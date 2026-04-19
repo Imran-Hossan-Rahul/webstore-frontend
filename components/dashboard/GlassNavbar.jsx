@@ -121,6 +121,9 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
             
             {/* Navigation Links */}
             <div className="hidden md:flex items-center gap-6 ml-6">
+                <Link href="/templates" className="text-sm font-bold text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
+                    Templates
+                </Link>
                 <Link href="/blogs" className="text-sm font-bold text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
                     Blogs
                 </Link>

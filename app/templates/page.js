@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
-import { redirect } from "next/navigation";
 import TemplatesDashboard from "@/components/dashboard/templates/TemplatesDashboard";
 
 export default async function TemplatesPage() {
@@ -17,7 +16,7 @@ export default async function TemplatesPage() {
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
       const res = await fetch(`${API_BASE_URL}/user/profile`, {
         headers: { Authorization: `Bearer ${token}` },
-        cache: "no-store", 
+        cache: "no-store",
       });
 
       if (res.ok) isAuthenticated = true;
@@ -26,9 +25,6 @@ export default async function TemplatesPage() {
     }
   }
 
-  // If not authenticated, redirect to login (or landing if you prefer public preview)
-  // For now, consistent dashboard experience requires login.
-  if (!isAuthenticated) return redirect("/");
-
-  return <TemplatesDashboard />;
+  // Public page — everyone can browse templates (guests & authenticated users)
+  return <TemplatesDashboard isGuest={!isAuthenticated} />;
 }

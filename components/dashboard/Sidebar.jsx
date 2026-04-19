@@ -17,6 +17,7 @@ import {
   Briefcase,
   Trophy,
   FileText,
+  Layout,
 } from "lucide-react";
 
 const SidebarItem = ({ icon: Icon, label, href, active, count }) => (
@@ -77,20 +78,23 @@ export default function Sidebar() {
           active={pathname === "/" && view !== "saved" && view !== "creators"}
         />
         <SidebarItem
-          icon={Compass}
-          label="Explore"
-          href="/explore"
-          active={pathname === "/explore"}
+          icon={Layout}
+          label="Templates"
+          href="/templates"
+          active={pathname?.startsWith("/templates")}
         />
-        {/* Blogs link temporarily hidden
         <SidebarItem
           icon={FileText}
           label="Blogs"
           href="/blogs"
           active={pathname === "/blogs"}
         />
-        */}
-        {/* <SidebarItem icon={TrendingUp} label="Trending" href="/trending" /> */}
+        <SidebarItem
+          icon={Compass}
+          label="Explore"
+          href="/explore"
+          active={pathname === "/explore"}
+        />
       </div>
 
       {/* Library + Saved — hidden temporarily
