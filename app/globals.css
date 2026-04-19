@@ -1,0 +1,718 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================
+   UNIVERSAL MACOS STYLE SMOOTH SCROLLBAR
+   Applies to all browsers (Chrome, Firefox, Safari)
+   ========================================= */
+
+/* For all elements */
+* {
+  scrollbar-width: thin;               /* Firefox */
+  scrollbar-color: #838383 transparent;
+}
+
+/* WebKit Browsers (Chrome, Safari, Edge, Opera) */
+*::-webkit-scrollbar {
+  width: 8px;                          /* Thin like macOS */
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;             /* Clean macOS track */
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(180, 180, 180, 0.8); /* Soft grey thumb */
+  border-radius: 20px;                 /* Fully rounded */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(63, 63, 63, 0.9);
+}
+
+[data-theme="dark"] *::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 100, 0.8);
+}
+
+[data-theme="dark"] *::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.9);
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --clr: rgba(228, 228, 228, 0.5);
+}
+
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =========================================
+   UNIVERSAL SELECTION STYLING (BRAND ALIGNED)
+   ========================================= */
+
+::selection {
+  background-color: #6252db; /* Brand Indigo/Purple */
+  color: #ffffff;
+}
+
+[data-theme="dark"] ::selection {
+  background-color: rgba(98, 82, 219, 0.4); /* Softer highlight for dark mode */
+  color: #ffffff;
+}
+
+.background {
+  position: relative;
+  background: linear-gradient(180deg, #D8D8D8 -13.03%, #c5ccee 100%);
+  transition: background 0.3s ease;
+}
+
+[data-theme="dark"] .background {
+  background: linear-gradient(180deg, #1a1a2e -13.03%, #16213e 100%);
+}
+
+.inner-div {
+  /* background: #eceef2;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25);
+  border-radius: 37px; */
+}
+
+.sight-bar {
+  /* background: #eef0f4;
+  box-shadow: inset 5px 7px 30px -16px rgba(0, 0, 0, 0.37);
+  border-radius: 37px; */
+}
+
+/* .profile-section {
+  height: 87px;
+  background: #e7e9ed;
+  box-shadow: inset 5px 7px 30px -16px rgba(0, 0, 0, 0.2);
+  border-radius: 0px 0px 37px 37px;
+} */
+
+.image-div-style {
+  background: #f8f8f8;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] .image-div-style {
+  background: #1a1a1a;
+  box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.clicked-button-gradient {
+  width: 260px;
+  height: 52px;
+  background: linear-gradient(90deg, #6252db 0%, #8774e8 70%);
+  border-radius: 0px 21px 21px 0px;
+}
+
+.profile-icon-style {
+  box-shadow: 
+    8px 8px 20px #bec3cf,
+    -8px -8px 20px #ffffff,
+    inset 0 0 0 #bec3cf,
+    inset 0 0 0 #ffffff;
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .profile-icon-style {
+  box-shadow: 
+    8px 8px 20px #0a0a0a,
+    -8px -8px 20px #1a1a1a,
+    inset 0 0 0 #0a0a0a,
+    inset 0 0 0 #1a1a1a;
+}
+
+.profile-icon-style:hover {
+  box-shadow:
+    4px 4px 10px #bec3cf,
+    -4px -4px 10px #ffffff,
+    inset 4px 4px 10px #bec3cf,
+    inset -4px -4px 10px #ffffff;
+}
+
+[data-theme="dark"] .profile-icon-style:hover {
+  box-shadow:
+    4px 4px 10px #0a0a0a,
+    -4px -4px 10px #1a1a1a,
+    inset 4px 4px 10px #0a0a0a,
+    inset -4px -4px 10px #1a1a1a;
+}
+
+.login-register-style-div {
+  box-shadow: 20px 20px 60px #bec3cf, -20px -20px 60px #ffffff;
+}
+
+[data-theme="dark"] .login-register-style-div {
+  box-shadow: 20px 20px 60px #0a0a0a, -20px -20px 60px #1a1a1a;
+}
+
+.email-password-input-box {
+  box-shadow: 
+    inset 8px 8px 16px #bec3cf,
+    inset -8px -8px 16px #ffffff;
+  padding: 20px;
+  padding-left: 55px;
+  color: #3d4468;
+  font-weight: 500; /* font-medium */
+  font-size: 1rem; /* text-base */
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+[data-theme="dark"] .email-password-input-box {
+  box-shadow: 
+    inset 8px 8px 16px #0a0a0a,
+    inset -8px -8px 16px #1a1a1a;
+  color: #cbd5e1;
+}
+
+.email-password-input-box:focus {
+  box-shadow:
+    inset 4px 4px 8px #bec3cf,
+    inset -4px -4px 8px #ffffff;
+}
+
+[data-theme="dark"] .email-password-input-box:focus {
+  box-shadow:
+    inset 4px 4px 8px #0a0a0a,
+    inset -4px -4px 8px #1a1a1a;
+}
+
+.eye-icon {
+  box-shadow:
+    4px 4px 10px #bec3cf,
+    -4px -4px 10px #ffffff;
+  transition: all 0.3s ease;
+  color: #9499b7; /* default text color */
+}
+
+[data-theme="dark"] .eye-icon {
+  box-shadow:
+    4px 4px 10px #0a0a0a,
+    -4px -4px 10px #1a1a1a;
+  color: #64748b;
+}
+
+.eye-icon:hover {
+  color: #6c7293; /* hover:text-[#6c7293] */
+}
+
+[data-theme="dark"] .eye-icon:hover {
+  color: #94a3b8;
+}
+
+.eye-icon:active {
+  box-shadow:
+    inset 2px 2px 5px #bec3cf,
+    inset -2px -2px 5px #ffffff;
+}
+
+[data-theme="dark"] .eye-icon:active {
+  box-shadow:
+    inset 2px 2px 5px #0a0a0a,
+    inset -2px -2px 5px #1a1a1a;
+}
+
+/* global.css বা component এর style tag এ */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.card-template {
+  background: rgba(245, 245, 245, 0.5);
+  backdrop-filter: blur(40px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 32px;
+}
+
+[data-theme="dark"] .card-template {
+  background: rgba(26, 26, 26, 0.5);
+}
+
+.smooth-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: black;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  z-index: 9999;
+  transition: width 0.2s ease, height 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-theme="dark"] .smooth-cursor {
+  background-color: white;
+}
+
+/* Hovering state (hand/clickable) */
+.smooth-cursor.hovering {
+  width: 35px;
+  height: 35px;
+  background-color: black;
+}
+
+[data-theme="dark"] .smooth-cursor.hovering {
+  background-color: white;
+}
+
+/* Arrow inside circle for hand, pointing right */
+.smooth-cursor .arrow {
+  width: 6px;
+  height: 6px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(-45deg); /* arrow pointing right */
+  /* center vertically */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+[data-theme="dark"] .smooth-cursor .arrow {
+  border-color: black;
+}
+
+/* Import VS Code-like font (moved, Fira Code for code blocks) */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+pre[class*="language-"] {
+  background: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Inline code */
+code {
+  background: #1e1e1e;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
+  font-family: 'Fira Code', monospace;
+}
+
+[data-theme="dark"] code {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+/* Syntax tokens */
+.token.comment { color: #6a9955; font-style: italic; }
+.token.keyword { color: #569cd6; font-weight: bold; }
+.token.string { color: #ce9178; }
+.token.function { color: #dcdcaa; }
+.token.variable { color: #9cdcfe; }
+.token.number { color: #b5cea8; }
+.token.operator { color: #d4d4d4; }
+.token.punctuation { color: #d4d4d4; }
+.token.class-name { color: #4ec9b0; }
+.token.boolean { color: #569cd6; }
+.token.tag { color: #569cd6; }
+.token.attr-name { color: #9cdcfe; }
+.token.attr-value { color: #ce9178; }
+
+/* Full-width DARK code block */
+.tiptap pre {
+  background: #1e1e1e !important;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+[data-theme="dark"] .tiptap pre {
+  background: #2a2a2a !important;
+}
+
+/* Code text */
+.tiptap pre code {
+  color: #ffffff !important;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+[data-theme="dark"] .tiptap pre code {
+  color: #e0e0e0 !important;
+}
+
+/* Highlight.js blocks */
+.hljs {
+  background: #1e1e1e !important;
+  color: #ffffff !important;
+  display: block;
+  width: 100%;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+[data-theme="dark"] .hljs {
+  background: #2a2a2a !important;
+  color: #e0e0e0 !important;
+}
+
+/* Resize handle */
+.tiptap-image-handle {
+  width: 12px;
+  height: 12px;
+  background-color: #3b82f6; /* blue-500 */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+  border-radius: 2px;
+}
+
+/* --- Lists --- */
+.tiptap ul {
+  list-style-type: disc !important;  /* bullet */
+  padding-left: 1.5rem !important;   /* proper indent */
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap ol {
+  list-style-type: decimal !important; /* numbered list */
+  padding-left: 1.5rem !important;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tiptap li {
+  display: list-item !important;
+  margin: 0.25rem 0;
+}
+
+/* --- Headings --- */
+.tiptap h1 {
+  font-size: 2rem;       /* 32px approx */
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1rem 0 0.5rem;
+}
+
+.tiptap h2 {
+  font-size: 1.75rem;    /* 28px approx */
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0.9rem 0 0.45rem;
+}
+
+.tiptap h3 {
+  font-size: 1.5rem;     /* 24px approx */
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.tiptap h4 {
+  font-size: 1.25rem;    /* 20px approx */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0.6rem 0 0.4rem;
+}
+
+.tiptap h5 {
+  font-size: 1.125rem;   /* 18px approx */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0.5rem 0 0.25rem;
+}
+
+.tiptap h6 {
+  font-size: 1rem;       /* 16px approx */
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0.5rem 0 0.25rem;
+}
+
+/* আপনার স্টাইল ফাইল (e.g., BlogEditor.css বা index.css) এ যোগ করুন */
+
+/* এডিটর কার্সার (caret) ভিজিবিলিটি ফিক্স - ১০০% ইনভার্সন সলিউশন */
+@keyframes dynamicCaret {
+    0%, 100% { caret-color: #000000; }  /* Black */
+    33% { caret-color: #ffffff; }       /* White */
+    66% { caret-color: #3b82f6; }       /* Blue */
+}
+
+.ProseMirror {
+    animation: dynamicCaret 1.5s steps(1) infinite !important; /* সব ধরনের ব্যাকগ্রাউন্ডে যেন কার্সারটি জ্বলজ্বল করে */
+}
+
+/* ProseMirror দ্বারা নির্বাচিত কোনো নোড */
+.ProseMirror .ProseMirror-selectednode {
+    /* এটি কোনো ব্লক নোডের চারপাশে নীল সিলেকশন তৈরি করে */
+    outline: 2px solid #007bff; /* নীল রঙের বর্ডার */
+    outline-offset: 4px;        /* বর্ডার এবং ইমেজের মধ্যে স্পেস */
+    cursor: pointer;            /* মাউস কার্সারকে চেঞ্জ করে ইউজারকে ইঙ্গিত দিন */
+}
+
+[data-theme="dark"] .ProseMirror .ProseMirror-selectednode {
+    outline: 2px solid #60a5fa;
+}
+
+/* আপনার কাস্টম ইমেজ র্যাপার */
+/* যদি আপনি ImageNodeView-এ একটি র্যাপার div ব্যবহার করেন, তবে সেই div এ স্টাইল দিন */
+.ProseMirror .image-wrapper.ProseMirror-selectednode {
+    /* আউটলাইনটি যেন ইমেজের চারপাশে ভালোভাবে দেখা যায়, সেটি নিশ্চিত করুন */
+}
+
+/* এটি আপনার গ্লোবাল CSS ফাইলে বা এডিটর স্টাইলিং ফাইলে যোগ করুন */
+.ProseMirror table {
+    border-collapse: collapse; /* টেবিল বর্ডারকে একক লাইনে রাখে */
+    /* width: 100%; */
+    margin: 1em 0;
+}
+
+/* টেবিল হেডার, ডেটা এবং টিডি-তে বর্ডার যোগ করা */
+.ProseMirror table th,
+.ProseMirror table td {
+    border: 1px solid #ccc; /* হালকা ধূসর বর্ডার */
+    width: 20px;
+    text-align: left;
+    vertical-align: top;
+}
+
+[data-theme="dark"] .ProseMirror table th,
+[data-theme="dark"] .ProseMirror table td {
+    border: 1px solid #444;
+}
+
+/* যদি আপনি হেডার রো ব্যবহার করেন */
+.ProseMirror table th {
+    font-weight: bold;
+    background-color: #f8f8f8;
+}
+
+[data-theme="dark"] .ProseMirror table th {
+    background-color: #2a2a2a;
+}
+
+/* টেবিল সিলেক্ট করা হলে বর্ডার হাইলাইট করার জন্য */
+.ProseMirror table.selectedCell {
+    outline: 2px solid #6c757d;
+}
+
+[data-theme="dark"] .ProseMirror table.selectedCell {
+    outline: 2px solid #94a3b8;
+}
+
+/* =====================================================
+   MEDIUM-STYLE BLOG READING TYPOGRAPHY
+   Applied to .blog-prose wrapper in blog detail page
+   ===================================================== */
+
+.blog-prose {
+  font-family: var(--font-lora), 'Georgia', 'Times New Roman', serif;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: #242424;
+  letter-spacing: -0.003em;
+  word-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] .blog-prose {
+  color: #e0e0e0;
+}
+
+/* Paragraphs */
+.blog-prose p {
+  margin-top: 0;
+  margin-bottom: 1.7em;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: inherit;
+}
+
+/* First paragraph after heading — no extra top space */
+.blog-prose h1 + p,
+.blog-prose h2 + p,
+.blog-prose h3 + p,
+.blog-prose h4 + p {
+  margin-top: 0;
+}
+
+/* Headings — Inter for clean contrast with serif body */
+.blog-prose h1,
+.blog-prose h2,
+.blog-prose h3,
+.blog-prose h4,
+.blog-prose h5,
+.blog-prose h6 {
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: #111;
+  margin-top: 2.4em;
+  margin-bottom: 0.55em;
+}
+
+[data-theme="dark"] .blog-prose h1,
+[data-theme="dark"] .blog-prose h2,
+[data-theme="dark"] .blog-prose h3,
+[data-theme="dark"] .blog-prose h4,
+[data-theme="dark"] .blog-prose h5,
+[data-theme="dark"] .blog-prose h6 {
+  color: #f0f0f0;
+}
+
+.blog-prose h1 { font-size: 2.1rem; font-weight: 800; }
+.blog-prose h2 { font-size: 1.7rem; font-weight: 700; }
+.blog-prose h3 { font-size: 1.4rem; font-weight: 700; }
+.blog-prose h4 { font-size: 1.2rem; font-weight: 700; }
+
+/* Bold text — Inter for punch */
+.blog-prose strong,
+.blog-prose b {
+  font-family: var(--font-inter), sans-serif;
+  font-weight: 700;
+  color: #111;
+}
+
+[data-theme="dark"] .blog-prose strong,
+[data-theme="dark"] .blog-prose b {
+  color: #f0f0f0;
+}
+
+/* Blockquote — Medium signature */
+.blog-prose blockquote {
+  font-family: var(--font-lora), Georgia, serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.7;
+  color: #555;
+  border-left: 3px solid #292929;
+  margin: 2.2em 0;
+  padding: 0.4em 0 0.4em 1.5em;
+  background: transparent;
+  border-radius: 0;
+}
+
+[data-theme="dark"] .blog-prose blockquote {
+  color: #aaa;
+  border-left-color: #777;
+}
+
+/* Lists */
+.blog-prose ul,
+.blog-prose ol {
+  padding-left: 1.8em;
+  margin: 0.6em 0 1.7em;
+  font-size: 1.2rem;
+  line-height: 1.85;
+}
+
+.blog-prose li {
+  margin-bottom: 0.5em;
+  padding-left: 0.25em;
+}
+
+.blog-prose ul { list-style-type: disc; }
+.blog-prose ol { list-style-type: decimal; }
+
+.blog-prose li::marker {
+  color: #888;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .blog-prose li::marker {
+  color: #666;
+}
+
+/* Inline code */
+.blog-prose :not(pre) > code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.875em;
+  background: #f2f2f2;
+  color: #c0392b;
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+[data-theme="dark"] .blog-prose :not(pre) > code {
+  background: #2a2a2a;
+  color: #e06c75;
+  border-color: rgba(255,255,255,0.06);
+}
+
+/* Links */
+.blog-prose a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(0,0,0,0.25);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.blog-prose a:hover {
+  text-decoration-color: #111;
+}
+
+[data-theme="dark"] .blog-prose a {
+  text-decoration-color: rgba(255,255,255,0.25);
+}
+
+[data-theme="dark"] .blog-prose a:hover {
+  text-decoration-color: #f0f0f0;
+}
+
+/* Images */
+.blog-prose img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin: 2em auto;
+}
+
+/* Horizontal rule — Medium uses a subtle separator */
+.blog-prose hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 3em auto;
+  max-width: 80px;
+}
+
+[data-theme="dark"] .blog-prose hr {
+  border-top-color: #333;
+}
