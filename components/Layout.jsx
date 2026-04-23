@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Background from "@/components/Background";
 import InnerDiv from "@/components/InnerDiv";
-import Navbar from "./HomeComponents/Navbar";
+import GlassNavbar from "./dashboard/GlassNavbar";
 import TrackerClient from "./TrackerClient";
 import SmoothCursor from "./MainCursor";
 import CreatorAccountModal from "@/components/DashboardComponents/CreatorAccountModal";
@@ -16,7 +16,7 @@ export default function Layout({ children }) {
       <TrackerClient />
 
       <InnerDiv>
-        <Navbar onOpenCreatorModal={() => setShowCreatorModal(true)} />
+        <GlassNavbar onOpenCreatorModal={() => setShowCreatorModal(true)} />
 
         <main className="w-full flex justify-center">
           <div className="w-full max-w-[1800px] px-3 md:px-6 lg:px-8 pb-16">
