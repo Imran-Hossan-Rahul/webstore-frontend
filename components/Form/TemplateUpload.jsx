@@ -110,8 +110,9 @@ export default function TemplateUploadFullDebug({
       discount: "",
       currency: "USD",
       liveLink: "",
+      githubLink: "",
       tags: "",
-      cardShape: "square-medium" // Default value, hidden from UI
+      cardShape: "square-medium"
   });
 
   const [previewFile, setPreviewFile] = useState(null);
@@ -256,7 +257,8 @@ export default function TemplateUploadFullDebug({
     fd.append("discount", Number(formData.discount || 0));
     fd.append("currency", formData.currency);
     fd.append("liveLink", formData.liveLink);
-    fd.append("cardShape", formData.cardShape); // Hidden default
+    fd.append("githubLink", formData.githubLink);
+    fd.append("cardShape", formData.cardShape);
 
     fd.append("previewFile", previewFile);
     fd.append("projectFile", projectFile);
@@ -293,7 +295,7 @@ export default function TemplateUploadFullDebug({
       setMessage("✔ Template uploaded successfully!");
       // Reset
       e.target.reset();
-      setFormData({ ...formData, title: "", description: "", price: "", tags: "", liveLink: "" });
+      setFormData({ ...formData, title: "", description: "", price: "", tags: "", liveLink: "", githubLink: "" });
       setSelectedTechs([]);
       setPreviewFile(null);
       setProjectFile(null);
@@ -395,6 +397,31 @@ export default function TemplateUploadFullDebug({
                                         value={formData.liveLink}
                                         onChange={handleInputChange}
                                         placeholder="https://..."
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition-all"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-300 mb-2">GitHub Repository</label>
+                                    <input
+                                        name="githubLink"
+                                        type="url"
+                                        value={formData.githubLink}
+                                        onChange={handleInputChange}
+                                        placeholder="https://github.com/..."
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition-all"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-300 mb-2">Tags (comma separated)</label>
+                                    <input
+                                        name="tags"
+                                        type="text"
+                                        value={formData.tags}
+                                        onChange={handleInputChange}
+                                        placeholder="modern, responsive, dark-mode"
                                         className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500/50 transition-all"
                                     />
                                 </div>

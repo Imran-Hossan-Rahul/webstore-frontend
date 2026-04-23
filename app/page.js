@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 import AuthenticatedHome from "@/components/dashboard/AuthenticatedHome";
 
+
 export default async function Home() {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value;
@@ -9,9 +10,7 @@ export default async function Home() {
 
   if (token) {
     try {
-      const JWT_SECRET =
-        "4625f0409cbe8a2008e3b6e1e779ad02f1fd4fc792b0b9dda08d4e72236fca086460f4fac2061d082f21449b64329ffc6bc6b2328bbd737f8aa92eb87661fc45";
-      const secret = new TextEncoder().encode(JWT_SECRET);
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET_ACCESS_TOKEN);
       await jwtVerify(token, secret);
 
       const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;

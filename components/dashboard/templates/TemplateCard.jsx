@@ -72,7 +72,7 @@ export const TemplateCard = ({ template }) => {
         
         {/* 1. Image Container (Rounded, Clean) */}
         <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800 transition-all duration-300">
-            <Link href={`/templates/${template.slug || template._id}`} className="block w-full h-full">
+            <Link href={`/templates/${template._id}`} className="block w-full h-full">
                 {imageSrc ? (
                     <img 
                         src={imageSrc} 

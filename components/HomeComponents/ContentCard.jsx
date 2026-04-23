@@ -21,6 +21,7 @@ export default function VideoCard({ item, type }) {
   const image = item.coverImage || item.thumbnail;
   const author = item.author || item.user; 
   const slug = item.slug;
+  const itemId = item._id; // Add ID for templates
   const tags = item.tags || [];
 
   // Card Shape Logic
@@ -33,7 +34,7 @@ export default function VideoCard({ item, type }) {
 
   // Interaction Handlers
   const handleClick = () => {
-     if (isTemplate) router.push(`/templates/${slug}`);
+     if (isTemplate) router.push(`/templates/${itemId || slug}`);
      else router.push(`/blogs/${slug}`); 
   };
 
@@ -51,7 +52,7 @@ export default function VideoCard({ item, type }) {
 
       try {
           const endpoint = isTemplate 
-             ? ${process.env.NEXT_PUBLIC_API_URL}/template/${slug}/like`
+             ? ${process.env.NEXT_PUBLIC_API_URL}/template/${itemId || slug}/like`
              : ${process.env.NEXT_PUBLIC_API_URL}/blog/${slug}/like`;
           
           await axios.post(endpoint, {}, { headers: { Authorization: `Bearer ${token}` } });

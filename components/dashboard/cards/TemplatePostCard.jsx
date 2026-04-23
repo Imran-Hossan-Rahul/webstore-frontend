@@ -56,7 +56,7 @@ const TemplatePostCard = ({
 
   const handleNavigation = (e) => {
       if (isDetailPage) return;
-      router.push(`/templates/${item.slug || _id}`);
+      router.push(`/templates/${_id}`);
   };
 
   const handleLike = async (e) => {
@@ -82,12 +82,22 @@ const TemplatePostCard = ({
     e.stopPropagation();
     if (isGuest) { onRequireAuth?.('download'); return; }
     try {
-      await api.post(`/template/${_id}/download`);
-      if (item.projectFile) {
-        window.open(item.projectFile, '_blank');
+      const response = await api.post(`/template/${_id}/download`);
+      if (response.success && response.url) {
+        // Create a temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = response.url;
+        link.download = `${title || 'template'}.zip`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else if (response.requiresPurchase) {
+        alert('Please purchase this template first');
       }
     } catch (error) {
       console.error("Download error:", error);
+      alert('Download failed. Please try again.');
     }
   };
 
@@ -117,11 +127,18 @@ const TemplatePostCard = ({
         onClick={handleNavigation}
     >
         {/* Left Column: Avatar */}
-        <div className="flex-shrink-0" onClick={(e) => { e.stopPropagation(); setIsCreatorModalOpen(true); }}>
-             <div className="relative group/avatar cursor-pointer hover:opacity-80 transition-opacity">
+        <div className="flex-shrink-0">
+             <div 
+                className="relative group/avatar cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={(e) => { 
+                    e.stopPropagation(); 
+                    e.preventDefault();
+                    setIsCreatorModalOpen(true); 
+                }}
+             >
                  <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
                      {(() => {
-                       const avatarUrl = user?.avatar || user?.profilePic || user?.profilePicture || 
+                       const avatarUrl = user?.profilePicture || user?.avatar || user?.profilePic || 
                                         item?.creator?.profilePicture || item?.creator?.avatar ||
                                         item?.owner?.profilePicture || item?.owner?.avatar ||
                                         item?.user?.profilePicture || item?.user?.avatar;
@@ -134,6 +151,7 @@ const TemplatePostCard = ({
                             height={48} 
                             className="rounded-full w-full h-full object-cover"
                             alt={userName}
+                            unoptimized
                          />
                        ) : (
                          <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
@@ -154,7 +172,11 @@ const TemplatePostCard = ({
                      <div className="flex items-center gap-2">
                         <h3 
                             className="font-bold text-gray-900 dark:text-gray-100 text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 transition-colors cursor-pointer"
-                            onClick={(e) => { e.stopPropagation(); setIsCreatorModalOpen(true); }}
+                            onClick={(e) => { 
+                                e.stopPropagation(); 
+                                e.preventDefault();
+                                setIsCreatorModalOpen(true); 
+                            }}
                         >
                             {user?.name || item?.creator?.name || item?.owner?.name || 'Creator'}
                         </h3>
@@ -323,7 +345,7 @@ const TemplatePostCard = ({
                             {/* Description - Always Show */}
                             <div>
                                 <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Description</div>
-                                <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-4 leading-relaxed">
+                                <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-4 leading-relaxed break-words whitespace-normal">
                                     {description ? (
                                         description.length > 160 
                                             ? `${description.substring(0, 160)}...` 

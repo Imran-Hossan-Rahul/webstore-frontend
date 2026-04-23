@@ -10,6 +10,12 @@ export default function RightSidebar() {
   const pathname = usePathname();
   const [featuredCreator, setFeaturedCreator] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [trendingTags, setTrendingTags] = useState([]);
+  const [tagsLoading, setTagsLoading] = useState(true);
+  const [templateCategories, setTemplateCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [templateTags, setTemplateTags] = useState([]);
+  const [templateTagsLoading, setTemplateTagsLoading] = useState(true);
 
   // Determine Context
   const isMsg = pathname?.includes('/messages');
@@ -34,7 +40,55 @@ export default function RightSidebar() {
 
   useEffect(() => {
     fetchFeaturedCreator();
-  }, []);
+    if (isTemplate) {
+      fetchTemplateCategories();
+      fetchTemplateTags();
+    } else {
+      fetchTrendingTags();
+    }
+  }, [isTemplate]);
+
+  // Fetch trending tags
+  const fetchTrendingTags = async () => {
+    try {
+      const response = await api.get("/feed/trending-tags?limit=6");
+      if (response.success && response.data.length > 0) {
+        setTrendingTags(response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch trending tags:", error);
+    } finally {
+      setTagsLoading(false);
+    }
+  };
+
+  // Fetch template categories
+  const fetchTemplateCategories = async () => {
+    try {
+      const response = await api.get("/template/popular-categories?limit=8");
+      if (response.success && response.data.length > 0) {
+        setTemplateCategories(response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch template categories:", error);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
+
+  // Fetch template trending tags
+  const fetchTemplateTags = async () => {
+    try {
+      const response = await api.get("/template/trending-tags?limit=6");
+      if (response.success && response.data.length > 0) {
+        setTemplateTags(response.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch template tags:", error);
+    } finally {
+      setTemplateTagsLoading(false);
+    }
+  };
 
   if (isMsg) return null;
 
@@ -127,19 +181,71 @@ export default function RightSidebar() {
   return (
     <aside className="h-full flex flex-col gap-6">
       
-      {/* Search / Filter Context for Templates */}
+      {/* Categories for Templates - Real Data */}
       {isTemplate && (
           <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-6 shadow-xl shadow-black/5">
               <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                  <Layers size={16} /> Categories
+                  <Layers size={16} /> Popular Categories
               </h3>
-              <div className="flex flex-wrap gap-2">
-                  {["UI Kits", "Dashboards", "Landing Pages", "Mobile Apps", "Illustrations", "Icons"].map(cat => (
-                      <span key={cat} className="px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-300 cursor-pointer hover:border-purple-500 hover:text-purple-500 transition-colors">
-                          {cat}
-                      </span>
+              
+              {categoriesLoading ? (
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="h-8 w-24 bg-gray-200 dark:bg-white/10 rounded-lg animate-pulse" />
                   ))}
-              </div>
+                </div>
+              ) : templateCategories.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-4">No categories yet</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {templateCategories.map(cat => (
+                    <Link
+                      key={cat.category}
+                      href={`/templates?category=${encodeURIComponent(cat.category)}`}
+                      className="group px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-300 cursor-pointer hover:border-purple-500 hover:text-purple-500 transition-colors flex items-center gap-1.5"
+                    >
+                      <span>{cat.category}</span>
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500 group-hover:text-purple-400">
+                        {cat.templateCount}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
+          </div>
+      )}
+
+      {/* Trending Tags for Templates - Real Data */}
+      {isTemplate && (
+          <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-6 shadow-xl shadow-black/5">
+              <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                   <TrendingUp size={16} /> Trending Tags
+              </h3>
+              
+              {templateTagsLoading ? (
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="h-8 w-20 bg-gray-200 dark:bg-white/10 rounded-lg animate-pulse" />
+                  ))}
+                </div>
+              ) : templateTags.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-4">No trending tags yet</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {templateTags.map(item => (
+                    <Link
+                      key={item.tag}
+                      href={`/templates?tag=${encodeURIComponent(item.tag)}`}
+                      className="group px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-300 cursor-pointer hover:border-blue-500 hover:text-blue-500 transition-colors flex items-center gap-1.5"
+                    >
+                      <span>#{item.tag}</span>
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500 group-hover:text-blue-400">
+                        {item.templateCount}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
           </div>
       )}
 
@@ -234,23 +340,41 @@ export default function RightSidebar() {
          </div>
       </div>
 
-      {/* Trending Tags Cloud (Default) */}
+      {/* Trending Tags Cloud (Default) - Real Data */}
       {!isTemplate && (
           <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-6 shadow-xl shadow-black/5">
               <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                    <TrendingUp size={16} /> Trending
               </h3>
-              <div className="flex flex-wrap gap-2">
-                  {["#3DDesign", "#Minimalism", "#Web3", "#Portfolio", "#Abstract", "#Motion"].map(tag => (
-                      <span key={tag} className="px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-300 cursor-pointer hover:border-blue-500 hover:text-blue-500 transition-colors">
-                          {tag}
-                      </span>
+              
+              {tagsLoading ? (
+                <div className="flex flex-wrap gap-2">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="h-8 w-20 bg-gray-200 dark:bg-white/10 rounded-lg animate-pulse" />
                   ))}
-              </div>
+                </div>
+              ) : trendingTags.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-4">No trending tags yet</p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {trendingTags.map(item => (
+                    <Link
+                      key={item.tag}
+                      href={`/search?q=${encodeURIComponent(item.tag)}`}
+                      className="group px-3 py-1.5 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-lg text-xs font-bold text-gray-600 dark:text-gray-300 cursor-pointer hover:border-blue-500 hover:text-blue-500 transition-colors flex items-center gap-1.5"
+                    >
+                      <span>#{item.tag}</span>
+                      <span className="text-[10px] text-gray-400 dark:text-gray-500 group-hover:text-blue-400">
+                        {item.postCount}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              )}
           </div>
       )}
 
-      {/* Pro Banner */}
+      {/* Pro Banner
       {!isSaved && (
         <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-6 text-white shadow-xl shadow-blue-500/20">
             <h3 className="font-bold text-lg mb-2">Upgrade to Pro</h3>
@@ -259,7 +383,7 @@ export default function RightSidebar() {
                 Learn more <ArrowRight className="w-4 h-4" />
             </button>
         </div>
-      )}
+      )} */}
 
     </aside>
   );

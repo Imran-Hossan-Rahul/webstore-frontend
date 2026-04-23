@@ -1,13 +1,9 @@
 "use client";
 
+import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import React from "react";
-
-import NameInput from "@/components/Input/NameInput";
-import EmailInput from "@/components/Input/EmailInput";
-import PasswordInput from "@/components/Input/PasswordInput";
 import CheckBox from "@/components/Input/CheckBox";
 import TrackerClient from "@/components/TrackerClient";
 

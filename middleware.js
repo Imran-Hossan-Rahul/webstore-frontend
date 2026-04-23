@@ -47,11 +47,20 @@ export async function middleware(req) {
 
   const hasCreatorAccount = decoded?.hasCreatorAccount;
 
+  // Debug log
+  console.log('🔍 Middleware Debug:', {
+    pathname,
+    hasCreatorAccount,
+    decodedPayload: decoded
+  });
+
   // Creator route protection
   if (pathname.startsWith("/user/creator")) {
     if (!hasCreatorAccount) {
-      return NextResponse.redirect(new URL("/dashboard", req.url));
+      console.log('❌ Redirecting: No creator account');
+      return NextResponse.redirect(new URL("/", req.url));
     }
+    console.log('✅ Allowing access to creator route');
   }
 
   return NextResponse.next();
@@ -60,17 +69,8 @@ export async function middleware(req) {
 export const config = {
   matcher: [
     "/",
-    "/admin",
     "/admin/:path*",
-    "/dashboard",
     "/dashboard/:path*",
-    "/app/dashboard",
-    "/app/dashboard/:path*",
-    "/user/creator",
-    "/user/creator/:path*",
-    "/user/dashboard",
-    "/user/dashboard/:path*",
-    "/user/hirer",
-    "/user/hirer/:path*",
+    "/user/:path*", // This will match all /user/* routes
   ],
 };

@@ -35,8 +35,8 @@ export default function CreatorAccountModal({ isOpen, onClose }) {
           Cookies.set("hasCreatorAccount", "true", { expires: 7 });
         }
         
-        // Redirect to creator dashboard
-        router.push("/user/creator");
+        // Force page reload to update middleware with new token
+        window.location.href = "/user/creator";
       }
     } catch (err) {
       setError(err.message || "Failed to create creator account");

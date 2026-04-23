@@ -129,8 +129,15 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
         onClick={handleNavigate}
       >
         {/* Avatar */}
-        <div className="flex-shrink-0" onClick={(e) => { e.stopPropagation(); setIsCreatorModalOpen(true); }}>
-          <div className="relative w-12 h-12 rounded-full p-[2px] bg-white dark:bg-black border border-gray-200 dark:border-white/10 hover:opacity-80 transition-opacity">
+        <div className="flex-shrink-0">
+          <div 
+            className="relative w-12 h-12 rounded-full p-[2px] bg-white dark:bg-black border border-gray-200 dark:border-white/10 hover:opacity-80 transition-opacity cursor-pointer"
+            onClick={(e) => { 
+                e.stopPropagation(); 
+                e.preventDefault();
+                setIsCreatorModalOpen(true); 
+            }}
+          >
             {(author?.profilePicture || author?.avatar) ? (
               <Image
                 src={author.profilePicture || author.avatar}
@@ -153,8 +160,12 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
           <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
             <div className="flex items-center gap-2">
               <h3 
-                className="font-bold text-gray-900 dark:text-gray-100 text-base hover:underline decoration-2 decoration-emerald-500 underline-offset-4"
-                onClick={(e) => { e.stopPropagation(); setIsCreatorModalOpen(true); }}
+                className="font-bold text-gray-900 dark:text-gray-100 text-base hover:underline decoration-2 decoration-emerald-500 underline-offset-4 cursor-pointer"
+                onClick={(e) => { 
+                    e.stopPropagation(); 
+                    e.preventDefault();
+                    setIsCreatorModalOpen(true); 
+                }}
               >
                 {author?.name || 'Anonymous'}
               </h3>

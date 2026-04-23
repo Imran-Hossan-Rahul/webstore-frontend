@@ -203,7 +203,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCreatorAccoun
                             <span className="flex items-center gap-1"><Calendar size={14}/> Joined {new Date(displayProfile.createdAt || user.createdAt).getFullYear()}</span>
                         </div>
 
-                        {/* Creator buttons temporarily hidden
+                        
                         {isCreatorAccount ? (
                           <div className="mt-4">
                             <button
@@ -231,7 +231,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCreatorAccoun
                             </button>
                           </div>
                         )}
-                        */}
+                        
 
                         {/* Bio Section */}
                         <div className="mt-6">

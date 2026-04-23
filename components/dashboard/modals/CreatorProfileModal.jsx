@@ -58,7 +58,9 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
         fetchProfile();
     }, [isOpen, userId]);
 
-    const handleFollow = async () => {
+    const handleFollow = async (e) => {
+        e?.stopPropagation();
+        e?.preventDefault();
         if (followLoading) return;
         setFollowLoading(true);
         try {
@@ -74,7 +76,9 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
         }
     };
 
-    const handleViewArticles = () => {
+    const handleViewArticles = (e) => {
+        e?.stopPropagation();
+        e?.preventDefault();
         onClose();
         router.push(`/blogs?author=${userId}`);
     };
@@ -90,14 +94,28 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
             {/* Backdrop */}
             <div
                 className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-                onClick={onClose}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    onClose();
+                }}
             />
 
             {/* Modal */}
-            <div className="relative w-full max-w-2xl bg-white dark:bg-[#0f0f0f] rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-white/10 animate-in fade-in zoom-in-95 duration-200">
+            <div 
+                className="relative w-full max-w-2xl bg-white dark:bg-[#0f0f0f] rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-white/10 animate-in fade-in zoom-in-95 duration-200"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }}
+            >
                 {/* Close */}
                 <button
-                    onClick={onClose}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        onClose();
+                    }}
                     className="absolute top-4 right-4 z-20 p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full text-white transition-colors"
                 >
                     <X size={20} />
@@ -172,6 +190,7 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
 
                                 {/* Action buttons */}
                                 <div className="flex items-center gap-2 sm:mt-14">
+                                    {/* Follow button */}
                                     <button
                                         onClick={handleFollow}
                                         disabled={followLoading}
@@ -226,7 +245,7 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
                             </div>
 
                             {/* Stats — fetched from real DB aggregation */}
-                            <div className="grid grid-cols-3 gap-3 mb-6">
+                            <div className="grid grid-cols-4 gap-3 mb-6">
                                 <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Eye size={18} className="text-emerald-500 mb-1.5" />
                                     <span className="text-xl font-black text-gray-900 dark:text-white">{(profile.totalViews || 0).toLocaleString()}</span>
@@ -241,6 +260,11 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
                                     <BookOpen size={18} className="text-blue-500 mb-1.5" />
                                     <span className="text-xl font-black text-gray-900 dark:text-white">{(profile.totalBlogs || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-0.5">Articles</span>
+                                </div>
+                                <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                    <Layers size={18} className="text-purple-500 mb-1.5" />
+                                    <span className="text-xl font-black text-gray-900 dark:text-white">{(profile.totalTemplates || 0).toLocaleString()}</span>
+                                    <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-0.5">Templates</span>
                                 </div>
                             </div>
 

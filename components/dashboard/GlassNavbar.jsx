@@ -11,7 +11,9 @@ import {
   Settings,
   LogOut,
   User,
-  Sparkles
+  Sparkles,
+  Layers,
+  FileText
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
@@ -30,6 +32,7 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showChatModal, setShowChatModal] = useState(false);
   const [hasCreatorAccount, setHasCreatorAccount] = useState(false);
+  const [showCreateDropdown, setShowCreateDropdown] = useState(false);
 
   // State for user data
   const [userData, setUserData] = useState({
@@ -85,6 +88,17 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
     return () => window.removeEventListener('openChat', handleOpenChat);
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (showCreateDropdown && !e.target.closest('.create-dropdown-container')) {
+        setShowCreateDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showCreateDropdown]);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("hasCreatorAccount");
@@ -118,16 +132,6 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
                     Amr<span className="text-purple-600">Platform</span>
                 </span>
             </Link>
-            
-            {/* Navigation Links */}
-            <div className="hidden md:flex items-center gap-6 ml-6">
-                <Link href="/templates" className="text-sm font-bold text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
-                    Templates
-                </Link>
-                <Link href="/blogs" className="text-sm font-bold text-gray-500 hover:text-purple-600 dark:text-gray-400 dark:hover:text-purple-400 transition-colors">
-                    Blogs
-                </Link>
-            </div>
         </div>
 
         {/* Center: Search Bar */}
@@ -169,15 +173,49 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
         {/* Right: Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
             
-            {/* Create button — visible only to creators, goes directly to blog editor */}
+            {/* Create button with dropdown — visible only to creators */}
             {hasCreatorAccount && (
-              <Link
-                href="/blog-editor"
-                className="hidden sm:flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-black/20 dark:shadow-white/20"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Create</span>
-              </Link>
+              <div className="relative create-dropdown-container">
+                <button
+                  onClick={() => setShowCreateDropdown(!showCreateDropdown)}
+                  className="hidden sm:flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-black/20 dark:shadow-white/20"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Create</span>
+                </button>
+
+                {/* Dropdown Menu */}
+                {showCreateDropdown && (
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
+                    <Link
+                      href="/upload"
+                      onClick={() => setShowCreateDropdown(false)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
+                        <Layers className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-gray-900 dark:text-white">Create Template</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Upload a new template</div>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/blog-editor"
+                      onClick={() => setShowCreateDropdown(false)}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
+                    >
+                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-gray-900 dark:text-white">Create Blog</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">Write a new article</div>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* Icons — chat and notifications hidden temporarily */}
