@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Inter, Lora } from "next/font/google";
+import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { ToastProvider } from "@/components/ui/ToastProvider";
 
@@ -7,13 +7,7 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-});
-
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-lora",
-  display: "swap",
-  style: ["normal", "italic"],
+  fallback: ['system-ui', 'arial'],
 });
 
 export const metadata = {
@@ -24,7 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${lora.variable}`}>
+      <body className={`${inter.variable}`}>
         <ThemeProvider>
           <ToastProvider>
             {children}

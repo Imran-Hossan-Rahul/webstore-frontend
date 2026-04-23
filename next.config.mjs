@@ -24,6 +24,10 @@ const nextConfig = {
       },
     ],
   },
+  // Optimize font loading with timeout handling
+  experimental: {
+    optimizeFonts: true,
+  },
 };
 
 export default nextConfig;
