@@ -87,7 +87,7 @@ export default function Sidebar() {
           icon={FileText}
           label="Blogs"
           href="/blogs"
-          active={pathname === "/blogs"}
+          active={pathname?.startsWith("/blogs")}
         />
         <SidebarItem
           icon={Compass}

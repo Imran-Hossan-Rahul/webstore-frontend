@@ -4,29 +4,21 @@ import { api } from "@/utils/api";
 import { TemplateCard } from "./TemplateCard";
 import axios from "axios";
 
+import useSWR from 'swr';
+
+const fetcher = async (url) => {
+    const res = await axios.get(url, { params: { page: 1, limit: 50 }, withCredentials: true });
+    if (!res.data || (!res.data.success && !res.data.data)) throw new Error("Failed to fetch");
+    return res.data.data || res.data.templates || [];
+};
+
 export default function TemplatesFeed({ searchQuery }) {
-  const [templates, setTemplates] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  useEffect(() => {
-    const fetchTemplates = async () => {
-        try {
-            const API_URL = process.env.NEXT_PUBLIC_API_URL;
-            const res = await axios.get(`${API_URL}/template`, { params: { page: 1, limit: 50 }, withCredentials: true });
-            
-            if (res.data && (res.data.success || res.data.data)) {
-                 const data = res.data.data || res.data.templates || [];
-                 setTemplates(data);
-            }
-        } catch (e) {
-            console.error("Templates fetch failed", e);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchTemplates();
-  }, []);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const { data: templatesData, error, isLoading: loading } = useSWR(`${API_URL}/template`, fetcher);
+
+  const templates = templatesData || [];
 
   // Filter Logic
   const filteredTemplates = templates.filter(t => {

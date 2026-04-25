@@ -9,95 +9,41 @@ import PostCard from "./cards/PostCard";
 import CreatorsList from "./CreatorsList";
 import QuickPostBox from "./QuickPostBox";
 import { api } from "@/utils/api";
+import useSWR from "swr";
+
+const fetcher = async (url) => {
+    const res = await api.get(url);
+    if (!res.success) throw new Error("Failed to fetch");
+    return res.data;
+};
 
 export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) {
   const searchParams = useSearchParams();
   const view = searchParams.get('view') || 'discover'; // 'discover' | 'community' | 'creators'
 
-  const [feedItems, setFeedItems] = React.useState([]);
   const [posts, setPosts] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState(null);
   // State for Project Detail Modal (Lifted up to fix positioning)
   const [selectedPost, setSelectedPost] = React.useState(null);
   const [selectedCategory, setSelectedCategory] = React.useState('all');
 
-  // Fetch Discover Feed
-  const fetchFeed = async () => {
-    try {
-        setLoading(true);
-        const data = await api.get('/feed'); 
-        
-        if (data.success) {
-            setFeedItems(data.data);
-        } else {
-            setError("Failed to load feed");
-        }
-    } catch (err) {
-        console.error(err);
-        setError("Error loading feed");
-    } finally {
-        setLoading(false);
-    }
+  const handleRequireAuth = (reason) => {
+      if (onRequireAuth) onRequireAuth(reason);
+      else window.dispatchEvent(new CustomEvent('requireAuth', { detail: reason }));
   };
 
-  // Fetch Community Posts
-  const fetchPosts = async () => {
-    try {
-        setLoading(true);
-        const res = await api.get('/posts');
-        if (res.success) {
-            setPosts(res.data);
-        }
-    } catch (err) {
-        console.error(err);
-        setError("Error loading posts");
-    } finally {
-        setLoading(false);
-    }
-  };
-
-  // Fetch Favorites
-  const fetchFavorites = async () => {
-    try {
-        setLoading(true);
-        const res = await api.get('/favorites');
-        if (res.success) {
-            setPosts(res.data);
-        }
-    } catch (err) {
-        console.error(err);
-        setError("Error loading saved posts");
-    } finally {
-        setLoading(false);
-    }
-  };
+  // SWR Fetching
+  const { data: feedItemsData, error: feedError, isLoading: feedLoading } = useSWR(view === 'discover' ? '/feed' : null, fetcher);
+  const { data: postsData, error: postsError, isLoading: postsLoading } = useSWR(view === 'community' ? '/posts' : null, fetcher);
+  const { data: favsData, error: favsError, isLoading: favsLoading } = useSWR(view === 'saved' ? '/favorites' : null, fetcher);
 
   React.useEffect(() => {
-    if (view === 'community') {
-        fetchPosts();
-    } else if (view === 'saved') {
-        fetchFavorites();
-    } else if (view === 'creators') {
-        setLoading(false);
-    } else {
-        fetchFeed();
-    }
-    
-    // Listen for media upload completion
-    if (typeof window !== 'undefined') {
-        const handleMediaUploaded = ({ postId, media }) => {
-            setFeedItems(prev => prev.map(item => 
-                item._id === postId 
-                    ? { ...item, media: [...(item.media || []), media] }
-                    : item
-            ));
-        };
-        
-        // Note: Socket connection would be needed here
-        // For now, we'll rely on refresh
-    }
-  }, [view]);
+      if (postsData) setPosts(postsData);
+      if (favsData) setPosts(favsData);
+  }, [postsData, favsData]);
+
+  const loading = (view === 'discover' && feedLoading) || (view === 'community' && postsLoading) || (view === 'saved' && favsLoading);
+  const error = (view === 'discover' && feedError) || (view === 'community' && postsError) || (view === 'saved' && favsError);
+  const feedItems = feedItemsData || [];
 
   const handlePostCreated = (newPost) => {
       setPosts([newPost, ...posts]);
@@ -150,7 +96,7 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
 
               <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden min-h-[500px]">
                   {posts.map(post => (
-                      <PostCard key={post._id || post.id} {...post} isGuest={isGuest} onRequireAuth={onRequireAuth} />
+                      <PostCard key={post._id || post.id} {...post} isGuest={isGuest} onRequireAuth={handleRequireAuth} />
                   ))}
                   {posts.length === 0 && (
                       <div className="text-center py-20 text-gray-400">
@@ -205,11 +151,11 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
             </div>
             
             {/* Sort Dropdown */}
-            <select className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 border-0 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-white/10">
+            {/* <select className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/5 border-0 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-white/10">
                <option>Latest</option>
                <option>Popular</option>
                <option>Trending</option>
-            </select>
+            </select> */}
          </div>
          
          {/* Quick Post Box */}
@@ -231,17 +177,17 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
                               item={item}
                               onClick={() => setSelectedPost(item)}
                               isGuest={isGuest}
-                              onRequireAuth={onRequireAuth}
+                              onRequireAuth={handleRequireAuth}
                            />
                       ) : item.type === 'project' || item.projectStats ? (
                            <PostCard
                               {...item}
                               onClick={() => setSelectedPost(item)}
                               isGuest={isGuest}
-                              onRequireAuth={onRequireAuth}
+                              onRequireAuth={handleRequireAuth}
                             />
                        ) : (
-                           <BlogCard blog={item} currentUser={user} isGuest={isGuest} onRequireAuth={onRequireAuth} />
+                           <BlogCard blog={item} currentUser={user} isGuest={isGuest} onRequireAuth={handleRequireAuth} />
                        )}
                   </div>
               ))}

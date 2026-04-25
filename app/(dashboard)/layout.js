@@ -1,9 +1,8 @@
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
-import AuthenticatedHome from "@/components/dashboard/AuthenticatedHome";
+import DashboardLayoutWrapper from "@/components/dashboard/DashboardLayoutWrapper";
 
-
-export default async function Home() {
+export default async function DashboardLayout({ children }) {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value;
   let isAuthenticated = false;
@@ -23,11 +22,14 @@ export default async function Home() {
         isAuthenticated = true;
       }
     } catch (err) {
-      console.error("Token verification failed in page.js:", err.message);
+      console.error("Token verification failed in dashboard layout:", err.message);
       isAuthenticated = false;
     }
   }
 
-  // Always show the feed — guests get isGuest=true, authenticated users get full access
-  return <AuthenticatedHome isGuest={!isAuthenticated} />;
+  return (
+    <DashboardLayoutWrapper isGuest={!isAuthenticated}>
+      {children}
+    </DashboardLayoutWrapper>
+  );
 }

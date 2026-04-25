@@ -6,8 +6,7 @@ export async function middleware(req) {
   const pathname = req.nextUrl.pathname;
   const token = req.cookies.get("token")?.value;
 
-  const JWT_SECRET =
-    "4625f0409cbe8a2008e3b6e1e779ad02f1fd4fc792b0b9dda08d4e72236fca086460f4fac2061d082f21449b64329ffc6bc6b2328bbd737f8aa92eb87661fc45";
+  const JWT_SECRET = process.env.JWT_SECRET_ACCESS_TOKEN;
 
   if (!JWT_SECRET) {
     return NextResponse.redirect(new URL("/no-access", req.url));

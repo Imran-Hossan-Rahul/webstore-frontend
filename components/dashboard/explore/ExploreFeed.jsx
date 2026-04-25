@@ -130,62 +130,53 @@ const ClassicExploreCard = ({ item }) => {
 // ----------------------------------------------------------------------
 // 2. Main Logic
 // ----------------------------------------------------------------------
+import useSWR from 'swr';
+
+const fetcher = async (url) => {
+    const res = await api.get(url);
+    if (!res.success && !res.data && !res.templates && !res.blogs) throw new Error("Failed to fetch");
+    return res;
+};
+
 export default function ExploreFeed() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
 
-  useEffect(() => {
-    const fetchMixedContent = async () => {
-        try {
-            setLoading(true);
-            
-            // Parallel Fetching - FIXED ROUTES
-            const [projectsRes, templatesRes, blogsRes] = await Promise.allSettled([
-                api.get('/feed?type=projects&limit=20'),
-                api.get('/template?limit=20'), // Fixed: /templates -> /template (Singular per server.js)
-                api.get('/blog?limit=20')
-            ]);
+  const { data: projectsRes, isLoading: pLoading } = useSWR('/feed?type=projects&limit=20', fetcher);
+  const { data: templatesRes, isLoading: tLoading } = useSWR('/template?limit=20', fetcher);
+  const { data: blogsRes, isLoading: bLoading } = useSWR('/blog?limit=20', fetcher);
 
-            let mixed = [];
+  const loading = pLoading || tLoading || bLoading;
 
-            // 1. Projects
-            if (projectsRes.status === 'fulfilled') {
-                const val = projectsRes.value;
-                const data = val.data || val; 
-                if (Array.isArray(data)) {
-                    mixed = [...mixed, ...data.map(p => ({...p, type: 'project'}))];
-                }
-            }
+  const items = React.useMemo(() => {
+      let mixed = [];
+      
+      // 1. Projects
+      if (projectsRes) {
+          const data = projectsRes.data || projectsRes; 
+          if (Array.isArray(data)) {
+              mixed = [...mixed, ...data.map(p => ({...p, type: 'project'}))];
+          }
+      }
 
-            // 2. Templates
-            if (templatesRes.status === 'fulfilled') {
-                 const val = templatesRes.value;
-                 const data = val.templates || val.data || val;
-                 if (Array.isArray(data)) {
-                     mixed = [...mixed, ...data.map(t => ({...t, type: 'template'}))];
-                 }
-            }
+      // 2. Templates
+      if (templatesRes) {
+           const data = templatesRes.templates || templatesRes.data || templatesRes;
+           if (Array.isArray(data)) {
+               mixed = [...mixed, ...data.map(t => ({...t, type: 'template'}))];
+           }
+      }
 
-            // 3. Blogs
-            if (blogsRes.status === 'fulfilled') {
-                const val = blogsRes.value;
-                const data = val.blogs || val.data || val;
-                if (Array.isArray(data)) {
-                    mixed = [...mixed, ...data.map(b => ({...b, type: 'blog'}))];
-                }
-            }
+      // 3. Blogs
+      if (blogsRes) {
+          const data = blogsRes.blogs || blogsRes.data || blogsRes;
+          if (Array.isArray(data)) {
+              mixed = [...mixed, ...data.map(b => ({...b, type: 'blog'}))];
+          }
+      }
 
-            mixed.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setItems(mixed);
-        } catch (e) {
-            console.error("Explore fetch failed", e);
-        } finally {
-            setLoading(false);
-        }
-    };
-    fetchMixedContent();
-  }, []);
+      mixed.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return mixed;
+  }, [projectsRes, templatesRes, blogsRes]);
 
   const tabs = [
       { id: "all", label: "All" },

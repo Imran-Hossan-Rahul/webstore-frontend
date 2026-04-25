@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { X, Upload } from "lucide-react";
+import { X, Upload, Plus, Minus } from "lucide-react";
 import { api } from "@/utils/api";
 import { CARD_SHAPES } from "@/constants/cardShapes";
 import { useToast } from "@/components/ui/ToastProvider";
@@ -9,10 +9,13 @@ import { useToast } from "@/components/ui/ToastProvider";
 export default function PublishModal({ isOpen, onClose, editor, existingSlug, initialData }) {
   const [formData, setFormData] = useState({
     title: "",
+    subtitle: "",
     category: "uncategorized",
     tags: "",
     coverImage: "",
     cardShape: "square-medium",
+    proTips: [""],
+    keyTakeaways: [""]
   });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -30,10 +33,13 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
     if (isOpen && initialData) {
       setFormData({
         title: initialData.title || "",
+        subtitle: initialData.subtitle || "",
         category: initialData.category || "uncategorized",
         tags: initialData.tags ? initialData.tags.join(", ") : "",
         coverImage: initialData.coverImage || "",
         cardShape: initialData.cardShape || "square-medium",
+        proTips: initialData.proTips?.length > 0 ? initialData.proTips : [""],
+        keyTakeaways: initialData.keyTakeaways?.length > 0 ? initialData.keyTakeaways : [""]
       });
       if (initialData.coverImage) {
         setCoverImagePreview(initialData.coverImage);
@@ -156,11 +162,14 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
 
       const payload = {
         title: titleText.slice(0, 150),
+        subtitle: formData.subtitle || undefined,
         content: contentHtml,
         tags: formData.tags.split(",").map(t => t.trim()).filter(t => t),
         category: formData.category,
         coverImage: formData.coverImage || undefined, // Cloudinary URL
         cardShape: formData.cardShape,
+        proTips: formData.proTips.filter(tip => tip.trim()).slice(0, 10),
+        keyTakeaways: formData.keyTakeaways.filter(tk => tk.trim()).slice(0, 10)
       };
 
       if (existingSlug) {
@@ -221,6 +230,21 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               placeholder="Enter blog title (optional - will use editor title)"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Subtitle */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Subtitle <span className="text-gray-400 font-normal">(Optional)</span>
+            </label>
+            <input
+              type="text"
+              value={formData.subtitle}
+              onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+              placeholder="A brief subtitle for your blog"
+              maxLength={200}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -309,6 +333,96 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
                     <X size={16} />
                   </button>
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* Pro Tips */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Pro Tips <span className="text-gray-400 font-normal">(Optional - Max 10)</span>
+            </label>
+            <div className="space-y-2">
+              {formData.proTips.map((tip, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={tip}
+                    onChange={(e) => {
+                      const newTips = [...formData.proTips];
+                      newTips[index] = e.target.value;
+                      setFormData({ ...formData, proTips: newTips });
+                    }}
+                    placeholder={`Pro tip ${index + 1}`}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  />
+                  {formData.proTips.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newTips = formData.proTips.filter((_, i) => i !== index);
+                        setFormData({ ...formData, proTips: newTips });
+                      }}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <Minus size={20} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              {formData.proTips.length < 10 && (
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, proTips: [...formData.proTips, ""] })}
+                  className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Plus size={16} /> Add Pro Tip
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Key Takeaways */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Key Takeaways <span className="text-gray-400 font-normal">(Optional - Max 10)</span>
+            </label>
+            <div className="space-y-2">
+              {formData.keyTakeaways.map((takeaway, index) => (
+                <div key={index} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={takeaway}
+                    onChange={(e) => {
+                      const newTakeaways = [...formData.keyTakeaways];
+                      newTakeaways[index] = e.target.value;
+                      setFormData({ ...formData, keyTakeaways: newTakeaways });
+                    }}
+                    placeholder={`Key takeaway ${index + 1}`}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                  />
+                  {formData.keyTakeaways.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newTakeaways = formData.keyTakeaways.filter((_, i) => i !== index);
+                        setFormData({ ...formData, keyTakeaways: newTakeaways });
+                      }}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <Minus size={20} />
+                    </button>
+                  )}
+                </div>
+              ))}
+              {formData.keyTakeaways.length < 10 && (
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, keyTakeaways: [...formData.keyTakeaways, ""] })}
+                  className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Plus size={16} /> Add Key Takeaway
+                </button>
               )}
             </div>
           </div>

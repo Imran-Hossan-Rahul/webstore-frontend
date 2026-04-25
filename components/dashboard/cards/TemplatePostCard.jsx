@@ -8,6 +8,7 @@ import {
 import { api } from "@/utils/api";
 import { useRouter } from 'next/navigation';
 import CreatorProfileModal from '../modals/CreatorProfileModal';
+import { useEffect } from 'react';
 
 const TemplatePostCard = ({ 
   item, 
@@ -121,6 +122,46 @@ const TemplatePostCard = ({
       return mb < 1 ? `${(bytes / 1024).toFixed(1)} KB` : `${mb.toFixed(1)} MB`;
   };
 
+  // ----------------------------------------------------------------------
+  // Dynamic Avatar Fetching (Mirroring CreatorProfileModal logic)
+  // ----------------------------------------------------------------------
+  const [creatorAvatar, setCreatorAvatar] = useState(null);
+  
+  useEffect(() => {
+    const authorId = user?._id || user || item?.creator?._id || item?.creator || item?.owner?._id || item?.owner || item?.user?._id || item?.user;
+    const initialAvatar = user?.profilePicture || user?.avatar || user?.profilePic || 
+                          item?.creator?.profilePicture || item?.creator?.avatar ||
+                          item?.owner?.profilePicture || item?.owner?.avatar ||
+                          item?.user?.profilePicture || item?.user?.avatar;
+    
+    if (authorId && !initialAvatar && typeof authorId === 'string') {
+      if (window.__avatarCache && window.__avatarCache[authorId]) {
+        setCreatorAvatar(window.__avatarCache[authorId]);
+        return;
+      }
+      
+      api.get(`/creator/${authorId}`)
+        .then(res => {
+          if (res.success && res.data) {
+            const fetchedAvatar = res.data.profilePicture || res.data.userId?.profilePicture;
+            if (fetchedAvatar) {
+              setCreatorAvatar(fetchedAvatar);
+              window.__avatarCache = window.__avatarCache || {};
+              window.__avatarCache[authorId] = fetchedAvatar;
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, [user, item]);
+
+  const userName = user?.name || item?.creator?.name || item?.owner?.name || item?.user?.name || 'Creator';
+  const initialAvatarUrl = user?.profilePicture || user?.avatar || user?.profilePic || 
+                           item?.creator?.profilePicture || item?.creator?.avatar ||
+                           item?.owner?.profilePicture || item?.owner?.avatar ||
+                           item?.user?.profilePicture || item?.user?.avatar;
+  const finalAvatarUrl = creatorAvatar || initialAvatarUrl;
+
   return (
     <div 
         className="group relative bg-white dark:bg-black border-b border-gray-100 dark:border-white/5 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
@@ -137,28 +178,20 @@ const TemplatePostCard = ({
                 }}
              >
                  <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
-                     {(() => {
-                       const avatarUrl = user?.profilePicture || user?.avatar || user?.profilePic || 
-                                        item?.creator?.profilePicture || item?.creator?.avatar ||
-                                        item?.owner?.profilePicture || item?.owner?.avatar ||
-                                        item?.user?.profilePicture || item?.user?.avatar;
-                       const userName = user?.name || item?.creator?.name || item?.owner?.name || item?.user?.name || 'Creator';
-                       
-                       return avatarUrl ? (
+                     {finalAvatarUrl ? (
                          <Image 
-                            src={avatarUrl} 
+                            src={finalAvatarUrl} 
                             width={48} 
                             height={48} 
                             className="rounded-full w-full h-full object-cover"
                             alt={userName}
                             unoptimized
                          />
-                       ) : (
+                     ) : (
                          <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
                              {userName[0] || "U"}
                          </div>
-                       );
-                     })()}
+                     )}
                  </div>
                  <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-black rounded-full"></div>
              </div>
