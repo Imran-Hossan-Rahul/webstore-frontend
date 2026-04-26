@@ -5,7 +5,7 @@ import Link from "next/link";
 import { api } from "@/utils/api";
 
 const TopBlogItem = ({ blog }) => (
-    <Link href={`/blog/${blog.slug}`} className="flex items-center gap-3 py-3 border-b border-gray-100 dark:border-white/5 last:border-0 group cursor-pointer transition-all hover:bg-black/5 dark:hover:bg-white/5 px-2 rounded-lg">
+    <Link href={`/blogs/${blog.slug}`} className="flex items-center gap-3 py-3 border-b border-gray-100 dark:border-white/5 last:border-0 group cursor-pointer transition-all hover:bg-black/5 dark:hover:bg-white/5 px-2 rounded-lg">
         <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0 shadow-sm border border-orange-100 dark:border-orange-500/20 group-hover:scale-105 transition-transform">
             <PenTool size={18} />
         </div>
@@ -42,7 +42,6 @@ export default function ExploreRightPanel() {
                 if (projectsRes.status === "fulfilled") {
                     const pData = projectsRes.value.data || projectsRes.value;
                     if (Array.isArray(pData)) {
-                        // Pick the most liked or viewed project
                         const sorted = [...pData].sort((a,b) => (b.likes || 0) - (a.likes || 0));
                         if (sorted.length > 0) setFeaturedProject(sorted[0]);
                     }
@@ -59,7 +58,6 @@ export default function ExploreRightPanel() {
   return (
     <aside className="w-full space-y-6">
         
-      {/* Popular Blogs Block */}
       <div className="bg-white/80 dark:bg-black/40 backdrop-blur-2xl rounded-3xl border border-white/60 dark:border-white/10 p-6 shadow-xl shadow-black/5 hover:shadow-2xl transition-all duration-500">
            <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                <TrendingUp size={18} className="text-orange-500" /> Hot Discussions
@@ -84,10 +82,8 @@ export default function ExploreRightPanel() {
            </div>
       </div>
 
-      {/* Featured Project */}
       {featuredProject && !loading && (
           <div className="bg-gray-900 dark:bg-black rounded-3xl p-1 relative overflow-hidden shadow-2xl group cursor-pointer border border-gray-800 dark:border-white/10">
-               {/* Animated Gradient Border Effect */}
                <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 via-pink-500/20 to-indigo-600/30 opacity-50 group-hover:opacity-100 transition-opacity duration-700 blur-xl" />
                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                
@@ -107,7 +103,7 @@ export default function ExploreRightPanel() {
                    
                    <h3 className="text-[15px] font-bold text-white mb-3 line-clamp-1 group-hover:text-purple-300 transition-colors drop-shadow-md">{featuredProject.title}</h3>
                    
-                   <Link href={`/project/${featuredProject._id}`}>
+                   <Link href={`/post/${featuredProject._id}`}>
                        <button className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 border border-white/5 active:scale-95">
                            View Project <ArrowUpRight size={16} />
                        </button>
@@ -115,16 +111,6 @@ export default function ExploreRightPanel() {
                </div>
           </div>
       )}
-      
-      {/* Footer / Links */}
-      <div className="flex flex-wrap gap-3 px-3 justify-center">
-           {['Guidelines', 'Privacy', 'Terms', 'About'].map(link => (
-               <Link href="#" key={link} className="text-xs font-semibold tracking-wide text-gray-500 hover:text-gray-900 dark:hover:text-gray-300 transition-colors">
-                   {link}
-               </Link>
-           ))}
-           <span className="text-xs font-semibold tracking-widest text-gray-400 dark:text-gray-600 w-full text-center mt-2 uppercase">© 2026 Creative</span>
-      </div>
 
     </aside>
   );

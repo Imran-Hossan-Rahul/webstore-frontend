@@ -1,13 +1,5 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import ExploreDashboard from "@/components/dashboard/explore/ExploreDashboard";
 
 export default function Explore() {
-  const router = useRouter();
-  
-  useEffect(() => {
-    router.push("/?view=discover");
-  }, [router]);
-  
-  return null;
+  return <ExploreDashboard />;
 }

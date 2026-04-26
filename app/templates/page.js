@@ -1,13 +1,5 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import TemplatesDashboard from "@/components/dashboard/templates/TemplatesDashboard";
 
 export default function Templates() {
-  const router = useRouter();
-  
-  useEffect(() => {
-    router.push("/");
-  }, [router]);
-  
-  return null;
+  return <TemplatesDashboard />;
 }

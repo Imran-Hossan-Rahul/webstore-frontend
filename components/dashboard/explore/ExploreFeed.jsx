@@ -5,16 +5,11 @@ import { Sparkles, TrendingUp, Grid, Award, Heart, Eye, PenTool, Layout, Code } 
 import Link from "next/link";
 import CreatorProfileModal from '../modals/CreatorProfileModal';
 
-// ----------------------------------------------------------------------
-// 1. Classic Minimal Card
-// ----------------------------------------------------------------------
 const ClassicExploreCard = ({ item }) => {
     const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
 
-    // 1. Determine Type Robustly
-    let type = item.type; // Trust the type we set in fetch first
+    let type = item.type;
     
-    // Fallback detection
     if (!type) {
          if (item.slug && !item.priceType && !item.projectStats) type = 'blog';
          else if (item.code || item.html || item.priceType) type = 'template';
@@ -30,27 +25,24 @@ const ClassicExploreCard = ({ item }) => {
     if (type === 'blog') {
         TypeIcon = PenTool;
         typeLabel = "Blog";
-        href = `/blog/${item.slug}`;
+        href = `/blogs/${item.slug}`;
         iconColor = "text-orange-500";
         bgColor = "bg-orange-50 dark:bg-orange-500/10";
     } else if (type === 'template') {
-        TypeIcon = Layout; // Distinct icon
+        TypeIcon = Layout;
         typeLabel = "Template";
         href = `/templates/${item._id}`;
         iconColor = "text-blue-500";
         bgColor = "bg-blue-50 dark:bg-blue-500/10";
     }
 
-    // Fallback for missing user
     const authorName = item.user?.name || item.author?.name || "Creator";
-    // Check all possible picture fields: profilePicture (User model), avatar, or profilePic
     const authorAvatar = item.user?.profilePicture || item.user?.avatar || item.author?.profilePicture || item.author?.avatar;
 
     return (
         <>
         <Link href={href} className="group block w-full h-full">
             <div className="flex flex-col h-full gap-3 p-2.5 bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-[24px] hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/10 hover:-translate-y-1 shadow-sm relative">
-                {/* Image Wrapper */}
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-900 border border-black/5 dark:border-white/5 transition-all duration-500">
                     {item.previewFile || item.coverImage ? (
                         <img 
@@ -64,7 +56,6 @@ const ClassicExploreCard = ({ item }) => {
                         </div>
                     )}
                     
-                    {/* Hover Overlay - View Action (Restored & Centered) */}
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-30 pointer-events-none">
                         <div className="px-4 py-2 bg-white/90 dark:bg-black/80 backdrop-blur-md rounded-full text-xs font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 flex items-center gap-2 shadow-lg">
                             <span className={iconColor}><TypeIcon size={12} /></span>
@@ -72,7 +63,6 @@ const ClassicExploreCard = ({ item }) => {
                         </div>
                     </div>
 
-                    {/* TITLE OVERLAY (Bottom) */}
                     <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-20 flex flex-col justify-end">
                          <h3 className="font-bold text-white text-sm leading-snug line-clamp-2 drop-shadow-md">
                             {item.title || "Untitled"}
@@ -80,9 +70,7 @@ const ClassicExploreCard = ({ item }) => {
                     </div>
                 </div>
 
-                {/* Content - Footer (Single Line: Author | Stats | Type) */}
                 <div className="flex items-center gap-3 px-1 mt-2">
-                    {/* Author (Left) */}
                     <div 
                         className="flex items-center gap-2 min-w-0 cursor-pointer hover:opacity-80 transition-opacity z-40 relative"
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsCreatorModalOpen(true); }}
@@ -99,15 +87,12 @@ const ClassicExploreCard = ({ item }) => {
                          </span>
                     </div>
 
-                     {/* Right Side: Stats + Type Icon (Auto Margin to push right) */}
                     <div className="flex items-center gap-3 ml-auto text-gray-400 shrink-0">
-                         {/* Stats */}
                          <div className="flex items-center gap-2 text-[10px]">
                              <span className="flex items-center gap-0.5"><Heart size={10} /> {item.likes || item.likesCount || 0}</span>
                              <span className="flex items-center gap-0.5"><Eye size={10} /> {item.views || item.viewsCount || 0}</span>
                          </div>
                          
-                         {/* Type Icon */}
                          <div className={`shrink-0 ${iconColor} bg-gray-50 dark:bg-white/5 p-1 rounded-full`} title={typeLabel}>
                             <TypeIcon size={12} />
                          </div>
@@ -116,7 +101,6 @@ const ClassicExploreCard = ({ item }) => {
             </div>
         </Link>
         
-        {/* Creator Profile Modal */}
         <CreatorProfileModal 
             isOpen={isCreatorModalOpen}
             onClose={() => setIsCreatorModalOpen(false)}
@@ -126,62 +110,64 @@ const ClassicExploreCard = ({ item }) => {
     );
 };
 
-
-// ----------------------------------------------------------------------
-// 2. Main Logic
-// ----------------------------------------------------------------------
-import useSWR from 'swr';
-
-const fetcher = async (url) => {
-    const res = await api.get(url);
-    if (!res.success && !res.data && !res.templates && !res.blogs) throw new Error("Failed to fetch");
-    return res;
-};
-
 export default function ExploreFeed() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
 
-  const { data: projectsRes, isLoading: pLoading } = useSWR('/feed?type=projects&limit=20', fetcher);
-  const { data: templatesRes, isLoading: tLoading } = useSWR('/template?limit=20', fetcher);
-  const { data: blogsRes, isLoading: bLoading } = useSWR('/blog?limit=20', fetcher);
+  useEffect(() => {
+    const fetchMixedContent = async () => {
+        try {
+            setLoading(true);
+            
+            const [projectsRes, templatesRes, blogsRes] = await Promise.allSettled([
+                api.get('/feed?type=projects&limit=20'),
+                api.get('/template?limit=20'),
+                api.get('/blog?limit=20')
+            ]);
 
-  const loading = pLoading || tLoading || bLoading;
+            let mixed = [];
 
-  const items = React.useMemo(() => {
-      let mixed = [];
-      
-      // 1. Projects
-      if (projectsRes) {
-          const data = projectsRes.data || projectsRes; 
-          if (Array.isArray(data)) {
-              mixed = [...mixed, ...data.map(p => ({...p, type: 'project'}))];
-          }
-      }
+            if (projectsRes.status === 'fulfilled') {
+                const val = projectsRes.value;
+                const data = val.data || val; 
+                if (Array.isArray(data)) {
+                    mixed = [...mixed, ...data.map(p => ({...p, type: 'project'}))];
+                }
+            }
 
-      // 2. Templates
-      if (templatesRes) {
-           const data = templatesRes.templates || templatesRes.data || templatesRes;
-           if (Array.isArray(data)) {
-               mixed = [...mixed, ...data.map(t => ({...t, type: 'template'}))];
-           }
-      }
+            if (templatesRes.status === 'fulfilled') {
+                 const val = templatesRes.value;
+                 const data = val.templates || val.data || val;
+                 if (Array.isArray(data)) {
+                     mixed = [...mixed, ...data.map(t => ({...t, type: 'template'}))];
+                 }
+            }
 
-      // 3. Blogs
-      if (blogsRes) {
-          const data = blogsRes.blogs || blogsRes.data || blogsRes;
-          if (Array.isArray(data)) {
-              mixed = [...mixed, ...data.map(b => ({...b, type: 'blog'}))];
-          }
-      }
+            if (blogsRes.status === 'fulfilled') {
+                const val = blogsRes.value;
+                const data = val.blogs || val.data || val;
+                if (Array.isArray(data)) {
+                    mixed = [...mixed, ...data.map(b => ({...b, type: 'blog'}))];
+                }
+            }
 
-      mixed.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      return mixed;
-  }, [projectsRes, templatesRes, blogsRes]);
+            mixed.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setItems(mixed);
+        } catch (e) {
+            console.error("Explore fetch failed", e);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchMixedContent();
+  }, []);
 
   const tabs = [
       { id: "all", label: "All" },
-      { id: "project", label: "Project" },
-      { id: "blog", label: "Blog" },
+      { id: "project", label: "Projects" },
+      { id: "blog", label: "Blogs" },
+      { id: "template", label: "Templates" },
   ];
 
   const filteredItems = activeTab === "all" ? items : items.filter(item => item.type === activeTab);
@@ -191,7 +177,6 @@ export default function ExploreFeed() {
   return (
     <div className="max-w-[1400px] mx-auto animate-in fade-in duration-500 pb-20">
         
-        {/* Header / Tabs */}
         <div className="mb-8">
             <div className="flex items-center gap-8 border-b border-gray-200 dark:border-gray-800">
                 {tabs.map(tab => {
@@ -216,7 +201,6 @@ export default function ExploreFeed() {
             </div>
         </div>
 
-        {/* 3. Robust Grid Layout - lg:grid-cols-3 forced for laptop screens */}
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4">
              {filteredItems.map((item, idx) => (
                  <ClassicExploreCard key={`${item.type}-${item._id || idx}`} item={item} />
