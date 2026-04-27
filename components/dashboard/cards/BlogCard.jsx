@@ -339,4 +339,4 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
   );
 };
 
-export default BlogCard;
+export default React.memo(BlogCard);

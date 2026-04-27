@@ -170,7 +170,9 @@ export default function ExploreFeed() {
       { id: "template", label: "Templates" },
   ];
 
-  const filteredItems = activeTab === "all" ? items : items.filter(item => item.type === activeTab);
+  const filteredItems = React.useMemo(() => {
+    return activeTab === "all" ? items : items.filter(item => item.type === activeTab);
+  }, [items, activeTab]);
 
   if (loading) return <div className="min-h-[50vh] flex items-center justify-center text-gray-400 text-sm tracking-widest uppercase">Loading...</div>;
 

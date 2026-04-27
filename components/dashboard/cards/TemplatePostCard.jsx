@@ -505,4 +505,4 @@ const TemplatePostCard = ({
   );
 };
 
-export default TemplatePostCard;
+export default React.memo(TemplatePostCard);

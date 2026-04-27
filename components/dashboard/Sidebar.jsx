@@ -20,7 +20,7 @@ import {
   Layout,
 } from "lucide-react";
 
-const SidebarItem = ({ icon: Icon, label, href, active, count }) => (
+const SidebarItem = React.memo(({ icon: Icon, label, href, active, count }) => (
   <Link
     href={href || "#"}
     className={`group relative flex items-center justify-between px-4 py-3 rounded-2xl transition-colors duration-300 ${
@@ -57,7 +57,7 @@ const SidebarItem = ({ icon: Icon, label, href, active, count }) => (
       </span>
     )}
   </Link>
-);
+));
 
 export default function Sidebar() {
   const pathname = usePathname();

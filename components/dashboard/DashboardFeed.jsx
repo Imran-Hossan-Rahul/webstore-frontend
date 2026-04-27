@@ -32,9 +32,10 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
   };
 
   // SWR Fetching
-  const { data: feedItemsData, error: feedError, isLoading: feedLoading } = useSWR(view === 'discover' ? '/feed' : null, fetcher);
-  const { data: postsData, error: postsError, isLoading: postsLoading } = useSWR(view === 'community' ? '/posts' : null, fetcher);
-  const { data: favsData, error: favsError, isLoading: favsLoading } = useSWR(view === 'saved' ? '/favorites' : null, fetcher);
+  const swrConfig = { revalidateOnFocus: false, dedupingInterval: 60000 };
+  const { data: feedItemsData, error: feedError, isLoading: feedLoading } = useSWR(view === 'discover' ? '/feed' : null, fetcher, swrConfig);
+  const { data: postsData, error: postsError, isLoading: postsLoading } = useSWR(view === 'community' ? '/posts' : null, fetcher, swrConfig);
+  const { data: favsData, error: favsError, isLoading: favsLoading } = useSWR(view === 'saved' ? '/favorites' : null, fetcher, swrConfig);
 
   React.useEffect(() => {
       if (postsData) setPosts(postsData);
@@ -163,14 +164,13 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
          
          {/* Feed List Container - Twitter Style */}
          <div className="flex flex-col border-x border-gray-200 dark:border-white/10 bg-white dark:bg-black min-h-screen">
-             {feedItems
-                .filter(item => {
+             {React.useMemo(() => feedItems.filter(item => {
                    if (selectedCategory === 'all') return true;
                    if (selectedCategory === 'templates') return item.type === 'template';
                    if (selectedCategory === 'projects') return item.type === 'project' || item.projectStats;
                    if (selectedCategory === 'blogs') return item.type === 'blog' || (!item.type && !item.projectStats);
                    return true;
-                })                 .map(item => (
+             }), [feedItems, selectedCategory]).map(item => (
                  <div key={item._id || item.id} className="w-full">
                       {item.type === 'template' ? (
                            <TemplatePostCard

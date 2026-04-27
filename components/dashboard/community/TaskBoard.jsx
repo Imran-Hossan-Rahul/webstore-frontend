@@ -306,11 +306,15 @@ export default function TaskBoard() {
     fetchTasks();
   }, [selectedCategory, selectedStatus]);
 
-  const filteredTasks = tasks.filter(task =>
-    task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    task.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredTasks = React.useMemo(() => {
+    if (!searchTerm) return tasks;
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    return tasks.filter(task =>
+      task.title.toLowerCase().includes(lowerSearchTerm) ||
+      task.description.toLowerCase().includes(lowerSearchTerm) ||
+      task.tags?.some(tag => tag.toLowerCase().includes(lowerSearchTerm))
+    );
+  }, [tasks, searchTerm]);
 
   const handleTaskCreated = (newTask) => {
     setTasks([newTask, ...tasks]);

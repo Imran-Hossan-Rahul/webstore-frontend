@@ -26,7 +26,7 @@ import Image from 'next/image';
 import AIEnhanceButton from '../AIEnhanceButton';
 import ThemeToggle from '../ThemeToggle';
 
-export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQuery, setSearchQuery, isGuest = false, onRequireAuth }) {
+const GlassNavbar = ({ toggleSidebar, onOpenCreatePost, searchQuery, setSearchQuery, isGuest = false, onRequireAuth }) => {
   const router = useRouter();
   const [searchFocused, setSearchFocused] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -297,3 +297,5 @@ export default function GlassNavbar({ toggleSidebar, onOpenCreatePost, searchQue
     </nav>
   );
 }
+
+export default React.memo(GlassNavbar);
