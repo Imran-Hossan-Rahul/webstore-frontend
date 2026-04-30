@@ -8,6 +8,9 @@ import { ArrowLeft, Heart, Eye, Share2, Download, User, FileText } from "lucide-
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
+import CreatorHoverCard from '@/components/dashboard/cards/CreatorHoverCard';
+import CreatorProfileModal from '@/components/dashboard/modals/CreatorProfileModal';
+import Image from 'next/image';
 
 import ProjectRightSidebar from '@/components/dashboard/sidebar/ProjectRightSidebar';
 
@@ -16,6 +19,7 @@ export default function TemplateDetailsPage() {
     const router = useRouter();
     const [template, setTemplate] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isCreatorModalOpen, setIsCreatorModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchTemplate = async () => {
@@ -62,7 +66,7 @@ export default function TemplateDetailsPage() {
 
     const creator = template.user || template.creator || {};
     const creatorName = creator.name || "Unknown Creator";
-    const creatorAvatar = creator.avatar || creator.profilePic;
+    const creatorAvatar = creator.avatar || creator.profilePic || creator.profilePicture;
 
     return (
         <div className="flex gap-6 w-full relative pb-20">
@@ -75,14 +79,14 @@ export default function TemplateDetailsPage() {
                      {/* Header / Preview */}
                      <div className="grid grid-cols-1 lg:grid-cols-2">
                          {/* Preview Section */}
-                         <div className="p-8 bg-gray-100 dark:bg-[#000] flex items-center justify-center min-h-[400px] border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-white/10 relative">
+                         <div className="bg-gray-100 dark:bg-[#000] flex items-center justify-center min-h-[400px] lg:min-h-[500px] border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-white/10 relative overflow-hidden">
                               {template.previewFile || template.coverImage ? (
-                                  <img src={template.previewFile || template.coverImage} className="max-h-[400px] w-full object-contain rounded-lg shadow-lg" alt={template.title} />
+                                  <img src={template.previewFile || template.coverImage} className="w-full h-full object-cover" alt={template.title} />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center">
+                                <div className="w-full h-full flex items-center justify-center p-4">
                                       <iframe 
                                         srcDoc={`<html><style>${template.css || ''} body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;}</style><body>${template.html || template.code || '<h1>Preview</h1>'}</body></html>`}
-                                        className="w-full h-[400px] bg-white rounded-lg border-none shadow-lg overflow-hidden"
+                                        className="w-full h-full bg-white rounded-lg border-none shadow-lg overflow-hidden"
                                         title="Preview"
                                       />
                                 </div>
@@ -92,18 +96,47 @@ export default function TemplateDetailsPage() {
                          {/* Info Section */}
                          <div className="p-8 lg:p-12 flex flex-col justify-center">
                              <div className="flex items-center gap-4 mb-8">
-                                 <div className="w-14 h-14 rounded-full bg-gray-200 overflow-hidden ring-2 ring-purple-500/20 shrink-0">
-                                     {creatorAvatar ? (
-                                         <img src={creatorAvatar} className="w-full h-full object-cover" />
-                                     ) : (
-                                         <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
-                                             {creatorName[0]}
-                                         </div>
-                                     )}
-                                 </div>
+                                 <CreatorHoverCard
+                                     userId={creator._id}
+                                     avatarUrl={creatorAvatar}
+                                     displayName={creatorName}
+                                 >
+                                     <div 
+                                         className="w-14 h-14 rounded-full overflow-hidden ring-2 ring-purple-500/20 shrink-0 cursor-pointer hover:ring-purple-500/40 transition-all"
+                                         onClick={(e) => {
+                                             e.stopPropagation();
+                                             e.preventDefault();
+                                             setIsCreatorModalOpen(true);
+                                         }}
+                                     >
+                                         {creatorAvatar ? (
+                                             <Image src={creatorAvatar} width={56} height={56} className="w-full h-full object-cover" alt={creatorName} />
+                                         ) : (
+                                             <div className="w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-xl">
+                                                 {creatorName[0]}
+                                             </div>
+                                         )}
+                                     </div>
+                                 </CreatorHoverCard>
                                  <div>
                                      <h1 className="font-bold text-2xl lg:text-3xl mb-1">{template.title}</h1>
-                                     <div className="text-sm text-gray-500 font-medium">by <span className="text-purple-600 dark:text-purple-400">{creatorName}</span></div>
+                                     <CreatorHoverCard
+                                         userId={creator._id}
+                                         avatarUrl={creatorAvatar}
+                                         displayName={creatorName}
+                                         wrapperDisplay="inline"
+                                     >
+                                         <div 
+                                             className="text-sm text-gray-500 font-medium cursor-pointer hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                                             onClick={(e) => {
+                                                 e.stopPropagation();
+                                                 e.preventDefault();
+                                                 setIsCreatorModalOpen(true);
+                                             }}
+                                         >
+                                             by <span className="text-purple-600 dark:text-purple-400">{creatorName}</span>
+                                         </div>
+                                     </CreatorHoverCard>
                                  </div>
                              </div>
 
@@ -232,6 +265,13 @@ export default function TemplateDetailsPage() {
                      />
                  </div>
             </div>
+            
+            {/* Creator Profile Modal */}
+            <CreatorProfileModal 
+                isOpen={isCreatorModalOpen}
+                onClose={() => setIsCreatorModalOpen(false)}
+                userId={creator?._id}
+            />
         </div>
     );
 }

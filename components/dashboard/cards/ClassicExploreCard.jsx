@@ -259,18 +259,25 @@ export default function ClassicExploreCard({ item, viewMode = 'grid' }) {
                    </Link>
                    
                    <div className="flex items-center gap-4 text-xs font-bold text-gray-500 dark:text-gray-400 mt-auto">
-                       <button 
-                            onClick={handleLike}
-                            disabled={isLiking}
-                            className={`flex items-center gap-1.5 transition-colors ${isLiked ? 'text-pink-500' : 'hover:text-pink-500'}`}
-                       >
-                            <Heart size={18} className={isLiked ? 'fill-current' : ''}/> 
-                            <span className="text-[13px]">{likesCount}</span>
-                       </button>
-                       <span className="flex items-center gap-1.5">
-                            <BookOpen size={18}/> 
-                            <span className="text-[13px]">{item.views || item.viewsCount || 0}</span>
-                       </span>
+                        <button 
+                             onClick={handleLike}
+                             disabled={isLiking}
+                             className={`flex items-center gap-1.5 transition-colors ${isLiked ? 'text-pink-500' : 'hover:text-pink-500'}`}
+                        >
+                             <Heart size={18} className={isLiked ? 'fill-current' : ''}/> 
+                             <span className="text-[13px]">{likesCount}</span>
+                        </button>
+                        <span className="flex items-center gap-1.5">
+                             {item.type === 'template' ? <Eye size={18}/> : <BookOpen size={18}/>} 
+                             <span className="text-[13px]">{item.views || item.viewsCount || 0}</span>
+                        </span>
+                        <button 
+                            onClick={handleShare}
+                            className="flex items-center gap-1.5 hover:text-emerald-500 transition-colors"
+                            title="Share"
+                        >
+                            <Share2 size={16}/>
+                        </button>
                    </div>
                </div>
             </div>
@@ -347,7 +354,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid' }) {
                                  <span>{likesCount}</span>
                              </button>
                              <span className="flex items-center gap-1">
-                                 <Eye size={16} /> 
+                                 {item.type === 'template' ? <Eye size={16}/> : <BookOpen size={16}/>} 
                                  <span>{item.views || item.viewsCount || 0}</span>
                              </span>
                          </div>
