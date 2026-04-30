@@ -4,7 +4,7 @@ import {
   Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
   Download, ExternalLink, Eye, Tag, DollarSign, Globe, Github,
   FileText, Shield, Layers, Clock, Code, Zap,
-  CheckCircle, AlertCircle, HelpCircle, Lightbulb
+  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame
 } from 'lucide-react';
 import { api } from "@/utils/api";
 import { useRouter } from 'next/navigation';
