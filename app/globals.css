@@ -41,6 +41,10 @@
 }
 
 
+html {
+  scrollbar-gutter: stable;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -80,12 +84,14 @@ body {
 
 .background {
   position: relative;
-  background: linear-gradient(180deg, #D8D8D8 -13.03%, #c5ccee 100%);
+  background: var(--background);
+  /* background: linear-gradient(180deg, #D8D8D8 -13.03%, #c5ccee 100%); */
   transition: background 0.3s ease;
 }
 
 [data-theme="dark"] .background {
-  background: linear-gradient(180deg, #1a1a2e -13.03%, #16213e 100%);
+  background: var(--background);
+  /* background: linear-gradient(180deg, #1a1a2e -13.03%, #16213e 100%); */
 }
 
 .inner-div {

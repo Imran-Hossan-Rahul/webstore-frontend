@@ -67,11 +67,11 @@ const TemplateCard = ({
 
         {/* Hover Actions (Clean - Only on Image) */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 backdrop-blur-[2px]">
-            <button className="p-2.5 bg-white text-black rounded-full hover:scale-110 transition-transform shadow-lg">
-                <Download className="w-4 h-4" />
+            <button className="text-white hover:scale-110 transition-transform">
+                <Download className="w-5 h-5" />
             </button>
-            <button className="p-2.5 bg-white/20 text-white backdrop-blur-md rounded-full hover:bg-pink-500 hover:text-white hover:scale-110 transition-all shadow-lg">
-                <Heart className="w-4 h-4" />
+            <button className="text-white hover:text-pink-500 hover:scale-110 transition-all">
+                <Heart className="w-5 h-5" />
             </button>
         </div>
 

@@ -2,90 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { api, getHasCreatorAccount } from "@/utils/api";
-import { Search, X, Eye, Heart, Download, Sparkles, TrendingUp, Zap, ChevronRight, BarChart3, Layout, Settings, MessageCircle } from "lucide-react";
+import { Search, Heart, Eye, Download, MessageCircle } from "lucide-react";
 import axios from "axios";
 import { CARD_SHAPES } from "@/constants/cardShapes";
-import ThemeToggle from "../ThemeToggle";
 import CreatorAccountModal from "./CreatorAccountModal";
 import ProfileModal from "./ProfileModal";
 import CreatorProfileModal from "./CreatorProfileModal";
 import { useToast } from "@/components/ui/ToastProvider";
 
-// ----------------------------------------------------------------------
-// 🛍️ PLATFORM DASHBOARD (Unified View)
-// ----------------------------------------------------------------------
-
-function ModuleHeader({ hasCreatorAccount, router, setShowProfileModal, setShowCreatorModal }) {
-  return (
-    <div className="sticky top-0 z-40 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-black/5 dark:border-white/10 shadow-sm transition-all duration-300">
-      <div className="max-w-[1800px] mx-auto px-6 py-4 flex items-center justify-between gap-6">
-          {/* Left: Branding */}
-          <Link href="/" className="text-xl font-bold text-black dark:text-white whitespace-nowrap flex items-center gap-2">
-             <div className="p-1.5 bg-indigo-600 rounded-lg">
-                <Layout className="w-4 h-4 text-white" />
-             </div>
-             <span>Creative</span>
-          </Link>
-
-          {/* Right: Actions */}
-          <div className="flex items-center gap-4">
-            {/* Creator functionality */}
-            {/* Creator buttons temporarily hidden
-            {hasCreatorAccount ? (
-               <button
-                 onClick={() => router.push('/user/creator')}
-                 className="hidden md:flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-sm font-bold rounded-full shadow-lg shadow-orange-500/20 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
-               >
-                 <Zap className="w-4 h-4 fill-white" />
-                 <span>Creator Dashboard</span>
-               </button>
-            ) : (
-               <button 
-                  onClick={() => setShowCreatorModal?.(true)}
-                  className="hidden md:flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-sm font-bold rounded-full hover:opacity-80 transition-opacity"
-               >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Become a Creator</span>
-               </button>
-            )}
-             
-             {hasCreatorAccount && (
-                <button 
-                  onClick={() => router.push('/user/creator')}
-                  className="md:hidden p-2 bg-amber-500 text-white rounded-full shadow-md"
-                >
-                    <Zap className="w-5 h-5 fill-white" />
-                </button>
-             )}
-            */}
-
-            <div className="h-6 w-px bg-gray-200 dark:bg-gray-800 mx-1" />
-            
-            <ThemeToggle />
-            <ThemeToggle />
-            <button 
-              onClick={() => setShowProfileModal(true)}
-              className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-700 hover:scale-105 transition-transform"
-            >
-              <div className="w-full h-full flex items-center justify-center bg-black dark:bg-white text-white dark:text-black font-bold text-sm">
-                U
-              </div>
-            </button>
-          </div>
-      </div>
-    </div>
-  );
-}
-
-
-
 export default function PlatformDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all"); 
-  const [templates, setTemplates] = useState([]);
-  const [blogs, setBlogs] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -98,8 +26,14 @@ export default function PlatformDashboard() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
 
+  // Initial Fetch & Search & Tab Change
+  useEffect(() => {
+    setPage(1);
+    setFilteredItems([]); 
+    setHasMore(true);
+    fetchData(1, true);
+  }, [searchQuery, activeTab]); 
 
-  // Infinite Scroll Handler
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -120,35 +54,20 @@ export default function PlatformDashboard() {
     return () => {
       if (target) observer.unobserve(target);
     };
-  }, [hasMore, loading, isFetchingMore]); // Re-attach if verify deps
+  }, [hasMore, loading, isFetchingMore]);
 
-  // Initial Fetch & Search & Tab Change
-  useEffect(() => {
-    // Reset on search query change or tab change
-    setPage(1);
-    setFilteredItems([]); // Clear current items
-    setHasMore(true);
-    fetchData(1, true);
-  }, [searchQuery, activeTab]); 
-
-  // Separate function for fetching to allow infinite scroll to call it
   const fetchData = async (pageNum, isReset = false) => {
-    if (pageNum === 1) setLoading(true); // Only main loader for first page
+    if (pageNum === 1) setLoading(true);
     else setIsFetchingMore(true);
 
     try {
       const token = localStorage.getItem("token");
-      if (token && pageNum === 1) { // Only fetch user context once
+      if (token && pageNum === 1) {
          const hasCreator = getHasCreatorAccount();
          setHasCreatorAccount(hasCreator);
       }
 
-      // 1. Fetch Feed with Filters
-      // Map activeTab to backend types if needed, or pass as is
-      const typeParam = activeTab === 'all' ? undefined : activeTab; // 'templates' or 'blogs' 
-      // Note: Backend needs to handle 'templates' (plural) vs 'template' (singular) if model differs.
-      // Let's standardise on passing the tab name and handling it in backend.
-
+      const typeParam = activeTab === 'all' ? undefined : activeTab; 
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/feed`, {
           params: { 
               page: pageNum, 
@@ -160,23 +79,17 @@ export default function PlatformDashboard() {
       });
       
       const newItems = response.data.data || [];
-      
-      // 2. Normalize Items (Ensure consistent shape)
       const normalizedItems = newItems.map(item => ({
           ...item,
-          // Fallback shape if missing
           cardShape: item.cardShape || (item.type === 'project' ? 'square-large' : 'square-medium')
       }));
 
-      // 3. Update State
       if (isReset) {
           setFilteredItems(normalizedItems);
       } else {
           setFilteredItems(prev => [...prev, ...normalizedItems]);
       }
-
       setHasMore(response.data.hasMore);
-      
     } catch (error) {
        console.error("Dashboard Fetch Error:", error);
     } finally {
@@ -185,111 +98,57 @@ export default function PlatformDashboard() {
     }
   };
 
-
-  if (loading) {
-     return (
-       <div className="min-h-screen bg-[#F3F6F8] dark:bg-black">
-      <ModuleHeader hasCreatorAccount={hasCreatorAccount} router={router} setShowProfileModal={setShowProfileModal} setShowCreatorModal={setShowCreatorModal} />
-          <div className="flex h-[80vh] items-center justify-center">
-             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-          </div>
-       </div>
-     );
-  }
-
   return (
-    <div className="min-h-screen bg-[#F3F6F8] dark:bg-black transition-colors duration-300 font-sans">
-      
-      {/* 1. Unified Header */}
-      <ModuleHeader hasCreatorAccount={hasCreatorAccount} router={router} setShowProfileModal={setShowProfileModal} />
-
-      {/* 2. Main Content Area */}
-      <div className="max-w-[1800px] mx-auto w-full p-6">
-          
-          {/* Promo/Banner Section (Non-Creators Only) 
-          {!hasCreatorAccount && (
-             <div className="mb-10 rounded-3xl bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-900 p-8 sm:p-12 text-center relative overflow-hidden shadow-2xl group">
-                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-                 <div className="absolute -top-24 -right-24 w-64 h-64 bg-purple-500 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                 <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-indigo-500 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-                 
-                 <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-                    <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-sm">
-                       Turn Your Passion Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Income</span>
-                    </h2>
-                    <p className="text-lg text-indigo-100/90 font-medium leading-relaxed">
-                       Join thousands of creators selling digital assets and writing blogs. Start your journey today.
-                    </p>
-                    <div className="pt-4 flex justify-center gap-4">
-                         <button 
-                            onClick={() => setShowCreatorModal(true)}
-                            className="px-8 py-3.5 bg-white text-indigo-900 font-bold rounded-full shadow-xl hover:shadow-2xl hover:bg-gray-50 transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center gap-2"
-                         >
-                            <Sparkles className="w-5 h-5" />
-                            <span>Start Creating</span>
-                         </button>
-                       <button className="px-8 py-3.5 bg-indigo-800/50 text-white font-bold rounded-full border border-indigo-400/30 hover:bg-indigo-700/50 backdrop-blur-sm transition-all">
-                           Learn More
-                       </button>
-                    </div>
-                 </div>
-             </div>
-          )}
-          */}
-
-          {/* Search & Tabs */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 sticky top-20 z-30 py-4 bg-[#F3F6F8]/95 dark:bg-black/95 backdrop-blur-sm">
-              <div className="flex items-center gap-2 bg-white dark:bg-gray-900 p-1.5 rounded-full border border-gray-200 dark:border-gray-800 shadow-sm">
-                  {['all', 'blogs'].map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${
-                          activeTab === tab
-                            ? "bg-black dark:bg-white text-white dark:text-black shadow-md transform"
-                            : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                        }`}
-                      >
-                         {tab}
-                      </button>
-                  ))}
-              </div>
-
-              <div className="relative w-full md:w-96 group">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors" size={18} />
-                  <input
-                    type="text"
-                    placeholder="Search resources..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm hover:shadow-md"
-                  />
-              </div>
+    <div className="w-full pt-4">
+      {/* Search & Tabs */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 sticky top-20 z-30 py-4 bg-[#F3F6F8]/95 dark:bg-black/95 backdrop-blur-sm">
+          <div className="flex items-center gap-2 bg-white dark:bg-gray-900 p-1.5 rounded-full border border-gray-200 dark:border-gray-800 shadow-sm">
+              {['all', 'blogs'].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${
+                      activeTab === tab
+                        ? "bg-black dark:bg-white text-white dark:text-black shadow-md transform"
+                        : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                    }`}
+                  >
+                     {tab}
+                  </button>
+              ))}
           </div>
 
-          {/* Content Grid */}
-          <ContentGrid items={filteredItems} loading={loading} router={router} />
-          
+          <div className="relative w-full md:w-96 group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors" size={18} />
+              <input
+                type="text"
+                placeholder="Search resources..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm hover:shadow-md"
+              />
+          </div>
       </div>
 
-       <CreatorAccountModal 
+      <ContentGrid items={filteredItems} loading={loading} router={router} />
+
+      <CreatorAccountModal 
         isOpen={showCreatorModal} 
         onClose={() => setShowCreatorModal(false)} 
-       />
-       
-       {/* Conditionally render modal based on user type */}
-       {hasCreatorAccount ? (
-         <CreatorProfileModal 
-           isOpen={showProfileModal} 
-           onClose={() => setShowProfileModal(false)}
-         />
-       ) : (
-         <ProfileModal 
-           isOpen={showProfileModal} 
-           onClose={() => setShowProfileModal(false)}
-           verifiedHasCreatorAccount={hasCreatorAccount}
-         />
-       )}
+      />
+      
+      {hasCreatorAccount ? (
+        <CreatorProfileModal 
+          isOpen={showProfileModal} 
+          onClose={() => setShowProfileModal(false)}
+        />
+      ) : (
+        <ProfileModal 
+          isOpen={showProfileModal} 
+          onClose={() => setShowProfileModal(false)}
+          verifiedHasCreatorAccount={hasCreatorAccount}
+        />
+      )}
     </div>
   );
 }

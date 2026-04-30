@@ -4,11 +4,13 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { 
-  Heart, MessageCircle, ArrowRight, TrendingUp, Clock, BookOpen, Share2, Bookmark, MoreHorizontal, FileText
+  Heart, MessageCircle, ArrowRight, TrendingUp, Clock, BookOpen, Share2, Bookmark, MoreHorizontal, FileText,
+  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, Eye
 } from 'lucide-react';
 import { api } from '@/utils/api';
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
 import CreatorProfileModal from '@/components/dashboard/modals/CreatorProfileModal';
+import CreatorHoverCard from './CreatorHoverCard';
 
 const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
   const router = useRouter();
@@ -156,36 +158,42 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
   const finalAvatar = creatorAvatar || author?.profilePicture || author?.avatar;
 
   return (
-    <div className="bg-white dark:bg-black border-b border-gray-100 dark:border-white/5 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors p-4 sm:p-5">
+    <div className="border-b border-gray-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors p-4 sm:p-5">
       <div
         className="group relative cursor-pointer flex gap-4 sm:gap-5"
         onClick={handleNavigate}
       >
         {/* Left Column: Avatar */}
         <div className="flex-shrink-0">
-          <div 
-            className="relative group/avatar cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={(e) => { 
-                e.stopPropagation(); 
-                e.preventDefault();
-                setIsCreatorModalOpen(true); 
-            }}
+          <CreatorHoverCard
+            userId={author?._id}
+            avatarUrl={finalAvatar}
+            displayName={author?.name}
           >
-            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
-              {finalAvatar ? (
-                <Image
-                  src={finalAvatar}
-                  fill
-                  className="object-cover"
-                  alt={author?.name || 'Author'}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white font-bold text-lg">
-                  {author?.name?.[0] || 'A'}
-                </div>
-              )}
+            <div 
+              className="relative group/avatar cursor-pointer"
+              onClick={(e) => { 
+                  e.stopPropagation(); 
+                  e.preventDefault();
+                  setIsCreatorModalOpen(true); 
+              }}
+            >
+              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
+                {finalAvatar ? (
+                  <Image
+                    src={finalAvatar}
+                    fill
+                    className="object-cover"
+                    alt={author?.name || 'Author'}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white font-bold text-lg">
+                    {author?.name?.[0] || 'A'}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </CreatorHoverCard>
         </div>
 
         {/* Right Column: Content */}
@@ -194,16 +202,23 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
           <div className="flex justify-between items-start mb-1">
              <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                  <div className="flex items-center gap-2">
-                    <h3 
-                        className="font-bold text-gray-900 dark:text-gray-100 text-[15px] hover:underline decoration-2 decoration-emerald-500 underline-offset-4 transition-colors cursor-pointer leading-tight"
-                        onClick={(e) => { 
-                            e.stopPropagation(); 
-                            e.preventDefault();
-                            setIsCreatorModalOpen(true); 
-                        }}
+                    <CreatorHoverCard
+                      userId={author?._id}
+                      avatarUrl={finalAvatar}
+                      displayName={author?.name}
+                      wrapperDisplay="inline"
                     >
-                        {author?.name || 'Anonymous'}
-                    </h3>
+                      <h3 
+                          className="font-bold text-gray-900 dark:text-gray-100 text-[15px] cursor-pointer hover:text-emerald-700 dark:hover:text-green-500 transition-colors duration-150"
+                          onClick={(e) => { 
+                              e.stopPropagation(); 
+                              e.preventDefault();
+                              setIsCreatorModalOpen(true); 
+                          }}
+                      >
+                          {author?.name || 'Anonymous'}
+                      </h3>
+                    </CreatorHoverCard>
                      {/* TYPE BADGE: BLOG */}
                      <span className="bg-emerald-100 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 text-[10px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
                         <FileText size={10} className="stroke-[3]" /> {blog.category && blog.category !== 'uncategorized' ? blog.category : 'Article'}
@@ -218,14 +233,14 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
                      </span>
                  </div>
              </div>
-             <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 transition-colors hidden sm:block">
+             <button className="text-gray-400 hidden sm:block">
                  <MoreHorizontal size={18} />
              </button>
           </div>
 
           {/* Body (The Hook) */}
           <div className="space-y-1.5 mb-3 mt-1">
-            <h2 className="text-[20px] sm:text-[22px] font-black text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug tracking-tight">
+            <h2 className="text-[20px] sm:text-[22px] font-black text-gray-900 dark:text-white leading-snug tracking-tight">
               {title}
             </h2>
             
@@ -244,73 +259,123 @@ const BlogCard = ({ blog, currentUser, isGuest = false, onRequireAuth }) => {
                   src={coverImage}
                   alt={title}
                   fill
-                  className="object-cover transform group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                  className="object-cover"
                 />
               </div>
             </div>
           )}
 
-          {/* Tags (Optional) */}
-          {blog.tags && blog.tags.length > 0 && (
-            <div className="flex items-center gap-2 flex-wrap mb-3">
-               {blog.tags.slice(0, 4).map((tag, idx) => (
-                  <span key={idx} className="bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-[11px] px-2 py-0.5 rounded-full font-semibold transition-colors cursor-pointer" onClick={(e) => e.stopPropagation()}>
+          {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
+          <div className="flex items-center justify-between pt-3 mt-1 border-t border-gray-100 dark:border-white/5">
+            {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
+            <div className="flex items-center gap-3 px-1 py-1">
+              {(() => {
+                const [hoveredIndex, setHoveredIndex] = useState(null);
+                const comments = blog.comments || [];
+                
+                const stats = [
+                  { id: 'comment', icon: MessageCircle, color: 'text-gray-500', title: 'Comments' },
+                  { id: 'question', icon: HelpCircle, color: 'text-blue-500', title: 'Questions' },
+                  { id: 'answer', icon: CheckCircle, color: 'text-green-500', title: 'Solutions' },
+                  { id: 'issue', icon: AlertCircle, color: 'text-red-500', title: 'Issues' },
+                  { id: 'suggestion', icon: Lightbulb, color: 'text-amber-500', title: 'Ideas' },
+                  { id: 'critique', icon: Eye, color: 'text-purple-500', title: 'Critiques' },
+                  { id: 'kudos', icon: Flame, color: 'text-orange-500', title: 'Kudos' }
+                ];
+
+                return stats.map((stat, idx) => {
+                  const count = comments.filter(c => c && c.feedbackType === stat.id).length;
+                  
+                  const Icon = stat.icon;
+                  
+                  // Calculate scale and lift based on distance from hovered index
+                  let scale = 1;
+                  let lift = 0;
+                  if (hoveredIndex !== null) {
+                    const distance = Math.abs(idx - hoveredIndex);
+                    if (distance === 0) {
+                      scale = 1.5;
+                      lift = -12;
+                    } else if (distance === 1) {
+                      scale = 1.2;
+                      lift = -6;
+                    }
+                  }
+
+                  return (
+                    <div 
+                      key={stat.id} 
+                      className="relative z-10 transition-all duration-300 ease-out py-2"
+                      style={{ 
+                        transform: `scale(${scale}) translateY(${lift}px)`, 
+                        zIndex: scale > 1 ? 20 : 10 
+                      }}
+                      onMouseEnter={() => setHoveredIndex(idx)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const filterType = stat.id === 'total' ? 'all' : stat.id;
+                        router.push(`/blogs/${blog.slug}?filter=${filterType}#comments`);
+                      }}
+                    >
+                       <div className="p-1.5 transition-colors">
+                          <Icon 
+                            size={18} 
+                            className={`${stat.color} opacity-100 stroke-[2.5px]`} 
+                          />
+                       </div>
+                       <span className="absolute top-1 right-0 text-gray-400 dark:text-gray-500 text-[9px] font-bold transform translate-x-1/2 -translate-y-1/3 pointer-events-none tabular-nums">
+                          {count}
+                       </span>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+
+            {/* Middle: Discovery Tags */}
+            <div className="hidden md:flex items-center gap-2 flex-1 justify-center px-4 overflow-hidden">
+               {blog.tags && blog.tags.slice(0, 2).map((tag, idx) => (
+                  <span key={idx} className="text-gray-400 dark:text-gray-500 hover:text-emerald-600 transition-colors text-[10px] font-bold truncate max-w-[80px]">
                     #{tag}
                   </span>
                ))}
             </div>
-          )}
 
-          {/* Action Bar */}
-          <div className="flex items-center justify-between pt-3 mt-1 border-t border-gray-100 dark:border-white/5">
-            <div className="flex items-center gap-4 sm:gap-6">
+            {/* Right: Engagement & Read Status */}
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Like */}
               <button
                 onClick={handleLike}
-                className={`flex items-center gap-1.5 text-sm group transition-all ${isLiked ? 'text-pink-500' : 'text-gray-500 hover:text-pink-500'}`}
+                className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-gray-500 hover:text-pink-500'}`}
               >
-                <div className="p-1.5 rounded-full group-hover:bg-pink-500/10 transition-colors">
-                  <Heart size={18} className={isLiked ? 'fill-current' : ''} />
-                </div>
-                <span className="font-semibold tabular-nums text-xs">{likesCount}</span>
-              </button>
-
-              {/* Comment */}
-              <button
-                onClick={handleCommentToggle}
-                className={`flex items-center gap-1.5 text-sm group transition-all ${showComments ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}
-              >
-                <div className="p-1.5 rounded-full group-hover:bg-blue-500/10 transition-colors">
-                  <MessageCircle size={18} className={showComments ? 'fill-current' : ''} />
-                </div>
-                <span className="font-semibold tabular-nums text-xs">{commentsCount}</span>
+                <Heart size={18} className={isLiked ? 'fill-current' : ''} />
+                <span className="font-bold tabular-nums text-[11px]">{likesCount}</span>
               </button>
 
               {/* Share */}
               <button 
-                  className="flex items-center gap-1.5 text-sm group transition-all text-gray-500 hover:text-green-500"
+                  className="text-gray-500 hover:text-blue-500 transition-colors"
                   onClick={(e) => { e.stopPropagation(); /* share logic */ }}
               >
-                  <div className="p-1.5 rounded-full group-hover:bg-green-500/10 transition-colors">
-                      <Share2 size={18} />
-                  </div>
+                  <Share2 size={18} />
               </button>
-            </div>
 
-            <div className="flex items-center gap-2 sm:gap-4">
-              {/* Views */}
-              <div className="flex items-center gap-1.5 text-sm text-gray-400">
-                <TrendingUp size={16} />
-                <span className="font-medium text-xs tabular-nums">{views}</span>
-              </div>
-              
               {/* Bookmark */}
               <button 
-                className="text-gray-400 hover:text-emerald-600 transition-colors p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/5"
+                className="text-gray-400 hover:text-pink-600 transition-colors"
                 onClick={(e) => { e.stopPropagation(); /* bookmark logic */ }}
               >
-                  <Bookmark size={18} />
+                  <Bookmark size={17} />
               </button>
+
+              <span className="w-px h-4 bg-gray-200 dark:bg-white/10 mx-1"></span>
+
+              {/* Read Count */}
+              <div className="flex items-center gap-1.5 text-gray-400">
+                <BookOpen size={14} />
+                <span className="font-bold text-[11px] tabular-nums">{views}</span>
+              </div>
             </div>
           </div>
         </div>

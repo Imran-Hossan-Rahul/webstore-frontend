@@ -58,11 +58,13 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
   return (
     <div className="min-h-screen bg-[#F3F4F6] dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden selection:bg-pink-500/30">
 
-      {/* Background Mesh Gradient (Subtle) */}
+      {/* Background Mesh Gradient (Removed as per request) */}
+      {/* 
       <div className="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20">
           <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-purple-400/30 rounded-full blur-[120px]" />
           <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-400/30 rounded-full blur-[120px]" />
-      </div>
+      </div> 
+      */}
 
       <GlassNavbar
         toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -78,7 +80,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
 
         {/* Left Sidebar (Floating) */}
         <div className="hidden lg:block w-[240px] flex-shrink-0">
-             <div className="fixed top-16 bottom-6 w-[240px] overflow-y-auto">
+             <div className="fixed top-24 bottom-6 w-[240px] overflow-y-auto">
                 <Sidebar isGuest={isGuest} onRequireAuth={requireAuth} />
              </div>
         </div>
@@ -99,7 +101,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
         {/* Right Sidebar (Floating) */}
         {!hideRightSidebar && (
           <div className="hidden xl:block w-[320px] flex-shrink-0">
-               <div className="fixed top-16 bottom-6 w-[320px] overflow-y-auto">
+               <div className="fixed top-24 bottom-6 w-[320px] overflow-y-auto">
                    <RightSidebar />
                </div>
           </div>

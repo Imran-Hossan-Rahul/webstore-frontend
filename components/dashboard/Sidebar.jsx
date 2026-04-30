@@ -39,7 +39,7 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count }) => (
     )}
     <div className="relative z-10 flex items-center gap-3">
       <Icon
-        className={`w-5 h-5 transition-transform group-hover:scale-110 ${
+        className={`w-5 h-5${
           active ? "fill-current" : ""
         }`}
       />
@@ -132,7 +132,7 @@ export default function Sidebar() {
           className="group flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 text-gray-500 dark:text-gray-400 hover:bg-white hover:text-black dark:hover:bg-white/10 dark:hover:text-white w-full"
         >
           <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5 transition-transform group-hover:scale-110" />
+            <Settings className="w-5 h-5" />
             <span className="font-medium">Settings</span>
           </div>
         </button>

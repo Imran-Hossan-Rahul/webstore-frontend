@@ -271,8 +271,15 @@ export default function TemplateUploadFullDebug({
     setLoading(true);
 
     try {
+      const token = localStorage.getItem("token");
+      const headers = {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(endpoint, {
         method: "POST",
+        headers,
         body: fd,
         credentials: "include",
       });

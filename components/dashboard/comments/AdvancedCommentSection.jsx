@@ -8,6 +8,8 @@ import {
     AlertCircle, Lightbulb, Flame, HelpCircle, Check, X, Sparkles, CheckCircle, Eye, Search, Filter, ChevronDown, AlignLeft, Star
 } from 'lucide-react';
 
+import { useSearchParams } from 'next/navigation';
+
 const FEEDBACK_TYPES = [
     { id: 'comment', label: 'Comment', icon: MessageCircle, color: 'text-gray-500', bg: 'bg-gray-100 dark:bg-white/10' },
     { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-blue-500', bg: 'bg-blue-500/10' },
@@ -280,12 +282,33 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
 
 
 const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], onClose, onCommentAdded }) => {
-    const [comments, setComments] = useState(initialComments); // Flat list initially
+    // Check if initial comments are fully populated objects, not just ID strings
+    const isPopulated = initialComments.length > 0 && typeof initialComments[0] === 'object' && initialComments[0] !== null;
+    const [comments, setComments] = useState(isPopulated ? initialComments : []); 
     const [loading, setLoading] = useState(false);
     const [replyingTo, setReplyingTo] = useState(null); // ID of comment being replied to
     const [searchQuery, setSearchQuery] = useState("");
     const [activeFilter, setActiveFilter] = useState(null); // 'issue', 'idea', etc.
     const [sortBy, setSortBy] = useState('newest'); // 'newest', 'oldest', 'liked'
+
+    const searchParams = useSearchParams();
+    const externalFilter = searchParams.get('filter');
+
+    // Handle external filtering from URL
+    useEffect(() => {
+        if (externalFilter) {
+            const filterValue = externalFilter === 'all' ? null : externalFilter;
+            setActiveFilter(filterValue);
+            
+            // Smooth scroll to comments if filter is present
+            setTimeout(() => {
+                const element = document.getElementById('comments');
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 800);
+        }
+    }, [externalFilter]);
 
     useEffect(() => {
         if (postId && comments.length === 0) fetchComments();

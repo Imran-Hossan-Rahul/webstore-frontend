@@ -3,11 +3,13 @@ import Image from 'next/image';
 import { 
   Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
   Download, ExternalLink, Eye, Tag, DollarSign, Globe, Github,
-  FileText, Shield, Layers, Clock, Code, Zap
+  FileText, Shield, Layers, Clock, Code, Zap,
+  CheckCircle, AlertCircle, HelpCircle, Lightbulb
 } from 'lucide-react';
 import { api } from "@/utils/api";
 import { useRouter } from 'next/navigation';
 import CreatorProfileModal from '../modals/CreatorProfileModal';
+import CreatorHoverCard from './CreatorHoverCard';
 import { useEffect } from 'react';
 
 const TemplatePostCard = ({ 
@@ -164,37 +166,43 @@ const TemplatePostCard = ({
 
   return (
     <div 
-        className="group relative bg-white dark:bg-black border-b border-gray-100 dark:border-white/5 hover:bg-gray-50/50 dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
+        className="group relative border-b border-gray-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
         onClick={handleNavigation}
     >
         {/* Left Column: Avatar */}
         <div className="flex-shrink-0">
-             <div 
-                className="relative group/avatar cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={(e) => { 
-                    e.stopPropagation(); 
-                    e.preventDefault();
-                    setIsCreatorModalOpen(true); 
-                }}
+             <CreatorHoverCard
+               userId={user?._id || item?.creator?._id || item?.owner?._id}
+               avatarUrl={finalAvatarUrl}
+               displayName={userName}
              >
-                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
-                     {finalAvatarUrl ? (
-                         <Image 
-                            src={finalAvatarUrl} 
-                            width={48} 
-                            height={48} 
-                            className="rounded-full w-full h-full object-cover"
-                            alt={userName}
-                            unoptimized
-                         />
-                     ) : (
-                         <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
-                             {userName[0] || "U"}
-                         </div>
-                     )}
-                 </div>
-                 <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-black rounded-full"></div>
-             </div>
+               <div 
+                  className="relative group/avatar cursor-pointer"
+                  onClick={(e) => { 
+                      e.stopPropagation(); 
+                      e.preventDefault();
+                      setIsCreatorModalOpen(true); 
+                  }}
+               >
+                   <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-gray-200 dark:border-white/10">
+                       {finalAvatarUrl ? (
+                           <Image 
+                              src={finalAvatarUrl} 
+                              width={48} 
+                              height={48} 
+                              className="rounded-full w-full h-full object-cover"
+                              alt={userName}
+                              unoptimized
+                           />
+                       ) : (
+                           <div className="w-full h-full rounded-full bg-gradient-to-tr from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                               {userName[0] || "U"}
+                           </div>
+                       )}
+                   </div>
+                   <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-black rounded-full"></div>
+               </div>
+             </CreatorHoverCard>
         </div>
 
         {/* Right Column: Content */}
@@ -203,16 +211,23 @@ const TemplatePostCard = ({
             <div className="flex justify-between items-start mb-1">
                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
                      <div className="flex items-center gap-2">
-                        <h3 
-                            className="font-bold text-gray-900 dark:text-gray-100 text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 transition-colors cursor-pointer"
-                            onClick={(e) => { 
-                                e.stopPropagation(); 
-                                e.preventDefault();
-                                setIsCreatorModalOpen(true); 
-                            }}
+                        <CreatorHoverCard
+                          userId={user?._id || item?.creator?._id || item?.owner?._id}
+                          avatarUrl={finalAvatarUrl}
+                          displayName={userName}
+                          wrapperDisplay="inline"
                         >
-                            {user?.name || item?.creator?.name || item?.owner?.name || 'Creator'}
-                        </h3>
+                          <h3 
+                              className="font-bold text-gray-900 dark:text-gray-100 text-base cursor-pointer hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150"
+                              onClick={(e) => { 
+                                  e.stopPropagation(); 
+                                  e.preventDefault();
+                                  setIsCreatorModalOpen(true); 
+                              }}
+                          >
+                              {user?.name || item?.creator?.name || item?.owner?.name || 'Creator'}
+                          </h3>
+                        </CreatorHoverCard>
                          {/* TYPE BADGE: TEMPLATE */}
                          <span className="bg-pink-100 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-200 dark:border-pink-500/20 text-[10px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider flex items-center gap-1">
                             <Layers size={10} className="stroke-[3]" /> Template
@@ -405,21 +420,6 @@ const TemplatePostCard = ({
                                 </div>
                             </div>
 
-                            {/* Tags - Always Show */}
-                            <div>
-                                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1"><Tag size={11} /> Tags</div>
-                                <div className="flex flex-wrap gap-1">
-                                    {tags && tags.length > 0 ? (
-                                        tags.slice(0, 6).map((tag, idx) => (
-                                            <span key={idx} className="px-2 py-0.5 bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-300 text-xs font-medium rounded">
-                                                #{tag}
-                                            </span>
-                                        ))
-                                    ) : (
-                                        <span className="text-xs text-gray-400 italic">No tags</span>
-                                    )}
-                                </div>
-                            </div>
 
                             {/* Version Info - Always Show */}
                             <div className="pt-2 border-t border-gray-200 dark:border-white/10">
@@ -438,57 +438,121 @@ const TemplatePostCard = ({
                 </div>
             </div>
 
-            {/* Action Bar */}
-            <div className="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-white/5">
-                <div className="flex items-center gap-6">
+            {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
+            <div className="flex items-center justify-between pt-3 mt-1 border-t border-gray-100 dark:border-white/5">
+                {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
+                <div className="flex items-center gap-3 px-1 py-1">
+                    {(() => {
+                        const [hoveredIndex, setHoveredIndex] = useState(null);
+                        const comments = item.comments || [];
+                        
+                        const stats = [
+                            { id: 'comment', icon: MessageCircle, color: 'text-gray-500', title: 'Comments' },
+                            { id: 'question', icon: HelpCircle, color: 'text-blue-500', title: 'Questions' },
+                            { id: 'answer', icon: CheckCircle, color: 'text-green-500', title: 'Solutions' },
+                            { id: 'issue', icon: AlertCircle, color: 'text-red-500', title: 'Issues' },
+                            { id: 'suggestion', icon: Lightbulb, color: 'text-amber-500', title: 'Ideas' },
+                            { id: 'critique', icon: Eye, color: 'text-purple-500', title: 'Critiques' },
+                            { id: 'kudos', icon: Flame, color: 'text-orange-500', title: 'Kudos' }
+                        ];
+
+                        return stats.map((stat, idx) => {
+                            const count = comments.filter(c => c && c.feedbackType === stat.id).length;
+                            
+                            const Icon = stat.icon;
+                            
+                            // Calculate scale and lift based on distance from hovered index
+                            let scale = 1;
+                            let lift = 0;
+                            if (hoveredIndex !== null) {
+                                const distance = Math.abs(idx - hoveredIndex);
+                                if (distance === 0) {
+                                    scale = 1.5;
+                                    lift = -12;
+                                } else if (distance === 1) {
+                                    scale = 1.2;
+                                    lift = -6;
+                                }
+                            }
+
+                            return (
+                                <div 
+                                    key={stat.id} 
+                                    className="relative z-10 transition-all duration-300 ease-out py-2"
+                                    style={{ 
+                                        transform: `scale(${scale}) translateY(${lift}px)`, 
+                                        zIndex: scale > 1 ? 20 : 10 
+                                    }}
+                                    onMouseEnter={() => setHoveredIndex(idx)}
+                                    onMouseLeave={() => setHoveredIndex(null)}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        const filterType = stat.id === 'total' ? 'all' : stat.id;
+                                        router.push(`/templates/${_id}?filter=${filterType}#comments`);
+                                    }}
+                                >
+                                    <div className="p-1.5 transition-colors">
+                                        <Icon 
+                                            size={18} 
+                                            className={`${stat.color} opacity-100 stroke-[2.5px]`} 
+                                        />
+                                    </div>
+                                    <span className="absolute top-1 right-0 text-gray-400 dark:text-gray-500 text-[9px] font-bold transform translate-x-1/2 -translate-y-1/3 pointer-events-none tabular-nums">
+                                        {count}
+                                    </span>
+                                </div>
+                            );
+                        });
+                    })()}
+                </div>
+
+                {/* Right: Engagement & Template Stats */}
+                <div className="flex items-center gap-2 sm:gap-4">
                     {/* Like */}
                     <button 
                         onClick={handleLike}
                         disabled={isLiking}
-                        className={`flex items-center gap-2 text-sm group transition-all ${
+                        className={`flex items-center gap-1.5 group transition-all ${
                             isLiked ? 'text-pink-500' : 'text-gray-500 hover:text-pink-500'
                         }`}
                     >
-                        <div className="p-1.5 rounded-full group-hover:bg-pink-500/10 transition-colors">
+                        <div className="p-1 rounded-full group-hover:bg-pink-500/10 transition-colors">
                             <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiking ? 'animate-bounce' : ''} />
                         </div>
-                        <span className="text-xs font-bold tabular-nums">{likesCount}</span>
-                    </button>
-
-                    {/* Comment */}
-                    <button 
-                        onClick={handleNavigation}
-                        className="flex items-center gap-2 text-sm group transition-all text-gray-500 hover:text-blue-500"
-                    >
-                        <div className="p-1.5 rounded-full group-hover:bg-blue-500/10 transition-colors">
-                            <MessageCircle size={18} />
-                        </div>
-                        <span className="text-xs font-bold tabular-nums">{currentCommentsCount}</span>
+                        <span className="text-[11px] font-bold tabular-nums">{likesCount}</span>
                     </button>
 
                     {/* Share */}
                     <button 
-                        className="flex items-center gap-2 text-sm group transition-all text-gray-500 hover:text-green-500"
+                        className="flex items-center transition-all text-gray-500 hover:text-blue-500"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="p-1.5 rounded-full group-hover:bg-green-500/10 transition-colors">
+                        <div className="p-1 rounded-full group-hover:bg-blue-500/10 transition-colors">
                             <Share2 size={18} />
                         </div>
                     </button>
-                </div>
 
-                <div className="flex items-center gap-2">
-                    {/* Download */}
+                    {/* Views */}
+                    <div className="flex items-center gap-1.5 text-gray-400">
+                        <Eye size={16} />
+                        <span className="font-bold text-[11px] tabular-nums">{viewsCount || 0}</span>
+                    </div>
+
+                    <span className="w-px h-4 bg-gray-200 dark:bg-white/10 mx-1"></span>
+
+                    {/* Download Stats */}
                     <button 
                         onClick={handleDownload}
-                        className="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-purple-600 transition-colors"
+                        className="flex items-center gap-1.5 text-gray-500 hover:text-purple-600 transition-colors"
                     >
-                        <Download size={18} />
-                        <span className="hidden sm:inline">Download</span>
+                        <div className="p-1 rounded-full group-hover:bg-purple-500/10">
+                            <Download size={18} />
+                        </div>
+                        <span className="font-bold text-[11px] tabular-nums">{downloadsCount || 0}</span>
                     </button>
 
                     {/* Bookmark */}
-                    <button className="text-gray-400 hover:text-purple-600 transition-colors p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-white/5">
+                    <button className="text-gray-400 hover:text-pink-600 transition-colors p-1 rounded-full group-hover:bg-pink-500/10">
                         <Bookmark size={18} />
                     </button>
                  </div>
