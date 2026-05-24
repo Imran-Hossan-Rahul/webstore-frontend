@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { X, Upload, Plus, Minus } from "lucide-react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { X, Upload, Highlighter, Heart, MessageCircle, Clock, FileText, Bookmark, Share2 } from "lucide-react";
 import { api } from "@/utils/api";
-import { CARD_SHAPES } from "@/constants/cardShapes";
 import { useToast } from "@/components/ui/ToastProvider";
+import CodexCard from "../dashboard/cards/CodexCard";
+import { useUser } from "@/context/UserContext";
 
 export default function PublishModal({ isOpen, onClose, editor, existingSlug, initialData }) {
   const [formData, setFormData] = useState({
@@ -14,8 +15,9 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
     tags: "",
     coverImage: "",
     cardShape: "square-medium",
-    proTips: [""],
-    keyTakeaways: [""]
+    seoTitle: "",
+    seoDescription: "",
+    focusKeywords: "",
   });
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -24,6 +26,11 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
   const [coverImageFile, setCoverImageFile] = useState(null);
   const [coverImagePreview, setCoverImagePreview] = useState("");
   const { showToast } = useToast();
+  
+  // New States for Highlights & Preview
+  const { user } = useUser();
+  const [excerptHtml, setExcerptHtml] = useState("");
+  const excerptRef = useRef(null);
 
   const showError = useCallback((title, message) => {
     showToast(message, "error", title);
@@ -38,8 +45,9 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
         tags: initialData.tags ? initialData.tags.join(", ") : "",
         coverImage: initialData.coverImage || "",
         cardShape: initialData.cardShape || "square-medium",
-        proTips: initialData.proTips?.length > 0 ? initialData.proTips : [""],
-        keyTakeaways: initialData.keyTakeaways?.length > 0 ? initialData.keyTakeaways : [""]
+        seoTitle: initialData.seoTitle || "",
+        seoDescription: initialData.seoDescription || "",
+        focusKeywords: initialData.focusKeywords ? initialData.focusKeywords.join(", ") : "",
       });
       if (initialData.coverImage) {
         setCoverImagePreview(initialData.coverImage);
@@ -47,6 +55,17 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
     }
   }, [isOpen, initialData]);
 
+  // Excerpt Initialization
+  useEffect(() => {
+    if (isOpen) {
+        let initialExcerpt = initialData?.excerpt;
+        if (!initialExcerpt) {
+            const contentText = editor.getText();
+            initialExcerpt = contentText ? contentText.substring(0, 300) + (contentText.length > 300 ? "..." : "") : "";
+        }
+        setExcerptHtml(initialExcerpt);
+    }
+  }, [isOpen, initialData, editor]);
 
   const categories = [
     "uncategorized",
@@ -59,12 +78,10 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
     "news",
   ];
 
-
-
   const pollUploadStatus = async (jobId) => {
     const pollInterval = setInterval(async () => {
       try {
-        const status = await api.get(`/blog/upload-status/${jobId}`);
+        const status = await api.get(`/codex/upload-status/${jobId}`);
 
         if (status.success) {
           setUploadProgress(status.progress || 0);
@@ -90,20 +107,18 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
         setUploading(false);
         setUploadJobId(null);
       }
-    }, 1000); // Poll every second
+    }, 1000);
   };
 
   const handleCoverImageChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith("image/")) {
       showError("Invalid File Type", "Please select an image file (JPG, PNG, WebP, GIF).");
       return;
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       showError("File Too Large", `Your image is ${(file.size / (1024 * 1024)).toFixed(1)}MB. Please choose an image smaller than 5MB.`);
       return;
@@ -111,25 +126,22 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
 
     setCoverImageFile(file);
     
-    // Show preview immediately
     const reader = new FileReader();
     reader.onloadend = () => {
       setCoverImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
 
-    // Queue upload to Cloudinary
     setUploading(true);
     setUploadProgress(0);
     try {
-      const formData = new FormData();
-      formData.append("coverImage", file);
+      const formDataUpload = new FormData();
+      formDataUpload.append("coverImage", file);
 
-      const response = await api.upload("/blog/upload-cover-image", formData);
+      const response = await api.upload("/codex/upload-cover-image", formDataUpload);
 
       if (response.success && response.jobId) {
         setUploadJobId(response.jobId);
-        // Start polling for status
         pollUploadStatus(response.jobId);
       } else {
         throw new Error("Failed to queue upload");
@@ -137,17 +149,46 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
     } catch (error) {
       console.error("❌ Upload queue failed:", error);
       showError("Upload Failed", "Failed to upload image. Please try again.");
-      // Clear the file on error
       setCoverImageFile(null);
       setCoverImagePreview("");
       setUploading(false);
     }
   };
 
+  const applyHighlight = () => {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+    
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    if (!selectedText.trim()) {
+        showToast("Select some text to highlight first.", "info", "Highlighting");
+        return;
+    }
+
+    if (!excerptRef.current.contains(range.commonAncestorContainer)) {
+        showToast("Please select text inside the excerpt box.", "info", "Highlighting");
+        return;
+    }
+
+    const mark = document.createElement("mark");
+    mark.className = "bg-yellow-200 text-yellow-900 rounded px-1 font-medium";
+    mark.textContent = selectedText;
+
+    range.deleteContents();
+    range.insertNode(mark);
+    
+    setExcerptHtml(excerptRef.current.innerHTML);
+  };
+
+  const handleExcerptInput = () => {
+      // No state update here to avoid cursor jumping in contentEditable
+      // excerptRef.current.innerHTML is read directly on submit
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Check if image is still uploading
     if (uploading) {
       showToast("Please wait for the image to finish uploading.", "warning", "Upload In Progress");
       return;
@@ -160,40 +201,36 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
       const titleText = titleNode && titleNode.text ? titleNode.text : formData.title || "Untitled";
       const contentHtml = editor.getHTML();
 
+      const excerpt = (excerptRef.current ? excerptRef.current.innerHTML : excerptHtml) || undefined;
+
       const payload = {
         title: titleText.slice(0, 150),
         subtitle: formData.subtitle || undefined,
         content: contentHtml,
+        excerpt,
         tags: formData.tags.split(",").map(t => t.trim()).filter(t => t),
         category: formData.category,
-        coverImage: formData.coverImage || undefined, // Cloudinary URL
+        coverImage: formData.coverImage || undefined,
         cardShape: formData.cardShape,
-        proTips: formData.proTips.filter(tip => tip.trim()).slice(0, 10),
-        keyTakeaways: formData.keyTakeaways.filter(tk => tk.trim()).slice(0, 10)
+        seoTitle: formData.seoTitle || undefined,
+        seoDescription: formData.seoDescription || undefined,
+        focusKeywords: formData.focusKeywords ? formData.focusKeywords.split(",").map(k => k.trim()).filter(k => k) : undefined,
       };
 
       if (existingSlug) {
-        // Update existing blog
-        await api.put(`/blog/${existingSlug}`, payload);
-        
-        // If it was just a draft, we might want to ensure it's published.
-        // It's safe to call publish again.
-        await api.post(`/blog/${existingSlug}/publish`, {});
-        
-        showToast("Your blog has been updated successfully!", "success", "Updated! 🎉");
+        await api.put(`/codex/${existingSlug}`, payload);
+        await api.post(`/codex/${existingSlug}/publish`, {});
+        showToast("Your codex has been updated successfully!", "success", "Updated! 🎉");
       } else {
-        // Create new blog
-        const blog = await api.post("/blog/create-blog", payload);
-        const slug = blog?.blog?.slug || blog?.slug;
-        
-        if (!slug) throw new Error("Failed to get blog slug");
-        
-        await api.post(`/blog/${slug}/publish`, {});
-        showToast("Your blog has been published successfully!", "success", "Published! 🎉");
+        const codex = await api.post("/codex/create-codex", payload);
+        const slug = codex?.codex?.slug || codex?.slug;
+        if (!slug) throw new Error("Failed to get codex slug");
+        await api.post(`/codex/${slug}/publish`, {});
+        showToast("Your codex has been published successfully!", "success", "Published! 🎉");
       }
       
       onClose();
-      setTimeout(() => { window.location.href = "/blogs"; }, 1200);
+      setTimeout(() => { window.location.href = "/codex"; }, 1200);
     } catch (err) {
       console.error("Publish/Update failed:", err);
       showError("Publish Failed", err.message || "Something went wrong. Please try again.");
@@ -204,259 +241,298 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
 
   if (!isOpen) return null;
 
+  const previewItemMock = {
+      _id: "preview-card",
+      slug: existingSlug || "preview",
+      title: formData.title || "Your Codex Title",
+      excerpt: excerptHtml || "Your codex excerpt will appear here...",
+      coverImage: coverImagePreview,
+      type: "codex",
+      user: user || { name: "You", profilePicture: "" },
+      views: 0,
+      likesCount: 0,
+      comments: [],
+      createdAt: new Date().toISOString()
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">
-            {existingSlug ? "Update Blog" : "Publish Blog"}
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[150] p-4 transition-all duration-300">
+      <div className="bg-slate-50 dark:bg-zinc-950 rounded-2xl w-[95vw] max-w-[1590px] max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200 dark:border-zinc-800 animate-in fade-in zoom-in duration-300">
+        
+        {/* Header */}
+        <div className="bg-white dark:bg-zinc-950 px-8 py-5 flex items-center justify-between z-10 border-b border-slate-100 dark:border-zinc-900 shrink-0">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-white font-sans">
+            {existingSlug ? "Update Codex" : "Publish Codex"}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-full transition-colors text-slate-400"
           >
             <X size={20} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Blog Title
-            </label>
-            <input
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Enter blog title (optional - will use editor title)"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+        {/* Content Body: Split into 2 columns */}
+        <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
+            
+            {/* LEFT COLUMN: Form */}
+            <div className="w-full lg:w-[450px] xl:w-[500px] shrink-0 overflow-y-auto px-8 py-6 border-r border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
+                <form id="publishForm" onSubmit={handleSubmit} className="space-y-6">
+                  {/* Title */}
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Codex Title
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      placeholder="Enter codex title..."
+                      className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm"
+                    />
+                  </div>
 
-          {/* Subtitle */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Subtitle <span className="text-gray-400 font-normal">(Optional)</span>
-            </label>
-            <input
-              type="text"
-              value={formData.subtitle}
-              onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-              placeholder="A brief subtitle for your blog"
-              maxLength={200}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
+                  {/* Subtitle */}
+                  <div className="space-y-2">
+                    <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Subtitle <span className="opacity-50 font-normal lowercase">(Optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.subtitle}
+                      onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
+                      placeholder="A brief subtitle for your codex"
+                      maxLength={200}
+                      className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm"
+                    />
+                  </div>
 
-          {/* Category */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Category
-            </label>
-            <select
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Tags */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Tags (comma separated)
-            </label>
-            <input
-              type="text"
-              value={formData.tags}
-              onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-              placeholder="e.g. react, nextjs, tutorial"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Cover Image */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Cover Image
-            </label>
-            <div className="space-y-3">
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-500 transition-colors">
-                <input
-                  type="file"
-                  accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-                  onChange={handleCoverImageChange}
-                  className="hidden"
-                  id="coverImageUpload"
-                  disabled={uploading}
-                />
-                <label htmlFor="coverImageUpload" className={`cursor-pointer ${uploading ? 'opacity-50' : ''}`}>
-                  <Upload className="mx-auto mb-2 text-gray-400" size={32} />
-                  <p className="text-sm font-medium text-gray-700 mb-1">
-                    {uploading ? `Uploading... ${uploadProgress}%` : "Click to upload cover image"}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Supported: JPG, JPEG, PNG, WebP, GIF (Max 5MB)
-                  </p>
-                  {uploading && (
-                    <div className="mt-3 w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${uploadProgress}%` }}
-                      ></div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Category */}
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Category
+                      </label>
+                      <select
+                        value={formData.category}
+                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all cursor-pointer text-sm appearance-none"
+                      >
+                        {categories.map((cat) => (
+                          <option key={cat} value={cat} className="bg-white dark:bg-zinc-900">
+                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                  )}
-                </label>
-              </div>
-              
-              {coverImagePreview && (
-                <div className="relative rounded-lg overflow-hidden border border-gray-200">
-                  <img
-                    src={coverImagePreview}
-                    alt="Preview"
-                    className="w-full h-48 object-cover"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCoverImageFile(null);
-                      setCoverImagePreview("");
-                    }}
-                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-                  >
-                    <X size={16} />
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
 
-          {/* Pro Tips */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Pro Tips <span className="text-gray-400 font-normal">(Optional - Max 10)</span>
-            </label>
-            <div className="space-y-2">
-              {formData.proTips.map((tip, index) => (
-                <div key={index} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={tip}
-                    onChange={(e) => {
-                      const newTips = [...formData.proTips];
-                      newTips[index] = e.target.value;
-                      setFormData({ ...formData, proTips: newTips });
-                    }}
-                    placeholder={`Pro tip ${index + 1}`}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                  />
-                  {formData.proTips.length > 1 && (
+                    {/* Tags */}
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Tags
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.tags}
+                        onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                        placeholder="e.g. react, design, ux"
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  {/* SEO Details Section */}
+                  <div className="pt-4 border-t border-slate-100 dark:border-zinc-800 space-y-6">
+                    <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 font-sans">SEO Settings</h3>
+                    
+                    {/* SEO Title */}
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        SEO Title <span className="opacity-50 font-normal lowercase">(Optional, Max 60 chars)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.seoTitle}
+                        onChange={(e) => setFormData({ ...formData, seoTitle: e.target.value })}
+                        placeholder="Optimized title for search engines..."
+                        maxLength={60}
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm"
+                      />
+                      <div className="text-xs text-slate-400 text-right">{formData.seoTitle.length}/60</div>
+                    </div>
+
+                    {/* SEO Description */}
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Meta Description <span className="opacity-50 font-normal lowercase">(Max 160 chars)</span>
+                      </label>
+                      <textarea
+                        value={formData.seoDescription}
+                        onChange={(e) => setFormData({ ...formData, seoDescription: e.target.value })}
+                        placeholder="A compelling description for search engine results..."
+                        maxLength={160}
+                        rows={3}
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm resize-none"
+                      />
+                      <div className="text-xs text-slate-400 text-right">{formData.seoDescription.length}/160</div>
+                    </div>
+
+                    {/* Focus Keywords */}
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                        Focus Keywords <span className="opacity-50 font-normal lowercase">(Comma separated)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.focusKeywords}
+                        onChange={(e) => setFormData({ ...formData, focusKeywords: e.target.value })}
+                        placeholder="e.g. react hooks, state management, frontend"
+                        className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-lg hover:border-black dark:hover:border-white focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Cover Image */}
+                  <div className="space-y-3">
+                    <label className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      Cover Image
+                    </label>
+                    <div className="relative group">
+                      <div className={`relative border border-slate-200 dark:border-zinc-800 ${coverImagePreview ? 'border-transparent' : ''} rounded-lg overflow-hidden transition-all duration-300 hover:border-black dark:hover:border-white bg-slate-50 dark:bg-zinc-900/50`}>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                          onChange={handleCoverImageChange}
+                          className="hidden"
+                          id="coverImageUpload"
+                          disabled={uploading}
+                        />
+                        
+                        {coverImagePreview ? (
+                          <div className="relative aspect-[3/2]">
+                            <img
+                              src={coverImagePreview}
+                              alt="Preview"
+                              className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                               <label htmlFor="coverImageUpload" className="px-6 py-2 bg-white text-black rounded-full text-xs font-bold cursor-pointer hover:scale-105 transition-transform">
+                                  Change Image
+                               </label>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setCoverImageFile(null);
+                                setCoverImagePreview("");
+                                setFormData(prev => ({ ...prev, coverImage: "" }));
+                              }}
+                              className="absolute top-3 right-3 p-1.5 bg-black/60 text-white rounded-full hover:bg-black transition-colors backdrop-blur-md"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ) : (
+                          <label htmlFor="coverImageUpload" className="flex flex-col items-center justify-center py-10 cursor-pointer">
+                            <Upload className="mb-3 text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors" size={24} />
+                            <p className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-400 mb-1 uppercase tracking-wider">
+                              {uploading ? `Uploading... ${uploadProgress}%` : "Click to upload cover image"}
+                            </p>
+                            <p className="text-[10px] text-slate-400 font-sans">
+                              High resolution recommended (Max 5MB)
+                            </p>
+                            {uploading && (
+                              <div className="mt-3 w-40 bg-slate-200 dark:bg-zinc-800 rounded-full h-1 overflow-hidden">
+                                <div 
+                                  className="bg-black dark:bg-white h-full transition-all duration-300"
+                                  style={{ width: `${uploadProgress}%` }}
+                                ></div>
+                              </div>
+                            )}
+                          </label>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+
+            {/* RIGHT COLUMN: Live Preview & Highlights */}
+            <div className="flex-1 bg-slate-50 dark:bg-zinc-900/30 overflow-y-auto flex flex-col">
+
+                {/* Toolbar */}
+                <div className="flex items-center justify-between px-6 py-3 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shrink-0">
+                    <div>
+                        <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 font-sans">Live Feed Preview</h3>
+                        <p className="text-xs text-slate-400">This is how your codex will appear in the feed.</p>
+                    </div>
                     <button
-                      type="button"
-                      onClick={() => {
-                        const newTips = formData.proTips.filter((_, i) => i !== index);
-                        setFormData({ ...formData, proTips: newTips });
-                      }}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        type="button"
+                        onClick={applyHighlight}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border border-yellow-200 rounded-md text-xs font-medium transition-colors cursor-pointer shrink-0"
                     >
-                      <Minus size={20} />
+                        <Highlighter size={14} />
+                        Highlight Selected Text
                     </button>
-                  )}
                 </div>
-              ))}
-              {formData.proTips.length < 10 && (
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, proTips: [...formData.proTips, ""] })}
-                  className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Plus size={16} /> Add Pro Tip
-                </button>
-              )}
-            </div>
-          </div>
 
-          {/* Key Takeaways */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Key Takeaways <span className="text-gray-400 font-normal">(Optional - Max 10)</span>
-            </label>
-            <div className="space-y-2">
-              {formData.keyTakeaways.map((takeaway, index) => (
-                <div key={index} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={takeaway}
-                    onChange={(e) => {
-                      const newTakeaways = [...formData.keyTakeaways];
-                      newTakeaways[index] = e.target.value;
-                      setFormData({ ...formData, keyTakeaways: newTakeaways });
-                    }}
-                    placeholder={`Key takeaway ${index + 1}`}
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                  />
-                  {formData.keyTakeaways.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const newTakeaways = formData.keyTakeaways.filter((_, i) => i !== index);
-                        setFormData({ ...formData, keyTakeaways: newTakeaways });
-                      }}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Minus size={20} />
-                    </button>
-                  )}
+                {/* Feed Container — exact same as DashboardFeed */}
+                <div className="flex-1 px-4 pt-4">
+                    <div className="w-full border border-slate-200 dark:border-white/10 rounded-t-2xl overflow-hidden bg-white dark:bg-slate-900/20">
+                        <CodexCard
+                            codex={{
+                                _id: "preview-card",
+                                slug: existingSlug || "preview",
+                                title: formData.title || "Your Codex Title",
+                                subtitle: formData.subtitle || "",
+                                excerpt: excerptHtml || "Your codex excerpt will appear here...",
+                                content: "",
+                                coverImage: coverImagePreview,
+                                author: user,
+                                createdAt: new Date().toISOString(),
+                                readTime: "5 min read",
+                                likesCount: 0,
+                                commentsCount: 0,
+                                category: formData.category,
+                                tags: Array.isArray(formData.tags) ? formData.tags : (formData.tags ? formData.tags.split(',').map(t => t.trim()) : [])
+                            }}
+                            currentUser={user}
+                            isPreview={true}
+                            excerptRef={excerptRef}
+                            onExcerptInput={handleExcerptInput}
+                        />
+                    </div>
                 </div>
-              ))}
-              {formData.keyTakeaways.length < 10 && (
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, keyTakeaways: [...formData.keyTakeaways, ""] })}
-                  className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-2"
-                >
-                  <Plus size={16} /> Add Key Takeaway
-                </button>
-              )}
             </div>
-          </div>
+        </div>
 
-          {/* Card Shape - hidden for now, will be added later
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-3">
-              Card Display Style
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              ...
-            </div>
-          </div>
-          */}
-
-          {/* Submit Button */}
-          <div className="flex gap-3 pt-4">
+        {/* Footer */}
+        <div className="bg-white dark:bg-zinc-950 px-8 py-4 border-t border-slate-100 dark:border-zinc-900 shrink-0 flex gap-4 justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-6 py-2.5 border border-slate-200 dark:border-zinc-800 rounded-lg font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 transition-all text-sm font-sans"
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={loading}
-              className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              form="publishForm"
+              disabled={loading || uploading}
+              className="px-8 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-lg font-medium hover:bg-zinc-900 dark:hover:bg-zinc-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-sm hover:shadow-md font-sans min-w-[160px]"
             >
-              {loading ? (existingSlug ? "Updating..." : "Publishing...") : (existingSlug ? "Update Blog" : "Publish Blog")}
+              {loading ? (
+                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              ) : null}
+              {loading ? "Publishing..." : (existingSlug ? "Update Codex" : "Publish to Codex")}
             </button>
-          </div>
-        </form>
+        </div>
+
       </div>
     </div>
   );
 }
+
+
+

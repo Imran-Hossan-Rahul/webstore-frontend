@@ -55,7 +55,7 @@ export default function PagePopularitySmaller() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="card-template p-3 rounded-2xl shadow-md h-[300px] flex flex-col justify-between text-black">
+      <div className="card-artifact p-3 rounded-2xl shadow-md h-[300px] flex flex-col justify-between text-black">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-bold">Top 5 Pages</h2>
           <button
@@ -104,3 +104,4 @@ export default function PagePopularitySmaller() {
     </div>
   );
 }
+

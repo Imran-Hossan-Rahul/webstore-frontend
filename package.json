@@ -1,5 +1,5 @@
 {
-  "name": "webstore-frontend",
+  "name": "codalina-frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -20,6 +20,8 @@
     "@google/generative-ai": "^0.24.1",
     "@hello-pangea/dnd": "^18.0.1",
     "@monaco-editor/react": "^4.6.0",
+    "@stripe/react-stripe-js": "^6.3.0",
+    "@stripe/stripe-js": "^9.4.0",
     "@tiptap/extension-code-block": "^3.12.0",
     "@tiptap/extension-code-block-lowlight": "^3.12.0",
     "@tiptap/extension-color": "^3.12.0",
@@ -59,6 +61,7 @@
     "lowlight": "^2.9.0",
     "lucide-react": "^0.553.0",
     "next": "14.0.0",
+    "nextjs-toploader": "^3.9.17",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-colorful": "^5.6.1",

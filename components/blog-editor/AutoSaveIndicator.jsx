@@ -28,15 +28,15 @@ export default function AutoSaveIndicator({ saveState, lastSaved }) {
     <div className="auto-save-indicator">
       {saveState === 'saving' && (
         <>
-          <Loader2 className="w-4 h-4 animate-spin text-gray-500" />
-          <span className="text-gray-600">Saving...</span>
+          <Loader2 className="w-4 h-4 animate-spin text-slate-500" />
+          <span className="text-slate-600">Saving...</span>
         </>
       )}
       
       {saveState === 'saved' && (
         <>
           <Check className="w-4 h-4 text-green-500" />
-          <span className="text-gray-600">Saved {getTimeAgo(lastSaved)}</span>
+          <span className="text-slate-600">Saved {getTimeAgo(lastSaved)}</span>
         </>
       )}
       

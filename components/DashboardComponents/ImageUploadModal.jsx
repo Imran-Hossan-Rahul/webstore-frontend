@@ -86,27 +86,13 @@ export default function ImageUploadModal({
       const formData = new FormData();
       formData.append("image", selectedFile);
 
-      // Initial upload request (queues the job)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ""}${uploadEndpoint}`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Upload failed");
-      }
+      // Using the api utility which handles FormData and cookies automatically
+      const resData = await api.post(uploadEndpoint, formData);
 
       // If response gives a job ID, we poll for status
-      if (data.data?.jobId) {
-        setUploading(true); // Ensure stays true
-        
-        const jobId = data.data.jobId;
+      if (resData.data?.jobId || resData.jobId) {
+        setUploading(true);
+        const jobId = resData.data?.jobId || resData.jobId;
         
         // Polling function
         const checkStatus = async () => {
@@ -141,9 +127,9 @@ export default function ImageUploadModal({
         checkStatus();
         
       } else {
-        // Fallback for immediate success (if API changes back)
+        // Fallback for immediate success
          if (onUploadSuccess) {
-          onUploadSuccess(data.data);
+          onUploadSuccess(resData.data || resData);
         }
         handleClose();
         setUploading(false);
@@ -167,20 +153,20 @@ export default function ImageUploadModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl relative animate-in zoom-in-95 duration-200">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg shadow-2xl relative animate-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Recommended: {recommendedSize} ({aspectRatio} ratio) • Max 5MB
             </p>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
           >
-            <X size={20} className="text-gray-500 dark:text-gray-400" />
+            <X size={20} className="text-slate-500 dark:text-slate-400" />
           </button>
         </div>
 
@@ -196,19 +182,19 @@ export default function ImageUploadModal({
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
                 dragActive
-                  ? "border-purple-500 bg-purple-50 dark:bg-purple-900/20"
-                  : "border-gray-300 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-600"
+                  ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10"
+                  : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               }`}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                  <Upload className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                <div className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center">
+                  <Upload className="w-8 h-8 text-slate-400 dark:text-slate-500" />
                 </div>
                 <div>
-                  <p className="text-gray-900 dark:text-white font-medium">
+                  <p className="text-slate-900 dark:text-white font-medium">
                     Drop your image here, or click to browse
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                     PNG, JPG, GIF up to 5MB
                   </p>
                 </div>
@@ -224,7 +210,7 @@ export default function ImageUploadModal({
           ) : (
             <div className="space-y-4">
               {/* Preview */}
-              <div className="relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
                 <img
                   src={preview}
                   alt="Preview"
@@ -240,7 +226,7 @@ export default function ImageUploadModal({
                   setSelectedFile(null);
                   setPreview(null);
                 }}
-                className="w-full py-2 px-4 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
               >
                 <Camera size={18} />
                 Change Image
@@ -251,23 +237,23 @@ export default function ImageUploadModal({
           {/* Error Message */}
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
-              <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+              <p className="text-red-600 dark:text-red-400 text-sm">{error.message || error}</p>
             </div>
           )}
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 p-6 border-t border-gray-200 dark:border-gray-800">
+        <div className="flex gap-3 p-6 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={handleClose}
-            className="flex-1 px-4 py-2.5 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors font-medium"
+            className="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-gray-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium"
           >
             Cancel
           </button>
           <button
             onClick={handleUpload}
             disabled={!selectedFile || uploading}
-            className="flex-1 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
           >
             {uploading ? (
               <>

@@ -10,15 +10,15 @@ export function DashboardModal({ isOpen, onClose, title, children }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
       <div 
-        className="bg-white rounded-[32px] shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200"
+        className="bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200"
         style={{ width: "70vw", height: "70vh" }}
       >
         {/* Header */}
-        <div className="flex justify-between items-center px-8 py-6 border-b border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+        <div className="flex justify-between items-center px-8 py-6 border-b border-slate-100">
+          <h2 className="text-xl font-medium text-slate-900 font-sans">{title}</h2>
           <button 
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
+            className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
           >
             <X size={24} />
           </button>
@@ -35,30 +35,30 @@ export function DashboardModal({ isOpen, onClose, title, children }) {
 
 // --- Specific Content Tables ---
 
-export function ViewsTable({ templates }) {
+export function ViewsTable({ artifacts }) {
     // Sort by views descending
-    const sorted = [...templates].sort((a, b) => (b.viewsCount || 0) - (a.viewsCount || 0));
+    const sorted = [...artifacts].sort((a, b) => (b.viewsCount || 0) - (a.viewsCount || 0));
 
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-50 sticky top-0 z-10">
+        <thead className="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th className="p-4 rounded-tl-xl font-semibold text-gray-600 text-sm">Template Name</th>
-            <th className="p-4 font-semibold text-gray-600 text-sm">Total Views</th>
-            <th className="p-4 rounded-tr-xl font-semibold text-gray-600 text-sm text-right">Preview</th>
+            <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Artifact Name</th>
+            <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Total Views</th>
+            <th className="p-4 rounded-tr-xl font-mono text-[11px] uppercase tracking-wider text-slate-500 text-right">Preview</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((t, i) => (
-                <tr key={t._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 font-medium text-gray-900 flex items-center gap-3">
-                        <span className="text-gray-400 text-xs font-mono w-6">#{i+1}</span>
+                <tr key={t._id} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4 font-medium text-slate-900 flex items-center gap-3">
+                        <span className="text-slate-400 text-xs font-mono w-6">#{i+1}</span>
                         {t.title}
                     </td>
-                    <td className="p-4 text-gray-600">{t.viewsCount || 0}</td>
+                    <td className="p-4 font-mono text-slate-600">{t.viewsCount || 0}</td>
                     <td className="p-4 text-right">
-                         <a href={`/templates/${t._id}`} target="_blank" className="text-blue-500 hover:text-blue-700 inline-flex items-center gap-1 text-sm">
+                         <a href={`/artifacts/${t._id}`} target="_blank" className="text-indigo-600 hover:text-blue-700 inline-flex items-center gap-1 text-sm">
                             View <ExternalLink size={12}/>
                          </a>
                     </td>
@@ -70,36 +70,36 @@ export function ViewsTable({ templates }) {
   );
 }
 
-export function DownloadsTable({ templates }) {
+export function DownloadsTable({ artifacts }) {
     // Sort by downloads descending
-    const sorted = [...templates].sort((a, b) => (b.downloadsCount || 0) - (a.downloadsCount || 0));
+    const sorted = [...artifacts].sort((a, b) => (b.downloadsCount || 0) - (a.downloadsCount || 0));
 
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-50 sticky top-0 z-10">
+        <thead className="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th className="p-4 rounded-tl-xl font-semibold text-gray-600 text-sm">Template Name</th>
-            <th className="p-4 font-semibold text-gray-600 text-sm">Downloads</th>
-            <th className="p-4 font-semibold text-gray-600 text-sm">Price Type</th>
-            <th className="p-4 rounded-tr-xl font-semibold text-gray-600 text-sm text-right">Revenue (Est)</th>
+            <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Artifact Name</th>
+            <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Downloads</th>
+            <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Price Type</th>
+            <th className="p-4 rounded-tr-xl font-mono text-[11px] uppercase tracking-wider text-slate-500 text-right">Revenue (Est)</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((t, i) => (
-                <tr key={t._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 font-medium text-gray-900 flex items-center gap-3">
-                        <span className="text-gray-400 text-xs font-mono w-6">#{i+1}</span>
+                <tr key={t._id} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4 font-medium text-slate-900 flex items-center gap-3">
+                        <span className="text-slate-400 text-xs font-mono w-6">#{i+1}</span>
                         {t.title}
                     </td>
-                    <td className="p-4 text-gray-600">{t.downloadsCount || 0}</td>
+                    <td className="p-4 text-slate-600 font-mono">{(t.downloadsCount || 0).toLocaleString()}</td>
                      <td className="p-4">
-                        <span className={`px-2 py-1 rounded text-xs font-bold ${t.priceType === 'paid' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
+                        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-mono font-medium uppercase tracking-widest ${t.priceType === 'paid' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}>
                             {t.priceType === 'paid' ? 'Paid' : 'Free'}
                         </span>
                     </td>
-                    <td className="p-4 text-right text-gray-900 font-medium">
-                         {t.priceType === 'paid' ? `$${((t.downloadsCount || 0) * (t.price || 0)).toFixed(2)}` : '-'}
+                    <td className="p-4 text-right text-slate-900 font-mono font-medium">
+                         {t.priceType === 'paid' ? `${((t.downloadsCount || 0) * (t.price || 0)).toFixed(2)} TKNS` : '-'}
                     </td>
                 </tr>
             ))}
@@ -117,22 +117,22 @@ export function DetailedCountryTable({ data }) {
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-50 sticky top-0 z-10">
+        <thead className="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th className="p-4 rounded-tl-xl font-semibold text-gray-600 text-sm">Country</th>
-            <th className="p-4 rounded-tr-xl font-semibold text-gray-600 text-sm text-right">Visitor Count</th>
+            <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Country</th>
+            <th className="p-4 rounded-tr-xl font-mono text-[11px] uppercase tracking-wider text-slate-500 text-right">Visitor Count</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((c, i) => (
-                <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 font-medium text-gray-900">{c.country}</td>
-                    <td className="p-4 text-right text-gray-600">{c.visitors}</td>
+                <tr key={i} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4 font-medium text-slate-900 font-sans">{c.country}</td>
+                    <td className="p-4 text-right text-slate-600 font-mono">{c.visitors.toLocaleString()}</td>
                 </tr>
             ))}
             {sorted.length === 0 && (
                 <tr>
-                    <td colSpan={2} className="p-8 text-center text-gray-500">No country data available</td>
+                    <td colSpan={2} className="p-8 text-center text-slate-500">No country data available</td>
                 </tr>
             )}
         </tbody>
@@ -157,33 +157,33 @@ export function detailedEarningsTable({ earnings }) {
     <div className="w-full">
         <div className="mb-6 p-6 bg-yellow-50 rounded-2xl border border-yellow-100 flex justify-between items-center">
              <div>
-                 <p className="text-yellow-800 font-medium">Total Lifetime Earnings</p>
-                 <h3 className="text-3xl font-bold text-yellow-900">{earnings}</h3>
+                 <p className="text-yellow-800 font-medium font-sans text-sm">Total Lifetime Earnings</p>
+                 <h3 className="text-3xl font-medium text-yellow-900 font-mono tracking-tight">{earnings} <span className="text-sm font-sans opacity-60">TKNS</span></h3>
              </div>
              <div className="text-sm text-yellow-700 bg-white/50 px-4 py-2 rounded-lg">
                  Next Payout: End of Month
              </div>
         </div>
 
-      <h3 className="text-lg font-bold mb-4">Payout History</h3>
+      <h3 className="text-base font-medium mb-4 font-sans text-slate-900">Payout History</h3>
       <table className="w-full text-left border-collapse">
-        <thead className="bg-gray-50 sticky top-0 z-10">
+        <thead className="bg-slate-50 sticky top-0 z-10">
           <tr>
-            <th className="p-4 rounded-tl-xl font-semibold text-gray-600 text-sm">Date</th>
-            <th className="p-4 font-semibold text-gray-600 text-sm">Description</th>
-             <th className="p-4 font-semibold text-gray-600 text-sm">Status</th>
-            <th className="p-4 rounded-tr-xl font-semibold text-gray-600 text-sm text-right">Amount</th>
+            <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Date</th>
+            <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Description</th>
+             <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Status</th>
+            <th className="p-4 rounded-tr-xl font-mono text-[11px] uppercase tracking-wider text-slate-500 text-right">Amount</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-100">
             {rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50 transition-colors">
-                    <td className="p-4 text-gray-600">{row.date}</td>
-                    <td className="p-4 font-medium text-gray-900">{row.description}</td>
+                <tr key={row.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4 text-slate-500 font-mono text-sm">{row.date}</td>
+                    <td className="p-4 font-medium text-slate-900 font-sans">{row.description}</td>
                     <td className="p-4">
-                        <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold">{row.status}</span>
+                        <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded-sm text-[10px] font-mono font-medium uppercase tracking-widest">{row.status}</span>
                     </td>
-                    <td className="p-4 text-right font-medium text-gray-900">${row.amount.toLocaleString()}</td>
+                    <td className="p-4 text-right font-medium text-slate-900 font-mono">{row.amount.toLocaleString()} TKNS</td>
                 </tr>
             ))}
         </tbody>
@@ -194,3 +194,4 @@ export function detailedEarningsTable({ earnings }) {
 
 // Ensure correct export name for the last one
 export const EarningsTable = detailedEarningsTable;
+

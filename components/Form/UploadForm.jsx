@@ -1,21 +1,23 @@
-// ProjectUploadForm.jsx
+// DevlogUploadForm.jsx
 "use client";
 
 import { useState } from "react";
 import axios from "axios";
+import { useToast } from "@/components/ui/ToastProvider";
 
-export default function ProjectUploadForm() {
+export default function DevlogUploadForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [options, setOptions] = useState("");
   const [zipFile, setZipFile] = useState(null);
+  const { showToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!zipFile) {
-      alert("Please select a zip file!");
+      showToast("Please select a zip file!", "warning");
       return;
     }
 
@@ -34,7 +36,7 @@ export default function ProjectUploadForm() {
       formData.append("zip", zipFile);
 
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/projects/upload`,
+        `${process.env.NEXT_PUBLIC_API_URL}/devlogs/upload`,
         formData,
         {
           headers: {
@@ -44,10 +46,10 @@ export default function ProjectUploadForm() {
       );
 
       console.log("Upload success:", res.data);
-      alert("Project uploaded successfully!");
+      showToast("Devlog uploaded successfully!", "success");
     } catch (err) {
       console.error("Upload failed:", err.response || err);
-      alert("Upload failed! Check console for details.");
+      showToast(err.response?.data?.message || err.message || "Upload failed!", "error");
     }
   };
 
@@ -86,10 +88,11 @@ export default function ProjectUploadForm() {
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-indigo-600 text-white px-4 py-2 rounded"
       >
-        Upload Project
+        Upload Devlog
       </button>
     </form>
   );
 }
+

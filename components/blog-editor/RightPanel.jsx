@@ -46,13 +46,13 @@ const SpacingInput = React.memo(({ label, value, onChange, min = 0 }) => {
 
   return (
     <div className="flex flex-col mb-1 w-1/4">
-      <label className="text-xs font-medium text-gray-500">{label}</label>
+      <label className="text-xs font-medium text-slate-500">{label}</label>
       <input
         type="number"
         value={displayValue}
         onChange={handleInputChange}
         min={min}
-        className="w-full text-xs border border-gray-300 rounded px-1 py-0.5 focus:ring-blue-500 focus:border-blue-500"
+        className="w-full text-xs border border-slate-300 rounded px-1 py-0.5 focus:ring-indigo-600 focus:border-indigo-600"
       />
     </div>
   );
@@ -61,9 +61,9 @@ SpacingInput.displayName = "SpacingInput";
 
 // --- সেকশন হেডার কম্পোনেন্ট (অপরিবর্তিত) ---
 const PanelSection = ({ title, icon: Icon, children }) => (
-  <div className="mb-6 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-    <h3 className="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center space-x-2">
-      {Icon && <Icon className="w-4 h-4 text-blue-500" />}
+  <div className="mb-6 p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+    <h3 className="text-sm font-bold text-slate-800 border-b pb-2 mb-3 flex items-center space-x-2">
+      {Icon && <Icon className="w-4 h-4 text-indigo-600" />}
       <span>{title}</span>
     </h3>
     <div className="space-y-3">{children}</div>
@@ -72,8 +72,26 @@ const PanelSection = ({ title, icon: Icon, children }) => (
 
 // --- রাইট প্যানেল মেইন কম্পোনেন্ট ---
 
-export default function RightPanel({ editor, onPreviewClick }) {
-  const { node: selectedNode, pos: selectedNodePos } = useCurrentNode(editor);
+export default function RightPanel({ editor, selectedPositions, onPreviewClick }) {
+  const executeCommand = (commandFn) => {
+    if (selectedPositions && selectedPositions.size > 0) {
+      let chain = editor.chain();
+      selectedPositions.forEach(pos => {
+        const node = editor.state.doc.nodeAt(pos);
+        if (node) {
+          chain = chain.setNodeSelection(pos);
+          commandFn(chain, node.type.name);
+        }
+      });
+      chain.run();
+    } else {
+      commandFn(editor.chain(), selectedNode?.type?.name || activeNodeName).run();
+    }
+  };
+  const { node: cursorNode, pos: cursorNodePos } = useCurrentNode(editor);
+  const firstSelectedPos = selectedPositions && selectedPositions.size > 0 ? Array.from(selectedPositions)[0] : null;
+  const selectedNode = firstSelectedPos !== null ? editor?.state?.doc?.nodeAt(firstSelectedPos) : cursorNode;
+  const selectedNodePos = firstSelectedPos !== null ? firstSelectedPos : cursorNodePos;
   const activeNodeName = selectedNode?.type?.name;
 
   const [isEditorFocused, setIsEditorFocused] = useState(
@@ -276,9 +294,9 @@ export default function RightPanel({ editor, onPreviewClick }) {
 
   // দুটি শর্ত পূরণ হলে নোড অ্যাকটিভলি সিলেক্টেড (রেন্ডার কন্ডিশন)
   const isNodeActivelySelected = useMemo(() => {
-    // যখন এডিটর ফোকাসড এবং একটি নোড নির্বাচিত
-    return !!selectedNode && isEditorFocused;
-  }, [selectedNode, isEditorFocused]);
+    const hasBatchSelection = selectedPositions && selectedPositions.size > 0;
+    return !!selectedNode && (isEditorFocused || hasBatchSelection);
+  }, [selectedNode, isEditorFocused, selectedPositions]);
 
   // সমস্ত কনস্ট্যান্ট এখানে সংজ্ঞায়িত
   const isBlockWithSpacing = [
@@ -322,7 +340,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
         paddingBottom: newPadding.bottom ?? 0,
         paddingLeft: newPadding.left ?? 0,
       };
-      editor.chain().updateAttributes(nodeType, allAttrs).run();
+      executeCommand((chain, type) => chain.updateAttributes(type, allAttrs));
 
       setMargin(newMargin);
       setPadding(newPadding);
@@ -360,7 +378,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
         setStyles((prev) => ({ ...prev, borderWidth: 1 }));
       }
 
-      editor.chain().updateAttributes(newNodeType, updatedAttrs).run();
+      executeCommand((chain, type) => chain.updateAttributes(type, updatedAttrs));
 
       const localKey = key.replace("borderRadius", "");
       setBorderRadius((prev) => ({
@@ -413,10 +431,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
         finalValue = Math.min(1, Math.max(0, parseFloat(value)));
       }
 
-      editor
-        .chain()
-        .updateAttributes(newNodeType, { [key]: finalValue })
-        .run();
+      executeCommand((chain, type) => chain.updateAttributes(type, { [key]: finalValue }));
 
       setStyles((prevStyles) => ({ ...prevStyles, [key]: finalValue }));
     },
@@ -436,10 +451,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
       let finalValue = isNaN(parsedValue) ? 1.5 : parsedValue;
       finalValue = Math.min(2.5, Math.max(1.0, finalValue));
       setLineHeight(finalValue);
-      editor
-        .chain()
-        .updateAttributes(activeNodeName, { lineHeight: finalValue })
-        .run();
+      executeCommand((chain, type) => chain.updateAttributes(type, { lineHeight: finalValue }));
     },
     [selectedNode, editor]
   );
@@ -452,10 +464,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
       let finalValue = isNaN(parsedValue) ? 0 : parsedValue;
       finalValue = Math.min(0.5, Math.max(-0.1, finalValue));
       setLetterSpacing(finalValue);
-      editor
-        .chain()
-        .updateAttributes(activeNodeName, { letterSpacing: finalValue })
-        .run();
+      executeCommand((chain, type) => chain.updateAttributes(type, { letterSpacing: finalValue }));
     },
     [selectedNode, editor]
   );
@@ -536,7 +545,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
 
     const safeLevel = Math.min(6, Math.max(1, level));
     setHeadingLevel(safeLevel);
-    editor.chain().setHeading({ level: safeLevel }).run();
+    executeCommand((chain, type) => chain.setHeading({ level: safeLevel }));
   };
 
   const handleAlignmentChange = (alignment) => {
@@ -715,7 +724,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
 
   if (!editor) {
     return (
-      <div className="w-80 border-l p-4 bg-gray-100 flex flex-col items-center justify-center text-center text-gray-500">
+      <div className="w-80 border-l p-4 bg-slate-100 flex flex-col items-center justify-center text-center text-slate-500">
         <p className="text-sm">Editor not initialized.</p>
       </div>
     );
@@ -726,7 +735,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
   return (
     // ⭐ ফিক্স: onMouseDown এবং onMouseUp ব্যবহার করে ফোকাস প্রিজার্ভ করা
     <div
-      className="w-80 border-l p-4 bg-gray-100 overflow-y-auto"
+      className="w-80 border-l p-4 bg-slate-100 overflow-y-auto"
       // মাউস ডাউন: প্যানেলে ক্লিক শুরু হয়েছে (Capture phase ensures child stopPropagation doesn't block this)
       onMouseDownCapture={() => {
         setIsPanelClicking(true);
@@ -739,9 +748,9 @@ export default function RightPanel({ editor, onPreviewClick }) {
       }}
     >
       {/* Sticky Header with Preview Button */}
-      <div className="sticky top-0 z-20 bg-gray-100 -mt-4 -mx-4 px-4 py-4 mb-4 border-b border-gray-200 flex flex-col gap-3 shadow-sm">
+      <div className="sticky top-0 z-20 bg-slate-100 -mt-4 -mx-4 px-4 py-4 mb-4 border-b border-slate-200 flex flex-col gap-3 shadow-sm">
         <div className="flex justify-between items-center w-full">
-          <h2 className="text-xl font-extrabold text-gray-900">Design Panel</h2>
+          <h2 className="text-xl font-extrabold text-slate-900">Design Panel</h2>
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
@@ -759,7 +768,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 window.dispatchEvent(event);
               }}
               className="flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-md shadow-md hover:shadow-lg transition-all text-xs font-bold uppercase tracking-wider hover:opacity-90"
-              title="Publish Blog"
+              title="Publish Codex"
             >
               Publish
             </button>
@@ -777,28 +786,28 @@ export default function RightPanel({ editor, onPreviewClick }) {
         <div className="flex gap-2 justify-between">
           <button
             onClick={() => handleExport("markdown")}
-            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-slate-300 rounded hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors"
             title="Export as Markdown"
           >
             <Download size={12} /> MD
           </button>
           <button
             onClick={() => handleExport("html")}
-            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-slate-300 rounded hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors"
             title="Export as HTML"
           >
             <Download size={12} /> HTML
           </button>
           <button
             onClick={() => handleExport("json")}
-            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-slate-300 rounded hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors"
             title="Export as JSON"
           >
             <Download size={12} /> JSON
           </button>
           <button
             onClick={() => handleExport("pdf")}
-            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 bg-white border border-slate-300 rounded hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors"
             title="Export as PDF"
           >
             <Download size={12} /> PDF
@@ -815,7 +824,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
         <div ref={infoContentRef}>
           {/* I. Document Metrics & Quality (Always Visible) */}
           <DocumentQualityMetrics editor={editor} />
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-slate-200" />
 
           {/* II. Tagging Section (Always Visible) */}
           <PanelSection title="Tagging" icon={Tag}>
@@ -826,7 +835,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 onChange={(e) => setNewTagInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
                 placeholder="Add tag (e.g., react-component)"
-                className="flex-grow text-sm border border-gray-300 rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
+                className="flex-grow text-sm border border-slate-300 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600"
               />
               <button
                 onClick={handleAddTag}
@@ -836,9 +845,9 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 Add
               </button>
             </div>
-            <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100 min-h-[30px]">
+            <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-100 min-h-[30px]">
               {tags.length === 0 ? (
-                <p className="text-xs text-gray-500 italic">No tags added.</p>
+                <p className="text-xs text-slate-500 italic">No tags added.</p>
               ) : (
                 tags.map((tag) => (
                   <div
@@ -878,14 +887,14 @@ export default function RightPanel({ editor, onPreviewClick }) {
         <div className="flex justify-center mb-4">
           <button
             onClick={toggleInfoExpansion}
-            className="flex items-center space-x-1 px-3 py-1 text-xs rounded-full bg-gray-300 text-gray-700 shadow-sm hover:bg-gray-400 transition-colors"
+            className="flex items-center space-x-1 px-3 py-1 text-xs rounded-full bg-slate-300 text-slate-700 shadow-sm hover:bg-slate-400 transition-colors"
           >
             <ChevronUp className="w-4 h-4" /> <span>Collapse Info</span>
           </button>
         </div>
       )}
 
-      <hr className="my-4 border-gray-200" />
+      <hr className="my-4 border-slate-200" />
 
       {/* III. স্টাইল কন্ট্রোল সেকশন: শুধুমাত্র যখন নোড অ্যাকটিভলি সিলেক্টেড (Focus + Node) */}
       {shouldShowStyleControls ? (
@@ -895,18 +904,18 @@ export default function RightPanel({ editor, onPreviewClick }) {
           {/* III. Structure Section */}
           <PanelSection title="Structure" icon={Layers}>
             {/* টাইপ ডিসপ্লে */}
-            <div className="flex justify-between items-center text-sm font-mono bg-gray-50 p-2 rounded">
-              <span className="text-gray-600">Type:</span>
+            <div className="flex justify-between items-center text-sm font-mono bg-slate-50 p-2 rounded">
+              <span className="text-slate-600">Type:</span>
               <span className="font-bold text-indigo-600 capitalize">
                 {activeNodeName.replace("Custom", "").replace("Lowlight", "")}
               </span>
             </div>
 
             {/* Visibility/Hide Toggle */}
-            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
               <label
                 htmlFor="isHidden"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-slate-700"
               >
                 Hide Element
               </label>
@@ -917,15 +926,15 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 onChange={(e) =>
                   handleStyleChange("isHidden", e.target.checked)
                 }
-                className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                className="h-4 w-4 text-blue-600 border-slate-300 rounded"
               />
             </div>
 
             {/* Z-Index (Layering) */}
-            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
               <label
                 htmlFor="zIndex"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-slate-700"
               >
                 Z-Index
               </label>
@@ -936,19 +945,19 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 onChange={(e) =>
                   handleStyleChange("zIndex", Number(e.target.value))
                 }
-                className="w-1/4 text-xs border border-gray-300 rounded px-1 py-0.5 focus:ring-blue-500 focus:border-blue-500"
+                className="w-1/4 text-xs border border-slate-300 rounded px-1 py-0.5 focus:ring-indigo-600 focus:border-indigo-600"
               />
             </div>
 
             {/* Cursor Style */}
-            <div className="flex flex-col pt-2 border-t border-gray-100">
-              <label className="text-sm font-medium text-gray-700 mb-1">
+            <div className="flex flex-col pt-2 border-t border-slate-100">
+              <label className="text-sm font-medium text-slate-700 mb-1">
                 Cursor
               </label>
               <select
                 value={styles.cursor}
                 onChange={(e) => handleStyleChange("cursor", e.target.value)}
-                className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                className="w-full text-sm border border-slate-300 rounded px-2 py-1"
               >
                 <option value="auto">Auto</option>
                 <option value="pointer">Pointer</option>
@@ -960,7 +969,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
             </div>
           </PanelSection>
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-slate-200" />
 
           {/* IV. Block Content/Type Specific Controls */}
           {activeNodeName === "heading" && (
@@ -973,7 +982,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                     className={`text-sm font-semibold px-2 py-1 rounded transition-colors ${
                       headingLevel === level
                         ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        : "bg-slate-200 text-slate-700 hover:bg-slate-300"
                     }`}
                   >
                     H{level}
@@ -995,7 +1004,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                     )
                     .run()
                 }
-                className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                className="w-full text-sm border border-slate-300 rounded px-2 py-1"
               >
                 <option value="null">Auto</option>
                 <option value="javascript">JavaScript</option>
@@ -1028,7 +1037,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
           </PanelSection>
           */}
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-slate-200" />
 
           {/* V. Typography Control */}
           {isTextBlock && (
@@ -1037,58 +1046,142 @@ export default function RightPanel({ editor, onPreviewClick }) {
               <div>
                 <label
                   htmlFor="line-height"
-                  className="text-sm font-medium text-gray-700 block mb-1"
+                  className="text-sm font-medium text-slate-700 block mb-1"
                 >
-                  Line Height (Current: {lineHeight.toFixed(1)})
+                  Line Height
                 </label>
-                <input
-                  id="line-height"
-                  type="range"
-                  min="1.0"
-                  max="2.5"
-                  step="0.1"
-                  value={lineHeight}
-                  onChange={(e) => handleLineHeightChange(e.target.value)}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                />
+                <div className="flex gap-3 items-center">
+                  <input
+                    id="line-height"
+                    type="range"
+                    min="1.0"
+                    max="2.5"
+                    step="0.1"
+                    value={lineHeight}
+                    onChange={(e) => handleLineHeightChange(e.target.value)}
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer flex-1"
+                  />
+                  <input
+                    type="number"
+                    min="1.0"
+                    max="2.5"
+                    step="0.1"
+                    value={lineHeight.toFixed(1)}
+                    onChange={(e) => handleLineHeightChange(e.target.value)}
+                    className="w-16 px-2 py-1 text-xs border border-slate-200 rounded text-center focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Margin Top Control */}
+              <div className="pt-3">
+                <label
+                  htmlFor="margin-top"
+                  className="text-sm font-medium text-slate-700 block mb-1"
+                >
+                  Spacing Top (px)
+                </label>
+                <div className="flex gap-3 items-center">
+                  <input
+                    id="margin-top"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={margin.top}
+                    onChange={(e) => handleSpacingChange({ ...margin, top: Number(e.target.value) }, padding)}
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer flex-1"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={margin.top}
+                    onChange={(e) => handleSpacingChange({ ...margin, top: Number(e.target.value) }, padding)}
+                    className="w-16 px-2 py-1 text-xs border border-slate-200 rounded text-center focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
+              </div>
+
+              {/* Margin Bottom Control */}
+              <div className="pt-3">
+                <label
+                  htmlFor="margin-bottom"
+                  className="text-sm font-medium text-slate-700 block mb-1"
+                >
+                  Spacing Bottom (px)
+                </label>
+                <div className="flex gap-3 items-center">
+                  <input
+                    id="margin-bottom"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={margin.bottom}
+                    onChange={(e) => handleSpacingChange({ ...margin, bottom: Number(e.target.value) }, padding)}
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer flex-1"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={margin.bottom}
+                    onChange={(e) => handleSpacingChange({ ...margin, bottom: Number(e.target.value) }, padding)}
+                    className="w-16 px-2 py-1 text-xs border border-slate-200 rounded text-center focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
               </div>
 
               {/* Letter Spacing Control */}
-              <div>
+              <div className="pt-3">
                 <label
                   htmlFor="letter-spacing"
-                  className="text-sm font-medium text-gray-700 block mb-1"
+                  className="text-sm font-medium text-slate-700 block mb-1"
                 >
-                  Letter Spacing (em) (Current: {letterSpacing.toFixed(2)})
+                  Letter Spacing (em)
                 </label>
-                <input
-                  id="letter-spacing"
-                  type="range"
-                  min="0"
-                  max="0.5"
-                  step="0.05"
-                  value={letterSpacing}
-                  onChange={(e) => handleLetterSpacingChange(e.target.value)}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                />
+                <div className="flex gap-3 items-center">
+                  <input
+                    id="letter-spacing"
+                    type="range"
+                    min="0"
+                    max="0.5"
+                    step="0.05"
+                    value={letterSpacing}
+                    onChange={(e) => handleLetterSpacingChange(e.target.value)}
+                    className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer flex-1"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    max="0.5"
+                    step="0.05"
+                    value={letterSpacing.toFixed(2)}
+                    onChange={(e) => handleLetterSpacingChange(e.target.value)}
+                    className="w-16 px-2 py-1 text-xs border border-slate-200 rounded text-center focus:outline-none focus:border-indigo-500 font-mono"
+                  />
+                </div>
               </div>
 
               {/* Indent / Outdent (Buttons) */}
-              <div className="pt-2 border-t border-gray-100">
-                <label className="text-sm font-medium text-gray-700 block mb-2">
+              <div className="pt-2 border-t border-slate-100">
+                <label className="text-sm font-medium text-slate-700 block mb-2">
                   Indentation
                 </label>
                 <div className="flex space-x-2">
                   <button
                     onClick={handleOutdent}
-                    className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors text-gray-700"
+                    className="p-2 rounded bg-slate-200 hover:bg-slate-300 transition-colors text-slate-700"
                     title="Outdent"
                   >
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   <button
                     onClick={handleIndent}
-                    className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors text-gray-700"
+                    className="p-2 rounded bg-slate-200 hover:bg-slate-300 transition-colors text-slate-700"
                     title="Indent"
                   >
                     <ChevronRight className="w-5 h-5" />
@@ -1098,14 +1191,14 @@ export default function RightPanel({ editor, onPreviewClick }) {
             </PanelSection>
           )}
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-slate-200" />
 
           {/* VI. Layout & Alignment Section */}
           {(isBlockWithSpacing || isResizable) && !isList && (
             <PanelSection title="Layout & Alignment" icon={Ruler}>
               {/* Alignment */}
               <div className="mb-4">
-                <h4 className="text-xs font-medium text-gray-500 mb-1">
+                <h4 className="text-xs font-medium text-slate-500 mb-1">
                   Align
                 </h4>
                 <div className="flex justify-around space-x-2">
@@ -1116,7 +1209,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                       className={`p-2 rounded transition-colors ${
                         styles.textAlign === align
                           ? "bg-blue-100 text-blue-600"
-                          : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                          : "bg-slate-200 text-slate-600 hover:bg-slate-300"
                       }`}
                       title={align}
                     >
@@ -1128,15 +1221,15 @@ export default function RightPanel({ editor, onPreviewClick }) {
 
               {/* Size (Width, Height, Min/Max) */}
               {(isResizable || activeNodeName === "section") && (
-                <div className="flex flex-col gap-3 mb-4 pt-2 border-t border-gray-100">
-                  <h4 className="text-xs font-medium text-gray-500 mb-1">
+                <div className="flex flex-col gap-3 mb-4 pt-2 border-t border-slate-100">
+                  <h4 className="text-xs font-medium text-slate-500 mb-1">
                     Size (px or null)
                   </h4>
 
                   {/* Width & Height */}
                   <div className="flex gap-4">
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Width
                       </label>
                       <input
@@ -1145,11 +1238,11 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("width", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Height
                       </label>
                       <input
@@ -1158,7 +1251,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("height", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                   </div>
@@ -1166,7 +1259,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                   {/* Min Width & Max Width */}
                   <div className="flex gap-4">
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Min Width
                       </label>
                       <input
@@ -1175,11 +1268,11 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("minWidth", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Max Width
                       </label>
                       <input
@@ -1188,7 +1281,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("maxWidth", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                   </div>
@@ -1196,7 +1289,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                   {/* Min Height & Max Height */}
                   <div className="flex gap-4">
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Min Height
                       </label>
                       <input
@@ -1207,11 +1300,11 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("minHeight", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                     <div className="flex flex-col w-1/2">
-                      <label className="text-xs font-medium text-gray-500">
+                      <label className="text-xs font-medium text-slate-500">
                         Max Height
                       </label>
                       <input
@@ -1222,7 +1315,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                         onChange={(e) =>
                           handleStyleChange("maxHeight", e.target.value)
                         }
-                        className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+                        className="w-full text-sm border border-slate-300 rounded px-2 py-1"
                       />
                     </div>
                   </div>
@@ -1232,8 +1325,8 @@ export default function RightPanel({ editor, onPreviewClick }) {
               {/* Spacing Controls (Margin/Padding) */}
               {isBlockWithSpacing && (
                 <>
-                  <div className="pt-2 border-t border-gray-100">
-                    <h4 className="text-xs font-medium text-gray-500 mb-2">
+                  <div className="pt-2 border-t border-slate-100">
+                    <h4 className="text-xs font-medium text-slate-500 mb-2">
                       Margin (px)
                     </h4>
                     <div className="flex justify-between gap-1">
@@ -1278,8 +1371,8 @@ export default function RightPanel({ editor, onPreviewClick }) {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-gray-100">
-                    <h4 className="text-xs font-medium text-gray-500 mb-2">
+                  <div className="pt-2 border-t border-slate-100">
+                    <h4 className="text-xs font-medium text-slate-500 mb-2">
                       Padding (px)
                     </h4>
                     <div className="flex justify-between gap-1">
@@ -1324,7 +1417,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
             </PanelSection>
           )}
 
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-slate-200" />
 
           {/* VII. Visual Style Controls */}
           <PanelSection title="Visual Style" icon={Layers}>
@@ -1341,7 +1434,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                 onChange={(val) => handleStyleChange("bgColor", val)}
               />
               <div className="flex items-center justify-between">
-                <label className="text-sm font-medium text-gray-700">
+                <label className="text-sm font-medium text-slate-700">
                   Opacity
                 </label>
                 <input
@@ -1351,14 +1444,14 @@ export default function RightPanel({ editor, onPreviewClick }) {
                   max="1"
                   value={styles.opacity}
                   onChange={(e) => handleStyleChange("opacity", e.target.value)}
-                  className="w-1/4 text-xs border border-gray-300 rounded px-1 py-0.5"
+                  className="w-1/4 text-xs border border-slate-300 rounded px-1 py-0.5"
                 />
               </div>
             </div>
 
             {/* Border Radius */}
-            <div className="pt-2 border-t border-gray-100">
-              <h4 className="text-xs font-medium text-gray-500 mb-2">
+            <div className="pt-2 border-t border-slate-100">
+              <h4 className="text-xs font-medium text-slate-500 mb-2">
                 Border Radius (px)
               </h4>
               <div className="flex justify-between gap-1">
@@ -1394,11 +1487,11 @@ export default function RightPanel({ editor, onPreviewClick }) {
             </div>
 
             {/* Border Style */}
-            <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-              <h4 className="text-xs font-medium text-gray-500 mb-1">Border</h4>
+            <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+              <h4 className="text-xs font-medium text-slate-500 mb-1">Border</h4>
               <div className="flex gap-2">
                 <div className="flex flex-col w-1/3">
-                  <label className="text-xs font-medium text-gray-500">
+                  <label className="text-xs font-medium text-slate-500">
                     Width
                   </label>
                   <input
@@ -1408,11 +1501,11 @@ export default function RightPanel({ editor, onPreviewClick }) {
                     onChange={(e) =>
                       handleStyleChange("borderWidth", e.target.value)
                     }
-                    className="w-full text-xs border border-gray-300 rounded px-1 py-0.5"
+                    className="w-full text-xs border border-slate-300 rounded px-1 py-0.5"
                   />
                 </div>
                 <div className="flex flex-col w-1/3">
-                  <label className="text-xs font-medium text-gray-500">
+                  <label className="text-xs font-medium text-slate-500">
                     Style
                   </label>
                   <select
@@ -1420,7 +1513,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                     onChange={(e) =>
                       handleStyleChange("borderStyle", e.target.value)
                     }
-                    className="w-full text-xs border border-gray-300 rounded px-1 py-0.5"
+                    className="w-full text-xs border border-slate-300 rounded px-1 py-0.5"
                   >
                     <option value="solid">Solid</option>
                     <option value="dashed">Dashed</option>
@@ -1429,7 +1522,7 @@ export default function RightPanel({ editor, onPreviewClick }) {
                   </select>
                 </div>
                 <div className="flex flex-col w-1/3">
-                  <label className="text-xs font-medium text-gray-500">
+                  <label className="text-xs font-medium text-slate-500">
                     Color
                   </label>
                   <input
@@ -1447,9 +1540,9 @@ export default function RightPanel({ editor, onPreviewClick }) {
         </>
       ) : (
         // যখন নোড সিলেক্টেড নয় অথবা এডিটর ফোকাসড নয়, তখন এই মেসেজ দেখাবে
-        <div className="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-center">
-          <Layers className="h-6 w-6 mx-auto mb-2 text-gray-400" />
-          <p className="text-sm font-medium text-gray-600">
+        <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-sm text-center">
+          <Layers className="h-6 w-6 mx-auto mb-2 text-slate-400" />
+          <p className="text-sm font-medium text-slate-600">
             Select an element in the editor to view style controls.
           </p>
         </div>
@@ -1457,3 +1550,4 @@ export default function RightPanel({ editor, onPreviewClick }) {
     </div>
   );
 }
+

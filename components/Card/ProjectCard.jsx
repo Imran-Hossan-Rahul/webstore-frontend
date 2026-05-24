@@ -1,26 +1,32 @@
 "use client";
 
-export default function ProjectCard({ project }) {
-  const folderName = project?.folder || null;
-  const tags = Array.isArray(project?.tags) ? project.tags : [];
+export default function DevlogCard({ devlog }) {
+  const folderName = devlog?.folder || null;
+  const tags = Array.isArray(devlog?.tags) ? devlog.tags : [];
 
   return (
-    <div className="border rounded p-4 shadow-md bg-white">
-      <h2 className="text-xl font-bold">{project.title}</h2>
-      <p className="text-gray-700">{project.description}</p>
+    <div className="border border-slate-200 dark:border-[#262626] rounded p-4 bg-white dark:bg-[#0A0A0A]">
+      <h2 className="text-base font-medium font-sans text-slate-900 dark:text-white">{devlog.title}</h2>
+      <p className="text-sm text-slate-500 font-sans leading-relaxed mt-1">{devlog.description}</p>
 
       {/* Tags */}
       {tags.length > 0 && (
-        <p className="text-sm text-gray-500">Tags: {tags.join(", ")}</p>
+        <div className="flex flex-wrap gap-1 mt-2">
+          {tags.map((tag, i) => (
+            <span key={i} className="text-[10px] font-mono text-indigo-500 bg-indigo-50 px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+              #{tag}
+            </span>
+          ))}
+        </div>
       )}
 
       {/* Options */}
-      {project.options?.length > 0 && (
+      {devlog.options?.length > 0 && (
         <div className="flex flex-wrap gap-2 my-2">
-          {project.options.map((opt) => (
+          {devlog.options.map((opt) => (
             <span
               key={opt}
-              className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
+              className="bg-slate-100 text-slate-600 px-2 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest border border-slate-200"
             >
               {opt}
             </span>
@@ -31,29 +37,29 @@ export default function ProjectCard({ project }) {
       {/* Static Build Preview */}
       {folderName ? (
         <iframe
-          src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/projects/${folderName}/index.html`.replace('/api/v1', '')}
+          src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/devlogs/${folderName}/index.html`.replace('/api/v1', '')}
           className="w-full h-96 border mt-2"
-          title={project.title}
+          title={devlog.title}
         ></iframe>
       ) : (
         <div className="text-red-500 text-sm mt-2">
-          ⚠️ Folder not found — no project preview available.
+          ⚠️ Folder not found — no devlog preview available.
         </div>
       )}
 
       {/* Image / Video preview */}
-      {project.file && (
+      {devlog.file && (
         <>
-          {project.file.endsWith(".mp4") ? (
+          {devlog.file.endsWith(".mp4") ? (
             <video
-              src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/uploads/${project.file}`.replace('/api/v1', '')}
+              src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/uploads/${devlog.file}`.replace('/api/v1', '')}
               controls
               className="w-full mt-2"
             />
           ) : (
             <img
-              src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/uploads/${project.file}`.replace('/api/v1', '')}
-              alt={project.title}
+              src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'}/uploads/${devlog.file}`.replace('/api/v1', '')}
+              alt={devlog.title}
               className="w-full mt-2"
             />
           )}
@@ -62,3 +68,4 @@ export default function ProjectCard({ project }) {
     </div>
   );
 }
+

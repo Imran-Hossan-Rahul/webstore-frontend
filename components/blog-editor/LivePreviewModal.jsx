@@ -1,25 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Monitor, Smartphone, Tablet, X, CheckCircle, ExternalLink } from "lucide-react";
+import { EditorContent, useEditor } from "@tiptap/react";
+import { getExtensions } from "./BlogEditor";
 
 /**
  * LivePreviewModal - A premium 'Figma-style' preview experience
  */
 const LivePreviewModal = ({ isOpen, onClose, editor }) => {
   const [device, setDevice] = useState("desktop"); // desktop | tablet | mobile
-  const [content, setContent] = useState("");
   const [isAnimateIn, setIsAnimateIn] = useState(false);
+
+  // Initialize a read-only instance of the editor for perfect rendering
+  const previewEditor = useEditor({
+    editable: false,
+    extensions: getExtensions(),
+    content: "",
+    immediatelyRender: false,
+  });
 
   // Sync content when modal opens
   useEffect(() => {
-    if (isOpen && editor) {
-      // Get the HTML with exact inline styles
-      const html = editor.getHTML();
-      setContent(html);
+    if (isOpen && editor && previewEditor) {
+      previewEditor.commands.setContent(editor.getJSON());
       setIsAnimateIn(true);
     } else {
       setIsAnimateIn(false);
     }
-  }, [isOpen, editor]);
+  }, [isOpen, editor, previewEditor]);
 
   if (!isOpen) return null;
 
@@ -31,7 +38,7 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gray-900/95 backdrop-blur-sm transition-opacity duration-300">
+    <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900/95 backdrop-blur-sm transition-opacity duration-300">
       
       {/* Header / Controls */}
       <div className="w-full h-16 bg-white/10 border-b border-white/10 flex items-center justify-between px-6 backdrop-blur-md absolute top-0 left-0 z-10">
@@ -47,7 +54,7 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
             <button
               onClick={() => setDevice("desktop")}
               className={`p-1.5 rounded-md transition-all ${
-                device === "desktop" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-white"
+                device === "desktop" ? "bg-white text-black shadow-sm" : "text-slate-400 hover:text-white"
               }`}
               title="Desktop View"
             >
@@ -56,7 +63,7 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
             <button
               onClick={() => setDevice("tablet")}
               className={`p-1.5 rounded-md transition-all ${
-                device === "tablet" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-white"
+                device === "tablet" ? "bg-white text-black shadow-sm" : "text-slate-400 hover:text-white"
               }`}
               title="Tablet View"
             >
@@ -65,7 +72,7 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
             <button
               onClick={() => setDevice("mobile")}
               className={`p-1.5 rounded-md transition-all ${
-                device === "mobile" ? "bg-white text-black shadow-sm" : "text-gray-400 hover:text-white"
+                device === "mobile" ? "bg-white text-black shadow-sm" : "text-slate-400 hover:text-white"
               }`}
               title="Mobile View"
             >
@@ -80,7 +87,7 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
           </button>
           <button 
             onClick={onClose} 
-            className="p-2 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+            className="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
           >
             <X size={20} />
           </button>
@@ -98,18 +105,14 @@ const LivePreviewModal = ({ isOpen, onClose, editor }) => {
       >
         {/* Mobile Notch Simulation */}
         {device === "mobile" && (
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-gray-800 rounded-b-xl z-20" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-800 rounded-b-xl z-20" />
         )}
 
         {/* Content Scroll Area */}
         <div className="w-full h-full overflow-y-auto bg-white custom-scrollbar">
             <div className={`w-full min-h-full p-8 ${device === 'mobile' ? 'pt-12 px-4' : 'px-8 md:px-16'}`}>
-                {/* Render HTML */}
-                <div 
-                    className="prose prose-lg max-w-none mx-auto"
-                    style={{ whiteSpace: 'pre-wrap' }}
-                    dangerouslySetInnerHTML={{ __html: content }} 
-                />
+                {/* Render exact EditorContent */}
+                <EditorContent editor={previewEditor} />
             </div>
         </div>
       </div>

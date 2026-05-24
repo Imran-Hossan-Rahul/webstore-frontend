@@ -117,28 +117,42 @@ import PublishModal from "./PublishModal";
 // ----------------------
 const addStyleAttributes = (parentAttrs = {}) => ({
   ...parentAttrs,
-  paddingTop: { default: 0 },
-  paddingRight: { default: 0 },
-  paddingBottom: { default: 0 },
-  paddingLeft: { default: 0 },
+  paddingTop: { default: 0, parseHTML: e => parseInt(e.style.paddingTop, 10) || 0 },
+  paddingRight: { default: 0, parseHTML: e => parseInt(e.style.paddingRight, 10) || 0 },
+  paddingBottom: { default: 0, parseHTML: e => parseInt(e.style.paddingBottom, 10) || 0 },
+  paddingLeft: { default: 0, parseHTML: e => parseInt(e.style.paddingLeft, 10) || 0 },
 
-  marginTop: { default: 0 },
-  marginRight: { default: 0 },
-  marginBottom: { default: 0 },
-  marginLeft: { default: 0 },
+  marginTop: { default: 0, parseHTML: e => parseInt(e.style.marginTop, 10) || 0 },
+  marginRight: { default: 0, parseHTML: e => parseInt(e.style.marginRight, 10) || 0 },
+  marginBottom: { default: 0, parseHTML: e => parseInt(e.style.marginBottom, 10) || 0 },
+  marginLeft: { default: 0, parseHTML: e => parseInt(e.style.marginLeft, 10) || 0 },
 
-  textColor: { default: "#000000" },
-  bgColor: { default: "#ffffff" },
+  textColor: { 
+    default: "#000000", 
+    parseHTML: e => {
+      if (e.style.WebkitBackgroundClip === 'text' && e.style.background) {
+         return e.style.background; // It's a gradient
+      }
+      return e.style.color || "#000000";
+    }
+  },
+  bgColor: { 
+    default: "transparent", 
+    parseHTML: e => {
+      if (e.style.WebkitBackgroundClip === 'text') return "transparent"; // Gradient background is for text
+      return e.style.backgroundColor || "transparent";
+    }
+  },
 
-  opacity: { default: 1 },
-  boxShadow: { default: "none" },
+  opacity: { default: 1, parseHTML: e => parseFloat(e.style.opacity) || 1 },
+  boxShadow: { default: "none", parseHTML: e => e.style.boxShadow || "none" },
 
-  borderWidth: { default: 0 },
-  borderStyle: { default: "solid" },
-  borderColor: { default: "#000000" },
+  borderWidth: { default: 0, parseHTML: e => parseInt(e.style.borderWidth, 10) || 0 },
+  borderStyle: { default: "solid", parseHTML: e => e.style.borderStyle || "solid" },
+  borderColor: { default: "#000000", parseHTML: e => e.style.borderColor || "#000000" },
 
-  strokeWidth: { default: 0 },
-  strokeColor: { default: "#000000" },
+  strokeWidth: { default: 0, parseHTML: e => parseInt(e.style.webkitTextStrokeWidth, 10) || 0 },
+  strokeColor: { default: "#000000", parseHTML: e => e.style.webkitTextStrokeColor || "#000000" },
 });
 
 // CustomCodeBlockLowlight
@@ -149,10 +163,10 @@ const CustomCodeBlockLowlight = CodeBlockLowlight.extend({
         default: () => uuidv4(),
         parseHTML: (element) => element.getAttribute("data-id") || uuidv4(),
       },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
       isHidden: {
         default: false,
         parseHTML: (element) =>
@@ -215,12 +229,12 @@ const CustomParagraph = Paragraph.extend({
         default: () => uuidv4(),
         parseHTML: (element) => element.getAttribute("data-id") || uuidv4(),
       },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
-      lineHeight: { default: 1.5 },
-      letterSpacing: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
+      lineHeight: { default: 1.5, parseHTML: e => parseFloat(e.style.lineHeight) || 1.5 },
+      letterSpacing: { default: 0, parseHTML: e => parseInt(e.style.letterSpacing, 10) || 0 },
       isHidden: {
         default: false,
         parseHTML: (element) =>
@@ -334,13 +348,13 @@ const CustomHeading = Heading.extend({
         default: () => uuidv4(),
         parseHTML: (element) => element.getAttribute("data-id") || uuidv4(),
       },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
       ...addStyleAttributes(this.parent?.()),
-      lineHeight: { default: 1.5 },
-      letterSpacing: { default: 0 },
+      lineHeight: { default: 1.5, parseHTML: e => parseFloat(e.style.lineHeight) || 1.5 },
+      letterSpacing: { default: 0, parseHTML: e => parseInt(e.style.letterSpacing, 10) || 0 },
       isHidden: {
         default: false,
         parseHTML: (element) =>
@@ -438,10 +452,10 @@ const CustomImage = Image.extend({
   addAttributes() {
     return {
       id: { default: () => uuidv4() },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
       isHidden: {
         default: false,
         parseHTML: (element) =>
@@ -537,10 +551,10 @@ const Section = Node.create({
   addAttributes() {
     return {
       id: { default: () => uuidv4() },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
       isHidden: {
         default: false,
         parseHTML: (element) =>
@@ -622,10 +636,10 @@ const createListExtension = (BaseExtension, tagName) => {
           default: () => uuidv4(),
           parseHTML: (element) => element.getAttribute("data-id") || uuidv4(),
         },
-        borderRadiusTopLeft: { default: 0 },
-        borderRadiusTopRight: { default: 0 },
-        borderRadiusBottomRight: { default: 0 },
-        borderRadiusBottomLeft: { default: 0 },
+        borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+        borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+        borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+        borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
         isHidden: {
           default: false,
           parseHTML: (element) =>
@@ -682,10 +696,10 @@ const TaskItem = TipTaskItem.extend({
         default: () => uuidv4(),
         parseHTML: (element) => element.getAttribute("data-id") || uuidv4(),
       },
-      borderRadiusTopLeft: { default: 0 },
-      borderRadiusTopRight: { default: 0 },
-      borderRadiusBottomRight: { default: 0 },
-      borderRadiusBottomLeft: { default: 0 },
+      borderRadiusTopLeft: { default: 0, parseHTML: e => parseInt(e.style.borderTopLeftRadius, 10) || 0 },
+      borderRadiusTopRight: { default: 0, parseHTML: e => parseInt(e.style.borderTopRightRadius, 10) || 0 },
+      borderRadiusBottomRight: { default: 0, parseHTML: e => parseInt(e.style.borderBottomRightRadius, 10) || 0 },
+      borderRadiusBottomLeft: { default: 0, parseHTML: e => parseInt(e.style.borderBottomLeftRadius, 10) || 0 },
       ...addStyleAttributes(this.parent?.()),
     };
   },
@@ -709,7 +723,7 @@ const TaskItem = TipTaskItem.extend({
 
     const mergedAttributes = mergeAttributes(HTMLAttributes, {
       "data-id": attrs.id,
-      "data-checked": attrs.checked ? "true" : "false",
+    "data-checked": attrs.checked ? "true" : "false",
       class: "task-list-item",
       style: customStyles,
     });
@@ -717,7 +731,56 @@ const TaskItem = TipTaskItem.extend({
   },
 });
 
-export default function BlogEditor() {
+export const getExtensions = (options = {}) => [
+  Document.extend({ content: "container" }),
+  Section,
+  StarterKit.configure({
+    paragraph: false,
+    document: false,
+    heading: false,
+    codeBlock: false,
+    bulletList: false,
+    orderedList: false,
+    listItem: false,
+    taskList: false,
+    taskItem: false,
+  }),
+  Heading,
+  Container,
+  Section,
+  HardBreak,
+  CustomHeading,
+  CustomParagraph,
+  CustomHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
+  CustomImage.extend({ addNodeView: () => ImageNodeView }),
+  CustomCodeBlockLowlight.configure({ lowlight }),
+  BulletList.configure({ keepMarks: true, keepAttributes: false }),
+  OrderedList.configure({ keepMarks: true, keepAttributes: false }),
+  ListItem,
+  TaskList,
+  TaskItem,
+  TextStyle,
+  FontFamily,
+  Color,
+  Link.configure({ openOnClick: false, autolink: false }),
+  Placeholder.configure({ placeholder: "Start writing..." }),
+  TextAlign.configure({ types: ["heading", "paragraph", "image"] }),
+  Underline,
+  Highlight.configure({ multicolor: true }),
+  Youtube.configure({ controls: true, allowFullscreen: true }),
+  UniversalEmbed,
+  Table.configure({ resizable: true }),
+  TableRow,
+  TableHeader,
+  TableCell,
+  SlashCommands.configure({
+    suggestion: createSuggestionOptions(options),
+  }),
+  MarkdownShortcuts,
+  HighlightedBlock,
+];
+
+export default function CodexEditor() {
   const [modalType, setModalType] = useState(null);
   const [modalInput, setModalInput] = useState("");
   const [modalDisplayText, setModalDisplayText] = useState("");
@@ -734,11 +797,12 @@ export default function BlogEditor() {
   // AI Chat State
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  // Load existing blog content if slug is present
+  // Load existing codex content if slug is present
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug");
   const [isLoading, setIsLoading] = useState(false);
-  const [blogData, setBlogData] = useState(null); // Added state
+  const [codexData, setCodexData] = useState(null); // Added state
+  const [selectedPositions, setSelectedPositions] = useState(new Set()); // Global batch select state
 
 
   // Listen for publish modal event
@@ -763,7 +827,7 @@ export default function BlogEditor() {
   const saveContent = useCallback(async (content) => {
     setSaveState("saving");
     try {
-      localStorage.setItem("blog-content", JSON.stringify(content));
+      localStorage.setItem("codex-content", JSON.stringify(content));
       setSaveState("saved");
       setLastSaved(new Date());
     } catch (error) {
@@ -779,60 +843,13 @@ export default function BlogEditor() {
 
   const editor = useEditor({
     immediatelyRender: false,
-    extensions: [
-      Document.extend({ content: "container" }),
-      Section,
-      StarterKit.configure({
-        paragraph: false,
-        document: false,
-        heading: false,
-        codeBlock: false,
-        bulletList: false,
-        orderedList: false,
-        listItem: false,
-        taskList: false,
-        taskItem: false,
-      }),
-      Heading,
-      Container,
-      Section,
-      HardBreak,
-      CustomHeading,
-      CustomParagraph,
-      CustomHeading.configure({ levels: [1, 2, 3, 4, 5, 6] }),
-      CustomImage.extend({ addNodeView: () => ImageNodeView }),
-      CustomCodeBlockLowlight.configure({ lowlight }),
-      BulletList.configure({ keepMarks: true, keepAttributes: false }),
-      OrderedList.configure({ keepMarks: true, keepAttributes: false }),
-      ListItem,
-      TaskList,
-      TaskItem,
-      TextStyle,
-      FontFamily,
-      Color,
-      Link.configure({ openOnClick: false, autolink: false }),
-      Placeholder.configure({ placeholder: "Start writing..." }),
-      TextAlign.configure({ types: ["heading", "paragraph", "image"] }),
-      Underline,
-      Highlight.configure({ multicolor: true }),
-      Youtube.configure({ controls: true, allowFullscreen: true }),
-      UniversalEmbed,
-      Table.configure({ resizable: true }),
-      TableRow,
-      TableHeader,
-      TableCell,
-      SlashCommands.configure({
-        suggestion: createSuggestionOptions({
-          setImageModalOpen: () => setModalType("image"),
-          setVideoModalOpen: () => setModalType("youtube"),
-          setAudioModalOpen: () => setModalType("audio"),
-          setEmbedModalOpen: () => setModalType("embed"),
-          openAISelector: () => handleAIRequest(),
-        }),
-      }),
-      MarkdownShortcuts,
-      HighlightedBlock,
-    ],
+    extensions: getExtensions({
+      setImageModalOpen: () => setModalType("image"),
+      setVideoModalOpen: () => setModalType("youtube"),
+      setAudioModalOpen: () => setModalType("audio"),
+      setEmbedModalOpen: () => setModalType("embed"),
+      openAISelector: () => handleAIRequest(),
+    }),
     content: {
       type: "doc",
       content: [
@@ -971,6 +988,12 @@ export default function BlogEditor() {
     return () => editor.off("update", handleUpdate);
   }, [editor, debouncedSave]);
 
+  useEffect(() => {
+    if (editor) {
+      window.editor = editor;
+    }
+  }, [editor]);
+
   // AI Chat Handler - must be before early return
   const handleAIRequest = useCallback(() => {
     setIsChatOpen(true);
@@ -980,13 +1003,13 @@ export default function BlogEditor() {
     if (slug && editor) {
       setIsLoading(true);
       // Use editor-specific endpoint to fetch drafts
-      api.get(`/blog/editor-data/${slug}`)
-        .then((blog) => {
-          if (blog) {
-             setBlogData(blog); // Store the fetched blog object
+      api.get(`/codex/editor-data/${slug}`)
+        .then((codex) => {
+          if (codex) {
+             setCodexData(codex); // Store the fetched codex object
           }
-          if (blog && blog.content) {
-            let content = blog.content;
+          if (codex && codex.content) {
+            let content = codex.content;
             
             // Try to parse if it's a string (could be JSON string or HTML)
             if (typeof content === 'string') {
@@ -1008,7 +1031,7 @@ export default function BlogEditor() {
           }
         })
         .catch((err) => {
-          console.error("Failed to load blog:", err);
+          console.error("Failed to load codex:", err);
         })
         .finally(() => {
           setIsLoading(false);
@@ -1215,30 +1238,64 @@ export default function BlogEditor() {
     updatedStyles = {}
   ) => {
     if (!selectedNode || !editor) return;
-    editor
-      .chain()
-      .focus()
-      .updateAttributes(selectedNode.type.name, {
-        marginTop: updatedMargin.top,
-        marginRight: updatedMargin.right,
-        marginBottom: updatedMargin.bottom,
-        marginLeft: updatedMargin.left,
-        paddingTop: updatedPadding.top,
-        paddingRight: updatedPadding.right,
-        paddingBottom: updatedPadding.bottom,
-        paddingLeft: updatedPadding.left,
-        ...updatedStyles,
-      })
-      .run();
+    
+    if (selectedPositions && selectedPositions.size > 0) {
+      let chain = editor.chain().focus();
+      selectedPositions.forEach(pos => {
+        const node = editor.state.doc.nodeAt(pos);
+        if (node) {
+          chain = chain.setNodeSelection(pos).updateAttributes(node.type.name, {
+            marginTop: updatedMargin.top,
+            marginRight: updatedMargin.right,
+            marginBottom: updatedMargin.bottom,
+            marginLeft: updatedMargin.left,
+            paddingTop: updatedPadding.top,
+            paddingRight: updatedPadding.right,
+            paddingBottom: updatedPadding.bottom,
+            paddingLeft: updatedPadding.left,
+            ...updatedStyles,
+          });
+        }
+      });
+      chain.run();
+    } else {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes(selectedNode.type.name, {
+          marginTop: updatedMargin.top,
+          marginRight: updatedMargin.right,
+          marginBottom: updatedMargin.bottom,
+          marginLeft: updatedMargin.left,
+          paddingTop: updatedPadding.top,
+          paddingRight: updatedPadding.right,
+          paddingBottom: updatedPadding.bottom,
+          paddingLeft: updatedPadding.left,
+          ...updatedStyles,
+        })
+        .run();
+    }
   };
 
   return (
     <ThemeProvider>
-      <div className="flex h-screen bg-gray-50">
-        <LeftPanel editor={editor} />
+      <div className="flex h-screen bg-slate-50 relative">
+        {isLoading && (
+          <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/80 backdrop-blur-sm">
+             <div className="flex flex-col items-center gap-4">
+                 <div className="animate-spin w-12 h-12 border-4 border-t-[#3ea6ff] border-slate-200 rounded-full"></div>
+                 <p className="text-slate-600 font-medium animate-pulse">Loading Codex...</p>
+             </div>
+          </div>
+        )}
+        <LeftPanel 
+          editor={editor} 
+          selectedPositions={selectedPositions}
+          setSelectedPositions={setSelectedPositions}
+        />
         <div className="flex-1 flex flex-col bg-white overflow-hidden">
           {/* Toolbar: fixed at top, never scrolls */}
-          <div className="flex-shrink-0 z-10 border-b border-gray-200 bg-white"
+          <div className="flex-shrink-0 z-10 border-b border-slate-200 bg-white"
                onClick={(e) => e.stopPropagation()}>
             <Toolbar
               editor={editor}
@@ -1251,6 +1308,7 @@ export default function BlogEditor() {
               deleteSection={deleteCurrentSection}
               toggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
               openAISelector={handleAIRequest}
+              selectedPositions={selectedPositions}
             />
           </div>
 
@@ -1279,7 +1337,7 @@ export default function BlogEditor() {
                 </h3>
                 {modalType === "image" ? (
                   <>
-                    <div className="border border-dashed border-gray-300 rounded p-4 mb-4 text-center cursor-pointer hover:bg-gray-50">
+                    <div className="border border-dashed border-slate-300 rounded p-4 mb-4 text-center cursor-pointer hover:bg-slate-50">
                       <input
                         type="file"
                         accept="image/*"
@@ -1303,7 +1361,7 @@ export default function BlogEditor() {
                   </>
                 ) : modalType === "link" ? (
                   <>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
                       URL (Link)
                     </label>
                     <input
@@ -1313,7 +1371,7 @@ export default function BlogEditor() {
                       onChange={(e) => setModalInput(e.target.value)}
                       placeholder="https://example.com"
                     />
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
                       Display Text
                     </label>
                     <input
@@ -1343,13 +1401,13 @@ export default function BlogEditor() {
                 )}
                 <div className="flex justify-end gap-2">
                   <button
-                    className="px-3 py-1 border rounded hover:bg-gray-200"
+                    className="px-3 py-1 border rounded hover:bg-slate-200"
                     onClick={() => setModalType(null)}
                   >
                     Cancel
                   </button>
                   <button
-                    className="px-3 py-1 border rounded bg-blue-500 text-white"
+                    className="px-3 py-1 border rounded bg-indigo-600 text-white"
                     disabled={modalType === "link" && !modalInput}
                     onClick={handleModalConfirm}
                   >
@@ -1370,7 +1428,7 @@ export default function BlogEditor() {
                 />
                 <div className="flex justify-end mt-2">
                   <button
-                    className="px-3 py-1 border rounded hover:bg-gray-200"
+                    className="px-3 py-1 border rounded hover:bg-slate-200"
                     onClick={() => setEmojiPickerOpen(false)}
                   >
                     Close
@@ -1399,6 +1457,7 @@ export default function BlogEditor() {
         <RightPanel
           editor={editor}
           applyBlockStyles={applyBlockStyles}
+          selectedPositions={selectedPositions}
           onPreviewClick={() => setIsPreviewOpen(true)}
         />
       </div>
@@ -1407,8 +1466,10 @@ export default function BlogEditor() {
         onClose={() => setIsPublishModalOpen(false)}
         editor={editor}
         existingSlug={slug}
-        initialData={blogData}
+        initialData={codexData}
       />
     </ThemeProvider>
   );
 }
+
+

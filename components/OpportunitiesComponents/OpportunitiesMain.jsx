@@ -27,7 +27,7 @@ export default function OpportunitiesMain() {
           id: 1,
           title: "React Developer Needed",
           description: "Looking for an experienced React developer...",
-          budget: "$5000",
+          budget: "5000 TKNS",
           skills: ["React", "Node.js"],
           postedBy: "Company ABC",
           postedDate: "2 days ago",
@@ -46,14 +46,14 @@ export default function OpportunitiesMain() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl font-bold text-black mb-2">Opportunities</h1>
-          <p className="text-gray-600">
-            Find projects and connect with clients or creators
+          <p className="text-slate-600">
+            Find devlogs and connect with patrons or craftsmen
           </p>
         </div>
         {/* All users can post opportunities */}
         <button
           onClick={() => window.location.href = "/opportunities?action=create"}
-          className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
+          className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
         >
           + Post Opportunity
         </button>
@@ -68,7 +68,7 @@ export default function OpportunitiesMain() {
             className={`px-4 py-2 rounded-full font-medium transition-colors ${
               filter === f
                 ? "bg-black text-white"
-                : "bg-white text-black hover:bg-gray-100"
+                : "bg-white text-black hover:bg-slate-100"
             }`}
           >
             {f.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
@@ -80,7 +80,7 @@ export default function OpportunitiesMain() {
       {loading ? (
         <div className="text-center py-20">Loading...</div>
       ) : opportunities.length === 0 ? (
-        <div className="text-center py-20 text-gray-600">
+        <div className="text-center py-20 text-slate-600">
           No opportunities found. Check back later!
         </div>
       ) : (
@@ -102,13 +102,13 @@ function OpportunityCard({ opportunity }) {
           <h3 className="text-xl font-semibold text-black mb-2">
             {opportunity.title}
           </h3>
-          <p className="text-gray-600 mb-4">{opportunity.description}</p>
+          <p className="text-slate-600 mb-4">{opportunity.description}</p>
         </div>
         <div className="text-right">
           <div className="text-2xl font-bold text-black mb-1">
             {opportunity.budget}
           </div>
-          <div className="text-sm text-gray-500">{opportunity.postedDate}</div>
+          <div className="text-sm text-slate-500">{opportunity.postedDate}</div>
         </div>
       </div>
 
@@ -117,17 +117,18 @@ function OpportunityCard({ opportunity }) {
           {opportunity.skills.map((skill, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+              className="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm"
             >
               {skill}
             </span>
           ))}
         </div>
-        <button className="px-6 py-2 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors">
+        <button className="px-6 py-2 bg-black text-white rounded-full font-medium hover:bg-slate-800 transition-colors">
           View Details
         </button>
       </div>
     </div>
   );
 }
+
 

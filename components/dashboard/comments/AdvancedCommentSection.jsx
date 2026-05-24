@@ -5,26 +5,28 @@ import Image from 'next/image';
 import { api } from "@/utils/api";
 import { 
     MessageCircle, Send, CornerDownRight, MoreHorizontal, 
-    AlertCircle, Lightbulb, Flame, HelpCircle, Check, X, Sparkles, CheckCircle, Eye, Search, Filter, ChevronDown, AlignLeft, Star
+    AlertCircle, Lightbulb, Flame, HelpCircle, Check, X, UserCheck, CheckCircle, Eye, Search, Filter, AlignLeft, Star
 } from 'lucide-react';
+import CustomSelect from '../../ui/CustomSelect';
 
 import { useSearchParams } from 'next/navigation';
 
 const FEEDBACK_TYPES = [
-    { id: 'comment', label: 'Comment', icon: MessageCircle, color: 'text-gray-500', bg: 'bg-gray-100 dark:bg-white/10' },
-    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
-    { id: 'issue', label: 'Issue', icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-500/10' },
-    { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
-    { id: 'kudos', label: 'Kudos', icon: Flame, color: 'text-pink-500', bg: 'bg-pink-500/10' },
+    { id: 'comment', label: 'Comment', icon: MessageCircle, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-white/10' },
+    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/30 border border-blue-100/50 dark:border-blue-900/30' },
+    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100/50 dark:border-emerald-900/30' },
+    { id: 'issue', label: 'Issue', icon: AlertCircle, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/30 border border-rose-100/50 dark:border-rose-900/30' },
+    { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/30 border border-amber-100/50 dark:border-amber-900/30' },
+    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100/50 dark:border-indigo-900/30' },
+    { id: 'kudos', label: 'Kudos', icon: Flame, color: 'text-pink-600 dark:text-pink-400', bg: 'bg-pink-50 dark:bg-pink-950/30 border border-pink-100/50 dark:border-pink-900/30' },
 ];
 
 const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitReply, onCancelReply, postAuthorId, isLast, searchQuery, onToggleHelpful }) => {
     const isRoot = depth === 0;
     const typeConfig = FEEDBACK_TYPES.find(t => t.id === comment.feedbackType) || FEEDBACK_TYPES[0];
     const Icon = typeConfig.icon;
-    const isCreator = postAuthorId && comment.user?._id === postAuthorId;
+    const isCraftsman = postAuthorId && comment.user?._id === postAuthorId;
+    const userAvatar = comment.user?.profilePicture || comment.user?.avatar || comment.user?.profilePic;
 
     // Time Ago
     const timeAgo = (dateStr) => {
@@ -53,7 +55,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
             const parts = str.split(new RegExp(`(${searchQuery})`, 'gi'));
             return parts.map((part, i) => 
                 part.toLowerCase() === searchQuery.toLowerCase() 
-                ? <mark key={i} className="bg-yellow-200 dark:bg-yellow-500/30 text-gray-900 dark:text-white rounded-sm px-0.5">{part}</mark> 
+                ? <mark key={i} className="bg-yellow-200 dark:bg-yellow-500/30 text-slate-900 dark:text-white rounded-sm px-0.5">{part}</mark> 
                 : part
             );
         };
@@ -61,11 +63,11 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
         const parts = content.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
         return parts.map((part, i) => {
             if (part.startsWith('`') && part.endsWith('`')) {
-                return <code key={i} className="bg-gray-100 dark:bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-pink-500">{part.slice(1, -1)}</code>;
+                return <code key={i} className="bg-slate-100 dark:bg-white/10 px-1.5 py-0.5 rounded text-xs font-mono text-pink-500">{part.slice(1, -1)}</code>;
             }
             if (part.startsWith('**') && part.endsWith('**')) {
                 // Highlight inside bold too
-                return <strong key={i} className="font-bold text-gray-900 dark:text-white">{highlightText(part.slice(2, -2))}</strong>;
+                return <strong key={i} className="font-bold text-slate-900 dark:text-white">{highlightText(part.slice(2, -2))}</strong>;
             }
             return <span key={i}>{highlightText(part)}</span>;
         });
@@ -84,12 +86,12 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                 // Starts at top -8px (To connect with Sibling Rail/Previous Node)
                 // Radius arc to center (20px top)
                 // Height = 20px (target center) - (-8px start) = 28px
-                <div className="absolute left-[-24px] top-[-8px] w-[24px] h-[28px] border-l-[2px] border-b-[2px] border-gray-200 dark:border-white/10 rounded-bl-xl pointer-events-none"></div>
+                <div className="absolute left-[-24px] top-[-8px] w-[24px] h-[28px] border-l-[2px] border-b-[2px] border-slate-200 dark:border-white/10 rounded-bl-xl pointer-events-none"></div>
             )}
 
             {/* OUTGOING TAIL (Vertical Line from Avatar Bottom to start of children) */}
             {hasChildren && (
-                 <div className={`absolute border-l-[2px] border-gray-200 dark:border-white/10 w-[2px] pointer-events-none ${
+                 <div className={`absolute border-l-[2px] border-slate-200 dark:border-white/10 w-[2px] pointer-events-none ${
                      isRoot 
                      ? 'left-[32px] top-[48px] bottom-[-24px]' // Root: Center 32px. Top 48px (Avatar bottom). Extends down to meet children.
                      : 'left-[12px] top-[32px] bottom-[-8px]'  // Nested: Center 12px. Top 32px (Avatar bottom). Extends down.
@@ -100,21 +102,21 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                 isRoot 
                 ? `bg-white dark:bg-[#111] p-4 rounded-2xl border ${
                     comment.isHelpful ? 'border-amber-400/40 bg-amber-50/20 dark:bg-amber-500/5 ring-1 ring-amber-400/20' :
-                    comment.feedbackType === 'issue' ? 'border-red-500/20' : 
-                    comment.feedbackType === 'suggestion' ? 'border-amber-500/20' : 
-                    comment.feedbackType === 'answer' ? 'border-green-500/20' :
-                    comment.feedbackType === 'critique' ? 'border-indigo-500/20' :
-                    isCreator ? 'border-purple-500/30 ring-1 ring-purple-500/10' :
-                    'border-gray-200 dark:border-white/5'
+                    comment.feedbackType === 'issue' ? 'border-rose-500/20 dark:border-rose-500/10 bg-rose-50/5 dark:bg-rose-950/5' : 
+                    comment.feedbackType === 'suggestion' ? 'border-amber-500/20 dark:border-amber-500/10 bg-amber-50/5 dark:bg-amber-950/5' : 
+                    comment.feedbackType === 'answer' ? 'border-emerald-500/20 dark:border-emerald-500/10 bg-emerald-50/5 dark:bg-emerald-950/5' :
+                    comment.feedbackType === 'critique' ? 'border-indigo-500/20 dark:border-indigo-500/10 bg-indigo-50/5 dark:bg-indigo-950/5' :
+                    comment.feedbackType === 'kudos' ? 'border-pink-500/20 dark:border-pink-500/10 bg-pink-50/5 dark:bg-pink-950/5' :
+                    'border-slate-200 dark:border-white/5'
                   } z-10`
-                : `pl-0 py-2 hover:bg-gray-50/50 dark:hover:bg-white/5 rounded-xl ml-0` 
+                : `pl-0 py-2 hover:bg-slate-50/50 dark:hover:bg-white/5 rounded-xl ml-0` 
             }`}>
                 <div className="flex justify-between items-start gap-3">
                     {/* Author Avatar */}
                     <div className="flex-shrink-0 relative z-10">
-                        <div className={`${isRoot ? 'w-8 h-8' : 'w-6 h-6'} rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 overflow-hidden ${isCreator ? 'ring-2 ring-purple-500 ring-offset-2 dark:ring-offset-black' : ''} shadow-sm mx-auto`}>
-                            {comment.user?.avatar ? (
-                                <Image src={comment.user.avatar} width={32} height={32} className="object-cover" alt="av" />
+                        <div className={`${isRoot ? 'w-8 h-8' : 'w-6 h-6'} rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 overflow-hidden border border-slate-200 dark:border-white/10 shadow-sm mx-auto`}>
+                            {userAvatar ? (
+                                <Image src={userAvatar} width={32} height={32} className="object-cover w-full h-full" alt="av" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-[10px] font-bold">{comment.user?.name?.[0]}</div>
                             )}
@@ -124,11 +126,11 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                     {/* Content */}
                     <div className="flex-1 min-w-0 pt-0.5">
                         <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                            <span className={`font-bold ${isRoot ? 'text-sm' : 'text-xs'} text-gray-900 dark:text-white`}>{comment.user?.name}</span>
+                            <span className={`font-bold ${isRoot ? 'text-sm' : 'text-xs'} text-slate-900 dark:text-white`}>{comment.user?.name}</span>
                             
-                            {isCreator && (
-                                <span className="bg-purple-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-1 shadow-sm shadow-purple-500/20">
-                                    <Sparkles size={8} /> OWNER
+                            {isCraftsman && (
+                                <span className="text-slate-500 dark:text-slate-400 text-[10px] font-bold flex items-center gap-1">
+                                    <UserCheck size={10} /> OWNER
                                 </span>
                             )}
 
@@ -142,10 +144,10 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                                 </span>
                             )}
                             
-                            <span className="text-gray-400 text-[10px]">• {timeAgo(comment.createdAt)}</span>
+                            <span suppressHydrationWarning className="text-slate-400 text-[10px] font-mono font-medium uppercase tracking-tight">{timeAgo(comment.createdAt)}</span>
                         </div>
                         
-                        <div className={`${isRoot ? 'text-sm' : 'text-xs text-gray-600 dark:text-gray-300'} leading-relaxed whitespace-pre-wrap`}>
+                        <div className={`${isRoot ? 'text-sm' : 'text-xs text-slate-600 dark:text-gray-300'} leading-relaxed whitespace-pre-wrap break-words`}>
                             {renderRichText(comment.content)}
                         </div>
 
@@ -153,19 +155,19 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                         <div className="flex items-center gap-4 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                              <button 
                                 onClick={() => onReply(comment._id)}
-                                className="text-[10px] font-bold text-gray-400 hover:text-purple-500 flex items-center gap-1 transition-colors"
+                                className="text-[10px] font-bold text-slate-400 hover:text-purple-500 flex items-center gap-1 transition-colors"
                              >
                                  Reply
                              </button>
                              
                              {/* Mark as Helpful - Only visible to post owner */}
-                             {isCreator && (
+                             {isCraftsman && (
                                 <button 
                                     onClick={() => onToggleHelpful && onToggleHelpful(comment._id, !comment.isHelpful)}
                                     className={`text-[10px] font-bold flex items-center gap-1 transition-colors ${
                                         comment.isHelpful 
                                         ? 'text-amber-500 hover:text-amber-600' 
-                                        : 'text-gray-400 hover:text-amber-500'
+                                        : 'text-slate-400 hover:text-amber-500'
                                     }`}
                                 >
                                     <Star size={10} className={comment.isHelpful ? 'fill-current' : ''} />
@@ -224,21 +226,21 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
     };
 
     return (
-        <div className="bg-gray-50/50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl p-3 shadow-sm focus-within:ring-2 focus-within:ring-purple-500/20 focus-within:border-purple-500/50 transition-all">
+        <div className="relative bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm focus-within:border-slate-400 dark:focus-within:border-white/30 transition-all overflow-hidden">
             <textarea
                 ref={textareaRef}
                 value={text}
                 onChange={handleInput}
                 onKeyDown={handleKeyDown}
                 placeholder={placeholder || "What's on your mind? (Markdown supported: **bold**, `code`)"}
-                className="w-full bg-transparent border-none focus:ring-0 text-sm text-gray-900 dark:text-white placeholder-gray-400 resize-none min-h-[80px] overflow-y-auto custom-scrollbar"
+                className="w-full bg-transparent border-none focus:ring-0 outline-none text-sm text-slate-900 dark:text-white placeholder-gray-400 resize-none min-h-[120px] p-4 pb-14 overflow-y-auto custom-scrollbar"
                 autoFocus={autoFocus}
-                style={{ height: '80px' }}
+                style={{ height: '120px' }}
             />
             
-            <div className="flex justify-between items-center mt-2 border-t border-gray-100 dark:border-white/5 pt-2">
+            <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end pointer-events-none p-2">
                 {/* Type Selector */}
-                <div className="flex gap-1">
+                <div className="flex gap-1 bg-white/80 dark:bg-black/40 backdrop-blur-md rounded-xl p-1.5 border border-slate-200/50 dark:border-white/10 pointer-events-auto">
                     {FEEDBACK_TYPES.map(type => (
                         <button
                             key={type.id}
@@ -246,7 +248,7 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
                             className={`p-1.5 rounded-lg transition-all ${
                                 selectedType === type.id 
                                 ? `${type.bg} ${type.color} ring-1 ring-inset ring-current` 
-                                : 'text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5'
+                                : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5'
                             }`}
                             title={type.label}
                         >
@@ -255,14 +257,12 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
                     ))}
                 </div>
 
-                <div className="flex gap-2 items-center">
-                    <span className="hidden sm:inline text-[10px] text-gray-400 mr-2">
-                        ⌘ + Enter
-                    </span>
+                <div className="flex gap-2 items-center pointer-events-auto">
+
                     {onCancel && (
                         <button 
                             onClick={onCancel}
-                            className="px-3 py-1.5 text-xs font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10 rounded-lg"
+                            className="px-3 py-1.5 text-xs font-bold text-slate-500 bg-white/80 dark:bg-black/40 backdrop-blur-md rounded-lg border border-slate-200/50 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10 transition-all"
                         >
                             Cancel
                         </button>
@@ -270,7 +270,7 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
                     <button 
                         onClick={handleSubmit}
                         disabled={!text.trim()}
-                        className="px-4 py-1.5 bg-purple-500 text-white text-xs font-bold rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-purple-500/20"
+                        className="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                     >
                         <Send size={12} /> Post
                     </button>
@@ -501,7 +501,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                     Bottom: 0 (to connect with next).
                  */}
                  {!isRoot && !isLast && (
-                     <div className="absolute left-[-24px] top-[-8px] bottom-0 w-[2px] bg-gray-200 dark:bg-white/10"></div>
+                     <div className="absolute left-[-24px] top-[-8px] bottom-0 w-[2px] bg-slate-200 dark:bg-white/10"></div>
                  )}
 
                 <CommentNode 
@@ -540,15 +540,8 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
     // So I will REMOVE the recursion from `CommentNode` JSX and do it here.
 
     return (
-        <div className="bg-gray-50 dark:bg-black/20 border-t border-gray-200 dark:border-white/10 p-4 sm:p-6" onClick={e => e.stopPropagation()}>
-             <div className="flex justify-between items-center mb-6">
-                 <h3 className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                     <MessageCircle size={18} /> Discussion ({comments.length})
-                 </h3>
-                 <button onClick={onClose} className="p-2 hover:bg-gray-200 dark:hover:bg-white/10 rounded-full">
-                     <X size={16} />
-                 </button>
-             </div>
+        <div className="bg-transparent pt-4" onClick={e => e.stopPropagation()}>
+
 
              {/* Main Input */}
              <div className="mb-6">
@@ -556,45 +549,33 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
              </div>
 
              {/* Smart Filter Bar & Search (Two Lines) */}
-             <div className="flex flex-col gap-3 mb-6 sticky top-0 bg-gray-50 dark:bg-[#111] z-30 pt-2 pb-4 -mx-2 px-2 border-b border-gray-200 dark:border-white/5 backdrop-blur-xl bg-opacity-90">
+             <div className="flex flex-col gap-3 mb-6 sticky top-0 z-30 pt-2 pb-4 -mx-2 px-2 border-b border-slate-200 dark:border-white/5 backdrop-blur-xl">
                 {/* Line 1: Search (flex-1) + Sort Dropdown (right) */}
                 <div className="flex items-center gap-3">
                     {/* Search - takes remaining space */}
                     <div className="relative flex-1">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
                         <input 
                             type="text" 
                             placeholder="Search discussion..." 
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-8 pr-3 py-2 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-xs focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all placeholder-gray-400"
+                            className="w-full pl-8 pr-3 py-2 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl text-xs focus:ring-0 outline-none focus:border-slate-400 dark:focus:border-white/20 transition-all placeholder-gray-400"
                         />
                     </div>
 
                     {/* Sort Dropdown - positioned on the right */}
-                    <div className="relative group flex-shrink-0">
-                        <button className="flex items-center gap-2 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 px-3 py-2 rounded-xl text-xs font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-white/10 transition-colors whitespace-nowrap">
-                            <AlignLeft size={14} /> 
-                            {sortBy === 'newest' ? 'Newest' : sortBy === 'oldest' ? 'Oldest' : 'Top'}
-                            <ChevronDown size={12} className="opacity-50" />
-                        </button>
-                        
-                        <div className="absolute top-full right-0 mt-2 w-32 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/10 rounded-xl shadow-xl p-1 z-50 hidden group-hover:block">
-                            {['newest', 'oldest', 'liked'].map(sort => (
-                                <button
-                                    key={sort}
-                                    onClick={() => setSortBy(sort)}
-                                    className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
-                                        sortBy === sort 
-                                        ? 'bg-purple-50 dark:bg-purple-500/20 text-purple-600 dark:text-purple-300' 
-                                        : 'hover:bg-gray-50 dark:hover:bg-white/5 text-gray-600 dark:text-gray-300'
-                                    }`}
-                                >
-                                    {sort === 'newest' ? 'Newest' : sort === 'oldest' ? 'Oldest' : 'Most Liked'}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    <CustomSelect 
+                        options={[
+                            { value: 'newest', label: 'Newest' },
+                            { value: 'oldest', label: 'Oldest' },
+                            { value: 'liked', label: 'Most Liked' }
+                        ]}
+                        value={sortBy}
+                        onChange={setSortBy}
+                        dropdownWidth="w-40"
+                        icon={AlignLeft}
+                    />
                 </div>
 
                 {/* Line 2: Filter Pills */}
@@ -603,8 +584,8 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                          onClick={() => setActiveFilter(null)}
                          className={`whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1.5 border ${
                              !activeFilter 
-                             ? 'bg-gray-900 text-white border-gray-900 dark:bg-white dark:text-black' 
-                             : 'bg-white dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/10 hover:border-gray-300'
+                             ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' 
+                             : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:border-slate-300'
                          }`}
                     >
                         All <span className="opacity-60 text-[10px] ml-0.5">{comments.length}</span>
@@ -623,7 +604,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                                 className={`whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1 border ${
                                     isActive 
                                     ? `${type.bg} ${type.color} border-current ring-1 ring-current` 
-                                    : 'bg-white dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10'
+                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
                                 }`}
                             >
                                 <type.icon size={11} />
@@ -643,7 +624,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                                 className={`whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1 border ${
                                     isActive 
                                     ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500 ring-1 ring-amber-500' 
-                                    : 'bg-white dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/10'
+                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
                                 }`}
                             >
                                 <Star size={11} className="fill-current" />
@@ -656,11 +637,32 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
              </div>
 
              {/* Tree */}
-             <div className="space-y-6">
+             <div className="space-y-6 min-h-[300px]">
                  {loading ? (
-                     <div className="text-center py-8 text-gray-400">Loading discussion...</div>
-                 ) : (
+                     <div className="text-center py-12 text-slate-400 animate-pulse flex flex-col items-center gap-3">
+                        <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+                        <span>Loading discussion...</span>
+                     </div>
+                 ) : filteredTree.length > 0 ? (
                      renderTree(filteredTree)
+                 ) : (
+                     <div className="py-20 text-center flex flex-col items-center justify-center gap-4 text-slate-400 bg-slate-50/50 dark:bg-white/[0.02] rounded-3xl border border-dashed border-slate-200 dark:border-white/5">
+                        <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
+                            <Search size={24} className="opacity-40" />
+                        </div>
+                        <div>
+                            <p className="font-semibold text-slate-600 dark:text-slate-300">No matches found</p>
+                            <p className="text-xs">Try adjusting your search or filters to find what you're looking for.</p>
+                        </div>
+                        { (searchQuery || activeFilter) && (
+                            <button 
+                                onClick={() => { setSearchQuery(""); setActiveFilter(null); }}
+                                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                            >
+                                Clear all filters
+                            </button>
+                        )}
+                     </div>
                  )}
              </div>
         </div>
@@ -668,3 +670,4 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
 };
 
 export default AdvancedCommentSection;
+

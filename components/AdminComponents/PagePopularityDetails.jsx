@@ -44,7 +44,7 @@ export default function PagePopularityDetails() {
   }, []);
 
   return (
-    <div className="p-5 min-h-screen bg-gray-50">
+    <div className="p-5 min-h-screen bg-slate-50">
       <h1 className="text-2xl font-bold mb-5">All Pages Popularity</h1>
       <div className="bg-white p-5 rounded-2xl shadow-md">
         <ResponsiveContainer width="100%" height={600}>

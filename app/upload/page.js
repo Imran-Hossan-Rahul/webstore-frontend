@@ -1,13 +1,12 @@
-import TemplateUploadFullDebug from "@/components/Form/TemplateUpload";
-import SmoothCursor from "@/components/MainCursor";
-import TrackerClient from "@/components/TrackerClient";
+import ArtifactPublishForm from "@/components/Form/TemplateUpload";
+import TrackerPatron from "@/components/TrackerPatron";
 
-export default function Template(){
+export default function Artifact(){
     return (
       <div>
-        <SmoothCursor smoothness={0.05} />
-        <TrackerClient />
-        <TemplateUploadFullDebug />
+        <TrackerPatron />
+        <ArtifactPublishForm />
       </div>
     );
 }
+

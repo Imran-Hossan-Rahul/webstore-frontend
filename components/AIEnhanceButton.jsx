@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Sparkles, Loader2, Wand2, Check } from 'lucide-react';
+import { Zap, Loader2, Wand2, Check } from 'lucide-react';
 
 const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) => {
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
         {loading ? (
             <Loader2 className="w-5 h-5 animate-spin text-purple-600" />
         ) : (
-            <Sparkles className={`w-5 h-5 ${text ? 'text-purple-600' : 'text-gray-300'}`} />
+            <Zap className={`w-5 h-5 ${text ? 'text-purple-600' : 'text-gray-300'}`} />
         )}
       </button>
 
@@ -57,18 +57,18 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
       {isOpen && (
         <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className={`absolute left-0 z-50 w-48 bg-white dark:bg-[#1f1f1f] rounded-xl shadow-xl border border-gray-100 dark:border-white/10 overflow-hidden animate-in fade-in zoom-in-95 ${dropdownClasses}`}>
+            <div className={`absolute left-0 z-50 w-48 bg-white dark:bg-[#1f1f1f] rounded-xl shadow-xl border border-slate-100 dark:border-white/10 overflow-hidden animate-in fade-in zoom-in-95 ${dropdownClasses}`}>
                 <div className="p-1">
                     <button
                         onClick={() => handleGenerate('enhance')}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
                     >
                         <Wand2 className="w-4 h-4" />
                         <span>Enhance Writing</span>
                     </button>
                     <button
                         onClick={() => handleGenerate('grammar')}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
                     >
                         <Check className="w-4 h-4" />
                         <span>Fix Grammar</span>

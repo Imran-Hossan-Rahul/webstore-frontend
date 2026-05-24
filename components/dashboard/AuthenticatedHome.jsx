@@ -4,15 +4,15 @@ import GlassNavbar from "./GlassNavbar";
 import Sidebar from "./Sidebar";
 import DashboardFeed from "./DashboardFeed";
 import RightSidebar from "./RightSidebar";
-import CreateProjectModal from "./modals/CreateProjectModal";
 import UserOnboardingModal from "./modals/UserOnboardingModal";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import { api } from "@/utils/api";
+import ChatModal from "./chat/ChatModal";
 
 export default function AuthenticatedHome({ children, hideRightSidebar = false, isGuest = false }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Onboarding Logic (only for authenticated users)
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -52,11 +52,11 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
       requireAuth("engage");
       return;
     }
-    setIsCreatePostOpen(true);
+    // Note: Modal handled via CreateDropdown link now
   };
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden selection:bg-pink-500/30">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-x-hidden selection:bg-blue-600/20">
 
       {/* Background Mesh Gradient (Removed as per request) */}
       {/* 
@@ -73,6 +73,8 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
         setSearchQuery={setSearchQuery}
         isGuest={isGuest}
         onRequireAuth={requireAuth}
+        isChatOpen={isChatOpen}
+        onToggleChat={() => setIsChatOpen(!isChatOpen)}
       />
 
       {/* Main Layout Container */}
@@ -80,7 +82,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
 
         {/* Left Sidebar (Floating) */}
         <div className="hidden lg:block w-[240px] flex-shrink-0">
-             <div className="fixed top-24 bottom-6 w-[240px] overflow-y-auto">
+             <div className="fixed top-[84px] bottom-6 w-[240px] overflow-y-auto custom-scrollbar">
                 <Sidebar isGuest={isGuest} onRequireAuth={requireAuth} />
              </div>
         </div>
@@ -101,24 +103,14 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
         {/* Right Sidebar (Floating) */}
         {!hideRightSidebar && (
           <div className="hidden xl:block w-[320px] flex-shrink-0">
-               <div className="fixed top-24 bottom-6 w-[320px] overflow-y-auto">
+               <div className="fixed top-[84px] bottom-6 w-[320px] overflow-y-auto custom-scrollbar">
                    <RightSidebar />
                </div>
           </div>
         )}
       </div>
 
-      {/* Global Create Project Modal (only for authenticated users) */}
-      {!isGuest && (
-        <CreateProjectModal
-          isOpen={isCreatePostOpen}
-          onClose={() => setIsCreatePostOpen(false)}
-          onProjectCreated={() => {
-            setIsCreatePostOpen(false);
-            window.location.reload();
-          }}
-        />
-      )}
+
 
       {/* Onboarding Modal (only for authenticated users) */}
       {!isGuest && (
@@ -135,6 +127,15 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
         reason={authModalReason}
       />
 
+      {/* Global Chat Modal */}
+      {!isGuest && (
+        <ChatModal 
+          isOpen={isChatOpen}
+          onClose={() => setIsChatOpen(false)}
+        />
+      )}
+
     </div>
   );
 }
+

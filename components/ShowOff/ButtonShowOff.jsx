@@ -3,15 +3,15 @@
 import React, { useEffect, useState } from "react";
 
 export default function ButtonShowOff({ refresh }) {
-  const [templates, setTemplates] = useState([]);
+  const [artifacts, setArtifacts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchTemplates = async () => {
+  const fetchArtifacts = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/template/upload`); // dev: http://localhost:3000/api/buttonTemplates/
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/artifact/upload`); // dev: http://localhost:3000/api/artifacts/
       const text = await res.text(); // response text
       let data;
       try {
@@ -21,35 +21,35 @@ export default function ButtonShowOff({ refresh }) {
       }
 
       if (data.success) {
-        setTemplates(data.data);
+        setArtifacts(data.data);
       } else {
-        throw new Error(data.message || "Failed to fetch templates");
+        throw new Error(data.message || "Failed to fetch artifacts");
       }
     } catch (err) {
       console.error(err);
       setError(err.message);
-      setTemplates([]);
+      setArtifacts([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTemplates();
+    fetchArtifacts();
   }, [refresh]);
 
   return (
-    <div className="rounded-3xl p-4 absolute top-5 w-[78%] h-[96%] left-[90px] overflow-auto">
+    <div className="rounded-2xl p-4 absolute top-5 w-[78%] h-[96%] left-[90px] overflow-auto">
       {loading && (
-        <p className="text-gray-500 text-center">Loading templates...</p>
+        <p className="text-slate-500 text-center">Loading artifacts...</p>
       )}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-      {!loading && !error && templates.length === 0 && (
-        <p className="text-gray-500 text-center">No templates found.</p>
+      {error && <p className="text-red-500 text-center">{error.message || error}</p>}
+      {!loading && !error && artifacts.length === 0 && (
+        <p className="text-slate-500 text-center">No artifacts found.</p>
       )}
 
       <div className="grid gap-4 md:grid-cols-3">
-        {templates.map((t) => (
+        {artifacts.map((t) => (
           <div
             key={t._id}
             className="bg-white rounded-2xl p-4 h-[420px] flex flex-col justify-between"
@@ -61,7 +61,7 @@ export default function ButtonShowOff({ refresh }) {
                 {t.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="bg-gray-200 text-gray-700 px-2 py-1 rounded-md text-xs"
+                    className="bg-slate-200 text-slate-700 px-2 py-1 rounded-md text-xs"
                   >
                     {tag}
                   </span>
@@ -88,3 +88,5 @@ export default function ButtonShowOff({ refresh }) {
     </div>
   );
 }
+
+

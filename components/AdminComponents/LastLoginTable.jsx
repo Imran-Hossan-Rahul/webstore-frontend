@@ -28,7 +28,7 @@ export default function LastLoginTable() {
   }, []);
 
   return (
-    <div className="card-template p-3 rounded-2xl shadow-md text-black overflow-x-auto">
+    <div className="card-artifact p-3 rounded-2xl shadow-md text-black overflow-x-auto">
       <h2 className="text-lg font-bold mb-2">Last Login Users</h2>
       <table className="w-full text-xs">
         <thead>
@@ -59,3 +59,4 @@ export default function LastLoginTable() {
     </div>
   );
 }
+

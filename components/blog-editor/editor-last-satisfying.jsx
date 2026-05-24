@@ -69,7 +69,7 @@
 //   marginLeft: { default: 0 },
 
 //   textColor: { default: "#000000" },
-//   bgColor: { default: "#ffffff" },
+//   bgColor: { default: "transparent" },
 
 //   opacity: { default: 1 },
 //   boxShadow: { default: "none" },
@@ -157,7 +157,7 @@
 // /**
 //  * Production-safe Paragraph with Unique ID:
 //  */
-// // BlogEditor.jsx ফাইল থেকে সম্পূর্ণ আপডেট করা CustomParagraph
+// // CodexEditor.jsx ফাইল থেকে সম্পূর্ণ আপডেট করা CustomParagraph
 // const CustomParagraph = Paragraph.extend({
 //   addAttributes() {
 //     return {
@@ -574,7 +574,7 @@
 // // Main Component
 // // ----------------------
 
-// export default function BlogEditor() {
+// export default function CodexEditor() {
 //   const [modalType, setModalType] = useState(null);
 //   const [modalInput, setModalInput] = useState("");
 //   const [modalDisplayText, setModalDisplayText] = useState("");
@@ -932,7 +932,7 @@
 //   };
 
 //   return (
-//     <div className="flex h-screen bg-gray-50">
+//     <div className="flex h-screen bg-slate-50">
 //       <LeftPanel editor={editor} />
 //       <div
 //         className="flex-1 relative p-4 bg-white overflow-y-auto"
@@ -963,7 +963,7 @@
 
 //               {modalType === "image" ? (
 //                 <>
-//                   <div className="border border-dashed border-gray-300 rounded p-4 mb-4 text-center cursor-pointer hover:bg-gray-50">
+//                   <div className="border border-dashed border-slate-300 rounded p-4 mb-4 text-center cursor-pointer hover:bg-slate-50">
 //                     <input
 //                       type="file"
 //                       accept="image/*"
@@ -987,7 +987,7 @@
 //                 </>
 //               ) : modalType === "link" ? (
 //                 <>
-//                   <label className="block text-sm font-medium text-gray-700 mb-1">
+//                   <label className="block text-sm font-medium text-slate-700 mb-1">
 //                     URL (Link)
 //                   </label>
 //                   <input
@@ -997,7 +997,7 @@
 //                     onChange={(e) => setModalInput(e.target.value)}
 //                     placeholder="https://example.com"
 //                   />
-//                   <label className="block text-sm font-medium text-gray-700 mb-1">
+//                   <label className="block text-sm font-medium text-slate-700 mb-1">
 //                     Display Text
 //                   </label>
 //                   <input
@@ -1020,13 +1020,13 @@
 
 //               <div className="flex justify-end gap-2">
 //                 <button
-//                   className="px-3 py-1 border rounded hover:bg-gray-200"
+//                   className="px-3 py-1 border rounded hover:bg-slate-200"
 //                   onClick={() => setModalType(null)}
 //                 >
 //                   Cancel
 //                 </button>
 //                 <button
-//                   className="px-3 py-1 border rounded bg-blue-500 text-white"
+//                   className="px-3 py-1 border rounded bg-indigo-600 text-white"
 //                   disabled={modalType === "link" && !modalInput}
 //                   onClick={handleModalConfirm}
 //                 >
@@ -1048,7 +1048,7 @@
 //               />
 //               <div className="flex justify-end mt-2">
 //                 <button
-//                   className="px-3 py-1 border rounded hover:bg-gray-200"
+//                   className="px-3 py-1 border rounded hover:bg-slate-200"
 //                   onClick={() => setEmojiPickerOpen(false)}
 //                 >
 //                   Close
@@ -1063,3 +1063,4 @@
 //     </div>
 //   );
 // }
+

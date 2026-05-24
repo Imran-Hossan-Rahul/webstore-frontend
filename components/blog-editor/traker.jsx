@@ -1,4 +1,4 @@
-// // components/blog-editor/useEditorTracker.js
+// // components/codex-editor/useEditorTracker.js
 // import { useEffect, useRef } from "react";
 
 // export default function useEditorTracker(editor, onEvent) {
@@ -35,3 +35,4 @@
 //     };
 //   }, [editor, onEvent]);
 // }
+

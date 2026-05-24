@@ -4,8 +4,8 @@ import { api } from "@/utils/api";
 import { X, MessageCircle } from "lucide-react";
 
 const CATEGORIES = [
-  { id: "general", label: "General", color: "bg-gray-500" },
-  { id: "technical", label: "Technical", color: "bg-blue-500" },
+  { id: "general", label: "General", color: "bg-slate-500" },
+  { id: "technical", label: "Technical", color: "bg-indigo-600" },
   { id: "design", label: "Design", color: "bg-purple-500" },
   { id: "business", label: "Business", color: "bg-green-500" },
   { id: "feedback", label: "Feedback", color: "bg-orange-500" },
@@ -43,26 +43,26 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0a0a0a] rounded-3xl max-w-2xl w-full shadow-2xl border border-white/10">
-        <div className="p-6 border-b border-gray-200 dark:border-white/10">
+      <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl max-w-2xl w-full shadow-2xl border border-white/10">
+        <div className="p-6 border-b border-slate-200 dark:border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
                 <MessageCircle className="w-5 h-5 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 Start Discussion
               </h2>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl">
-              <X className="w-5 h-5 text-gray-500" />
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
+              <X className="w-5 h-5 text-slate-500" />
             </button>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-3">
               Category
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -74,7 +74,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
                   className={`p-3 rounded-xl border-2 transition-all ${
                     formData.category === cat.id
                       ? `${cat.color} text-white border-transparent`
-                      : "border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:border-gray-300"
+                      : "border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-slate-300"
                   }`}
                 >
                   <span className="text-sm font-bold">{cat.label}</span>
@@ -84,7 +84,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
               Discussion Topic
             </label>
             <input
@@ -92,13 +92,13 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.topic}
               onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
               placeholder="What would you like to discuss?"
-              className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
               Description
             </label>
             <textarea
@@ -106,13 +106,13 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
               placeholder="Provide context for the discussion..."
-              className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent resize-none"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
               Tags (comma separated)
             </label>
             <input
@@ -120,15 +120,15 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               placeholder="react, design, api, etc."
-              className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
             />
           </div>
 
-          <div className="flex justify-end gap-4 pt-4 border-t border-gray-200 dark:border-white/10">
+          <div className="flex justify-end gap-4 pt-4 border-t border-slate-200 dark:border-white/10">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>

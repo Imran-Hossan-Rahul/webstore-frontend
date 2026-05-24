@@ -12,26 +12,26 @@ export default function DribbbleGrid({
   overlaySignup = false,
 }) {
   const router = useRouter();
-  const [templates, setTemplates] = useState([]);
+  const [artifacts, setArtifacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all"); // all, free, paid
 
   useEffect(() => {
-    fetchTemplates();
+    fetchArtifacts();
   }, [type, filter]);
 
-  const fetchTemplates = async () => {
+  const fetchArtifacts = async () => {
     setLoading(true);
     try {
-      let endpoint = "/template";
+      let endpoint = "/artifact";
       if (type === "popular") {
-        endpoint = "/template/featured/popular";
+        endpoint = "/artifact/featured/popular";
       } else if (type === "trending") {
-        endpoint = "/template/featured/trending";
+        endpoint = "/artifact/featured/trending";
       } else if (type === "editors-choice") {
-        endpoint = "/template/featured/editors-choice";
-      } else if (type === "my-templates") {
-        endpoint = "/template/my-templates";
+        endpoint = "/artifact/featured/editors-choice";
+      } else if (type === "my-artifacts") {
+        endpoint = "/artifact/my-artifacts";
       }
 
       const res = await api.get(endpoint);
@@ -44,16 +44,16 @@ export default function DribbbleGrid({
         data = data.filter((t) => t.priceType === "paid");
       }
 
-      setTemplates(data.slice(0, 12)); // Show 12 items like Dribbble
+      setArtifacts(data.slice(0, 12)); // Show 12 items like Dribbble
     } catch (error) {
-      console.error("Error fetching templates:", error);
+      console.error("Error fetching artifacts:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const displayedTemplates = overlaySignup ? templates.slice(0, 10) : templates;
-  const showSignupButton = overlaySignup && templates.length >= 10;
+  const displayedArtifacts = overlaySignup ? artifacts.slice(0, 10) : artifacts;
+  const showSignupButton = overlaySignup && artifacts.length >= 10;
 
   if (loading) {
     return (
@@ -67,7 +67,7 @@ export default function DribbbleGrid({
           {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="bg-white dark:bg-gray-800 rounded-2xl aspect-[4/3] animate-pulse"
+              className="bg-white dark:bg-slate-800 rounded-2xl aspect-[4/3] animate-pulse"
             />
           ))}
         </div>
@@ -91,7 +91,7 @@ export default function DribbbleGrid({
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   filter === f
                     ? "bg-black dark:bg-white text-white dark:text-black"
-                    : "bg-white dark:bg-gray-800 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                    : "bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700"
                 }`}
               >
                 {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -103,11 +103,11 @@ export default function DribbbleGrid({
 
       {/* Dribbble-style Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 relative">
-        {displayedTemplates.map((template) => (
-          <TemplateCard
-            key={template._id || template.id}
-            template={template}
-            onClick={() => router.push(`/templates/${template._id || template.id}`)}
+        {displayedArtifacts.map((artifact) => (
+          <ArtifactCard
+            key={artifact._id || artifact.id}
+            artifact={artifact}
+            onClick={() => router.push(`/artifacts/${artifact._id || artifact.id}`)}
           />
         ))}
       </div>
@@ -123,16 +123,16 @@ export default function DribbbleGrid({
         </div>
       )}
 
-      {templates.length === 0 && !loading && (
-        <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-          No templates found
+      {artifacts.length === 0 && !loading && (
+        <div className="text-center py-12 text-slate-500 dark:text-slate-400">
+          No artifacts found
         </div>
       )}
     </div>
   );
 }
 
-function TemplateCard({ template, onClick }) {
+function ArtifactCard({ artifact, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -142,17 +142,17 @@ function TemplateCard({ template, onClick }) {
       onMouseLeave={() => setIsHovered(false)}
       className="group cursor-pointer"
     >
-      <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+      <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
         {/* Image/Preview */}
-        <div className="relative aspect-[4/3] bg-gray-100 dark:bg-gray-700 overflow-hidden">
-          {template.thumbnailSource ? (
+        <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-700 overflow-hidden">
+          {artifact.thumbnailSource ? (
             <img
-              src={template.thumbnailSource}
-              alt={template.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              src={artifact.thumbnailSource}
+              alt={artifact.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:-translate-y-0.5"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-gray-400">
+            <div className="w-full h-full flex items-center justify-center text-slate-400">
               <svg
                 className="w-16 h-16"
                 fill="none"
@@ -177,12 +177,12 @@ function TemplateCard({ template, onClick }) {
           )}
 
           {/* Price Badge */}
-          {template.priceType === "paid" && (
+          {artifact.priceType === "paid" && (
             <div className="absolute top-3 right-3 bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-full text-sm font-semibold">
-              ${template.price}
+              ${artifact.price}
             </div>
           )}
-          {template.priceType === "free" && (
+          {artifact.priceType === "free" && (
             <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
               Free
             </div>
@@ -193,12 +193,12 @@ function TemplateCard({ template, onClick }) {
         <div className="p-4">
           <div className="flex items-start justify-between mb-2">
             <h3 className="font-semibold text-black dark:text-white text-sm line-clamp-1">
-              {template.title}
+              {artifact.title}
             </h3>
           </div>
 
           {/* Stats */}
-          <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -214,7 +214,7 @@ function TemplateCard({ template, onClick }) {
                   d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                 />
               </svg>
-              <span>{template.viewsCount || 0}</span>
+              <span>{artifact.viewsCount || 0}</span>
             </div>
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,13 +225,13 @@ function TemplateCard({ template, onClick }) {
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                 />
               </svg>
-              <span>{template.downloadsCount || 0}</span>
+              <span>{artifact.downloadsCount || 0}</span>
             </div>
             <div className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
-              <span>{template.likeCount || 0}</span>
+              <span>{artifact.likeCount || 0}</span>
             </div>
           </div>
         </div>
@@ -239,4 +239,5 @@ function TemplateCard({ template, onClick }) {
     </div>
   );
 }
+
 

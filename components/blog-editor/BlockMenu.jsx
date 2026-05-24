@@ -202,21 +202,21 @@ export const BlockMenu = ({ editor }) => {
       <div className="flex bg-white shadow-sm border rounded overflow-hidden">
         <button 
             onClick={handleDuplicate}
-            className="p-1 hover:bg-blue-50 text-gray-500 hover:text-blue-600 transition-colors border-r"
+            className="p-1 hover:bg-blue-50 text-slate-500 hover:text-blue-600 transition-colors border-r"
             title="Duplicate Block"
         >
             <Copy size={14} />
         </button>
         <button 
             onClick={handleToggleHide}
-            className={`p-1 hover:bg-yellow-50 transition-colors border-r ${menuState.isHidden ? 'text-orange-500 bg-orange-50' : 'text-gray-500 hover:text-orange-600'}`}
+            className={`p-1 hover:bg-yellow-50 transition-colors border-r ${menuState.isHidden ? 'text-orange-500 bg-orange-50' : 'text-slate-500 hover:text-orange-600'}`}
             title={menuState.isHidden ? "Unhide Block" : "Hide Block"}
         >
             {menuState.isHidden ? <EyeOff size={14} /> : <Eye size={14} />}
         </button>
         <button 
             onClick={handleDelete}
-            className="p-1 hover:bg-red-50 text-gray-500 hover:text-red-600 transition-colors"
+            className="p-1 hover:bg-red-50 text-slate-500 hover:text-red-600 transition-colors"
             title="Delete Block"
         >
             <Trash2 size={14} />

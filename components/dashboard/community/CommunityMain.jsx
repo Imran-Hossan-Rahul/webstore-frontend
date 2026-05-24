@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
-import CreatorDiscovery from "./CreatorDiscovery";
+import CraftsmanDiscovery from "./CreatorDiscovery";
 import ResourceLibrary from "./ResourceLibrary";
 import CreatePostModal from "./CreatePostModal";
 import CreateDiscussionModal from "./CreateDiscussionModal";
@@ -30,7 +30,7 @@ export default function CommunityMain() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateTask, setShowCreateTask] = useState(false);
-  const [showCreatorDiscovery, setShowCreatorDiscovery] = useState(false);
+  const [showCraftsmanDiscovery, setShowCraftsmanDiscovery] = useState(false);
   const [showResourceLibrary, setShowResourceLibrary] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showCreateDiscussion, setShowCreateDiscussion] = useState(false);
@@ -73,7 +73,7 @@ export default function CommunityMain() {
         tasksRes.data.forEach(task => {
           allActivities.push({
             _id: task._id,
-            user: task.creator,
+            user: task.craftsman,
             type: "sharing_task",
             title: task.title,
             description: task.description,
@@ -96,7 +96,7 @@ export default function CommunityMain() {
         resourcesRes.data.forEach(resource => {
           allActivities.push({
             _id: resource._id,
-            user: resource.creator,
+            user: resource.craftsman,
             type: "created_post",
             title: resource.title,
             description: resource.description,
@@ -124,10 +124,10 @@ export default function CommunityMain() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Community Hub
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
             Connect, collaborate, and grow together
           </p>
         </div>
@@ -169,7 +169,7 @@ export default function CommunityMain() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200 dark:border-white/10">
+      <div className="flex gap-2 border-b border-slate-200 dark:border-white/10">
         <TabButton
           active={activeTab === "feed"}
           onClick={() => setActiveTab("feed")}
@@ -210,7 +210,7 @@ export default function CommunityMain() {
           <OnlineUsers />
           <QuickActions 
             onStartDiscussion={() => setShowCreateDiscussion(true)}
-            onFindCollaborators={() => setShowCreatorDiscovery(true)}
+            onFindCollaborators={() => setShowCraftsmanDiscovery(true)}
             onShareResource={() => setShowResourceLibrary(true)}
           />
           <TrendingTopics />
@@ -226,10 +226,10 @@ export default function CommunityMain() {
         />
       )}
 
-      {/* Creator Discovery Modal */}
-      <CreatorDiscovery
-        isOpen={showCreatorDiscovery}
-        onClose={() => setShowCreatorDiscovery(false)}
+      {/* Craftsman Discovery Modal */}
+      <CraftsmanDiscovery
+        isOpen={showCraftsmanDiscovery}
+        onClose={() => setShowCraftsmanDiscovery(false)}
       />
 
       {/* Resource Library Modal */}
@@ -278,10 +278,10 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
           <Icon className="w-6 h-6 text-white" />
         </div>
       </div>
-      <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+      <div className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
         {value}
       </div>
-      <div className="text-sm text-gray-600 dark:text-gray-400">{label}</div>
+      <div className="text-sm text-slate-600 dark:text-slate-400">{label}</div>
     </div>
   );
 };
@@ -292,7 +292,7 @@ const TabButton = ({ active, onClick, icon: Icon, label }) => (
     className={`flex items-center gap-2 px-4 py-3 font-medium transition-all border-b-2 ${
       active
         ? "border-purple-600 text-purple-600"
-        : "border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+        : "border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
     }`}
   >
     <Icon className="w-4 h-4" />
@@ -319,11 +319,11 @@ const ActivityCard = ({ activity }) => {
 
   const getActivityIcon = () => {
     if (activity.feedType === "task") return <MessageSquare className="w-5 h-5 text-purple-500" />;
-    if (activity.feedType === "resource") return <Zap className="w-5 h-5 text-blue-500" />;
+    if (activity.feedType === "resource") return <Zap className="w-5 h-5 text-indigo-600" />;
     
     switch (activity.type) {
-      case "working_on_project":
-        return <Zap className="w-5 h-5 text-blue-500" />;
+      case "working_on_devlog":
+        return <Zap className="w-5 h-5 text-indigo-600" />;
       case "sharing_task":
         return <MessageSquare className="w-5 h-5 text-purple-500" />;
       case "completed_task":
@@ -331,7 +331,7 @@ const ActivityCard = ({ activity }) => {
       case "created_post":
         return <TrendingUp className="w-5 h-5 text-orange-500" />;
       default:
-        return <Zap className="w-5 h-5 text-gray-500" />;
+        return <Zap className="w-5 h-5 text-slate-500" />;
     }
   };
 
@@ -340,7 +340,7 @@ const ActivityCard = ({ activity }) => {
     if (activity.feedType === "resource") return "shared a resource";
     
     switch (activity.type) {
-      case "working_on_project":
+      case "working_on_devlog":
         return "is working on";
       case "sharing_task":
         return "shared a task";
@@ -378,8 +378,8 @@ const ActivityCard = ({ activity }) => {
     }
     if (activity.metadata?.postType) {
       const typeColors = {
-        comment: "bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300",
-        question: "bg-blue-500/10 text-blue-500",
+        comment: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-gray-300",
+        question: "bg-indigo-600/10 text-indigo-600",
         answer: "bg-green-500/10 text-green-500",
         issue: "bg-red-500/10 text-red-500",
         suggestion: "bg-amber-500/10 text-amber-500",
@@ -421,40 +421,40 @@ const ActivityCard = ({ activity }) => {
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2 flex-wrap flex-1">
               {getActivityIcon()}
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-slate-900 dark:text-white">
                 {activity.user?.name || "Unknown"}
               </span>
-              <span className="text-gray-600 dark:text-gray-400 text-sm">
+              <span className="text-slate-600 dark:text-slate-400 text-sm">
                 {getActivityText()}
               </span>
             </div>
             {getBadge()}
           </div>
-          <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-2">
+          <h3 className="font-bold text-slate-900 dark:text-white text-lg mb-2">
             {activity.title}
           </h3>
           {activity.description && (
-            <p className="text-gray-700 dark:text-gray-300 mb-3 line-clamp-2">
+            <p className="text-slate-700 dark:text-gray-300 mb-3 line-clamp-2">
               {activity.description}
             </p>
           )}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
               <span className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
                 {formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 hover:text-red-500 transition-colors">
                 <Heart className="w-4 h-4" />
                 <span className="text-sm">{likes}</span>
               </button>
-              <button className="flex items-center gap-1 text-gray-500 hover:text-blue-500 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors">
                 <MessageSquare className="w-4 h-4" />
                 <span className="text-sm">{comments}</span>
               </button>
-              <button className="flex items-center gap-1 text-gray-500 hover:text-green-500 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 hover:text-green-500 transition-colors">
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
@@ -492,21 +492,21 @@ const TaskCard = ({ task }) => {
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-lg transition-all cursor-pointer">
       <div className="flex items-start justify-between mb-3">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white">
           {task.title}
         </h3>
         <span className={`px-3 py-1 rounded-full text-xs font-bold ${statusColors[task.status]}`}>
           {task.status.replace("_", " ")}
         </span>
       </div>
-      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+      <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
         {task.description}
       </p>
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1">
             <User className="w-4 h-4" />
-            {task.creator?.name}
+            {task.craftsman?.name}
           </span>
           <span className="flex items-center gap-1">
             <MessageSquare className="w-4 h-4" />
@@ -561,7 +561,7 @@ const OnlineUsers = () => {
 
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
-      <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <Users className="w-5 h-5" />
         Recently Active
       </h3>
@@ -576,17 +576,17 @@ const OnlineUsers = () => {
                 <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white dark:border-black rounded-full" />
               </div>
               <div className="flex-1">
-                <div className="text-sm font-medium text-gray-900 dark:text-white">
+                <div className="text-sm font-medium text-slate-900 dark:text-white">
                   {user.name || "Unknown"}
                 </div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-slate-400">
                   Active recently
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">No active users</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">No active users</p>
         )}
       </div>
     </div>
@@ -595,7 +595,7 @@ const OnlineUsers = () => {
 
 const QuickActions = ({ onStartDiscussion, onFindCollaborators, onShareResource }) => (
   <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
-    <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+    <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <Zap className="w-5 h-5 text-purple-600" />
       Quick Actions
     </h3>
@@ -618,7 +618,7 @@ const TrendingTopics = () => {
 
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
-      <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-orange-600" />
         Trending Topics
       </h3>
@@ -628,7 +628,7 @@ const TrendingTopics = () => {
             <span className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline cursor-pointer">
               {topic.tag}
             </span>
-            <span className="text-xs text-gray-500 dark:text-gray-400">
+            <span className="text-xs text-slate-500 dark:text-slate-400">
               {topic.count} posts
             </span>
           </div>
@@ -657,16 +657,16 @@ const ActiveRooms = () => {
 
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
-      <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+      <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <Users className="w-5 h-5 text-blue-600" />
         Active Rooms
       </h3>
       <div className="space-y-3">
         {rooms.length > 0 ? (
           rooms.map((room) => (
-            <div key={room._id} className="p-3 bg-gray-50 dark:bg-white/5 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all cursor-pointer">
+            <div key={room._id} className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all cursor-pointer">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <span className="text-sm font-medium text-slate-900 dark:text-white">
                   {room.name}
                 </span>
                 <span className="text-xs text-green-500 flex items-center gap-1">
@@ -674,13 +674,13 @@ const ActiveRooms = () => {
                   {room.participants?.length || 0}
                 </span>
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
+              <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
                 {room.description}
               </p>
             </div>
           ))
         ) : (
-          <p className="text-sm text-gray-500 dark:text-gray-400">No active rooms</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">No active rooms</p>
         )}
       </div>
     </div>
@@ -690,7 +690,7 @@ const ActiveRooms = () => {
 const ActionButton = ({ icon: Icon, label, onClick }) => (
   <button 
     onClick={onClick}
-    className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-xl transition-all"
+    className="w-full flex items-center gap-3 px-4 py-3 text-left text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-white/5 rounded-xl transition-all"
   >
     <Icon className="w-4 h-4" />
     <span className="text-sm font-medium">{label}</span>
@@ -727,8 +727,8 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200 dark:border-white/10">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Share Your Problem
           </h2>
         </div>
@@ -738,7 +738,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             placeholder="What's your problem?"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <textarea
@@ -746,14 +746,14 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={4}
-            className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <div className="grid grid-cols-2 gap-4">
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white"
+              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
             >
               <option value="design">Design</option>
               <option value="development">Development</option>
@@ -763,7 +763,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             <select
               value={formData.priority}
               onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-              className="px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white"
+              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -776,13 +776,13 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             placeholder="Tags (comma separated)"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            className="w-full px-4 py-3 border border-gray-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-gray-900 dark:text-white"
+            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
           />
           <div className="flex justify-end gap-4 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-gray-600 dark:text-gray-400"
+              className="px-6 py-2 text-slate-600 dark:text-slate-400"
             >
               Cancel
             </button>
@@ -822,11 +822,11 @@ const EmptyState = ({ message }) => {
 
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-12 text-center">
-      <Zap className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+      <Zap className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+      <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
         No activities yet
       </h3>
-      <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
+      <p className="text-slate-600 dark:text-slate-400 mb-6">{message}</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
           onClick={createSampleActivity}
@@ -838,3 +838,5 @@ const EmptyState = ({ message }) => {
     </div>
   );
 };
+
+

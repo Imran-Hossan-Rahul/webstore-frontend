@@ -15,13 +15,13 @@ export default function VideoCard({ item, type }) {
   const [loadingFollow, setLoadingFollow] = useState(false);
 
   // Normalize Data
-  const isTemplate = type === "template";
+  const isArtifact = type === "artifact";
   const title = item.title;
   const description = item.description || item.excerpt;
   const image = item.coverImage || item.thumbnail;
   const author = item.author || item.user; 
   const slug = item.slug;
-  const itemId = item._id; // Add ID for templates
+  const itemId = item._id; // Add ID for artifacts
   const tags = item.tags || [];
 
   // Card Shape Logic
@@ -34,8 +34,8 @@ export default function VideoCard({ item, type }) {
 
   // Interaction Handlers
   const handleClick = () => {
-     if (isTemplate) router.push(`/templates/${itemId || slug}`);
-     else router.push(`/blogs/${slug}`); 
+     if (isArtifact) router.push(`/artifacts/${itemId || slug}`);
+     else router.push(`/codex/${slug}`); 
   };
 
   const handleLike = async (e) => {
@@ -51,9 +51,9 @@ export default function VideoCard({ item, type }) {
       setLikeCount(prev => liked ? prev - 1 : prev + 1);
 
       try {
-          const endpoint = isTemplate 
-             ? ${process.env.NEXT_PUBLIC_API_URL}/template/${itemId || slug}/like`
-             : ${process.env.NEXT_PUBLIC_API_URL}/blog/${slug}/like`;
+          const endpoint = isArtifact 
+             ? ${process.env.NEXT_PUBLIC_API_URL}/artifact/${itemId || slug}/like`
+             : ${process.env.NEXT_PUBLIC_API_URL}/codex/${slug}/like`;
           
           await axios.post(endpoint, {}, { headers: { Authorization: `Bearer ${token}` } });
       } catch (err) {
@@ -72,7 +72,7 @@ export default function VideoCard({ item, type }) {
       e.stopPropagation();
       const token = localStorage.getItem("token");
       if (!token) {
-          showToast("Please login to follow creators.", "info", "Login Required");
+          showToast("Please login to follow craftsmen.", "info", "Login Required");
           return;
       }
       if (!author?._id) return;
@@ -103,7 +103,7 @@ export default function VideoCard({ item, type }) {
           return;
       }
       if (author?._id) {
-        router.push(`/user/creator/chat?targetUser=${author._id}`);
+        router.push(`/user/craftsman/chat?targetUser=${author._id}`);
       }
   };
 
@@ -112,19 +112,19 @@ export default function VideoCard({ item, type }) {
   const displayedTags = tags.slice(0, 3);
   const isFree = item.price === 0;
 
-  // Blog Card (Text-Focused)
-  if (!isTemplate) {
+  // Codex Card (Text-Focused)
+  if (!isArtifact) {
       return (
         <div 
             className={`flex flex-col ${colSpanClass} group cursor-pointer`}
             style={{ gridRowEnd: `span ${gridRowSpan > 20 ? 20 : gridRowSpan}` }}
             onClick={handleClick}
         >
-             <div className="bg-white dark:bg-gray-900 rounded-xl p-4 h-full flex flex-col hover:shadow-md transition-shadow">
-                 <h3 className="font-semibold text-base leading-snug text-gray-900 dark:text-white mb-2 line-clamp-2">
+             <div className="bg-white dark:bg-slate-900 rounded-lg p-4 h-full flex flex-col hover:shadow-md transition-shadow">
+                 <h3 className="font-semibold text-base leading-snug text-slate-900 dark:text-white mb-2 line-clamp-2">
                      {title}
                  </h3>
-                 <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
+                 <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-3 mb-4 flex-1">
                      {description || "Read more about this topic..."}
                  </p>
                  <div className="flex items-center gap-2 mt-auto">
@@ -133,16 +133,16 @@ export default function VideoCard({ item, type }) {
                         className="w-5 h-5 rounded-full object-cover" 
                         alt="Author" 
                     />
-                    <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{author?.name || "Writer"}</span>
-                    <span className="text-xs text-gray-500 ml-auto">Read</span>
-                    <span className="text-xs text-gray-400">{item.readTime || "5 min read"}</span>
+                    <span className="text-xs font-medium text-slate-700 dark:text-gray-300">{author?.name || "Writer"}</span>
+                    <span className="text-xs text-slate-500 ml-auto">Read</span>
+                    <span className="text-xs text-slate-400">{item.readTime || "5 min read"}</span>
                  </div>
              </div>
         </div>
       );
   }
 
-  // Template Card (Image-Focused)
+  // Artifact Card (Image-Focused)
   return (
     <div 
         className={`flex flex-col ${colSpanClass} group cursor-pointer`}
@@ -150,7 +150,7 @@ export default function VideoCard({ item, type }) {
     >
       {/* Card Container */}
       <div
-        className="relative rounded-xl overflow-hidden shadow-sm hover:shadow-lg w-full bg-gray-100 dark:bg-gray-800 transition-all duration-300"
+        className="relative rounded-lg overflow-hidden shadow-sm hover:shadow-lg w-full bg-slate-100 dark:bg-slate-800 transition-all duration-300"
         style={{ height: `${imagePixelHeight}px` }}
         onClick={handleClick}
       >
@@ -159,7 +159,7 @@ export default function VideoCard({ item, type }) {
              {isFree ? (
                <span className="bg-green-500 text-white text-xs font-semibold px-2.5 py-1 rounded-md">FREE</span>
              ) : (
-               <span className="bg-white text-gray-900 px-2.5 py-1 rounded-md font-semibold text-xs">${item.price}</span>
+               <span className="bg-white text-slate-900 px-2.5 py-1 rounded-md font-semibold text-xs">${item.price}</span>
              )}
         </div>
 
@@ -170,14 +170,14 @@ export default function VideoCard({ item, type }) {
           <img
             src={image || "/placeholder.png"}
             alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+            className="w-full h-full object-cover group-hover:-translate-y-0.5 transition-transform duration-300" 
           />
         )}
       </div>
 
       {/* Footer */}
       <div className="mt-3 px-1">
-          <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-2 line-clamp-2">{title}</h3>
+          <h3 className="font-semibold text-sm text-slate-900 dark:text-white mb-2 line-clamp-2">{title}</h3>
           <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                   <img 
@@ -185,9 +185,9 @@ export default function VideoCard({ item, type }) {
                       className="w-6 h-6 rounded-full object-cover" 
                       alt={author?.name} 
                   />
-                  <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{author?.name || 'Creator'}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-gray-300">{author?.name || 'Craftsman'}</span>
                   {author?.verified && (
-                      <svg className="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
                       </svg>
                   )}
@@ -197,3 +197,5 @@ export default function VideoCard({ item, type }) {
     </div>
   );
 }
+
+

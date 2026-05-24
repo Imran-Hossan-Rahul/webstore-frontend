@@ -19,11 +19,11 @@ const data = [
 
 export default function RegisterRevenueCard() {
   return (
-    <div className="bg-white dark:bg-[#1a1a1a] p-8 rounded-[30px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-gray-100 dark:border-gray-800">
+    <div className="bg-white dark:bg-[#1a1a1a] p-8 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-slate-100 dark:border-slate-800">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">Revenue</h3>
-          <p className="text-sm text-gray-500 font-medium mt-1">Monthly earnings</p>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-gray-100">Revenue</h3>
+          <p className="text-sm text-slate-500 font-medium mt-1">Monthly earnings</p>
         </div>
         <div className="w-2 h-2 rounded-full bg-green-400"></div>
       </div>
@@ -48,24 +48,24 @@ export default function RegisterRevenueCard() {
         </ResponsiveContainer>
       </div>
 
-      <div className="flex justify-between items-end border-t border-gray-100 dark:border-gray-800 pt-6">
+      <div className="flex justify-between items-end border-t border-slate-100 dark:border-slate-800 pt-6">
         <div>
-          <p className="text-xs text-gray-400 font-medium mb-1">Current</p>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">5,878</p>
+          <p className="text-xs text-slate-400 font-medium mb-1">Current</p>
+          <p className="text-2xl font-bold text-slate-900 dark:text-white">5,878</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 font-medium mb-1">Goal</p>
-          <p className="text-2xl font-bold text-gray-400">7,000</p>
+          <p className="text-xs text-slate-400 font-medium mb-1">Goal</p>
+          <p className="text-2xl font-bold text-slate-400">7,000</p>
         </div>
         <div className="text-right">
-             <p className="text-xs text-gray-400 font-medium mb-1">Growth</p>
+             <p className="text-xs text-slate-400 font-medium mb-1">Growth</p>
              <p className="text-green-500 font-bold text-sm">+18%</p>
         </div>
       </div>
       
       <div className="mt-8 text-center"> 
-        <h4 className="font-bold text-gray-900 dark:text-white mb-2">Real-time Analytics Dashboard</h4>
-        <p className="text-xs text-gray-500 leading-relaxed max-w-xs mx-auto">
+        <h4 className="font-bold text-slate-900 dark:text-white mb-2">Real-time Analytics Dashboard</h4>
+        <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
             Track your performance with live analytics. Monitor views, downloads, revenue, and user growth in real-time.
         </p>
       </div>

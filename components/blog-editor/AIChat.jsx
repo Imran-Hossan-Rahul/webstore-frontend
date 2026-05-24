@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from "react";
-import { X, Send, Sparkles, Copy, ArrowRight, Undo2, Redo2 } from "lucide-react";
+import { X, Send, Zap, Copy, ArrowRight, Undo2, Redo2 } from "lucide-react";
 
 /**
  * AI Chat Interface Component
@@ -285,17 +285,17 @@ const AIChat = ({ editor, isOpen, onClose }) => {
         top: position.y,
         zIndex: 50 
       }}
-      className="w-96 bg-white rounded-xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden max-h-[600px]"
+      className="w-96 bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden max-h-[600px]"
     >
       {/* Header */}
       <div 
-        className="bg-gray-100 p-3 flex items-center justify-between"
+        className="bg-slate-100 p-3 flex items-center justify-between"
       >
         <div 
-          className="flex items-center gap-2 text-gray-700 font-medium cursor-move"
+          className="flex items-center gap-2 text-slate-700 font-medium cursor-move"
           onMouseDown={() => setIsDragging(true)}
         >
-          <Sparkles className="w-4 h-4 text-purple-600" />
+          <Zap className="w-4 h-4 text-purple-600" />
           <span>AI Assistant</span>
         </div>
         
@@ -304,7 +304,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
           <button 
             onClick={() => editor?.chain().focus().undo().run()}
             disabled={!editor?.can().undo()}
-            className="p-1 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded disabled:opacity-30 disabled:hover:bg-transparent"
             title="Undo"
           >
             <Undo2 className="w-4 h-4" />
@@ -312,7 +312,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
           <button 
             onClick={() => editor?.chain().focus().redo().run()}
             disabled={!editor?.can().redo()}
-            className="p-1 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded disabled:opacity-30 disabled:hover:bg-transparent"
+            className="p-1 text-slate-500 hover:text-purple-600 hover:bg-purple-50 rounded disabled:opacity-30 disabled:hover:bg-transparent"
             title="Redo"
           >
             <Redo2 className="w-4 h-4" />
@@ -320,21 +320,21 @@ const AIChat = ({ editor, isOpen, onClose }) => {
         </div>
 
         {/* Model Display (Fixed to 2.5 Flash) */}
-        <div className="px-2 py-1 text-xs border border-gray-300 rounded bg-white text-gray-700 font-medium cursor-default">
+        <div className="px-2 py-1 text-xs border border-slate-300 rounded bg-white text-slate-700 font-medium cursor-default">
           Gemini 2.5 Flash
         </div>
 
         
         <button 
           onClick={onClose}
-          className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+          className="p-1 hover:bg-slate-200 rounded-full transition-colors"
         >
-          <X className="w-4 h-4 text-gray-500" />
+          <X className="w-4 h-4 text-slate-500" />
         </button>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] bg-gray-50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-[300px] bg-slate-50">
         {messages.map((msg, idx) => (
           <div 
             key={idx} 
@@ -344,16 +344,16 @@ const AIChat = ({ editor, isOpen, onClose }) => {
               className={`max-w-[85%] rounded-lg p-3 text-sm ${
                 msg.role === 'user' 
                   ? 'bg-blue-600 text-white' 
-                  : 'bg-white border border-gray-200 text-gray-800 shadow-sm'
+                  : 'bg-white border border-slate-200 text-slate-800 shadow-sm'
               }`}
             >
-              <div className="whitespace-pre-wrap leading-relaxed">
+              <div className="whitespace-pre-wrap break-words leading-relaxed">
                 {msg.content || (msg.isStreaming && <span className="animate-pulse">Thinking...</span>)}
               </div>
               
               {/* Actions for AI messages */}
               {msg.role === 'model' && !msg.isStreaming && (msg.content || msg.actionText) && (
-                <div className="mt-2 pt-2 border-t border-gray-100 flex gap-2">
+                <div className="mt-2 pt-2 border-t border-slate-100 flex gap-2">
                   <button 
                     onClick={() => handleInsert(msg.actionText || msg.content)}
                     className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 font-medium transition-colors"
@@ -363,7 +363,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
                   </button>
                   <button 
                     onClick={() => navigator.clipboard.writeText(msg.actionText || msg.content)}
-                    className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                    className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700 transition-colors"
                     title="Copy to clipboard"
                   >
                     <Copy className="w-3 h-3" /> Copy
@@ -377,12 +377,12 @@ const AIChat = ({ editor, isOpen, onClose }) => {
       </div>
 
       {/* Quick Actions */}
-      <div className="p-3 bg-white border-t border-gray-100 flex flex-wrap gap-2">
+      <div className="p-3 bg-white border-t border-slate-100 flex flex-wrap gap-2">
          <button 
            onClick={() => handleSend("Rewrite the selected text or the current document to be more professional and engaging.")}
            className="px-3 py-1.5 text-xs bg-purple-50 text-purple-700 rounded-full border border-purple-200 hover:bg-purple-100 transition-colors"
          >
-           ✨ Enhance Writing
+           Enhance Writing
          </button>
          <button 
            onClick={() => handleSend("Fix all grammar, punctuation, and spelling mistakes in the current text.")}
@@ -399,7 +399,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
       </div>
 
       {/* Input */}
-      <div className="p-3 bg-white border-t border-gray-100">
+      <div className="p-3 bg-white border-t border-slate-100">
         <div className="relative">
           <textarea
             value={input}
@@ -411,7 +411,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
               }
             }}
             placeholder="Ask me anything..."
-            className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-12 text-sm"
+            className="w-full pl-3 pr-10 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none h-12 text-sm"
           />
           <button
             onClick={handleSend}
@@ -421,7 +421,7 @@ const AIChat = ({ editor, isOpen, onClose }) => {
             <Send className="w-3 h-3" />
           </button>
         </div>
-        <div className="text-xs text-gray-400 mt-2 text-center">
+        <div className="text-xs text-slate-400 mt-2 text-center">
           Powered by Gemini 2.5 Flash
         </div>
       </div>

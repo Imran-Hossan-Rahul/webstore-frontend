@@ -15,7 +15,7 @@ export default function ProfileCard({
         <img
           src={profilePic}
           alt={name}
-          className="w-24 h-24 rounded-full object-cover border-2 border-gray-200"
+          className="w-24 h-24 rounded-full object-cover border-2 border-slate-200 dark:border-[#262626]"
         />
         {/* Status Circle */}
         <span
@@ -28,13 +28,13 @@ export default function ProfileCard({
       {/* Name + Working Type */}
       <div className="mt-4 flex items-center gap-2">
         <span
-          className="text-lg font-semibold text-gray-800 cursor-pointer hover:underline"
+          className="text-base font-medium text-slate-800 dark:text-white cursor-pointer hover:underline font-sans"
           onClick={(e) => e.preventDefault()} // prevent default, placeholder
         >
           {name}
         </span>
         <span
-          className="text-xs px-2 py-0.5 bg-gray-500 text-gray-300 rounded cursor-pointer hover:underline"
+          className="text-[10px] px-2 py-0.5 bg-slate-100 dark:bg-[#171717] text-slate-500 dark:text-slate-400 rounded-sm cursor-pointer hover:underline font-mono font-medium uppercase tracking-wider border border-slate-200 dark:border-[#262626]"
           onClick={(e) => e.preventDefault()}
         >
           {solo ? "Solo" : "Team"}
@@ -46,7 +46,7 @@ export default function ProfileCard({
         {skills.map((skill, idx) => (
           <span
             key={idx}
-            className="text-xs text-gray-700 bg-gray-100 px-2 py-1 rounded-full cursor-pointer hover:bg-gray-300"
+            className="text-[11px] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-[#171717] px-2 py-1 rounded-full cursor-pointer hover:bg-slate-200 dark:hover:bg-[#262626] font-sans font-medium transition-colors border border-slate-200 dark:border-[#262626]"
             onClick={(e) => e.preventDefault()} // placeholder click
           >
             {skill}

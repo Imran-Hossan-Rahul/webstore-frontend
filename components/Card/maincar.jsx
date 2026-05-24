@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Download } from "lucide-react";
 
-const TemplateCard = ({
+const ArtifactCard = ({
   title = "Untitled",
   description = "No description available.",
   tags = [],
@@ -36,11 +36,11 @@ const TemplateCard = ({
         {/* FREE or PAID Badge */}
         <div className="absolute top-2 right-2 z-30">
           {isFree ? (
-            <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
+            <span className="bg-green-500 text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider uppercase">
               FREE
             </span>
           ) : (
-            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-semibold text-sm flex items-center gap-2">
+            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-mono font-medium text-sm flex items-center gap-2">
               {hasDiscount && (
                 <span className="line-through text-red-700 text-xs">
                   ${price}
@@ -48,11 +48,11 @@ const TemplateCard = ({
               )}
               <span>
                 {Number(finalPrice) === 0 || isNaN(Number(finalPrice)) ? (
-                  <span className="bg-yellow-400 text-black px-2 py-0.5 rounded-full text-xs font-semibold">
+                  <span className="bg-yellow-400 text-black px-2 py-0.5 rounded-full text-[10px] font-mono font-bold">
                     FREE
                   </span>
                 ) : (
-                  `$${Number(finalPrice).toFixed(2)}`
+                  <span className="font-mono font-bold">${Number(finalPrice).toFixed(2)}</span>
                 )}
               </span>
             </div>
@@ -79,7 +79,7 @@ const TemplateCard = ({
         {/* Overlay */}
         <div className="absolute bottom-2 left-0 right-0 z-20 px-4 flex flex-col gap-1 transition-all duration-300">
           {/* Title */}
-          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-lg font-semibold drop-shadow-lg transition-all duration-300">
+          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-lg transition-all duration-300 font-sans">
             {truncatedTitle}
           </h3>
 
@@ -108,7 +108,7 @@ const TemplateCard = ({
                 wordBreak: "break-word",
                 height: descriptionHeight,
               }}
-              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white text-sm bg-black/30 p-1 rounded backdrop-blur mt-1"
+              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white/90 text-sm bg-black/40 p-2 rounded-lg backdrop-blur-md mt-1 font-sans leading-relaxed"
             >
               {description}
             </p>
@@ -116,7 +116,7 @@ const TemplateCard = ({
 
           {/* Download Icon */}
           <div className="absolute bottom-3 -right-3 group-hover:-translate-x-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="bg-white text-black p-2 rounded-full shadow hover:bg-gray-200">
+            <button className="bg-white text-black p-2 rounded-full shadow hover:bg-slate-200">
               <Download size={18} />
             </button>
           </div>
@@ -138,7 +138,7 @@ const TemplateCard = ({
             ></iframe>
             <button
               onClick={() => setEmbedModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-xl"
+              className="absolute top-3 right-3 text-slate-500 hover:text-slate-800 font-bold text-xl"
             >
               ✕
             </button>
@@ -149,4 +149,5 @@ const TemplateCard = ({
   );
 };
 
-export default TemplateCard;
+export default ArtifactCard;
+

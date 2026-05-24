@@ -1,9 +1,9 @@
-// app/template.js
+// app/artifact.js
 "use client";
 
 import { motion } from "framer-motion";
 
-export default function Template({ children }) {
+export default function Artifact({ children }) {
   return (
     <motion.div
       initial={{ y: 20, opacity: 0 }}

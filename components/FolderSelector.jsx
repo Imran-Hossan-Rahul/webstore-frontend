@@ -62,7 +62,7 @@ export default function FolderSelector({ onFolderSelect }) {
   return (
     <div className="folder-selector">
       <div className="folder-header">
-        <h2>Select Project Folder</h2>
+        <h2>Select Devlog Folder</h2>
         <p>Choose a folder from your computer to work with</p>
       </div>
 
@@ -210,3 +210,4 @@ export default function FolderSelector({ onFolderSelect }) {
     </div>
   );
 }
+

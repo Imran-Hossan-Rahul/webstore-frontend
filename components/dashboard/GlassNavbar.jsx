@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { 
   Search, 
@@ -8,294 +8,305 @@ import {
   MessageCircle, 
   Plus, 
   Command,
-  Settings,
-  LogOut,
-  User,
-  Sparkles,
-  Layers,
-  FileText
+  UserCheck,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
+import socket from "@/utils/socket";
 import ProfileModal from "../DashboardComponents/ProfileModal";
-import CreatorProfileModal from "../DashboardComponents/CreatorProfileModal";
-import ChatModal from "./ChatModal";
-import { getHasCreatorAccount } from "@/utils/api";
+import CraftsmanProfileModal from "../DashboardComponents/CraftsmanProfileModal";
 import NotificationDropdown from "./NotificationDropdown";
-import Image from 'next/image';
-import AIEnhanceButton from '../AIEnhanceButton';
 import ThemeToggle from '../ThemeToggle';
+import { useUser } from "@/context/UserContext";
+import SearchSuggestions from "./navbar/SearchSuggestions";
+import CreateDropdown from "./navbar/CreateDropdown";
 
-const GlassNavbar = ({ toggleSidebar, onOpenCreatePost, searchQuery, setSearchQuery, isGuest = false, onRequireAuth }) => {
+const GlassNavbar = ({ 
+  toggleSidebar, 
+  onOpenCreatePost, 
+  searchQuery, 
+  setSearchQuery, 
+  onToggleChat,
+  onToggleNotification,
+  unreadChatCount: externalChatCount,
+  unreadNotificationCount: externalNotifCount
+}) => {
   const router = useRouter();
+  const { user, isGuest, logout } = useUser();
   const [searchFocused, setSearchFocused] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showChatModal, setShowChatModal] = useState(false);
-  const [hasCreatorAccount, setHasCreatorAccount] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  // State for user data
-  const [userData, setUserData] = useState({
-      name: "User",
-      avatar: null,
-      plan: "Member"
-  });
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
+  const [unreadChatCount, setUnreadChatCount] = useState(0);
+  const [suggestions, setSuggestions] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
 
+  // Sync counts from props or fetch initially
   useEffect(() => {
-    const initNavbar = async () => {
-        // Fetch real user profile
-        try {
-            const res = await api.get('/user/profile');
-            // Logic: api.js returns the payload directly ({ success: true, data: {...} })
-            if (res.success) {
-                const u = res.data;
-                let avatar = u.profilePicture; // Try user profile first
-                
-                // If avatar is missing but user is a creator, try fetching creator profile (Robust fallback like ProfileModal)
-                if (!avatar && u.hasCreatorAccount) {
-                    try {
-                        const creatorRes = await api.get("/creator/profile");
-                        if (creatorRes.success && creatorRes.data?.profilePicture) {
-                            avatar = creatorRes.data.profilePicture;
-                        }
-                    } catch (e) {
-                         console.error("Failed to fetch creator profile for navbar fallback", e);
-                    }
-                }
-
-                setUserData({
-                    name: u.name,
-                    avatar: avatar, 
-                    plan: u.hasCreatorAccount ? "Creator" : "Member"
-                });
-                setHasCreatorAccount(u.hasCreatorAccount);
-            }
-        } catch (err) {
-            console.error("Failed to fetch navbar user data", err);
-        }
+    if (isGuest) return;
+    const fetchCounts = async () => {
+        const [notifRes, chatRes] = await Promise.all([
+            api.get("/notifications/unread-count"),
+            api.get("/chat/unread-count")
+        ]);
+        if (notifRes.success) setUnreadNotifications(notifRes.count);
+        if (chatRes.success) setUnreadChatCount(chatRes.count);
     };
-    if (isGuest) return; // Skip auth fetch for guests
-    initNavbar();
+    fetchCounts();
   }, [isGuest]);
 
-  // Listen for open chat event
+  // Real-time Sync
   useEffect(() => {
-    const handleOpenChat = (e) => {
-      setShowChatModal(true);
-    };
-    
-    window.addEventListener('openChat', handleOpenChat);
-    return () => window.removeEventListener('openChat', handleOpenChat);
-  }, []);
+    if (!user?._id) return;
 
-  // Close dropdown when clicking outside
+    const handleCountUpdate = () => setUnreadNotifications(p => p + 1);
+    const handleChatUpdate = async () => {
+        const res = await api.get("/chat/unread-count");
+        if (res.success) setUnreadChatCount(res.count);
+    };
+
+    const handleLocalCountSync = (e) => {
+        if (e.detail && e.detail.count !== undefined) {
+            setUnreadNotifications(e.detail.count);
+        }
+    };
+
+    const handleLocalChatSync = (e) => {
+        if (e.detail && e.detail.count !== undefined) {
+            setUnreadChatCount(e.detail.count);
+        }
+    };
+
+    socket.on(`user:${user._id}:unread-count-update`, handleCountUpdate);
+    socket.on(`user:${user._id}:newMessage`, handleChatUpdate);
+    window.addEventListener("notification-count-update", handleLocalCountSync);
+    window.addEventListener("chat-count-update", handleLocalChatSync);
+
+    return () => {
+      socket.off(`user:${user._id}:unread-count-update`, handleCountUpdate);
+      socket.off(`user:${user._id}:newMessage`, handleChatUpdate);
+      window.removeEventListener("notification-count-update", handleLocalCountSync);
+      window.removeEventListener("chat-count-update", handleLocalChatSync);
+    };
+  }, [user?._id]);
+
+  // Search Suggestions Logic
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (showCreateDropdown && !e.target.closest('.create-dropdown-container')) {
-        setShowCreateDropdown(false);
+    const fetchSuggestions = async () => {
+      if (!searchQuery?.trim() || !searchFocused) {
+        setSuggestions(null);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const res = await api.get(`/search?q=${encodeURIComponent(searchQuery)}`);
+        if (res.success) setSuggestions(res.data);
+      } catch (err) {
+        console.error("Search failed", err);
+      } finally {
+        setIsSearching(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showCreateDropdown]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("hasCreatorAccount");
-    window.location.reload();
-  };
+    const timer = setTimeout(fetchSuggestions, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery, searchFocused]);
+
+  const totalResults = useMemo(() => {
+    if (!suggestions) return 0;
+    return Object.values(suggestions).reduce((acc, curr) => acc + (curr?.length || 0), 0);
+  }, [suggestions]);
 
   const handleSearch = () => {
-    if (searchQuery && searchQuery.trim()) {
+    if (searchQuery?.trim()) {
         router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+        setSearchFocused(false);
+        setMobileSearchOpen(false);
     }
   };
 
+  if (mobileSearchOpen) {
+    return (
+      <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div className="max-w-[1800px] mx-auto bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 px-4 h-[64px] flex items-center shadow-sm gap-3">
+          <button 
+            onClick={() => {
+              setMobileSearchOpen(false);
+              setSearchQuery("");
+            }} 
+            className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"
+          >
+            <svg className="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+          </button>
+          
+          <div className="flex-1 flex items-center bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 h-10 relative">
+            <Search strokeWidth={1.5} className="w-4 h-4 text-slate-400 mr-2" />
+            <input 
+              type="text" 
+              placeholder="Search everything..." 
+              autoFocus
+              className="bg-transparent border-none outline-none text-sm w-full text-slate-900 dark:text-white font-medium font-sans"
+              value={searchQuery || ""}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+            />
+            
+            {searchFocused && searchQuery?.trim() && (
+              <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[100]">
+                <SearchSuggestions 
+                  suggestions={suggestions} 
+                  isSearching={isSearching} 
+                  handleSearch={handleSearch}
+                  totalResults={totalResults}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </nav>
+    );
+  }
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      <div className="max-w-[1800px] mx-auto bg-white/70 dark:bg-black/60 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-b-2xl shadow-lg shadow-black/5 px-4 h-[64px] flex items-center">
+      <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-white/10 px-4 h-[64px] flex items-center shadow-sm">
         
-        {/* Left: Logo & Toggle */}
+        {/* Left Section */}
         <div className="flex items-center gap-4">
-            <button 
-                onClick={toggleSidebar}
-                className="lg:hidden p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors"
-            >
-                <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
+            <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors">
+                <Menu strokeWidth={1.5} className="w-5 h-5 text-slate-600 dark:text-slate-300" />
             </button>
-            
             <Link href="/" className="flex items-center gap-2 group">
-                <div className="w-8 h-8 bg-gradient-to-tr from-purple-600 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 transition-all">
-                    A
-                </div>
-                <span className="font-bold text-xl tracking-tight hidden sm:block text-gray-900 dark:text-white">
-                    Amr<span className="text-purple-600">Platform</span>
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">A</div>
+                <span className="font-medium text-xl tracking-tight hidden sm:block text-slate-900 dark:text-white font-sans">
+                    Codalina
                 </span>
             </Link>
         </div>
 
-        {/* Center: Search Bar */}
-        <div className="flex-1 flex justify-center px-4">
-        <div className={`hidden md:flex w-full max-w-lg items-center bg-gray-100/50 dark:bg-white/5 border ${searchFocused ? 'border-[#00BCD4] bg-white dark:bg-black' : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'} rounded-xl px-3 h-10 transition-all duration-200`}>
-            <button 
-                onClick={handleSearch}
-                className="hover:scale-110 transition-transform"
-            >
-                <Search className={`w-4 h-4 ${searchFocused ? 'text-[#00BCD4]' : 'text-gray-400'} mr-2`} />
-            </button>
-            
-            <div className="mr-2">
-                <AIEnhanceButton 
-                   text={searchQuery} 
-                   placement="bottom"
-                   onUpdate={(val) => setSearchQuery && setSearchQuery(val)}
-                   className=""
-                />
-            </div>
+        {/* Center Section: Optimized Search */}
+        <div className="flex-1 flex justify-center px-4 relative">
+          <div className={`hidden md:flex w-full max-w-lg items-center bg-slate-50 dark:bg-white/5 border ${searchFocused ? 'border-slate-900 dark:border-white bg-white dark:bg-slate-900 shadow-sm' : 'border-slate-200 dark:border-white/10'} rounded-xl px-3 h-10 transition-all duration-200 relative`}>
+              <Search strokeWidth={1.5} className={`w-4 h-4 ${searchFocused ? 'text-slate-900 dark:text-white' : 'text-slate-400'} mr-2`} />
+              <input 
+                  type="text" 
+                  placeholder="Search everything..." 
+                  className="bg-transparent border-none outline-none text-sm w-full text-slate-900 dark:text-white font-medium font-sans"
+                  value={searchQuery || ""}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              />
+              <div className="hidden lg:flex items-center gap-1 px-1.5 py-0.5 rounded border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-[9px] font-mono font-medium text-slate-400 uppercase">
+                  <Command strokeWidth={1.5} className="w-3 h-3" /> <span>K</span>
+              </div>
 
-            <input 
-                type="text" 
-                placeholder="Search resources, creators, tags..." 
-                className="bg-transparent border-none outline-none text-sm w-full text-gray-900 dark:text-white placeholder:text-gray-400"
-                value={searchQuery !== undefined ? searchQuery : ""}
-                onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
-                onFocus={() => setSearchFocused(true)}
-                onBlur={() => setSearchFocused(false)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            />
-            <div className="hidden lg:flex items-center gap-1 px-1.5 py-0.5 rounded border border-gray-200 dark:border-white/10 bg-white/50 dark:bg-black/20 text-[10px] font-medium text-gray-400">
-                <Command className="w-3 h-3" />
-                <span>K</span>
-            </div>
-        </div>
+              {/* Modular Suggestions */}
+              {searchFocused && searchQuery?.trim() && (
+                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[100]">
+                      <SearchSuggestions 
+                        suggestions={suggestions} 
+                        isSearching={isSearching} 
+                        handleSearch={handleSearch}
+                        totalResults={totalResults}
+                      />
+                  </div>
+              )}
+          </div>
         </div>
 
-        {/* Right: Actions */}
+        {/* Right Section */}
         <div className="flex items-center gap-2 sm:gap-4">
-            
-            {/* Create button with dropdown — visible only to creators */}
-            {hasCreatorAccount && (
-              <div className="relative create-dropdown-container">
+            {!isGuest && user?.hasCraftsmanAccount && (
+              <div className="relative">
                 <button
                   onClick={() => setShowCreateDropdown(!showCreateDropdown)}
-                  className="hidden sm:flex items-center gap-2 bg-black dark:bg-white text-white dark:text-black px-4 py-2 rounded-xl text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-black/20 dark:shadow-white/20"
+                  className="hidden sm:flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-[10px] font-mono font-medium hover:bg-blue-600 dark:hover:bg-blue-50 transition-all uppercase tracking-wider"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>Create</span>
+                  <Plus strokeWidth={1.5} className="w-4 h-4" /> <span>Create</span>
                 </button>
-
-                {/* Dropdown Menu */}
-                {showCreateDropdown && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-gray-900 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-50">
-                    <Link
-                      href="/upload"
-                      onClick={() => setShowCreateDropdown(false)}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                        <Layers className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold text-gray-900 dark:text-white">Create Template</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Upload a new template</div>
-                      </div>
-                    </Link>
-                    <Link
-                      href="/blog-editor"
-                      onClick={() => setShowCreateDropdown(false)}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors"
-                    >
-                      <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                        <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-bold text-gray-900 dark:text-white">Create Blog</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">Write a new article</div>
-                      </div>
-                    </Link>
-                  </div>
-                )}
+                <CreateDropdown 
+                  isOpen={showCreateDropdown} 
+                  setIsOpen={setShowCreateDropdown} 
+                  onOpenCreatePost={onOpenCreatePost} 
+                />
               </div>
             )}
 
-            {/* Icons — chat and notifications hidden temporarily */}
-            <div className="flex items-center gap-1 sm:gap-2 border-r border-gray-200 dark:border-white/10 pr-4 mr-0 sm:mr-2">
-                <div className="hidden sm:block">
-                    <ThemeToggle />
-                </div>
+            <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-4">
+                <button 
+                  onClick={() => setMobileSearchOpen(true)} 
+                  className="md:hidden p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all"
+                >
+                  <Search strokeWidth={1.5} className="w-5 h-5" />
+                </button>
+                
+                {!isGuest && (
+                  <>
+                    <button onClick={onToggleChat} className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all relative">
+                        <MessageCircle strokeWidth={1.5} className="w-5 h-5" />
+                        {unreadChatCount > 0 && (
+                          <span className="absolute top-1 right-1 w-4 h-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
+                            {unreadChatCount}
+                          </span>
+                        )}
+                    </button>
+                    <button onClick={onToggleNotification} className="p-2 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white transition-all relative">
+                        <Bell strokeWidth={1.5} className="w-5 h-5" />
+                        {unreadNotifications > 0 && (
+                          <span className="absolute top-1 right-1 w-4 h-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
+                            {unreadNotifications}
+                          </span>
+                        )}
+                    </button>
+                  </>
+                )}
+                <ThemeToggle />
             </div>
 
-            {/* Profile — guests see Login/Signup, authenticated users see avatar */}
             {isGuest ? (
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => router.push('/auth/login')}
-                  className="px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 rounded-xl transition-all"
-                >
-                  Log in
-                </button>
-                <button
-                  onClick={() => router.push('/auth/register')}
-                  className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:opacity-90 transition-all shadow-lg shadow-purple-500/20"
-                >
-                  Sign up free
-                </button>
+                <Link href="/auth/login" className="px-4 py-2 text-[11px] font-mono font-medium text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all uppercase tracking-wider">Log in</Link>
+                <Link href="/auth/register" className="px-4 py-2 text-[11px] font-mono font-medium bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl shadow-lg uppercase tracking-wider hover:opacity-90 transition-opacity">Join Free</Link>
               </div>
             ) : (
-            <div 
-              onClick={() => setShowProfileModal(true)}
-              className="flex items-center gap-3 cursor-pointer group"
-            >
-                <div className="text-right hidden xl:block">
-                    <div className="text-sm font-bold text-gray-900 dark:text-white leading-none">{userData.name}</div>
-                    <div className="text-xs text-purple-600 font-bold mt-0.5 flex items-center justify-end gap-1">
-                        <Sparkles className="w-3 h-3" /> {userData.plan}
-                    </div>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 p-[2px] hover:ring-2 ring-purple-500 transition-all">
-                    <div className="w-full h-full rounded-full bg-white dark:bg-black overflow-hidden relative">
-                         {userData.avatar ? (
-                             <img 
-                                src={userData.avatar} 
-                                alt={userData.name} 
-                                className="w-full h-full object-cover" 
-                             />
-                         ) : (
-                             <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-lg">
-                                 {userData.name?.[0] || 'U'}
-                             </div>
-                         )}
-                    </div>
-                </div>
-            </div>
+              <div onClick={() => router.push(`/u/${user.username}`)} className="flex items-center gap-3 cursor-pointer group">
+                  <div className="text-right hidden xl:block">
+                      <div className="text-sm font-medium text-slate-900 dark:text-white font-sans">{user.name}</div>
+                      <div className="text-[9px] text-slate-500 dark:text-slate-400 font-mono font-medium flex items-center justify-end gap-1 uppercase tracking-[0.2em]">
+                          <UserCheck strokeWidth={1.5} className="w-2.5 h-2.5" /> {user.hasCraftsmanAccount ? "Craftsman" : "Member"}
+                      </div>
+                  </div>
+                  <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
+                      {user.profilePicture ? (
+                        <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold">{user.name?.[0]}</div>
+                      )}
+                  </div>
+              </div>
             )}
-
-            {/* Mobile menu trigger could come here if needed, keeping it simple for verification */}
         </div>
-
       </div>
 
-      {/* Profile Modals */}
-      {hasCreatorAccount ? (
-        <CreatorProfileModal 
-          isOpen={showProfileModal} 
-          onClose={() => setShowProfileModal(false)}
-        />
+      {/* Modals */}
+      {user?.hasCraftsmanAccount ? (
+        <CraftsmanProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
       ) : (
-        <ProfileModal 
-          isOpen={showProfileModal} 
-          onClose={() => setShowProfileModal(false)}
-          verifiedHasCreatorAccount={hasCreatorAccount}
-        />
+        <ProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
       )}
-
-      {/* Chat Modal */}
-      <ChatModal 
-        isOpen={showChatModal} 
-        onClose={() => setShowChatModal(false)}
-      />
     </nav>
   );
-}
+};
 
 export default React.memo(GlassNavbar);
+
+
+

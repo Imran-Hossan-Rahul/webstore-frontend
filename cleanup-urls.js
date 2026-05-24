@@ -34,7 +34,7 @@ function replaceInFile(filePath) {
     content = content.replace(/\|\|\s*["'`]http:\/\/localhost:5000\/api\/v1["'`]/g, '');
     content = content.replace(/\|\|\s*["'`]http:\/\/localhost:5000["'`]/g, '');
 
-    // Convert standard template literals `${process.env.NEXT_PUBLIC_API_URL}/endpoint`
+    // Convert standard artifact literals `${process.env.NEXT_PUBLIC_API_URL}/endpoint`
     // Ensure Next.js can interpolate it cleanly
     
     if (content !== original) {
@@ -47,3 +47,4 @@ for (const dir of targetDirs) {
     if (fs.existsSync(dir)) processDirectory(dir);
 }
 console.log("Cleanup complete.");
+

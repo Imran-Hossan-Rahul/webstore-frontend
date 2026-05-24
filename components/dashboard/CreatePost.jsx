@@ -4,30 +4,31 @@ import { Image as ImageIcon, Send, X, Smile, Calendar, MapPin, BarChart2, Link, 
 import { api } from "@/utils/api";
 import AIEnhanceButton from '../AIEnhanceButton';
 
-const CreatePost = ({ onPostCreated, forceShow = false }) => {
+const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = false }) => {
   const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]); 
   const [previews, setPreviews] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  const [isProjectMode, setIsProjectMode] = useState(false);
-  const [isCreator, setIsCreator] = useState(false);
+  const [isDevlogMode, setIsDevlogMode] = useState(defaultIsDevlogMode);
+  const [isCraftsman, setIsCraftsman] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    // Check if user is creator
-    const hasCreator = localStorage.getItem("hasCreatorAccount") === "true";
-    setIsCreator(hasCreator);
+    // Check if user is craftsman
+    const hasCraftsman = localStorage.getItem("hasCraftsmanAccount") === "true";
+    setIsCraftsman(hasCraftsman);
     setCheckingAuth(false);
   }, []);
 
 
-  const [projectStats, setProjectStats] = useState({ 
+  const [devlogStats, setDevlogStats] = useState({ 
       tools: "", 
       timeSpent: "", 
-      projectLink: "",
+      devlogLink: "",
       location: "",
       startDate: "",
       difficulty: "Intermediate",
@@ -65,33 +66,42 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
       });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!content.trim() && selectedFiles.length === 0) return;
+    
+    // Validation: Devlog MUST have a title
+    if (isDevlogMode && !title.trim()) {
+        alert("Please provide a title for your devlog.");
+        return;
+    }
+
     setLoading(true);
     try {
         // Filter out empty stats
         const relevantStats = {};
-        if (projectStats.tools) relevantStats.tools = projectStats.tools.split(',').map(t => t.trim()).filter(Boolean);
-        if (projectStats.timeSpent) relevantStats.timeSpent = projectStats.timeSpent;
-        if (projectStats.projectLink) relevantStats.projectLink = projectStats.projectLink;
-        if (projectStats.location) relevantStats.location = projectStats.location;
-        if (projectStats.startDate) relevantStats.startDate = projectStats.startDate;
-        if (projectStats.difficulty && showDifficulty) relevantStats.difficulty = projectStats.difficulty;
+        if (devlogStats.tools) relevantStats.tools = devlogStats.tools.split(',').map(t => t.trim()).filter(Boolean);
+        if (devlogStats.timeSpent) relevantStats.timeSpent = devlogStats.timeSpent;
+        if (devlogStats.devlogLink) relevantStats.devlogLink = devlogStats.devlogLink;
+        if (devlogStats.location) relevantStats.location = devlogStats.location;
+        if (devlogStats.startDate) relevantStats.startDate = devlogStats.startDate;
+        if (devlogStats.difficulty && showDifficulty) relevantStats.difficulty = devlogStats.difficulty;
         
         // Phase 2
-        if (projectStats.livePreviewUrl) relevantStats.livePreviewUrl = projectStats.livePreviewUrl;
-        if (projectStats.resources && projectStats.resources.length > 0) relevantStats.resources = projectStats.resources;
+        if (devlogStats.livePreviewUrl) relevantStats.livePreviewUrl = devlogStats.livePreviewUrl;
+        if (devlogStats.resources && devlogStats.resources.length > 0) relevantStats.resources = devlogStats.resources;
 
-        // Determine postType logic: If any stats are present, treat as project, else check user toggle
+        // Determine postType logic: If any stats are present, treat as devlog, else check user toggle
         const hasStats = Object.keys(relevantStats).length > 0;
-        const finalPostType = (isProjectMode || hasStats) ? 'project' : 'thought';
+        const finalPostType = (isDevlogMode || hasStats) ? 'devlog' : 'thought';
 
         const payload = {
+            title: (isDevlogMode || hasStats) ? title : undefined,
             content,
             images: [],
             postType: finalPostType,
             category: 'Development', 
-            projectStats: hasStats ? relevantStats : undefined
+            devlogStats: hasStats ? relevantStats : undefined
         };
 
         const postRes = await api.post('/posts/create', payload);
@@ -106,6 +116,7 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                 }));
             }
             setContent("");
+            setTitle("");
             setSelectedFiles([]);
             setPreviews([]);
             setIsFocused(false);
@@ -118,25 +129,34 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
     }
   };
 
-  if (!checkingAuth && !isCreator && !forceShow) return null;
+  if (!checkingAuth && !isCraftsman && !forceShow) return null;
 
   return (
-    <div className={`group bg-white dark:bg-black/40 backdrop-blur-md border border-gray-100 dark:border-white/5 rounded-[2rem] p-4 mb-8 transition-all duration-300 ${isFocused ? 'shadow-xl ring-1 ring-purple-500/20 border-purple-500/30' : 'shadow-sm hover:shadow-md'}`}>
+    <div className={`group bg-white dark:bg-black/40 backdrop-blur-md border border-slate-100 dark:border-white/5 rounded-[2rem] p-4 mb-8 transition-all duration-300 ${isFocused ? 'shadow-xl ring-1 ring-purple-500/20 border-purple-500/30' : 'shadow-sm hover:shadow-md'}`}>
         <div className="flex gap-4">
-             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px] flex-shrink-0 cursor-pointer hover:scale-105 transition-transform">
+             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px] flex-shrink-0 cursor-pointer hover:-translate-y-0.5 transition-transform">
                  <div className="w-full h-full rounded-full bg-white dark:bg-black overflow-hidden">
                     {/* Placeholder Avatar */}
-                    <div className="w-full h-full bg-gray-100 dark:bg-gray-800" />
+                    <div className="w-full h-full bg-slate-100 dark:bg-slate-800" />
                  </div>
              </div>
              
              <div className="flex-1 pt-1">
+                  {isDevlogMode && (
+                      <input 
+                         type="text"
+                         value={title}
+                         onChange={(e) => setTitle(e.target.value)}
+                         placeholder="Devlog Title (Required for devlogs)"
+                         className="w-full bg-transparent border-none focus:ring-0 text-2xl font-bold text-slate-900 dark:text-white placeholder-gray-400 mb-2"
+                      />
+                  )}
                  <textarea 
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     onFocus={() => setIsFocused(true)}
                     placeholder="What is happening?!"
-                    className="w-full bg-transparent border-none focus:ring-0 text-xl font-medium text-gray-900 dark:text-white placeholder-gray-400 resize-none min-h-[60px]"
+                    className="w-full bg-transparent border-none focus:ring-0 text-xl font-medium text-slate-900 dark:text-white placeholder-gray-400 resize-none min-h-[60px]"
                     rows={isFocused ? 4 : 2}
                  />
 
@@ -157,49 +177,49 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                      </div>
                  )}
                  
-                    {/* Project Mode Inputs */}
-                 {(isProjectMode || showLocation || showDate || showDifficulty) && (
-                    <div className="mt-4 p-4 bg-gray-50 dark:bg-white/5 rounded-xl border border-gray-100 dark:border-white/5 space-y-3 animate-in fade-in slide-in-from-top-4">
-                        {/* Always show Tools & Time if Project Mode is explicitly ON */}
-                        {isProjectMode && (
+                    {/* Devlog Mode Inputs */}
+                 {(isDevlogMode || showLocation || showDate || showDifficulty) && (
+                    <div className="mt-4 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/5 space-y-3 animate-in fade-in slide-in-from-top-4">
+                        {/* Always show Tools & Time if Devlog Mode is explicitly ON */}
+                        {isDevlogMode && (
                             <>
                                 <div className="flex gap-2">
                                      <input 
                                         type="text"
                                         placeholder="Tools used (e.g. Figma, React)"
-                                        value={projectStats.tools}
-                                        onChange={(e) => setProjectStats({...projectStats, tools: e.target.value})}
-                                        className="flex-1 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
+                                        value={devlogStats.tools}
+                                        onChange={(e) => setDevlogStats({...devlogStats, tools: e.target.value})}
+                                        className="flex-1 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
                                      />
                                      <input 
                                         type="text"
                                         placeholder="Time spent"
-                                        value={projectStats.timeSpent}
-                                        onChange={(e) => setProjectStats({...projectStats, timeSpent: e.target.value})}
-                                        className="w-24 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
+                                        value={devlogStats.timeSpent}
+                                        onChange={(e) => setDevlogStats({...devlogStats, timeSpent: e.target.value})}
+                                        className="w-24 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
                                      />
                                 </div>
                                 <input 
                                     type="text"
-                                    placeholder="Project/Code Link (Optional)"
-                                    value={projectStats.projectLink}
-                                    onChange={(e) => setProjectStats({...projectStats, projectLink: e.target.value})}
-                                    className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
+                                    placeholder="Devlog/Code Link (Optional)"
+                                    value={devlogStats.devlogLink}
+                                    onChange={(e) => setDevlogStats({...devlogStats, devlogLink: e.target.value})}
+                                    className="w-full bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
                                  />
                             </>
                         )}
                         
-                        {/* Phase 2: Live Preview & Resources (Only in Project Mode) */}
-                        {isProjectMode && (
-                            <div className="space-y-3 pt-2 border-t border-gray-100 dark:border-white/5">
+                        {/* Phase 2: Live Preview & Resources (Only in Devlog Mode) */}
+                        {isDevlogMode && (
+                            <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-white/5">
                                 {/* Live Preview URL */}
-                                <div className="flex items-center gap-2 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2">
-                                     <Link className="w-4 h-4 text-gray-400" />
+                                <div className="flex items-center gap-2 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2">
+                                     <Link className="w-4 h-4 text-slate-400" />
                                      <input 
                                         type="text"
                                         placeholder="Live Demo URL (https://...)"
-                                        value={projectStats.livePreviewUrl}
-                                        onChange={(e) => setProjectStats({...projectStats, livePreviewUrl: e.target.value})}
+                                        value={devlogStats.livePreviewUrl}
+                                        onChange={(e) => setDevlogStats({...devlogStats, livePreviewUrl: e.target.value})}
                                         className="w-full bg-transparent border-none text-sm focus:outline-none"
                                      />
                                 </div>
@@ -212,19 +232,19 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                                             placeholder="Resource Title (e.g. GitHub Repo)"
                                             value={resourceInput.title}
                                             onChange={(e) => setResourceInput({...resourceInput, title: e.target.value})}
-                                            className="flex-1 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                                            className="flex-1 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none"
                                          />
                                          <input 
                                             type="text"
                                             placeholder="URL"
                                             value={resourceInput.url}
                                             onChange={(e) => setResourceInput({...resourceInput, url: e.target.value})}
-                                            className="flex-1 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none"
+                                            className="flex-1 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none"
                                          />
                                          <button
                                             onClick={() => {
                                                 if(resourceInput.title && resourceInput.url) {
-                                                    setProjectStats(prev => ({
+                                                    setDevlogStats(prev => ({
                                                         ...prev,
                                                         resources: [...prev.resources, { ...resourceInput, type: 'link' }]
                                                     }));
@@ -238,14 +258,14 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                                     </div>
                                     
                                     {/* Resource List */}
-                                    {projectStats.resources.length > 0 && (
+                                    {devlogStats.resources.length > 0 && (
                                         <div className="flex flex-wrap gap-2">
-                                            {projectStats.resources.map((res, idx) => (
-                                                <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-gray-100 dark:bg-white/10 rounded-full text-xs font-medium">
+                                            {devlogStats.resources.map((res, idx) => (
+                                                <div key={idx} className="flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-white/10 rounded-full text-xs font-medium">
                                                     <FileText className="w-3 h-3" />
                                                     <span>{res.title}</span>
                                                     <button 
-                                                        onClick={() => setProjectStats(prev => ({
+                                                        onClick={() => setDevlogStats(prev => ({
                                                             ...prev,
                                                             resources: prev.resources.filter((_, i) => i !== idx)
                                                         }))}
@@ -264,15 +284,15 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                         {/* Difficulty Selector */}
                         {showDifficulty && (
                              <div className="flex items-center gap-2">
-                                <span className="text-xs text-gray-500 font-bold uppercase">Difficulty:</span>
+                                <span className="text-xs text-slate-500 font-bold uppercase">Difficulty:</span>
                                 {['Beginner', 'Intermediate', 'Advanced'].map(level => (
                                     <button
                                         key={level}
-                                        onClick={() => setProjectStats({...projectStats, difficulty: level})}
+                                        onClick={() => setDevlogStats({...devlogStats, difficulty: level})}
                                         className={`px-3 py-1 rounded-full text-xs font-bold border transition-all ${
-                                            projectStats.difficulty === level 
+                                            devlogStats.difficulty === level 
                                             ? 'bg-purple-100 text-purple-600 border-purple-200' 
-                                            : 'bg-white text-gray-500 border-gray-200 hover:border-purple-300'
+                                            : 'bg-white text-slate-500 border-slate-200 hover:border-purple-300'
                                         }`}
                                     >
                                         {level}
@@ -284,25 +304,25 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                         {/* Location & Date */}
                         <div className="flex gap-2">
                              {showLocation && (
-                                 <div className="flex-1 flex items-center gap-2 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2">
-                                     <MapPin className="w-4 h-4 text-gray-400" />
+                                 <div className="flex-1 flex items-center gap-2 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2">
+                                     <MapPin className="w-4 h-4 text-slate-400" />
                                      <input 
                                         type="text"
                                         placeholder="Add Location"
-                                        value={projectStats.location}
-                                        onChange={(e) => setProjectStats({...projectStats, location: e.target.value})}
+                                        value={devlogStats.location}
+                                        onChange={(e) => setDevlogStats({...devlogStats, location: e.target.value})}
                                         className="w-full bg-transparent border-none text-sm focus:outline-none"
                                      />
                                  </div>
                              )}
                              {showDate && (
-                                 <div className="flex items-center gap-2 bg-white dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2">
-                                     <Calendar className="w-4 h-4 text-gray-400" />
+                                 <div className="flex items-center gap-2 bg-white dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2">
+                                     <Calendar className="w-4 h-4 text-slate-400" />
                                      <input 
                                         type="date"
-                                        value={projectStats.startDate}
-                                        onChange={(e) => setProjectStats({...projectStats, startDate: e.target.value})}
-                                        className="bg-transparent border-none text-sm focus:outline-none text-gray-600 dark:text-gray-300 w-full"
+                                        value={devlogStats.startDate}
+                                        onChange={(e) => setDevlogStats({...devlogStats, startDate: e.target.value})}
+                                        className="bg-transparent border-none text-sm focus:outline-none text-slate-600 dark:text-gray-300 w-full"
                                      />
                                  </div>
                              )}
@@ -312,7 +332,7 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                  
                  {/* Toolbar */}
                  {isFocused && (
-                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-white/5 animate-in fade-in slide-in-from-top-2">
+                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-white/5 animate-in fade-in slide-in-from-top-2">
                          <div className="flex items-center gap-1">
                              <button 
                                 onClick={() => fileInputRef.current?.click()}
@@ -338,7 +358,7 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                                 {showEmojiPicker && (
                                     <div className="absolute top-12 left-0 z-50 animate-in fade-in zoom-in-95 origin-top-left">
                                         <div className="fixed inset-0 z-40" onClick={() => setShowEmojiPicker(false)} />
-                                        <div className="relative z-50 shadow-2xl rounded-2xl overflow-hidden border border-gray-100 dark:border-white/10">
+                                        <div className="relative z-50 shadow-2xl rounded-2xl overflow-hidden border border-slate-100 dark:border-white/10">
                                             <EmojiPicker 
                                                 onEmojiClick={(emojiData) => {
                                                     setContent(prev => prev + emojiData.emoji);
@@ -374,10 +394,10 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                                  <MapPin className="w-5 h-5" />
                              </button>
                              <button 
-                                onClick={() => setIsProjectMode(!isProjectMode)}
-                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ml-2 border ${isProjectMode ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 border-purple-200' : 'text-gray-500 border-gray-200 dark:border-white/10 hover:border-purple-300'}`}
+                                onClick={() => setIsDevlogMode(!isDevlogMode)}
+                                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ml-2 border ${isDevlogMode ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 border-purple-200' : 'text-slate-500 border-slate-200 dark:border-white/10 hover:border-purple-300'}`}
                              >
-                                 {isProjectMode ? 'Project Mode On' : '+ Add Context'}
+                                 {isDevlogMode ? 'Devlog Mode On' : '+ Add Context'}
                              </button>
                              <input 
                                 type="file" 
@@ -401,7 +421,7 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
                              <button 
                                 onClick={handleSubmit}
                                 disabled={(!content.trim() && selectedFiles.length === 0) || loading}
-                                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-sm shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
+                                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-sm shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
                              >
                                  {loading ? (
                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -419,3 +439,5 @@ const CreatePost = ({ onPostCreated, forceShow = false }) => {
 };
 
 export default CreatePost;
+
+

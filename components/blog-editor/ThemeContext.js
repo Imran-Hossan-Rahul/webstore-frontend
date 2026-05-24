@@ -23,7 +23,7 @@ export function ThemeProvider({ children }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div data-theme={theme} className="blog-editor-theme-wrapper">
+      <div data-theme={theme} className="codex-editor-theme-wrapper">
         {children}
       </div>
     </ThemeContext.Provider>
@@ -37,3 +37,4 @@ export const useTheme = () => {
   }
   return context
 }
+

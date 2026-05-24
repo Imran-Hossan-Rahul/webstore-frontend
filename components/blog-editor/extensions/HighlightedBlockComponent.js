@@ -59,7 +59,7 @@ export default function HighlightedBlockComponent(props) {
       >
         <button 
            onClick={addParagraphBefore}
-           className="bg-blue-500 hover:bg-blue-600 text-white rounded px-2 py-1 shadow-sm flex items-center justify-center transition-colors text-xs font-semibold"
+           className="bg-indigo-600 hover:bg-blue-600 text-white rounded px-2 py-1 shadow-sm flex items-center justify-center transition-colors text-xs font-semibold"
            title="Add line above"
         >
           <Plus size={14} className="mr-1" /> Add Above
@@ -71,7 +71,7 @@ export default function HighlightedBlockComponent(props) {
           {isWarning ? (
             <AlertCircle className="w-6 h-6 text-amber-500" />
           ) : (
-            <Info className="w-6 h-6 text-blue-500" />
+            <Info className="w-6 h-6 text-indigo-600" />
           )}
         </div>
         <div className="flex-grow">

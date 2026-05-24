@@ -1,200 +1,383 @@
 "use client";
 
-import React from "react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
-import CheckBox from "@/components/Input/CheckBox";
-import TrackerClient from "@/components/TrackerClient";
+import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import { User, Mail, Lock, ShieldCheck, ArrowRight, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// Custom Button Components for this specific design
-const LargeSocialButton = ({ icon, text, style, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`w-full h-12 rounded-lg font-medium flex items-center justify-center gap-3 transition-all duration-200 border ${style}`}
-  >
-    {icon}
-    <span>{text}</span>
-  </button>
-);
+import AuthContainer from "@/components/Auth/AuthContainer";
+import SocialAuth from "@/components/Auth/SocialAuth";
+import TrackerPatron from "@/components/TrackerPatron";
+import { api } from "@/utils/api";
+
+// ─── Validation helpers ───────────────────────────────────────────────────────
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Returns 0–3 strength score */
+function getPasswordStrength(password) {
+  if (!password) return 0;
+  let score = 0;
+  if (password.length >= 8)   score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/\d/.test(password))    score++;
+  return score;
+}
+
+const STRENGTH_LABELS = ["", "Weak", "Good", "Strong"];
+const STRENGTH_COLORS = ["", "bg-red-500", "bg-yellow-400", "bg-emerald-500"];
+const STRENGTH_TEXT   = ["", "text-red-500", "text-yellow-500", "text-emerald-500"];
+
+function validateRegister({ name, email, password, confirmPassword }) {
+  const errors = {};
+  if (!name.trim() || name.trim().length < 2) {
+    errors.name = "Full name must be at least 2 characters";
+  }
+  if (!email.trim()) {
+    errors.email = "Email is required";
+  } else if (!EMAIL_REGEX.test(email)) {
+    errors.email = "Enter a valid email address";
+  }
+  if (!password) {
+    errors.password = "Password is required";
+  } else if (password.length < 8) {
+    errors.password = "Must be at least 8 characters";
+  } else if (!/[A-Z]/.test(password)) {
+    errors.password = "Must contain at least one uppercase letter";
+  } else if (!/\d/.test(password)) {
+    errors.password = "Must contain at least one number";
+  }
+  if (!confirmPassword) {
+    errors.confirmPassword = "Please confirm your password";
+  } else if (password !== confirmPassword) {
+    errors.confirmPassword = "Passwords do not match";
+  }
+  return errors;
+}
+
+// ─── Shared Input component ───────────────────────────────────────────────────
+
+const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+
+  return (
+    <div className="space-y-2 mb-6">
+      <div className="px-1">
+        <label className="text-[13px] font-bold text-slate-700 dark:text-zinc-400 tracking-wide uppercase">
+          {label}
+        </label>
+      </div>
+      <div className="relative group">
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors duration-300">
+          <Icon size={20} strokeWidth={1.5} />
+        </div>
+        <input
+          {...props}
+          type={inputType}
+          className={`w-full pl-12 ${isPassword ? "pr-12" : "pr-4"} py-4 bg-slate-50 dark:bg-zinc-950/50 border-2 ${
+            error ? "border-red-500/50" : "border-slate-100 dark:border-zinc-800"
+          } rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-950 focus:outline-none transition-all duration-300`}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            tabIndex={-1}
+            onClick={() => setShowPassword((v) => !v)}
+            className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors"
+          >
+            {showPassword ? <EyeOff size={20} strokeWidth={1.5} /> : <Eye size={20} strokeWidth={1.5} />}
+          </button>
+        )}
+      </div>
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            key="err"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="text-red-500 text-[11px] font-bold mt-1.5 ml-1 uppercase tracking-tighter"
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// ─── Password Strength Bar ────────────────────────────────────────────────────
+
+function PasswordStrengthBar({ password }) {
+  const score = getPasswordStrength(password);
+  if (!password) return null;
+
+  return (
+    <div className="px-1 -mt-4 mb-5 space-y-1.5">
+      <div className="flex gap-1.5">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`flex-1 h-1 rounded-full transition-all duration-300 ${
+              i <= score ? STRENGTH_COLORS[score] : "bg-slate-200 dark:bg-zinc-800"
+            }`}
+          />
+        ))}
+      </div>
+      <p className={`text-[11px] font-bold uppercase tracking-wider ${STRENGTH_TEXT[score]}`}>
+        {STRENGTH_LABELS[score]} password
+      </p>
+    </div>
+  );
+}
+
+// ─── Register Page ────────────────────────────────────────────────────────────
 
 export default function RegisterPage() {
-  const router = useRouter();
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name,            setName]            = useState("");
+  const [email,           setEmail]           = useState("");
+  const [password,        setPassword]        = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [loading,         setLoading]         = useState(false);
+  const [success,         setSuccess]         = useState(false);
+  const [fieldErrors,     setFieldErrors]     = useState({});
+  const [generalError,    setGeneralError]    = useState("");
+
+  // Social OAuth redirect
+  const handleSocialLogin = (provider) => {
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL.replace("/api/v1", "");
+    window.location.href = `${backendUrl}/api/v1/oauth/${provider}/login`;
+  };
+
+  // Clear individual field error on change
+  const clearError = (field) =>
+    setFieldErrors((prev) => ({ ...prev, [field]: "" }));
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setError("");
-    
-    // Basic validation
-    if (!name || !email || !password || !confirmPassword) {
-      setError("Please fill in all fields");
+    setGeneralError("");
+
+    // Client-side validation
+    const errors = validateRegister({ name, email, password, confirmPassword });
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
-    if (password !== confirmPassword) {
-        setError("Passwords do not match");
-        return;
-    }
+    setFieldErrors({});
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ name, email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "Registration failed");
+      // Use api utility — CSRF + credentials handled automatically
+      const data = await api.post("/auth/register", { name, email, password });
 
-      // Store auth
-      Cookies.set("token", data.data.accessToken, { expires: 7 });
-      Cookies.set("hasCreatorAccount", data.data.hasCreatorAccount, { expires: 7 });
-      localStorage.setItem("user", JSON.stringify(data.data));
-      localStorage.setItem("hasCreatorAccount", data.data.hasCreatorAccount);
-      localStorage.setItem("userId", data.data._id);
-      localStorage.setItem("token", data.data.accessToken);
+      // ✅ Tokens live in httpOnly cookies — we store only UI state
+      localStorage.setItem("user",                JSON.stringify(data.data));
+      localStorage.setItem("hasCraftsmanAccount", String(data.data.hasCraftsmanAccount));
+      localStorage.setItem("userId",              data.data._id);
+      
+      // Store CSRF token for cross-port/cross-origin requests
+      if (data.data.csrfToken) {
+        localStorage.setItem("XSRF-TOKEN", data.data.csrfToken);
+      }
 
       setSuccess(true);
-      
-      // Force refresh to ensure Server Components see the cookie
-      router.refresh();
-      
       setTimeout(() => {
-        router.push("/");
+        window.location.href = "/";
       }, 1500);
-
     } catch (err) {
-      setError(err.message);
+      setGeneralError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <div className="flex min-h-screen w-full bg-white dark:bg-black font-sans selection:bg-purple-100 items-center justify-center">
-      <TrackerClient />
-      
-      {/* Form — centered */}
-      <div className="w-full max-w-md px-6 py-10 fade-in">
-        <div className="max-w-md w-full mx-auto">
-          
-          {/* Header */}
-          <div className="mb-10">
-            <h1 className="text-4xl font-serif font-bold text-gray-900 dark:text-white mb-3">
-              ✦ Welcome Back
-            </h1>
-            <p className="text-gray-500 text-sm">
-              Sign in to access your dashboard and analytics.
+    <AuthContainer
+      title="Create account"
+      subtitle="Join the elite community of modern craftsmen"
+      footer={
+        <p className="text-center text-[15px] text-slate-500 dark:text-zinc-500 font-medium">
+          Already a member?{" "}
+          <Link
+            href="/auth/login"
+            className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all"
+          >
+            Sign in here
+          </Link>
+        </p>
+      }
+    >
+      <TrackerPatron />
+
+      <AnimatePresence mode="wait">
+        {/* ── Success State ──────────────────────────────────────────────── */}
+        {success ? (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center justify-center py-10"
+          >
+            <div className="w-24 h-24 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-6">
+              <CheckCircle2 size={56} strokeWidth={1.5} />
+            </div>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+              Account Created
+            </h3>
+            <p className="text-slate-500 dark:text-zinc-400 mt-2 text-center">
+              Welcome aboard! Redirecting to your workspace…
             </p>
-          </div>
+          </motion.div>
 
-          {/* Social Buttons */}
-          <div className="space-y-3 mb-8">
-            <LargeSocialButton 
-              icon={<img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="G" />}
-              text="Continue with Google"
-              style="bg-white text-gray-700 border-gray-200 hover:bg-gray-50 dark:bg-zinc-900 dark:text-white dark:border-zinc-800"
+        /* ── Register Form ──────────────────────────────────────────────── */
+        ) : (
+          <motion.div
+            key="register"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <SocialAuth
+              onGoogle={() => handleSocialLogin("google")}
+              onGithub={() => handleSocialLogin("github")}
             />
-            <LargeSocialButton 
-              icon={<img src="https://www.svgrepo.com/show/511330/apple-173.svg" className="w-5 h-5" alt="A" />}
-              text="Continue with Apple"
-              style="bg-black text-white border-black hover:opacity-90 dark:bg-white dark:text-black dark:border-white"
-            />
-          </div>
 
-          <div className="relative mb-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100 dark:border-gray-800"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white dark:bg-black text-gray-400 uppercase text-xs tracking-wider">Or</span>
-            </div>
-          </div>
-
-          {/* Form */}
-          <form className="space-y-5" onSubmit={handleSignUp}>
-            <div>
-                <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2">Full Name</label>
-                <input 
-                    type="text" 
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="John Doe"
-                    className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
-                />
+            {/* Divider */}
+            <div className="relative mb-10">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-100 dark:border-zinc-800" />
+              </div>
+              <div className="relative flex justify-center text-[11px] uppercase tracking-[0.2em] font-black text-slate-400">
+                <span className="px-4 bg-white dark:bg-[#121212] rounded-full">
+                  Register Account
+                </span>
+              </div>
             </div>
 
-            <div>
-                <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2">Email Address</label>
-                <input 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
-                    className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
-                />
-            </div>
+            <form onSubmit={handleSignUp} className="space-y-1" noValidate>
+              {/* Name */}
+              <AuthInput
+                label="Full Name"
+                icon={User}
+                type="text"
+                placeholder="John Doe"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => { setName(e.target.value); clearError("name"); }}
+                error={fieldErrors.name}
+              />
 
-            {/* Split Password Row */}
-            <div className="flex gap-4">
-                <div className="w-1/2">
-                    <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2">Password</label>
-                    <input 
-                        type="password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
-                    />
+              {/* Email */}
+              <AuthInput
+                label="Email Address"
+                icon={Mail}
+                type="email"
+                placeholder="patron@example.com"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); clearError("email"); }}
+                error={fieldErrors.email}
+              />
+
+              {/* Password + Strength bar */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4">
+                <div>
+                  <AuthInput
+                    label="Password"
+                    icon={Lock}
+                    type="password"
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                    value={password}
+                    onChange={(e) => { setPassword(e.target.value); clearError("password"); }}
+                    error={fieldErrors.password}
+                  />
+                  <PasswordStrengthBar password={password} />
                 </div>
-                <div className="w-1/2">
-                     <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2">Confirm</label>
-                    <input 
-                        type="password" 
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full px-4 py-3 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
+                <AuthInput
+                  label="Confirm"
+                  icon={ShieldCheck}
+                  type="password"
+                  placeholder="••••••••"
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => { setConfirmPassword(e.target.value); clearError("confirmPassword"); }}
+                  error={fieldErrors.confirmPassword}
+                />
+              </div>
+
+              {/* General / server error */}
+              <AnimatePresence>
+                {generalError && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)] flex-shrink-0" />
+                    <p className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-tighter">
+                      {generalError}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Terms checkbox */}
+              <div className="pb-4 px-1">
+                <label className="flex items-center gap-3 cursor-pointer group">
+                  <div className="relative flex items-center flex-shrink-0">
+                    <input
+                      type="checkbox"
+                      required
+                      className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-slate-200 dark:border-zinc-800 transition-all checked:bg-indigo-600 checked:border-indigo-600"
                     />
-                </div>
-            </div>
+                    <svg
+                      className="absolute h-3.5 w-3.5 pointer-events-none hidden peer-checked:block text-white left-0.5 top-0.5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  <span className="text-sm text-slate-500 dark:text-zinc-500 group-hover:text-slate-700 dark:group-hover:text-zinc-300 transition-colors">
+                    I agree to the{" "}
+                    <span className="font-bold underline text-slate-700 dark:text-zinc-300">
+                      Community Guidelines
+                    </span>
+                  </span>
+                </label>
+              </div>
 
-            <div className="flex items-center justify-between pt-2">
-                 <div className="flex items-center">
-                    <CheckBox />
-                    <span className="ml-2 text-xs text-gray-500">Remember me</span>
-                 </div>
-                 <a href="/auth/login" className="text-xs font-semibold text-purple-600 hover:text-purple-700">Already have account?</a>
-            </div>
-
-            <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl transition-all duration-200 shadow-lg shadow-purple-500/30 flex items-center justify-center gap-2"
-            >
-                {loading ? "Creating..." : "Sign Up →"}
-            </button>
-
-            {error && <p className="text-red-500 text-xs text-center mt-2">{error}</p>}
-            {success && <p className="text-green-500 text-xs text-center mt-2">Account created successfully!</p>}
-          </form>
-
-          <div className="mt-8 text-center">
-             <p className="text-xs text-gray-400">
-                Don't have an account? <span className="text-purple-600 font-bold cursor-pointer">Sign up for free</span>
-             </p>
-          </div>
-
-        </div>
-      </div>
-    </div>
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
+              >
+                {loading ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span className="text-[17px] tracking-tight">Create Account</span>
+                    <ArrowRight
+                      size={20} strokeWidth={1.5}
+                      className="group-hover:translate-x-1 transition-transform duration-300"
+                    />
+                  </>
+                )}
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </AuthContainer>
   );
 }

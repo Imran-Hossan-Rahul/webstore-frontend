@@ -3,9 +3,50 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { Search, Loader2, User, FileText, Layout, ArrowRight, Sparkles } from "lucide-react";
+import { Search, Loader2, User, FileText, Layout, ArrowRight, Trophy, Zap, BookOpen, CheckCircle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import AIEnhanceButton from '../AIEnhanceButton';
+
+const HighlightMatch = ({ text, query }) => {
+  if (!query || !text || typeof text !== 'string') return <>{text}</>;
+  // Escape regex characters in query
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts = text.split(new RegExp(`(${escapedQuery})`, 'gi'));
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === query.toLowerCase() ? (
+          <mark key={i} className="bg-amber-100/80 dark:bg-amber-500/20 text-slate-900 dark:text-amber-100 px-0.5 rounded-sm font-semibold">
+            {part}
+          </mark>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+};
+
+const HighlightedSnippet = ({ text, query, maxLength = 120 }) => {
+  if (!text || typeof text !== 'string') return null;
+  if (!query) return <>{text.substring(0, maxLength)}{text.length > maxLength ? '...' : ''}</>;
+  
+  const lowerText = text.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const matchIndex = lowerText.indexOf(lowerQuery);
+  
+  if (matchIndex === -1) {
+      return <>{text.substring(0, maxLength)}{text.length > maxLength ? '...' : ''}</>;
+  }
+  
+  const halfWindow = Math.floor((maxLength - query.length) / 2);
+  let start = Math.max(0, matchIndex - halfWindow);
+  let end = Math.min(text.length, matchIndex + query.length + halfWindow);
+  
+  const snippet = (start > 0 ? '...' : '') + text.substring(start, end) + (end < text.length ? '...' : '');
+  
+  return <HighlightMatch text={snippet} query={query} />;
+};
 
 export default function SearchMain() {
   const searchParams = useSearchParams();
@@ -19,11 +60,14 @@ export default function SearchMain() {
   const [results, setResults] = useState({ 
       users: [], 
       posts: [], 
-      templates: [], 
-      blogs: [] 
+      artifacts: [], 
+      codex: [],
+      jobs: [],
+      challenges: []
   });
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   useEffect(() => {
     if (query) {
@@ -39,11 +83,11 @@ export default function SearchMain() {
     setDisplayedQuery(q);
     
     try {
-      const res = await api.get(`/search?q=${encodeURIComponent(q)}`);
+      const res = await api.get(`/search?q=${encodeURIComponent(q)}${verifiedOnly ? '&verifiedOnly=true' : ''}`);
       if (res.success) {
         setResults(res.data);
       } else {
-        setResults({ users: [], posts: [], templates: [], blogs: [] });
+        setResults({ users: [], posts: [], artifacts: [], codex: [], jobs: [], challenges: [] });
       }
     } catch (error) {
       console.error("Search error:", error);
@@ -60,127 +104,114 @@ export default function SearchMain() {
   };
 
   // Helper to count total results
-  const totalResults = (results.users?.length || 0) + (results.posts?.length || 0) + (results.templates?.length || 0) + (results.blogs?.length || 0);
+  const totalResults = (results.users?.length || 0) + (results.posts?.length || 0) + (results.artifacts?.length || 0) + (results.codex?.length || 0) + (results.jobs?.length || 0) + (results.challenges?.length || 0);
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] dark:bg-[#0a0a0a] pt-24 px-4 pb-20">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-transparent">
+      <div className="max-w-6xl">
         
-        {/* Search Header */}
-        <div className="mb-12">
-            <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-purple-600" />
-                Search Results
-            </h1>
-            
-            <form onSubmit={onSearchSubmit} className="relative max-w-2xl">
-                <div className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity" />
-                    <div className="relative bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-2xl p-2 flex items-center shadow-xl">
-                        <Search className="w-6 h-6 text-gray-400 ml-4" />
-                        
-                        <div className="ml-2">
-                             <AIEnhanceButton 
-                                text={searchQuery} 
-                                onUpdate={setSearchQuery}
-                                placement="bottom"
-                             />
-                        </div>
+        {/* Search Results Summary */}
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <h1 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Search className="w-5 h-5 text-slate-900 dark:text-white" />
+                    Search Results
+                </h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                    {loading ? "Searching..." : `Found ${totalResults} results for "${displayedQuery}"`}
+                </p>
+            </div>
 
-                        <input 
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Search creators, templates, resources..."
-                            className="flex-1 bg-transparent border-none focus:ring-0 text-lg px-4 text-gray-900 dark:text-white placeholder:text-gray-500 font-medium h-12"
-                        />
-                        <button 
-                            type="submit"
-                            disabled={loading}
-                            className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold hover:scale-105 transition-transform disabled:opacity-50"
-                        >
-                            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5" />}
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
+            {/* Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+                {[
+                    { id: "all", label: "All", icon: Layout },
+                    { id: "patrons", label: "Craftsmen", icon: User, count: results.patrons?.length },
+                    { id: "posts", label: "Posts", icon: FileText, count: results.posts?.length },
+                    { id: "artifacts", label: "Artifacts", icon: Layout, count: results.artifacts?.length },
+                    { id: "codex", label: "Codex", icon: BookOpen, count: results.codex?.length },
+                    { id: "jobs", label: "Jobs", icon: null, count: results.jobs?.length },
+                    { id: "challenges", label: "Challenges", icon: Trophy, count: results.challenges?.length },
+                ].map((tab) => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all whitespace-nowrap ${
+                            activeTab === tab.id
+                            ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm"
+                            : "bg-white dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/10 border border-slate-100 dark:border-white/5"
+                        }`}
+                    >
+                        {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
+                        {tab.label}
+                        {tab.count > 0 && (
+                            <span className={`ml-1 text-[10px] px-1.5 py-0.5 rounded ${activeTab === tab.id ? 'bg-white/20' : 'bg-slate-100 dark:bg-white/10'}`}>
+                                {tab.count}
+                            </span>
+                        )}
+                    </button>
+                ))}
+            </div>
 
-        {/* Tabs */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
-            {[
-                { id: "all", label: "All Results", icon: Layout },
-                { id: "users", label: "Creators", icon: User, count: results.users?.length },
-                { id: "posts", label: "Posts", icon: FileText, count: results.posts?.length },
-                { id: "templates", label: "Templates", icon: Layout, count: results.templates?.length },
-            ].map((tab) => (
-                <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all whitespace-nowrap ${
-                        activeTab === tab.id
-                        ? "bg-black dark:bg-white text-white dark:text-black shadow-lg shadow-purple-500/20"
-                        : "bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10"
-                    }`}
-                >
-                    <tab.icon className="w-4 h-4" />
-                    {tab.label}
-                    {tab.count > 0 && (
-                        <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-md ${activeTab === tab.id ? 'bg-white/20' : 'bg-gray-200 dark:bg-white/10'}`}>
-                            {tab.count}
-                        </span>
-                    )}
-                </button>
-            ))}
+
         </div>
 
         {/* Results Content */}
         {loading ? (
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
-                {[1,2,3,4,5,6].map(i => (
-                    <div key={i} className="h-48 bg-gray-200 dark:bg-white/5 rounded-2xl" />
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-pulse">
+                {[1,2,3,4].map(i => (
+                    <div key={i} className="h-32 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/5" />
                 ))}
              </div>
         ) : totalResults === 0 ? (
-            <div className="text-center py-20 bg-white/50 dark:bg-white/5 rounded-3xl border border-dashed border-gray-300 dark:border-white/10">
-                <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Search className="w-10 h-10 text-purple-600" />
+            <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm">
+                <div className="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-slate-300" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No results found</h3>
-                <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
-                    We couldn't find anything matching "{displayedQuery}". Try searching for something else or use the AI Enhance button to refine your query.
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">No matches found</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto font-medium">
+                    We couldn't find anything matching "{displayedQuery}". Try different keywords.
                 </p>
             </div>
         ) : (
-            <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-500">
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 
                 {/* Users Section */}
                 {results.users?.length > 0 && (activeTab === 'all' || activeTab === 'users') && (
                     <section>
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                            <User className="w-5 h-5 text-purple-500" /> Creators
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Craftsmen</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {results.users.map((user) => (
-                                <Link href={`/profile/${user._id}`} key={user._id}>
-                                    <div className="bg-white dark:bg-[#111] p-4 rounded-xl border border-gray-100 dark:border-white/5 hover:border-purple-500/30 hover:shadow-xl hover:-translate-y-1 transition-all group">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-[#222] overflow-hidden">
+                                <Link href={`/u/${user.username || user._id}`} key={user._id}>
+                                    <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/10 overflow-hidden border border-slate-50 dark:border-white/10">
                                                 {user.profilePicture ? (
                                                     <img src={user.profilePicture} alt={user.name} className="w-full h-full object-cover" />
                                                 ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-xl font-bold text-gray-400">
-                                                        {user.name[0]}
+                                                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-slate-400">
+                                                        {user.name?.[0]}
                                                     </div>
                                                 )}
                                             </div>
-                                            <div>
-                                                <h3 className="font-bold text-gray-900 dark:text-white group-hover:text-purple-500 transition-colors">{user.name}</h3>
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-1">{user.bio || "No bio yet"}</p>
-                                                {user.hasCreatorAccount && (
-                                                    <span className="inline-block mt-2 px-2 py-0.5 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-[10px] font-bold rounded">CREATOR</span>
+                                            <div className="flex-1 min-w-0">
+                                                <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors truncate flex items-center gap-1.5">
+                                                    <HighlightMatch text={user.name} query={displayedQuery} />
+                                                    {user.isVerified && <CheckCircle className="w-3.5 h-3.5 text-slate-900 dark:text-white" fill="currentColor" />}
+                                                </h3>
+                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">
+                                                    @<HighlightMatch text={user.username || "user"} query={displayedQuery} />
+                                                </p>
+                                                {user.bio && (
+                                                    <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">
+                                                        <HighlightedSnippet text={user.bio} query={displayedQuery} maxLength={60} />
+                                                    </p>
                                                 )}
                                             </div>
+                                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-all opacity-0 group-hover:opacity-100" />
                                         </div>
                                     </div>
                                 </Link>
@@ -189,24 +220,33 @@ export default function SearchMain() {
                     </section>
                 )}
 
-                {/* Templates Section */}
-                {results.templates?.length > 0 && (activeTab === 'all' || activeTab === 'templates') && (
+                {/* Artifacts Section */}
+                {results.artifacts?.length > 0 && (activeTab === 'all' || activeTab === 'artifacts') && (
                     <section>
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                             <Layout className="w-5 h-5 text-pink-500" /> Templates
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                             {results.templates.map((template) => (
-                                 <Link href={`/template/${template._id}`} key={template._id} className="group">
-                                    <div className="bg-white dark:bg-[#111] rounded-2xl overflow-hidden border border-gray-100 dark:border-white/5 hover:shadow-2xl hover:shadow-pink-500/10 transition-all">
-                                        <div className="p-6">
-                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-pink-500 transition-colors">{template.title}</h3>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-2">{template.description}</p>
-                                            <div className="flex flex-wrap gap-2 mt-4">
-                                                {template.tags?.slice(0,3).map(tag => (
-                                                    <span key={tag} className="text-xs font-medium px-2 py-1 bg-gray-100 dark:bg-white/5 rounded-md text-gray-600 dark:text-gray-300">#{tag}</span>
-                                                ))}
-                                            </div>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Artifacts</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                             {results.artifacts.map((artifact) => (
+                                 <Link href={`/artifacts/${artifact._id}`} key={artifact._id} className="group">
+                                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
+                                            <HighlightMatch text={artifact.title} query={displayedQuery} />
+                                        </h3>
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 font-medium">
+                                            <HighlightedSnippet text={artifact.description} query={displayedQuery} maxLength={100} />
+                                        </p>
+                                        <div className="flex flex-wrap gap-1.5 mt-3">
+                                            {(() => {
+                                                const matchedTags = artifact.tags?.filter(t => t.toLowerCase().includes(displayedQuery.toLowerCase())) || [];
+                                                const otherTags = artifact.tags?.filter(t => !t.toLowerCase().includes(displayedQuery.toLowerCase())) || [];
+                                                return [...matchedTags, ...otherTags].slice(0,3).map(tag => (
+                                                    <span key={tag} className="text-[9px] font-bold px-2 py-0.5 bg-slate-50 dark:bg-white/5 rounded text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-white/5">
+                                                        #<HighlightMatch text={tag} query={displayedQuery} />
+                                                    </span>
+                                                ));
+                                            })()}
                                         </div>
                                     </div>
                                  </Link>
@@ -215,26 +255,81 @@ export default function SearchMain() {
                     </section>
                 )}
 
-                {/* Posts/Blogs Section */}
+                {/* Posts/Codex Section */}
                 {results.posts?.length > 0 && (activeTab === 'all' || activeTab === 'posts') && (
                     <section>
-                         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                             <FileText className="w-5 h-5 text-blue-500" /> Posts & Blogs
-                        </h2>
-                        <div className="space-y-4">
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Posts & Codex</h2>
+                        </div>
+                        <div className="grid grid-cols-1 gap-3">
                             {results.posts.map((post) => (
                                 <Link href={`/post/${post._id}`} key={post._id}>
-                                    <div className="bg-white dark:bg-[#111] p-6 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all flex gap-4">
-                                        <div className="flex-1">
-                                             <div className="flex items-center gap-2 mb-2">
-                                                <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
-                                                    {post.user?.profilePicture && <img src={post.user.profilePicture} className="w-full h-full object-cover" />}
-                                                </div>
-                                                <span className="text-xs font-bold text-gray-700 dark:text-gray-300">{post.user?.name}</span>
-                                                <span className="text-xs text-gray-400">• {new Date(post.createdAt).toLocaleDateString()}</span>
+                                    <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all flex items-start gap-4 group">
+                                        <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
+                                            <FileText className="w-4 h-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                                        </div>
+                                         <div className="flex-1 min-w-0">
+                                             <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
+                                                <HighlightMatch text={post.title || (post.content ? post.content.substring(0, 50) : "Untitled Post")} query={displayedQuery} />
+                                             </h3>
+                                             {post.content && (
+                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mb-1 font-medium">
+                                                    <HighlightedSnippet text={post.content} query={displayedQuery} maxLength={120} />
+                                                </p>
+                                             )}
+
+                                             <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-tight">
+                                                 <span className="text-slate-500 dark:text-slate-300 flex items-center gap-1">
+                                                     {post.user?.name}
+                                                     {post.user?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
+                                                 </span>
+                                                <span>•</span>
+                                                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                                              </div>
-                                             <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{post.content?.substring(0, 80) || "Untitled Post"}...</h3>
-                                             <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{post.projectStats?.tools?.join(", ")}</p>
+                                        </div>
+                                        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Codex Section */}
+                {results.codex?.length > 0 && (activeTab === 'all' || activeTab === 'codex') && (
+                    <section>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Codex & Codex</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {results.codex.map((codex) => (
+                                <Link href={`/codex/${codex.slug}`} key={codex._id} className="block h-full">
+                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className="text-[9px] font-black bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white px-2 py-0.5 rounded uppercase transition-colors">{codex.category || 'Codex'}</span>
+                                            <span className="text-[9px] text-slate-400 font-bold">{codex.readTime || '5 min read'}</span>
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1 leading-tight">
+                                            <HighlightMatch text={codex.title} query={displayedQuery} />
+                                        </h3>
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
+                                            <HighlightedSnippet text={codex.subtitle || codex.content} query={displayedQuery} maxLength={120} />
+                                        </p>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-5 h-5 rounded-full bg-slate-200 overflow-hidden">
+                                                    {codex.author?.profilePicture && <img src={codex.author.profilePicture} className="w-full h-full object-cover" />}
+                                                </div>
+                                                <span className="text-[10px] text-slate-500 font-bold flex items-center gap-1">
+                                                    {codex.author?.name}
+                                                    {codex.author?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
+                                                </span>
+                                            </div>
+                                            <div className="w-7 h-7 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-slate-900 transition-all">
+                                                <ArrowRight size={14} />
+                                            </div>
                                         </div>
                                     </div>
                                 </Link>
@@ -243,6 +338,90 @@ export default function SearchMain() {
                     </section>
                 )}
 
+                {/* Jobs Section */}
+                {results.jobs?.length > 0 && (activeTab === 'all' || activeTab === 'jobs') && (
+                    <section>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Jobs</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {results.jobs.map((job) => (
+                                <Link href={`/jobs/${job._id}`} key={job._id}>
+                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
+                                                {/* Icon removed */}
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
+                                                    {job.patron?.name}
+                                                    {job.patron?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
+                                                </span>
+                                                <span className="text-[10px] font-bold text-slate-500">{job.budget?.type === "hourly" ? "Hourly" : "Fixed-price"}</span>
+                                            </div>
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-2 leading-tight">
+                                            <HighlightMatch text={job.title} query={displayedQuery} />
+                                        </h3>
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
+                                            <HighlightedSnippet text={job.description} query={displayedQuery} maxLength={100} />
+                                        </p>
+                                        <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-white/5">
+                                            <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                <Zap size={12} className="text-slate-900 dark:text-white" />
+                                                {job.budget?.min}–{job.budget?.max} {job.budget?.currency || 'TKNS'}
+                                            </span>
+                                            <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Challenges Section */}
+                {results.challenges?.length > 0 && (activeTab === 'all' || activeTab === 'challenges') && (
+                    <section>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Challenges</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {results.challenges.map((challenge) => (
+                                <Link href={`/challenges/${challenge._id}`} key={challenge._id}>
+                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
+                                                <Trophy className="w-4 h-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{challenge.difficulty || 'All Levels'}</span>
+                                                <span className="text-[10px] font-bold text-slate-500 capitalize">{challenge.status?.replace('_', ' ')}</span>
+                                            </div>
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-2 leading-tight">
+                                            <HighlightMatch text={challenge.title} query={displayedQuery} />
+                                        </h3>
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
+                                            <HighlightedSnippet text={challenge.description} query={displayedQuery} maxLength={120} />
+                                        </p>
+                                        <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-white/5">
+                                            <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+                                                <Trophy size={12} className="text-amber-500" />
+                                                Prize: {challenge.prize}
+                                            </span>
+                                            <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+
             </div>
         )}
 
@@ -250,3 +429,5 @@ export default function SearchMain() {
     </div>
   );
 }
+
+

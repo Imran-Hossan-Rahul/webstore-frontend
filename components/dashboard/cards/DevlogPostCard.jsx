@@ -1,0 +1,611 @@
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { 
+  Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
+  Calendar, MapPin, ExternalLink, Github, Layers, Clock, 
+  CheckCircle2, Circle, AlertCircle, FileText, Download, ChevronRight,
+  Tag, Shield, Users, Eye, Lightbulb, Flame, CheckCircle, Code, Zap, HelpCircle, Hash
+} from 'lucide-react';
+import { api } from "@/utils/api";
+import dynamic from 'next/dynamic';
+import { useShare } from "@/hooks/useShare";
+
+const AdvancedCommentSection = dynamic(() => import('../comments/AdvancedCommentSection'), { ssr: false });
+import CraftsmanProfileModal from '../modals/CraftsmanProfileModal';
+import { formatDistanceToNow } from 'date-fns';
+import DiscussionBadges from '../ui/DiscussionBadges';
+import CraftsmanHoverCard from './CraftsmanHoverCard';
+
+import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
+import NProgress from 'nprogress';
+
+const DevlogPostCard = ({ 
+  post,
+  item, 
+  onClick,
+  isDetailPage = false,
+  isCodex = false,
+  isGuest = false,
+  onRequireAuth
+}) => {
+  const actualItem = post || item;
+  const router = useRouter();
+  const { 
+    _id, 
+    slug,
+    title,
+    user, 
+    content, 
+    images, 
+    likes: initialLikes, 
+    likesCount,
+    commentsCount: initialCommentsCount, 
+    isLiked: initialIsLiked, 
+    isFavorited: initialIsFavorited,
+    devlogStats,
+    createdAt,
+    viewsCount,
+    discussionStats
+  } = actualItem;
+
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [likeCount, setLikeCount] = useState(likesCount || initialLikes || 0);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(initialIsFavorited);
+  const [isCraftsmanModalOpen, setIsCraftsmanModalOpen] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  
+  const { share } = useShare();
+  
+  const [currentCommentsCount, setCurrentCommentsCount] = useState(initialCommentsCount || 0);
+
+  // Parse stats
+  const {
+      category: statsCategory,
+      tags = [],
+      tools = [],
+      difficulty = 'Intermediate',
+      status = 'Ongoing',
+      startDate,
+      endDate,
+      originalEndDate,
+      extensions = [],
+      milestones = [],
+      resources = [],
+      collaborators = [],
+      location,
+      license = 'None',
+      devlogLink,
+      livePreviewUrl,
+      documentationUrl,
+      timeSpent
+  } = devlogStats || {};
+
+  const category = statsCategory || actualItem.category || 'Uncategorized';
+
+  const getTimelineProgress = () => {
+      if (!startDate || !endDate) return 0;
+      const start = new Date(startDate).getTime();
+      const end = new Date(endDate).getTime();
+      const now = new Date().getTime();
+      const total = end - start;
+      const elapsed = now - start;
+      return Math.min(Math.max((elapsed / total) * 100, 0), 100);
+  };
+
+  const progress = getTimelineProgress();
+  
+  const formatDate = (dateString) => {
+      if (!dateString) return '';
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = now - date;
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(hours / 24);
+      
+      if (hours < 1) return 'Just now';
+      if (hours < 24) return `${hours}h ago`;
+      if (days < 7) return `${days}d ago`;
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+  
+  const getTechColor = (tool) => {
+      if (!tool) return 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-white/5 dark:text-gray-300 dark:border-white/10';
+      const t = tool.toLowerCase();
+      if (t.includes('react') || t.includes('flutter')) return 'bg-indigo-600/10 text-indigo-600 border-indigo-600/20';
+      if (t.includes('node') || t.includes('mongo') || t.includes('vue')) return 'bg-green-500/10 text-green-500 border-green-500/20';
+      if (t.includes('next') || t.includes('vercel')) return 'bg-slate-800 text-gray-200 border-slate-600 dark:bg-white/10 dark:text-gray-200 dark:border-white/20';
+      if (t.includes('tailwind') || t.includes('css')) return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20';
+      if (t.includes('js') || t.includes('javascript') || t.includes('html')) return 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20';
+      if (t.includes('python') || t.includes('figma')) return 'bg-pink-500/10 text-pink-500 border-pink-500/20';
+      return 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-white/5 dark:text-gray-300 dark:border-white/10';
+  };
+  
+  const handleNavigation = (e) => {
+      if (isDetailPage) return;
+      NProgress.start();
+      if (isCodex) {
+          router.push(`/codex/${slug}`);
+      } else {
+          router.push(`/post/${_id}`);
+      }
+  };
+
+  const handleLike = async (e) => {
+    e.stopPropagation();
+    if (isGuest) { onRequireAuth?.('like'); return; }
+    
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
+    setLikeCount(prev => newIsLiked ? prev + 1 : prev - 1);
+
+    try {
+       await api.put(`/posts/${_id}/like`);
+    } catch (err) {
+       console.error("Like failed", err);
+       setIsLiked(!newIsLiked);
+       setLikeCount(prev => newIsLiked ? prev - 1 : prev + 1);
+    }
+  };
+
+  const handleFavorite = async (e) => {
+    e.stopPropagation();
+    if (isGuest) { onRequireAuth?.('save'); return; }
+    const newIsFavorited = !isFavorited;
+    setIsFavorited(newIsFavorited);
+    try {
+        await api.post('/favorites/toggle', { postId: _id, itemType: 'Post' });
+    } catch (err) {
+        console.error("Favorite failed", err);
+        setIsFavorited(!newIsFavorited);
+    }
+  };
+
+  const getPlainText = (html) => {
+    if (!html) return '';
+    return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  };
+
+  const plainTextDescription = getPlainText(content);
+
+  const handleShare = async (e) => {
+    e.stopPropagation();
+    await share({
+        title: title || "Devlog Update",
+        text: plainTextDescription.substring(0, 100),
+        url: `/post/${_id}`
+    });
+  };
+
+  // ----------------------------------------------------------------------
+  // Dynamic Avatar Fetching (Mirroring ArtifactPostCard)
+  // ----------------------------------------------------------------------
+  const [craftsmanAvatar, setCraftsmanAvatar] = useState(null);
+  
+  useEffect(() => {
+    const authorId = user?._id || user;
+    const initialAvatar = user?.profilePicture || user?.avatar || user?.profilePic;
+    
+    if (authorId && !initialAvatar && typeof authorId === 'string') {
+      if (window.__avatarCache && window.__avatarCache[authorId]) {
+        setCraftsmanAvatar(window.__avatarCache[authorId]);
+        return;
+      }
+      
+      api.get(`/craftsman/${authorId}`)
+        .then(res => {
+          if (res.success && res.data) {
+            const fetchedAvatar = res.data.profilePicture || res.data.userId?.profilePicture;
+            if (fetchedAvatar) {
+              setCraftsmanAvatar(fetchedAvatar);
+              window.__avatarCache = window.__avatarCache || {};
+              window.__avatarCache[authorId] = fetchedAvatar;
+            }
+          }
+        })
+        .catch(() => {});
+    }
+  }, [user]);
+
+  const userName = user?.name || 'Craftsman';
+  const initialAvatarUrl = user?.profilePicture || user?.avatar || user?.profilePic;
+  const finalAvatarUrl = craftsmanAvatar || initialAvatarUrl;
+
+  return (
+    <div 
+        className="group relative border-b border-slate-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
+        onClick={handleNavigation}
+    >
+        {/* Left Column: Avatar */}
+        <div className="flex-shrink-0">
+             <CraftsmanHoverCard
+               userId={user?._id || user}
+               username={user?.username}
+               avatarUrl={finalAvatarUrl}
+               displayName={userName}
+             >
+               <div className="relative group/avatar">
+                   <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-slate-200 dark:border-white/10">
+                       {finalAvatarUrl ? (
+                           <Image 
+                               src={finalAvatarUrl} 
+                               width={48} 
+                               height={48} 
+                               className="rounded-full w-full h-full object-cover"
+                               alt={userName}
+                               unoptimized
+                           />
+                       ) : (
+                           <div className="w-full h-full rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold text-lg">
+                               {userName[0] || "U"}
+                           </div>
+                       )}
+                   </div>
+                   <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-black rounded-full"></div>
+               </div>
+             </CraftsmanHoverCard>
+        </div>
+
+        {/* Right Column: Content */}
+        <div className="flex-1 min-w-0">
+             {/* Header */}
+            <div className="flex justify-between items-start mb-1">
+                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                     <div className="flex items-center gap-2">
+                        <CraftsmanHoverCard
+                          userId={user?._id || user}
+                          username={user?.username}
+                          avatarUrl={finalAvatarUrl}
+                          displayName={userName}
+                          wrapperDisplay="inline"
+                        >
+                          <h3 className="font-medium text-slate-900 dark:text-gray-100 text-base hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
+                              {userName}
+                          </h3>
+                        </CraftsmanHoverCard>
+                         {/* TYPE BADGE: DEVLOG */}
+                         <span className="bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 text-[9px] font-mono font-medium px-1.5 py-0.5 rounded uppercase tracking-[0.2em] flex items-center gap-1">
+                            <Layers size={10} className="stroke-[3]" /> Devlog
+                        </span>
+                     </div>
+                     <span className="text-slate-400 text-sm hidden sm:block">·</span>
+                     <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-wider">
+                         {formatDate(createdAt)}
+                     </span>
+                 </div>
+                 <div className="flex items-center gap-3">
+                     <div className="hidden md:flex items-center gap-x-3 text-[9px] font-mono font-medium text-slate-400 uppercase tracking-wider">
+                         <span className="flex items-center gap-1"><Zap size={10} className="text-amber-500 fill-amber-500/20"/> {difficulty}</span>
+                         <span className="opacity-30">•</span>
+                         <span className="flex items-center gap-1"><Clock size={10} className="text-indigo-500"/> {timeSpent || 'N/A'}</span>
+                         <span className="opacity-30">•</span>
+                         <span className="flex items-center gap-1"><MapPin size={10} className="text-emerald-500"/> {location || 'Remote'}</span>
+                     </div>
+                 </div>
+            </div>
+
+            {/* Devlog Title & Status */}
+            <div className="mb-3 flex justify-between items-start gap-4">
+                <div>
+                    <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-0.5 font-sans">
+                        {title || "Untitled Devlog"}
+                    </h2>
+                </div>
+                <div className="flex-shrink-0">
+                    <span className={`px-2.5 py-1 text-[9px] font-mono font-medium rounded border tracking-[0.2em] uppercase shadow-sm ${
+                        status === 'Completed' ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' : 
+                        'bg-white text-slate-900 border-slate-200 dark:bg-black dark:text-white dark:border-white/10'
+                    }`}>
+                        {status}
+                    </span>
+                </div>
+            </div>
+
+            {/* Main Content Grid: Image + Details */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3">
+                
+                {/* Left: Preview Image */}
+                <div className="lg:col-span-7 h-full">
+                     {images && images.length > 0 ? (
+                         <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/5 group/media h-full min-h-[300px] lg:min-h-[450px] shadow-inner">
+                             {images.length === 1 ? (
+                                 <Image 
+                                     src={images[0]} 
+                                     fill 
+                                     alt={title || 'Devlog preview'} 
+                                     className="object-cover"
+                                 />
+                             ) : (
+                                 <div className="grid grid-cols-2 h-full w-full gap-0.5">
+                                     {images.slice(0, 4).map((img, i) => (
+                                         <div key={i} className={`relative overflow-hidden ${
+                                             images.length === 3 && i === 0 ? 'row-span-2' : ''
+                                         }`}>
+                                             <Image 
+                                                 src={img} 
+                                                 fill 
+                                                 alt={`Preview ${i}`} 
+                                                 className="object-cover"
+                                             />
+                                         </div>
+                                     ))}
+                                 </div>
+                             )}
+                             <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[9px] font-mono font-medium px-2 py-1 rounded-full border border-white/10 uppercase tracking-wider">
+                                 {images.length} Image{images.length > 1 ? 's' : ''}
+                             </div>
+                         </div>
+                     ) : (
+                        <div className="flex flex-col items-center justify-center text-slate-400 h-full min-h-[450px] bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10">
+                            <Layers size={48} className="opacity-20 mb-2" />
+                            <span className="text-xs font-medium">No preview available</span>
+                        </div>
+                    )}
+                </div>
+
+                {/* Right: Details Section */}
+                <div className="lg:col-span-5">
+                    <div className="bg-slate-50 dark:bg-[#111] rounded-xl p-4 border border-slate-100 dark:border-white/10 h-full flex flex-col shadow-sm">
+                        <div className="space-y-3">
+                            
+                            {/* Header: Links & Resources */}
+                            <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
+                                <span className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] flex items-center gap-1">
+                                    <FileText size={14}/> Details
+                                </span>
+                                <div className="flex gap-2">
+                                     {devlogLink ? (
+                                         <a 
+                                            href={devlogLink} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="p-1.5 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg hover:border-purple-500 hover:text-purple-500 transition-colors shadow-sm" 
+                                            title="GitHub"
+                                         >
+                                             <Github size={14} />
+                                         </a>
+                                     ) : (
+                                         <button 
+                                            onClick={(e) => { e.stopPropagation(); }}
+                                            className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
+                                            title="No GitHub link"
+                                         >
+                                             <Github size={14} />
+                                         </button>
+                                     )}
+                                     {livePreviewUrl ? (
+                                         <a 
+                                            href={livePreviewUrl} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="p-1.5 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg hover:border-pink-500 hover:text-pink-500 transition-colors shadow-sm" 
+                                            title="Live Demo"
+                                         >
+                                             <ExternalLink size={14} />
+                                         </a>
+                                     ) : (
+                                         <button 
+                                            onClick={(e) => { e.stopPropagation(); }}
+                                            className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
+                                            title="No live demo"
+                                         >
+                                             <ExternalLink size={14} />
+                                         </button>
+                                     )}
+                                     {documentationUrl ? (
+                                         <a 
+                                            href={documentationUrl} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="p-1.5 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg hover:border-blue-500 hover:text-blue-500 transition-colors shadow-sm" 
+                                            title="Documentation"
+                                         >
+                                             <FileText size={14} />
+                                         </a>
+                                     ) : (
+                                         <button 
+                                            onClick={(e) => { e.stopPropagation(); }}
+                                            className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
+                                            title="No documentation"
+                                         >
+                                             <FileText size={14} />
+                                         </button>
+                                     )}
+
+                                     {/* Download Button - Matching Artifact Style */}
+                                     {resources && resources.length > 0 ? (
+                                         <a 
+                                            href={resources[0].link || resources[0].url} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="p-1.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-all shadow-sm" 
+                                            title="Download Resource"
+                                         >
+                                             <Download size={14} />
+                                         </a>
+                                     ) : (
+                                         <button 
+                                            onClick={(e) => { e.stopPropagation(); }}
+                                            className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
+                                            title="No resource available"
+                                         >
+                                             <Download size={14} />
+                                         </button>
+                                     )}
+                                </div>
+                            </div>
+
+                            {/* Info Grid - Always Show */}
+                            <div className="grid grid-cols-2 gap-2">
+                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
+                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Tag size={11}/> Category</div>
+                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate font-sans">
+                                          {category || <span className="text-slate-400 italic">Uncategorized</span>}
+                                      </div>
+                                 </div>
+                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
+                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Users size={11}/> Team</div>
+                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate uppercase font-sans">
+                                          {collaborators.length > 0 ? `${collaborators.length} Members` : 'Solo'}
+                                      </div>
+                                 </div>
+                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
+                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Clock size={11}/> Timeline</div>
+                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate flex items-center gap-2 font-mono">
+                                          <div className="flex-1 h-1 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
+                                              <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-purple-500 to-pink-500 relative"></div>
+                                          </div>
+                                          <span className="text-[10px]">{Math.round(progress)}%</span>
+                                      </div>
+                                 </div>
+                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
+                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Shield size={11}/> License</div>
+                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate font-sans">
+                                          {license}
+                                      </div>
+                                 </div>
+                            </div>
+
+                            {/* Description - Always Show */}
+                            <div>
+                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2">Description</div>
+                                <div className="text-sm text-slate-700 dark:text-gray-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                                    {content ? (
+                                        plainTextDescription.length > 160
+                                          ? `${plainTextDescription.substring(0, 160)}...`
+                                          : plainTextDescription
+                                    ) : (
+                                        <span className="text-slate-400 italic">No description provided</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Tech Stack - Always Show */}
+                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
+                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1"><Code size={11} /> Tech Stack</div>
+                                <div className="flex flex-wrap gap-1.5 items-center">
+                                    {Array.isArray(tools) && tools.length > 0 ? (
+                                        <>
+                                            {tools.slice(0, 4).map((t, idx) => (
+                                                <span key={idx} className={`text-[9px] font-mono font-medium px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity uppercase tracking-wider ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
+                                                    {t}
+                                                </span>
+                                            ))}
+                                            {tools.length > 4 && (
+                                                <span className="text-[9px] font-mono font-medium px-2 py-0.5 border border-slate-200 dark:border-white/10 rounded text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 uppercase">
+                                                    +{tools.length - 4} more
+                                                </span>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <span className="text-xs text-slate-400 italic">No tech stack</span>
+                                    )}
+                                </div>
+                            </div>
+                             {/* Milestones Info - Always Show */}
+                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
+                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-1 flex items-center gap-1"><CheckCircle size={11} /> Next Milestone</div>
+                                <div className="text-xs text-slate-600 dark:text-slate-400">
+                                    {milestones && milestones.length > 0 ? (
+                                        <div className="flex items-center gap-2">
+                                            <span className="truncate font-medium font-sans">{milestones[0].title}</span>
+                                            {milestones[0].date && <span className="text-[10px] font-mono font-medium opacity-50 uppercase">• {formatDate(milestones[0].date)}</span>}
+                                        </div>
+                                    ) : (
+                                        <span className="italic">No upcoming milestones</span>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Tags - Always Show */}
+                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
+                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1"><Hash size={11} /> Devlog Tags</div>
+                                <div className="flex flex-wrap gap-1.5">
+                                    {Array.isArray(tags) && tags.length > 0 ? (
+                                        tags.map((tag, idx) => (
+                                            <span key={idx} className="text-[9px] font-mono font-medium px-2 py-0.5 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 rounded uppercase tracking-wider">
+                                                #{tag}
+                                            </span>
+                                        ))
+                                    ) : (
+                                        <span className="text-xs text-slate-400 italic">No tags</span>
+                                    )}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
+            <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
+                {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
+                <div className="flex items-center gap-1 sm:gap-2">
+                    <DiscussionBadges 
+                        item={post} 
+                        href={`/post/${_id}`} 
+                        initialCounts={{...discussionStats?.types, comment: currentCommentsCount}} 
+                    />
+                </div>
+
+                {/* Right: Engagement Stats */}
+                <div className="flex items-center gap-2 sm:gap-4">
+                    {/* Like */}
+                    <button 
+                        onClick={handleLike}
+                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-500 hover:text-pink-600'}`}
+                    >
+                        <div className="transition-colors">
+                            <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
+                        </div>
+                        <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount}</span>
+                    </button>
+
+                    {/* Share */}
+                    <button 
+                        className="flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 transition-colors group"
+                        onClick={handleShare}
+                    >
+                        <div className="transition-colors">
+                            <Share2 size={18} />
+                        </div>
+                    </button>
+
+                    {/* Bookmark */}
+                    <button 
+                        onClick={handleFavorite}
+                        className={`transition-colors group-hover:text-pink-600 ${isFavorited ? 'text-pink-600' : 'text-slate-400 hover:text-pink-600'}`}
+                    >
+                        <Bookmark size={18} fill={isFavorited ? 'currentColor' : 'none'} />
+                    </button>
+
+                    <span className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
+
+                    {/* Views */}
+                    <div className="flex items-center gap-1.5 text-slate-400">
+                        <Eye size={16} />
+                        <span className="font-mono font-medium text-[11px] tabular-nums">{viewsCount || 0}</span>
+                    </div>
+                 </div>
+            </div>
+        </div>
+
+        {/* Craftsman Profile Modal */}
+        <CraftsmanProfileModal 
+            isOpen={isCraftsmanModalOpen}
+            onClose={() => setIsCraftsmanModalOpen(false)}
+            userId={user?._id || user}
+        />
+    </div>
+  );
+};
+
+export default DevlogPostCard;
+
+

@@ -77,8 +77,8 @@ export default function Toolbar({ editor, openModal }) {
       <button
         onClick={handleClick}
         title={label}
-        className={`p-2 rounded hover:bg-gray-200 transition text-black ${
-          isActive ? "bg-gray-300 font-semibold" : ""
+        className={`p-2 rounded hover:bg-slate-200 transition text-black ${
+          isActive ? "bg-slate-300 font-semibold" : ""
         }`}
       >
         {icon || label}
@@ -100,7 +100,7 @@ export default function Toolbar({ editor, openModal }) {
       {/* Drag handle */}
       <div
         onMouseDown={handleMouseDown}
-        className="px-2 py-1 bg-gray-200 cursor-move rounded-l flex items-center justify-center text-black font-bold"
+        className="px-2 py-1 bg-slate-200 cursor-move rounded-l flex items-center justify-center text-black font-bold"
         style={{ userSelect: "none" }}
       >
         ☰
@@ -136,8 +136,8 @@ export default function Toolbar({ editor, openModal }) {
       <div className="relative">
         <button
           onClick={() => setHeadingDropdown(!headingDropdown)}
-          className={`p-2 rounded hover:bg-gray-200 text-black flex items-center gap-1 ${
-            currentHeading ? "bg-gray-300 font-semibold" : ""
+          className={`p-2 rounded hover:bg-slate-200 text-black flex items-center gap-1 ${
+            currentHeading ? "bg-slate-300 font-semibold" : ""
           }`}
         >
           {currentHeading ? `H${currentHeading}` : "H"} ▼
@@ -156,9 +156,9 @@ export default function Toolbar({ editor, openModal }) {
                   setHeadingDropdown(false);
                   setUpdateCounter((prev) => prev + 1); // immediately update toolbar
                 }}
-                className={`block px-4 py-1 w-full text-left text-black hover:bg-gray-200 ${
+                className={`block px-4 py-1 w-full text-left text-black hover:bg-slate-200 ${
                   editor.isActive("heading", { level: lvl })
-                    ? "bg-gray-300 font-semibold"
+                    ? "bg-slate-300 font-semibold"
                     : ""
                 }`}
               >

@@ -9,7 +9,7 @@ export default function ChallengesDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F3F4F6] dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#F3F4F6] dark:bg-[#0a0a0a] text-slate-900 dark:text-white overflow-x-hidden">
         
       {/* Background Exciting Gradient */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20">

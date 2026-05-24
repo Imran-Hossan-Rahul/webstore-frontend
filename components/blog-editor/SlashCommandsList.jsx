@@ -60,7 +60,7 @@ const SlashCommandsList = forwardRef((props, ref) => {
     return (
       <div className="slash-commands-list">
         <div className="slash-commands-empty">
-          <p className="text-sm text-gray-500">No commands found</p>
+          <p className="text-sm text-slate-500">No commands found</p>
         </div>
       </div>
     );

@@ -74,25 +74,25 @@ export const HistoryViewer = ({ editor, isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[60] border-l transform transition-transform duration-200 ease-in-out">
-      <div className="flex items-center justify-between p-4 border-b bg-gray-50">
+      <div className="flex items-center justify-between p-4 border-b bg-slate-50">
         <h3 className="font-semibold flex items-center gap-2">
             <Clock size={16} /> History
         </h3>
-        <button onClick={onClose} className="p-1 hover:bg-gray-200 rounded">
+        <button onClick={onClose} className="p-1 hover:bg-slate-200 rounded">
             <X size={16} />
         </button>
       </div>
       
       <div className="p-4 overflow-y-auto h-[calc(100vh-60px)] space-y-3">
         {history.length === 0 && (
-            <p className="text-gray-400 text-sm text-center italic mt-10">No recent changes recorded.</p>
+            <p className="text-slate-400 text-sm text-center italic mt-10">No recent changes recorded.</p>
         )}
         
         {history.map((item, idx) => (
             <div key={item.id} className="group flex items-start justify-between p-3 border rounded-lg hover:bg-blue-50 transition-colors">
                 <div>
-                    <span className="text-xs text-gray-400 block mb-1">{item.time}</span>
-                    <p className="text-sm font-medium text-gray-700">{item.desc}</p>
+                    <span className="text-xs text-slate-400 block mb-1">{item.time}</span>
+                    <p className="text-sm font-medium text-slate-700">{item.desc}</p>
                 </div>
                 <button 
                     onClick={() => handleRestore(idx)}

@@ -4,19 +4,19 @@ import { useState } from "react";
 import Background from "@/components/Background";
 import InnerDiv from "@/components/InnerDiv";
 import GlassNavbar from "./dashboard/GlassNavbar";
-import TrackerClient from "./TrackerClient";
-import SmoothCursor from "./MainCursor";
-import CreatorAccountModal from "@/components/DashboardComponents/CreatorAccountModal";
+import TrackerPatron from "./TrackerPatron";
+
+import CraftsmanAccountModal from "@/components/DashboardComponents/CraftsmanAccountModal";
 
 export default function Layout({ children }) {
-  const [showCreatorModal, setShowCreatorModal] = useState(false);
+  const [showCraftsmanModal, setShowCraftsmanModal] = useState(false);
   return (
     <Background>
-      <SmoothCursor smoothness={0.05} />
-      <TrackerClient />
+
+      <TrackerPatron />
 
       <InnerDiv>
-        <GlassNavbar onOpenCreatorModal={() => setShowCreatorModal(true)} />
+        <GlassNavbar onOpenCraftsmanModal={() => setShowCraftsmanModal(true)} />
 
         <main className="w-full flex justify-center">
           <div className="w-full max-w-[1800px] px-3 md:px-6 lg:px-8 pb-16">
@@ -25,9 +25,9 @@ export default function Layout({ children }) {
         </main>
       </InnerDiv>
 
-      <CreatorAccountModal 
-        isOpen={showCreatorModal} 
-        onClose={() => setShowCreatorModal(false)}
+      <CraftsmanAccountModal 
+        isOpen={showCraftsmanModal} 
+        onClose={() => setShowCraftsmanModal(false)}
       />
     </Background>
   );

@@ -5,7 +5,7 @@ export default function RoadMap() {
   const steps = [
     "Start learning fundamentals in any field you choose.",
     "Try to create something with everything you learn.",
-    "Share what you’ve created as templates and what you’ve learned with the world as a blog or notes.",
+    "Share what you’ve created as artifacts and what you’ve learned with the world as a codex or notes.",
     "Earn from what you’ve created or shared. Collaborate and get rewarded, with a big chance to be hired!",
   ];
 
@@ -30,3 +30,4 @@ export default function RoadMap() {
     </div>
   );
 }
+

@@ -1,9 +1,9 @@
-import TrackerClient from "@/components/TrackerClient";
+import TrackerPatron from "@/components/TrackerPatron";
 import AllCountriesPage from "@/components/AdminComponents/AllCountriesBarChart";
 
 export default function AllCountries(){
     return <div>
-            <TrackerClient />
+            <TrackerPatron />
             <AllCountriesPage />
           </div>;
 }

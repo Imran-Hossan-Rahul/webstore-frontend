@@ -1,10 +1,10 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import HomeTemplateCard from "./Card/HomeTemplate";
+import HomeArtifactCard from "./Card/HomeArtifact";
 import { useRouter } from "next/navigation";
 
 export default function FeaturedRow({ type, title }) {
-  const [templates, setTemplates] = useState([]);
+  const [artifacts, setArtifacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -12,18 +12,18 @@ export default function FeaturedRow({ type, title }) {
   const rowRef = useRef(null);
   const router = useRouter();
 
-  // Fetch featured templates
+  // Fetch featured artifacts
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/template/featured?type=${type}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/artifact/featured?type=${type}`)
       .then((res) => res.json())
-      .then((data) => data.success && setTemplates(data.data))
+      .then((data) => data.success && setArtifacts(data.data))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [type]);
 
-  // Fetch total template count
+  // Fetch total artifact count
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/template/count`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/artifact/count`)
       .then((res) => res.json())
       .then((data) => data.success && setTotalCount(data.total))
       .catch(console.error);
@@ -44,14 +44,14 @@ export default function FeaturedRow({ type, title }) {
       row?.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [templates]);
+  }, [artifacts]);
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
-  if (!templates.length) return null;
+  if (!artifacts.length) return null;
 
   const scrollRow = (dir) =>
     rowRef.current?.scrollBy({ left: dir * 300, behavior: "smooth" });
-  const goToAllTemplatesPage = () => router.push("/templates");
+  const goToAllArtifactsPage = () => router.push("/artifacts");
 
   return (
     <div className="mb-8 mt-6 relative overflow-hidden">
@@ -62,8 +62,8 @@ export default function FeaturedRow({ type, title }) {
 
         {/* Gap দেয়ার জন্য margin বা space-x-4 ব্যবহার করেছি */}
         <button
-          onClick={goToAllTemplatesPage}
-          className="flex items-center text-gray-700 hover:text-gray-900 font-medium"
+          onClick={goToAllArtifactsPage}
+          className="flex items-center text-slate-700 hover:text-slate-900 font-medium"
         >
           <span className="mt-1">{totalCount}</span>
           <svg
@@ -83,7 +83,7 @@ export default function FeaturedRow({ type, title }) {
         </button>
       </div>
 
-      {/* Scrollable templates */}
+      {/* Scrollable artifacts */}
       <div className="flex items-center relative">
         {canScrollLeft && (
           <button
@@ -97,8 +97,8 @@ export default function FeaturedRow({ type, title }) {
           ref={rowRef}
           className="flex overflow-x-auto space-x-4 scrollbar-hide scroll-smooth px-6"
         >
-          {templates.map((t) => (
-            <HomeTemplateCard key={t._id} {...t} rating={t.averageRating} />
+          {artifacts.map((t) => (
+            <HomeArtifactCard key={t._id} {...t} rating={t.averageRating} />
           ))}
         </div>
         {canScrollRight && (
@@ -113,3 +113,4 @@ export default function FeaturedRow({ type, title }) {
     </div>
   );
 }
+

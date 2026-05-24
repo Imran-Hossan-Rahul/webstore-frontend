@@ -1,10 +1,10 @@
 import PagePopularityDetails from "@/components/AdminComponents/PagePopularityDetails"
-import TrackerClient from "@/components/TrackerClient"
+import TrackerPatron from "@/components/TrackerPatron"
 
 export default function PageViews() {
     return (
       <div>
-        <TrackerClient />
+        <TrackerPatron />
         <PagePopularityDetails />
       </div>
     );

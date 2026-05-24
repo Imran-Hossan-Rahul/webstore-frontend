@@ -70,10 +70,10 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
   return (
     <div className="flex flex-col relative" ref={containerRef}>
       <div className="flex justify-between items-center mb-1">
-        <label className="text-sm font-medium text-gray-700 w-24 truncate" title={label}>{label}</label>
+        <label className="text-sm font-medium text-slate-700 w-24 truncate" title={label}>{label}</label>
         <div
           onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-          className="w-10 h-8 rounded border border-gray-300 cursor-pointer shadow-sm relative overflow-hidden transition-transform active:scale-95"
+          className="w-10 h-8 rounded border border-slate-300 cursor-pointer shadow-sm relative overflow-hidden transition-transform active:scale-95"
           style={{ background: value || "#fff" }}
         >
           {/* Transparency grid simulated */}
@@ -90,20 +90,20 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
 
       {isOpen && (
         <div
-          className="fixed z-50 w-72 bg-white border border-gray-200 rounded-xl shadow-2xl p-4 animate-in fade-in slide-in-from-right-8"
+          className="fixed z-50 w-72 bg-white border border-slate-200 rounded-xl shadow-2xl p-4 animate-in fade-in slide-in-from-right-8"
           style={{ top: '20%', right: '340px' }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header & Tabs */}
           <div className="flex justify-between items-center mb-4">
-            <div className="flex bg-gray-100 p-1 rounded-lg">
+            <div className="flex bg-slate-100 p-1 rounded-lg">
               <button
                 onClick={() => {
                   setMode("solid");
                   onChange(color);
                 }}
                 className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all ${
-                  mode === "solid" ? "bg-white shadow-sm text-black" : "text-gray-500 hover:text-gray-700"
+                  mode === "solid" ? "bg-white shadow-sm text-black" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 Solid
@@ -114,13 +114,13 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
                   updateGradient({});
                 }}
                 className={`px-4 py-1.5 text-xs font-semibold rounded-md transition-all ${
-                  mode === "gradient" ? "bg-white shadow-sm text-black" : "text-gray-500 hover:text-gray-700"
+                  mode === "gradient" ? "bg-white shadow-sm text-black" : "text-slate-500 hover:text-slate-700"
                 }`}
               >
                 Gradient
               </button>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100">
+            <button onClick={() => setIsOpen(false)} className="text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100">
               <X size={16} />
             </button>
           </div>
@@ -132,9 +132,9 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
               </div>
               
               <div className="flex items-center gap-2">
-                 <div className="text-xs font-medium text-gray-500 w-8">HEX</div>
-                 <div className="flex items-center flex-1 border rounded bg-gray-50 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent">
-                    <span className="pl-2 text-gray-400 text-xs">#</span>
+                 <div className="text-xs font-medium text-slate-500 w-8">HEX</div>
+                 <div className="flex items-center flex-1 border rounded bg-slate-50 focus-within:ring-2 focus-within:ring-indigo-600 focus-within:border-transparent">
+                    <span className="pl-2 text-slate-400 text-xs">#</span>
                     <input 
                         value={color.replace('#', '')}
                         onChange={(e) => handleSolidChange(`#${e.target.value}`)}
@@ -144,12 +144,12 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
               </div>
               
               {/* Presets Grid */}
-              <div className="grid grid-cols-6 gap-2 pt-2 border-t border-gray-100">
+              <div className="grid grid-cols-6 gap-2 pt-2 border-t border-slate-100">
                   {['#000000', '#ffffff', '#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#6366f1', '#8b5cf6', '#ec4899', '#64748b', '#71717a', '#a1a1aa'].map(c => (
                       <button 
                         key={c} 
                         onClick={() => handleSolidChange(c)}
-                        className="w-full aspect-square rounded-md border border-gray-200 shadow-sm relative group overflow-hidden"
+                        className="w-full aspect-square rounded-md border border-slate-200 shadow-sm relative group overflow-hidden"
                         style={{ background: c }}
                         title={c}
                       >
@@ -162,7 +162,7 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
             <div className="space-y-4">
               {/* Gradient Preview */}
               <div 
-                className="h-24 w-full rounded-lg border border-gray-200 shadow-inner relative" 
+                className="h-24 w-full rounded-lg border border-slate-200 shadow-inner relative" 
                 style={{ background: value || "transparent" }}
               >
                 {/* Visual helper for direction if linear */}
@@ -181,13 +181,13 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
               <div className="flex gap-2 text-xs">
                 <button 
                     onClick={() => handleTypeChange("linear")}
-                    className={`flex-1 py-1.5 border rounded ${gradientType === "linear" ? "bg-blue-50 border-blue-200 text-blue-700 font-medium" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                    className={`flex-1 py-1.5 border rounded ${gradientType === "linear" ? "bg-blue-50 border-blue-200 text-blue-700 font-medium" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
                 >
                     Linear
                 </button>
                 <button 
                     onClick={() => handleTypeChange("radial")}
-                    className={`flex-1 py-1.5 border rounded ${gradientType === "radial" ? "bg-blue-50 border-blue-200 text-blue-700 font-medium" : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+                    className={`flex-1 py-1.5 border rounded ${gradientType === "radial" ? "bg-blue-50 border-blue-200 text-blue-700 font-medium" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
                 >
                     Radial
                 </button>
@@ -195,13 +195,13 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
 
               {/* Controls */}
               {gradientType === 'linear' && (
-                  <div className="flex items-center gap-3 bg-gray-50 p-2 rounded border border-gray-100">
-                    <span className="text-xs font-medium text-gray-500">Angle</span>
+                  <div className="flex items-center gap-3 bg-slate-50 p-2 rounded border border-slate-100">
+                    <span className="text-xs font-medium text-slate-500">Angle</span>
                     <input 
                       type="range" min="0" max="360" 
                       value={gradientData.angle} 
                       onChange={(e) => updateGradient({ angle: Number(e.target.value) })}
-                      className="flex-1 h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                      className="flex-1 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
                     <span className="text-xs w-8 text-right font-mono bg-white px-1 rounded border">{gradientData.angle}°</span>
                   </div>
@@ -211,34 +211,34 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
               <div className="space-y-3 pt-2">
                 {/* Start Color */}
                 <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-gray-300 ring-2 ring-gray-100" />
-                   <span className="text-xs font-medium text-gray-500 w-16">Start</span>
-                   <div className="flex-1 flex items-center gap-2 border rounded p-1 bg-white hover:border-gray-300 transition-colors">
+                   <div className="w-2 h-2 rounded-full bg-slate-300 ring-2 ring-gray-100" />
+                   <span className="text-xs font-medium text-slate-500 w-16">Start</span>
+                   <div className="flex-1 flex items-center gap-2 border rounded p-1 bg-white hover:border-slate-300 transition-colors">
                      <input 
                         type="color" 
                         value={gradientData.startColor} 
                         onChange={(e) => updateGradient({ startColor: e.target.value })} 
                         className="w-6 h-6 rounded cursor-pointer border-none bg-transparent p-0" 
                      />
-                     <span className="text-[10px] font-mono text-gray-600 uppercase">{gradientData.startColor}</span>
+                     <span className="text-[10px] font-mono text-slate-600 uppercase">{gradientData.startColor}</span>
                    </div>
                 </div>
 
                 {/* Connection Line */}
-                <div className="ml-1 w-0.5 h-2 bg-gray-200 my-[-6px]" />
+                <div className="ml-1 w-0.5 h-2 bg-slate-200 my-[-6px]" />
 
                 {/* End Color */}
                 <div className="flex items-center gap-3">
-                   <div className="w-2 h-2 rounded-full bg-gray-800 ring-2 ring-gray-100" />
-                   <span className="text-xs font-medium text-gray-500 w-16">End</span>
-                   <div className="flex-1 flex items-center gap-2 border rounded p-1 bg-white hover:border-gray-300 transition-colors">
+                   <div className="w-2 h-2 rounded-full bg-slate-800 ring-2 ring-gray-100" />
+                   <span className="text-xs font-medium text-slate-500 w-16">End</span>
+                   <div className="flex-1 flex items-center gap-2 border rounded p-1 bg-white hover:border-slate-300 transition-colors">
                      <input 
                         type="color" 
                         value={gradientData.endColor} 
                         onChange={(e) => updateGradient({ endColor: e.target.value })} 
                         className="w-6 h-6 rounded cursor-pointer border-none bg-transparent p-0" 
                      />
-                     <span className="text-[10px] font-mono text-gray-600 uppercase">{gradientData.endColor}</span>
+                     <span className="text-[10px] font-mono text-slate-600 uppercase">{gradientData.endColor}</span>
                    </div>
                 </div>
               </div>

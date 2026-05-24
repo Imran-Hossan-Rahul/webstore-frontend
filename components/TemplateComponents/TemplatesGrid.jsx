@@ -1,18 +1,18 @@
 "use client";
 
-import TemplateCard from "../Card/TemplateCard";
+import ArtifactCard from "../Card/ArtifactCard";
 
-export default function TemplatesGrid({ templatesData }) {
+export default function ArtifactsGrid({ artifactsData }) {
   const sections = [
-    { key: "featured", title: "Featured Templates" },
-    { key: "trending", title: "Trending Templates" },
+    { key: "featured", title: "Featured Artifacts" },
+    { key: "trending", title: "Trending Artifacts" },
     { key: "editorsChoice", title: "Editor’s Choice" },
   ];
 
   return (
     <div className="w-full px-4 md:px-8 mt-8 space-y-16">
       {sections.map((section) => {
-        const items = templatesData[section.key];
+        const items = artifactsData[section.key];
         if (!items || items.length === 0) return null;
 
         return (
@@ -33,29 +33,29 @@ export default function TemplatesGrid({ templatesData }) {
               gap-4
             "
             >
-              {items.map((template) => (
-                <div key={template._id} className="break-inside-avoid mb-4">
-                  <TemplateCard
-                    title={template.title}
-                    description={template.description}
-                    tags={template.tags}
-                    category={template.category}
-                    price={template.price}
-                    discount={template.discount}
-                    rating={template.averageRating}
-                    ratingCount={template.ratingCount}
-                    previewFile={template.previewFile}
-                    profilePic={template.user?.profilePic}
-                    authorName={template.user?.name}
-                    verifiedSeller={template.verifiedSeller}
-                    viewsCount={template.viewsCount}
-                    downloadsCount={template.downloadsCount}
+              {items.map((artifact) => (
+                <div key={artifact._id} className="break-inside-avoid mb-4">
+                  <ArtifactCard
+                    title={artifact.title}
+                    description={artifact.description}
+                    tags={artifact.tags}
+                    category={artifact.category}
+                    price={artifact.price}
+                    discount={artifact.discount}
+                    rating={artifact.averageRating}
+                    ratingCount={artifact.ratingCount}
+                    previewFile={artifact.previewFile}
+                    profilePic={artifact.user?.profilePic}
+                    authorName={artifact.user?.name}
+                    verifiedSeller={artifact.verifiedSeller}
+                    viewsCount={artifact.viewsCount}
+                    downloadsCount={artifact.downloadsCount}
                     featured={
-                      template.popular
+                      artifact.popular
                         ? "popular"
-                        : template.trending
+                        : artifact.trending
                         ? "trending"
-                        : template.editorsChoice
+                        : artifact.editorsChoice
                         ? "editorsChoice"
                         : ""
                     }
@@ -69,3 +69,4 @@ export default function TemplatesGrid({ templatesData }) {
     </div>
   );
 }
+

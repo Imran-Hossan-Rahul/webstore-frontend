@@ -16,13 +16,13 @@ export default function EmbedPage() {
 
   const fetchContent = async () => {
     try {
-      if (type === "blog") {
-        // TODO: Fetch blog content
-        // const res = await api.get(`/blog/${id}`);
+      if (type === "codex") {
+        // TODO: Fetch codex content
+        // const res = await api.get(`/codex/${id}`);
         // setContent(res.data);
-      } else if (type === "template") {
-        // TODO: Fetch template content
-        // const res = await api.get(`/template/${id}`);
+      } else if (type === "artifact") {
+        // TODO: Fetch artifact content
+        // const res = await api.get(`/artifact/${id}`);
         // setContent(res.data);
       }
     } catch (error) {
@@ -34,23 +34,23 @@ export default function EmbedPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-600">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-slate-600">Loading...</div>
       </div>
     );
   }
 
   if (!content) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-gray-600">Content not found</div>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="text-slate-600">Content not found</div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white p-8">
-      {type === "blog" ? (
+      {type === "codex" ? (
         <div
           className="prose max-w-none"
           dangerouslySetInnerHTML={{ __html: content.html }}
@@ -58,8 +58,8 @@ export default function EmbedPage() {
       ) : (
         <div>
           <h1 className="text-3xl font-bold mb-4">{content.title}</h1>
-          <p className="text-gray-600 mb-4">{content.description}</p>
-          {/* Render template preview */}
+          <p className="text-slate-600 mb-4">{content.description}</p>
+          {/* Render artifact preview */}
         </div>
       )}
     </div>

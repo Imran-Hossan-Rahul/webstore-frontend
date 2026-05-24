@@ -77,7 +77,7 @@
 //     case "heading":
 //       return <Type size={14} className="text-purple-600" />;
 //     case "paragraph":
-//       return <FileText size={14} className="text-gray-600" />;
+//       return <FileText size={14} className="text-slate-600" />;
 //     case "image":
 //       return <Image size={14} className="text-green-600" />;
 //     case "youtube":
@@ -91,7 +91,7 @@
 //     case "taskList":
 //       return <List size={14} className="text-indigo-600" />;
 //     default:
-//       return <ChevronsRight size={14} className="text-gray-400" />;
+//       return <ChevronsRight size={14} className="text-slate-400" />;
 //   }
 // };
 
@@ -381,10 +381,10 @@
 
 //           let className =
 //             "py-1 pl-6 pr-2 text-sm rounded cursor-pointer transition-colors flex items-center gap-2 relative group";
-//           className += " text-gray-700 hover:bg-gray-100";
+//           className += " text-slate-700 hover:bg-slate-100";
 
 //           if (isActiveNode) {
-//             className += " bg-blue-100 ring-2 ring-blue-500 font-medium";
+//             className += " bg-blue-100 ring-2 ring-indigo-600 font-medium";
 //           }
 
 //           // 🚫 হাইড করা আইটেমের জন্য আলাদা স্টাইল
@@ -402,8 +402,8 @@
 //               }
 //               onMouseEnter={() => handleNodeHover(contentNode.pos, nodeName)}
 //             >
-//               <span className="absolute left-3 top-0 bottom-0 w-px bg-gray-300 group-last:h-1/2 group-last:top-0"></span>
-//               <span className="absolute left-3.5 top-1/2 w-2 h-px bg-gray-300"></span>
+//               <span className="absolute left-3 top-0 bottom-0 w-px bg-slate-300 group-last:h-1/2 group-last:top-0"></span>
+//               <span className="absolute left-3.5 top-1/2 w-2 h-px bg-slate-300"></span>
 
 //               {/* 🚫 আইকন সেট করা */}
 //               {isHidden ? (
@@ -461,7 +461,7 @@
 
 //   return (
 //     <div className="w-64 bg-white border-r h-full overflow-y-auto p-4 flex-shrink-0">
-//       <h2 className="text-xl font-bold mb-4 text-gray-800">
+//       <h2 className="text-xl font-bold mb-4 text-slate-800">
 //         <ChevronDown size={20} className="inline mr-2" />
 //         Document Structure
 //       </h2>
@@ -469,7 +469,7 @@
 //         {editor && flatStructure.length > 0 ? (
 //           renderFlatStructure(flatStructure)
 //         ) : (
-//           <p className="text-gray-500 text-sm">
+//           <p className="text-slate-500 text-sm">
 //             Add content to the editor to see the structure.
 //           </p>
 //         )}

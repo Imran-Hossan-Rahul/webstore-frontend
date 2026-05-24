@@ -7,24 +7,35 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
+import { Activity, TrendingUp, Loader2 } from "lucide-react";
+import { api } from "@/utils/api";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    const total = payload.reduce((sum, entry) => sum + entry.value, 0);
     return (
-      <div className="bg-white border border-gray-300 rounded-lg p-2 text-xs min-w-[140px] pointer-events-none">
-        <p className="font-semibold mb-1">{label}</p>
-        {payload.map((entry) => (
-          <p key={entry.dataKey} className="m-0">
-            {entry.dataKey.charAt(0).toUpperCase() + entry.dataKey.slice(1)}:{" "}
-            <span className="font-bold">{entry.value}</span>
-          </p>
-        ))}
-        <hr className="my-1" />
-        <p className="font-semibold">Total: {total}</p>
+      <div className="bg-slate-900 text-white rounded-xl p-4 shadow-2xl border border-white/10">
+        <p className="text-[10px] font-bold uppercase tracking-widest mb-3 opacity-50 border-b border-white/5 pb-2">
+          {new Date(label).toLocaleString(undefined, { 
+            month: 'short', 
+            day: 'numeric', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </p>
+        <div className="space-y-2">
+          {payload.sort((a, b) => b.value - a.value).map((entry) => (
+            <div key={entry.dataKey} className="flex items-center justify-between gap-8">
+              <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">{entry.dataKey}</span>
+              </div>
+              <span className="text-xs font-bold">{entry.value}</span>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -34,35 +45,15 @@ const CustomTooltip = ({ active, payload, label }) => {
 export default function UsersActivityAreaChart() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [lifetime, setLifetime] = useState(true);
+  const [range, setRange] = useState("30d");
 
-  // Initialize last 7 days (default)
-  useEffect(() => {
-    const today = new Date();
-    const lastWeek = new Date();
-    lastWeek.setDate(today.getDate() - 6);
-    setStartDate(lastWeek.toISOString().split("T")[0]);
-    setEndDate(today.toISOString().split("T")[0]);
-  }, []);
-
-  // Fetch API data
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/stats/daily-users`,
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        );
-        const json = await res.json();
-        if (json.success) {
-          setData(json.stats);
+        const res = await api.get(`/stats/daily-users?range=${range}`);
+        if (res.success) {
+          setData(res.stats);
         }
       } catch (err) {
         console.error("Error fetching stats:", err);
@@ -71,154 +62,146 @@ export default function UsersActivityAreaChart() {
       }
     };
     fetchData();
-  }, []);
+  }, [range]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading && data.length === 0) return (
+    <div className="h-[520px] bg-white dark:bg-[#0A0A0A] rounded-2xl flex items-center justify-center border border-slate-200/60 dark:border-white/5">
+      <Loader2 className="animate-spin text-slate-400" size={24} />
+    </div>
+  );
 
-  // Fill missing dates with 0, handle lifetime
-  const filledData = () => {
-    if (data.length === 0) return [];
+  const chartData = data.length > 0 ? data : [];
+  
+  const totals = chartData.reduce((acc, item) => ({
+    craftsmen: acc.craftsmen + (item.craftsmen || 0),
+    patrons: acc.patrons + (item.patrons || 0),
+    users: acc.users + (item.users || 0),
+    craftsmen: acc.craftsmen + (item.craftsmen || 0),
+    visitors: acc.visitors + (item.visitors || 0),
+  }), { craftsmen: 0, patrons: 0, users: 0, craftsmen: 0, visitors: 0 });
 
-    let start = startDate;
-    let end = endDate;
+  const ranges = [
+    { id: 'live', label: 'Live' },
+    { id: 'hourly', label: 'Hourly' },
+    { id: '7d', label: '7 Days' },
+    { id: '30d', label: '30 Days' },
+    { id: 'lifetime', label: 'Lifetime' },
+  ];
 
-    if (lifetime) {
-      start = data.reduce(
-        (earliest, item) => (item.date < earliest ? item.date : earliest),
-        data[0].date
-      );
-      end = data.reduce(
-        (latest, item) => (item.date > latest ? item.date : latest),
-        data[0].date
-      );
-    }
-
-    const result = [];
-    const current = new Date(start);
-    const last = new Date(end);
-
-    while (current <= last) {
-      const dateStr = current.toISOString().split("T")[0];
-      const existing = data.find((d) => d.date === dateStr);
-      result.push({
-        date: dateStr,
-        freelancers: existing ? existing.freelancers : 0,
-        clients: existing ? existing.clients : 0,
-      });
-      current.setDate(current.getDate() + 1);
-    }
-    return result;
+  const formatXAxis = (dt) => {
+    const date = new Date(dt);
+    if (range === 'live') return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (range === 'hourly') return date.toLocaleTimeString([], { hour: '2-digit' });
+    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   };
 
-  const chartData = filledData();
-
-  const totalFreelancer = chartData.reduce(
-    (acc, item) => acc + item.freelancers,
-    0
-  );
-  const totalClient = chartData.reduce((acc, item) => acc + item.clients, 0);
-
   return (
-    <div className="card-template p-3 rounded-2xl shadow-md h-[500px] flex flex-col justify-between transition-all duration-300 text-black relative">
-      {/* Title */}
-      <h2 className="text-lg font-bold mb-2">User Activity</h2>
-
-      {/* Calendar toolbar */}
-      <div className="flex items-center gap-1 text-xs mb-2 relative z-20">
-        <button
-          className="p-1 bg-gray-200 rounded-md"
-          onClick={() => setShowCalendar(!showCalendar)}
-        >
-          &#128197;
-        </button>
-        <span>Start: {startDate || "Select"}</span>
-        <span>End: {endDate || "Select"}</span>
-        <div className="ml-auto flex items-center gap-1">
-          <input
-            type="checkbox"
-            id="lifetime"
-            checked={lifetime}
-            onChange={(e) => setLifetime(e.target.checked)}
-          />
-          <label htmlFor="lifetime" className="text-xs">
-            Lifetime
-          </label>
+    <div className="bg-white dark:bg-[#0A0A0A] p-8 rounded-2xl border border-slate-200/60 dark:border-white/5 shadow-sm h-[520px] flex flex-col">
+      
+      {/* Minimal Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider leading-none">Growth Dynamics</h2>
+          <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-2 flex items-center gap-2">
+             <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full" /> User Acquisition Timeline
+          </p>
         </div>
 
-        {/* Overlay Date Picker */}
-        {showCalendar && !lifetime && (
-          <div className="absolute top-full left-0 mt-1 flex gap-1 bg-white p-2 shadow-md rounded-md">
-            <input
-              type="date"
-              className="border p-1 rounded-md text-xs"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <input
-              type="date"
-              className="border border-gray-300 p-1 rounded-md text-xs"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
+        <div className="flex items-center gap-1 bg-slate-50 dark:bg-white/5 p-1 rounded-xl">
+           {ranges.map((r) => (
+             <button 
+               key={r.id}
+               onClick={() => setRange(r.id)}
+               className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-widest transition-all ${
+                 range === r.id 
+                  ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm" 
+                  : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+               }`}
+             >
+               {r.label}
+             </button>
+           ))}
+        </div>
+      </div>
+
+      {/* Modern Area Chart */}
+      <div className="flex-1 min-h-[250px] relative">
+        {loading && (
+          <div className="absolute inset-0 bg-white/40 dark:bg-black/40 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-xl">
+            <Loader2 className="animate-spin text-indigo-600" size={20} />
           </div>
         )}
-      </div>
-
-      {/* Totals */}
-      <div className="flex gap-1 mb-2">
-        <div className="flex-1 p-1 bg-gray-100 rounded-md text-center text-xs">
-          <p>Total Freelancers</p>
-          <p className="font-bold text-[#af09dc]">{totalFreelancer}</p>
-        </div>
-        <div className="flex-1 p-1 bg-gray-100 rounded-md text-center text-xs">
-          <p>Total Clients</p>
-          <p className="font-bold text-[#4ca404]">{totalClient}</p>
-        </div>
-        <div className="flex-1 p-1 bg-gray-100 rounded-md text-center text-xs">
-          <p>Total Users</p>
-          <p className="font-bold">{totalFreelancer + totalClient}</p>
-        </div>
-      </div>
-
-      {/* Chart */}
-      <div className="flex-1 min-h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            data={chartData}
-            margin={{ top: 4, right: 10, left: 0, bottom: 4 }}
-          >
-            <XAxis
-              dataKey="date"
-              tickFormatter={(dt) => {
-                const date = new Date(dt);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
-              }}
-              tick={{ fontSize: 10 }}
+          <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
+            <defs>
+              <linearGradient id="colorCraftsman" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.15}/>
+                <stop offset="95%" stopColor="#4F46E5" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorPatron" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#94A3B8" stopOpacity={0.1}/>
+                <stop offset="95%" stopColor="#94A3B8" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorUser" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10B981" stopOpacity={0.1}/>
+                <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorCraftsman" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#F59E0B" stopOpacity={0.1}/>
+                <stop offset="95%" stopColor="#F59E0B" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorVisitor" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#F43F5E" stopOpacity={0.1}/>
+                <stop offset="95%" stopColor="#F43F5E" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <XAxis 
+              dataKey="date" 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fontSize: 9, fontWeight: 700, fill: '#94A3B8' }}
+              tickFormatter={formatXAxis}
             />
-            <YAxis tick={{ fontSize: 10 }} />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ stroke: "#ccc", strokeWidth: 1 }}
-            />
-            <Legend wrapperStyle={{ fontSize: 10 }} />
-            <Area
-              type="monotone"
-              dataKey="freelancers"
-              stroke="#af09dc"
-              fill="#af09dc33"
-            />
-            <Area
-              type="monotone"
-              dataKey="clients"
-              stroke="#4ca404"
-              fill="#4ca40433"
-            />
+            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fontWeight: 700, fill: '#94A3B8' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#4F46E5', strokeWidth: 1, strokeDasharray: '4 4' }} />
+            
+            <Area type="monotone" dataKey="visitors" stroke="#F43F5E" strokeWidth={2} fillOpacity={1} fill="url(#colorVisitor)" animationDuration={1000} />
+            <Area type="monotone" dataKey="users" stroke="#10B981" strokeWidth={2} fillOpacity={1} fill="url(#colorUser)" animationDuration={1200} />
+            <Area type="monotone" dataKey="craftsmen" stroke="#4F46E5" strokeWidth={2.5} fillOpacity={1} fill="url(#colorCraftsman)" animationDuration={1400} />
+            <Area type="monotone" dataKey="craftsmen" stroke="#F59E0B" strokeWidth={2} fillOpacity={1} fill="url(#colorCraftsman)" animationDuration={1600} />
+            <Area type="monotone" dataKey="patrons" stroke="#94A3B8" strokeWidth={2} strokeDasharray="5 5" fillOpacity={1} fill="url(#colorPatron)" animationDuration={1800} />
           </AreaChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* Clean Legend/Summary */}
+      <div className="mt-6 pt-6 border-t border-slate-100 dark:border-white/5 flex items-center justify-between overflow-x-auto no-scrollbar">
+        <div className="flex gap-6 min-w-max">
+          <LegendItem color="#4F46E5" label="Craftsmen" value={totals.craftsmen} />
+          <LegendItem color="#94A3B8" label="patrons" value={totals.patrons} />
+          <LegendItem color="#10B981" label="Users" value={totals.users} />
+          <LegendItem color="#F59E0B" label="Craftsmen" value={totals.craftsmen} />
+          <LegendItem color="#F43F5E" label="Visitors" value={totals.visitors} />
+        </div>
+        
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-600/5 text-blue-600 rounded-lg border border-indigo-600/10 ml-4">
+           <TrendingUp size={12} />
+           <span className="text-[9px] font-bold uppercase tracking-widest whitespace-nowrap">Consistent Growth</span>
+        </div>
       </div>
     </div>
   );
 }
+
+function LegendItem({ color, label, value }) {
+  return (
+    <div className="flex items-center gap-2.5">
+       <div className="w-1 h-5 rounded-full" style={{ backgroundColor: color }} />
+       <div>
+          <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest leading-none">{label}</p>
+          <p className="text-sm font-bold text-slate-900 dark:text-white leading-none mt-1">{value.toLocaleString()}</p>
+       </div>
+    </div>
+  );
+}
+

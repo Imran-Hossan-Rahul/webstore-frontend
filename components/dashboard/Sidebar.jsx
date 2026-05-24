@@ -1,9 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import SettingsModal from "../DashboardComponents/SettingsModal";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { DashboardContext } from "../../app/(dashboard)/layout";
+import { useLanguage } from "@/context/LanguageContext";
 import {
   Home,
   Compass,
@@ -14,43 +15,50 @@ import {
   TrendingUp,
   Settings,
   MessageCircle,
-  Briefcase,
   Trophy,
   FileText,
   Layout,
+  BarChart2,
+  Target,
+  Clock,
+  ShieldCheck,
+  Briefcase,
+  Terminal,
 } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count }) => (
   <Link
     href={href || "#"}
-    className={`group relative flex items-center justify-between px-4 py-3 rounded-2xl transition-colors duration-300 ${
+    className={`group relative flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-150 ${
       active
-        ? "text-white dark:text-black"
-        : "text-gray-500 dark:text-gray-400 hover:bg-white hover:text-black dark:hover:bg-white/10 dark:hover:text-white"
+        ? "text-slate-900 dark:text-white"
+        : "text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white"
     }`}
   >
     {active && (
       <motion.div
         layoutId="sidebar-active-indicator"
-        className="absolute inset-0 bg-black dark:bg-white rounded-2xl shadow-lg shadow-black/5 dark:shadow-white/5"
+        className="absolute inset-0 bg-slate-100 dark:bg-white/10 rounded-xl"
         initial={false}
         transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.8 }}
       />
     )}
     <div className="relative z-10 flex items-center gap-3">
-      <Icon
-        className={`w-5 h-5${
-          active ? "fill-current" : ""
-        }`}
-      />
-      <span className="font-medium">{label}</span>
+      {Icon && (
+        <Icon
+          className={`w-4 h-4 ${
+            active ? "stroke-[2.5px]" : "stroke-[1.5px]"
+          }`}
+        />
+      )}
+      <span className={`text-sm font-sans font-medium`}>{label}</span>
     </div>
     {count && (
       <span
-        className={`relative z-10 text-xs font-bold px-2 py-0.5 rounded-full ${
+        className={`relative z-10 text-[10px] font-mono font-medium px-2 py-0.5 rounded-full ${
           active
-            ? "bg-white/20 text-white dark:bg-black/10 dark:text-black"
-            : "bg-gray-100 dark:bg-gray-800"
+            ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
+            : "bg-slate-100 dark:bg-white/5 text-slate-500"
         }`}
       >
         {count}
@@ -59,91 +67,166 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count }) => (
   </Link>
 ));
 
+SidebarItem.displayName = "SidebarItem";
+
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const { user } = useContext(DashboardContext) || {};
+  const { t } = useLanguage();
 
   // Safely extract 'view' parameter
   const view = searchParams?.get("view");
 
   return (
-    <aside className="h-full flex flex-col bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-4 shadow-xl shadow-black/5 overflow-visible">
-      {/* Main Nav */}
-      <div className="space-y-1">
-        <SidebarItem
-          icon={Home}
-          label="Feed"
-          href="/"
-          active={pathname === "/" && view !== "saved" && view !== "creators"}
-        />
-        <SidebarItem
-          icon={Layout}
-          label="Templates"
-          href="/templates"
-          active={pathname?.startsWith("/templates")}
-        />
-        <SidebarItem
-          icon={FileText}
-          label="Blogs"
-          href="/blogs"
-          active={pathname?.startsWith("/blogs")}
-        />
-        <SidebarItem
-          icon={Compass}
-          label="Explore"
-          href="/explore"
-          active={pathname === "/explore"}
-        />
+    <aside className="h-full flex flex-col bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-3 shadow-sm overflow-hidden">
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide space-y-1">
+        {/* Main Nav */}
+        <div className="space-y-1">
+          <SidebarItem
+            icon={Home}
+            label={t("feed")}
+            href="/"
+            active={pathname === "/" && view !== "saved" && view !== "craftsmen"}
+          />
+          <SidebarItem
+            icon={Terminal}
+            label={t("Devlogs")}
+            href="/devlogs"
+            active={pathname?.startsWith("/devlogs")}
+          />
+          <SidebarItem
+            icon={Layout}
+            label={t("artifacts")}
+            href="/artifacts"
+            active={pathname?.startsWith("/artifacts")}
+          />
+          <SidebarItem
+            icon={FileText}
+            label={t("codex")}
+            href="/codex"
+            active={pathname?.startsWith("/codex")}
+          />
+        </div>
+
+        {/* Library + Saved */}
+        <div className="mt-8 mb-3 px-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em]">
+          {t("library")}
+        </div>
+        <div className="space-y-1">
+          <SidebarItem
+            icon={Bookmark}
+            label={t("saved")}
+            href="/?view=saved"
+            active={pathname === "/" && view === "saved"}
+            count=""
+          />
+          <SidebarItem
+            icon={Trophy}
+            label={t("achievements")}
+            href="/achievements"
+            active={pathname?.startsWith("/achievements")}
+          />
+        </div>
+
+        {/* Community section */}
+        <div className="mt-8 mb-3 px-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em]">
+          {t("community")}
+        </div>
+        <div className="space-y-1">
+          <SidebarItem
+            icon={Trophy}
+            label={t("challenges")}
+            href="/challenges"
+            active={pathname?.startsWith("/challenges")}
+          />
+          <SidebarItem
+            icon={Briefcase}
+            label={t("jobs")}
+            href="/jobs"
+            active={pathname?.startsWith("/jobs")}
+          />
+          <SidebarItem
+            icon={Target}
+            label={t("proposals")}
+            href="/proposals"
+            active={pathname?.startsWith("/proposals")}
+          />
+          <SidebarItem 
+            icon={ShieldCheck} 
+            label={t("rewards_wallet")} 
+            href="/wallet" 
+            active={pathname?.startsWith("/wallet")}
+          />
+
+          {(user?.role === "patron" || user?.role === "admin" || user?.isHost) && (
+            <>
+              <div className="mt-8 mb-3 px-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em]">
+                {t("host_panel")}
+              </div>
+              {user?.role === "patron" || user?.role === "admin" ? (
+                <>
+                  <SidebarItem
+                    icon={Users}
+                    label={t("manage_jobs")}
+                    href="/manage-jobs"
+                    active={pathname?.startsWith("/manage-jobs")}
+                  />
+                </>
+              ) : null}
+
+              {user?.isHost || user?.role === "admin" ? (
+                <>
+                  <SidebarItem
+                    icon={Zap}
+                    label={t("host_challenge")}
+                    href="/challenges/create"
+                    active={pathname?.startsWith("/challenges/create")}
+                  />
+                  <SidebarItem
+                    icon={Trophy}
+                    label={t("manage_challenges")}
+                    href="/manage-challenges"
+                    active={pathname?.startsWith("/manage-challenges")}
+                  />
+                </>
+              ) : null}
+            </>
+          )}
+
+          <SidebarItem
+            icon={Clock}
+            label={t("workspace")}
+            href="/workspace"
+            active={pathname?.startsWith("/workspace")}
+          />
+
+          <SidebarItem 
+            icon={ShieldCheck} 
+            label={t("verify_identity")} 
+            href="/verify" 
+            active={pathname === "/verify"}
+          />
+        </div>
+        
+        {/* Bottom Spacing */}
+        <div className="h-4" />
       </div>
 
-      {/* Library + Saved — hidden temporarily
-      <div className="mt-2 mb-4 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-        Library
-      </div>
-      <div className="space-y-1">
+      {/* Fixed Footer */}
+      <div className="mt-auto pt-4 border-t border-slate-200/50 dark:border-white/5">
         <SidebarItem
-          icon={Bookmark}
-          label="Saved"
-          href="/?view=saved"
-          active={pathname === "/" && view === "saved"}
-          count=""
+          icon={Settings}
+          label={t("settings")}
+          href="/settings"
+          active={pathname === "/settings"}
         />
       </div>
-      */}
-
-      {/* Community section — temporarily hidden
-      <div className="mt-8 mb-4 px-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
-        Community
-      </div>
-      <div className="space-y-1">
-        <SidebarItem 
-          icon={Users} 
-          label="Creators" 
-          href="/?view=creators" 
-          active={pathname === "/" && view === "creators"}
-        />
-      </div>
-      */}
-
-      <div className="mt-auto pt-4 border-t border-gray-200/50 dark:border-white/5">
-        <button
-          onClick={() => setShowSettingsModal(true)}
-          className="group flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 text-gray-500 dark:text-gray-400 hover:bg-white hover:text-black dark:hover:bg-white/10 dark:hover:text-white w-full"
-        >
-          <div className="flex items-center gap-3">
-            <Settings className="w-5 h-5" />
-            <span className="font-medium">Settings</span>
-          </div>
-        </button>
-      </div>
-
-      {showSettingsModal && (
-        <SettingsModal
-          isOpen={showSettingsModal}
-          onClose={() => setShowSettingsModal(false)}
-        />
-      )}
     </aside>
+
   );
 }
+
+

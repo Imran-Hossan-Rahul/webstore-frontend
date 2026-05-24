@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.NEXT_PUBLIC_API_URL); // backend এর port ঠিক আছে কিনা চেক করো
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000"); // backend এর port ঠিক আছে কিনা চেক করো
 
 export default function TestSocket() {
   const [visitors, setVisitors] = useState([]);

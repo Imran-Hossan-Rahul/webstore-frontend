@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Heart, Download } from "lucide-react";
-import axios from "axios";
+import { api } from "@/utils/api";
+import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useToast } from "@/components/ui/ToastProvider";
 
-const TemplateCard = ({
+const ArtifactCard = ({
   id,
   title = "Untitled",
   description = "No description available.",
@@ -19,7 +20,7 @@ const TemplateCard = ({
   discount = 0,
   fileType = "image",
   featured = "",
-  currency = "USD",
+  currency = "TKNS",
 }) => {
   const [liked, setLiked] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
@@ -28,6 +29,9 @@ const TemplateCard = ({
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState("");
   const { showToast } = useToast();
+  const { user, refreshUser } = useContext(DashboardContext);
+
+  const canAfford = (user?.walletBalance || 0) >= (hasDiscount ? price - price * (discount / 100) : price);
 
   const truncatedTitle =
     title.length > 30 ? title.substring(0, 30) + "..." : title;
@@ -43,39 +47,19 @@ const TemplateCard = ({
   // =======================
   const handleLike = async (e) => {
     e.stopPropagation();
-    const templateId = id;
-    const token = localStorage.getItem("token");
-    let visitorId = localStorage.getItem("visitorId");
-
-    if (!token && !visitorId) {
-      showToast("Please login or visit the page to like.", "info", "Login Required");
-      return;
-    }
-
     const prevLiked = liked;
     const prevCount = likeCount;
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
 
     try {
-      const payload = token ? {} : { visitorId };
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/like`,
-        payload,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          withCredentials: true,
-        }
-      );
-      if (res.data?.liked !== undefined) {
-        setLiked(res.data.liked);
+      const res = await api.post(`/artifact/${id}/like`);
+      if (res.liked !== undefined) {
+        setLiked(res.liked);
       }
     } catch (err) {
       setLiked(prevLiked);
       setLikeCount(prevCount);
-      if (err.response?.status === 401) {
-        showToast("Your session expired. Please login again.", "warning", "Session Expired");
-        localStorage.removeItem("token");
-      }
     }
   };
 
@@ -85,45 +69,19 @@ const TemplateCard = ({
 const handleDownload = async (e) => {
   e.stopPropagation();
 
-  const templateId = id;
-  const token = localStorage.getItem("token");
-  let visitorId = localStorage.getItem("visitorId");
-
-  if (!token && !visitorId) {
-    showToast("Please login or visit the page to download.", "info", "Login Required");
-    return;
-  }
-
   try {
-    const payload = token ? {} : { visitorId };
-    const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/download`,
-      payload,
-      {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
-        withCredentials: true,
-      }
-    );
+    const res = await api.post(`/artifact/${id}/download`);
 
-    if (res.data?.url) {
-      window.location.href = res.data.url; // free download
+    if (res.url) {
+      window.location.href = res.url; // free download
       return;
     }
   } catch (err) {
-    const data = err?.response?.data;
-    const status = err?.response?.status;
+    console.error("❌ Download error:", err);
 
-    console.log("❌ Download error:", data);
-
-    if (status === 403 && data?.paid === true) {
-      // 🔹 redirect to payment page
-      const paymentUrl = `/payment?templateId=${data.templateId}&amount=${data.price}&currency=${data.currency}`;
-      window.location.href = paymentUrl;
-      return;
-    }
-
-    if (status === 401) {
-      showToast("Your session expired. Please login again.", "warning", "Session Expired");
-      localStorage.removeItem("token");
+    if (err.message.includes("403")) {
+      // 🔹 Show native token purchase modal
+      setShowPaymentModal(true);
       return;
     }
   }
@@ -131,44 +89,46 @@ const handleDownload = async (e) => {
 
 
   // =======================
-  // Payment Complete Handler
+  // Purchase Handler (TKNS Native)
   // =======================
-  const handlePaymentComplete = async () => {
-    const token = localStorage.getItem("token");
-    await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${id}/confirm-purchase`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setShowPaymentModal(false);
-    showToast("Payment successful! You can now download the template.", "success", "Payment Complete 🎉");
+  const handlePurchase = async () => {
+    try {
+        const res = await api.post(`/artifact/${id}/buy`);
+
+        if (res.success) {
+            setShowPaymentModal(false);
+            showToast("Artifact purchased successfully! You can now download it.", "success", "Purchase Complete 🎉");
+            await refreshUser(); // Update global balance
+            // Re-trigger download
+            handleDownload({ stopPropagation: () => {} });
+        }
+    } catch (err) {
+        console.error("Purchase failed", err);
+        showToast(err.message || "Purchase failed. Please check your balance.", "error", "Transaction Failed");
+    }
   };
 
   return (
     <>
       <div
-        className="relative rounded-xl overflow-hidden shadow group cursor-pointer w-full h-64 bg-white transition-all duration-300"
+        className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-[#262626] group cursor-pointer w-full h-64 bg-white dark:bg-[#0A0A0A] transition-all duration-150"
         onClick={() => setEmbedModalOpen(true)}
       >
         {/* FREE or PAID Badge */}
         <div className="absolute top-2 right-2 z-30">
           {isFree ? (
-            <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
+            <span className="bg-green-500 text-white text-[10px] font-mono font-medium uppercase tracking-[0.2em] px-3 py-1 rounded-full shadow">
               FREE
             </span>
           ) : (
-            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-semibold text-sm flex items-center gap-2">
+            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-mono font-medium text-sm flex items-center gap-2">
               {hasDiscount && (
                 <span className="line-through text-red-700 text-xs">
-                  ${price}
+                  {price}
                 </span>
               )}
               <span>
-                {Number(finalPrice) === 0 || isNaN(Number(finalPrice)) ? (
-                  <span className="bg-yellow-400 text-black px-2 py-0.5 rounded-full text-xs font-semibold">
-                    FREE
-                  </span>
-                ) : (
-                  `$${Number(finalPrice).toFixed(2)}`
+                  <span className="font-mono">{Number(finalPrice).toFixed(0)} {currency}</span>
                 )}
               </span>
             </div>
@@ -194,7 +154,7 @@ const handleDownload = async (e) => {
 
         {/* Overlay */}
         <div className="absolute bottom-2 left-0 right-0 z-20 px-4 flex flex-col gap-1 transition-all duration-300">
-          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-lg font-semibold drop-shadow-lg transition-all duration-300">
+          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-lg transition-all duration-300 font-sans">
             {truncatedTitle}
           </h3>
 
@@ -204,7 +164,7 @@ const handleDownload = async (e) => {
               {safeTags.slice(0, 3).map((t, i) => (
                 <span
                   key={i}
-                  className="text-[10px] text-white bg-black/40 px-2 py-0.5 rounded-full backdrop-blur"
+                  className="text-[9px] font-mono font-medium uppercase tracking-wider text-white bg-black/40 px-2 py-0.5 rounded-sm backdrop-blur"
                 >
                   {t}
                 </span>
@@ -220,7 +180,7 @@ const handleDownload = async (e) => {
                 wordBreak: "break-word",
                 height: descriptionHeight,
               }}
-              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white text-sm bg-black/30 p-1 rounded backdrop-blur mt-1"
+              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white/90 text-sm bg-black/40 p-2 rounded-lg backdrop-blur-md mt-1 font-sans leading-relaxed"
             >
               {description}
             </p>
@@ -230,16 +190,14 @@ const handleDownload = async (e) => {
           <div className="absolute bottom-16 -right-3 group-hover:-translate-x-5 opacity-0 group-hover:opacity-100 transition-all duration-300 z-30">
             <button
               onClick={handleLike}
-              className={`bg-transparent backdrop:blur-3xl rounded-full flex items-center gap-1 transform transition-transform duration-200 ${
-                animating ? "scale-125" : "scale-100"
-              }`}
+              className="bg-transparent backdrop:blur-3xl rounded-full flex items-center gap-1 transition-all duration-150"
             >
               <Heart
                 size={20}
                 className={`transition-colors duration-300 stroke-white ${
                   liked
                     ? "text-pink-600 fill-pink-600 stroke-pink-600"
-                    : "text-gray-600"
+                    : "text-slate-600"
                 }`}
               />
             </button>
@@ -271,14 +229,14 @@ const handleDownload = async (e) => {
               allowFullScreen
               onLoad={() => {
                 // Track view when modal opens
-                axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/view/${id}`)
-                  .then(() => console.log('✅ View tracked for template:', id))
+                axios.post(`${process.env.NEXT_PUBLIC_API_URL}/artifact/view/${id}`)
+                  .then(() => console.log('✅ View tracked for artifact:', id))
                   .catch(err => console.error('❌ View tracking failed:', err));
               }}
             ></iframe>
             <button
               onClick={() => setEmbedModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-xl"
+              className="absolute top-3 right-3 text-slate-500 hover:text-slate-800 font-bold text-xl"
             >
               ✕
             </button>
@@ -286,25 +244,42 @@ const handleDownload = async (e) => {
         </div>
       )}
 
-      {/* Payment Modal */}
+      {/* Purchase Confirmation Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-[380px] shadow relative">
-            <h2 className="text-lg font-semibold mb-3">Purchase Template</h2>
-            <p className="mb-4 text-gray-700">
-              You need to purchase this template before downloading.
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] animate-in fade-in duration-150">
+          <div className="bg-white dark:bg-[#0A0A0A] p-8 rounded-2xl w-[400px] border border-slate-200 dark:border-[#262626] relative">
+            <h2 className="text-xl font-medium font-sans text-black dark:text-white mb-2 uppercase tracking-tight">Premium Artifact</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6 font-normal font-sans">
+              This premium resource requires a one-time token exchange.
             </p>
+            
+            <div className="p-6 bg-slate-50 dark:bg-white/5 rounded-2xl mb-8 border border-slate-100 dark:border-white/5">
+                <div className="flex justify-between items-center mb-2">
+                    <span className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-widest">Price</span>
+                    <span className="text-xl font-medium font-mono text-black dark:text-white tracking-tight">{finalPrice.toFixed(0)} <span className="text-xs font-sans opacity-60">{currency}</span></span>
+                </div>
+                <div className="h-px bg-slate-200 dark:bg-white/10 my-3" />
+                <p className="text-[9px] font-bold text-slate-400 uppercase leading-relaxed tracking-wider">
+                    Purchasing will grant you lifetime access to download this artifact.
+                </p>
+            </div>
+
             <button
-              onClick={() => (window.location.href = paymentUrl)}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg"
+              onClick={handlePurchase}
+              disabled={!canAfford}
+              className={`w-full py-4 rounded-xl text-[11px] font-mono font-medium uppercase tracking-[0.2em] transition-all duration-150 mb-4 ${
+                canAfford 
+                ? "btn-primary" 
+                : "bg-slate-200 dark:bg-[#171717] text-slate-400 cursor-not-allowed border border-slate-300 dark:border-[#262626]"
+              }`}
             >
-              Proceed to Payment
+              {canAfford ? "Confirm Purchase" : "Insufficient Tokens"}
             </button>
             <button
               onClick={() => setShowPaymentModal(false)}
-              className="mt-2 w-full text-gray-600"
+              className="w-full text-[10px] font-mono font-medium text-slate-400 hover:text-slate-600 uppercase tracking-widest transition-colors"
             >
-              Cancel
+              Maybe Later
             </button>
           </div>
         </div>
@@ -313,4 +288,5 @@ const handleDownload = async (e) => {
   );
 };
 
-export default TemplateCard;
+export default ArtifactCard;
+

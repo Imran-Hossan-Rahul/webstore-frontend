@@ -1,14 +1,14 @@
 /**
- * Blog Export Utilities
- * Enhanced export functionality for blogs
+ * Codex Export Utilities
+ * Enhanced export functionality for codex
  */
 
 import jsPDF from "jspdf";
 
 /**
- * Export blog as PDF
+ * Export codex as PDF
  */
-export async function exportToPDF(editor, title = "Blog Post") {
+export async function exportToPDF(editor, title = "Codex Post") {
   if (!editor) return;
 
   try {
@@ -40,9 +40,9 @@ export async function exportToPDF(editor, title = "Blog Post") {
 }
 
 /**
- * Export blog as HTML
+ * Export codex as HTML
  */
-export function exportToHTML(editor, title = "Blog Post") {
+export function exportToHTML(editor, title = "Codex Post") {
   if (!editor) return;
 
   const html = editor.getHTML();
@@ -98,9 +98,9 @@ export function exportToHTML(editor, title = "Blog Post") {
 }
 
 /**
- * Export blog as JSON
+ * Export codex as JSON
  */
-export function exportToJSON(editor, title = "Blog Post") {
+export function exportToJSON(editor, title = "Codex Post") {
   if (!editor) return;
 
   const json = editor.getJSON();
@@ -123,22 +123,22 @@ export function exportToJSON(editor, title = "Blog Post") {
 }
 
 /**
- * Generate embed code for blog/template
+ * Generate embed code for codex/artifact
  */
 export function generateEmbedCode(type, id, title) {
   const baseUrl = window.location.origin;
   
-  if (type === "blog") {
+  if (type === "codex") {
     return `<iframe 
-  src="${baseUrl}/embed/blog/${id}" 
+  src="${baseUrl}/embed/codex/${id}" 
   width="100%" 
   height="600" 
   frameborder="0"
   title="${title}"
 ></iframe>`;
-  } else if (type === "template") {
+  } else if (type === "artifact") {
     return `<iframe 
-  src="${baseUrl}/embed/template/${id}" 
+  src="${baseUrl}/embed/artifact/${id}" 
   width="100%" 
   height="600" 
   frameborder="0"
@@ -148,4 +148,6 @@ export function generateEmbedCode(type, id, title) {
   
   return "";
 }
+
+
 

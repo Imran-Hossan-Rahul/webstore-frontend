@@ -16,7 +16,7 @@ export default function FeaturedProfiles({ type, title }) {
 
   // Fetch featured users
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/freelancers`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/craftsmen`)
       .then((res) => res.json())
       .then((data) => data.success && setUsers(data.data))
       .catch(console.error)
@@ -63,7 +63,7 @@ export default function FeaturedProfiles({ type, title }) {
 
         <button
           onClick={goToAllUsersPage}
-          className="flex items-center text-gray-700 hover:text-gray-900 font-medium"
+          className="flex items-center text-slate-700 hover:text-slate-900 font-medium"
         >
           <span className="mt-1">{totalCount}</span>
           <svg
@@ -124,3 +124,4 @@ export default function FeaturedProfiles({ type, title }) {
     </div>
   );
 }
+

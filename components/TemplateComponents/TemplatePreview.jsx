@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-export default function TemplatePreview({ src }) {
+export default function ArtifactPreview({ src }) {
   if (!src) return null;
 
   return (
@@ -9,7 +9,7 @@ export default function TemplatePreview({ src }) {
       <h3>Live Preview:</h3>
       <iframe
         src={src}
-        title="Template Preview"
+        title="Artifact Preview"
         style={{
           width: "100%",
           height: "500px",
@@ -20,3 +20,4 @@ export default function TemplatePreview({ src }) {
     </div>
   );
 }
+

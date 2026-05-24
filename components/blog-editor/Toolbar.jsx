@@ -1,4 +1,4 @@
-// components/blog-editor/Toolbar.jsx
+// components/codex-editor/Toolbar.jsx
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import {
@@ -43,7 +43,7 @@ import {
   Highlighter,
   Globe,
   Clock,
-  Sparkles,
+  Zap,
   Minus,
   CaseUpper,
 } from "lucide-react";
@@ -86,14 +86,20 @@ const HeadingIconsMap = {
 /**
  * ড্রপডাউন আইটেম কম্পোনেন্ট
  */
-const DropdownItem = ({ onClick, title, icon: Icon }) => (
+const DropdownItem = ({ onClick, title, icon: Icon, textIcon, style }) => (
   <button
     onMouseDown={(e) => e.preventDefault()}
     onClick={onClick}
-    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 transition-colors duration-150"
+    className="w-full text-left px-4 py-2 text-sm hover:bg-slate-100 flex items-center space-x-3 transition-colors duration-150"
   >
-    {Icon && <Icon className="w-4 h-4 text-gray-600" />}
-    <span>{title}</span>
+    {textIcon ? (
+      <span className="w-6 text-center text-lg text-slate-500 flex-shrink-0" style={style}>
+        {textIcon}
+      </span>
+    ) : Icon ? (
+      <Icon className="w-4 h-4 text-slate-600 flex-shrink-0" />
+    ) : null}
+    <span className="truncate text-slate-800" style={style}>{title}</span>
   </button>
 );
 
@@ -135,20 +141,20 @@ const Dropdown = ({ icon: Icon, title, buttonLabel, colorIndicator, children }) 
         type="button"
         onMouseDown={(e) => e.preventDefault()}
         className={`px-2 py-1.5 rounded transition-colors flex items-center space-x-1 min-w-[30px] ${
-          isOpen ? "bg-gray-200" : "hover:bg-gray-200"
+          isOpen ? "bg-slate-200" : "hover:bg-slate-200"
         }`}
         title={title}
         onClick={handleToggle}
       >
-        {Icon && !buttonLabel && <Icon className="w-4 h-4 text-gray-700" />}
-        {buttonLabel && <span className="text-sm font-medium text-gray-700 ml-1 mr-1">{buttonLabel}</span>}
-        {colorIndicator && <div className="w-2.5 h-2.5 rounded-full border border-gray-300 ml-0.5" style={{ backgroundColor: colorIndicator === 'transparent' ? '#fff' : colorIndicator }} />}
-        <ChevronDown className="w-3 h-3 text-gray-500" />
+        {Icon && !buttonLabel && <Icon className="w-4 h-4 text-slate-700" />}
+        {buttonLabel && <span className="text-xs font-medium text-slate-700 ml-1 mr-1 font-sans">{buttonLabel}</span>}
+        {colorIndicator && <div className="w-2.5 h-2.5 rounded-full border border-slate-300 ml-0.5" style={{ backgroundColor: colorIndicator === 'transparent' ? '#fff' : colorIndicator }} />}
+        <ChevronDown className="w-3 h-3 text-slate-500" />
       </button>
 
       {isOpen && (
         <div
-          className="absolute left-0 z-20 mt-1 w-56 origin-top-left bg-white border border-gray-200 rounded-md shadow-lg transition-all duration-100 ease-out"
+          className="absolute left-0 z-20 mt-1 w-56 origin-top-left bg-white border border-slate-200 rounded-md shadow-lg transition-all duration-100 ease-out max-h-80 overflow-y-auto"
           onClick={() => setIsOpen(false)}
         >
           <div className="py-1">{children}</div>
@@ -189,7 +195,7 @@ const ToolbarButton = ({
       className={`p-1.5 rounded transition-all flex items-center justify-center min-w-[32px] min-h-[32px] ${
         editor && editor.isActive(isActive)
           ? "bg-indigo-100 text-indigo-700 shadow-sm ring-1 ring-indigo-300 ring-inset font-bold"
-          : "text-gray-700 hover:bg-gray-200"
+          : "text-slate-700 hover:bg-slate-200"
       } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
       title={title}
       type="button"
@@ -214,18 +220,18 @@ const CustomModal = ({ isOpen, onClose, onInsert, title, children }) => {
         className="bg-white p-6 rounded-lg shadow-xl w-96"
         onMouseDown={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-bold mb-4">{title}</h3>
+        <h3 className="text-base font-medium mb-4 font-sans text-slate-900">{title}</h3>
         {children}
         <div className="mt-4 flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm rounded bg-gray-200 hover:bg-gray-300"
+            className="px-4 py-2 text-sm rounded bg-slate-200 hover:bg-slate-300"
           >
             বাতিল
           </button>
           <button
             onClick={onInsert}
-            className="px-4 py-2 text-sm rounded bg-blue-500 text-white hover:bg-blue-600"
+            className="px-4 py-2 text-sm rounded bg-indigo-600 text-white hover:bg-blue-600"
           >
             ইনসার্ট
           </button>
@@ -236,7 +242,42 @@ const CustomModal = ({ isOpen, onClose, onInsert, title, children }) => {
 };
 
 // --- টূলবার মেইন কম্পোনেন্ট ---
-export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveState, lastSaved, openModal, toggleHistory, openAISelector }) {
+export default function Toolbar({
+  editor,
+  editorWidth,
+  changeEditorWidth,
+  saveState,
+  lastSaved,
+  openModal,
+  openEmojiPicker,
+  deleteSection,
+  toggleHistory,
+  openAISelector,
+  selectedPositions
+}) {
+  const executeCommand = (commandFn) => {
+    if (selectedPositions && selectedPositions.size > 0) {
+      let chain = editor.chain();
+      selectedPositions.forEach(pos => {
+        const node = editor.state.doc.nodeAt(pos);
+        if (node) {
+          const from = pos + 1;
+          const to = pos + node.nodeSize - 1;
+          if (to > from) {
+            chain = chain.setTextSelection({ from, to });
+            commandFn(chain);
+          } else {
+            chain = chain.setNodeSelection(pos);
+            commandFn(chain);
+          }
+        }
+      });
+      chain.run();
+    } else {
+      commandFn(editor.chain().focus()).run();
+    }
+  };
+
   // Theme hook
   const { theme, toggleTheme } = useTheme();
 
@@ -355,7 +396,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
   const handleSetLink = useCallback(() => {
     if (!editor) return;
     if (editor.isActive("link")) {
-      editor.chain().focus().unsetLink().run();
+      executeCommand(chain => chain.unsetLink());
       return;
     }
     const { from, to } = editor.state.selection;
@@ -412,7 +453,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
     } else if (imageUrl) {
       let finalUrl = imageUrl.trim();
       if (!/^https?:\/\//i.test(finalUrl)) finalUrl = "http://" + finalUrl;
-      editor.chain().focus().setImage({ src: finalUrl, alt: "image" }).run();
+      executeCommand(chain => chain.setImage({ src: finalUrl, alt: "image" }));
     }
     setIsImageModalOpen(false);
   };
@@ -443,7 +484,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
       }
 
       if (editor.isActive("youtube")) {
-        editor.chain().focus().setYoutubeVideo({ src: finalUrl }).run();
+        executeCommand(chain => chain.setYoutubeVideo({ src: finalUrl }));
       } else {
         editor
           .chain()
@@ -479,13 +520,13 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
   const ActiveHeadingIcon = HeadingIconsMap[currentBlockType] || Type;
 
   return (
-    <div className="bg-white p-2 border-b border-gray-200 flex flex-wrap gap-1">
+    <div className="bg-white p-2 border-b border-slate-200 flex flex-wrap gap-1">
       {/* -------------------------------------------------
       // PRIMARY BLOCK CONTROLS: Block Types & Headings 
       // ------------------------------------------------- */}
 
 
-      <div className="flex items-center gap-0.5 bg-gray-50/60 p-0.5 rounded-lg border border-gray-100">
+      <div className="flex items-center gap-0.5 bg-slate-50/60 p-0.5 rounded-lg border border-slate-100">
         {/* BLOCK STYLES (Lists, Quotes, etc.) - Block Dropdown */}
         <Dropdown icon={ActiveBlockIcon} title="Insert Block">
           {/* 🔥 দ্বিতীয় ফিক্স: ব্লক থেকে নিশ্চিত প্যারাগ্রাফ পরিবর্তন */}
@@ -506,32 +547,32 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
           {/* 🔥 ফিক্স শেষ */}
 
           <DropdownItem
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            onClick={() => executeCommand(chain => chain.toggleBulletList())}
             title="Bullet List"
             icon={List}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            onClick={() => executeCommand(chain => chain.toggleOrderedList())}
             title="Numbered List"
             icon={ListOrdered}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().toggleTaskList().run()}
+            onClick={() => executeCommand(chain => chain.toggleTaskList())}
             title="Task List"
             icon={CheckSquare}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            onClick={() => executeCommand(chain => chain.toggleBlockquote())}
             title="Blockquote"
             icon={Quote}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().setCodeBlock().run()}
+            onClick={() => executeCommand(chain => chain.setCodeBlock())}
             title="Code Block"
             icon={Code}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            onClick={() => executeCommand(chain => chain.setHorizontalRule())}
             title="Divider"
             icon={Minus}
           />
@@ -557,7 +598,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
 
           <DropdownItem
             onClick={() => {
-              editor.chain().focus().toggleHeading({ level: 1 }).run();
+              executeCommand(chain => chain.toggleHeading({ level: 1 }));
             }}
             title={`Title (H1)`}
             icon={Heading1}
@@ -572,7 +613,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
               <DropdownItem
                 key={level}
                 onClick={() => {
-                  editor.chain().focus().toggleHeading({ level }).run();
+                  executeCommand(chain => chain.toggleHeading({ level }));
                 }}
                 title={titleText}
                 icon={IconComponent}
@@ -582,10 +623,10 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         </Dropdown>
       </div>
 
-      <span className="border-l border-gray-200 mx-1 h-5 self-center"></span>
+      <span className="border-l border-slate-200 mx-1 h-5 self-center"></span>
 
       {/* Font Family Dropdown (Moved here & changed icon) */}
-      <div className="flex items-center gap-0.5 bg-gray-50/60 p-0.5 rounded-lg border border-gray-100">
+      <div className="flex items-center gap-0.5 bg-slate-50/60 p-0.5 rounded-lg border border-slate-100">
       <Dropdown 
         icon={CaseUpper} 
         title="Font Family"
@@ -597,40 +638,108 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
       >
         <DropdownItem
           onClick={() => {
-            // By explicitly setting the font to 'Inter' (or generic sans-serif), 
-            // we avoid Tiptap stripping the entire block's font mark.
-            editor.chain().focus().setFontFamily("Inter, sans-serif").run();
+            executeCommand(chain => chain.setFontFamily("Inter, sans-serif"));
           }}
           title="Default (Inter)"
-          icon={CaseUpper}
+          textIcon="Ag"
+          style={{ fontFamily: 'Inter, sans-serif' }}
         />
-        <DropdownItem
-          onClick={() => editor.chain().focus().setFontFamily("serif").run()}
-          title="Serif"
-          icon={CaseUpper}
-          style={{ fontFamily: "serif" }}
-        />
-        <DropdownItem
-          onClick={() => editor.chain().focus().setFontFamily("monospace").run()}
-          title="Monospace"
-          icon={CaseUpper}
-          style={{ fontFamily: "monospace" }}
-        />
-        <DropdownItem
-          onClick={() => editor.chain().focus().setFontFamily("cursive").run()}
-          title="Cursive"
-          icon={CaseUpper}
-          style={{ fontFamily: "cursive" }}
-        />
+        {[
+          // --- SANS-SERIF ---
+          { name: 'Roboto', value: '"Roboto", sans-serif' },
+          { name: 'Open Sans', value: '"Open Sans", sans-serif' },
+          { name: 'Montserrat', value: '"Montserrat", sans-serif' },
+          { name: 'Plus Jakarta Sans', value: '"Plus Jakarta Sans", sans-serif' },
+          { name: 'Outfit', value: '"Outfit", sans-serif' },
+          { name: 'Lato', value: '"Lato", sans-serif' },
+          { name: 'Poppins', value: '"Poppins", sans-serif' },
+          { name: 'Oswald', value: '"Oswald", sans-serif' },
+          { name: 'Raleway', value: '"Raleway", sans-serif' },
+          { name: 'Nunito', value: '"Nunito", sans-serif' },
+          { name: 'Ubuntu', value: '"Ubuntu", sans-serif' },
+          { name: 'Inter', value: '"Inter", sans-serif' },
+          { name: 'Work Sans', value: '"Work Sans", sans-serif' },
+          { name: 'Quicksand', value: '"Quicksand", sans-serif' },
+          { name: 'Rubik', value: '"Rubik", sans-serif' },
+          { name: 'Karla', value: '"Karla", sans-serif' },
+          { name: 'Mukta', value: '"Mukta", sans-serif' },
+          { name: 'Josefin Sans', value: '"Josefin Sans", sans-serif' },
+          
+          // --- SERIF ---
+          { name: 'Playfair Display', value: '"Playfair Display", serif' },
+          { name: 'Merriweather', value: '"Merriweather", serif' },
+          { name: 'Lora', value: '"Lora", serif' },
+          { name: 'Charter', value: '"Charter", serif' },
+          { name: 'PT Serif', value: '"PT Serif", serif' },
+          { name: 'Crimson Text', value: '"Crimson Text", serif' },
+          { name: 'Libre Baskerville', value: '"Libre Baskerville", serif' },
+          { name: 'EB Garamond', value: '"EB Garamond", serif' },
+          { name: 'Bitter', value: '"Bitter", serif' },
+          { name: 'Arvo', value: '"Arvo", serif' },
+          { name: 'Roboto Slab', value: '"Roboto Slab", serif' },
+
+          // --- DISPLAY / DECORATIVE ---
+          { name: 'Bebas Neue', value: '"Bebas Neue", sans-serif' },
+          { name: 'Righteous', value: '"Righteous", sans-serif' },
+          { name: 'Lobster', value: '"Lobster", cursive' },
+          { name: 'Anton', value: '"Anton", sans-serif' },
+          { name: 'Abril Fatface', value: '"Abril Fatface", serif' },
+          { name: 'Comfortaa', value: '"Comfortaa", sans-serif' },
+
+          // --- HANDWRITING / CURSIVE ---
+          { name: 'Caveat', value: '"Caveat", cursive' },
+          { name: 'Pacifico', value: '"Pacifico", cursive' },
+          { name: 'Dancing Script', value: '"Dancing Script", cursive' },
+          { name: 'Shadows Into Light', value: '"Shadows Into Light", cursive' },
+          { name: 'Indie Flower', value: '"Indie Flower", cursive' },
+          { name: 'Permanent Marker', value: '"Permanent Marker", cursive' },
+          { name: 'Satisfy', value: '"Satisfy", cursive' },
+          { name: 'Great Vibes', value: '"Great Vibes", cursive' },
+
+          // --- MONOSPACE ---
+          { name: 'Fira Code', value: '"Fira Code", monospace' },
+          { name: 'Inconsolata', value: '"Inconsolata", monospace' },
+          { name: 'JetBrains Mono', value: '"JetBrains Mono", monospace' },
+          { name: 'Source Code Pro', value: '"Source Code Pro", monospace' },
+          { name: 'IBM Plex Mono', value: '"IBM Plex Mono", monospace' },
+          { name: 'Space Mono', value: '"Space Mono", monospace' },
+          { name: 'Ubuntu Mono', value: '"Ubuntu Mono", monospace' },
+
+          // --- BENGALI / SOUTH ASIAN ---
+          { name: 'Hind Siliguri (Bengali)', value: '"Hind Siliguri", sans-serif' },
+          { name: 'Noto Sans Bengali', value: '"Noto Sans Bengali", sans-serif' },
+          { name: 'Galada (Bengali)', value: '"Galada", cursive' },
+
+          // --- CLASSIC WEB SAFE ---
+          { name: 'Arial', value: 'Arial, Helvetica, sans-serif' },
+          { name: 'Verdana', value: 'Verdana, Geneva, sans-serif' },
+          { name: 'Tahoma', value: 'Tahoma, Geneva, sans-serif' },
+          { name: 'Trebuchet MS', value: '"Trebuchet MS", Helvetica, sans-serif' },
+          { name: 'Impact', value: 'Impact, Charcoal, sans-serif' },
+          { name: 'Times New Roman', value: '"Times New Roman", Times, serif' },
+          { name: 'Georgia', value: 'Georgia, serif' },
+          { name: 'Garamond', value: 'Garamond, serif' },
+          { name: 'Courier New', value: '"Courier New", Courier, monospace' },
+          { name: 'Comic Sans', value: '"Comic Sans MS", cursive, sans-serif' },
+          { name: 'Brush Script', value: '"Brush Script MT", cursive' }
+        ].map((font) => (
+          <DropdownItem
+            key={font.name}
+            onClick={() => executeCommand(chain => chain.setFontFamily(font.value))}
+            title={font.name}
+            textIcon="Ag"
+            style={{ fontFamily: font.value }}
+          />
+        ))}
       </Dropdown>
       </div>
       
-      <span className="border-l border-gray-200 mx-1 h-5 self-center"></span>
+      <span className="border-l border-slate-200 mx-1 h-5 self-center"></span>
 
       {/* -------------------------------------------------
       // MARK STYLES (Bold, Italic, Strike, Code)
       // ------------------------------------------------- */}
-      <div className="flex items-center gap-0.5 bg-gray-50/60 p-0.5 rounded-lg border border-gray-100">
+      <div className="flex items-center gap-0.5 bg-slate-50/60 p-0.5 rounded-lg border border-slate-100">
         <ToolbarButton
           editor={editor}
           command="toggleBold"
@@ -670,36 +779,36 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         colorIndicator={editor.getAttributes('textStyle')?.color || "transparent"}
       >
         <DropdownItem
-          onClick={() => editor.chain().focus().unsetColor().run()}
+          onClick={() => executeCommand(chain => chain.unsetColor())}
           title="Default"
           icon={Palette}
         />
         <DropdownItem
-          onClick={() => editor.chain().focus().setColor("#ef4444").run()}
+          onClick={() => executeCommand(chain => chain.setColor("#ef4444"))}
           title="Red"
           icon={Palette}
           style={{ color: "#ef4444" }}
         />
         <DropdownItem
-          onClick={() => editor.chain().focus().setColor("#3b82f6").run()}
+          onClick={() => executeCommand(chain => chain.setColor("#3b82f6"))}
           title="Blue"
           icon={Palette}
           style={{ color: "#3b82f6" }}
         />
         <DropdownItem
-          onClick={() => editor.chain().focus().setColor("#10b981").run()}
+          onClick={() => executeCommand(chain => chain.setColor("#10b981"))}
           title="Green"
           icon={Palette}
           style={{ color: "#10b981" }}
         />
         <DropdownItem
-          onClick={() => editor.chain().focus().setColor("#f59e0b").run()}
+          onClick={() => executeCommand(chain => chain.setColor("#f59e0b"))}
           title="Orange"
           icon={Palette}
           style={{ color: "#f59e0b" }}
         />
         <DropdownItem
-          onClick={() => editor.chain().focus().setColor("#8b5cf6").run()}
+          onClick={() => executeCommand(chain => chain.setColor("#8b5cf6"))}
           title="Purple"
           icon={Palette}
           style={{ color: "#8b5cf6" }}
@@ -713,13 +822,13 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         colorIndicator={editor.getAttributes('highlight')?.color || "transparent"}
       >
         <DropdownItem
-          onClick={() => editor.chain().focus().unsetHighlight().run()}
+          onClick={() => executeCommand(chain => chain.unsetHighlight())}
           title="No Highlight"
           icon={Highlighter}
         />
         <DropdownItem
           onClick={() =>
-            editor.chain().focus().setHighlight({ color: "#fde047" }).run()
+            executeCommand(chain => chain.setHighlight({ color: "#fde047" }))
           }
           title="Yellow"
           icon={Highlighter}
@@ -727,7 +836,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         />
         <DropdownItem
           onClick={() =>
-            editor.chain().focus().setHighlight({ color: "#86efac" }).run()
+            executeCommand(chain => chain.setHighlight({ color: "#86efac" }))
           }
           title="Green"
           icon={Highlighter}
@@ -735,7 +844,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         />
         <DropdownItem
           onClick={() =>
-            editor.chain().focus().setHighlight({ color: "#93c5fd" }).run()
+            executeCommand(chain => chain.setHighlight({ color: "#93c5fd" }))
           }
           title="Blue"
           icon={Highlighter}
@@ -743,7 +852,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         />
         <DropdownItem
           onClick={() =>
-            editor.chain().focus().setHighlight({ color: "#fca5a5" }).run()
+            executeCommand(chain => chain.setHighlight({ color: "#fca5a5" }))
           }
           title="Red/Pink"
           icon={Highlighter}
@@ -752,13 +861,13 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
       </Dropdown>
       </div>
 
-      <span className="border-l border-gray-200 mx-1"></span>
+      <span className="border-l border-slate-200 mx-1"></span>
 
       {/* -------------------------------------------------
       // LINK & TABLE & MEDIA 
       // ------------------------------------------------- */}
 
-      <div className="flex items-center gap-0.5 bg-gray-50/60 p-0.5 rounded-lg border border-gray-100">
+      <div className="flex items-center gap-0.5 bg-slate-50/60 p-0.5 rounded-lg border border-slate-100">
         {/* Table Dropdown */}
         <Dropdown icon={Table} title="Table">
           <DropdownItem
@@ -773,27 +882,27 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
             icon={Table}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().addColumnBefore().run()}
+            onClick={() => executeCommand(chain => chain.addColumnBefore())}
             title="Add Column Before"
             icon={CornerDownLeft}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().addColumnAfter().run()}
+            onClick={() => executeCommand(chain => chain.addColumnAfter())}
             title="Add Column After"
             icon={CornerDownRight}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().addRowBefore().run()}
+            onClick={() => executeCommand(chain => chain.addRowBefore())}
             title="Add Row Before"
             icon={CornerDownLeft}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().addRowAfter().run()}
+            onClick={() => executeCommand(chain => chain.addRowAfter())}
             title="Add Row After"
             icon={CornerDownRight}
           />
           <DropdownItem
-            onClick={() => editor.chain().focus().deleteTable().run()}
+            onClick={() => executeCommand(chain => chain.deleteTable())}
             title="Delete Table"
             icon={Trash2}
           />
@@ -850,14 +959,14 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         />
       </div>
 
-      <span className="border-l border-gray-200 mx-1"></span>
+      <span className="border-l border-slate-200 mx-1"></span>
 
       {/* ALIGNMENT */}
-      <div className="flex items-center gap-0.5 bg-gray-50/60 p-0.5 rounded-lg border border-gray-100">
+      <div className="flex items-center gap-0.5 bg-slate-50/60 p-0.5 rounded-lg border border-slate-100">
         <ToolbarButton
           editor={editor}
           command="setTextAlign"
-          onClick={() => editor.chain().focus().setTextAlign("left").run()}
+          onClick={() => executeCommand(chain => chain.setTextAlign("left"))}
           isActive={{ textAlign: "left" }}
           icon={AlignLeft}
           title="Align Left"
@@ -865,7 +974,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         <ToolbarButton
           editor={editor}
           command="setTextAlign"
-          onClick={() => editor.chain().focus().setTextAlign("center").run()}
+          onClick={() => executeCommand(chain => chain.setTextAlign("center"))}
           isActive={{ textAlign: "center" }}
           icon={AlignCenter}
           title="Align Center"
@@ -873,7 +982,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         <ToolbarButton
           editor={editor}
           command="setTextAlign"
-          onClick={() => editor.chain().focus().setTextAlign("right").run()}
+          onClick={() => executeCommand(chain => chain.setTextAlign("right"))}
           isActive={{ textAlign: "right" }}
           icon={AlignRight}
           title="Align Right"
@@ -881,24 +990,24 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         <ToolbarButton
           editor={editor}
           command="setTextAlign"
-          onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+          onClick={() => executeCommand(chain => chain.setTextAlign("justify"))}
           isActive={{ textAlign: "justify" }}
           icon={AlignJustify}
           title="Align Justify"
         />
       </div>
 
-      <span className="border-l border-gray-200 mx-1"></span>
+      <span className="border-l border-slate-200 mx-1"></span>
 
       {/* AI ASSISTANT */}
       <ToolbarButton
         editor={editor}
         onClick={openAISelector}
-        icon={Sparkles}
-        title="AI Assistant (Magic Sparkles)"
+        icon={Zap}
+        title="AI Assistant"
       />
 
-      <span className="border-l border-gray-200 mx-1"></span>
+      <span className="border-l border-slate-200 mx-1"></span>
 
       {/* HISTORY */}
       <ToolbarButton
@@ -923,12 +1032,12 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
       
 
       {/* Vertical Divider */}
-      <div className="h-6 w-px bg-gray-300 mx-1"></div>
+      <div className="h-6 w-px bg-slate-300 mx-1"></div>
 
       {/* Dark Mode Toggle */}
       <button
         onClick={toggleTheme}
-        className="p-2 rounded hover:bg-gray-100 transition-colors"
+        className="p-2 rounded hover:bg-slate-100 transition-colors"
         title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
       >
         {theme === 'light' ? (
@@ -989,7 +1098,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
       >
         <div className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-slate-700">
               লিঙ্ক টেক্সট
             </label>
             <input
@@ -997,12 +1106,12 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
               value={linkText}
               onChange={(e) => setLinkText(e.target.value)}
               onKeyDown={(e) => e.stopPropagation()}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
               placeholder="যে লেখাটি লিঙ্ক হবে"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-slate-700">
               URL
             </label>
             <input
@@ -1010,7 +1119,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
               value={linkUrl}
               onChange={(e) => setLinkUrl(e.target.value)}
               onKeyDown={(e) => e.stopPropagation()}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+              className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
               placeholder="https://example.com"
             />
           </div>
@@ -1029,13 +1138,13 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         title="ইমেজ ইনসার্ট করুন"
       >
         <div className="space-y-3">
-          <p className="text-sm text-gray-600">পিসি থেকে আপলোড করুন:</p>
+          <p className="text-sm text-slate-600">পিসি থেকে আপলোড করুন:</p>
           <input
             type="file"
             accept="image/*"
             onChange={handleImageFileSelect}
             onKeyDown={(e) => e.stopPropagation()}
-            className="w-full text-sm text-gray-700 mt-2"
+            className="w-full text-sm text-slate-700 mt-2"
           />
           {imageFile ? (
             <p className="text-sm text-blue-600 mt-2">
@@ -1043,8 +1152,8 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
             </p>
           ) : (
             <>
-              <div className="my-3 text-center border-t border-gray-200 pt-3">
-                <span className="text-xs text-gray-400">অথবা একটি URL দিন</span>
+              <div className="my-3 text-center border-t border-slate-200 pt-3">
+                <span className="text-xs text-slate-400">অথবা একটি URL দিন</span>
               </div>
               <input
                 type="url"
@@ -1054,7 +1163,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
                   setImageFile(null);
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
                 placeholder="https://example.com/image.jpg"
               />
             </>
@@ -1074,13 +1183,13 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
         title="ভিডিও ইনসার্ট করুন"
       >
         <div className="space-y-3">
-          <p className="text-sm text-gray-600">পিসি থেকে আপলোড করুন:</p>
+          <p className="text-sm text-slate-600">পিসি থেকে আপলোড করুন:</p>
           <input
             type="file"
             accept="video/*"
             onChange={handleVideoFileSelect}
             onKeyDown={(e) => e.stopPropagation()}
-            className="w-full text-sm text-gray-700 mt-2"
+            className="w-full text-sm text-slate-700 mt-2"
           />
           {videoFile ? (
             <p className="text-sm text-blue-600 mt-2">
@@ -1088,8 +1197,8 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
             </p>
           ) : (
             <>
-              <div className="my-3 text-center border-t border-gray-200 pt-3">
-                <span className="text-xs text-gray-400">
+              <div className="my-3 text-center border-t border-slate-200 pt-3">
+                <span className="text-xs text-slate-400">
                   অথবা একটি YouTube/ভিডিও URL দিন
                 </span>
               </div>
@@ -1101,7 +1210,7 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
                   setVideoFile(null);
                 }}
                 onKeyDown={(e) => e.stopPropagation()}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
                 placeholder="https://www.youtube.com/watch?v=..."
               />
             </>
@@ -1124,10 +1233,10 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
           accept="audio/*"
           onChange={handleAudioFileSelect}
           onKeyDown={(e) => e.stopPropagation()}
-          className="w-full text-sm text-gray-700 mt-2"
+          className="w-full text-sm text-slate-700 mt-2"
         />
         {audioFile && (
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="text-sm text-slate-600 mt-2">
             সিলেক্টেড ফাইল: <strong>{audioFile.name}</strong>
           </p>
         )}
@@ -1135,3 +1244,4 @@ export default function Toolbar({ editor, editorWidth, changeEditorWidth, saveSt
     </div>
   );
 }
+

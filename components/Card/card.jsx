@@ -5,7 +5,7 @@ import axios from "axios";
 import { Heart, Download } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 
-const TemplateCard = ({
+const ArtifactCard = ({
   id,
   title = "Untitled",
   description = "No description available.",
@@ -19,12 +19,12 @@ const TemplateCard = ({
   userId = null,
   fileType = "image",
   featured = "",
-  currency = "USD",
+  currency = "TKNS",
 }) => {
   const [liked, setLiked] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
   const [embedModalOpen, setEmbedModalOpen] = useState(false);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState(null);
   const { showToast } = useToast();
 
@@ -41,7 +41,7 @@ const TemplateCard = ({
   const handleLike = async (e) => {
     e.stopPropagation();
 
-    const templateId = id;
+    const artifactId = id;
     const token = localStorage.getItem("token");
     let visitorId = localStorage.getItem("visitorId");
 
@@ -59,7 +59,7 @@ const TemplateCard = ({
     try {
       const payload = token ? {} : { visitorId };
 
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/like`,
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/artifact/${artifactId}/like`,
         payload,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -82,7 +82,7 @@ const TemplateCard = ({
   const handleDownload = async (e) => {
     e.stopPropagation();
 
-    const templateId = id;
+    const artifactId = id;
     const token = localStorage.getItem("token");
     let visitorId = localStorage.getItem("visitorId");
 
@@ -94,7 +94,7 @@ const TemplateCard = ({
     try {
       const payload = token ? {} : { visitorId };
 
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/download`,
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/artifact/${artifactId}/download`,
         payload,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -111,12 +111,12 @@ const TemplateCard = ({
         const data = err.response.data;
 
         setPaymentInfo({
-          templateId: data.templateId,
+          artifactId: data.artifactId,
           price: data.price,
           currency: data.currency,
         });
 
-        setShowPaymentModal(true);
+        setShowPurchaseModal(true);
         return;
       }
 
@@ -131,23 +131,23 @@ const TemplateCard = ({
   return (
     <>
       <div
-        className="relative rounded-xl overflow-hidden shadow group cursor-pointer w-full h-64 bg-white transition-all duration-300"
+        className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-[#262626] group cursor-pointer w-full h-64 bg-white dark:bg-[#0A0A0A] transition-all duration-150"
         onClick={() => setEmbedModalOpen(true)}
       >
         {/* Badge */}
         <div className="absolute top-2 right-2 z-30">
           {isFree ? (
-            <span className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
+            <span className="bg-green-500 text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider">
               FREE
             </span>
           ) : (
-            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-semibold text-sm flex items-center gap-2">
+            <div className="bg-yellow-400 text-black px-3 py-1 rounded-full shadow font-mono font-medium text-sm flex items-center gap-2">
               {hasDiscount && (
-                <span className="line-through text-red-700 text-xs">
-                  ${price}
+                <span className="line-through text-red-700 text-[10px] font-mono opacity-70">
+                  {price} {currency}
                 </span>
               )}
-              <span>${Number(finalPrice).toFixed(2)}</span>
+              <span className="text-xs font-mono font-bold tracking-tight">{Number(finalPrice).toFixed(0)} {currency}</span>
             </div>
           )}
         </div>
@@ -171,7 +171,7 @@ const TemplateCard = ({
 
         {/* Overlay text */}
         <div className="absolute bottom-2 left-0 right-0 z-20 px-4 flex flex-col gap-1">
-          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-lg font-semibold drop-shadow-lg transition-all duration-300">
+          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-lg transition-all duration-300 font-sans">
             {title.length > 30 ? title.substring(0, 30) + "..." : title}
           </h3>
 
@@ -196,7 +196,7 @@ const TemplateCard = ({
                 textOverflow: "ellipsis",
                 height: descriptionHeight,
               }}
-              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white text-sm bg-black/30 p-1 rounded backdrop-blur mt-1"
+              className="absolute w-[100%] -translate-x-8 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white/90 text-sm bg-black/40 p-2 rounded-lg backdrop-blur-md mt-1 font-sans leading-relaxed"
             >
               {description}
             </p>
@@ -209,12 +209,12 @@ const TemplateCard = ({
               className="bg-white p-2 rounded-full shadow flex items-center gap-1"
             >
               <Heart
-                size={20}
+                size={18}
                 className={`transition-colors duration-300 ${
-                  liked ? "text-pink-600 fill-pink-600" : "text-gray-600"
+                  liked ? "text-pink-600 fill-pink-600" : "text-slate-600"
                 }`}
               />
-              <span className="text-sm">{likeCount}</span>
+              <span className="text-xs font-mono font-medium">{likeCount}</span>
             </button>
           </div>
 
@@ -244,7 +244,7 @@ const TemplateCard = ({
             ></iframe>
             <button
               onClick={() => setEmbedModalOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 font-bold text-xl"
+              className="absolute top-3 right-3 text-slate-500 hover:text-slate-800 font-bold text-xl"
             >
               ✕
             </button>
@@ -252,35 +252,37 @@ const TemplateCard = ({
         </div>
       )}
 
-      {/* PAYMENT MODAL */}
-      {showPaymentModal && paymentInfo && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-[380px] shadow">
-            <h2 className="text-lg font-semibold mb-3">Purchase Template</h2>
+      {/* PURCHASE MODAL */}
+      {showPurchaseModal && paymentInfo && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#0A0A0A] p-6 rounded-xl w-[380px] border border-slate-200 dark:border-[#262626]">
+            <h2 className="text-lg font-semibold mb-3 text-black dark:text-white">Purchase Artifact</h2>
 
-            <p className="mb-1 text-gray-700">
-              Template ID: <b>{paymentInfo.templateId}</b>
+            <p className="mb-1 text-slate-500 text-xs font-sans">
+              Artifact ID: <b className="font-mono text-slate-900">{paymentInfo.artifactId}</b>
             </p>
 
-            <p className="mb-4 text-gray-700">
+            <p className="mb-4 text-slate-500 text-xs font-sans">
               Price:{" "}
-              <b>
+              <b className="font-mono text-indigo-600 text-lg">
                 {paymentInfo.price} {paymentInfo.currency}
               </b>
             </p>
 
             <button
               onClick={() => {
-                window.location.href = `/payment?templateId=${paymentInfo.templateId}&amount=${paymentInfo.price}&currency=${paymentInfo.currency}`;
+                // Future: Integrate with internal wallet unlock API
+                showToast("This feature will use your internal TKNS balance.", "info");
+                setShowPurchaseModal(false);
               }}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg"
+              className="btn-primary w-full py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs"
             >
-              Proceed to Payment
+              Unlock with TKNS
             </button>
 
             <button
-              onClick={() => setShowPaymentModal(false)}
-              className="mt-2 w-full text-gray-600"
+              onClick={() => setShowPurchaseModal(false)}
+              className="mt-2 w-full text-slate-600"
             >
               Cancel
             </button>
@@ -291,4 +293,5 @@ const TemplateCard = ({
   );
 };
 
-export default TemplateCard;
+export default ArtifactCard;
+

@@ -50,9 +50,9 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
               <TrendingUp className="text-[#3ea6ff]" size={24} />
               Analytics: {post.content?.substring(0, 30) || "Post Stats"}...
             </h2>
-            <p className="text-gray-400 text-sm mt-1">Real-time Performance</p>
+            <p className="text-slate-400 text-sm mt-1">Real-time Performance</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-[#303030] rounded-full text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-[#303030] rounded-full text-slate-400 hover:text-white transition-colors">
             <X size={24} />
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
                               className={`px-3 py-1.5 rounded-md text-xs font-medium uppercase transition-all ${
                                   timeRange === range 
                                   ? 'bg-[#3ea6ff] text-[#0f0f0f] shadow-md' 
-                                  : 'text-gray-400 hover:text-gray-200 hover:bg-[#333]'
+                                  : 'text-slate-400 hover:text-gray-200 hover:bg-[#333]'
                               }`}
                           >
                               {range}
@@ -80,31 +80,31 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
               </div>
 
           {loading ? (
-             <div className="h-96 flex items-center justify-center"><div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-gray-600 rounded-full"></div></div>
+             <div className="h-96 flex items-center justify-center"><div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-slate-600 rounded-full"></div></div>
           ) : error ? (
-             <div className="h-96 flex items-center justify-center text-red-400">{error}</div>
+             <div className="h-96 flex items-center justify-center text-red-400">{error.message || error}</div>
           ) : (
           <div className="space-y-8">
             {/* Summary Cards */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-gray-400 text-xs mb-1">Impressions</div>
+                  <div className="text-slate-400 text-xs mb-1">Impressions</div>
                   <div className="text-xl font-bold text-white">{data.totalImpressions?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-gray-400 text-xs mb-1">Views</div>
+                  <div className="text-slate-400 text-xs mb-1">Views</div>
                   <div className="text-xl font-bold text-[#3ea6ff]">{data.totalViews?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-gray-400 text-xs mb-1">Likes</div>
+                  <div className="text-slate-400 text-xs mb-1">Likes</div>
                   <div className="text-xl font-bold text-[#00C49F]">{data.totalLikes?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-gray-400 text-xs mb-1">Comments</div>
+                  <div className="text-slate-400 text-xs mb-1">Comments</div>
                   <div className="text-xl font-bold text-[#FFBB28]">{data.totalComments?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-gray-400 text-xs mb-1">Shares</div>
+                  <div className="text-slate-400 text-xs mb-1">Shares</div>
                   <div className="text-xl font-bold text-[#FF8042]">{data.totalShares?.toLocaleString()}</div>
                </div>
             </div>

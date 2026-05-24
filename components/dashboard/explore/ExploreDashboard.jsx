@@ -4,7 +4,7 @@ import ExploreFeed from "./ExploreFeed";
 
 export default function ExploreDashboard() {
   return (
-    <div className="pt-8">
+    <div>
       <ExploreFeed />
     </div>
   );

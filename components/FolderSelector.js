@@ -32,7 +32,7 @@ export default function FolderSelector({ onFolderSelect }) {
       >
         {loading ? "Setting up..." : "Choose Folder"}
       </button>
-      <p className="text-gray-400 mt-4 text-sm">
+      <p className="text-slate-400 mt-4 text-sm">
         Select a folder to work with your files, or cancel to use temporary workspace
       </p>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { api, getHasCreatorAccount } from "@/utils/api";
+import { api, getHasCraftsmanAccount } from "@/utils/api";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
@@ -13,14 +13,14 @@ export default function HomeMain({ initialCategory = "All" }) {
   const [searchQuery, setSearchQuery] = useState("");
   
   // Data State
-  const [templates, setTemplates] = useState([]);
-  const [blogs, setBlogs] = useState([]);
+  const [artifacts, setArtifacts] = useState([]);
+  const [codex, setCodex] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // User State
   const [user, setUser] = useState(null);
-  const [hasCreatorAccount, setHasCreatorAccount] = useState(false);
+  const [hasCraftsmanAccount, setHasCraftsmanAccount] = useState(false);
 
   // Toggle Sidebar
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -28,68 +28,55 @@ export default function HomeMain({ initialCategory = "All" }) {
   // 1. Fetch User Info (for Navbar)
   useEffect(() => {
     const fetchUser = async () => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            try {
-                // Get basic user info if you have an endpoint, or decode token. 
-                // For now, let's just assume we have a way or rely on partial data.
-                // We'll fetch 'hasCreatorAccount' at least.
-                const isCreator = await getHasCreatorAccount(token);
-                setHasCreatorAccount(isCreator);
-                
-                // Decode token for name if feasible or fetch profile (optional)
-                // setUser({ name: "User" }); // Placeholder or real fetch
-                
-                // Let's use a quick profile fetch if available, else just 'User'
-                try {
-                  const res = await api.get("/auth/me"); // Assuming this exists or similar
-                  setUser(res.data?.user || { name: "User" });
-                } catch (e) {
-                   // Fallback to localStorage user if saved during login
-                   const localUser = JSON.parse(localStorage.getItem("user") || "{}");
-                   if (localUser.name) setUser(localUser);
-                }
-            } catch (err) {
-                console.error("Auth check failed", err);
+        try {
+            const res = await api.get("/user/profile");
+            if (res.success) {
+                setUser(res.data);
+                setHasCraftsmanAccount(res.data.hasCraftsmanAccount);
             }
+        } catch (err) {
+            console.error("Auth check failed", err);
+            // Fallback to localStorage user if saved during login for basic UI
+            const localUser = JSON.parse(localStorage.getItem("user") || "{}");
+            if (localUser.name) setUser(localUser);
+            setHasCraftsmanAccount(getHasCraftsmanAccount());
         }
     };
     fetchUser();
   }, []);
 
-  // 2. Fetch Content (Templates & Blogs) - Reusing Logic
+  // 2. Fetch Content (Artifacts & Codex) - Reusing Logic
   useEffect(() => {
     const init = async () => {
       try {
         setLoading(true);
-        const [templatesRes, blogsRes] = await Promise.allSettled([
-           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/template`, { params: { page: 1, limit: 100 }, withCredentials: true }),
-           // Fallback to /blog if /blog/all fails 
-           api.get("/blog?limit=100") // Using api wrapper as verified working
+        const [artifactsRes, codexRes] = await Promise.allSettled([
+           api.get("/artifact", { params: { page: 1, limit: 100 } }),
+           api.get("/codex?limit=100")
         ]);
 
-        const fetchedTemplates = templatesRes.status === "fulfilled" ? (templatesRes.value.data.data || templatesRes.value.data.templates || []) : [];
+        const fetchedArtifacts = artifactsRes.status === "fulfilled" ? (artifactsRes.value.data || artifactsRes.value.artifacts || []) : [];
         
-        let fetchedBlogs = [];
-        if (blogsRes.status === "fulfilled") {
-            const bData = blogsRes.value; // api.get returns body directly
-            if (bData && Array.isArray(bData.blogs)) {
-                fetchedBlogs = bData.blogs;
+        let fetchedCodex = [];
+        if (codexRes.status === "fulfilled") {
+            const bData = codexRes.value; // api.get returns body directly
+            if (bData && Array.isArray(bData.codex)) {
+                fetchedCodex = bData.codex;
             } else if (Array.isArray(bData)) {
-                fetchedBlogs = bData;
+                fetchedCodex = bData;
             }
         }
 
         // Normalize
-        const normTemplates = fetchedTemplates.map(t => ({ ...t, type: "template" }));
-        const normBlogs = fetchedBlogs.map(b => ({ 
+        const normArtifacts = fetchedArtifacts.map(t => ({ ...t, type: "artifact" }));
+        const normCodex = fetchedCodex.map(b => ({ 
             ...b, 
-            type: "blog",
+            type: "codex",
             description: b.excerpt || b.description || "No description matched." 
         }));
 
-        setTemplates(normTemplates);
-        setBlogs(normBlogs);
+        setArtifacts(normArtifacts);
+        setCodex(normCodex);
       } catch (error) {
          console.error("Dashboard Init Error:", error);
       } finally {
@@ -106,17 +93,17 @@ export default function HomeMain({ initialCategory = "All" }) {
      // STRICT SEPARATION Logic
      if (activeCategory === "All") {
          // Hybrid Feed: Mix logic
-         items = [...templates, ...blogs]; 
-     } else if (activeCategory === "Templates") {
-         items = [...templates];
-     } else if (activeCategory === "Blogs") {
-         items = [...blogs];
+         items = [...artifacts, ...codex]; 
+     } else if (activeCategory === "Artifacts") {
+         items = [...artifacts];
+     } else if (activeCategory === "Codex") {
+         items = [...codex];
      } else if (activeCategory === "Websites") {
-         items = templates.filter(t => t.category?.toLowerCase().includes("website"));
+         items = artifacts.filter(t => t.category?.toLowerCase().includes("website"));
      } else if (activeCategory === "Mobile Apps") {
-         items = templates.filter(t => t.category?.toLowerCase().includes("mobile"));
+         items = artifacts.filter(t => t.category?.toLowerCase().includes("mobile"));
      } else if (activeCategory === "SaaS") {
-         items = templates.filter(t => t.category?.toLowerCase().includes("saas"));
+         items = artifacts.filter(t => t.category?.toLowerCase().includes("saas"));
      }
 
      // Sort by newest
@@ -128,13 +115,13 @@ export default function HomeMain({ initialCategory = "All" }) {
         items = items.filter(item => {
              const t = item.title || "";
              const d = item.description || "";
-             const authorName = (item.type === 'template' ? item.user?.name : item.author?.name) || "";
+             const authorName = (item.type === 'artifact' ? item.user?.name : item.author?.name) || "";
              return t.toLowerCase().includes(lower) || d.toLowerCase().includes(lower) || authorName.toLowerCase().includes(lower);
         });
      }
 
      setFilteredItems(items);
-  }, [activeCategory, templates, blogs, searchQuery]);
+  }, [activeCategory, artifacts, codex, searchQuery]);
 
 
   return (
@@ -146,7 +133,7 @@ export default function HomeMain({ initialCategory = "All" }) {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         user={user}
-        hasCreatorAccount={hasCreatorAccount}
+        hasCraftsmanAccount={hasCraftsmanAccount}
       />
 
       {/* 2. Main Layout Container */}
@@ -165,7 +152,7 @@ export default function HomeMain({ initialCategory = "All" }) {
              {/* Content Grid */}
              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                  {loading ? (
-                    <div className="col-span-full h-96 flex items-center justify-center text-gray-500">
+                    <div className="col-span-full h-96 flex items-center justify-center text-slate-500">
                         Loading content...
                     </div>
                  ) : filteredItems.length > 0 ? (
@@ -177,7 +164,7 @@ export default function HomeMain({ initialCategory = "All" }) {
                         />
                     ))
                  ) : (
-                    <div className="col-span-full h-96 flex flex-col items-center justify-center text-gray-500">
+                    <div className="col-span-full h-96 flex flex-col items-center justify-center text-slate-500">
                         <p className="text-lg font-medium">No content found</p>
                         <p className="text-sm">Try changing the category or search query.</p>
                     </div>
@@ -188,3 +175,5 @@ export default function HomeMain({ initialCategory = "All" }) {
     </div>
   );
 }
+
+

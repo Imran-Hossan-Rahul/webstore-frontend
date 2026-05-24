@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.NEXT_PUBLIC_API_URL, { transports: ["websocket"] });
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000", { transports: ["websocket"] });
 
 export default function LiveEvents() {
   const [sessions, setSessions] = useState([]);
@@ -46,7 +46,7 @@ export default function LiveEvents() {
   return (
     <div className="h-[400px] overflow-auto border">
       <table className="w-full border-collapse border">
-        <thead className="sticky top-0 bg-gray-200">
+        <thead className="sticky top-0 bg-slate-200">
           <tr>
             <th>Visitor ID</th>
             <th>Session ID</th>
@@ -58,7 +58,7 @@ export default function LiveEvents() {
         </thead>
         <tbody>
           {sessions.map((s) => (
-            <tr key={s.sessionId} className="hover:bg-gray-100">
+            <tr key={s.sessionId} className="hover:bg-slate-100">
               <td>{s.visitorId || "Unknown"}</td>
               <td>{s.sessionId || "Unknown"}</td>
               <td>{(s.eventTypes || []).join(", ")}</td>

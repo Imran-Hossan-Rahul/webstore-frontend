@@ -10,7 +10,6 @@ import {
   MessageCircle,
   CheckCircle,
   User,
-  Briefcase,
   Users,
   Image as ImageIcon
 } from "lucide-react";
@@ -19,8 +18,8 @@ const ActivityIcon = ({ type }) => {
   const iconProps = { className: "w-5 h-5" };
 
   switch (type) {
-    case "working_on_project":
-      return <Palette {...iconProps} className="text-blue-500" />;
+    case "working_on_devlog":
+      return <Palette {...iconProps} className="text-indigo-600" />;
     case "sharing_task":
       return <CheckCircle {...iconProps} className="text-green-500" />;
     case "solving_problem":
@@ -36,14 +35,14 @@ const ActivityIcon = ({ type }) => {
     case "updated_profile":
       return <User {...iconProps} className="text-cyan-500" />;
     default:
-      return <Zap {...iconProps} className="text-gray-500" />;
+      return <Zap {...iconProps} className="text-slate-500" />;
   }
 };
 
 const ActivityItem = ({ activity }) => {
   const getActivityText = () => {
     switch (activity.type) {
-      case "working_on_project":
+      case "working_on_devlog":
         return `is working on "${activity.title}"`;
       case "sharing_task":
         return `shared a task: "${activity.title}"`;
@@ -65,7 +64,7 @@ const ActivityItem = ({ activity }) => {
   };
 
   return (
-    <div className="flex items-start gap-4 p-4 border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+    <div className="flex items-start gap-4 p-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
       <div className="flex-shrink-0">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {activity.user?.avatar ? (
@@ -83,26 +82,26 @@ const ActivityItem = ({ activity }) => {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <ActivityIcon type={activity.type} />
-          <span className="font-semibold text-gray-900 dark:text-white">
+          <span className="font-semibold text-slate-900 dark:text-white">
             {activity.user?.name || "Unknown User"}
           </span>
-          <span className="text-gray-600 dark:text-gray-400">
+          <span className="text-slate-600 dark:text-slate-400">
             {getActivityText()}
           </span>
         </div>
 
         {activity.description && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
             {activity.description}
           </p>
         )}
 
-        <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
           <span>{formatDistanceToNow(new Date(activity.createdAt), { addSuffix: true })}</span>
-          {activity.projectId && (
+          {activity.devlogId && (
             <span className="flex items-center gap-1">
-              <Briefcase className="w-3 h-3" />
-              Project
+               {/* Icon removed */}
+              Devlog
             </span>
           )}
           {activity.roomId && (
@@ -151,7 +150,7 @@ export default function ActivityFeed() {
     return (
       <div className="p-8 text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4" />
-        <p className="text-gray-600 dark:text-gray-400">Loading community activities...</p>
+        <p className="text-slate-600 dark:text-slate-400">Loading community activities...</p>
       </div>
     );
   }
@@ -159,7 +158,7 @@ export default function ActivityFeed() {
   if (error) {
     return (
       <div className="p-8 text-center">
-        <p className="text-red-500 mb-4">{error}</p>
+        <p className="text-red-500 mb-4">{error.message || error}</p>
         <button
           onClick={fetchActivities}
           className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -172,11 +171,11 @@ export default function ActivityFeed() {
 
   return (
     <div className="min-h-[600px]">
-      <div className="p-6 border-b border-gray-100 dark:border-white/5">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+      <div className="p-6 border-b border-slate-100 dark:border-white/5">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
           Live Activity Feed
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-slate-600 dark:text-slate-400">
           See what the community is working on right now
         </p>
       </div>
@@ -188,11 +187,11 @@ export default function ActivityFeed() {
           ))
         ) : (
           <div className="p-12 text-center">
-            <Zap className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <Zap className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No activities yet
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-slate-600 dark:text-slate-400">
               Be the first to share what you're working on!
             </p>
           </div>
@@ -201,3 +200,4 @@ export default function ActivityFeed() {
     </div>
   );
 }
+

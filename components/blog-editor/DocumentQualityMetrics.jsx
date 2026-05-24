@@ -233,22 +233,22 @@ export default function DocumentQualityMetrics({ editor }) {
   return (
     <div className="space-y-6">
        {/* Section Header */}
-       <div className="flex items-center space-x-2 border-b border-gray-100 pb-2">
+       <div className="flex items-center space-x-2 border-b border-slate-100 pb-2">
             <Activity className="w-5 h-5 text-indigo-600" />
-            <h3 className="font-bold text-gray-800">Content Analytics</h3>
+            <h3 className="font-bold text-slate-800">Content Analytics</h3>
        </div>
 
        {/* 1. Overview Grid */}
        <div className="grid grid-cols-2 gap-3">
-            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
-                <Text className="w-4 h-4 text-gray-400 mx-auto mb-1" />
-                <div className="text-xl font-bold text-gray-900">{metrics.wordCount}</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Words</div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
+                <Text className="w-4 h-4 text-slate-400 mx-auto mb-1" />
+                <div className="text-xl font-bold text-slate-900">{metrics.wordCount}</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wide">Words</div>
             </div>
-            <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
-                <Clock className="w-4 h-4 text-gray-400 mx-auto mb-1" />
-                <div className="text-xl font-bold text-gray-900">{metrics.readingTime}m</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">Read Time</div>
+            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-center">
+                <Clock className="w-4 h-4 text-slate-400 mx-auto mb-1" />
+                <div className="text-xl font-bold text-slate-900">{metrics.readingTime}m</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wide">Read Time</div>
             </div>
        </div>
 
@@ -257,14 +257,14 @@ export default function DocumentQualityMetrics({ editor }) {
             {/* SEO Score */}
             <div>
                 <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                    <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                         <TrendingUp size={14} /> SEO Score
                     </span>
                     <span className={`text-sm font-bold ${getScoreColor(metrics.seoScore)}`}>
                         {metrics.seoScore}/100
                     </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-slate-200 rounded-full h-2">
                     <div 
                         className={`h-2 rounded-full transition-all duration-500 ${getProgressColor(metrics.seoScore)}`} 
                         style={{ width: `${metrics.seoScore}%` }} 
@@ -275,14 +275,14 @@ export default function DocumentQualityMetrics({ editor }) {
             {/* Readability Score */}
             <div>
                 <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                    <span className="text-sm font-medium text-slate-700 flex items-center gap-1">
                         <Info size={14} /> Readability
                     </span>
                     <span className={`text-sm font-bold ${getScoreColor(metrics.readabilityScore)}`}>
                         {metrics.readabilityLabel} ({metrics.readabilityScore})
                     </span>
                 </div>
-                 <div className="w-full bg-gray-200 rounded-full h-2">
+                 <div className="w-full bg-slate-200 rounded-full h-2">
                     <div 
                         className={`h-2 rounded-full transition-all duration-500 ${getProgressColor(metrics.readabilityScore)}`} 
                         style={{ width: `${metrics.readabilityScore}%` }} 
@@ -309,27 +309,27 @@ export default function DocumentQualityMetrics({ editor }) {
 
        {/* 4. Keyword Density */}
        <div>
-            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1">
                 <List size={12} /> Top Keywords
             </h4>
             <div className="space-y-2">
                 {metrics.keywords.length > 0 ? (
                     metrics.keywords.map((kw, idx) => (
                         <div key={idx} className="flex justify-between items-center text-sm">
-                            <span className="text-gray-700 capitalize">{kw.word}</span>
+                            <span className="text-slate-700 capitalize">{kw.word}</span>
                             <div className="flex items-center gap-2">
-                                <div className="w-16 bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                <div className="w-16 bg-slate-100 rounded-full h-1.5 overflow-hidden">
                                     <div 
                                         className="bg-indigo-500 h-1.5 rounded-full" 
                                         style={{ width: `${kw.density * 5}%` }} // Scale visualization
                                     />
                                 </div>
-                                <span className="text-xs text-gray-400 w-8 text-right">{kw.count}</span>
+                                <span className="text-xs text-slate-400 w-8 text-right">{kw.count}</span>
                             </div>
                         </div>
                     ))
                 ) : (
-                    <p className="text-xs text-gray-400 italic">Start writing to see keywords...</p>
+                    <p className="text-xs text-slate-400 italic">Start writing to see keywords...</p>
                 )}
             </div>
        </div>
@@ -354,9 +354,9 @@ export default function DocumentQualityMetrics({ editor }) {
 
        {/* 6. Real Plagiarism Check (HIDDEN - To be added later) */}
        {/* 
-       <div className="pt-4 border-t border-gray-100">
+       <div className="pt-4 border-t border-slate-100">
             <div className="flex justify-between items-center mb-2">
-                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1">
+                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                     <Search size={12} /> Plagiarism Check
                 </h4>
                 {plagiarismData && (
@@ -376,7 +376,7 @@ export default function DocumentQualityMetrics({ editor }) {
             ) : null}
 
             {plagiarismData ? (
-                 <div className="text-sm bg-gray-50 p-2 rounded border border-gray-100">
+                 <div className="text-sm bg-slate-50 p-2 rounded border border-slate-100">
                      {plagiarismData.score === 0 ? (
                          <div className="flex items-center gap-2 text-green-600">
                              <CheckCircle size={16} />
@@ -388,7 +388,7 @@ export default function DocumentQualityMetrics({ editor }) {
                                  <AlertTriangle size={16} />
                                  <span>Plagiarism Detected!</span>
                              </div>
-                             <p className="text-xs text-gray-500">
+                             <p className="text-xs text-slate-500">
                                  Found {plagiarismData.matches?.length || 0} potential usage matches.
                              </p>
                          </div>
@@ -398,7 +398,7 @@ export default function DocumentQualityMetrics({ editor }) {
                 <button
                     onClick={handlePlagiarismCheck}
                     disabled={isCheckingPlagiarism || metrics.wordCount < 50}
-                    className="w-full flex justify-center items-center gap-2 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-sm font-medium rounded transition-colors"
+                    className="w-full flex justify-center items-center gap-2 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-medium rounded transition-colors"
                 >
                     {isCheckingPlagiarism ? (
                         <>
@@ -411,7 +411,7 @@ export default function DocumentQualityMetrics({ editor }) {
             )}
             
             {!plagiarismData && !isCheckingPlagiarism && metrics.wordCount < 50 && (
-                <p className="text-xs text-center text-gray-400 mt-1">
+                <p className="text-xs text-center text-slate-400 mt-1">
                     Write at least 50 words to check.
                 </p>
             )}

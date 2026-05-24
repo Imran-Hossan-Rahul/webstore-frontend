@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { FiSearch, FiBell, FiMail } from "react-icons/fi";
+import { Search, Bell, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import ThemeToggle from "../ThemeToggle";
 
 export default function TopRightIcons() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeIcon, setActiveIcon] = useState(""); // kon icon active
+  const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef(null);
+  const router = useRouter();
 
   // Click outside to close search
   useEffect(() => {
@@ -29,21 +32,30 @@ export default function TopRightIcons() {
     setActiveIcon(iconName);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
+
   return (
     <div className="fixed top-5 right-5 flex items-center gap-3 z-50">
       {/* Search Box */}
       <div
         ref={searchRef}
-        onClick={handleSearchClick} // full box e click handler
-        className={`flex items-center rounded-full overflow-hidden cursor-pointer transition-all duration-500 ease-in-out origin-left ${
-          searchOpen ? "w-64 bg-black dark:bg-white" : "w-11 bg-white dark:bg-gray-800"
+        onClick={handleSearchClick}
+        className={`flex items-center rounded-full overflow-hidden cursor-pointer transition-all duration-300 ease-in-out origin-left bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${
+          searchOpen ? "w-64 shadow-sm" : "w-11"
         }`}
         style={{ height: "44px" }}
       >
         <div className="flex items-center justify-center w-11 h-11">
-          <FiSearch
-            className={`transition-colors duration-200 ${
-              searchOpen ? "text-white dark:text-black" : "text-black dark:text-white"
+          <Search
+            strokeWidth={1.5}
+            className={`w-5 h-5 transition-colors duration-200 ${
+              searchOpen ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
             }`}
           />
         </div>
@@ -51,10 +63,13 @@ export default function TopRightIcons() {
           type="text"
           placeholder="Search..."
           autoFocus
-          className={`bg-transparent outline-none transition-all duration-500 ease-in-out ${
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className={`bg-transparent outline-none transition-all duration-300 ease-in-out text-sm ${
             searchOpen
-              ? "opacity-100 ml-2 w-full text-white dark:text-black placeholder-white dark:placeholder-black"
-              : "opacity-0 w-0 ml-0 text-black dark:text-white placeholder-black dark:placeholder-white"
+              ? "opacity-100 ml-2 w-full text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
+              : "opacity-0 w-0 ml-0 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500"
           }`}
         />
       </div>
@@ -67,15 +82,12 @@ export default function TopRightIcons() {
         <a
           href="/inbox"
           onClick={() => handleIconClick("mail")}
-          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
-            activeIcon === "mail"
-              ? "bg-black dark:bg-white"
-              : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-          }`}
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
-          <FiMail
-            className={`text-lg transition-colors duration-200 ${
-              activeIcon === "mail" ? "text-white dark:text-black" : "text-black dark:text-white"
+          <Mail
+            strokeWidth={1.5}
+            className={`w-5 h-5 transition-colors duration-200 ${
+              activeIcon === "mail" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
             }`}
           />
         </a>
@@ -83,33 +95,28 @@ export default function TopRightIcons() {
         <a
           href="/notifications"
           onClick={() => handleIconClick("bell")}
-          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
-            activeIcon === "bell"
-              ? "bg-black dark:bg-white"
-              : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
-          }`}
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
-          <FiBell
-            className={`text-lg transition-colors duration-200 ${
-              activeIcon === "bell" ? "text-white dark:text-black" : "text-black dark:text-white"
+          <Bell
+            strokeWidth={1.5}
+            className={`w-5 h-5 transition-colors duration-200 ${
+              activeIcon === "bell" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
             }`}
           />
         </a>
 
         <div
           onClick={() => handleIconClick("profile")}
-          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 ${
+          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border ${
             activeIcon === "profile"
-              ? "bg-black dark:bg-white"
-              : "bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700"
+              ? "border-blue-600 dark:border-blue-400"
+              : "border-slate-200 dark:border-slate-700"
           }`}
         >
           <img
             src="/profile.jpg"
             alt="Profile"
-            className={`w-9 h-9 rounded-full object-cover transition-all duration-200 ${
-              activeIcon === "profile" ? "brightness-0 dark:invert" : ""
-            }`}
+            className="w-9 h-9 rounded-full object-cover transition-all duration-200"
           />
         </div>
       </div>

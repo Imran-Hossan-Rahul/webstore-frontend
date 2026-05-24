@@ -4,31 +4,31 @@ import { useState } from "react";
 
 export default function EditorSetupPage() {
   const [framework, setFramework] = useState("nextjs");
-  const [projectName, setProjectName] = useState("");
+  const [devlogName, setDevlogName] = useState("");
 
-  const handleCreateProject = async () => {
-    if (!projectName) {
-      alert("অনুগ্রহ করে প্রজেক্টের নাম লিখুন।");
+  const handleCreateDevlog = async () => {
+    if (!devlogName) {
+      alert("অনুগ্রহ করে ডেভলগের নাম লিখুন।");
       return;
     }
 
-    const res = await fetch("/api/create-project", {
+    const res = await fetch("/api/create-devlog", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ framework, projectName }),
+      body: JSON.stringify({ framework, devlogName }),
     });
 
     const data = await res.json();
     if (data.success) {
-      alert(`প্রজেক্ট "${projectName}" সফলভাবে তৈরি হয়েছে!`);
+      alert(`ডেভলগ "${devlogName}" সফলভাবে তৈরি হয়েছে!`);
     } else {
-      alert("প্রজেক্ট তৈরি করতে সমস্যা হয়েছে।");
+      alert("ডেভলগ তৈরি করতে সমস্যা হয়েছে।");
     }
   };
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>নতুন প্রজেক্ট তৈরি করুন</h1>
+      <h1>নতুন ডেভলগ তৈরি করুন</h1>
 
       <div style={{ marginBottom: "1rem" }}>
         <label>ফ্রেমওয়ার্ক সিলেক্ট করুন: </label>
@@ -43,16 +43,17 @@ export default function EditorSetupPage() {
       </div>
 
       <div style={{ marginBottom: "1rem" }}>
-        <label>প্রজেক্টের নাম: </label>
+        <label>ডেভলগের নাম: </label>
         <input
           type="text"
-          placeholder="প্রজেক্টের নাম লিখুন"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
+          placeholder="ডেভলগের নাম লিখুন"
+          value={devlogName}
+          onChange={(e) => setDevlogName(e.target.value)}
         />
       </div>
 
-      <button onClick={handleCreateProject}>Create Project</button>
+      <button onClick={handleCreateDevlog}>Create Devlog</button>
     </div>
   );
 }
+

@@ -28,13 +28,13 @@
 
 //   return (
 //     <div className="flex flex-col mb-1 w-1/4">
-//       <label className="text-xs font-medium text-gray-500">{label}</label>
+//       <label className="text-xs font-medium text-slate-500">{label}</label>
 //       <input
 //         type="number"
 //         value={displayValue}
 //         onChange={handleInputChange}
 //         min={min}
-//         className="w-full text-xs border border-gray-300 rounded px-1 py-0.5 focus:ring-blue-500 focus:border-blue-500"
+//         className="w-full text-xs border border-slate-300 rounded px-1 py-0.5 focus:ring-indigo-600 focus:border-indigo-600"
 //       />
 //     </div>
 //   );
@@ -43,9 +43,9 @@
 
 // // --- সেকশন হেডার কম্পোনেন্ট (অপরিবর্তিত) ---
 // const PanelSection = ({ title, icon: Icon, children }) => (
-//   <div className="mb-6 p-3 bg-white border border-gray-200 rounded-lg shadow-sm">
-//     <h3 className="text-sm font-bold text-gray-800 border-b pb-2 mb-3 flex items-center space-x-2">
-//       {Icon && <Icon className="w-4 h-4 text-blue-500" />}
+//   <div className="mb-6 p-3 bg-white border border-slate-200 rounded-lg shadow-sm">
+//     <h3 className="text-sm font-bold text-slate-800 border-b pb-2 mb-3 flex items-center space-x-2">
+//       {Icon && <Icon className="w-4 h-4 text-indigo-600" />}
 //       <span>{title}</span>
 //     </h3>
 //     <div className="space-y-3">{children}</div>
@@ -541,7 +541,7 @@
 
 //   if (!editor) {
 //     return (
-//       <div className="w-80 border-l p-4 bg-gray-100 flex flex-col items-center justify-center text-center text-gray-500">
+//       <div className="w-80 border-l p-4 bg-slate-100 flex flex-col items-center justify-center text-center text-slate-500">
 //         <p className="text-sm">Editor not initialized.</p>
 //       </div>
 //     );
@@ -552,7 +552,7 @@
 //   return (
 //     // ⭐ ফিক্স: onMouseDown এবং onMouseUp ব্যবহার করে ফোকাস প্রিজার্ভ করা
 //     <div
-//       className="w-80 border-l p-4 bg-gray-100 overflow-y-auto"
+//       className="w-80 border-l p-4 bg-slate-100 overflow-y-auto"
 //       // মাউস ডাউন: প্যানেলে ক্লিক শুরু হয়েছে
 //       onMouseDown={() => {
 //         setIsPanelClicking(true);
@@ -564,7 +564,7 @@
 //         }, 100);
 //       }}
 //     >
-//       <h2 className="text-xl font-extrabold mb-4 text-gray-900">
+//       <h2 className="text-xl font-extrabold mb-4 text-slate-900">
 //         Design Panel
 //       </h2>
 
@@ -577,7 +577,7 @@
 //         <div ref={infoContentRef}>
 //           {/* I. Document Metrics & Quality (Always Visible) */}
 //           <DocumentQualityMetrics editor={editor} />
-//           <hr className="my-4 border-gray-200" />
+//           <hr className="my-4 border-slate-200" />
 
 //           {/* II. Tagging Section (Always Visible) */}
 //           <PanelSection title="Tagging" icon={Tag}>
@@ -588,7 +588,7 @@
 //                 onChange={(e) => setNewTagInput(e.target.value)}
 //                 onKeyDown={(e) => e.key === "Enter" && handleAddTag()}
 //                 placeholder="Add tag (e.g., react-component)"
-//                 className="flex-grow text-sm border border-gray-300 rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500"
+//                 className="flex-grow text-sm border border-slate-300 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600"
 //               />
 //               <button
 //                 onClick={handleAddTag}
@@ -598,9 +598,9 @@
 //                 Add
 //               </button>
 //             </div>
-//             <div className="flex flex-wrap gap-2 pt-2 border-t border-gray-100 min-h-[30px]">
+//             <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-100 min-h-[30px]">
 //               {tags.length === 0 ? (
-//                 <p className="text-xs text-gray-500 italic">No tags added.</p>
+//                 <p className="text-xs text-slate-500 italic">No tags added.</p>
 //               ) : (
 //                 tags.map((tag) => (
 //                   <div
@@ -640,14 +640,14 @@
 //         <div className="flex justify-center mb-4">
 //           <button
 //             onClick={toggleInfoExpansion}
-//             className="flex items-center space-x-1 px-3 py-1 text-xs rounded-full bg-gray-300 text-gray-700 shadow-sm hover:bg-gray-400 transition-colors"
+//             className="flex items-center space-x-1 px-3 py-1 text-xs rounded-full bg-slate-300 text-slate-700 shadow-sm hover:bg-slate-400 transition-colors"
 //           >
 //             <ChevronUp className="w-4 h-4" /> <span>Collapse Info</span>
 //           </button>
 //         </div>
 //       )}
 
-//       <hr className="my-4 border-gray-200" />
+//       <hr className="my-4 border-slate-200" />
 
 //       {/* III. স্টাইল কন্ট্রোল সেকশন: শুধুমাত্র যখন নোড অ্যাকটিভলি সিলেক্টেড (Focus + Node) */}
 //       {shouldShowStyleControls ? (
@@ -657,18 +657,18 @@
 //           {/* III. Structure Section */}
 //           <PanelSection title="Structure" icon={Layers}>
 //             {/* টাইপ ডিসপ্লে */}
-//             <div className="flex justify-between items-center text-sm font-mono bg-gray-50 p-2 rounded">
-//               <span className="text-gray-600">Type:</span>
+//             <div className="flex justify-between items-center text-sm font-mono bg-slate-50 p-2 rounded">
+//               <span className="text-slate-600">Type:</span>
 //               <span className="font-bold text-indigo-600 capitalize">
 //                 {activeNodeName.replace("Custom", "").replace("Lowlight", "")}
 //               </span>
 //             </div>
 
 //             {/* Visibility/Hide Toggle */}
-//             <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+//             <div className="flex items-center justify-between pt-2 border-t border-slate-100">
 //               <label
 //                 htmlFor="isHidden"
-//                 className="text-sm font-medium text-gray-700"
+//                 className="text-sm font-medium text-slate-700"
 //               >
 //                 Hide Element
 //               </label>
@@ -679,15 +679,15 @@
 //                 onChange={(e) =>
 //                   handleStyleChange("isHidden", e.target.checked)
 //                 }
-//                 className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+//                 className="h-4 w-4 text-blue-600 border-slate-300 rounded"
 //               />
 //             </div>
 
 //             {/* Z-Index (Layering) */}
-//             <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+//             <div className="flex items-center justify-between pt-2 border-t border-slate-100">
 //               <label
 //                 htmlFor="zIndex"
-//                 className="text-sm font-medium text-gray-700"
+//                 className="text-sm font-medium text-slate-700"
 //               >
 //                 Z-Index
 //               </label>
@@ -698,19 +698,19 @@
 //                 onChange={(e) =>
 //                   handleStyleChange("zIndex", Number(e.target.value))
 //                 }
-//                 className="w-1/4 text-xs border border-gray-300 rounded px-1 py-0.5 focus:ring-blue-500 focus:border-blue-500"
+//                 className="w-1/4 text-xs border border-slate-300 rounded px-1 py-0.5 focus:ring-indigo-600 focus:border-indigo-600"
 //               />
 //             </div>
 
 //             {/* Cursor Style */}
-//             <div className="flex flex-col pt-2 border-t border-gray-100">
-//               <label className="text-sm font-medium text-gray-700 mb-1">
+//             <div className="flex flex-col pt-2 border-t border-slate-100">
+//               <label className="text-sm font-medium text-slate-700 mb-1">
 //                 Cursor
 //               </label>
 //               <select
 //                 value={styles.cursor}
 //                 onChange={(e) => handleStyleChange("cursor", e.target.value)}
-//                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                 className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //               >
 //                 <option value="auto">Auto</option>
 //                 <option value="pointer">Pointer</option>
@@ -722,7 +722,7 @@
 //             </div>
 //           </PanelSection>
 
-//           <hr className="my-4 border-gray-200" />
+//           <hr className="my-4 border-slate-200" />
 
 //           {/* IV. Block Content/Type Specific Controls */}
 //           {activeNodeName === "heading" && (
@@ -735,7 +735,7 @@
 //                     className={`text-sm font-semibold px-2 py-1 rounded transition-colors ${
 //                       headingLevel === level
 //                         ? "bg-blue-600 text-white"
-//                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+//                         : "bg-slate-200 text-slate-700 hover:bg-slate-300"
 //                     }`}
 //                   >
 //                     H{level}
@@ -758,7 +758,7 @@
 //                     )
 //                     .run()
 //                 }
-//                 className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                 className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //               >
 //                 <option value="null">Auto</option>
 //                 <option value="javascript">JavaScript</option>
@@ -789,7 +789,7 @@
 //             </div>
 //           </PanelSection>
 
-//           <hr className="my-4 border-gray-200" />
+//           <hr className="my-4 border-slate-200" />
 
 //           {/* V. Typography Control */}
 //           {isTextBlock && (
@@ -798,7 +798,7 @@
 //               <div>
 //                 <label
 //                   htmlFor="line-height"
-//                   className="text-sm font-medium text-gray-700 block mb-1"
+//                   className="text-sm font-medium text-slate-700 block mb-1"
 //                 >
 //                   Line Height (Current: {lineHeight.toFixed(1)})
 //                 </label>
@@ -810,7 +810,7 @@
 //                   step="0.1"
 //                   value={lineHeight}
 //                   onChange={(e) => handleLineHeightChange(e.target.value)}
-//                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+//                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
 //                 />
 //               </div>
 
@@ -818,7 +818,7 @@
 //               <div>
 //                 <label
 //                   htmlFor="letter-spacing"
-//                   className="text-sm font-medium text-gray-700 block mb-1"
+//                   className="text-sm font-medium text-slate-700 block mb-1"
 //                 >
 //                   Letter Spacing (em) (Current: {letterSpacing.toFixed(2)})
 //                 </label>
@@ -830,26 +830,26 @@
 //                   step="0.05"
 //                   value={letterSpacing}
 //                   onChange={(e) => handleLetterSpacingChange(e.target.value)}
-//                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+//                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
 //                 />
 //               </div>
 
 //               {/* Indent / Outdent (Buttons) */}
-//               <div className="pt-2 border-t border-gray-100">
-//                 <label className="text-sm font-medium text-gray-700 block mb-2">
+//               <div className="pt-2 border-t border-slate-100">
+//                 <label className="text-sm font-medium text-slate-700 block mb-2">
 //                   Indentation
 //                 </label>
 //                 <div className="flex space-x-2">
 //                   <button
 //                     onClick={handleOutdent}
-//                     className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors text-gray-700"
+//                     className="p-2 rounded bg-slate-200 hover:bg-slate-300 transition-colors text-slate-700"
 //                     title="Outdent"
 //                   >
 //                     <ChevronLeft className="w-5 h-5" />
 //                   </button>
 //                   <button
 //                     onClick={handleIndent}
-//                     className="p-2 rounded bg-gray-200 hover:bg-gray-300 transition-colors text-gray-700"
+//                     className="p-2 rounded bg-slate-200 hover:bg-slate-300 transition-colors text-slate-700"
 //                     title="Indent"
 //                   >
 //                     <ChevronRight className="w-5 h-5" />
@@ -859,14 +859,14 @@
 //             </PanelSection>
 //           )}
 
-//           <hr className="my-4 border-gray-200" />
+//           <hr className="my-4 border-slate-200" />
 
 //           {/* VI. Layout & Alignment Section */}
 //           {(isBlockWithSpacing || isResizable) && !isList && (
 //             <PanelSection title="Layout & Alignment" icon={Ruler}>
 //               {/* Alignment */}
 //               <div className="mb-4">
-//                 <h4 className="text-xs font-medium text-gray-500 mb-1">
+//                 <h4 className="text-xs font-medium text-slate-500 mb-1">
 //                   Align
 //                 </h4>
 //                 <div className="flex justify-around space-x-2">
@@ -877,7 +877,7 @@
 //                       className={`p-2 rounded transition-colors ${
 //                         styles.textAlign === align
 //                           ? "bg-blue-100 text-blue-600"
-//                           : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+//                           : "bg-slate-200 text-slate-600 hover:bg-slate-300"
 //                       }`}
 //                       title={align}
 //                     >
@@ -889,15 +889,15 @@
 
 //               {/* Size (Width, Height, Min/Max) */}
 //               {(isResizable || activeNodeName === "section") && (
-//                 <div className="flex flex-col gap-3 mb-4 pt-2 border-t border-gray-100">
-//                   <h4 className="text-xs font-medium text-gray-500 mb-1">
+//                 <div className="flex flex-col gap-3 mb-4 pt-2 border-t border-slate-100">
+//                   <h4 className="text-xs font-medium text-slate-500 mb-1">
 //                     Size (px or null)
 //                   </h4>
 
 //                   {/* Width & Height */}
 //                   <div className="flex gap-4">
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Width
 //                       </label>
 //                       <input
@@ -906,11 +906,11 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("width", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Height
 //                       </label>
 //                       <input
@@ -919,7 +919,7 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("height", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                   </div>
@@ -927,7 +927,7 @@
 //                   {/* Min Width & Max Width */}
 //                   <div className="flex gap-4">
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Min Width
 //                       </label>
 //                       <input
@@ -936,11 +936,11 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("minWidth", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Max Width
 //                       </label>
 //                       <input
@@ -949,7 +949,7 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("maxWidth", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                   </div>
@@ -957,7 +957,7 @@
 //                   {/* Min Height & Max Height */}
 //                   <div className="flex gap-4">
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Min Height
 //                       </label>
 //                       <input
@@ -968,11 +968,11 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("minHeight", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                     <div className="flex flex-col w-1/2">
-//                       <label className="text-xs font-medium text-gray-500">
+//                       <label className="text-xs font-medium text-slate-500">
 //                         Max Height
 //                       </label>
 //                       <input
@@ -983,7 +983,7 @@
 //                         onChange={(e) =>
 //                           handleStyleChange("maxHeight", e.target.value)
 //                         }
-//                         className="w-full text-sm border border-gray-300 rounded px-2 py-1"
+//                         className="w-full text-sm border border-slate-300 rounded px-2 py-1"
 //                       />
 //                     </div>
 //                   </div>
@@ -993,8 +993,8 @@
 //               {/* Spacing Controls (Margin/Padding) */}
 //               {isBlockWithSpacing && (
 //                 <>
-//                   <div className="pt-2 border-t border-gray-100">
-//                     <h4 className="text-xs font-medium text-gray-500 mb-2">
+//                   <div className="pt-2 border-t border-slate-100">
+//                     <h4 className="text-xs font-medium text-slate-500 mb-2">
 //                       Margin (px)
 //                     </h4>
 //                     <div className="flex justify-between gap-1">
@@ -1039,8 +1039,8 @@
 //                     </div>
 //                   </div>
 
-//                   <div className="pt-2 border-t border-gray-100">
-//                     <h4 className="text-xs font-medium text-gray-500 mb-2">
+//                   <div className="pt-2 border-t border-slate-100">
+//                     <h4 className="text-xs font-medium text-slate-500 mb-2">
 //                       Padding (px)
 //                     </h4>
 //                     <div className="flex justify-between gap-1">
@@ -1090,14 +1090,14 @@
 //                   max="1"
 //                   value={styles.opacity}
 //                   onChange={(e) => handleStyleChange("opacity", e.target.value)}
-//                   className="w-1/4 text-xs border border-gray-300 rounded px-1 py-0.5"
+//                   className="w-1/4 text-xs border border-slate-300 rounded px-1 py-0.5"
 //                 />
 //               </div>
 //             </div>
 
 //             {/* Border Radius */}
-//             <div className="pt-2 border-t border-gray-100">
-//               <h4 className="text-xs font-medium text-gray-500 mb-2">
+//             <div className="pt-2 border-t border-slate-100">
+//               <h4 className="text-xs font-medium text-slate-500 mb-2">
 //                 Border Radius (px)
 //               </h4>
 //               <div className="flex justify-between gap-1">
@@ -1133,11 +1133,11 @@
 //             </div>
 
 //             {/* Border Style */}
-//             <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-//               <h4 className="text-xs font-medium text-gray-500 mb-1">Border</h4>
+//             <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+//               <h4 className="text-xs font-medium text-slate-500 mb-1">Border</h4>
 //               <div className="flex gap-2">
 //                 <div className="flex flex-col w-1/3">
-//                   <label className="text-xs font-medium text-gray-500">
+//                   <label className="text-xs font-medium text-slate-500">
 //                     Width
 //                   </label>
 //                   <input
@@ -1147,11 +1147,11 @@
 //                     onChange={(e) =>
 //                       handleStyleChange("borderWidth", e.target.value)
 //                     }
-//                     className="w-full text-xs border border-gray-300 rounded px-1 py-0.5"
+//                     className="w-full text-xs border border-slate-300 rounded px-1 py-0.5"
 //                   />
 //                 </div>
 //                 <div className="flex flex-col w-1/3">
-//                   <label className="text-xs font-medium text-gray-500">
+//                   <label className="text-xs font-medium text-slate-500">
 //                     Style
 //                   </label>
 //                   <select
@@ -1159,7 +1159,7 @@
 //                     onChange={(e) =>
 //                       handleStyleChange("borderStyle", e.target.value)
 //                     }
-//                     className="w-full text-xs border border-gray-300 rounded px-1 py-0.5"
+//                     className="w-full text-xs border border-slate-300 rounded px-1 py-0.5"
 //                   >
 //                     <option value="solid">Solid</option>
 //                     <option value="dashed">Dashed</option>
@@ -1168,7 +1168,7 @@
 //                   </select>
 //                 </div>
 //                 <div className="flex flex-col w-1/3">
-//                   <label className="text-xs font-medium text-gray-500">
+//                   <label className="text-xs font-medium text-slate-500">
 //                     Color
 //                   </label>
 //                   <input
@@ -1186,9 +1186,9 @@
 //         </>
 //       ) : (
 //         // যখন নোড সিলেক্টেড নয় অথবা এডিটর ফোকাসড নয়, তখন এই মেসেজ দেখাবে
-//         <div className="p-3 bg-white border border-gray-200 rounded-lg shadow-sm text-center">
-//           <Layers className="h-6 w-6 mx-auto mb-2 text-gray-400" />
-//           <p className="text-sm font-medium text-gray-600">
+//         <div className="p-3 bg-white border border-slate-200 rounded-lg shadow-sm text-center">
+//           <Layers className="h-6 w-6 mx-auto mb-2 text-slate-400" />
+//           <p className="text-sm font-medium text-slate-600">
 //             Select an element in the editor to view style controls.
 //           </p>
 //         </div>

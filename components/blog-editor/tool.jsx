@@ -1,4 +1,4 @@
-// // components/blog-editor/Toolbar.jsx
+// // components/codex-editor/Toolbar.jsx
 
 // import React, { useState, useCallback, useRef, useEffect } from "react";
 // import {
@@ -75,9 +75,9 @@
 // const DropdownItem = ({ onClick, title, icon: Icon }) => (
 //   <button
 //     onClick={onClick}
-//     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 transition-colors duration-150"
+//     className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 flex items-center space-x-2 transition-colors duration-150"
 //   >
-//     {Icon && <Icon className="w-4 h-4 text-gray-600" />}
+//     {Icon && <Icon className="w-4 h-4 text-slate-600" />}
 //     <span>{title}</span>
 //   </button>
 // );
@@ -119,18 +119,18 @@
 //       <button
 //         type="button"
 //         className={`p-2 rounded transition-colors flex items-center space-x-1 min-w-[30px] ${
-//           isOpen ? "bg-gray-200" : "hover:bg-gray-200"
+//           isOpen ? "bg-slate-200" : "hover:bg-slate-200"
 //         }`}
 //         title={title}
 //         onClick={handleToggle}
 //       >
-//         {Icon && <Icon className="w-4 h-4 text-gray-700" />}
-//         <ChevronDown className="w-3 h-3 text-gray-500" />
+//         {Icon && <Icon className="w-4 h-4 text-slate-700" />}
+//         <ChevronDown className="w-3 h-3 text-slate-500" />
 //       </button>
 
 //       {isOpen && (
 //         <div
-//           className="absolute left-0 z-20 mt-1 w-56 origin-top-left bg-white border border-gray-200 rounded-md shadow-lg transition-all duration-100 ease-out"
+//           className="absolute left-0 z-20 mt-1 w-56 origin-top-left bg-white border border-slate-200 rounded-md shadow-lg transition-all duration-100 ease-out"
 //           onClick={() => setIsOpen(false)}
 //         >
 //           <div className="py-1">{children}</div>
@@ -169,8 +169,8 @@
 //       disabled={isDisabled}
 //       className={`p-2 rounded transition-colors ${
 //         editor && editor.isActive(isActive)
-//           ? "bg-gray-200 text-gray-900"
-//           : "text-gray-700 hover:bg-gray-200"
+//           ? "bg-slate-200 text-slate-900"
+//           : "text-slate-700 hover:bg-slate-200"
 //       } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
 //       title={title}
 //       type="button"
@@ -200,13 +200,13 @@
 //         <div className="mt-4 flex justify-end space-x-2">
 //           <button
 //             onClick={onClose}
-//             className="px-4 py-2 text-sm rounded bg-gray-200 hover:bg-gray-300"
+//             className="px-4 py-2 text-sm rounded bg-slate-200 hover:bg-slate-300"
 //           >
 //             বাতিল
 //           </button>
 //           <button
 //             onClick={onInsert}
-//             className="px-4 py-2 text-sm rounded bg-blue-500 text-white hover:bg-blue-600"
+//             className="px-4 py-2 text-sm rounded bg-indigo-600 text-white hover:bg-blue-600"
 //           >
 //             ইনসার্ট
 //           </button>
@@ -451,7 +451,7 @@
 //   const ActiveHeadingIcon = HeadingIconsMap[currentBlockType] || Type;
 
 //   return (
-//     <div className="bg-white p-2 border-b border-gray-200 sticky top-0 z-10 flex flex-wrap gap-1">
+//     <div className="bg-white p-2 border-b border-slate-200 sticky top-0 z-10 flex flex-wrap gap-1">
 //       {/* -------------------------------------------------
 //       // PRIMARY BLOCK CONTROLS: Block Types & Headings 
 //       // ------------------------------------------------- */}
@@ -551,7 +551,7 @@
 //         })}
 //       </Dropdown>
 
-//       <span className="border-l border-gray-200 mx-1"></span>
+//       <span className="border-l border-slate-200 mx-1"></span>
 
 //       {/* -------------------------------------------------
 //       // MARK STYLES (Bold, Italic, Strike, Code)
@@ -585,7 +585,7 @@
 //         title="Code (Ctrl+E)"
 //       />
 
-//       <span className="border-l border-gray-200 mx-1"></span>
+//       <span className="border-l border-slate-200 mx-1"></span>
 
 //       {/* -------------------------------------------------
 //       // LINK & TABLE & MEDIA 
@@ -670,7 +670,7 @@
 //         title="Set/Unset Link"
 //       />
 
-//       <span className="border-l border-gray-200 mx-1"></span>
+//       <span className="border-l border-slate-200 mx-1"></span>
 
 //       {/* ALIGNMENT */}
 //       <ToolbarButton
@@ -706,7 +706,7 @@
 //         title="Align Justify"
 //       />
 
-//       <span className="border-l border-gray-200 mx-1"></span>
+//       <span className="border-l border-slate-200 mx-1"></span>
 
 //       {/* HISTORY */}
 //       <ToolbarButton
@@ -739,7 +739,7 @@
 //       >
 //         <div className="space-y-3">
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700">
+//             <label className="block text-sm font-medium text-slate-700">
 //               লিঙ্ক টেক্সট
 //             </label>
 //             <input
@@ -747,12 +747,12 @@
 //               value={linkText}
 //               onChange={(e) => setLinkText(e.target.value)}
 //               onKeyDown={(e) => e.stopPropagation()}
-//               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+//               className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
 //               placeholder="যে লেখাটি লিঙ্ক হবে"
 //             />
 //           </div>
 //           <div>
-//             <label className="block text-sm font-medium text-gray-700">
+//             <label className="block text-sm font-medium text-slate-700">
 //               URL
 //             </label>
 //             <input
@@ -760,7 +760,7 @@
 //               value={linkUrl}
 //               onChange={(e) => setLinkUrl(e.target.value)}
 //               onKeyDown={(e) => e.stopPropagation()}
-//               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+//               className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
 //               placeholder="https://example.com"
 //             />
 //           </div>
@@ -779,13 +779,13 @@
 //         title="ইমেজ ইনসার্ট করুন"
 //       >
 //         <div className="space-y-3">
-//           <p className="text-sm text-gray-600">পিসি থেকে আপলোড করুন:</p>
+//           <p className="text-sm text-slate-600">পিসি থেকে আপলোড করুন:</p>
 //           <input
 //             type="file"
 //             accept="image/*"
 //             onChange={handleImageFileSelect}
 //             onKeyDown={(e) => e.stopPropagation()}
-//             className="w-full text-sm text-gray-700 mt-2"
+//             className="w-full text-sm text-slate-700 mt-2"
 //           />
 //           {imageFile ? (
 //             <p className="text-sm text-blue-600 mt-2">
@@ -793,8 +793,8 @@
 //             </p>
 //           ) : (
 //             <>
-//               <div className="my-3 text-center border-t border-gray-200 pt-3">
-//                 <span className="text-xs text-gray-400">অথবা একটি URL দিন</span>
+//               <div className="my-3 text-center border-t border-slate-200 pt-3">
+//                 <span className="text-xs text-slate-400">অথবা একটি URL দিন</span>
 //               </div>
 //               <input
 //                 type="url"
@@ -804,7 +804,7 @@
 //                   setImageFile(null);
 //                 }}
 //                 onKeyDown={(e) => e.stopPropagation()}
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+//                 className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
 //                 placeholder="https://example.com/image.jpg"
 //               />
 //             </>
@@ -824,13 +824,13 @@
 //         title="ভিডিও ইনসার্ট করুন"
 //       >
 //         <div className="space-y-3">
-//           <p className="text-sm text-gray-600">পিসি থেকে আপলোড করুন:</p>
+//           <p className="text-sm text-slate-600">পিসি থেকে আপলোড করুন:</p>
 //           <input
 //             type="file"
 //             accept="video/*"
 //             onChange={handleVideoFileSelect}
 //             onKeyDown={(e) => e.stopPropagation()}
-//             className="w-full text-sm text-gray-700 mt-2"
+//             className="w-full text-sm text-slate-700 mt-2"
 //           />
 //           {videoFile ? (
 //             <p className="text-sm text-blue-600 mt-2">
@@ -838,8 +838,8 @@
 //             </p>
 //           ) : (
 //             <>
-//               <div className="my-3 text-center border-t border-gray-200 pt-3">
-//                 <span className="text-xs text-gray-400">
+//               <div className="my-3 text-center border-t border-slate-200 pt-3">
+//                 <span className="text-xs text-slate-400">
 //                   অথবা একটি YouTube/ভিডিও URL দিন
 //                 </span>
 //               </div>
@@ -851,7 +851,7 @@
 //                   setVideoFile(null);
 //                 }}
 //                 onKeyDown={(e) => e.stopPropagation()}
-//                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+//                 className="mt-1 block w-full rounded-md border-slate-300 shadow-sm p-2 border"
 //                 placeholder="https://www.youtube.com/watch?v=..."
 //               />
 //             </>
@@ -874,10 +874,10 @@
 //           accept="audio/*"
 //           onChange={handleAudioFileSelect}
 //           onKeyDown={(e) => e.stopPropagation()}
-//           className="w-full text-sm text-gray-700 mt-2"
+//           className="w-full text-sm text-slate-700 mt-2"
 //         />
 //         {audioFile && (
-//           <p className="text-sm text-gray-600 mt-2">
+//           <p className="text-sm text-slate-600 mt-2">
 //             সিলেক্টেড ফাইল: <strong>{audioFile.name}</strong>
 //           </p>
 //         )}
@@ -885,3 +885,4 @@
 //     </div>
 //   );
 // }
+

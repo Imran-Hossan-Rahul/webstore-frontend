@@ -127,7 +127,7 @@ export default function RegisterForm({
           I want to:
         </label>
         <div className="flex flex-wrap gap-4">
-          {["freelancer", "client", "both"].map((type) => (
+          {["craftsman", "patron", "both"].map((type) => (
             <label key={type} className="flex items-center gap-2">
               <input
                 type="radio"
@@ -137,10 +137,10 @@ export default function RegisterForm({
                 onChange={(e) => handleChange("accountType", e.target.value)}
                 className="accent-blue-500"
               />
-              {type === "freelancer"
-                ? "Work (Freelancer)"
-                : type === "client"
-                ? "Hire (Client)"
+              {type === "craftsman"
+                ? "Work (Craftsman)"
+                : type === "patron"
+                ? "Hire (patron)"
                 : "Work & Hire (Both)"}
             </label>
           ))}
@@ -174,3 +174,4 @@ export default function RegisterForm({
     </form>
   );
 }
+

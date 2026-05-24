@@ -95,10 +95,10 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-        <div className="bg-white dark:bg-gray-900 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl border border-white/20 relative">
+        <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl border border-white/20 relative">
             
             {/* Progress Bar */}
-            <div className="h-1 bg-gray-100 dark:bg-white/10 w-full">
+            <div className="h-1 bg-slate-100 dark:bg-white/10 w-full">
                 <div 
                     className="h-full bg-black dark:bg-white transition-all duration-500"
                     style={{ width: step === 1 ? "50%" : "100%" }}
@@ -110,24 +110,24 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                 {/* Step 1: Profile Picture */}
                 {step === 1 && (
                     <div className="text-center animate-in slide-in-from-right duration-300">
-                        <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                              Make a Statement
                         </h2>
-                        <p className="text-gray-500 dark:text-gray-400 mb-8">
-                            Add a profile picture so clients and community members recognize you.
+                        <p className="text-slate-500 dark:text-slate-400 mb-8">
+                            Add a profile picture so patrons and community members recognize you.
                         </p>
 
                         <div className="flex justify-center mb-8">
                             <div 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
+                                className="w-32 h-32 rounded-full border-2 border-dashed border-slate-300 dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
                             >
                                 {previewUrl ? (
                                     <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
                                     <>
-                                        <Upload className="text-gray-400 mb-2 group-hover:scale-110 transition-transform" />
-                                        <span className="text-xs text-gray-400 font-bold">Upload Photo</span>
+                                        <Upload className="text-slate-400 mb-2 group-hover:scale-110 transition-transform" />
+                                        <span className="text-xs text-slate-400 font-bold">Upload Photo</span>
                                     </>
                                 )}
                                 <input 
@@ -148,7 +148,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         </button>
                         <button 
                             onClick={onClose}
-                            className="w-full mt-3 py-2 text-gray-500 font-bold hover:text-gray-800 dark:hover:text-white transition-colors"
+                            className="w-full mt-3 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
                         >
                             Skip for now
                         </button>
@@ -158,10 +158,10 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                 {/* Step 2: Interests */}
                 {step === 2 && (
                     <div className="text-center animate-in slide-in-from-right duration-300">
-                        <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                              Focus Your Feed
                         </h2>
-                        <p className="text-gray-500 dark:text-gray-400 mb-6">
+                        <p className="text-slate-500 dark:text-slate-400 mb-6">
                             Pick up to 3 topics you want to see.
                         </p>
 
@@ -173,7 +173,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                     className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${
                                         selectedInterests.includes(interest)
                                         ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30"
-                                        : "bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:border-blue-400"
+                                        : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:border-blue-400"
                                     }`}
                                 >
                                     {interest}
@@ -191,13 +191,13 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         <div className="flex gap-2 mt-3">
                             <button 
                                 onClick={() => setStep(1)}
-                                className="flex-1 py-2 text-gray-500 font-bold hover:text-gray-800 dark:hover:text-white transition-colors"
+                                className="flex-1 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
                             >
                                 Back
                             </button>
                             <button 
                                 onClick={onClose}
-                                className="flex-1 py-2 text-gray-500 font-bold hover:text-gray-800 dark:hover:text-white transition-colors"
+                                className="flex-1 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
                             >
                                 Skip for now
                             </button>
@@ -210,3 +210,4 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
     </div>
   );
 }
+

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { api, getHasCreatorAccount } from "@/utils/api";
+import { api, getHasCraftsmanAccount } from "@/utils/api";
 import { Search, Heart, Eye, Download, MessageCircle } from "lucide-react";
 import axios from "axios";
 import { CARD_SHAPES } from "@/constants/cardShapes";
-import CreatorAccountModal from "./CreatorAccountModal";
+import CraftsmanAccountModal from "./CraftsmanAccountModal";
 import ProfileModal from "./ProfileModal";
-import CreatorProfileModal from "./CreatorProfileModal";
+import CraftsmanProfileModal from "./CraftsmanProfileModal";
 import { useToast } from "@/components/ui/ToastProvider";
 
 export default function PlatformDashboard() {
@@ -17,8 +17,8 @@ export default function PlatformDashboard() {
   const [filteredItems, setFilteredItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [hasCreatorAccount, setHasCreatorAccount] = useState(false);
-  const [showCreatorModal, setShowCreatorModal] = useState(false);
+  const [hasCraftsmanAccount, setHasCraftsmanAccount] = useState(false);
+  const [showCraftsmanModal, setShowCraftsmanModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
 
   // Infinite Scroll State
@@ -57,31 +57,28 @@ export default function PlatformDashboard() {
   }, [hasMore, loading, isFetchingMore]);
 
   const fetchData = async (pageNum, isReset = false) => {
-    if (pageNum === 1) setLoading(true);
+    if (pageNum === 1) {
+        setLoading(true);
+        const hasCraftsman = getHasCraftsmanAccount();
+        setHasCraftsmanAccount(hasCraftsman);
+    }
     else setIsFetchingMore(true);
 
     try {
-      const token = localStorage.getItem("token");
-      if (token && pageNum === 1) {
-         const hasCreator = getHasCreatorAccount();
-         setHasCreatorAccount(hasCreator);
-      }
-
-      const typeParam = activeTab === 'all' ? undefined : activeTab; 
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/feed`, {
-          params: { 
-              page: pageNum, 
+      const typeParam = activeTab === 'all' ? undefined : activeTab;
+      const response = await api.get("/feed", {
+          params: {
+              page: pageNum,
               limit: 10,
               type: typeParam,
-              q: searchQuery 
-          },
-          withCredentials: true
+              q: searchQuery
+          }
       });
-      
-      const newItems = response.data.data || [];
+
+      const newItems = response.data || [];
       const normalizedItems = newItems.map(item => ({
           ...item,
-          cardShape: item.cardShape || (item.type === 'project' ? 'square-large' : 'square-medium')
+          cardShape: item.cardShape || (item.type === 'devlog' ? 'square-large' : 'square-medium')
       }));
 
       if (isReset) {
@@ -89,7 +86,7 @@ export default function PlatformDashboard() {
       } else {
           setFilteredItems(prev => [...prev, ...normalizedItems]);
       }
-      setHasMore(response.data.hasMore);
+      setHasMore(response.hasMore);
     } catch (error) {
        console.error("Dashboard Fetch Error:", error);
     } finally {
@@ -102,15 +99,15 @@ export default function PlatformDashboard() {
     <div className="w-full pt-4">
       {/* Search & Tabs */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 sticky top-20 z-30 py-4 bg-[#F3F6F8]/95 dark:bg-black/95 backdrop-blur-sm">
-          <div className="flex items-center gap-2 bg-white dark:bg-gray-900 p-1.5 rounded-full border border-gray-200 dark:border-gray-800 shadow-sm">
-              {['all', 'blogs'].map((tab) => (
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-full border border-slate-200 dark:border-slate-800 shadow-sm">
+              {['all', 'codex'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${
                       activeTab === tab
                         ? "bg-black dark:bg-white text-white dark:text-black shadow-md transform"
-                        : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                        : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                     }`}
                   >
                      {tab}
@@ -119,26 +116,26 @@ export default function PlatformDashboard() {
           </div>
 
           <div className="relative w-full md:w-96 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" size={18} />
               <input
                 type="text"
                 placeholder="Search resources..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm hover:shadow-md"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm hover:shadow-md"
               />
           </div>
       </div>
 
       <ContentGrid items={filteredItems} loading={loading} router={router} />
 
-      <CreatorAccountModal 
-        isOpen={showCreatorModal} 
-        onClose={() => setShowCreatorModal(false)} 
+      <CraftsmanAccountModal 
+        isOpen={showCraftsmanModal} 
+        onClose={() => setShowCraftsmanModal(false)} 
       />
       
-      {hasCreatorAccount ? (
-        <CreatorProfileModal 
+      {hasCraftsmanAccount ? (
+        <CraftsmanProfileModal 
           isOpen={showProfileModal} 
           onClose={() => setShowProfileModal(false)}
         />
@@ -146,7 +143,7 @@ export default function PlatformDashboard() {
         <ProfileModal 
           isOpen={showProfileModal} 
           onClose={() => setShowProfileModal(false)}
-          verifiedHasCreatorAccount={hasCreatorAccount}
+          verifiedHasCraftsmanAccount={hasCraftsmanAccount}
         />
       )}
     </div>
@@ -161,7 +158,7 @@ function ContentGrid({ items, loading, router, limit }) {
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-gray-800 rounded-[20px] aspect-[4/3] animate-pulse" />
+              <div key={i} className="bg-white dark:bg-slate-800 rounded-lg aspect-[4/3] animate-pulse" />
             ))}
           </div>
         );
@@ -169,12 +166,12 @@ function ContentGrid({ items, loading, router, limit }) {
     
     if (items.length === 0) {
         return (
-          <div className="flex flex-col items-center justify-center min-h-[300px] text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-3xl">
-            <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-              <Search className="text-gray-400" size={24} />
+          <div className="flex flex-col items-center justify-center min-h-[300px] text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+              <Search className="text-slate-400" size={24} />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">No results found</h3>
-            <p className="text-gray-500 dark:text-gray-400">Try adjusting your filters.</p>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h3>
+            <p className="text-slate-500 dark:text-slate-400">Try adjusting your filters.</p>
           </div>
         );
     }
@@ -210,12 +207,12 @@ function ContentCard({ item, router }) {
   const [loadingFollow, setLoadingFollow] = useState(false);
   const { showToast } = useToast();
   
-  const isTemplate = item.type === "template";
+  const isArtifact = item.type === "artifact";
   const title = item.title;
-  const image = isTemplate ? item.thumbnailSource || item.previewFile : item.coverImage;
-  const description = isTemplate ? item.description : item.excerpt;
+  const image = isArtifact ? item.thumbnailSource || item.previewFile : item.coverImage;
+  const description = isArtifact ? item.description : item.excerpt;
   const tags = item.tags || [];
-  const author = isTemplate ? item.user : item.author;
+  const author = isArtifact ? item.user : item.author;
 
   let shape = item.cardShape || 'square-medium';
   if (!CARD_SHAPES.find(s => s.value === shape)) shape = 'square-medium';
@@ -236,14 +233,14 @@ function ContentCard({ item, router }) {
   const gridRowSpan = Math.ceil(totalPixelHeight / 10);
 
   const truncatedTitle = title.length > 50 ? title.substring(0, 50) + "..." : title;
-  const isFree = isTemplate && (!item.price || item.price === 0);
+  const isFree = isArtifact && (!item.price || item.price === 0);
 
   // Safe tags slicing
   const displayedTags = Array.isArray(tags) ? tags.slice(0, 3) : [];
 
   useEffect(() => {
     // Initialize Like State
-    if (isTemplate) {
+    if (isArtifact) {
       setLiked(item.isLiked || false);
       setLikeCount(item.likes || 0);
     } else {
@@ -253,58 +250,38 @@ function ContentCard({ item, router }) {
     // Initialize Follow State
     const checkFollowStatus = async () => {
         if (!author?._id) return;
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/follow-status/${author._id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setFollowing(res.data.isFollowing);
+            const res = await api.get(`/user/follow-status/${author._id}`);
+            setFollowing(res.isFollowing);
         } catch (err) {
             console.error("Failed to check follow status", err);
         }
     };
     
     checkFollowStatus();
-  }, [item, isTemplate, author]);
+  }, [item, isArtifact, author]);
 
   const handleClick = () => {
-    if (isTemplate) {
-      router.push(`/templates/${item._id}`);
+    if (isArtifact) {
+      router.push(`/artifacts/${item._id}`);
     } else {
-      router.push(`/blogs/${item.slug}`);
+      router.push(`/codex/${item.slug}`);
     }
   };
 
   const handleLike = async (e) => {
     e.stopPropagation();
-    if (!isTemplate) return; 
+    if (!isArtifact) return; 
 
-    const templateId = item._id;
-    const token = localStorage.getItem("token");
-    let visitorId = localStorage.getItem("visitorId");
-
-    if (!token && !visitorId) {
-      showToast("Please login or visit the page to like.", "info", "Login Required");
-      return;
-    }
-
+    const artifactId = item._id;
     const prevLiked = liked;
     setLiked(!liked);
     setLikeCount(liked ? likeCount - 1 : likeCount + 1);
 
     try {
-      const payload = token ? {} : { visitorId };
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/like`,
-        payload,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          withCredentials: true,
-        }
-      );
-      if (res.data?.liked !== undefined) {
-        setLiked(res.data.liked);
+      const res = await api.post(`/artifact/${artifactId}/like`);
+      if (res.liked !== undefined) {
+        setLiked(res.liked);
       }
     } catch (err) {
       setLiked(prevLiked);
@@ -314,63 +291,35 @@ function ContentCard({ item, router }) {
 
   const handleDownload = async (e) => {
     e.stopPropagation();
-    if (!isTemplate) {
-      router.push(`/blogs/${item.slug}`);
+    if (!isArtifact) {
+      router.push(`/codex/${item.slug}`);
       return;
     }
 
-    const templateId = item._id;
-    const token = localStorage.getItem("token");
-    let visitorId = localStorage.getItem("visitorId");
-
-    if (!token && !visitorId) {
-      showToast("Please login or visit the page to download.", "info", "Login Required");
-      return;
-    }
-
+    const artifactId = item._id;
     try {
-      const payload = token ? {} : { visitorId };
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/template/${templateId}/download`,
-        payload,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          withCredentials: true,
-        }
-      );
-
-      if (res.data?.url) {
-        window.location.href = res.data.url;
+      const res = await api.post(`/artifact/${artifactId}/download`);
+      if (res.url) {
+        window.location.href = res.url;
         return;
       }
     } catch (err) {
        console.error("Download fail", err);
-       if (err?.response?.data?.paid) {
-           showToast("This is a paid template. Please purchase to download.", "info", "Paid Template");
-       }
+       showToast(err.message || "Download failed", "error", "Error");
     }
   };
 
   const handleFollow = async (e) => {
       e.stopPropagation();
-      const token = localStorage.getItem("token");
-      if (!token) {
-          showToast("Please login to follow creators.", "info", "Login Required");
-          return;
-      }
-      
       setLoadingFollow(true);
       const prevFollowing = following;
       setFollowing(!following); // Optimistic update
-
       try {
-          await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/follow/${author._id}`,
-              {},
-              { headers: { Authorization: `Bearer ${token}` } }
-          );
+          await api.post(`/user/follow/${author._id}`);
       } catch (err) {
           console.error("Follow error", err);
           setFollowing(prevFollowing);
-          showToast("Failed to update follow status. Please try again.", "error", "Error");
+          showToast(err.message || "Failed to update follow status.", "error", "Error");
       } finally {
           setLoadingFollow(false);
       }
@@ -378,17 +327,12 @@ function ContentCard({ item, router }) {
 
   const handleChat = (e) => {
       e.stopPropagation();
-      const token = localStorage.getItem("token");
-      if (!token) {
-          showToast("Please login to start a chat.", "info", "Login Required");
-          return;
-      }
-      // Navigate to chat with this specific creator
-      // Assuming a route like /user/messages?chatId=... or /user/creator/chat/:id
+      // Navigate to chat with this specific craftsman
+      // Assuming a route like /user/messages?chatId=... or /user/craftsman/chat/:id
       // Based on typical patterns, we likely want to go to the messages page and select this user
       // For now, we'll push to a generic chat page or specific if known. 
       // Using standard pattern:
-      router.push(`/user/creator/chat?targetUser=${author._id}`);
+      router.push(`/user/craftsman/chat?targetUser=${author._id}`);
   };
 
   return (
@@ -405,31 +349,31 @@ function ContentCard({ item, router }) {
           Fixed rounding bug: Added transform-gpu and strict overflow handling
       */}
       <div
-        className="relative rounded-[20px] overflow-hidden shadow-sm group-hover:shadow-2xl cursor-pointer w-full bg-white dark:bg-gray-800 transition-shadow duration-500 transform-gpu z-0"
+        className="relative rounded-lg overflow-hidden shadow-sm group-hover:shadow-2xl cursor-pointer w-full bg-white dark:bg-slate-800 transition-shadow duration-500 transform-gpu z-0"
         style={{ height: `${imagePixelHeight}px`, WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
         onClick={handleClick}
       >
         {/* Badge */}
         <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {item.type === 'project' ? (
+          {item.type === 'devlog' ? (
               <span className={`text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider backdrop-blur ${
-                  item.projectStats?.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
+                  item.devlogStats?.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
               }`}>
-                  {item.projectStats?.status?.toUpperCase() || 'PROJECT'}
+                  {item.devlogStats?.status?.toUpperCase() || 'DEVLOG'}
               </span>
-          ) : isTemplate ? (
+          ) : isArtifact ? (
             isFree ? (
               <span className="bg-emerald-500/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
                 FREE
               </span>
             ) : (
               <div className="bg-white text-black px-2 py-1 rounded-full shadow-sm font-bold text-[10px]">
-                ${item.price}
+                {item.price} TKNS
               </div>
             )
           ) : (
             <span className="bg-indigo-500/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
-              BLOG
+              CODEX
             </span>
           )}
         </div>
@@ -448,7 +392,7 @@ function ContentCard({ item, router }) {
           <img
             src={image || "/placeholder.png"}
             alt={title || "Content"}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 will-change-transform" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:-translate-y-0.5 will-change-transform" 
           />
         )}
 
@@ -467,24 +411,24 @@ function ContentCard({ item, router }) {
 
                  {/* Container for Tags/Stats */}
                  <div className="relative min-h-[20px]">
-                      {/* Projects: Show Tech Stack & Difficulty */}
-                      {item.type === 'project' ? (
+                      {/* Devlogs: Show Tech Stack & Difficulty */}
+                      {item.type === 'devlog' ? (
                           <div className="flex flex-wrap gap-1.5 items-center">
                               {/* Difficulty Badge */}
-                              {item.projectStats?.difficulty && (
+                              {item.devlogStats?.difficulty && (
                                   <span className="text-[9px] font-bold uppercase text-white/90 bg-white/20 px-1.5 py-0.5 rounded backdrop-blur-sm">
-                                      {item.projectStats.difficulty}
+                                      {item.devlogStats.difficulty}
                                   </span>
                               )}
                               {/* Tech Stack Preview (First 2) */}
-                              {item.projectStats?.tools?.slice(0, 2).map((t, i) => (
+                              {item.devlogStats?.tools?.slice(0, 2).map((t, i) => (
                                   <span key={i} className="text-[10px] font-medium text-white/80 bg-black/40 px-1.5 py-0.5 rounded">
                                       {t}
                                   </span>
                               ))}
                               {/* Count for remaining tools */}
-                              {(item.projectStats?.tools?.length || 0) > 2 && (
-                                  <span className="text-[9px] text-white/60">+{item.projectStats.tools.length - 2}</span>
+                              {(item.devlogStats?.tools?.length || 0) > 2 && (
+                                  <span className="text-[9px] text-white/60">+{item.devlogStats.tools.length - 2}</span>
                               )}
                           </div>
                       ) : (
@@ -523,10 +467,10 @@ function ContentCard({ item, router }) {
                  
                  <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5">
                      <Eye size={14} className="text-white" />
-                     <span className="text-[10px] font-bold text-white">{isTemplate ? item.viewsCount : item.views}</span>
+                     <span className="text-[10px] font-bold text-white">{isArtifact ? item.viewsCount : item.views}</span>
                  </div>
 
-                 {isTemplate && (
+                 {isArtifact && (
                      <button
                         onClick={handleDownload} 
                         className="flex items-center gap-1.5 hover:bg-white/20 transition-colors bg-white/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5 text-white"
@@ -547,7 +491,7 @@ function ContentCard({ item, router }) {
           <div className="flex items-center gap-3 w-full">
               {/* Avatar */}
               <div className="relative group/profile cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden border border-white/50 dark:border-gray-700 shadow-sm group-hover/profile:border-purple-500 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-white/50 dark:border-slate-700 shadow-sm group-hover/profile:border-purple-500 transition-colors">
                       {author?.profilePic || author?.avatar ? (
                           <img src={author.profilePic || author.avatar} alt={author?.name} className="w-full h-full object-cover" />
                       ) : (
@@ -557,13 +501,13 @@ function ContentCard({ item, router }) {
                       )}
                   </div>
                   {/* Status Indicator (Optional) */}
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></div>
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full"></div>
               </div>
               
               {/* Name & Actions */}
               <div className="flex flex-col flex-1 min-w-0 justify-center">
-                  <span className="text-sm font-bold text-gray-900 dark:text-gray-100 truncate hover:text-purple-600 transition-colors cursor-pointer leading-tight mb-0.5">
-                      {author?.name || 'Creator'}
+                  <span className="text-sm font-bold text-slate-900 dark:text-gray-100 truncate hover:text-purple-600 transition-colors cursor-pointer leading-tight mb-0.5">
+                      {author?.name || 'Craftsman'}
                   </span>
                   
                   {/* Action Row: Follow | Chat */}
@@ -571,16 +515,16 @@ function ContentCard({ item, router }) {
                       <button 
                         onClick={handleFollow}
                         disabled={loadingFollow}
-                        className={`text-[11px] font-semibold tracking-wide text-left transition-colors w-fit flex items-center gap-1 ${following ? 'text-gray-400' : 'text-blue-600 dark:text-blue-400 hover:text-blue-500'}`}
+                        className={`text-[11px] font-semibold tracking-wide text-left transition-colors w-fit flex items-center gap-1 ${following ? 'text-slate-400' : 'text-blue-600 dark:text-blue-400 hover:text-indigo-600'}`}
                       >
                           {following ? 'Following' : 'Follow'}
                       </button>
 
-                      <div className="h-3 w-[1px] bg-gray-300 dark:bg-gray-700"></div>
+                      <div className="h-3 w-[1px] bg-slate-300 dark:bg-slate-700"></div>
 
                       <button 
                         onClick={handleChat}
-                        className="text-[11px] font-semibold tracking-wide text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-1 group/chat"
+                        className="text-[11px] font-semibold tracking-wide text-slate-500 dark:text-slate-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors flex items-center gap-1 group/chat"
                       >
                           <span>Chat</span>
                           <MessageCircle size={10} className="group-hover/chat:fill-purple-500/20" />
@@ -592,3 +536,6 @@ function ContentCard({ item, router }) {
     </div>
   );
 }
+
+
+

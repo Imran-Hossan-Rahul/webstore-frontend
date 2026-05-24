@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Anton&family=Arvo&family=Bebas+Neue&family=Bitter&family=Caveat&family=Comfortaa&family=Crimson+Text&family=Dancing+Script&family=EB+Garamond&family=Fira+Code&family=Galada&family=Great+Vibes&family=Hind+Siliguri&family=IBM+Plex+Mono&family=Inconsolata&family=Indie+Flower&family=Josefin+Sans&family=Karla&family=Lato&family=Libre+Baskerville&family=Lobster&family=Lora&family=Merriweather&family=Montserrat&family=Mukta&family=Noto+Sans+Bengali&family=Nunito&family=Open+Sans&family=Oswald&family=Pacifico&family=Permanent+Marker&family=Playfair+Display&family=Poppins&family=PT+Serif&family=Quicksand&family=Raleway&family=Righteous&family=Roboto&family=Roboto+Slab&family=Rubik&family=Satisfy&family=Shadows+Into+Light&family=Source+Code+Pro&family=Space+Mono&family=Ubuntu&family=Ubuntu+Mono&family=Work+Sans&display=swap');
+
+@import './editor-fonts.css';
+
 /* =========================================
    UNIVERSAL MACOS STYLE SMOOTH SCROLLBAR
    Applies to all browsers (Chrome, Firefox, Safari)
@@ -49,6 +54,8 @@ html {
   --background: #ffffff;
   --foreground: #171717;
   --clr: rgba(228, 228, 228, 0.5);
+  --font-inter: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 [data-theme="dark"] {
@@ -66,7 +73,162 @@ body {
   color: var(--foreground);
   font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* =========================================
+   MINIMALIST PROFESSIONAL UTILITIES
+   ========================================= */
+
+.glass-minimal {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+[data-theme="dark"] .glass-minimal {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.shadow-soft {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .shadow-soft {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-precision {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .shadow-precision {
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.text-gradient-minimal {
+  background: linear-gradient(to bottom right, #1e293b, #475569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .text-gradient-minimal {
+  background: linear-gradient(to bottom right, #f8fafc, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-subtle {
+  border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+[data-theme="dark"] .border-subtle {
+  border: 1px solid #262626;
+}
+
+/* =========================================
+   MONOCHROMATIC LINK SYSTEM
+   ========================================= */
+
+.link-ui {
+  color: #a3a3a3; /* text-neutral-400 */
+  transition: color 150ms ease-in-out;
+  text-decoration: none;
+}
+
+.link-ui:hover {
+  color: #ffffff; /* text-white */
+}
+
+[data-theme="light"] .link-ui {
+  color: #737373; /* text-neutral-500 */
+}
+
+[data-theme="light"] .link-ui:hover {
+  color: #000000;
+}
+
+.link-inline {
+  color: #e5e5e5; /* text-neutral-200 */
+  transition: all 150ms ease-in-out;
+  text-decoration: none;
+}
+
+.link-inline:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+[data-theme="light"] .link-inline {
+  color: #404040; /* text-neutral-700 */
+}
+
+[data-theme="light"] .link-inline:hover {
+  color: #000000;
+}
+
+.link-destructive {
+  color: #a3a3a3; /* text-neutral-400 */
+  transition: color 150ms ease-in-out;
+}
+
+.link-destructive:hover {
+  color: #ef4444; /* text-red-500 */
+}
+
+/* =========================================
+   BUTTON INTERACTION MECHANICS
+   ========================================= */
+
+.btn-primary {
+  background-color: #FFFFFF;
+  color: #000000;
+  transition: all 150ms ease-in-out;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background-color: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  color: #171717;
+  transition: all 150ms ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background-color: #171717;
+  border: 1px solid #262626;
+  color: #ededed;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: #262626;
+  color: #ffffff;
+}
+
+.btn-ghost {
+  background-color: transparent;
+  transition: all 150ms ease-in-out;
+  color: inherit;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background-color: #1a1a1a;
+}
+
 
 /* =========================================
    UNIVERSAL SELECTION STYLING (BRAND ALIGNED)
@@ -126,81 +288,44 @@ body {
 .clicked-button-gradient {
   width: 260px;
   height: 52px;
-  background: linear-gradient(90deg, #6252db 0%, #8774e8 70%);
-  border-radius: 0px 21px 21px 0px;
+  background: #6252db;
+  border-radius: 0px 6px 6px 0px;
 }
 
 .profile-icon-style {
-  box-shadow: 
-    8px 8px 20px #bec3cf,
-    -8px -8px 20px #ffffff,
-    inset 0 0 0 #bec3cf,
-    inset 0 0 0 #ffffff;
-  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
 }
 
 [data-theme="dark"] .profile-icon-style {
-  box-shadow: 
-    8px 8px 20px #0a0a0a,
-    -8px -8px 20px #1a1a1a,
-    inset 0 0 0 #0a0a0a,
-    inset 0 0 0 #1a1a1a;
-}
-
-.profile-icon-style:hover {
-  box-shadow:
-    4px 4px 10px #bec3cf,
-    -4px -4px 10px #ffffff,
-    inset 4px 4px 10px #bec3cf,
-    inset -4px -4px 10px #ffffff;
-}
-
-[data-theme="dark"] .profile-icon-style:hover {
-  box-shadow:
-    4px 4px 10px #0a0a0a,
-    -4px -4px 10px #1a1a1a,
-    inset 4px 4px 10px #0a0a0a,
-    inset -4px -4px 10px #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .login-register-style-div {
-  box-shadow: 20px 20px 60px #bec3cf, -20px -20px 60px #ffffff;
+  border: 1px solid #e2e8f0;
+  background: white;
 }
 
 [data-theme="dark"] .login-register-style-div {
-  box-shadow: 20px 20px 60px #0a0a0a, -20px -20px 60px #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #0a0a0a;
 }
 
 .email-password-input-box {
-  box-shadow: 
-    inset 8px 8px 16px #bec3cf,
-    inset -8px -8px 16px #ffffff;
-  padding: 20px;
-  padding-left: 55px;
-  color: #3d4468;
-  font-weight: 500; /* font-medium */
-  font-size: 1rem; /* text-base */
+  border: 1px solid #e2e8f0;
+  padding: 12px 16px;
+  padding-left: 48px;
+  color: #1e293b;
+  font-size: 0.875rem;
   outline: none;
-  transition: box-shadow 0.3s ease;
+  border-radius: 6px;
+  background: #f8fafc;
 }
 
 [data-theme="dark"] .email-password-input-box {
-  box-shadow: 
-    inset 8px 8px 16px #0a0a0a,
-    inset -8px -8px 16px #1a1a1a;
-  color: #cbd5e1;
-}
-
-.email-password-input-box:focus {
-  box-shadow:
-    inset 4px 4px 8px #bec3cf,
-    inset -4px -4px 8px #ffffff;
-}
-
-[data-theme="dark"] .email-password-input-box:focus {
-  box-shadow:
-    inset 4px 4px 8px #0a0a0a,
-    inset -4px -4px 8px #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
+  color: #f1f5f9;
 }
 
 .eye-icon {
@@ -247,14 +372,14 @@ body {
   scrollbar-width: none;     /* Firefox */
 }
 
-.card-template {
+.card-artifact {
   background: rgba(245, 245, 245, 0.5);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
-  border-radius: 32px;
+  border-radius: 8px;
 }
 
-[data-theme="dark"] .card-template {
+[data-theme="dark"] .card-artifact {
   background: rgba(26, 26, 26, 0.5);
 }
 
@@ -310,86 +435,162 @@ body {
   border-color: black;
 }
 
-/* Import VS Code-like font (moved, Fira Code for code blocks) */
+/* =========================================
+   ENHANCED CODE BLOCKS & SYNTAX HIGHLIGHTING
+   ========================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
 
-pre[class*="language-"] {
-  background: #1e1e1e;
-  color: #d4d4d4;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-/* Inline code */
-code {
-  background: #1e1e1e;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.3rem;
-  font-family: 'Fira Code', monospace;
-}
-
-[data-theme="dark"] code {
-  background: #2a2a2a;
-  color: #e0e0e0;
-}
-
-/* Syntax tokens */
-.token.comment { color: #6a9955; font-style: italic; }
-.token.keyword { color: #569cd6; font-weight: bold; }
-.token.string { color: #ce9178; }
-.token.function { color: #dcdcaa; }
-.token.variable { color: #9cdcfe; }
-.token.number { color: #b5cea8; }
-.token.operator { color: #d4d4d4; }
-.token.punctuation { color: #d4d4d4; }
-.token.class-name { color: #4ec9b0; }
-.token.boolean { color: #569cd6; }
-.token.tag { color: #569cd6; }
-.token.attr-name { color: #9cdcfe; }
-.token.attr-value { color: #ce9178; }
-
-/* Full-width DARK code block */
-.tiptap pre {
-  background: #1e1e1e !important;
-  padding: 18px;
-  border-radius: 10px;
-  overflow-x: auto;
-  margin: 16px 0;
-}
-
-[data-theme="dark"] .tiptap pre {
-  background: #2a2a2a !important;
-}
-
-/* Code text */
-.tiptap pre code {
-  color: #ffffff !important;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-[data-theme="dark"] .tiptap pre code {
-  color: #e0e0e0 !important;
-}
-
-/* Highlight.js blocks */
+/* Main Code Block Container - FORCED STYLING */
+.codex-prose pre,
+.codex-prose pre[class*="language-"],
+.prose .codex-prose pre,
+.tiptap pre,
 .hljs {
-  background: #1e1e1e !important;
-  color: #ffffff !important;
-  display: block;
-  width: 100%;
-  padding: 18px;
-  border-radius: 10px;
-  overflow-x: auto;
+  background: #0d1117 !important;
+  background-color: #0d1117 !important;
+  color: #e6edf3 !important;
+  padding: 3rem 1.5rem 1.5rem !important;
+  border-radius: 8px !important;
+  overflow-x: auto !important;
+  font-family: var(--font-mono), monospace !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin: 2rem 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5) !important;
+  position: relative !important;
+  z-index: 1 !important;
 }
 
-[data-theme="dark"] .hljs {
-  background: #2a2a2a !important;
-  color: #e0e0e0 !important;
+/* Ensure child code tags inherit the font and color */
+.codex-prose pre code,
+.tiptap pre code,
+.hljs code {
+  font-family: inherit !important;
+  color: inherit !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Premium Language Label (LEFT) */
+.codex-prose pre[data-language]::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 10px;
+  left: 1.5rem;
+  padding: 0.35rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  color: #79c0ff; /* Light blue/cyan for visibility */
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 6px;
+  pointer-events: none;
+  font-family: var(--font-jakarta), sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+/* Premium Copy Button (RIGHT) */
+.copy-code-btn {
+  position: absolute;
+  top: 10px;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.35rem 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(4px);
+  color: #8b949e;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  font-family: var(--font-jakarta), sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.copy-code-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.copy-code-btn.copied {
+  color: #10b981 !important; /* emerald-500 */
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.copy-code-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.copy-code-btn:active svg {
+  transform: scale(0.8);
+}
+
+/* Reset for Light Mode - Keep it Dark for Professionalism */
+[data-theme="light"] .codex-prose pre {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+}
+
+[data-theme="dark"] .codex-prose pre {
+  background: #010409 !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Inline code (not in pre) */
+code:not(pre code) {
+  background: rgba(98, 82, 219, 0.1);
+  color: #6252db;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+[data-theme="dark"] code:not(pre code) {
+  background: rgba(98, 82, 219, 0.2);
+  color: #a5b4fc;
+}
+
+/* Syntax Token Colors (Professional Palette) */
+.hljs-comment, .hljs-quote { color: #8b949e; font-style: italic; }
+.hljs-keyword, .hljs-selector-tag { color: #ff7b72; font-weight: 600; }
+.hljs-string, .hljs-doctag, .hljs-regexp { color: #a5d6ff; }
+.hljs-title, .hljs-section, .hljs-selector-id { color: #d2a8ff; font-weight: 600; }
+.hljs-variable, .hljs-artifact-variable { color: #ffa657; }
+.hljs-type, .hljs-built_in, .hljs-number { color: #ffa657; }
+.hljs-symbol, .hljs-bullet, .hljs-subst { color: #79c0ff; }
+.hljs-attr, .hljs-attribute { color: #79c0ff; }
+.hljs-function { color: #d2a8ff; }
+.hljs-params { color: #e6edf3; }
+.hljs-literal { color: #79c0ff; }
+.hljs-link { color: #a5d6ff; text-decoration: underline; }
+
+/* Scrollbar for code blocks */
+pre::-webkit-scrollbar {
+  height: 6px;
+}
+pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Resize handle */
@@ -467,7 +668,7 @@ code {
   margin: 0.5rem 0 0.25rem;
 }
 
-/* আপনার স্টাইল ফাইল (e.g., BlogEditor.css বা index.css) এ যোগ করুন */
+/* আপনার স্টাইল ফাইল (e.g., CodexEditor.css বা index.css) এ যোগ করুন */
 
 /* এডিটর কার্সার (caret) ভিজিবিলিটি ফিক্স - ১০০% ইনভার্সন সলিউশন */
 @keyframes dynamicCaret {
@@ -499,211 +700,411 @@ code {
 }
 
 /* এটি আপনার গ্লোবাল CSS ফাইলে বা এডিটর স্টাইলিং ফাইলে যোগ করুন */
-.ProseMirror table {
-    border-collapse: collapse; /* টেবিল বর্ডারকে একক লাইনে রাখে */
-    /* width: 100%; */
-    margin: 1em 0;
+/* =====================================================
+   PREMIUM MONOCHROMATIC TABLE STYLING
+   Applied to both Editor (.ProseMirror) and Viewer (.codex-prose)
+   ===================================================== */
+/* Table Wrapper for Horizontal Scroll (Tiptap adds this automatically) */
+.ProseMirror .tableWrapper,
+.codex-prose .tableWrapper {
+  overflow-x: auto !important;
+  margin: 2.5rem 0 !important;
+  width: 100% !important;
 }
 
-/* টেবিল হেডার, ডেটা এবং টিডি-তে বর্ডার যোগ করা */
+.ProseMirror table,
+.codex-prose table {
+  display: table !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 0 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.5 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="dark"] .ProseMirror table,
+[data-theme="dark"] .codex-prose table {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
 .ProseMirror table th,
-.ProseMirror table td {
-    border: 1px solid #ccc; /* হালকা ধূসর বর্ডার */
-    width: 20px;
-    text-align: left;
-    vertical-align: top;
+.ProseMirror table td,
+.codex-prose table th,
+.codex-prose table td {
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+  vertical-align: top !important;
+  min-width: 100px;
 }
 
 [data-theme="dark"] .ProseMirror table th,
-[data-theme="dark"] .ProseMirror table td {
-    border: 1px solid #444;
+[data-theme="dark"] .ProseMirror table td,
+[data-theme="dark"] .codex-prose table th,
+[data-theme="dark"] .codex-prose table td {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-/* যদি আপনি হেডার রো ব্যবহার করেন */
-.ProseMirror table th {
-    font-weight: bold;
-    background-color: #f8f8f8;
+.ProseMirror table th,
+.codex-prose table th {
+  font-weight: 600 !important;
+  background-color: rgba(0, 0, 0, 0.02) !important;
 }
 
-[data-theme="dark"] .ProseMirror table th {
-    background-color: #2a2a2a;
+[data-theme="dark"] .ProseMirror table th,
+[data-theme="dark"] .codex-prose table th {
+  background-color: rgba(255, 255, 255, 0.02) !important;
 }
 
-/* টেবিল সিলেক্ট করা হলে বর্ডার হাইলাইট করার জন্য */
-.ProseMirror table.selectedCell {
-    outline: 2px solid #6c757d;
+/* Row Hover Interaction */
+.ProseMirror table tr:hover td,
+.codex-prose table tr:hover td {
+  background-color: rgba(0, 0, 0, 0.01) !important;
 }
 
-[data-theme="dark"] .ProseMirror table.selectedCell {
-    outline: 2px solid #94a3b8;
+[data-theme="dark"] .ProseMirror table tr:hover td,
+[data-theme="dark"] .codex-prose table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.01) !important;
+}
+
+/* Column/Cell Selection and Handles for Tiptap */
+.ProseMirror table.selectedCell,
+.ProseMirror table td.selectedCell,
+.ProseMirror table th.selectedCell {
+  background-color: rgba(98, 82, 219, 0.08) !important;
+  outline: 2px solid #6252db !important;
+}
+
+[data-theme="dark"] .ProseMirror table.selectedCell,
+[data-theme="dark"] .ProseMirror table td.selectedCell,
+[data-theme="dark"] .ProseMirror table th.selectedCell {
+  background-color: rgba(98, 82, 219, 0.15) !important;
+  outline: 2px solid #a5b4fc !important;
 }
 
 /* =====================================================
-   MEDIUM-STYLE BLOG READING TYPOGRAPHY
-   Applied to .blog-prose wrapper in blog detail page
+   MEDIUM-STYLE CODEX READING TYPOGRAPHY
+   Applied to .codex-prose wrapper in codex detail page
    ===================================================== */
 
-.blog-prose {
-  font-family: var(--font-lora), 'Georgia', 'Times New Roman', serif;
-  font-size: 1.2rem;
-  line-height: 1.85;
-  color: #242424;
-  letter-spacing: -0.003em;
-  word-spacing: 0.02em;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* =====================================================
+   PREMIUM EDITORIAL CODEX TYPOGRAPHY
+   Applied to .codex-prose wrapper in codex detail page
+   ===================================================== */
 
-[data-theme="dark"] .blog-prose {
-  color: #e0e0e0;
-}
-
-/* Paragraphs */
-.blog-prose p {
-  margin-top: 0;
-  margin-bottom: 1.7em;
-  font-size: 1.2rem;
-  line-height: 1.85;
-  color: inherit;
-}
-
-/* First paragraph after heading — no extra top space */
-.blog-prose h1 + p,
-.blog-prose h2 + p,
-.blog-prose h3 + p,
-.blog-prose h4 + p {
-  margin-top: 0;
-}
-
-/* Headings — Inter for clean contrast with serif body */
-.blog-prose h1,
-.blog-prose h2,
-.blog-prose h3,
-.blog-prose h4,
-.blog-prose h5,
-.blog-prose h6 {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.022em;
-  line-height: 1.2;
-  color: #111;
-  margin-top: 2.4em;
-  margin-bottom: 0.55em;
-}
-
-[data-theme="dark"] .blog-prose h1,
-[data-theme="dark"] .blog-prose h2,
-[data-theme="dark"] .blog-prose h3,
-[data-theme="dark"] .blog-prose h4,
-[data-theme="dark"] .blog-prose h5,
-[data-theme="dark"] .blog-prose h6 {
-  color: #f0f0f0;
-}
-
-.blog-prose h1 { font-size: 2.1rem; font-weight: 800; }
-.blog-prose h2 { font-size: 1.7rem; font-weight: 700; }
-.blog-prose h3 { font-size: 1.4rem; font-weight: 700; }
-.blog-prose h4 { font-size: 1.2rem; font-weight: 700; }
-
-/* Bold text — Inter for punch */
-.blog-prose strong,
-.blog-prose b {
+.codex-prose {
   font-family: var(--font-inter), sans-serif;
-  font-weight: 700;
-  color: #111;
+  font-size: 1rem;
+  line-height: 1.625; /* leading-relaxed approx */
+  color: #1a1a1a;
+  letter-spacing: -0.011em;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
-[data-theme="dark"] .blog-prose strong,
-[data-theme="dark"] .blog-prose b {
-  color: #f0f0f0;
+/* Forcefully remove automatic white backgrounds from existing posts to maintain theme consistency */
+.codex-prose [style*="background"],
+.codex-prose [style*="background-color"],
+.codex-prose span[style],
+.codex-prose p[style] {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
-/* Blockquote — Medium signature */
-.blog-prose blockquote {
-  font-family: var(--font-lora), Georgia, serif;
-  font-size: 1.3rem;
+[data-theme="dark"] .codex-prose {
+  color: #e2e8f0;
+}
+
+/* Paragraphs with intentional spacing */
+.codex-prose p {
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+/* Headings - Typography Rhythm */
+.codex-prose h1,
+.codex-prose h2,
+.codex-prose h3,
+.codex-prose h4,
+.codex-main-title {
+  font-family: 'Outfit', sans-serif;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .codex-prose h1,
+[data-theme="dark"] .codex-prose h2,
+[data-theme="dark"] .codex-prose h3,
+[data-theme="dark"] .codex-prose h4 {
+  color: #f8fafc;
+}
+
+/* Specific Spacing for Each Heading Level */
+.codex-prose h1 { 
+  font-size: 2.25rem; 
+  font-weight: 800; 
+  margin-top: 3.5rem; 
+  margin-bottom: 1.25rem; 
+  line-height: 1.2;
+}
+
+.codex-prose h2 { 
+  font-size: 1.75rem; 
+  font-weight: 700; 
+  margin-top: 3rem; 
+  margin-bottom: 1rem; 
+  border-bottom: 1px solid rgba(0,0,0,0.05); 
+  padding-bottom: 0.5rem; 
+  line-height: 1.3;
+}
+
+[data-theme="dark"] .codex-prose h2 {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.codex-prose h3 { 
+  font-size: 1.35rem; 
+  font-weight: 600; 
+  margin-top: 2.5rem; 
+  margin-bottom: 0.75rem; 
+  line-height: 1.4;
+}
+
+.codex-prose h4 { 
+  font-size: 1.15rem; 
+  font-weight: 600; 
+  margin-top: 2rem; 
+  margin-bottom: 0.5rem; 
+  line-height: 1.5;
+}
+
+/* Premium Blockquote - Large and Atmospheric */
+.codex-prose blockquote {
+  position: relative;
+  font-family: var(--font-lora), serif;
   font-style: italic;
-  font-weight: 500;
+  font-size: 1.75rem;
+  line-height: 1.5;
+  color: #334155;
+  margin: 4rem 0;
+  padding: 2rem 3rem;
+  background: #f8fafc;
+  border-left: 6px solid #0f172a;
+  border-radius: 0 8px 8px 0;
+}
+
+[data-theme="dark"] .codex-prose blockquote {
+  background: rgba(30, 41, 59, 0.5);
+  color: #cbd5e1;
+  border-left-color: #38bdf8;
+}
+
+.codex-prose blockquote::before {
+  content: '"';
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  font-size: 5rem;
+  opacity: 0.1;
+  font-family: serif;
+}
+
+/* Lists with Custom Markers */
+.codex-prose ul,
+.codex-prose ol {
+  margin-bottom: 2.5rem;
+  padding-left: 1.5rem;
+}
+
+.codex-prose li {
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.codex-prose ul li::marker {
+  color: #38bdf8;
+  font-size: 1.2rem;
+}
+
+/* =========================================
+   DARK STUDIO CODE BLOCKS (BRANDED)
+   ========================================= */
+
+.codex-prose pre {
+  background: #0f172a !important;
+  color: #e2e8f0;
+  padding: 3rem 1.5rem 1.5rem !important;
+  border-radius: 8px !important;
+  overflow-x: auto;
+  margin: 3rem 0;
+  position: relative;
+  font-family: var(--font-mono), monospace !important;
+  font-size: 0.95rem !important;
   line-height: 1.7;
-  color: #555;
-  border-left: 3px solid #292929;
-  margin: 2.2em 0;
-  padding: 0.4em 0 0.4em 1.5em;
-  background: transparent;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+}
+
+.codex-prose pre::before {
+  content: "CODE";
+  position: absolute;
+  top: 10px;
+  left: 1.5rem;
+  background: rgba(255,255,255,0.05);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Language Branding using data-lang (Set by CodeBlockAutoLabeler) */
+.codex-prose pre[data-lang="javascript"]::before {
+  content: "JAVASCRIPT";
+  color: #f7df1e;
+  background: rgba(247, 223, 30, 0.1);
+}
+
+.codex-prose pre[data-lang="typescript"]::before {
+  content: "TYPESCRIPT";
+  color: #3178c6;
+  background: rgba(49, 120, 198, 0.1);
+}
+
+.codex-prose pre[data-lang="python"]::before {
+  content: "PYTHON";
+  color: #3776ab;
+  background: rgba(55, 118, 171, 0.1);
+}
+
+.codex-prose pre[data-lang="react"]::before {
+  content: "REACT / JSX";
+  color: #61dafb;
+  background: rgba(97, 218, 251, 0.1);
+}
+
+.codex-prose pre[data-lang="html"]::before {
+  content: "HTML5";
+  color: #e34f26;
+  background: rgba(227, 79, 38, 0.1);
+}
+
+.codex-prose pre[data-lang="css"]::before {
+  content: "CSS3";
+  color: #1572b6;
+  background: rgba(21, 114, 182, 0.1);
+}
+
+.codex-prose pre[data-lang="go"]::before {
+  content: "GO LANG";
+  color: #00add8;
+  background: rgba(0, 173, 216, 0.1);
+}
+
+.codex-prose pre[data-lang="rust"]::before {
+  content: "RUST";
+  color: #dea584;
+  background: rgba(222, 165, 132, 0.1);
+}
+
+.codex-prose pre[data-lang="java"]::before {
+  content: "JAVA";
+  color: #ed8b00;
+  background: rgba(237, 139, 0, 0.1);
+}
+
+.codex-prose pre[data-lang="cpp"]::before {
+  content: "C++";
+  color: #00599c;
+  background: rgba(0, 89, 156, 0.1);
+}
+
+.codex-prose code {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  padding: 0;
   border-radius: 0;
 }
 
-[data-theme="dark"] .blog-prose blockquote {
-  color: #aaa;
-  border-left-color: #777;
+/* Inline Code fallback */
+.codex-prose :not(pre) > code {
+  background: rgba(15, 23, 42, 0.05);
+  color: #0f172a;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
 }
 
-/* Lists */
-.blog-prose ul,
-.blog-prose ol {
-  padding-left: 1.8em;
-  margin: 0.6em 0 1.7em;
-  font-size: 1.2rem;
-  line-height: 1.85;
+[data-theme="dark"] .codex-prose :not(pre) > code {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
 }
 
-.blog-prose li {
-  margin-bottom: 0.5em;
-  padding-left: 0.25em;
-}
-
-.blog-prose ul { list-style-type: disc; }
-.blog-prose ol { list-style-type: decimal; }
-
-.blog-prose li::marker {
-  color: #888;
+/* Premium Links - Professional Color Accent */
+.tiptap a,
+.codex-prose a {
+  color: #2563eb !important;
+  text-decoration: none;
   font-weight: 500;
+  border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+  padding-bottom: 1px;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-[data-theme="dark"] .blog-prose li::marker {
-  color: #666;
+.tiptap a:hover,
+.codex-prose a:hover {
+  color: #1d4ed8 !important;
+  border-bottom-color: #1d4ed8;
+  background-color: rgba(37, 99, 235, 0.05);
 }
 
-/* Inline code */
-.blog-prose :not(pre) > code {
-  font-family: 'Fira Code', 'Courier New', monospace;
-  font-size: 0.875em;
-  background: #f2f2f2;
-  color: #c0392b;
-  padding: 0.15em 0.45em;
-  border-radius: 4px;
-  border: 1px solid rgba(0,0,0,0.08);
+[data-theme="dark"] .tiptap a,
+[data-theme="dark"] .codex-prose a {
+  color: #60a5fa !important;
+  border-bottom-color: rgba(96, 165, 250, 0.3);
 }
 
-[data-theme="dark"] .blog-prose :not(pre) > code {
-  background: #2a2a2a;
-  color: #e06c75;
-  border-color: rgba(255,255,255,0.06);
+[data-theme="dark"] .tiptap a:hover,
+[data-theme="dark"] .codex-prose a:hover {
+  color: #93c5fd !important;
+  border-bottom-color: #93c5fd;
+  background-color: rgba(96, 165, 250, 0.1);
 }
 
-/* Links */
-.blog-prose a {
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: rgba(0,0,0,0.25);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.2s ease;
+/* Images - Floating with Depth */
+.codex-prose img {
+  border-radius: 8px;
+  margin: 4rem 0;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s ease;
 }
 
-.blog-prose a:hover {
-  text-decoration-color: #111;
+.codex-prose img:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.25);
 }
 
-[data-theme="dark"] .blog-prose a {
-  text-decoration-color: rgba(255,255,255,0.25);
-}
-
-[data-theme="dark"] .blog-prose a:hover {
-  text-decoration-color: #f0f0f0;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .codex-prose {
+    font-size: 1.15rem;
+  }
+  .codex-prose h1 { font-size: 2.5rem; }
+  .codex-prose h2 { font-size: 2rem; }
+  .codex-prose blockquote { font-size: 1.4rem; padding: 1.5rem 2rem; }
 }
 
 /* Images */
-.blog-prose img {
+.codex-prose img {
   display: block;
   width: 100%;
   height: auto;
@@ -712,13 +1113,87 @@ code {
 }
 
 /* Horizontal rule — Medium uses a subtle separator */
-.blog-prose hr {
+.codex-prose hr {
   border: none;
   border-top: 1px solid #e0e0e0;
   margin: 3em auto;
   max-width: 80px;
 }
 
-[data-theme="dark"] .blog-prose hr {
+[data-theme="dark"] .codex-prose hr {
   border-top-color: #333;
+}
+/* =========================================
+   UI UTILITIES
+   ========================================= */
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* =========================================
+   PREMIUM SHIMMER LOADING SYSTEM
+   ========================================= */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.4) 25%,
+    rgba(241, 245, 249, 0.8) 50%,
+    rgba(226, 232, 240, 0.4) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+[data-theme="dark"] .animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0.4) 25%,
+    rgba(38, 38, 38, 0.8) 50%,
+    rgba(22, 22, 22, 0.4) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite linear;
+}
+
+
+
+/* Feed excerpt highlight styling */
+mark {
+  background-color: #fef08a;
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+.dark mark {
+  background-color: rgba(234, 179, 8, 0.35);
+  color: inherit;
 }

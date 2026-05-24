@@ -36,16 +36,16 @@ const MessageBubble = ({ message, isOwn }) => {
         <div className={`rounded-2xl px-4 py-2 ${
           isOwn
             ? 'bg-purple-600 text-white'
-            : 'bg-gray-100 dark:bg-white/10 text-gray-900 dark:text-white'
+            : 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
         }`}>
           {!isOwn && (
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+            <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
               {message.sender?.name || "Unknown"}
             </div>
           )}
           <div className="text-sm">{message.content}</div>
           <div className={`text-xs mt-1 ${
-            isOwn ? 'text-purple-200' : 'text-gray-500 dark:text-gray-400'
+            isOwn ? 'text-purple-200' : 'text-slate-500 dark:text-slate-400'
           }`}>
             {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
           </div>
@@ -57,7 +57,7 @@ const MessageBubble = ({ message, isOwn }) => {
 
 const OnlineUser = ({ user, isOnline }) => {
   return (
-    <div className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg cursor-pointer">
+    <div className="flex items-center gap-3 p-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg cursor-pointer">
       <div className="relative">
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {user.avatar ? (
@@ -75,10 +75,10 @@ const OnlineUser = ({ user, isOnline }) => {
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-gray-900 dark:text-white truncate">
+        <div className="text-sm font-medium text-slate-900 dark:text-white truncate">
           {user.name}
         </div>
-        <div className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="text-xs text-slate-500 dark:text-slate-400">
           {isOnline ? "Online" : "Offline"}
         </div>
       </div>
@@ -151,23 +151,23 @@ export default function CommunityChat() {
   return (
     <div className="h-[600px] bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-gray-100 dark:border-white/5">
+      <div className="p-4 border-b border-slate-100 dark:border-white/5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
               <Hash className="w-5 h-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white">
+              <h3 className="font-semibold text-slate-900 dark:text-white">
                 Community Chat
               </h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 {onlineUsers.filter(u => u.isOnline).length} online
               </p>
             </div>
           </div>
-          <button className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg">
-            <MoreVertical className="w-4 h-4 text-gray-500" />
+          <button className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg">
+            <MoreVertical className="w-4 h-4 text-slate-500" />
           </button>
         </div>
       </div>
@@ -195,11 +195,11 @@ export default function CommunityChat() {
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <MessageCircle className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  <MessageCircle className="w-12 h-12 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     No messages yet
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-slate-600 dark:text-slate-400">
                     Start the conversation!
                   </p>
                 </div>
@@ -208,7 +208,7 @@ export default function CommunityChat() {
           </div>
 
           {/* Message Input */}
-          <div className="p-4 border-t border-gray-100 dark:border-white/5">
+          <div className="p-4 border-t border-slate-100 dark:border-white/5">
             <form onSubmit={handleSendMessage} className="flex gap-3">
               <div className="flex-1 relative">
                 <input
@@ -216,14 +216,14 @@ export default function CommunityChat() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className="w-full px-4 py-3 pr-12 border border-gray-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   disabled={sending}
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-white/5 rounded"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded"
                 >
-                  <Smile className="w-4 h-4 text-gray-500" />
+                  <Smile className="w-4 h-4 text-slate-500" />
                 </button>
               </div>
               <button
@@ -238,9 +238,9 @@ export default function CommunityChat() {
         </div>
 
         {/* Online Users Sidebar */}
-        <div className="w-64 border-l border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-black/20">
-          <div className="p-4 border-b border-gray-100 dark:border-white/5">
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+        <div className="w-64 border-l border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-black/20">
+          <div className="p-4 border-b border-slate-100 dark:border-white/5">
+            <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
               Online ({onlineUsers.filter(u => u.isOnline).length})
             </h4>
           </div>

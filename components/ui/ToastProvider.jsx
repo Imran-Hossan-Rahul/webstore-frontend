@@ -5,10 +5,10 @@ import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 const ToastContext = createContext(null);
 
 const icons = {
-  success: <CheckCircle className="w-5 h-5 text-green-500" />,
-  error: <AlertCircle className="w-5 h-5 text-red-500" />,
-  warning: <AlertTriangle className="w-5 h-5 text-amber-500" />,
-  info: <Info className="w-5 h-5 text-blue-500" />,
+  success: <CheckCircle strokeWidth={1.5} className="w-5 h-5 text-green-500" />,
+  error: <AlertCircle strokeWidth={1.5} className="w-5 h-5 text-red-500" />,
+  warning: <AlertTriangle strokeWidth={1.5} className="w-5 h-5 text-amber-500" />,
+  info: <Info strokeWidth={1.5} className="w-5 h-5 text-indigo-600" />,
 };
 
 const bgClasses = {
@@ -29,6 +29,17 @@ export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
   const showToast = useCallback((message, type = "info", title = null, duration = 4000) => {
+    // Safety check: ensure message is a string or primitive to prevent React child rendering errors
+    let finalMessage = message;
+    if (message instanceof Error) {
+      finalMessage = message.message;
+    } else if (typeof message === 'object' && message !== null) {
+      // Handle cases where an API response might return an object as message
+      finalMessage = message.message || message.error || JSON.stringify(message);
+    } else if (typeof message !== 'string') {
+      finalMessage = String(message);
+    }
+
     const id = Date.now() + Math.random();
     const defaultTitles = {
       success: "Success",
@@ -38,7 +49,7 @@ export function ToastProvider({ children }) {
     };
     setToasts((prev) => [
       ...prev,
-      { id, message, type, title: title || defaultTitles[type], duration },
+      { id, message: finalMessage, type, title: title || defaultTitles[type], duration },
     ]);
     if (duration > 0) {
       setTimeout(() => {
@@ -68,15 +79,15 @@ export function ToastProvider({ children }) {
               <p className={`text-sm font-semibold ${titleClasses[toast.type]}`}>
                 {toast.title}
               </p>
-              <p className="text-sm text-gray-700 mt-0.5 break-words">
+              <p className="text-sm text-slate-700 mt-0.5 break-words">
                 {toast.message}
               </p>
             </div>
             <button
               onClick={() => dismiss(toast.id)}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition-colors"
+              className="flex-shrink-0 text-slate-400 hover:text-slate-600 transition-colors"
             >
-              <X className="w-4 h-4" />
+              <X strokeWidth={1.5} className="w-4 h-4" />
             </button>
           </div>
         ))}

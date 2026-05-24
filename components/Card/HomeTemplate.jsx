@@ -1,12 +1,12 @@
 "use client";
 
-export default function TemplateCard({
+export default function ArtifactCard({
   title,
   description,
   tags,
   price,
   rating,
-  previewFile, // main template image
+  previewFile, // main artifact image
   profilePic, // profile image
 }) {
   const truncateTitle = (text) => {
@@ -16,7 +16,7 @@ export default function TemplateCard({
   };
 
   return (
-    <div className="card-template w-[350px] h-[380px] mr-6 mt-4 mb-6 hover:scale-[1.05] transition-all duration-300 relative rounded-3xl overflow-hidden">
+    <div className="card-artifact w-[350px] h-[380px] mr-6 mt-4 mb-6 hover:-translate-y-1 transition-all duration-150 relative rounded-2xl overflow-hidden border border-slate-200 dark:border-[#262626] dark:bg-[#0A0A0A]">
       {/* Image Section */}
       <div className="relative w-full h-[250px] overflow-hidden rounded-2xl">
         {previewFile ? (
@@ -26,13 +26,13 @@ export default function TemplateCard({
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-slate-500">
             No Preview
           </div>
         )}
 
         {/* Star + Rating */}
-        <div className="absolute top-2 right-2 flex items-center gap-1 bg-white px-2 py-1 rounded-full shadow-md">
+        <div className="absolute top-2 right-2 flex items-center gap-1 bg-white dark:bg-[#0A0A0A] px-2 py-1 rounded-full border border-slate-200 dark:border-[#262626]">
           {/* later replace with your SVG */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,11 +48,11 @@ export default function TemplateCard({
               d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
             />
           </svg>
-          <span className="text-xs text-black font-semibold">{rating}</span>
+          <span className="text-xs text-black font-mono font-medium">{rating}</span>
         </div>
 
         {/* Title overlay */}
-        <div className="absolute bottom-2 left-2 right-2 text-white font-semibold text-sm bg-black/50 px-2 py-1 rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute bottom-2 left-2 right-2 text-white font-medium text-base font-sans bg-black/60 px-3 py-1.5 rounded-lg opacity-0 hover:opacity-100 transition-opacity duration-300 backdrop-blur-sm">
           {truncateTitle(title) || "Futurestic Button"}
         </div>
       </div>
@@ -61,7 +61,7 @@ export default function TemplateCard({
       <div className="flex justify-between items-center mt-4 px-2">
         {/* Profile Pic + Tags */}
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md">
+          <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-200 dark:border-[#262626]">
             {profilePic ? (
               <img
                 src={profilePic}
@@ -74,22 +74,23 @@ export default function TemplateCard({
           </div>
 
           {/* Tags */}
-          <span className="text-xs font-medium text-gray-700 bg-gray-200 px-2 py-1 rounded-full">
+          <span className="text-xs font-medium text-slate-700 bg-slate-200 px-2 py-1 rounded-full">
             {tags || "Tag"}
           </span>
         </div>
 
         {/* Price always visible */}
-        <div className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full shadow">
+        <div className="text-sm font-mono font-medium text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-[#171717] px-3 py-1 rounded-full border border-slate-200 dark:border-[#262626]">
           ${price}
         </div>
       </div>
 
       {/* Description */}
-      <div className="mt-2 px-2 text-gray-700 text-xs line-clamp-3">
+      <div className="mt-3 px-2 text-slate-500 text-[13px] line-clamp-3 font-sans leading-relaxed">
         {description ||
           "This is fantastic button created by Imran. Nextjs, Tailwind Css and more.."}
       </div>
     </div>
   );
 }
+

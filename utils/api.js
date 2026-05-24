@@ -1,47 +1,116 @@
 /**
- * API Utility Functions
- * Centralized API calls with authentication
+ * API Utility — Codalina
+ * 
+ * Centralized API client with:
+ *  - Automatic httpOnly cookie auth (credentials: "include")
+ *  - CSRF token injection on every mutating request
+ *  - Smart body serialization (JSON vs FormData)
+ *  - Consistent error shape for all callers
  */
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+// ─── CSRF ────────────────────────────────────────────────────────────────────
+
 /**
- * Get auth token from localStorage or cookies
+ * Reads the XSRF-TOKEN cookie set by the backend.
+ * Returns null during SSR (no `document`).
  */
-function getAuthToken() {
+function getCsrfToken() {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem("token") || null;
+  
+  // 1. Try reading from cookie (works if on same domain/port)
+  const match = document.cookie.match(/XSRF-TOKEN=([^;]+)/);
+  if (match) return decodeURIComponent(match[1]);
+
+  // 2. Fallback to localStorage (needed for cross-port development)
+  return localStorage.getItem("XSRF-TOKEN");
 }
 
 /**
- * Get account type
+ * Persists the CSRF token for cross-port development.
  */
-function getHasCreatorAccount() {
-  if (typeof window === "undefined") return null;
-  const hasCreator = localStorage.getItem("hasCreatorAccount");
-  return hasCreator === "true" || hasCreator === true;
+function setCsrfToken(token) {
+  if (typeof window !== "undefined" && token) {
+    localStorage.setItem("XSRF-TOKEN", token);
+  }
+}
+
+// ─── UI HELPERS ──────────────────────────────────────────────────────────────
+
+/**
+ * Cheap synchronous check for UI gating (non-sensitive).
+ * Actual auth truth lives in the httpOnly cookie verified server-side.
+ */
+function getHasCraftsmanAccount() {
+  if (typeof window === "undefined") return false;
+  const v = localStorage.getItem("hasCraftsmanAccount");
+  return v === "true";
 }
 
 /**
- * Base fetch function with auth
+ * Returns true if a `userId` is stored — a fast UI-only guard.
+ * Never use this for actual security decisions.
+ */
+function isAuthenticated() {
+  if (typeof window === "undefined") return false;
+  return Boolean(localStorage.getItem("userId"));
+}
+
+/**
+ * Reads the accessToken from the stored user object in localStorage.
+ * Used as a backup Authorization header for cross-origin or file upload requests.
+ */
+function getAccessToken() {
+  if (typeof window === "undefined") return null;
+  try {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      return user?.accessToken || null;
+    }
+  } catch (e) {
+    console.error("Failed to parse user from localStorage:", e);
+  }
+  return null;
+}
+
+// ─── CORE FETCH ──────────────────────────────────────────────────────────────
+
+/**
+ * Base fetch wrapper. All api.* methods route through here.
+ *
+ * Handles:
+ *  - JSON bodies (default)
+ *  - FormData bodies (skips Content-Type so browser sets multipart boundary)
+ *  - CSRF injection
+ *  - Error normalization
  */
 async function apiFetch(endpoint, options = {}) {
-  const token = getAuthToken();
   const url = `${API_BASE_URL}${endpoint}`;
+  const csrfToken = getCsrfToken();
+  const accessToken = getAccessToken();
 
-  const headers = {
-    "Content-Type": "application/json",
-    ...options.headers,
-  };
+  const isFormData = options.body instanceof FormData;
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  // For FormData we must NOT set Content-Type — browser does it automatically
+  // with the correct multipart boundary.
+  const headers = isFormData
+    ? { "X-XSRF-TOKEN": csrfToken, ...options.headers }
+    : { "Content-Type": "application/json", "X-XSRF-TOKEN": csrfToken, ...options.headers };
+
+  // Strip null/undefined CSRF (e.g. during SSR or on GET requests)
+  if (!csrfToken) delete headers["X-XSRF-TOKEN"];
+
+  // Append Bearer token as a robust double-defense for cross-origin or upload requests
+  if (accessToken) {
+    headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
   const config = {
     ...options,
     headers,
-    credentials: "include",
+    credentials: "include", // Always send httpOnly cookies
   };
 
   try {
@@ -52,78 +121,84 @@ async function apiFetch(endpoint, options = {}) {
 
     if (!response.ok) {
       const message = isJson
-        ? data?.message || `API request failed (${response.status})`
-        : `HTTP ${response.status} ${response.statusText}: ${String(data).slice(0, 300)}`;
-      throw new Error(message);
+        ? data?.message || `Request failed (${response.status})`
+        : `HTTP ${response.status}: ${String(data).slice(0, 200)}`;
+      const error = new Error(message);
+      error.status = response.status;
+      error.data = data;
+      throw error;
     }
 
     return data;
   } catch (error) {
-    console.error("API Error:", error);
     throw error;
   }
 }
 
-/**
- * API Methods
- */
-export const api = {
-  // GET request
-  get: (endpoint, options = {}) => apiFetch(endpoint, { ...options, method: "GET" }),
+// ─── API METHODS ─────────────────────────────────────────────────────────────
 
-  // POST request
-  post: (endpoint, data, options = {}) =>
-    apiFetch(endpoint, {
+export const api = {
+  /**
+   * GET — read data
+   */
+  get: (endpoint, options = {}) =>
+    apiFetch(endpoint, { ...options, method: "GET" }),
+
+  /**
+   * POST — create / mutate
+   * Accepts a plain object (JSON) or a FormData instance (file upload).
+   */
+  post: (endpoint, data, options = {}) => {
+    const isFormData = data instanceof FormData;
+    return apiFetch(endpoint, {
       ...options,
       method: "POST",
-      body: JSON.stringify(data),
-    }),
+      body: isFormData ? data : JSON.stringify(data),
+    });
+  },
 
-  // PUT request
-  put: (endpoint, data, options = {}) =>
-    apiFetch(endpoint, {
+  /**
+   * PUT — full replacement
+   */
+  put: (endpoint, data, options = {}) => {
+    const isFormData = data instanceof FormData;
+    return apiFetch(endpoint, {
       ...options,
       method: "PUT",
-      body: JSON.stringify(data),
-    }),
+      body: isFormData ? data : JSON.stringify(data),
+    });
+  },
 
-  // DELETE request
-  delete: (endpoint, options = {}) => apiFetch(endpoint, { ...options, method: "DELETE" }),
-
-  // PATCH request
-  patch: (endpoint, data, options = {}) =>
-    apiFetch(endpoint, {
+  /**
+   * PATCH — partial update
+   */
+  patch: (endpoint, data, options = {}) => {
+    const isFormData = data instanceof FormData;
+    return apiFetch(endpoint, {
       ...options,
       method: "PATCH",
-      body: JSON.stringify(data),
-    }),
-
-  // File upload
-  upload: async (endpoint, formData, options = {}) => {
-    const token = getAuthToken();
-    const url = `${API_BASE_URL}${endpoint}`;
-
-    const headers = {};
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
-
-    const response = await fetch(url, {
-      ...options,
-      method: "POST",
-      headers,
-      body: formData,
-      credentials: "include",
+      body: isFormData ? data : JSON.stringify(data),
     });
-
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(data.message || "Upload failed");
-    }
-
-    return data;
   },
+
+  /**
+   * DELETE — remove resource
+   */
+  delete: (endpoint, options = {}) =>
+    apiFetch(endpoint, { ...options, method: "DELETE" }),
+
+  /**
+   * UPLOAD — explicit file upload helper (alias for api.post with FormData)
+   * Kept for backward compatibility with existing callers.
+   */
+  upload: (endpoint, formData, method = "POST", options = {}) =>
+    apiFetch(endpoint, {
+      ...options,
+      method,
+      body: formData, // FormData — apiFetch auto-detects
+    }),
 };
 
-export { getAuthToken, getHasCreatorAccount, API_BASE_URL };
+// ─── EXPORTS ─────────────────────────────────────────────────────────────────
 
+export { getHasCraftsmanAccount, isAuthenticated, setCsrfToken, API_BASE_URL };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 import axios from "axios";
 
@@ -73,7 +73,7 @@ export default function LiveAnalyticsCards() {
     return data;
   };
 
-  const cards = [
+  const cards = useMemo(() => [
     {
       title: "Total Views",
       subtitle: "Monthly visitor analytics",
@@ -84,7 +84,7 @@ export default function LiveAnalyticsCards() {
     },
     {
       title: "Downloads",
-      subtitle: "Template downloads over time",
+      subtitle: "Artifact downloads over time",
       data: analyticsData.downloads,
       color: "#06b6d4",
       gradientFrom: "#06b6d4",
@@ -106,7 +106,7 @@ export default function LiveAnalyticsCards() {
       gradientFrom: "#f59e0b",
       gradientTo: "#ef4444",
     },
-  ];
+  ], [analyticsData]);
 
   // Auto-rotate cards every 4 seconds
   useEffect(() => {
@@ -120,8 +120,8 @@ export default function LiveAnalyticsCards() {
 
   if (loading) {
     return (
-      <div className="w-[500px] h-[400px] bg-white rounded-3xl shadow-lg flex items-center justify-center">
-        <div className="animate-pulse text-gray-400">Loading analytics...</div>
+      <div className="w-[500px] h-[400px] bg-white rounded-2xl shadow-lg flex items-center justify-center">
+        <div className="animate-pulse text-slate-400">Loading analytics...</div>
       </div>
     );
   }
@@ -141,12 +141,12 @@ export default function LiveAnalyticsCards() {
                 : "opacity-0 translate-x-full scale-95"
             }`}
           >
-            <div className="bg-white rounded-3xl shadow-xl p-8 h-full border border-gray-100">
+            <div className="bg-white rounded-2xl shadow-xl p-8 h-full border border-slate-100">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{card.title}</h3>
-                  <p className="text-sm text-gray-500 mt-1">{card.subtitle}</p>
+                  <h3 className="text-2xl font-bold text-slate-900">{card.title}</h3>
+                  <p className="text-sm text-slate-500 mt-1">{card.subtitle}</p>
                 </div>
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: card.color }}></div>
               </div>
@@ -209,21 +209,21 @@ export default function LiveAnalyticsCards() {
               </div>
 
               {/* Stats Summary */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
                 <div>
-                  <p className="text-xs text-gray-500">Current</p>
+                  <p className="text-xs text-slate-500">Current</p>
                   <p className="text-lg font-bold" style={{ color: card.color }}>
                     {card.data[card.data.length - 1]?.value.toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Goal</p>
-                  <p className="text-lg font-bold text-gray-400">
+                  <p className="text-xs text-slate-500">Goal</p>
+                  <p className="text-lg font-bold text-slate-400">
                     {card.data[card.data.length - 1]?.goal.toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500">Growth</p>
+                  <p className="text-xs text-slate-500">Growth</p>
                   <p className="text-lg font-bold text-green-600">
                     +{Math.floor(Math.random() * 20 + 5)}%
                   </p>
@@ -241,7 +241,7 @@ export default function LiveAnalyticsCards() {
             key={index}
             onClick={() => setCurrentCard(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              index === currentCard ? "w-8 bg-purple-600" : "w-2 bg-gray-300"
+              index === currentCard ? "w-8 bg-purple-600" : "w-2 bg-slate-300"
             }`}
           />
         ))}
@@ -249,3 +249,4 @@ export default function LiveAnalyticsCards() {
     </div>
   );
 }
+

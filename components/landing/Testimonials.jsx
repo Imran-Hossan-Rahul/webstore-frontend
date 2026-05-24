@@ -18,13 +18,13 @@ const testimonials = [
   {
     name: "Emma Davis",
     role: "Freelance Creative",
-    content: "Finally, a place where I can showcase my work and get paid for my templates without the headache.",
+    content: "Finally, a place where I can showcase my work and get paid for my artifacts without the headache.",
     avatar: "E"
   },
   {
     name: "James Wilson",
     role: "CTO @ CloudScale",
-    content: "Security and scalability were our top concerns. AmrPlatform nailed both.",
+    content: "Security and scalability were our top concerns. Codalina nailed both.",
     avatar: "J"
   },
     {
@@ -39,8 +39,8 @@ export default function Testimonials() {
   return (
     <section id="testimonials" className="py-24 bg-white dark:bg-black overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-        <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
-          Loved by <span className="text-pink-600">Creators</span>
+        <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
+          Loved by <span className="text-pink-600">Craftsmen</span>
         </h2>
       </div>
 
@@ -53,12 +53,12 @@ export default function Testimonials() {
           {[...testimonials, ...testimonials].map((t, i) => (
             <div 
               key={i} 
-              className="w-[350px] flex-shrink-0 p-6 rounded-2xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 whitespace-normal"
+              className="w-[350px] flex-shrink-0 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 whitespace-normal"
             >
               <div className="flex items-center gap-1 mb-4 text-amber-400">
                 {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-current" />)}
               </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-6 text-sm leading-relaxed">
+              <p className="text-slate-600 dark:text-gray-300 mb-6 text-sm leading-relaxed">
                 "{t.content}"
               </p>
               <div className="flex items-center gap-3">
@@ -66,8 +66,8 @@ export default function Testimonials() {
                   {t.avatar}
                 </div>
                 <div>
-                  <div className="font-bold text-gray-900 dark:text-white text-sm">{t.name}</div>
-                  <div className="text-xs text-gray-500">{t.role}</div>
+                  <div className="font-bold text-slate-900 dark:text-white text-sm">{t.name}</div>
+                  <div className="text-xs text-slate-500">{t.role}</div>
                 </div>
               </div>
             </div>
@@ -90,3 +90,4 @@ export default function Testimonials() {
     </section>
   );
 }
+

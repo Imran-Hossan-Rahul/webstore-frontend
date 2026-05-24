@@ -4,62 +4,96 @@ import { jwtVerify } from "jose";
 
 export async function middleware(req) {
   const pathname = req.nextUrl.pathname;
-  const token = req.cookies.get("token")?.value;
+  const token    = req.cookies.get("accessToken")?.value;
+  const JWT_SECRET = process.env.JWT_ACCESS_SECRET;
 
-  const JWT_SECRET = process.env.JWT_SECRET_ACCESS_TOKEN;
-
+  // ─── Dev warning if secret missing ────────────────────────────────────────
   if (!JWT_SECRET) {
-    return NextResponse.redirect(new URL("/no-access", req.url));
-  }
-
-  // Temporary: Hide all admin routes completely from everyone
-  if (pathname.startsWith("/admin")) {
-    return NextResponse.redirect(new URL("/no-access", req.url));
-  }
-
-  // If user is unauthenticated
-  if (!token) {
-    // Guard dashboard: send visitors back home
-    if (pathname.startsWith("/dashboard")) {
-      return NextResponse.redirect(new URL("/", req.url));
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[MIDDLEWARE] JWT_ACCESS_SECRET is missing — route protection degraded.");
     }
-    // Protect /user/* routes
-    if (pathname.startsWith("/user/")) {
-      return NextResponse.redirect(new URL("/no-access", req.url));
-    }
-    // Allow everything else (homepage, blogs, etc.)
     return NextResponse.next();
   }
 
-  let decoded;
-  try {
-    const secret = new TextEncoder().encode(JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
-    decoded = payload;
-  } catch (err) {
-    // If token is invalid, allow public routes through
-    if (pathname === "/" || pathname.startsWith("/blogs")) {
+  // ─── Verify token (when present) ──────────────────────────────────────────
+  let decoded = null;
+
+  if (token) {
+    try {
+      const secret = new TextEncoder().encode(JWT_SECRET);
+      const { payload } = await jwtVerify(token, secret);
+      decoded = payload;
+    } catch (err) {
+      // Token is invalid or expired
+      if (process.env.NODE_ENV === "development") {
+        console.warn("[MIDDLEWARE] JWT verify failed:", err.message);
+      }
+
+      // For protected routes, send to login (not /no-access — that's for role errors)
+      const isPublic =
+        pathname === "/" ||
+        pathname.startsWith("/auth") ||
+        pathname.startsWith("/codex") ||
+        pathname.startsWith("/artifacts") ||
+        pathname.startsWith("/search") ||
+        pathname.startsWith("/about") ||
+        pathname.startsWith("/embed");
+
+      if (!isPublic) {
+        const loginUrl = new URL("/auth/login", req.url);
+        loginUrl.searchParams.set("error", "session_expired");
+        return NextResponse.redirect(loginUrl);
+      }
+
+      // For public routes clear the bad cookie by continuing — backend will
+      // handle token refresh on next authenticated API call
       return NextResponse.next();
     }
-    return NextResponse.redirect(new URL("/no-access", req.url));
   }
 
-  const hasCreatorAccount = decoded?.hasCreatorAccount;
+  // ─── Admin route protection ────────────────────────────────────────────────
+  if (pathname.startsWith("/admin")) {
+    if (!decoded || (decoded.role !== "admin" && decoded.role !== "superadmin")) {
+      return NextResponse.redirect(new URL("/no-access", req.url));
+    }
+    return NextResponse.next();
+  }
 
-  // Debug log
-  console.log('🔍 Middleware Debug:', {
-    pathname,
-    hasCreatorAccount,
-    decodedPayload: decoded
-  });
+  // ─── Unauthenticated user gates ───────────────────────────────────────────
+  if (!token) {
+    // Authenticated-only areas
+    const protectedPrefixes = [
+      "/dashboard",
+      "/user/",
+      "/settings",
+      "/upload",
+      "/inbox",
+      "/opportunities",
+      "/notifications",
+    ];
 
-  // Creator route protection
-  if (pathname.startsWith("/user/creator")) {
-    if (!hasCreatorAccount) {
-      console.log('❌ Redirecting: No creator account');
+    for (const prefix of protectedPrefixes) {
+      if (pathname.startsWith(prefix)) {
+        // Redirect to login with return URL for UX
+        const loginUrl = new URL("/auth/login", req.url);
+        loginUrl.searchParams.set("next", pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+    }
+
+    return NextResponse.next();
+  }
+
+  // ─── Craftsman-only routes ────────────────────────────────────────────────
+  if (pathname.startsWith("/user/craftsman")) {
+    if (!decoded?.hasCraftsmanAccount) {
       return NextResponse.redirect(new URL("/", req.url));
     }
-    console.log('✅ Allowing access to creator route');
+  }
+
+  // ─── Already logged-in users shouldn't see auth pages ────────────────────
+  if (decoded && pathname.startsWith("/auth")) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
@@ -70,6 +104,12 @@ export const config = {
     "/",
     "/admin/:path*",
     "/dashboard/:path*",
-    "/user/:path*", // This will match all /user/* routes
+    "/user/:path*",
+    "/settings/:path*",
+    "/upload/:path*",
+    "/inbox/:path*",
+    "/opportunities/:path*",
+    "/notifications/:path*",
+    "/auth/:path*",
   ],
 };

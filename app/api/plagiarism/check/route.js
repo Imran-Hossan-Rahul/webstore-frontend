@@ -48,7 +48,7 @@ export async function POST(req) {
               const target = sentences.find(s => s.trim().length > 20);
               if (target) {
                   matches = [{
-                      url: `https://example-content-network.com/article-${randomFactor % 999}`,
+                      url: `https://example-content-network.com/codex-${randomFactor % 999}`,
                       match_text: target.trim().substring(0, 60) + "...",
                       similarity: score + 40
                   }];
@@ -123,3 +123,4 @@ export async function POST(req) {
     );
   }
 }
+

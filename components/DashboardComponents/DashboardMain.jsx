@@ -1,22 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { api, getHasCreatorAccount } from "@/utils/api";
+import { api, getHasCraftsmanAccount } from "@/utils/api";
 import DribbbleGrid from "@/components/HomeComponents/DribbbleGrid";
-import CreateCreatorAccount from "./CreateCreatorAccount";
+import CreateCraftsmanAccount from "./CreateCraftsmanAccount";
+import { Zap } from "lucide-react";
 
 export default function DashboardMain() {
-  const hasCreatorAccount = getHasCreatorAccount();
-  const [showCreatorForm, setShowCreatorForm] = useState(false);
+  const hasCraftsmanAccount = getHasCraftsmanAccount();
+  const [showCraftsmanForm, setShowCraftsmanForm] = useState(false);
   const [userStats, setUserStats] = useState({
-    templates: 0,
-    blogs: 0,
+    artifacts: 0,
+    codex: 0,
     downloads: 0,
     views: 0,
     sales: 0,
     earnings: 0,
   });
-  const [myBlogs, setMyBlogs] = useState([]);
+  const [myCodex, setMyCodex] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,33 +26,33 @@ export default function DashboardMain() {
 
   const fetchUserStats = async () => {
     try {
-      // Fetch user's templates count
-      const templatesRes = await api.get("/template/my-templates");
-      const templates = templatesRes.data || [];
+      // Fetch user's artifacts count
+      const artifactsRes = await api.get("/artifact/my-artifacts");
+      const artifacts = artifactsRes.data || [];
 
       // Calculate stats
-      const totalDownloads = templates.reduce(
+      const totalDownloads = artifacts.reduce(
         (sum, t) => sum + (t.downloadsCount || 0),
         0
       );
-      const totalViews = templates.reduce(
+      const totalViews = artifacts.reduce(
         (sum, t) => sum + (t.viewsCount || 0),
         0
       );
 
-      // TODO: replace with user-specific blogs endpoint
-      const blogsRes = await api.get("/blog");
-      const blogs = Array.isArray(blogsRes) ? blogsRes : blogsRes?.data || [];
+      // TODO: replace with user-specific codex endpoint
+      const codexRes = await api.get("/codex");
+      const codex = Array.isArray(codexRes) ? codexRes : codexRes?.data || [];
 
       setUserStats({
-        templates: templates.length,
-        blogs: blogs.length,
+        artifacts: artifacts.length,
+        codex: codex.length,
         downloads: totalDownloads,
         views: totalViews,
         sales: 0, // TODO: Add sales API
         earnings: 0, // TODO: Add earnings API
       });
-      setMyBlogs(blogs.slice(0, 3));
+      setMyCodex(codex.slice(0, 3));
     } catch (error) {
       console.error("Error fetching stats:", error);
     } finally {
@@ -59,31 +60,31 @@ export default function DashboardMain() {
     }
   };
 
-  if (showCreatorForm) {
+  if (showCraftsmanForm) {
     return (
-      <CreateCreatorAccount
+      <CreateCraftsmanAccount
         onSuccess={() => {
-          setShowCreatorForm(false);
-          window.location.reload(); // Reload to update hasCreatorAccount
+          setShowCraftsmanForm(false);
+          window.location.reload(); // Reload to update hasCraftsmanAccount
         }}
       />
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-950 dark:to-black text-gray-900 dark:text-gray-100 px-4 py-6 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-950 dark:to-black text-slate-900 dark:text-gray-100 px-4 py-6 md:px-8 lg:px-12">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-2">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold">Dashboard</h1>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Jun 1 – Aug 31, {new Date().getFullYear()}
           </p>
         </div>
-        <div className="flex gap-2 text-xs md:text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-400">
           <span>EOI Sent</span>
           <span className="font-semibold text-black dark:text-white">
-            {userStats.templates}
+            {userStats.artifacts}
           </span>
           <span>New Requests</span>
           <span className="font-semibold text-black dark:text-white">
@@ -92,18 +93,18 @@ export default function DashboardMain() {
         </div>
       </div>
 
-      {/* Creator Account Prompt */}
-      {!hasCreatorAccount && (
-        <div className="mb-8 rounded-3xl bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white shadow-lg">
-          <h2 className="text-2xl font-bold mb-2">Become a Creator! 🚀</h2>
+      {/* Craftsman Account Prompt */}
+      {!hasCraftsmanAccount && (
+        <div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white shadow-lg">
+          <h2 className="text-2xl font-bold mb-2">Become a Craftsman! 🚀</h2>
           <p className="mb-4">
-            Unlock creator features: publish blogs, share templates, and showcase your work to thousands of users.
+            Unlock craftsman features: publish codex, share artifacts, and showcase your work to thousands of users.
           </p>
           <button
-            onClick={() => setShowCreatorForm(true)}
-            className="px-6 py-3 bg-white text-blue-600 rounded-full font-medium hover:bg-gray-100 transition-colors"
+            onClick={() => setShowCraftsmanForm(true)}
+            className="px-6 py-3 bg-white text-blue-600 rounded-full font-medium hover:bg-slate-100 transition-colors"
           >
-            Create Creator Account
+            Create Craftsman Account
           </button>
         </div>
       )}
@@ -111,16 +112,16 @@ export default function DashboardMain() {
       {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
-          title="Templates"
-          value={userStats.templates}
+          title="Artifacts"
+          value={userStats.artifacts}
           icon="📦"
-          onClick={() => router.push("/templates")}
+          onClick={() => router.push("/artifacts")}
         />
         <StatCard
-          title="Blogs"
-          value={userStats.blogs}
+          title="Codex"
+          value={userStats.codex}
           icon="📝"
-          onClick={() => router.push("/blog-editor")}
+          onClick={() => router.push("/codex-editor")}
         />
         <StatCard title="Downloads" value={userStats.downloads} icon="⬇️" />
         <StatCard title="Views" value={userStats.views} icon="👁️" />
@@ -130,26 +131,26 @@ export default function DashboardMain() {
         {/* Left column */}
         <div className="lg:col-span-2 space-y-6">
           {/* Quick Actions */}
-          <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <p className="text-sm font-semibold mb-4">Quick Actions</p>
             <div className="flex flex-wrap gap-3">
-              {hasCreatorAccount && (
+              {hasCraftsmanAccount && (
                 <>
                   <ActionButton
-                    label="Create Template"
+                    label="Create Artifact"
                     icon="➕"
                     onClick={() => router.push("/upload")}
                   />
                   <ActionButton
-                    label="Write Blog"
+                    label="Write Codex"
                     icon="✍️"
-                    onClick={() => router.push("/blog-editor")}
+                    onClick={() => router.push("/codex-editor")}
                   />
                 </>
               )}
               <ActionButton
                 label="Post Opportunity"
-                icon="💼"
+                icon={<Zap size={14} />}
                 onClick={() => router.push("/opportunities?action=create")}
               />
               <ActionButton
@@ -160,37 +161,37 @@ export default function DashboardMain() {
             </div>
           </div>
 
-          {/* Templates */}
-          <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          {/* Artifacts */}
+          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Your Templates</h2>
+              <h2 className="text-lg font-semibold">Your Artifacts</h2>
               <button
-                onClick={() => router.push("/templates")}
-                className="text-sm text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
+                onClick={() => router.push("/artifacts")}
+                className="text-sm text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
               >
                 View All →
               </button>
             </div>
-            <DribbbleGrid type="my-templates" title="" showFilters={false} />
+            <DribbbleGrid type="my-artifacts" title="" showFilters={false} />
           </div>
 
-          {/* Blogs + Activity */}
+          {/* Codex + Activity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+            <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-lg font-semibold">Your Blogs</h2>
+                <h2 className="text-lg font-semibold">Your Codex</h2>
                 <button
-                  onClick={() => router.push("/blog-editor")}
-                  className="text-xs text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white"
+                  onClick={() => router.push("/codex-editor")}
+                  className="text-xs text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
                 >
                   Write →
                 </button>
               </div>
-              {myBlogs.length === 0 ? (
-                <div className="text-xs text-gray-600 dark:text-gray-400">
-                  No blogs yet. Share what you learn and earn.{" "}
+              {myCodex.length === 0 ? (
+                <div className="text-xs text-slate-600 dark:text-slate-400">
+                  No codex yet. Share what you learn and earn.{" "}
                   <button
-                    onClick={() => router.push("/blog-editor")}
+                    onClick={() => router.push("/codex-editor")}
                     className="underline"
                   >
                     Start writing
@@ -198,13 +199,13 @@ export default function DashboardMain() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {myBlogs.map((b) => (
+                  {myCodex.map((b) => (
                     <div
                       key={b._id || b.slug || b.title}
-                      className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-gray-900 p-3 shadow-sm"
+                      className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 p-3 shadow-sm"
                     >
-                      <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                        {b.category || "Blog"}
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                        {b.category || "Codex"}
                       </p>
                       <p className="text-sm font-semibold text-black dark:text-white line-clamp-2">
                         {b.title || "Untitled"}
@@ -215,9 +216,9 @@ export default function DashboardMain() {
               )}
             </div>
 
-            <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+            <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
               <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
-              <div className="space-y-3 text-xs text-gray-600 dark:text-gray-400">
+              <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
                 <div className="rounded-2xl bg-gradient-to-r from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-800/30 border border-black/5 dark:border-white/10 p-3">
                   Downloads history placeholder. Wire API to list recent
                   downloads.
@@ -234,7 +235,7 @@ export default function DashboardMain() {
         {/* Right column */}
         <div className="space-y-6">
           {/* Sales & Earnings */}
-          <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5 space-y-3">
+          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5 space-y-3">
             <h2 className="text-lg font-semibold">Earnings</h2>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <MiniStat
@@ -251,7 +252,7 @@ export default function DashboardMain() {
           </div>
 
           {/* Recommended */}
-          <div className="rounded-3xl bg-white/80 dark:bg-gray-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Recommended</h2>
             </div>
@@ -267,13 +268,13 @@ function StatCard({ title, value, icon, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 ${
-        onClick ? "cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700" : ""
+      className={`bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 ${
+        onClick ? "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700" : ""
       }`}
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-gray-600 dark:text-gray-400 text-xs mb-1">
+          <p className="text-slate-600 dark:text-slate-400 text-xs mb-1">
             {title}
           </p>
           <p className="text-2xl font-bold text-black dark:text-white">
@@ -290,7 +291,7 @@ function ActionButton({ label, icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300"
+      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium hover:bg-slate-800 dark:hover:bg-slate-200 transition-all duration-300"
     >
       <span>{icon}</span>
       <span>{label}</span>
@@ -300,10 +301,12 @@ function ActionButton({ label, icon, onClick }) {
 
 function MiniStat({ title, value, accent }) {
   return (
-    <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-gray-900 p-3 shadow-sm">
-      <p className="text-xs text-gray-600 dark:text-gray-400">{title}</p>
+    <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 p-3 shadow-sm">
+      <p className="text-xs text-slate-600 dark:text-slate-400">{title}</p>
       <p className="text-xl font-bold text-black dark:text-white">{value}</p>
       <div className={`mt-2 h-1.5 rounded-full bg-gradient-to-r ${accent}`} />
     </div>
   );
 }
+
+

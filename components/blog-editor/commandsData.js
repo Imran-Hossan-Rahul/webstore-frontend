@@ -25,7 +25,7 @@ import {
   Underline,
   Highlighter,
   Globe,
-  Sparkles,
+  Zap,
 } from "lucide-react";
 
 export const SLASH_COMMANDS = [
@@ -322,7 +322,7 @@ export const SLASH_COMMANDS = [
     title: "Ask AI",
     description: "Get AI writing assistance",
     searchTerms: ["ai", "assistant", "help", "write", "generate", "magic"],
-    icon: Sparkles,
+    icon: Zap,
     category: "ai",
     command: ({ editor, range, openAISelector }) => {
       editor.chain().focus().deleteRange(range).run();

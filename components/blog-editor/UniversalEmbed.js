@@ -38,7 +38,7 @@ export const UniversalEmbed = Node.create({
   renderHTML({ HTMLAttributes }) {
     return [
       "div",
-      { class: "universal-embed-wrapper my-4 relative rounded-lg overflow-hidden border border-gray-200 shadow-sm" },
+      { class: "universal-embed-wrapper my-4 relative rounded-lg overflow-hidden border border-slate-200 shadow-sm" },
       [
         "iframe",
         mergeAttributes(HTMLAttributes, {

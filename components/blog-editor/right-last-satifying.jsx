@@ -90,7 +90,7 @@
 //   if (!selectedNode) {
 //     return (
 //       <div className="w-72 border-l bg-white p-4 h-screen sticky top-0 overflow-y-auto shadow-inner">
-//         <p className="text-gray-500">Select a block to customize</p>
+//         <p className="text-slate-500">Select a block to customize</p>
 //       </div>
 //     );
 //   }
@@ -154,7 +154,7 @@
 //                 <button
 //                   key={align}
 //                   className={`px-3 py-1 border rounded ${
-//                     imageAlign === align ? "bg-gray-300" : ""
+//                     imageAlign === align ? "bg-slate-300" : ""
 //                   }`}
 //                   onClick={() => {
 //                     setImageAlign(align);
@@ -180,7 +180,7 @@
 //       {/* --------------------------- */}
 //       <h3 className="font-semibold mb-2">Margin</h3>
 
-//       <div className="grid grid-cols-2 gap-4 mb-6 p-3 border rounded bg-gray-50">
+//       <div className="grid grid-cols-2 gap-4 mb-6 p-3 border rounded bg-slate-50">
 //         {/* LEFT */}
 //         <InputBox
 //           label="Left"
@@ -231,7 +231,7 @@
 //       {/* --------------------------- */}
 //       <h3 className="font-semibold mb-2">Padding</h3>
 
-//       <div className="grid grid-cols-2 gap-4 mb-6 p-3 border rounded bg-gray-50">
+//       <div className="grid grid-cols-2 gap-4 mb-6 p-3 border rounded bg-slate-50">
 //         {/* LEFT */}
 //         <InputBox
 //           label="Left"
@@ -377,10 +377,10 @@
 //   // Input Box Component
 //   const InputBox = ({ label, value, onChange }) => (
 //     <div className="flex flex-col items-center">
-//       <span className="text-sm font-medium text-gray-700 mb-1">{label}</span>
+//       <span className="text-sm font-medium text-slate-700 mb-1">{label}</span>
 //       <input
 //         type="number"
-//         className="w-16 border border-gray-300 bg-white px-2 py-1 rounded text-center text-gray-800"
+//         className="w-16 border border-slate-300 bg-white px-2 py-1 rounded text-center text-slate-800"
 //         value={value}
 //         min={0}
 //         onChange={(e) => onChange(parseInt(e.target.value) || 0)}
@@ -422,8 +422,8 @@
 
 //   if (!selectedNode) {
 //     return (
-//       <div className="w-72 border-l border-gray-300 bg-gray-50 p-4 h-screen sticky top-0 overflow-y-auto">
-//         <p className="text-gray-500">Select a block to customize</p>
+//       <div className="w-72 border-l border-slate-300 bg-slate-50 p-4 h-screen sticky top-0 overflow-y-auto">
+//         <p className="text-slate-500">Select a block to customize</p>
 //       </div>
 //     );
 //   }
@@ -438,8 +438,8 @@
 //   ];
 
 //   return (
-//     <div className="w-72 border-l border-gray-300 bg-gray-50 p-4 h-screen sticky top-0 overflow-y-auto space-y-4">
-//       <h2 className="text-lg font-semibold text-gray-900 capitalize border-b pb-2 border-gray-300">
+//     <div className="w-72 border-l border-slate-300 bg-slate-50 p-4 h-screen sticky top-0 overflow-y-auto space-y-4">
+//       <h2 className="text-lg font-semibold text-slate-900 capitalize border-b pb-2 border-slate-300">
 //         {selectedNode.type.name} Settings
 //       </h2>
 
@@ -447,12 +447,12 @@
 //       {selectedNode.type.name === "image" && (
 //         <>
 //           <div>
-//             <label className="text-gray-700">Image Width</label>
+//             <label className="text-slate-700">Image Width</label>
 //             <input
 //               type="number"
 //               value={imageWidth}
 //               min={50}
-//               className="w-full border border-gray-300 bg-white px-3 py-1 rounded text-gray-800"
+//               className="w-full border border-slate-300 bg-white px-3 py-1 rounded text-slate-800"
 //               onChange={(e) => {
 //                 const w = parseInt(e.target.value) || 0;
 //                 setImageWidth(w);
@@ -465,12 +465,12 @@
 //             />
 //           </div>
 //           <div>
-//             <label className="text-gray-700">Image Height</label>
+//             <label className="text-slate-700">Image Height</label>
 //             <input
 //               type="number"
 //               value={imageHeight}
 //               min={50}
-//               className="w-full border border-gray-300 bg-white px-3 py-1 rounded text-gray-800"
+//               className="w-full border border-slate-300 bg-white px-3 py-1 rounded text-slate-800"
 //               onChange={(e) => {
 //                 const h = parseInt(e.target.value) || 0;
 //                 setImageHeight(h);
@@ -483,13 +483,13 @@
 //             />
 //           </div>
 //           <div>
-//             <label className="text-gray-700">Alignment</label>
+//             <label className="text-slate-700">Alignment</label>
 //             <div className="flex gap-2 mt-2">
 //               {["left", "center", "right"].map((align) => (
 //                 <button
 //                   key={align}
-//                   className={`px-3 py-1 border border-gray-300 rounded text-gray-800 hover:bg-gray-200 ${
-//                     imageAlign === align ? "bg-gray-300" : "bg-white"
+//                   className={`px-3 py-1 border border-slate-300 rounded text-slate-800 hover:bg-slate-200 ${
+//                     imageAlign === align ? "bg-slate-300" : "bg-white"
 //                   }`}
 //                   onClick={() => {
 //                     setImageAlign(align);
@@ -510,8 +510,8 @@
 
 //       {/* MARGIN & PADDING */}
 //       <div>
-//         <h3 className="font-semibold text-gray-800 mb-2">Margin</h3>
-//         <div className="grid grid-cols-2 gap-4 p-3 border rounded bg-gray-100">
+//         <h3 className="font-semibold text-slate-800 mb-2">Margin</h3>
+//         <div className="grid grid-cols-2 gap-4 p-3 border rounded bg-slate-100">
 //           {["Left", "Right", "Top", "Bottom"].map((side) => (
 //             <InputBox
 //               key={side}
@@ -526,8 +526,8 @@
 //           ))}
 //         </div>
 
-//         <h3 className="font-semibold text-gray-800 mb-2 mt-4">Padding</h3>
-//         <div className="grid grid-cols-2 gap-4 p-3 border rounded bg-gray-100">
+//         <h3 className="font-semibold text-slate-800 mb-2 mt-4">Padding</h3>
+//         <div className="grid grid-cols-2 gap-4 p-3 border rounded bg-slate-100">
 //           {["Left", "Right", "Top", "Bottom"].map((side) => (
 //             <InputBox
 //               key={side}
@@ -546,7 +546,7 @@
 //       {/* COLORS */}
 //       {["paragraph", "heading"].includes(selectedNode.type.name) && (
 //         <>
-//           <h3 className="font-semibold text-gray-800 mb-2">Text Color</h3>
+//           <h3 className="font-semibold text-slate-800 mb-2">Text Color</h3>
 //           <HexColorPicker
 //             color={textColor}
 //             onChange={(color) => handleColorInput(color, "text")}
@@ -562,7 +562,7 @@
 //             style={{ backgroundColor: textColor }}
 //           />
 
-//           <h3 className="font-semibold text-gray-800 mb-2 mt-4">
+//           <h3 className="font-semibold text-slate-800 mb-2 mt-4">
 //             Background Color
 //           </h3>
 //           <HexColorPicker
@@ -584,7 +584,7 @@
 
 //       {/* NEW STYLING CONTROLS */}
 //       <div>
-//         <h3 className="font-semibold text-gray-800 mt-4 mb-2">Opacity</h3>
+//         <h3 className="font-semibold text-slate-800 mt-4 mb-2">Opacity</h3>
 //         <input
 //           type="number"
 //           min="0"
@@ -604,13 +604,13 @@
 //           }}
 //         />
 
-//         <h3 className="font-semibold text-gray-800 mt-4 mb-2">Box Shadow</h3>
+//         <h3 className="font-semibold text-slate-800 mt-4 mb-2">Box Shadow</h3>
 //         <div className="flex flex-wrap gap-2 mb-2">
 //           {shadowPresets.map((preset) => (
 //             <button
 //               key={preset}
 //               className={`px-3 py-1 border rounded text-sm ${
-//                 boxShadow === preset ? "bg-gray-300" : "bg-white"
+//                 boxShadow === preset ? "bg-slate-300" : "bg-white"
 //               }`}
 //               onClick={() => {
 //                 setBoxShadow(preset);
@@ -644,7 +644,7 @@
 //           }}
 //         />
 
-//         <h3 className="font-semibold text-gray-800 mt-4 mb-2">Border</h3>
+//         <h3 className="font-semibold text-slate-800 mt-4 mb-2">Border</h3>
 //         <div className="grid grid-cols-3 gap-2">
 //           <input
 //             type="number"
@@ -688,7 +688,7 @@
 //           />
 //         </div>
 
-//         <h3 className="font-semibold text-gray-800 mt-4 mb-2">Stroke</h3>
+//         <h3 className="font-semibold text-slate-800 mt-4 mb-2">Stroke</h3>
 //         <div className="grid grid-cols-2 gap-2">
 //           <input
 //             type="number"

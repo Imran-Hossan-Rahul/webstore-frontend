@@ -22,7 +22,7 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get(`/blog/${slug}/analytics?range=${timeRange}`);
+      const res = await api.get(`/codex/${slug}/analytics?range=${timeRange}`);
       if (res && res.totalViews !== undefined) {
         setData(res);
       } else {
@@ -53,11 +53,11 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
               <TrendingUp className="text-[#3ea6ff]" size={24} />
-              Analytics: {title || "Blog Stats"}
+              Analytics: {title || "Codex Stats"}
             </h2>
-            <p className="text-gray-400 text-sm mt-1">Real-time performance insights</p>
+            <p className="text-slate-400 text-sm mt-1">Real-time performance insights</p>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-[#303030] rounded-full text-gray-400 hover:text-white transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-[#303030] rounded-full text-slate-400 hover:text-white transition-colors">
             <X size={24} />
           </button>
         </div>
@@ -75,7 +75,7 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
                           className={`px-3 py-1.5 rounded-md text-xs font-medium uppercase transition-all ${
                               timeRange === range 
                               ? 'bg-[#3ea6ff] text-[#0f0f0f] shadow-md' 
-                              : 'text-gray-400 hover:text-gray-200 hover:bg-[#333]'
+                              : 'text-slate-400 hover:text-gray-200 hover:bg-[#333]'
                           }`}
                       >
                           {range}
@@ -86,11 +86,11 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
 
           {loading ? (
              <div className="h-96 flex items-center justify-center">
-               <div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-gray-600 rounded-full"></div>
+               <div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-slate-600 rounded-full"></div>
              </div>
           ) : error ? (
-            <div className="h-96 flex flex-col items-center justify-center text-gray-400 gap-4">
-               <p className="text-red-400">{error}</p>
+            <div className="h-96 flex flex-col items-center justify-center text-slate-400 gap-4">
+               <p className="text-red-400">{error.message || error}</p>
                <button onClick={fetchAnalytics} className="px-4 py-2 bg-[#303030] rounded hover:bg-[#3e3e3e] text-white">Retry</button>
             </div>
           ) : (
@@ -98,23 +98,23 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
               {/* Summary Cards */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                  <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                    <div className="text-gray-400 text-xs mb-1">Impressions</div>
+                    <div className="text-slate-400 text-xs mb-1">Impressions</div>
                     <div className="text-xl font-bold text-white">{data.totalImpressions?.toLocaleString() || 0}</div>
                  </div>
                  <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                    <div className="text-gray-400 text-xs mb-1">Views</div>
+                    <div className="text-slate-400 text-xs mb-1">Views</div>
                     <div className="text-xl font-bold text-[#3ea6ff]">{data.totalViews?.toLocaleString()}</div>
                  </div>
                  <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                    <div className="text-gray-400 text-xs mb-1">Likes</div>
+                    <div className="text-slate-400 text-xs mb-1">Likes</div>
                     <div className="text-xl font-bold text-[#00C49F]">{data.totalLikes?.toLocaleString() || 0}</div>
                  </div>
                  <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                    <div className="text-gray-400 text-xs mb-1">Comments</div>
+                    <div className="text-slate-400 text-xs mb-1">Comments</div>
                     <div className="text-xl font-bold text-[#FFBB28]">{data.totalComments?.toLocaleString() || 0}</div>
                  </div>
                  <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                    <div className="text-gray-400 text-xs mb-1">Shares</div>
+                    <div className="text-slate-400 text-xs mb-1">Shares</div>
                     <div className="text-xl font-bold text-[#FF8042]">{data.totalShares?.toLocaleString() || 0}</div>
                  </div>
               </div>
@@ -204,7 +204,7 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
                                 </PieChart>
                             </ResponsiveContainer>
                         ) : (
-                            <p className="text-gray-500">No country data yet</p>
+                            <p className="text-slate-500">No country data yet</p>
                         )}
                     </div>
                  </div>
@@ -239,3 +239,4 @@ export default function AnalyticsModal({ isOpen, onClose, slug, title }) {
     </div>
   );
 }
+

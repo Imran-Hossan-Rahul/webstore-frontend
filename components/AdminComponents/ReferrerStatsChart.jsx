@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PieChartTemplate from "./PieChartTemplate";
+import PieChartArtifact from "./PieChartArtifact";
 
 export default function ReferrerStatsChart() {
   const [data, setData] = useState([]);
@@ -40,5 +40,6 @@ export default function ReferrerStatsChart() {
 
   if (loading) return <p>Loading...</p>;
 
-  return <PieChartTemplate title="Traffic Sources" data={data} />;
+  return <PieChartArtifact title="Traffic Sources" data={data} />;
 }
+

@@ -1,6 +1,6 @@
 "use client";
 
-import PieChartTemplate from "./PieChartTemplate";
+import PieChartArtifact from "./PieChartArtifact";
 import { useEffect, useState } from "react";
 
 export default function NewVsRepeatedChart() {
@@ -35,5 +35,6 @@ export default function NewVsRepeatedChart() {
 
   if (!chart) return <p>Loading...</p>;
 
-  return <PieChartTemplate title="New vs Repeated Users" data={chart} />;
+  return <PieChartArtifact title="New vs Repeated Users" data={chart} />;
 }
+

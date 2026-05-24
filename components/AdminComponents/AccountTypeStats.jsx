@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PieChartTemplate from "./PieChartTemplate";
+import PieChartArtifact from "./PieChartArtifact";
 
 export default function AccountTypeChart() {
   const [data, setData] = useState([]);
@@ -39,5 +39,6 @@ export default function AccountTypeChart() {
 
   if (loading) return <p>Loading...</p>;
 
-  return <PieChartTemplate title="Account Types" data={data} />;
+  return <PieChartArtifact title="Account Types" data={data} />;
 }
+

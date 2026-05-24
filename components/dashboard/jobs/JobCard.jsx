@@ -1,83 +1,102 @@
 "use client";
 import React from "react";
-import { MapPin, Clock, DollarSign, Briefcase, ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export const JobCard = ({ job, onClick }) => {
+import { MapPin, Zap, Users, ArrowUpRight, Heart } from "lucide-react";
+import { api } from "@/utils/api";
+import { showToast } from "@/utils/toast";
+
+export const JobCard = ({ job, isGuest, onRequireAuth }) => {
+  const router = useRouter();
+  const [isFavorited, setIsFavorited] = React.useState(job.isFavorited);
+  
+  const handleFavorite = async (e) => {
+    e.stopPropagation();
+    if (isGuest) { onRequireAuth?.('save'); return; }
+    
+    const newStatus = !isFavorited;
+    setIsFavorited(newStatus);
+    try {
+        await api.post('/favorites/toggle', { postId: job._id, itemType: 'job' });
+    } catch (err) {
+        console.error("Favorite failed", err);
+        setIsFavorited(!newStatus);
+        showToast("Failed to update saved status", "error");
+    }
+  };
+
   const isHourly = job.budget?.type === "hourly";
-  // Format Budget
   const budgetDisplay = isHourly 
-    ? `$${job.budget?.min || 0} - $${job.budget?.max || 0}/hr`
-    : `$${job.budget?.min || 0} - $${job.budget?.max || 0}`;
+    ? `${job.budget?.min || 0}-${job.budget?.max || 0} TKNS/hr`
+    : `${job.budget?.min || 0}-${job.budget?.max || 0} TKNS`;
 
   return (
     <div 
-        onClick={onClick}
-        className="group bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/5 rounded-2xl p-6 hover:shadow-xl hover:border-purple-500/30 transition-all duration-300 cursor-pointer relative overflow-hidden"
+        onClick={() => router.push(`/jobs/${job._id}`)}
+        className="group bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-xl p-6 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all duration-300 cursor-pointer relative"
     >
-        {/* Hover Gradient Accent */}
-        <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-purple-500 to-blue-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-        
-        <div className="flex gap-4 items-start">
-            {/* Client Logo */}
-            <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex-shrink-0 overflow-hidden border border-gray-200 dark:border-white/10">
-                {job.client?.avatar ? (
-                    <img src={job.client.avatar} alt={job.client.name} className="w-full h-full object-cover" />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center text-lg font-bold text-gray-400">
-                        {job.client?.name?.[0]}
+        <div className="space-y-4">
+            <div className="flex justify-between items-start gap-4">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white transition-colors leading-tight line-clamp-2">
+                    {job.title}
+                </h3>
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={handleFavorite}
+                        className={`transition-all p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 ${
+                            isFavorited ? 'text-rose-500' : 'text-slate-400'
+                        }`}
+                    >
+                        <Heart size={18} fill={isFavorited ? "currentColor" : "none"} />
+                    </button>
+                    <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap mt-1 uppercase tracking-wider">
+                        {new Date(job.createdAt).toLocaleDateString()}
+                    </span>
+                </div>
+            </div>
+
+            <div className="space-y-3">
+                <div className="flex items-center gap-2 text-sm">
+                    <span className="font-bold text-slate-900 dark:text-white">
+                        {isHourly ? "Hourly" : "Fixed-price"}: {budgetDisplay}
+                    </span>
+                    <span className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                    <span className="text-slate-500 font-medium uppercase text-[10px] tracking-wider px-1.5 py-0.5 bg-slate-100 dark:bg-white/5 rounded border border-slate-200 dark:border-white/10">
+                        {job.level}
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-4 text-xs text-slate-500">
+                    <div className="flex items-center gap-1.5">
+                        <MapPin size={14} className="text-slate-400" />
+                        <span>{job.location || "Remote"}</span>
                     </div>
+                    <div className="flex items-center gap-1.5">
+                        <Users size={14} className="text-slate-400" />
+                        <span>{job.applicants?.length || 0} Proposals</span>
+                    </div>
+                    {job.applicants?.filter(a => a.stage === "hired").length > 0 && (
+                        <div className="flex items-center gap-1.5">
+                             {/* Icon removed */}
+                            <span className="text-emerald-600 dark:text-emerald-400 font-bold">Hired: {job.applicants.filter(a => a.stage === "hired").length}</span>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Skills */}
+            <div className="pt-2 flex flex-wrap gap-2">
+                {job.skills?.slice(0, 3).map((skill, i) => (
+                    <span key={i} className="text-[10px] px-2 py-1 rounded bg-slate-50 dark:bg-white/5 text-slate-500 font-semibold border border-slate-200 dark:border-white/10 uppercase tracking-tight">
+                        {skill}
+                    </span>
+                ))}
+                {job.skills?.length > 3 && (
+                    <span className="text-[10px] font-bold text-slate-400 self-center">
+                        +{job.skills.length - 3}
+                    </span>
                 )}
             </div>
-
-            {/* Content */}
-            <div className="flex-1">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white group-hover:text-purple-600 transition-colors">
-                            {job.title}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400 font-medium">
-                            <span>{job.client?.name}</span>
-                            {/* Verified Badge Mock */}
-                            <CheckCircle2 size={14} className="text-blue-500" />
-                        </div>
-                    </div>
-                    
-                    {/* Time / Status */}
-                    <div className="text-xs font-semibold text-gray-400 bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-md">
-                        {new Date(job.createdAt).toLocaleDateString()}
-                    </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-500/10 dark:text-green-400 border border-green-200 dark:border-green-500/20">
-                        <DollarSign size={12} /> {budgetDisplay}
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20">
-                        <MapPin size={12} /> {job.location || "Remote"}
-                    </span>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400 border border-purple-200 dark:border-purple-500/20">
-                        <Briefcase size={12} /> {job.level || "Expert"}
-                    </span>
-                </div>
-
-                {/* Skills */}
-                <div className="mt-4 flex flex-wrap gap-2">
-                    {job.skills?.map((skill, i) => (
-                        <span key={i} className="text-xs px-2 py-1 rounded-md bg-gray-50 dark:bg-white/5 text-gray-600 dark:text-gray-300 border border-gray-100 dark:border-white/5">
-                            {skill}
-                        </span>
-                    ))}
-                </div>
-            </div>
-            
-             {/* Hover Action */}
-             <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-6 top-1/2 -translate-y-1/2 hidden md:block">
-                  <button className="bg-black dark:bg-white text-white dark:text-black p-3 rounded-full shadow-lg transform translate-x-4 group-hover:translate-x-0 transition-all">
-                      <ArrowUpRight size={20} />
-                  </button>
-             </div>
         </div>
     </div>
   );

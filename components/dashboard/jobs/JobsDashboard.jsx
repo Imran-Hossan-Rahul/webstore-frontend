@@ -9,7 +9,7 @@ export default function JobsDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0a0a0a] text-gray-900 dark:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#0a0a0a] text-slate-900 dark:text-white overflow-x-hidden">
         
       {/* Background Subtle Gradient */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-30 dark:opacity-20">

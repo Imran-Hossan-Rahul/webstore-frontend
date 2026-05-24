@@ -21,7 +21,7 @@ const COLORS = [
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white border border-gray-300 rounded-lg p-2 text-xs pointer-events-none">
+      <div className="bg-white border border-slate-300 rounded-lg p-2 text-xs pointer-events-none">
         {payload.map((entry) => (
           <p key={entry.name} className="m-0">
             {entry.name}: <span className="font-bold">{entry.value}</span>
@@ -33,9 +33,9 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
-export default function PieChartTemplate({ title, data }) {
+export default function PieChartArtifact({ title, data }) {
   return (
-    <div className="card-template p-3 rounded-2xl shadow-md h-[400px] flex flex-col justify-between text-black">
+    <div className="card-artifact p-3 rounded-2xl shadow-md h-[400px] flex flex-col justify-between text-black">
       <h2 className="text-lg font-bold mb-2">{title}</h2>
       <div className="flex-1 min-h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
@@ -65,3 +65,4 @@ export default function PieChartTemplate({ title, data }) {
     </div>
   );
 }
+
