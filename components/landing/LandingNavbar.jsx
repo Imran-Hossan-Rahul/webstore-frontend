@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ArrowRight } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
+import BetaBanner from "../BetaBanner";
 
 export default function LandingNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -30,15 +31,21 @@ export default function LandingNavbar() {
           : "bg-transparent h-20"
       }`}
     >
+      <BetaBanner />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className="p-2 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
              <div className="w-4 h-4 bg-white rounded-full opacity-50" />
           </div>
-          <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-            Amr<span className="text-indigo-600">Platform</span>
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Codalina
+            </span>
+            <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 rounded-full">
+              Beta
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}

@@ -20,6 +20,7 @@ import ThemeToggle from '../ThemeToggle';
 import { useUser } from "@/context/UserContext";
 import SearchSuggestions from "./navbar/SearchSuggestions";
 import CreateDropdown from "./navbar/CreateDropdown";
+import BetaBanner from "../BetaBanner";
 
 const GlassNavbar = ({ 
   toggleSidebar, 
@@ -130,6 +131,7 @@ const GlassNavbar = ({
   if (mobileSearchOpen) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <BetaBanner />
         <div className="max-w-[1800px] mx-auto bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 px-4 h-[64px] flex items-center shadow-sm gap-3">
           <button 
             onClick={() => {
@@ -175,6 +177,7 @@ const GlassNavbar = ({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+      <BetaBanner />
       <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-white/10 px-4 h-[64px] flex items-center shadow-sm">
         
         {/* Left Section */}
@@ -183,10 +186,15 @@ const GlassNavbar = ({
                 <Menu strokeWidth={1.5} className="w-5 h-5 text-slate-600 dark:text-slate-300" />
             </button>
             <Link href="/" className="flex items-center gap-2 group">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">A</div>
-                <span className="font-medium text-xl tracking-tight hidden sm:block text-slate-900 dark:text-white font-sans">
-                    Codalina
-                </span>
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">C</div>
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="font-medium text-xl tracking-tight text-slate-900 dark:text-white font-sans">
+                      Codalina
+                  </span>
+                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 rounded-full">
+                    Beta
+                  </span>
+                </div>
             </Link>
         </div>
 

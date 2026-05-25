@@ -61,8 +61,9 @@ function SettingsContent() {
     try {
       const res = await api.get("/user/settings");
       if (res.success) setUser(res.data);
-      else showToast("Failed to load user data", "error");
-    } catch { showToast("Failed to load user data", "error"); }
+    } catch (e) {
+        console.error("Failed to load user data:", e);
+    }
     finally { setLoadingUser(false); }
   };
 
