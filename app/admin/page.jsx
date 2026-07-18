@@ -16,12 +16,6 @@ export default function AdminPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        router.push('/auth/login');
-        return;
-      }
-
       try {
         const res = await api.get("/user/profile");
         if (res.success) {

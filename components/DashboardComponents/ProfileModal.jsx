@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -170,7 +171,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                     className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 overflow-hidden bg-slate-200 dark:bg-slate-800 shadow-lg cursor-pointer group relative"
                   >
                       {displayProfilePicture ? (
-                          <img src={displayProfilePicture} alt={displayProfile?.displayName || user?.name} className="w-full h-full object-cover" />
+                          <img src={getOptimizedUrl(displayProfilePicture)} alt={displayProfile?.displayName || user?.name} className="w-full h-full object-cover" />
                       ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-500 dark:text-slate-400 font-bold text-3xl">
                               {(displayProfile?.displayName || user?.name || "?").charAt(0).toUpperCase()}
@@ -296,11 +297,16 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                         {/* Logout Section */}
                         <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-700">
                              <button 
-                                onClick={() => {
+                                onClick={async () => {
+                                    try {
+                                        await api.post("/auth/logout");
+                                    } catch(e) {
+                                        console.error("Logout error", e);
+                                    }
                                     localStorage.removeItem("token");
                                     localStorage.removeItem("hasCraftsmanAccount");
                                     localStorage.removeItem("user");
-                                    window.location.href = "/";
+                                    window.location.href = "/auth/login";
                                 }}
                                 className="w-full py-3 rounded-xl border border-red-100 dark:border-red-900/30 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 font-bold text-sm transition-colors flex items-center justify-center gap-2"
                              >

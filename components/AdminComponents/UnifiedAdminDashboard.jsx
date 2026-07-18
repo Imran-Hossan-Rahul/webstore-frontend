@@ -6,9 +6,11 @@ import {
   Settings, ChevronRight, TrendingUp, UserCheck, Search, Loader2,
   Bell, Command, Trophy, AlertTriangle, Zap, Server, Cpu,
   MousePointer2, Clock, Eye, ArrowUp, ArrowDown, Radio, Wifi,
-  RefreshCw, Filter, MoreVertical
+  RefreshCw, Filter, MoreVertical, ShoppingBag
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // Admin Components
 import UsersActivityAreaChart from './UsersActivityGraph';
@@ -40,6 +42,7 @@ const UnifiedAdminDashboard = () => {
   const [onlineCount, setOnlineCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const liveEventsRef = useRef([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchDashboardData();
@@ -48,7 +51,7 @@ const UnifiedAdminDashboard = () => {
 
     // Socket.IO for real-time events
     if (!socket) {
-      socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000');
+      socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', { withCredentials: true, transports: ['polling', 'websocket'] });
     }
 
     socket.on('adminLiveEvent', (event) => {
@@ -129,6 +132,7 @@ const UnifiedAdminDashboard = () => {
     { id: 'disputes', label: 'Disputes', icon: AlertTriangle },
     { id: 'live', label: 'Live Monitor', icon: Activity },
     { id: 'users', label: 'Users', icon: Users },
+    { id: 'market', label: 'Marketplace', icon: ShoppingBag, isLink: true, href: '/admin/market' },
   ];
 
   const renderContent = () => {
@@ -164,9 +168,9 @@ const UnifiedAdminDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#FDFDFD] dark:bg-[#050505] -mt-8 font-sans selection:bg-indigo-600/10">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#FDFDFD] dark:bg-[#050505] lg:-mt-8 font-sans selection:bg-indigo-600/10">
       {/* Elite Sidebar */}
-      <aside className="w-64 bg-white dark:bg-[#080808] border-r border-slate-200/60 dark:border-white/5 flex flex-col sticky top-0 h-screen transition-all duration-500">
+      <aside className="w-full lg:w-64 bg-white dark:bg-[#080808] border-b lg:border-b-0 lg:border-r border-slate-200/60 dark:border-white/5 flex flex-col lg:sticky top-0 lg:h-screen transition-all duration-500 z-40">
         {/* Logo */}
         <div className="p-8 flex items-center gap-3">
           <div className="w-8 h-8 bg-slate-950 dark:bg-white rounded-lg flex items-center justify-center text-white dark:text-black">
@@ -181,13 +185,19 @@ const UnifiedAdminDashboard = () => {
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1 mt-4">
+        <nav className="px-4 py-2 lg:py-0 lg:flex-1 lg:mt-4 flex gap-2 lg:gap-0 lg:flex-col overflow-x-auto scrollbar-hide">
           {navItems.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group ${
-                activeTab === item.id
+              onClick={() => {
+                if (item.isLink) {
+                  router.push(item.href);
+                } else {
+                  setActiveTab(item.id);
+                }
+              }}
+              className={`w-auto shrink-0 lg:w-full flex items-center justify-center lg:justify-between px-4 py-2.5 lg:py-3 rounded-xl transition-all group ${
+                activeTab === item.id || (item.isLink && false)
                   ? 'bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white'
                   : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.02]'
               }`}
@@ -209,7 +219,7 @@ const UnifiedAdminDashboard = () => {
 
         {/* Platform Health Mini Widget */}
         {platformHealth && (
-          <div className="px-4 pb-4">
+          <div className="px-4 pb-4 hidden lg:block">
             <div className="bg-slate-50 dark:bg-white/[0.02] rounded-2xl p-4 border border-slate-100 dark:border-white/5 space-y-3">
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Platform Health</p>
               <div className="space-y-2">
@@ -229,7 +239,7 @@ const UnifiedAdminDashboard = () => {
           </div>
         )}
 
-        <div className="p-6 border-t border-slate-100 dark:border-white/5">
+        <div className="p-6 border-t border-slate-100 dark:border-white/5 hidden lg:block">
           <div className="bg-slate-50 dark:bg-white/5 rounded-xl p-4 flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 border border-white dark:border-white/10" />
             <div className="flex-1 min-w-0">
@@ -243,8 +253,8 @@ const UnifiedAdminDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-10 overflow-y-auto max-w-[1600px] mx-auto w-full">
-        <header className="flex items-center justify-between mb-12">
+      <main className="flex-1 p-4 md:p-6 lg:p-10 overflow-x-hidden overflow-y-auto max-w-[1600px] mx-auto w-full">
+        <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 lg:mb-12 gap-4">
           <div className="flex items-center gap-4">
             <div className="h-10 w-[2px] bg-indigo-600 rounded-full hidden md:block" />
             <div>

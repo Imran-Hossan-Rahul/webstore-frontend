@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
@@ -197,7 +198,7 @@ export default function CraftsmenList() {
                   <span className="text-xs font-bold text-slate-400 w-4">{idx + 1}.</span>
                   <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                     {user.profilePicture ? (
-                      <img src={user.profilePicture} alt="Avatar" className="w-full h-full object-cover" />
+                      <img src={getOptimizedUrl(user.profilePicture)} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-xs font-bold bg-indigo-500 text-white">
                         {user.name?.charAt(0) || "U"}
@@ -232,7 +233,7 @@ export default function CraftsmenList() {
               <div key={act._id} className="flex gap-3">
                 <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 shrink-0 overflow-hidden flex items-center justify-center">
                   {act.user?.profilePicture ? (
-                    <img src={act.user.profilePicture} alt="Avatar" className="w-full h-full object-cover" />
+                    <img src={getOptimizedUrl(act.user.profilePicture)} alt="Avatar" className="w-full h-full object-cover" />
                   ) : (
                     <span className="text-xs font-bold text-slate-500">{act.user?.name?.charAt(0) || "U"}</span>
                   )}
@@ -272,7 +273,7 @@ export default function CraftsmenList() {
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors line-clamp-1">{devlog.title}</h3>
                 <div className="flex items-center gap-2 mt-2">
                    <div className="w-4 h-4 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
-                     {devlog.user?.profilePicture ? <img src={devlog.user.profilePicture} className="w-full h-full object-cover" /> : null}
+                     {devlog.user?.profilePicture ? <img src={getOptimizedUrl(devlog.user.profilePicture)} className="w-full h-full object-cover" /> : null}
                    </div>
                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">{devlog.user?.name || 'Anonymous'}</span>
                    <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
@@ -350,7 +351,7 @@ export default function CraftsmenList() {
                   {/* Avatar */}
                   <div className="w-28 h-28 rounded-full bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 relative overflow-hidden mb-6 shrink-0">
                       {craftsman.profilePicture ? (
-                        <img src={craftsman.profilePicture} alt={craftsman.displayName} className="w-full h-full object-cover" />
+                        <img src={getOptimizedUrl(craftsman.profilePicture)} alt={craftsman.displayName} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-slate-900 text-white font-bold text-4xl">
                             {craftsman.displayName?.[0]?.toUpperCase() || "C"}
@@ -470,7 +471,7 @@ export default function CraftsmenList() {
             <div key={squad._id} className="bg-white dark:bg-[#111111] border border-slate-100 dark:border-white/5 rounded-3xl p-6 hover:border-indigo-500/30 transition-all flex flex-col">
               <div className="flex items-center justify-between mb-4">
                 <div className="w-12 h-12 bg-slate-100 dark:bg-white/5 rounded-xl flex items-center justify-center overflow-hidden">
-                  {squad.logo ? <img src={squad.logo} className="w-full h-full object-cover" /> : <Users size={20} className="text-slate-400" />}
+                  {squad.logo ? <img src={getOptimizedUrl(squad.logo)} className="w-full h-full object-cover" /> : <Users size={20} className="text-slate-400" />}
                 </div>
                 <span className="px-3 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 font-bold text-[10px] uppercase tracking-widest rounded-lg">Level {Math.floor(squad.totalXP / 1000) || 1}</span>
               </div>

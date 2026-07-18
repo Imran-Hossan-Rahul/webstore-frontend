@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -140,7 +141,7 @@ export default function CraftsmanArtifactsPage() {
         </nav>
         <div className="mt-auto">
              <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-[#3e3e3e] overflow-hidden cursor-pointer">
-                 <img src="https://ui-avatars.com/api/?name=User" alt="User" />
+                 <img src={getOptimizedUrl("https://ui-avatars.com/api/?name=User")} alt="User" />
              </div>
         </div>
       </aside>
@@ -262,7 +263,7 @@ export default function CraftsmanArtifactsPage() {
                                 onClick={() => router.push(`/artifact/${artifact._id}`)}
                               >
                                 {artifact.previewFile ? (
-                                  <img src={artifact.previewFile} alt="" className="w-full h-full object-cover" />
+                                  <img src={getOptimizedUrl(artifact.previewFile)} alt="" className="w-full h-full object-cover" />
                                 ) : (
                                   <div className="w-full h-full flex items-center justify-center text-slate-700 bg-[#1a1a1a]">
                                      <LayoutGrid size={20} />

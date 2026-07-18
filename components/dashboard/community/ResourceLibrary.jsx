@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import {
@@ -181,7 +182,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
       {/* Preview */}
       <div className="relative aspect-video bg-gradient-to-br from-blue-500/10 to-purple-500/10 overflow-hidden">
         {resource.previewImage ? (
-          <img src={resource.previewImage} alt={resource.title} className="w-full h-full object-cover" />
+          <img src={getOptimizedUrl(resource.previewImage)} alt={resource.title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <Package className="w-16 h-16 text-gray-300 dark:text-slate-600" />

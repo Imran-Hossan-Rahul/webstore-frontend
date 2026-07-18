@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useEffect, useRef, useState } from "react";
 import { Mic, MicOff, Video, VideoOff, PhoneOff, User, Minimize2, Maximize2, Phone } from "lucide-react";
@@ -115,7 +116,7 @@ export default function CallInterface({
           <div className="flex flex-col items-center gap-6">
             <div className="w-32 h-32 rounded-full border-4 border-white/10 bg-white/5 flex items-center justify-center overflow-hidden animate-pulse">
               {callerAvatar ? (
-                <img src={callerAvatar} alt="Caller" className="w-full h-full object-cover" />
+                <img src={getOptimizedUrl(callerAvatar)} alt="Caller" className="w-full h-full object-cover" />
               ) : (
                 <User size={64} className="text-white/50" />
               )}

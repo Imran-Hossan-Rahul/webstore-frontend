@@ -3,6 +3,7 @@
 import React, { useState, useContext } from "react";
 import { Heart, Download } from "lucide-react";
 import { api } from "@/utils/api";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useToast } from "@/components/ui/ToastProvider";
 
@@ -146,7 +147,7 @@ const handleDownload = async (e) => {
           />
         ) : (
           <img
-            src={previewFile}
+            src={getOptimizedUrl(previewFile)}
             alt={title}
             className="absolute inset-0 w-full h-full object-cover transition"
           />

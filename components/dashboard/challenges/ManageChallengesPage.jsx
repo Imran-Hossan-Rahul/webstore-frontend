@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from "react";
 import { motion } from "framer-motion";
 import { api } from "@/utils/api";
@@ -131,7 +132,7 @@ export default function ManageChallengesPage() {
                   {/* Preview Image or Icon */}
                   <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-white/5 overflow-hidden flex items-center justify-center shrink-0 border border-slate-200/50">
                     {challenge.coverImage ? (
-                        <img src={challenge.coverImage} className="w-full h-full object-cover" />
+                        <img src={getOptimizedUrl(challenge.coverImage)} className="w-full h-full object-cover" />
                     ) : (
                         <Trophy size={20} className="text-slate-300" />
                     )}

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { X, Camera, MapPin, Calendar, Mail, Edit2, CheckCircle, Eye, EyeOff, FileText, Layout, LayoutDashboard } from "lucide-react";
@@ -121,7 +122,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                     className="w-32 h-32 rounded-full border-4 border-white dark:border-slate-900 overflow-hidden bg-slate-900 dark:bg-white shadow-lg cursor-pointer group relative"
                   >
                     {craftsmanProfile?.profilePicture ? (
-                      <img src={craftsmanProfile.profilePicture} alt={craftsmanProfile.displayName} className="w-full h-full object-cover" />
+                      <img src={getOptimizedUrl(craftsmanProfile.profilePicture)} alt={craftsmanProfile.displayName} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-white dark:text-black font-bold text-4xl">
                         {craftsmanProfile?.displayName?.charAt(0).toUpperCase()}

@@ -162,7 +162,10 @@ class AdvancedTracker {
         ...data
       });
     } catch (error) {
-      console.error(`[AdvancedTracker] Failed to send data to ${endpoint}:`, error);
+      const msg = error?.response?.data?.message || error?.message || '';
+      if (!msg.toLowerCase().includes('too many requests') && error?.response?.status !== 429) {
+        console.error(`[AdvancedTracker] Failed to send data to ${endpoint}:`, error);
+      }
     }
   }
 

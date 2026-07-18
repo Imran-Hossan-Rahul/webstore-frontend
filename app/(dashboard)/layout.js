@@ -3,19 +3,22 @@ import React, { useState, createContext } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import RightSidebar from "@/components/dashboard/RightSidebar";
 import GlassNavbar from "@/components/dashboard/GlassNavbar";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import UserOnboardingModal from "@/components/dashboard/modals/UserOnboardingModal";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import ChatModal from "@/components/dashboard/chat/ChatModal";
 import NotificationModal from "@/components/dashboard/notifications/NotificationModal";
-import VerificationBanner from "@/components/dashboard/VerificationBanner";
 import { useUser } from "@/context/UserContext";
 import GlobalSocketListener from "@/components/dashboard/GlobalSocketListener";
+import MobileBottomNav from "@/components/navigation/MobileBottomNav";
+import { X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const DashboardContext = createContext();
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { user, isGuest } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,6 +26,7 @@ export default function DashboardLayout({ children }) {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authModalReason, setAuthModalReason] = useState("engage");
+  const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 
   const openChatWithUser = React.useCallback((userId) => {
     const event = new CustomEvent("open-chat", { detail: { userId } });
@@ -36,9 +40,11 @@ export default function DashboardLayout({ children }) {
   // Close mobile sidebar on route change
   React.useEffect(() => {
     setSidebarOpen(false);
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   if (isAuthPage) return <>{children}</>;
+
+  const isMarket = pathname?.startsWith("/market");
 
   const hideRightSidebar = 
     pathname.startsWith("/chat") || 
@@ -73,7 +79,10 @@ export default function DashboardLayout({ children }) {
       }}
     >
       <div className="min-h-screen bg-[#fafafa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-100 dark:selection:bg-indigo-500/30">
-        <GlassNavbar
+        <GlassNavbar 
+          user={user} 
+          isSidebarHovered={isSidebarHovered} 
+          sidebarOpen={sidebarOpen}
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           onOpenCreatePost={() => setIsCreateModalOpen(true)}
           searchQuery={searchQuery}
@@ -82,49 +91,62 @@ export default function DashboardLayout({ children }) {
           onToggleNotification={() => window.dispatchEvent(new CustomEvent("toggle-notification"))}
         />
 
-        <div className="relative z-10 flex pt-24 px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
-          {/* Left Sidebar */}
-          {!isFullWidthPage && (
-            <div className="hidden lg:block w-[280px] flex-shrink-0">
-              <div className="fixed top-24 bottom-6 w-[280px] overflow-y-auto scrollbar-hide">
-                <Sidebar />
-              </div>
-            </div>
-          )}
-
-          {/* Mobile Sidebar Drawer Overlay */}
+        {/* Mobile Sidebar Drawer Overlay */}
+        <AnimatePresence>
           {sidebarOpen && !isFullWidthPage && (
-            <div className="lg:hidden fixed inset-0 z-50 flex">
+            <div className="lg:hidden fixed inset-0 z-[60] flex">
               {/* Backdrop */}
-              <div 
-                className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 bg-black/40 backdrop-blur-sm"
                 onClick={() => setSidebarOpen(false)}
               />
               
               {/* Drawer Container */}
-              <div className="relative flex-1 flex flex-col max-w-[300px] w-full bg-[#fafafa] dark:bg-slate-950 h-full p-4 transition-transform duration-300 z-50">
-                <div className="flex items-center justify-between mb-4 px-2">
-                  <span className="font-semibold text-sm uppercase tracking-wider text-slate-400">Navigation</span>
-                  <button 
-                    onClick={() => setSidebarOpen(false)}
-                    className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-white/5 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
-                  >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+              <motion.div 
+                initial={{ x: "-100%", opacity: 0.5 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "-100%", opacity: 0 }}
+                transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                className="relative flex-1 flex flex-col max-w-[240px] w-full bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl h-full p-4 pt-4 z-[60] border-r border-white/60 dark:border-white/10 shadow-2xl"
+              >
+                <div className="flex justify-between items-center mb-6 pl-2">
+                  <div className="flex items-center gap-2">
+                     <img src="/logo.png" alt="Codalina" className="w-6 h-6 object-contain" />
+                     <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">Codalina</span>
+                  </div>
+                  <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-slate-600 hover:text-black dark:text-slate-400 dark:hover:text-white transition-all bg-white/50 dark:bg-white/5 border border-white/60 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10">
+                    <X strokeWidth={1.5} className="w-4 h-4" />
                   </button>
                 </div>
-                <div className="flex-1 overflow-y-auto scrollbar-hide">
+                <div className="flex-1 overflow-hidden pb-6">
                   <Sidebar />
                 </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        <div className="relative z-10 flex pt-[64px] md:pt-24 px-0 sm:px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
+          {/* Left Sidebar */}
+          {!isFullWidthPage && (
+            <div className={`hidden lg:block ${isMarket ? 'w-[64px]' : 'w-[280px]'} flex-shrink-0 transition-all duration-300 z-50`}>
+              <div 
+                className={`fixed top-24 bottom-6 ${isMarket ? (isSidebarHovered ? 'w-[280px]' : 'w-[64px]') : 'w-[280px]'} overflow-y-auto scrollbar-hide transition-all duration-300 z-50`}
+                onMouseEnter={() => setIsSidebarHovered(true)}
+                onMouseLeave={() => setIsSidebarHovered(false)}
+              >
+                <Sidebar isHovered={isSidebarHovered} />
               </div>
             </div>
           )}
 
           {/* Main Content Area */}
           <main className="flex-1 w-full min-w-0">
-              {!isFullWidthPage && <VerificationBanner user={user} />}
-              <div className="pb-20">
+              <div className="pb-24">
                   {children}
               </div>
           </main>
@@ -142,7 +164,6 @@ export default function DashboardLayout({ children }) {
         {/* Global Modals */}
         {!isGuest && (
           <>
-
             <UserOnboardingModal
               isOpen={showOnboarding}
               onClose={() => setShowOnboarding(false)}
@@ -158,6 +179,8 @@ export default function DashboardLayout({ children }) {
           onClose={() => setShowAuthModal(false)}
           reason={authModalReason}
         />
+        
+        <MobileBottomNav />
       </div>
     </DashboardContext.Provider>
   );

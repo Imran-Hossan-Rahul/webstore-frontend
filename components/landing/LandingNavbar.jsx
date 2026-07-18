@@ -35,9 +35,7 @@ export default function LandingNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="p-2 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl group-hover:scale-110 transition-transform duration-300">
-             <div className="w-4 h-4 bg-white rounded-full opacity-50" />
-          </div>
+          <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
               Codalina

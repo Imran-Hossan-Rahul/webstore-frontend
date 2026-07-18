@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -166,7 +167,7 @@ export default function VerificationReviewPage() {
              <button className="absolute top-12 right-12 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
                <X size={32} strokeWidth={1} />
              </button>
-             <img src={previewImage} className="max-w-full max-h-full object-contain shadow-2xl rounded-sm" alt="Artifact" />
+             <img src={getOptimizedUrl(previewImage)} className="max-w-full max-h-full object-contain shadow-2xl rounded-sm" alt="Artifact" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -189,7 +190,7 @@ const AssetCard = ({ label, type, url, onClick }) => (
       onClick={onClick}
       className="aspect-video rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 cursor-zoom-in"
     >
-      <img src={url} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
+      <img src={getOptimizedUrl(url)} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
     </div>
   </div>
 );

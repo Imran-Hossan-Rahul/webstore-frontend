@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
 import { Bell, X, Check, Trash2, ExternalLink, MessageCircle, Heart, UserPlus, ShoppingBag, Info } from "lucide-react";
@@ -234,7 +235,7 @@ export default function NotificationModal({ isOpen, onClose }) {
                   <div className="relative w-12 h-12">
                     <div className="w-full h-full rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5">
                       {notif.sender?.profilePicture ? (
-                        <img src={notif.sender.profilePicture} className="w-full h-full object-cover" alt="" />
+                        <img src={getOptimizedUrl(notif.sender.profilePicture)} className="w-full h-full object-cover" alt="" />
                       ) : (
                         <div className="text-slate-400 font-bold text-sm uppercase">
                           {notif.sender?.name?.[0] || notif.sender?.username?.[0] || "?"}

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState } from "react";
 import { Search, Plus, MessageCircle, User, X } from "lucide-react";
@@ -187,7 +188,7 @@ export default function ChatSidebar({
                     <div className="relative shrink-0">
                       <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5">
                         {avatar ? (
-                          <img src={avatar} className="w-full h-full object-cover" alt="" />
+                          <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
                         ) : (
                           <User size={20} className="text-slate-400 dark:text-slate-500" />
                         )}

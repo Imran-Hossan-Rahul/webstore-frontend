@@ -217,6 +217,21 @@ export const SLASH_COMMANDS = [
 
   // ==================== LAYOUT ====================
   {
+    title: "Table of Contents",
+    description: "Insert a dynamic table of contents",
+    searchTerms: ["toc", "table", "contents", "index", "list"],
+    icon: List,
+    category: "layout",
+    command: ({ editor, range }) => {
+      editor
+        .chain()
+        .focus()
+        .deleteRange(range)
+        .insertContent({ type: 'tableOfContents' })
+        .run();
+    },
+  },
+  {
     title: "Divider",
     description: "Insert a horizontal line",
     searchTerms: ["hr", "divider", "line", "separator", "horizontal"],

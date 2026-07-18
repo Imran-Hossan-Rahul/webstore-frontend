@@ -21,7 +21,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
     fetchMessages();
     
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
-    socketRef.current = io(socketUrl);
+    socketRef.current = io(socketUrl, { withCredentials: true, transports: ['polling', 'websocket'] });
     socketRef.current.emit('discussion:join', discussionId);
     
     socketRef.current.on('discussion:mediaUploaded', ({ messageId, attachment }) => {

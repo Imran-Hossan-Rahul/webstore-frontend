@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from "react";
 import { api } from "@/utils/api";
 import EmptyState from "../ui/EmptyState";
@@ -219,7 +220,7 @@ export default function ChallengesPage() {
                       <div className="flex items-center gap-2 mb-3 cursor-pointer">
                         <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-[#262626] flex items-center justify-center">
                           {challenge.craftsman.profilePicture ? (
-                            <img src={challenge.craftsman.profilePicture} className="w-full h-full object-cover" />
+                            <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" />
                           ) : (
                             <span className="text-[8px] font-bold text-slate-500">{challenge.craftsman.name?.charAt(0) || 'U'}</span>
                           )}

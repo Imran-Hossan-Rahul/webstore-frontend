@@ -53,11 +53,17 @@ export async function middleware(req) {
 
   // ─── Admin route protection ────────────────────────────────────────────────
   if (pathname.startsWith("/admin")) {
-    if (!decoded || (decoded.role !== "admin" && decoded.role !== "superadmin")) {
+    const isAdmin =
+      decoded?.role === "admin" ||
+      decoded?.role === "superadmin" ||
+      decoded?.isSuperAdmin === true; // ✅ FIX: isSuperAdmin flag was not checked before
+
+    if (!decoded || !isAdmin) {
       return NextResponse.redirect(new URL("/no-access", req.url));
     }
     return NextResponse.next();
   }
+
 
   // ─── Unauthenticated user gates ───────────────────────────────────────────
   if (!token) {

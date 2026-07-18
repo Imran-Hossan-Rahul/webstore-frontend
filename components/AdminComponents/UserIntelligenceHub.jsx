@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState } from 'react';
 import { api, API_BASE_URL } from '@/utils/api';
@@ -92,7 +93,7 @@ const UserIntelligenceHub = ({ dossier }) => {
          <div className="space-y-8">
             <div className="relative inline-block group">
                <div className="w-32 h-32 rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
-                  <img src={getFullUrl(profile.profilePicture) || 'https://ui-avatars.com/api/?name=User&background=random'} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
+                  <img src={getOptimizedUrl(getFullUrl(profile.profilePicture) || 'https://ui-avatars.com/api/?name=User&background=random')} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
                </div>
                {profile.isVerified && (
                   <div className="absolute -bottom-2 -right-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-1.5 rounded-xl shadow-sm">

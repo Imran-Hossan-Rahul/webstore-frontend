@@ -105,6 +105,12 @@ export default function AchievementsPage() {
       isUnlocked: user?.gamification?.level >= 10
     }
   ];
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const searchQuery = searchParams?.get("q")?.toLowerCase() || "";
+  const displayedBadges = searchQuery 
+    ? badges.filter(b => b.title.toLowerCase().includes(searchQuery) || b.description.toLowerCase().includes(searchQuery))
+    : badges;
+
 
   return (
     <div className="max-w-6xl mx-auto pb-8 px-4 sm:px-6 lg:px-8 animate-in fade-in duration-700">
@@ -154,17 +160,25 @@ export default function AchievementsPage() {
       {/* Badges Section */}
       <div className="space-y-8">
         <div className="flex items-center justify-between border-b border-slate-200/50 dark:border-white/5 pb-4">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-white">Professional Badges</h2>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+            {searchQuery ? `Search Results for "${searchQuery}"` : "Professional Badges"}
+          </h2>
           <span className="text-[11px] font-bold text-blue-600 bg-blue-50 dark:bg-blue-500/10 px-3 py-1 rounded-full uppercase tracking-wider">
-            {badges.filter(b => b.isUnlocked).length} / {badges.length} Unlocked
+            {displayedBadges.filter(b => b.isUnlocked).length} / {displayedBadges.length} Unlocked
           </span>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {badges.map((badge, i) => (
-            <AchievementCard key={i} {...badge} />
-          ))}
-        </div>
+        {displayedBadges.length === 0 ? (
+          <div className="text-center py-12 bg-white/50 dark:bg-slate-900/20 rounded-2xl border border-dashed border-slate-200 dark:border-white/10">
+             <p className="text-sm font-bold text-slate-500">No badges match your search.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {displayedBadges.map((badge, i) => (
+              <AchievementCard key={i} {...badge} />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* XP Activity Ledger */}

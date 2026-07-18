@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe } from "lucide-react";
+import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe, Gift, FileText, ShoppingCart, Check } from "lucide-react";
 import { api } from "@/utils/api";
 import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -46,6 +46,9 @@ export default function RightSidebar() {
   const [artifactTagsLoading, setArtifactTagsLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [itemsLoading, setItemsLoading] = useState(false);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [showCartSuccess, setShowCartSuccess] = useState(false);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
   // Determine Context
   const isMsg = pathname?.includes('/messages');
@@ -66,6 +69,69 @@ export default function RightSidebar() {
   const isProposals = pathname?.startsWith('/proposals') && !isProposalDetail;
   const isExplore = pathname === '/explore';
   const isVerify = pathname === '/verify';
+  const isMarket = pathname?.startsWith('/market');
+
+  useEffect(() => {
+    if (!isMarket) return;
+    const fetchRecommended = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/v1/market/products');
+        const data = await response.json();
+        let liveProducts = data.filter(p => p.status === 'Live');
+        const currentId = pathname.startsWith('/market/product/') ? pathname.split('/')[3] : null;
+        if (currentId) {
+            liveProducts = liveProducts.filter(p => p.id.toString() !== currentId);
+        }
+        const shuffled = liveProducts.sort(() => 0.5 - Math.random());
+        setRecommendedProducts(shuffled.slice(0, 4));
+      } catch (err) {
+        console.error("Error fetching recommendations:", err);
+      }
+    };
+    fetchRecommended();
+  }, [isMarket, pathname]);
+
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (!isMarket) return;
+
+    const updateCartCount = () => {
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        if (cartStr) {
+          const cartIds = JSON.parse(cartStr);
+          setCartCount(cartIds.length);
+        } else {
+          setCartCount(0);
+        }
+      } catch (e) {}
+    };
+
+    // Initial load
+    updateCartCount();
+
+    const handleCartUpdate = () => {
+      updateCartCount();
+      setShowCartSuccess(true);
+      setTimeout(() => setShowCartSuccess(false), 3000);
+    };
+    
+    window.addEventListener('addedToCart', handleCartUpdate);
+    window.addEventListener('cartUpdated', updateCartCount);
+
+    const handleOrderConfirmed = () => {
+      setShowOrderSuccess(true);
+      setTimeout(() => setShowOrderSuccess(false), 4000);
+    };
+    window.addEventListener('orderConfirmed', handleOrderConfirmed);
+    
+    return () => {
+      window.removeEventListener('addedToCart', handleCartUpdate);
+      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('orderConfirmed', handleOrderConfirmed);
+    };
+  }, [isMarket]);
 
   const [jobTips] = useState([
     { title: "Personalized Pitch", desc: "Tailor your cover letter to the patron's specific needs." },
@@ -755,6 +821,84 @@ export default function RightSidebar() {
                </Link>
            </div>
         </div>
+      </aside>
+    );
+  }
+
+  // --- MARKET CONTEXT SIDEBAR ---
+  if (isMarket) {
+    return (
+      <aside className="h-full flex flex-col gap-6 pb-10">
+        <div className="flex flex-col gap-3">
+            <Link 
+              href="/market/cart" 
+              className="relative flex items-center justify-center gap-2 border border-gray-900 bg-gray-900 hover:bg-black text-white px-4 py-3.5 rounded-xl text-sm font-bold transition shadow-sm"
+            >
+              <ShoppingCart size={18} className={showCartSuccess ? 'animate-bounce text-emerald-400' : ''} /> 
+              CART
+              {cartCount > 0 && (
+                <span className={`absolute top-1/2 -translate-y-1/2 right-3 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md transition-transform duration-300 ${showCartSuccess ? 'scale-125' : 'scale-100'}`}>
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            
+            <Link 
+              href="/market/orders" 
+              className="flex items-center justify-center gap-2 border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl text-sm font-bold transition shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              MY ORDERS
+            </Link>
+        </div>
+
+        {/* Recommended Products Widget (Algorithm) */}
+        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm mt-4">
+           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+             <Star size={14} className="text-[#111827]" /> Related Products
+           </h3>
+           <div className="space-y-4">
+             {recommendedProducts.map((product) => {
+               const photo = product.photos && JSON.parse(product.photos)[0];
+               const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
+                  ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
+                  : photo;
+                  
+               return (
+                 <Link href={`/market/product/${product.id}`} key={product.id} className="flex gap-4 group items-center p-2 -m-2 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                   <div className="w-16 h-16 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
+                     {photoUrl ? (
+                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                     ) : (
+                       <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 bg-slate-100">Img</div>
+                     )}
+                   </div>
+                   <div className="flex-1 min-w-0">
+                     <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 truncate group-hover:text-[#111827] transition-colors">{product.title}</h4>
+                     <p className="text-[12px] font-bold text-slate-600 dark:text-slate-300">BDT {product.selling_price}</p>
+                   </div>
+                 </Link>
+               );
+             })}
+             {recommendedProducts.length === 0 && (
+               <div className="text-center text-[11px] text-slate-400 py-4 animate-pulse">Analyzing preferences...</div>
+             )}
+           </div>
+        </div>
+
+        {/* Cart Success Toast */}
+        {showCartSuccess && (
+          <div className="sticky bottom-10 mt-auto z-[100] w-full bg-emerald-500/95 backdrop-blur border border-emerald-400 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
+            <Check size={20} strokeWidth={3} className="text-white shrink-0" /> 
+            <span className="truncate">Successfully added to cart</span>
+          </div>
+        )}
+        {showOrderSuccess && (
+          <div className="sticky bottom-10 mt-auto z-[100] w-full bg-emerald-600/95 backdrop-blur border border-emerald-500 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
+            <Check size={20} strokeWidth={3} className="text-white shrink-0" /> 
+            <span className="truncate">Order confirmed successfully</span>
+          </div>
+        )}
       </aside>
     );
   }

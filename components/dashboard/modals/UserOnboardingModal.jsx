@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useRef, useEffect } from "react";
 import { Upload, X, Check, ArrowRight, Zap, Target } from "lucide-react";
 import { api } from "@/utils/api";
@@ -123,7 +124,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                 className="w-32 h-32 rounded-full border-2 border-dashed border-slate-300 dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
                             >
                                 {previewUrl ? (
-                                    <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                                    <img src={getOptimizedUrl(previewUrl)} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
                                     <>
                                         <Upload className="text-slate-400 mb-2 group-hover:scale-110 transition-transform" />

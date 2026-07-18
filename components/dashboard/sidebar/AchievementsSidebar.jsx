@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React from "react";
 import useSWR from "swr";
 import { api } from "@/utils/api";
@@ -57,7 +58,7 @@ export default function AchievementsSidebar() {
               <div className="relative">
                 <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-white/10 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5">
                   {user.profilePicture ? (
-                    <img src={user.profilePicture} className="w-full h-full object-cover" alt="" />
+                    <img src={getOptimizedUrl(user.profilePicture)} className="w-full h-full object-cover" alt="" />
                   ) : (
                     <UserIcon size={14} className="text-slate-400" />
                   )}

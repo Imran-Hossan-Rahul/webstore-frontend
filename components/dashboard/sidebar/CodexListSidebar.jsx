@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Tag, BookOpen, Clock, Star, Zap, ChevronRight, PenTool } from "lucide-react";
@@ -120,7 +121,7 @@ export default function CodexListSidebar() {
               >
                 <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/10 shrink-0 flex items-center justify-center text-slate-400">
                   {codex.coverImage ? (
-                    <img src={codex.coverImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <img src={getOptimizedUrl(codex.coverImage)} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                   ) : (
                     <BookOpen size={16} />
                   )}

@@ -10,7 +10,8 @@ import {
   Trophy, 
   User, 
   Settings,
-  HelpCircle
+  HelpCircle,
+  Store
 } from "lucide-react";
 
 const SidebarItem = ({ icon: Icon, label, href, isActive }) => (
@@ -48,6 +49,7 @@ export default function Sidebar({ isOpen = true, className = "" }) {
         <SidebarItem icon={Activity} label="Devlogs" href="/devlogs" isActive={pathname?.startsWith("/devlogs")} />
         <SidebarItem icon={Trophy} label="Challenges" href="/challenges" isActive={pathname?.startsWith("/challenges")} />
         <SidebarItem icon={User} label="Community" href="/community" isActive={pathname?.startsWith("/community")} />
+        <SidebarItem icon={Store} label="Marketplace" href="/market" isActive={pathname?.startsWith("/market")} />
       </div>
 
       <div className="w-full h-px bg-slate-200 dark:bg-slate-800 my-2" />

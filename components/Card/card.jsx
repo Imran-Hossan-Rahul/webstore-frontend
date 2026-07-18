@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import axios from "axios";
 import { Heart, Download } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
@@ -163,7 +164,7 @@ const ArtifactCard = ({
           />
         ) : (
           <img
-            src={previewFile}
+            src={getOptimizedUrl(previewFile)}
             alt={title}
             className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 transition"
           />

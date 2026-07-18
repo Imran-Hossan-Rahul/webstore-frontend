@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useRef } from "react";
 import { Image, Video, FileText, Smile, X } from "lucide-react";
 import { api } from "@/utils/api";
@@ -80,7 +81,7 @@ export default function QuickPostBox({ user, onPostCreated }) {
                 <div key={i} className="relative group">
                   <div className="w-20 h-20 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden">
                     {file.type.startsWith("image/") ? (
-                      <img src={URL.createObjectURL(file)} alt="" className="w-full h-full object-cover" />
+                      <img src={getOptimizedUrl(URL.createObjectURL(file))} alt="" className="w-full h-full object-cover" />
                     ) : (
                       <FileText className="w-8 h-8 text-slate-400" />
                     )}

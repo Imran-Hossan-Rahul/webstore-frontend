@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -383,7 +384,7 @@ export default function ChatPage() {
           className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-blue-500 shadow-2xl flex items-center justify-center overflow-hidden hover:scale-110 transition-transform relative"
         >
           {selectedChat && avatar ? (
-             <img src={avatar} className="w-full h-full object-cover" alt="" />
+             <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
           ) : (
              <MessageCircle size={24} className="text-indigo-600" />
           )}

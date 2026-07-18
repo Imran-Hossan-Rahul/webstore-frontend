@@ -33,11 +33,32 @@ module.exports = {
         'DEFAULT': '4px',
         'md': '6px',
         'lg': '8px',
-        'xl': '8px', // Overriding bulky radii to maintain system
+        'xl': '8px', 
         '2xl': '8px',
         '3xl': '8px',
         'full': '9999px',
       },
+      keyframes: {
+        jelly: {
+          '0%, 100%': { transform: 'scale(1, 1)' },
+          '25%': { transform: 'scale(0.9, 1.1)' },
+          '50%': { transform: 'scale(1.1, 0.9)' },
+          '75%': { transform: 'scale(0.95, 1.05)' },
+        },
+        bounceRight: {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(3px)' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '50%': { opacity: '0.8', transform: 'scale(0.95)' },
+        }
+      },
+      animation: {
+        'jelly': 'jelly 0.5s ease-in-out',
+        'bounce-right': 'bounceRight 0.5s ease-in-out infinite',
+        'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+      }
     },
   },
   plugins: [],

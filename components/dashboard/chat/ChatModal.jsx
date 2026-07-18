@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "@/utils/api";
@@ -554,7 +555,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
           onClick={() => setIsMinimized(false)}
           className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-indigo-500 shadow-2xl flex items-center justify-center overflow-hidden hover:scale-110 transition-transform relative"
         >
-          {selectedChat && avatar ? <img src={avatar} className="w-full h-full object-cover" alt="" /> : <MessageCircle size={24} className="text-indigo-500" />}
+          {selectedChat && avatar ? <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" /> : <MessageCircle size={24} className="text-indigo-500" />}
           {selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id) && (
             <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-black rounded-full"></div>
           )}
@@ -571,7 +572,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
             <div className="flex items-center gap-3">
                <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0 border border-slate-200 dark:border-white/5 flex items-center justify-center">
                  {callData.callerAvatar ? (
-                   <img src={callData.callerAvatar} alt="Caller" className="w-full h-full object-cover" />
+                   <img src={getOptimizedUrl(callData.callerAvatar)} alt="Caller" className="w-full h-full object-cover" />
                  ) : (
                    <span className="text-xl">📞</span>
                  )}

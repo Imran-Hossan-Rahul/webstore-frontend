@@ -22,7 +22,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
     
     // Connect to socket
     const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
-    socketRef.current = io(socketUrl);
+    socketRef.current = io(socketUrl, { withCredentials: true, transports: ['polling', 'websocket'] });
     
     // Join discussion room
     socketRef.current.emit('discussion:join', discussionId);

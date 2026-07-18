@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { api } from "@/utils/api";
 import { 
@@ -500,7 +501,7 @@ const CreateChallengeForm = () => {
                              <div className="absolute z-50 w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden">
                                 {userSearchResults.map(u => (
                                    <button key={u._id} type="button" onClick={() => handleSelectUser(u)} className="w-full flex items-center gap-3 p-3 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
-                                      <img src={u.profilePicture || "/default-avatar.png"} className="w-8 h-8 rounded-full" />
+                                      <img src={getOptimizedUrl(u.profilePicture || "/default-avatar.png")} className="w-8 h-8 rounded-full" />
                                       <div className="text-left">
                                          <p className="text-xs font-bold text-slate-900 dark:text-white">{u.name}</p>
                                          <p className="text-[10px] text-slate-400">@{u.username}</p>
@@ -514,7 +515,7 @@ const CreateChallengeForm = () => {
                        <div className="flex flex-wrap gap-3 pt-2">
                           {judges.map(j => (
                              <div key={j._id} className="flex items-center gap-2 pl-1 pr-3 py-1 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full group">
-                                <img src={j.profilePicture || "/default-avatar.png"} className="w-6 h-6 rounded-full" />
+                                <img src={getOptimizedUrl(j.profilePicture || "/default-avatar.png")} className="w-6 h-6 rounded-full" />
                                 <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300">{j.name}</span>
                                 <button type="button" onClick={() => setJudges(judges.filter(prev => prev._id !== j._id))} className="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><X size={10}/></button>
                              </div>
@@ -631,7 +632,7 @@ const CreateChallengeForm = () => {
                       <input type="file" accept="image/*" onChange={(e) => { handleImageChange(e); setErrors(p => ({...p, coverImage: false})); }} className="absolute inset-0 opacity-0 cursor-pointer z-20" />
                       {imagePreview ? (
                         <>
-                          <img src={imagePreview} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                          <img src={getOptimizedUrl(imagePreview)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                           <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                              <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 flex items-center gap-2 shadow-2xl">
                                 <Zap size={14} className="text-white" />

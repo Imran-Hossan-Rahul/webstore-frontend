@@ -1,9 +1,10 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { Search, Loader2, User, FileText, Layout, ArrowRight, Trophy, Zap, BookOpen, CheckCircle, ShieldCheck } from "lucide-react";
+import { Search, Loader2, User, FileText, Layout, ArrowRight, Trophy, Zap, BookOpen, CheckCircle, ShieldCheck, Briefcase, Send } from "lucide-react";
 import Link from "next/link";
 import AIEnhanceButton from '../AIEnhanceButton';
 
@@ -48,13 +49,53 @@ const HighlightedSnippet = ({ text, query, maxLength = 120 }) => {
   return <HighlightMatch text={snippet} query={query} />;
 };
 
+const splitMatches = (items, q) => {
+    if (!items || !items.length) return { exact: [], partial: [] };
+    if (!q || !q.trim()) return { exact: items, partial: [] };
+    const lowerQ = q.toLowerCase();
+    
+    const exact = [];
+    const partial = [];
+    
+    items.forEach(item => {
+        const title = (item.title || item.name || item.product_name || item.company || "").toLowerCase();
+        const desc = (item.description || item.bio || item.content || item.subtitle || "").toLowerCase();
+        
+        if (title.includes(lowerQ) || desc.includes(lowerQ)) {
+            exact.push(item);
+        } else {
+            partial.push(item);
+        }
+    });
+    
+    return { exact, partial };
+};
+
+const MatchRenderer = ({ items, query, renderItem, gridClassName }) => {
+    const { exact, partial } = splitMatches(items, query);
+    return (
+        <div className="space-y-6 w-full mt-4">
+            {exact.length > 0 && (
+                <div className={gridClassName}>
+                    {exact.map(renderItem)}
+                </div>
+            )}
+            {partial.length > 0 && (
+                <div className={gridClassName}>
+                    {partial.map(renderItem)}
+                </div>
+            )}
+        </div>
+    );
+};
+
 export default function SearchMain() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get("q") || "";
+  const typeParam = searchParams.get("type") || "all";
   
   const [searchQuery, setSearchQuery] = useState(query);
-  // Separate state for what results are currently showing for
   const [displayedQuery, setDisplayedQuery] = useState(query);
   
   const [results, setResults] = useState({ 
@@ -63,10 +104,14 @@ export default function SearchMain() {
       artifacts: [], 
       codex: [],
       jobs: [],
-      challenges: []
+      challenges: [],
+      marketplace: [],
+      workspace: [],
+      proposals: [],
+      saved: []
   });
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("all");
+  const [activeTab, setActiveTab] = useState(typeParam);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
 
   useEffect(() => {
@@ -75,6 +120,12 @@ export default function SearchMain() {
       handleSearch(query);
     }
   }, [query]);
+
+  useEffect(() => {
+    if (typeParam) {
+      setActiveTab(typeParam);
+    }
+  }, [typeParam]);
 
   const handleSearch = async (q) => {
     if (!q || !q.trim()) return;
@@ -87,7 +138,7 @@ export default function SearchMain() {
       if (res.success) {
         setResults(res.data);
       } else {
-        setResults({ users: [], posts: [], artifacts: [], codex: [], jobs: [], challenges: [] });
+        setResults({ users: [], posts: [], artifacts: [], codex: [], jobs: [], challenges: [], marketplace: [], workspace: [], proposals: [], saved: [] });
       }
     } catch (error) {
       console.error("Search error:", error);
@@ -104,34 +155,38 @@ export default function SearchMain() {
   };
 
   // Helper to count total results
-  const totalResults = (results.users?.length || 0) + (results.posts?.length || 0) + (results.artifacts?.length || 0) + (results.codex?.length || 0) + (results.jobs?.length || 0) + (results.challenges?.length || 0);
+  const totalResults = (results.users?.length || 0) + (results.posts?.length || 0) + (results.artifacts?.length || 0) + (results.codex?.length || 0) + (results.jobs?.length || 0) + (results.challenges?.length || 0) + (results.marketplace?.length || 0);
 
   return (
     <div className="bg-transparent">
       <div className="max-w-6xl">
         
         {/* Search Results Summary */}
-        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="mb-8 flex flex-col gap-6">
             <div>
                 <h1 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <Search className="w-5 h-5 text-slate-900 dark:text-white" />
                     Search Results
                 </h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
                     {loading ? "Searching..." : `Found ${totalResults} results for "${displayedQuery}"`}
                 </p>
             </div>
 
             {/* Tabs */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
+            <div className="flex flex-wrap items-center gap-2">
                 {[
                     { id: "all", label: "All", icon: Layout },
-                    { id: "patrons", label: "Craftsmen", icon: User, count: results.patrons?.length },
+                    { id: "patrons", label: "Craftsmen", icon: User, count: results.users?.length },
                     { id: "posts", label: "Posts", icon: FileText, count: results.posts?.length },
                     { id: "artifacts", label: "Artifacts", icon: Layout, count: results.artifacts?.length },
                     { id: "codex", label: "Codex", icon: BookOpen, count: results.codex?.length },
                     { id: "jobs", label: "Jobs", icon: null, count: results.jobs?.length },
                     { id: "challenges", label: "Challenges", icon: Trophy, count: results.challenges?.length },
+                    { id: "marketplace", label: "Marketplace", icon: Layout, count: results.marketplace?.length },
+                    { id: "workspace", label: "Workspace", icon: Briefcase, count: 0 },
+                    { id: "proposals", label: "Proposals", icon: Send, count: 0 },
+                    { id: "saved", label: "Saved", icon: CheckCircle, count: 0 },
                 ].map((tab) => (
                     <button
                         key={tab.id}
@@ -177,20 +232,23 @@ export default function SearchMain() {
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 
                 {/* Users Section */}
-                {results.users?.length > 0 && (activeTab === 'all' || activeTab === 'users') && (
+                {results.users?.length > 0 && (activeTab === 'all' || activeTab === 'users' || activeTab === 'patrons') && (
                     <section>
                         <div className="flex items-center gap-2 mb-4">
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Craftsmen</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {results.users.map((user) => (
+                        <MatchRenderer 
+                            items={results.users} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                            renderItem={(user) => (
                                 <Link href={`/u/${user.username || user._id}`} key={user._id}>
                                     <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group">
                                         <div className="flex items-center gap-3">
                                             <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/10 overflow-hidden border border-slate-50 dark:border-white/10">
                                                 {user.profilePicture ? (
-                                                    <img src={user.profilePicture} alt={user.name} className="w-full h-full object-cover" />
+                                                    <img src={getOptimizedUrl(user.profilePicture)} alt={user.name} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-sm font-bold text-slate-400">
                                                         {user.name?.[0]}
@@ -215,8 +273,8 @@ export default function SearchMain() {
                                         </div>
                                     </div>
                                 </Link>
-                            ))}
-                        </div>
+                            )}
+                        />
                     </section>
                 )}
 
@@ -227,10 +285,13 @@ export default function SearchMain() {
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Artifacts</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                             {results.artifacts.map((artifact) => (
-                                 <Link href={`/artifacts/${artifact._id}`} key={artifact._id} className="group">
-                                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
+                        <MatchRenderer 
+                            items={results.artifacts} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                            renderItem={(artifact) => (
+                                <Link href={`/artifacts/${artifact._id}`} key={artifact._id} className="group">
+                                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
                                         <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
                                             <HighlightMatch text={artifact.title} query={displayedQuery} />
                                         </h3>
@@ -249,9 +310,9 @@ export default function SearchMain() {
                                             })()}
                                         </div>
                                     </div>
-                                 </Link>
-                             ))}
-                        </div>
+                                </Link>
+                            )}
+                        />
                     </section>
                 )}
 
@@ -262,8 +323,11 @@ export default function SearchMain() {
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Posts & Codex</h2>
                         </div>
-                        <div className="grid grid-cols-1 gap-3">
-                            {results.posts.map((post) => (
+                        <MatchRenderer 
+                            items={results.posts} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 gap-3"
+                            renderItem={(post) => (
                                 <Link href={`/post/${post._id}`} key={post._id}>
                                     <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all flex items-start gap-4 group">
                                         <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
@@ -291,8 +355,8 @@ export default function SearchMain() {
                                         <ArrowRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 transition-all" />
                                     </div>
                                 </Link>
-                            ))}
-                        </div>
+                            )}
+                        />
                     </section>
                 )}
 
@@ -303,8 +367,11 @@ export default function SearchMain() {
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Codex & Codex</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {results.codex.map((codex) => (
+                        <MatchRenderer 
+                            items={results.codex} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
+                            renderItem={(codex) => (
                                 <Link href={`/codex/${codex.slug}`} key={codex._id} className="block h-full">
                                     <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
                                         <div className="flex items-center gap-2 mb-3">
@@ -320,7 +387,7 @@ export default function SearchMain() {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <div className="w-5 h-5 rounded-full bg-slate-200 overflow-hidden">
-                                                    {codex.author?.profilePicture && <img src={codex.author.profilePicture} className="w-full h-full object-cover" />}
+                                                    {codex.author?.profilePicture && <img src={getOptimizedUrl(codex.author.profilePicture)} className="w-full h-full object-cover" />}
                                                 </div>
                                                 <span className="text-[10px] text-slate-500 font-bold flex items-center gap-1">
                                                     {codex.author?.name}
@@ -333,8 +400,8 @@ export default function SearchMain() {
                                         </div>
                                     </div>
                                 </Link>
-                            ))}
-                        </div>
+                            )}
+                        />
                     </section>
                 )}
 
@@ -345,8 +412,11 @@ export default function SearchMain() {
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Jobs</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {results.jobs.map((job) => (
+                        <MatchRenderer 
+                            items={results.jobs} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                            renderItem={(job) => (
                                 <Link href={`/jobs/${job._id}`} key={job._id}>
                                     <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
                                         <div className="flex items-center gap-2 mb-3">
@@ -376,8 +446,8 @@ export default function SearchMain() {
                                         </div>
                                     </div>
                                 </Link>
-                            ))}
-                        </div>
+                            )}
+                        />
                     </section>
                 )}
 
@@ -388,8 +458,11 @@ export default function SearchMain() {
                             <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
                             <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Challenges</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {results.challenges.map((challenge) => (
+                        <MatchRenderer 
+                            items={results.challenges} 
+                            query={displayedQuery} 
+                            gridClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
+                            renderItem={(challenge) => (
                                 <Link href={`/challenges/${challenge._id}`} key={challenge._id}>
                                     <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
                                         <div className="flex items-center gap-2 mb-3">
@@ -416,11 +489,98 @@ export default function SearchMain() {
                                         </div>
                                     </div>
                                 </Link>
-                            ))}
-                        </div>
+                            )}
+                        />
                     </section>
                 )}
 
+                {/* Marketplace Section */}
+                {results.marketplace?.length > 0 && (activeTab === 'all' || activeTab === 'marketplace') && (
+                    <section>
+                        <div className="flex items-center gap-2 mb-4">
+                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
+                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Marketplace</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                             {results.marketplace.map((product) => (
+                                 <Link href={`/market/product/${product._id}`} key={product._id} className="group">
+                                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
+                                        <div className="w-full h-32 mb-3 bg-slate-100 dark:bg-white/5 rounded-xl overflow-hidden relative">
+                                            {product.photos && (() => {
+                                                try {
+                                                    const parsedPhotos = JSON.parse(product.photos);
+                                                    return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-cover" /> : null;
+                                                } catch(e) { return null; }
+                                            })()}
+                                        </div>
+                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
+                                            <HighlightMatch text={product.title} query={displayedQuery} />
+                                        </h3>
+                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 font-medium">
+                                            <HighlightedSnippet text={product.description} query={displayedQuery} maxLength={100} />
+                                        </p>
+                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-50 dark:border-white/5">
+                                            <span className="text-xs font-bold text-slate-900 dark:text-white">BDT {product.selling_price}</span>
+                                            <span className="text-[9px] font-bold px-2 py-0.5 bg-slate-50 dark:bg-white/5 rounded text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-white/5">
+                                                {product.category || 'Product'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                 </Link>
+                             ))}
+                        </div>
+                    </section>
+                )}
+                {/* Workspace Special Section */}
+                {activeTab === 'workspace' && (
+                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Briefcase className="w-8 h-8 text-blue-500" />
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Your Workspace</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
+                            Your workspace is private and contains your personal projects and tasks. Click below to go to your workspace.
+                        </p>
+                        <Link href={`/workspace?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 transition-all">
+                            View Workspace
+                            <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                )}
+
+                {/* Proposals Special Section */}
+                {activeTab === 'proposals' && (
+                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="w-16 h-16 bg-amber-50 dark:bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Send className="w-8 h-8 text-amber-500" />
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Your Proposals</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
+                            Your proposals are private. Click below to view and search your submitted proposals.
+                        </p>
+                        <Link href={`/proposals?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-xl font-bold text-sm hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
+                            View Proposals
+                            <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                )}
+
+                {/* Saved Special Section */}
+                {activeTab === 'saved' && (
+                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircle className="w-8 h-8 text-emerald-500" />
+                        </div>
+                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Saved Items</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
+                            Your saved items are private to your account. Click below to explore and search your personal saved folder.
+                        </p>
+                        <Link href={`/saved?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-500/20 transition-all">
+                            View Saved Items
+                            <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                )}
 
             </div>
         )}
@@ -429,5 +589,3 @@ export default function SearchMain() {
     </div>
   );
 }
-
-

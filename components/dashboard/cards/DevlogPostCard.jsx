@@ -4,7 +4,7 @@ import {
   Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
   Calendar, MapPin, ExternalLink, Github, Layers, Clock, 
   CheckCircle2, Circle, AlertCircle, FileText, Download, ChevronRight,
-  Tag, Shield, Users, Eye, Lightbulb, Flame, CheckCircle, Code, Zap, HelpCircle, Hash
+  Tag, Shield, Users, Eye, Lightbulb, Flame, CheckCircle, Code, Zap, HelpCircle, Hash, PanelRight, X
 } from 'lucide-react';
 import { api } from "@/utils/api";
 import dynamic from 'next/dynamic';
@@ -55,6 +55,7 @@ const DevlogPostCard = ({
   const [isFavorited, setIsFavorited] = useState(initialIsFavorited);
   const [isCraftsmanModalOpen, setIsCraftsmanModalOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const { share } = useShare();
   
@@ -214,7 +215,7 @@ const DevlogPostCard = ({
 
   return (
     <div 
-        className="group relative border-b border-slate-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
+        className="group relative sm:border-b border-slate-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-2 sm:gap-6"
         onClick={handleNavigation}
     >
         {/* Left Column: Avatar */}
@@ -250,8 +251,8 @@ const DevlogPostCard = ({
         {/* Right Column: Content */}
         <div className="flex-1 min-w-0">
              {/* Header */}
-            <div className="flex justify-between items-start mb-1">
-                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+             <div className="flex justify-between items-start mb-1">
+                 <div className="flex flex-row items-center gap-1.5 flex-wrap">
                      <div className="flex items-center gap-2">
                         <CraftsmanHoverCard
                           userId={user?._id || user}
@@ -260,39 +261,29 @@ const DevlogPostCard = ({
                           displayName={userName}
                           wrapperDisplay="inline"
                         >
-                          <h3 className="font-medium text-slate-900 dark:text-gray-100 text-base hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
+                          <h3 className="font-bold text-slate-900 dark:text-gray-100 text-base hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
                               {userName}
                           </h3>
                         </CraftsmanHoverCard>
-                         {/* TYPE BADGE: DEVLOG */}
-                         <span className="bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 text-[9px] font-mono font-medium px-1.5 py-0.5 rounded uppercase tracking-[0.2em] flex items-center gap-1">
-                            <Layers size={10} className="stroke-[3]" /> Devlog
-                        </span>
                      </div>
-                     <span className="text-slate-400 text-sm hidden sm:block">·</span>
-                     <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-wider">
+                     <span className="text-slate-400 text-sm">·</span>
+                     <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-wider mt-0.5">
                          {formatDate(createdAt)}
                      </span>
                  </div>
-                 <div className="flex items-center gap-3">
-                     <div className="hidden md:flex items-center gap-x-3 text-[9px] font-mono font-medium text-slate-400 uppercase tracking-wider">
-                         <span className="flex items-center gap-1"><Zap size={10} className="text-amber-500 fill-amber-500/20"/> {difficulty}</span>
-                         <span className="opacity-30">•</span>
-                         <span className="flex items-center gap-1"><Clock size={10} className="text-indigo-500"/> {timeSpent || 'N/A'}</span>
-                         <span className="opacity-30">•</span>
-                         <span className="flex items-center gap-1"><MapPin size={10} className="text-emerald-500"/> {location || 'Remote'}</span>
-                     </div>
-                 </div>
-            </div>
+                 <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
+                     {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
+                 </button>
+             </div>
 
             {/* Devlog Title & Status */}
             <div className="mb-3 flex justify-between items-start gap-4">
                 <div>
-                    <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-0.5 font-sans">
+                    <h2 className="text-base font-normal text-slate-900 dark:text-white mb-0.5 font-sans">
                         {title || "Untitled Devlog"}
                     </h2>
                 </div>
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 hidden sm:block">
                     <span className={`px-2.5 py-1 text-[9px] font-mono font-medium rounded border tracking-[0.2em] uppercase shadow-sm ${
                         status === 'Completed' ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' : 
                         'bg-white text-slate-900 border-slate-200 dark:bg-black dark:text-white dark:border-white/10'
@@ -303,12 +294,12 @@ const DevlogPostCard = ({
             </div>
 
             {/* Main Content Grid: Image + Details */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible">
                 
                 {/* Left: Preview Image */}
                 <div className="lg:col-span-7 h-full">
                      {images && images.length > 0 ? (
-                         <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/5 group/media h-full min-h-[300px] lg:min-h-[450px] shadow-inner">
+                         <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/5 group/media w-full shadow-inner aspect-[4/3] lg:aspect-auto lg:h-full">
                              {images.length === 1 ? (
                                  <Image 
                                      src={images[0]} 
@@ -332,12 +323,14 @@ const DevlogPostCard = ({
                                      ))}
                                  </div>
                              )}
-                             <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[9px] font-mono font-medium px-2 py-1 rounded-full border border-white/10 uppercase tracking-wider">
-                                 {images.length} Image{images.length > 1 ? 's' : ''}
-                             </div>
+                             {images.length > 1 && (
+                                 <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[9px] font-mono font-medium px-2 py-1 rounded-full border border-white/10 uppercase tracking-wider">
+                                     {images.length} Images
+                                 </div>
+                             )}
                          </div>
                      ) : (
-                        <div className="flex flex-col items-center justify-center text-slate-400 h-full min-h-[450px] bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10">
+                        <div className="flex flex-col items-center justify-center text-slate-400 w-full bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10 aspect-[4/3] lg:aspect-auto lg:h-full">
                             <Layers size={48} className="opacity-20 mb-2" />
                             <span className="text-xs font-medium">No preview available</span>
                         </div>
@@ -345,8 +338,16 @@ const DevlogPostCard = ({
                 </div>
 
                 {/* Right: Details Section */}
-                <div className="lg:col-span-5">
-                    <div className="bg-slate-50 dark:bg-[#111] rounded-xl p-4 border border-slate-100 dark:border-white/10 h-full flex flex-col shadow-sm">
+                <div className={`
+                    lg:col-span-5 
+                    absolute inset-0 z-20 lg:static lg:z-auto lg:h-full p-2 lg:p-0
+                    bg-transparent
+                    transition-all duration-300 ease-out
+                    ${isExpanded 
+                        ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
+                        : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
+                `}>
+                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-slate-50 lg:dark:bg-[#111] lg:backdrop-blur-none rounded-xl p-4 lg:p-0 sm:lg:p-4 border border-white/60 dark:border-white/10 lg:border-slate-100 lg:dark:border-white/10 h-full flex flex-col shadow-xl sm:shadow-sm overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
                         <div className="space-y-3">
                             
                             {/* Header: Links & Resources */}
@@ -507,36 +508,6 @@ const DevlogPostCard = ({
                                     )}
                                 </div>
                             </div>
-                             {/* Milestones Info - Always Show */}
-                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
-                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-1 flex items-center gap-1"><CheckCircle size={11} /> Next Milestone</div>
-                                <div className="text-xs text-slate-600 dark:text-slate-400">
-                                    {milestones && milestones.length > 0 ? (
-                                        <div className="flex items-center gap-2">
-                                            <span className="truncate font-medium font-sans">{milestones[0].title}</span>
-                                            {milestones[0].date && <span className="text-[10px] font-mono font-medium opacity-50 uppercase">• {formatDate(milestones[0].date)}</span>}
-                                        </div>
-                                    ) : (
-                                        <span className="italic">No upcoming milestones</span>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* Tags - Always Show */}
-                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
-                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1"><Hash size={11} /> Devlog Tags</div>
-                                <div className="flex flex-wrap gap-1.5">
-                                    {Array.isArray(tags) && tags.length > 0 ? (
-                                        tags.map((tag, idx) => (
-                                            <span key={idx} className="text-[9px] font-mono font-medium px-2 py-0.5 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/10 rounded uppercase tracking-wider">
-                                                #{tag}
-                                            </span>
-                                        ))
-                                    ) : (
-                                        <span className="text-xs text-slate-400 italic">No tags</span>
-                                    )}
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -559,7 +530,7 @@ const DevlogPostCard = ({
                     {/* Like */}
                     <button 
                         onClick={handleLike}
-                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-500 hover:text-pink-600'}`}
+                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
                     >
                         <div className="transition-colors">
                             <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
@@ -569,7 +540,7 @@ const DevlogPostCard = ({
 
                     {/* Share */}
                     <button 
-                        className="flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 transition-colors group"
+                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-indigo-600 transition-colors group"
                         onClick={handleShare}
                     >
                         <div className="transition-colors">
@@ -577,21 +548,6 @@ const DevlogPostCard = ({
                         </div>
                     </button>
 
-                    {/* Bookmark */}
-                    <button 
-                        onClick={handleFavorite}
-                        className={`transition-colors group-hover:text-pink-600 ${isFavorited ? 'text-pink-600' : 'text-slate-400 hover:text-pink-600'}`}
-                    >
-                        <Bookmark size={18} fill={isFavorited ? 'currentColor' : 'none'} />
-                    </button>
-
-                    <span className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
-
-                    {/* Views */}
-                    <div className="flex items-center gap-1.5 text-slate-400">
-                        <Eye size={16} />
-                        <span className="font-mono font-medium text-[11px] tabular-nums">{viewsCount || 0}</span>
-                    </div>
                  </div>
             </div>
         </div>

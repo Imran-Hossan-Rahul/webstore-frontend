@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
@@ -184,7 +185,7 @@ function PayoutCard({ challenge, onPayout, isProcessing, isHistory }) {
             <div key={idx} className="flex items-center gap-3 bg-slate-50 dark:bg-white/5 p-3 rounded-xl">
               <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0">
                 {w.user?.profilePicture ? (
-                  <img src={w.user.profilePicture} alt="User" className="w-full h-full object-cover" />
+                  <img src={getOptimizedUrl(w.user.profilePicture)} alt="User" className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-xs font-bold text-slate-500">
                     {w.user?.name?.charAt(0) || '?'}

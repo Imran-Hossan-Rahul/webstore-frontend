@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React from "react";
 import { Upload, X, Plus, Download, FileText, AlertCircle } from "lucide-react";
@@ -78,7 +79,7 @@ export default function MetadataSection({
           
           {imagePreviews.map((src, idx) => (
             <div key={idx} className="relative aspect-video rounded-xl overflow-hidden group">
-              <img src={src} alt="Preview" className="w-full h-full object-cover" />
+              <img src={getOptimizedUrl(src)} alt="Preview" className="w-full h-full object-cover" />
               <button onClick={() => removeImage(idx)} className="absolute top-1 right-1 p-1 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition">
                 <X size={14} strokeWidth={1.5} />
               </button>

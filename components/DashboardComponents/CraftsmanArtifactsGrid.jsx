@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -93,7 +94,7 @@ function EngineerArtifactCard({ artifact, router, onDelete }) {
             {/* Thumbnail */}
             <div className="relative aspect-video rounded-[18px] overflow-hidden bg-slate-100 mb-4 cursor-pointer" onClick={() => router.push(`/artifacts/${artifact._id}`)}>
                  {artifact.thumbnailSource ? (
-                    <img src={artifact.thumbnailSource} alt={artifact.title} className="w-full h-full object-cover" />
+                    <img src={getOptimizedUrl(artifact.thumbnailSource)} alt={artifact.title} className="w-full h-full object-cover" />
                  ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-300">
                         <Image size={40} />

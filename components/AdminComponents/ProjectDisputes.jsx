@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
@@ -126,7 +127,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                 <User size={10} /> patron
               </p>
               <div className="flex items-center gap-2">
-                <img src={contract.patron?.profilePicture} className="w-5 h-5 rounded-full object-cover" alt="" />
+                <img src={getOptimizedUrl(contract.patron?.profilePicture)} className="w-5 h-5 rounded-full object-cover" alt="" />
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{contract.patron?.name}</span>
               </div>
             </div>
@@ -135,7 +136,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                 <User size={10} /> Craftsman
               </p>
               <div className="flex items-center gap-2">
-                <img src={contract.craftsman?.profilePicture} className="w-5 h-5 rounded-full object-cover" alt="" />
+                <img src={getOptimizedUrl(contract.craftsman?.profilePicture)} className="w-5 h-5 rounded-full object-cover" alt="" />
                 <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{contract.craftsman?.name}</span>
               </div>
             </div>

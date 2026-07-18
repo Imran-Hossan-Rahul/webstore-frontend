@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { TrendingUp, PenTool, ArrowUpRight, Trophy, Layout, Clock, Heart, Eye, Code } from "lucide-react";
 import Link from "next/link";
@@ -95,7 +96,7 @@ export default function ExploreRightPanel() {
                    
                    <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 border border-slate-800 dark:border-white/5 shadow-inner">
                         {featuredDevlog.previewFile || featuredDevlog.coverImage ? (
-                            <img src={featuredDevlog.previewFile || featuredDevlog.coverImage} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-[1.5s] ease-out" alt="Featured" />
+                            <img src={getOptimizedUrl(featuredDevlog.previewFile || featuredDevlog.coverImage)} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-[1.5s] ease-out" alt="Featured" />
                         ) : (
                             <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-600"><Code size={30} /></div>
                         )}

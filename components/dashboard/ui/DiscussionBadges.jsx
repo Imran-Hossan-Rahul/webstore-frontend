@@ -64,9 +64,7 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                     kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                 };
 
-                const baseColor = hasCount 
-                    ? 'text-slate-500 dark:text-slate-400 opacity-90' 
-                    : 'text-slate-400 dark:text-slate-600 opacity-30';
+                const baseColor = 'text-slate-700 dark:text-slate-300';
                 
                 const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
 

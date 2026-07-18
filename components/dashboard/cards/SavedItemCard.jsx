@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -212,7 +213,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         <div className="flex items-center gap-2 cursor-pointer group/author">
                             <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden ring-1 ring-slate-100 dark:ring-white/10 shrink-0">
                                 {author?.profilePicture ? (
-                                    <img src={author.profilePicture} className="w-full h-full object-cover" />
+                                    <img src={getOptimizedUrl(author.profilePicture)} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
                                 )}

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { api } from "@/utils/api";
@@ -283,7 +284,7 @@ function JudgingQueue({ challenge, onSelect }) {
                                     displayName={sub.user?.name}
                                  >
                                     <div className="flex items-center gap-4 cursor-pointer">
-                                       <img src={sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-10 h-10 rounded-2xl border border-slate-100 dark:border-white/5 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                                       <img src={getOptimizedUrl(sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-10 h-10 rounded-2xl border border-slate-100 dark:border-white/5 object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
                                        <span className="text-xs font-semibold text-slate-900 dark:text-white  tracking-tight">{sub.user?.name}</span>
                                     </div>
                                  </CraftsmanHoverCard>
@@ -405,7 +406,7 @@ function SubmissionReview({ submission, challenge, selectedWinners, onSelectWinn
                 avatarUrl={submission.user?.profilePicture}
                 displayName={submission.user?.name}
              >
-                <img src={submission.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-14 h-14 rounded-2xl border border-slate-200 dark:border-white/10 object-cover grayscale hover:grayscale-0 transition-all duration-500 shadow-sm shrink-0 cursor-pointer" />
+                <img src={getOptimizedUrl(submission.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-14 h-14 rounded-2xl border border-slate-200 dark:border-white/10 object-cover grayscale hover:grayscale-0 transition-all duration-500 shadow-sm shrink-0 cursor-pointer" />
              </CraftsmanHoverCard>
              <div className="flex-1 min-w-0">
                 <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight truncate">{submission.title || submission.tagline || 'Untitled Artifact'}</h2>
@@ -432,7 +433,7 @@ function SubmissionReview({ submission, challenge, selectedWinners, onSelectWinn
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    {submission.screenshots.map((src, i) => (
                       <button key={i} onClick={() => setSelectedImage(src)} className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video block group relative shadow-sm cursor-zoom-in">
-                         <img src={src} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                         <img src={getOptimizedUrl(src)} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                          <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </button>
                    ))}

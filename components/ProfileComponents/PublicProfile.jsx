@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -407,15 +409,21 @@ const PublicProfile = ({ username }) => {
     setShowImageUpload(true);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (!confirmLogout) {
       setConfirmLogout(true);
       setTimeout(() => setConfirmLogout(false), 3000);
       return;
     }
+    try {
+      await api.post("/auth/logout");
+    } catch (e) {
+      console.error("Logout error", e);
+    }
     localStorage.removeItem("token");
     localStorage.removeItem("hasCraftsmanAccount");
-    window.location.href = "/";
+    localStorage.removeItem("user");
+    window.location.href = "/auth/login";
   };
 
   if (loading) {
@@ -456,7 +464,7 @@ const PublicProfile = ({ username }) => {
         <div className="flex flex-col items-center justify-center text-center -mt-24 relative z-10">
           <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm mb-6">
             {profile.profilePicture ? (
-              <img src={profile.profilePicture} alt={profile.name} className="w-full h-full object-cover grayscale opacity-50" />
+              <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover grayscale opacity-50" />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400 text-4xl font-bold uppercase">
                 {profile.name[0]}
@@ -505,7 +513,7 @@ const PublicProfile = ({ username }) => {
         {/* Cover Section */}
         <div className="relative h-48 md:h-72 w-full bg-slate-100 dark:bg-slate-900 overflow-hidden rounded-2xl">
           {profile.coverPicture ? (
-            <img src={profile.coverPicture} alt="Cover" className="w-full h-full object-cover" />
+            <img src={getOptimizedUrl(profile.coverPicture)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
             <div className="w-full h-full bg-slate-50 dark:bg-white/5" />
           )}
@@ -531,7 +539,7 @@ const PublicProfile = ({ username }) => {
             <div className="relative group/avatar">
               <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm relative">
                 {profile.profilePicture ? (
-                  <img src={profile.profilePicture} alt={profile.name} className="w-full h-full object-cover" />
+                  <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400 text-4xl font-bold uppercase">
                     {profile.name[0]}

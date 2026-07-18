@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import {
@@ -219,7 +220,7 @@ const CraftsmanCard = ({ craftsman }) => {
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 p-[2px]">
               <div className="w-full h-full rounded-2xl bg-white dark:bg-black flex items-center justify-center overflow-hidden">
                 {craftsman.avatar ? (
-                  <img src={craftsman.avatar} alt={craftsman.name} className="w-full h-full object-cover" />
+                  <img src={getOptimizedUrl(craftsman.avatar)} alt={craftsman.name} className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-2xl font-bold text-slate-400">
                     {craftsman.name?.[0]}

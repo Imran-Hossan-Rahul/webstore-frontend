@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { Zap, Clock, Info, ShieldCheck, ArrowRight } from "lucide-react";
 import { api } from "@/utils/api";
@@ -52,7 +53,7 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
                  <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-2">{challenge.title}</h2>
                  <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-white/10">
-                       {challenge.craftsman?.profilePicture ? <img src={challenge.craftsman.profilePicture} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-indigo-500" />}
+                       {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-indigo-500" />}
                     </div>
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">By {challenge.craftsman?.name}</p>
                  </div>

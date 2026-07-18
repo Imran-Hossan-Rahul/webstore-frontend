@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -203,7 +204,7 @@ export default function ArtifactsListSidebar() {
               >
                 <div className="w-9 h-9 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/10 shrink-0">
                   {artifact.previewFile ? (
-                    <img src={artifact.previewFile} alt={artifact.title} className="w-full h-full object-cover" />
+                    <img src={getOptimizedUrl(artifact.previewFile)} alt={artifact.title} className="w-full h-full object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-400">
                       <Package size={14} />

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { 
@@ -345,7 +346,7 @@ const ChallengeDetailsContent = ({ challenge, isGuest, onRequireAuth, user }) =>
                                         className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-black/20 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-400 dark:hover:border-white/40 transition-all group w-full text-left"
                                       >
                                         <div className="w-12 h-12 rounded-xl bg-white dark:bg-black/40 flex items-center justify-center text-slate-400 shadow-sm overflow-hidden">
-                                           <img src={url} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
+                                           <img src={getOptimizedUrl(url)} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                           <p className="font-bold text-slate-900 dark:text-white truncate text-xs">{res.name || res.title || 'Resource Image'}</p>
@@ -441,7 +442,7 @@ const ChallengeDetailsContent = ({ challenge, isGuest, onRequireAuth, user }) =>
                                       displayName={sub.user?.name}
                                     >
                                       <div className="w-10 h-10 rounded-full bg-white dark:bg-black/40 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/10 shadow-sm cursor-pointer">
-                                        {sub.user?.profilePicture ? <img src={sub.user.profilePicture} alt="" className="w-full h-full object-cover" /> : <div className="font-bold text-slate-400">{sub.user?.name?.[0]}</div>}
+                                        {sub.user?.profilePicture ? <img src={getOptimizedUrl(sub.user.profilePicture)} alt="" className="w-full h-full object-cover" /> : <div className="font-bold text-slate-400">{sub.user?.name?.[0]}</div>}
                                       </div>
                                     </CraftsmanHoverCard>
                                     <div>

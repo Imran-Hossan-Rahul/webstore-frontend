@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from "react";
 import { 
    Clock, Users, MapPin, ArrowRight, CheckCircle, ShieldCheck, Info, X,
@@ -176,7 +177,7 @@ export default function JobTalentRightSidebar({ jobId }) {
             >
               <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/10 cursor-pointer">
                  {job.patron?.profilePicture ? (
-                   <img src={job.patron.profilePicture} alt="" className="w-full h-full object-cover" />
+                   <img src={getOptimizedUrl(job.patron.profilePicture)} alt="" className="w-full h-full object-cover" />
                  ) : (
                    <span className="text-lg font-bold text-slate-400">{(job.patron?.name || 'P')[0]}</span>
                  )}

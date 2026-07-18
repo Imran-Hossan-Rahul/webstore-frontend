@@ -4,7 +4,7 @@ import {
   Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
   Download, ExternalLink, Eye, Tag, Globe, Github,
   FileText, Shield, Layers, Clock, Code, Zap,
-  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame
+  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, PanelRight, X
 } from 'lucide-react';
 import { api } from "@/utils/api";
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/ToastProvider";
 import CraftsmanHoverCard from './CraftsmanHoverCard';
 import { useEffect } from 'react';
 import { useShare } from "@/hooks/useShare";
+import NProgress from 'nprogress';
 
 // Dynamic Tech Badge Colors
 const getTechColor = (tool) => {
@@ -69,6 +70,7 @@ const ArtifactPostCard = ({
   const [currentCommentsCount, setCurrentCommentsCount] = useState(initialCommentsCount);
   const [showIframeModal, setShowIframeModal] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const { share } = useShare();
   
@@ -212,7 +214,7 @@ const ArtifactPostCard = ({
 
   return (
     <div 
-        className="group relative border-b border-slate-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-6"
+        className="group relative sm:border-b sm:border-slate-100 dark:sm:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors cursor-pointer p-4 flex gap-2 sm:gap-6"
         onClick={handleNavigation}
     >
         {/* Left Column: Avatar */}
@@ -248,8 +250,8 @@ const ArtifactPostCard = ({
         {/* Right Column: Content */}
         <div className="flex-1 min-w-0">
              {/* Header */}
-            <div className="flex justify-between items-start mb-1">
-                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+             <div className="flex justify-between items-start mb-1">
+                 <div className="flex flex-row items-center gap-1.5 flex-wrap">
                      <div className="flex items-center gap-2">
                         <CraftsmanHoverCard
                           userId={user?._id || item?.craftsman?._id || item?.owner?._id}
@@ -258,28 +260,27 @@ const ArtifactPostCard = ({
                           displayName={userName}
                           wrapperDisplay="inline"
                         >
-                          <h3 className="font-medium text-slate-900 dark:text-gray-100 text-base hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-150 font-sans">
+                          <h3 className="font-bold text-slate-900 dark:text-gray-100 text-base hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-150 font-sans">
                               {user?.name || item?.craftsman?.name || item?.owner?.name || 'Craftsman'}
                           </h3>
                         </CraftsmanHoverCard>
-                         {/* TYPE BADGE: ARTIFACT */}
-                         <span className="bg-pink-100 dark:bg-pink-500/10 text-pink-600 dark:text-pink-400 border border-pink-200 dark:border-pink-500/20 text-[9px] font-mono font-medium px-1.5 py-0.5 rounded uppercase tracking-[0.2em] flex items-center gap-1">
-                            <Layers size={10} className="stroke-[3]" /> Artifact
-                        </span>
                      </div>
                      <span className="text-slate-400 text-sm">·</span>
-                     <span className="text-slate-500 dark:text-slate-400 text-sm">
+                     <span className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">
                          {formatDate(createdAt)}
                      </span>
                  </div>
-            </div>
+                 <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
+                     {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
+                 </button>
+             </div>
 
             {/* Artifact Title & Pricing */}
             <div className="mb-3 flex justify-between items-start gap-4">
-                <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-1 font-sans">
+                <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans">
                     {title}
                 </h2>
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 hidden sm:block">
                     {isFree ? (
                         <span className="px-2.5 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[10px] font-mono font-medium rounded uppercase tracking-[0.2em]">
                             Free
@@ -293,12 +294,12 @@ const ArtifactPostCard = ({
             </div>
 
             {/* Main Content Grid: Image + Details */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible">
                 
                 {/* Left: Preview Image */}
                 <div className="lg:col-span-7 h-full">
                     {previewFile ? (
-                        <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/5 group/media h-full min-h-[300px] lg:min-h-[450px] shadow-inner">
+                        <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-100 dark:border-white/5 group/media w-full shadow-inner aspect-[4/3] lg:aspect-auto lg:h-full">
                             {previewFile.endsWith('.mp4') || previewFile.endsWith('.webm') ? (
                                 <video 
                                     src={previewFile} 
@@ -316,7 +317,7 @@ const ArtifactPostCard = ({
                             )}
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center text-slate-400 h-[300px] bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10">
+                        <div className="flex flex-col items-center justify-center text-slate-400 w-full bg-slate-50 dark:bg-white/5 rounded-xl border border-dashed border-slate-200 dark:border-white/10 aspect-[4/3] lg:aspect-auto lg:h-full">
                             <Layers size={48} className="opacity-20 mb-2" />
                             <span className="text-xs font-medium">No preview available</span>
                         </div>
@@ -324,8 +325,16 @@ const ArtifactPostCard = ({
                 </div>
 
                 {/* Right: Details Section */}
-                <div className="lg:col-span-5">
-                    <div className="bg-slate-50 dark:bg-[#111] rounded-xl p-4 border border-slate-100 dark:border-white/10 h-full flex flex-col shadow-sm">
+                <div className={`
+                    lg:col-span-5 
+                    absolute inset-0 z-20 lg:static lg:z-auto lg:h-full p-2 lg:p-0
+                    bg-transparent
+                    transition-all duration-300 ease-out
+                    ${isExpanded 
+                        ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
+                        : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
+                `}>
+                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-slate-50 lg:dark:bg-[#111] lg:backdrop-blur-none rounded-xl p-4 lg:p-0 sm:lg:p-4 border border-white/60 dark:border-white/10 lg:border-slate-100 lg:dark:border-white/10 h-full flex flex-col shadow-xl sm:shadow-sm overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
                         <div className="space-y-3">
                             
                             {/* Header: Links & Download */}
@@ -333,7 +342,7 @@ const ArtifactPostCard = ({
                                 <span className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] flex items-center gap-1">
                                     <FileText size={14}/> Details
                                 </span>
-                                <div className="flex gap-2">
+                                <div className="flex flex-wrap gap-2 pb-2 sm:pb-0">
                                      {githubLink ? (
                                          <a 
                                             href={githubLink} 
@@ -465,19 +474,6 @@ const ArtifactPostCard = ({
                                     )}
                                 </div>
                             </div>
-
-                            {/* Version Info - Always Show */}
-                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
-                                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock size={11} /> Version</div>
-                                <div className="text-xs text-slate-600 dark:text-slate-400">
-                                    {versions && versions.length > 0 ? (
-                                        <>v{versions[versions.length - 1].version} · {formatDate(versions[versions.length - 1].updatedAt)}</>
-                                    ) : (
-                                        <span className="italic">v1.0.0 · {formatDate(createdAt)}</span>
-                                    )}
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -515,9 +511,7 @@ const ArtifactPostCard = ({
                                 kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                             };
 
-                            const baseColor = hasCount 
-                                ? 'text-slate-500 dark:text-slate-400 opacity-90' 
-                                : 'text-slate-400 dark:text-slate-600 opacity-30';
+                            const baseColor = 'text-slate-700 dark:text-slate-300';
                             
                             const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
 
@@ -552,7 +546,7 @@ const ArtifactPostCard = ({
                     {/* Like */}
                     <button 
                         onClick={handleLike}
-                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-500 hover:text-pink-600'}`}
+                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
                     >
                         <div className="transition-colors">
                             <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} />
@@ -562,7 +556,7 @@ const ArtifactPostCard = ({
 
                     {/* Share */}
                     <button 
-                        className="flex items-center gap-1.5 text-slate-500 hover:text-indigo-600 transition-colors group"
+                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-indigo-600 transition-colors group"
                         onClick={handleShare}
                     >
                         <div className="transition-colors">
@@ -575,7 +569,7 @@ const ArtifactPostCard = ({
                     {/* Download Stats */}
                     <button 
                         onClick={handleDownload}
-                        className="flex items-center gap-1.5 text-slate-500 hover:text-purple-600 transition-colors group"
+                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-purple-600 transition-colors group"
                     >
                         <div className="transition-colors">
                             <Download size={18} />
@@ -583,21 +577,6 @@ const ArtifactPostCard = ({
                         <span className="font-mono font-medium text-[11px] tabular-nums">{downloadsCount || 0}</span>
                     </button>
 
-                    {/* Bookmark */}
-                    <button 
-                        onClick={handleFavorite}
-                        className={`transition-colors group-hover:text-pink-600 ${isFavorited ? 'text-pink-600' : 'text-slate-400 hover:text-pink-600'}`}
-                    >
-                        <Bookmark size={18} fill={isFavorited ? 'currentColor' : 'none'} />
-                    </button>
-
-                    <span className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
-
-                    {/* Views */}
-                    <div className="flex items-center gap-1.5 text-slate-400">
-                        <Eye size={16} />
-                        <span className="font-mono font-medium text-[11px] tabular-nums">{viewsCount || 0}</span>
-                    </div>
                  </div>
             </div>
         </div>

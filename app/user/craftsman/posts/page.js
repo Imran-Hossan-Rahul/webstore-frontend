@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -153,7 +154,7 @@ export default function CraftsmanPostsPage() {
         </nav>
         <div className="mt-auto">
              <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-[#3e3e3e] overflow-hidden cursor-pointer">
-                 <img src="https://ui-avatars.com/api/?name=User" alt="User" />
+                 <img src={getOptimizedUrl("https://ui-avatars.com/api/?name=User")} alt="User" />
              </div>
         </div>
       </aside>
@@ -266,7 +267,7 @@ export default function CraftsmanPostsPage() {
                                 onClick={() => router.push(`/post/${post._id}`)}
                               >
                                 {post.images && post.images.length > 0 ? (
-                                  <img src={post.images[0]} alt="" className="w-full h-full object-cover" />
+                                  <img src={getOptimizedUrl(post.images[0])} alt="" className="w-full h-full object-cover" />
                                 ) : (
                                   <span className="text-slate-600 text-[10px] p-1 text-center font-mono">TEXT</span>
                                 )}

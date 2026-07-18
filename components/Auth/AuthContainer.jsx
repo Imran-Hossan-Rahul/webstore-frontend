@@ -14,7 +14,7 @@ const AuthContainer = ({ children, title, subtitle, footer }) => {
           {/* Logo Placeholder - Minimalist & Elite */}
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-[1.25rem] bg-white dark:bg-zinc-900 shadow-xl shadow-indigo-500/10 border border-slate-100 dark:border-zinc-800 mb-8 relative group overflow-hidden">
              <div className="absolute inset-0 bg-indigo-500 opacity-0 group-hover:opacity-10 transition-opacity duration-500" />
-            <span className="text-3xl font-black text-indigo-600 dark:text-indigo-400 tracking-tighter">C</span>
+            <img src="/logo.png" alt="Codalina" className="h-12 w-12 object-contain" />
           </div>
           <h1 className="text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-3">
             {title}

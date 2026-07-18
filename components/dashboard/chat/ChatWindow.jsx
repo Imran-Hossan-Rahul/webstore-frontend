@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useEffect, useState } from "react";
 import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock } from "lucide-react";
@@ -135,7 +136,7 @@ export default function ChatWindow({
           <div className="relative shrink-0">
             <div className={`rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5 ${isCompact ? 'w-10 h-10' : 'w-12 h-12'}`}>
               {avatar ? (
-                <img src={avatar} className="w-full h-full object-cover" alt="" />
+                <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
               ) : (
                 <User size={20} className="text-slate-400" />
               )}
@@ -458,7 +459,7 @@ export default function ChatWindow({
         {selectedFile && (
           <div className="mb-3 p-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl flex items-center gap-3">
             {filePreview ? (
-              <img src={filePreview} alt="Preview" className="w-12 h-12 object-cover rounded-xl border border-black/5 dark:border-white/10" />
+              <img src={getOptimizedUrl(filePreview)} alt="Preview" className="w-12 h-12 object-cover rounded-xl border border-black/5 dark:border-white/10" />
             ) : (
               <div className="w-12 h-12 bg-slate-200 dark:bg-black rounded-xl flex items-center justify-center">
                 <Paperclip size={20} className="text-slate-500" />

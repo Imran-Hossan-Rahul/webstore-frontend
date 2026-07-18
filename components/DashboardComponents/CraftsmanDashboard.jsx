@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -193,7 +194,7 @@ export default function CraftsmanDashboard() {
         </nav>
         <div className="mt-auto">
              <div className="w-10 h-10 rounded-full bg-slate-300 border-2 border-white shadow-sm overflow-hidden cursor-pointer" onClick={() => setActiveModal('profile')}>
-                 <img src="https://ui-avatars.com/api/?name=User" alt="User" />
+                 <img src={getOptimizedUrl("https://ui-avatars.com/api/?name=User")} alt="User" />
              </div>
         </div>
       </aside>

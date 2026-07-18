@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import NProgress from 'nprogress';
 import { 
   Heart, MessageCircle, ArrowRight, TrendingUp, Clock, BookOpen, Share2, Bookmark, MoreHorizontal, FileText,
-  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, Eye
+  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, Eye, PanelRight, X
 } from 'lucide-react';
 import { api } from '@/utils/api';
 import { useToast } from "@/components/ui/ToastProvider";
@@ -33,6 +33,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [showComments, setShowComments] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const { share } = useShare();
 
   const {
@@ -266,6 +267,9 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                      </span>
                  </div>
              </div>
+             <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
+                 {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
+             </button>
           </div>
 
           {/* Title — full width above */}
@@ -276,10 +280,10 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
           </div>
 
           {/* Body: image left column + text right column */}
-          <div className={`mb-3 ${coverImage ? 'flex items-start gap-3' : ''}`}>
+          <div className={`mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible ${coverImage ? 'lg:flex lg:items-start lg:gap-3' : ''}`}>
             {coverImage && (
-              <div className="w-[42%] flex-shrink-0 rounded-xl overflow-hidden border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5">
-                <div className="aspect-[3/2] relative w-full">
+              <div className={`w-full lg:w-[42%] flex-shrink-0 rounded-xl overflow-hidden border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5`}>
+                <div className="aspect-[4/3] relative w-full">
                   {isPreview && typeof coverImage === 'string' && coverImage.startsWith('blob:') ? (
                     <img src={coverImage} alt={title} className="object-cover w-full h-full" />
                   ) : (
@@ -296,7 +300,15 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
 
             {(excerpt || subtitle) && (
               <div
-                className={`text-slate-600 dark:text-gray-300 text-[14px] sm:text-[15px] leading-relaxed flex-1 ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-indigo-500/30 rounded px-1 -mx-1' : ''}`}
+                className={`text-slate-600 dark:text-gray-300 text-[14px] sm:text-[15px] leading-relaxed flex-1 
+                absolute inset-0 z-20 lg:static lg:z-auto 
+                bg-white/40 dark:bg-[#0a0a0a]/60 lg:bg-transparent lg:dark:bg-transparent backdrop-blur-xl lg:backdrop-blur-none
+                p-4 lg:p-0 m-2 lg:m-0 rounded-xl lg:rounded-none border border-white/60 dark:border-white/10 lg:border-none shadow-xl lg:shadow-none
+                transition-all duration-300 ease-out
+                ${isExpanded 
+                    ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
+                    : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
+                ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-indigo-500/30' : ''}`}
                 style={{
                   display: '-webkit-box',
                   WebkitLineClamp: coverImage ? 11 : 8,
@@ -354,9 +366,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                       kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                   };
 
-                  const baseColor = hasCount 
-                      ? 'text-slate-500 dark:text-slate-400 opacity-90' 
-                      : 'text-slate-400 dark:text-slate-600 opacity-30';
+                  const baseColor = 'text-slate-700 dark:text-slate-300';
                   
                   const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
 
@@ -400,7 +410,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
               {/* Like */}
               <button
                 onClick={handleLike}
-                className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-slate-500 hover:text-pink-500'}`}
+                className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-slate-700 dark:text-slate-300 hover:text-pink-500'}`}
               >
                 <Heart size={18} className={isLiked ? 'fill-current' : ''} />
                 <span className="font-bold tabular-nums text-[11px]">{likesCount}</span>
@@ -408,27 +418,12 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
 
               {/* Share */}
               <button 
-                  className="text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors"
+                  className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
                   onClick={handleShare}
               >
                   <Share2 size={18} />
               </button>
 
-              {/* Bookmark */}
-              <button 
-                className={`transition-colors group-hover:text-pink-600 ${isFavorited ? 'text-pink-600' : 'text-slate-400 hover:text-pink-600'}`}
-                onClick={handleFavorite}
-              >
-                  <Bookmark size={17} fill={isFavorited ? 'currentColor' : 'none'} />
-              </button>
-
-              <span className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
-
-              {/* Read Count */}
-              <div className="flex items-center gap-1.5 text-slate-400">
-                <BookOpen size={14} />
-                <span className="font-bold text-[11px] tabular-nums">{views}</span>
-              </div>
             </div>
           </div>
         </div>

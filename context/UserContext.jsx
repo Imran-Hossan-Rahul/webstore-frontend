@@ -50,9 +50,14 @@ export function UserProvider({ children }) {
         setUser(null);
       }
     } catch (err) {
-      // Silence auth errors on initial load (user is just a guest)
-      setIsGuest(true);
-      setUser(null);
+      // If it's a server error (500/503), don't log the user out. The backend is likely just restarting.
+      if (err.status && err.status >= 500) {
+        console.warn("Backend unavailable, preserving current user state:", err);
+      } else {
+        // Only silence auth errors (401/403) and treat them as guest
+        setIsGuest(true);
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Camera, RefreshCw, Check, X, Loader2, ShieldCheck, Zap, AlertCircle } from 'lucide-react';
@@ -145,7 +146,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 className="w-full h-full"
               >
-                <img src={capturedImage} className="w-full h-full object-cover" alt="Captured" />
+                <img src={getOptimizedUrl(capturedImage)} className="w-full h-full object-cover" alt="Captured" />
                 <div className="absolute top-4 right-4 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1.5 rounded-full flex items-center gap-2">
                   <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                   <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Image Quality OK</span>

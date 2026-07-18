@@ -86,6 +86,8 @@ function getAccessToken() {
  *  - CSRF injection
  *  - Error normalization
  */
+let refreshTokenPromise = null;
+
 async function apiFetch(endpoint, options = {}) {
   const url = `${API_BASE_URL}${endpoint}`;
   const csrfToken = getCsrfToken();
@@ -114,7 +116,43 @@ async function apiFetch(endpoint, options = {}) {
   };
 
   try {
-    const response = await fetch(url, config);
+    let response = await fetch(url, config);
+
+    // Silent Refresh Token Flow on 401 Unauthorized
+    if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/refresh-token') && !endpoint.includes('/auth/logout')) {
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = fetch(`${API_BASE_URL}/auth/refresh-token`, {
+          method: 'POST',
+          credentials: 'include'
+        }).then(res => {
+          if (!res.ok) throw new Error("Refresh failed");
+          return res.json();
+        }).finally(() => {
+          refreshTokenPromise = null;
+        });
+      }
+      
+      try {
+        const refreshData = await refreshTokenPromise;
+        if (refreshData?.data?.accessToken) {
+          // Update the localStorage backup token
+          const userStr = localStorage.getItem("user");
+          if (userStr) {
+            const userObj = JSON.parse(userStr);
+            userObj.accessToken = refreshData.data.accessToken;
+            localStorage.setItem("user", JSON.stringify(userObj));
+          }
+          // Update Authorization header for the retry
+          config.headers["Authorization"] = `Bearer ${refreshData.data.accessToken}`;
+        }
+        
+        // Retry the original request
+        response = await fetch(url, config);
+      } catch (refreshErr) {
+        // If refresh fails, fall through to standard 401 handling
+      }
+    }
+
     const contentType = response.headers.get("content-type") || "";
     const isJson = contentType.includes("application/json");
     const data = isJson ? await response.json() : await response.text();

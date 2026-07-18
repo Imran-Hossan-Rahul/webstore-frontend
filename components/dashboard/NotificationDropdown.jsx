@@ -1,9 +1,12 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect, useRef } from "react";
 import { Bell, Check, CheckCheck } from "lucide-react";
 import { api } from "@/utils/api";
 import { io } from "socket.io-client";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { hoverModalVariants } from "@/utils/animations";
 
 export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +17,7 @@ export default function NotificationDropdown() {
   useEffect(() => {
     fetchUnreadCount();
     
-    const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000");
+    const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000", { withCredentials: true, transports: ['polling', 'websocket'] });
     const userId = localStorage.getItem("userId");
     
     if (userId) {
@@ -95,7 +98,7 @@ export default function NotificationDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-slate-500 hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors relative"
+        className="p-2 text-black hover:text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors relative"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
@@ -105,81 +108,89 @@ export default function NotificationDropdown() {
         )}
       </button>
 
-      {isOpen && (
-        <div className="fixed right-4 top-20 w-[420px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-[100] animate-in slide-in-from-top-5 fade-in duration-200">
-          <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between sticky top-0 bg-white dark:bg-slate-900 z-10">
-            <h3 className="font-bold text-xl text-slate-900 dark:text-white">Notifications</h3>
-            {unreadCount > 0 && (
-              <button
-                onClick={markAllAsRead}
-                className="text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg font-medium transition-colors"
-              >
-                Mark all as read
-              </button>
-            )}
-          </div>
-
-          <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
-            {notifications.length === 0 ? (
-              <div className="p-12 text-center text-slate-500">
-                <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Bell className="w-8 h-8 text-slate-400" />
-                </div>
-                <p className="font-medium text-slate-600 dark:text-slate-400">No notifications yet</p>
-                <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">When you get notifications, they'll show up here</p>
-              </div>
-            ) : (
-              notifications.map((notif) => (
-                <div
-                  key={notif._id}
-                  className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-pointer relative ${
-                    !notif.read ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500" : ""
-                  }`}
-                  onClick={async () => {
-                    if (!notif.read) await markAsRead(notif._id);
-                    setIsOpen(false);
-                    if (notif.link) {
-                      setTimeout(() => {
-                        window.location.href = notif.link;
-                      }, 100);
-                    }
-                  }}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            variants={hoverModalVariants}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            className="fixed right-4 top-20 w-[420px] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden z-[100]"
+          >
+            <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between sticky top-0 bg-white dark:bg-slate-900 z-10">
+              <h3 className="font-bold text-xl text-slate-900 dark:text-white">Notifications</h3>
+              {unreadCount > 0 && (
+                <button
+                  onClick={markAllAsRead}
+                  className="text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg font-medium transition-colors"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md">
-                      {notif.sender?.profilePicture ? (
-                        <img src={notif.sender.profilePicture} alt="" className="w-full h-full rounded-full object-cover" />
-                      ) : (
-                        notif.sender?.name?.[0] || "S"
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-slate-900 dark:text-white leading-snug">
-                        <span className="font-semibold">{notif.sender?.name || "Someone"}</span>{" "}
-                        <span className="text-slate-600 dark:text-slate-400">{notif.message.replace(notif.sender?.name || "", "").trim()}</span>
-                      </p>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
-                        {!notif.read && (
-                          <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                  Mark all as read
+                </button>
+              )}
+            </div>
+
+            <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
+              {notifications.length === 0 ? (
+                <div className="p-12 text-center text-slate-500">
+                  <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Bell className="w-8 h-8 text-slate-400" />
+                  </div>
+                  <p className="font-medium text-slate-600 dark:text-slate-400">No notifications yet</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">When you get notifications, they'll show up here</p>
+                </div>
+              ) : (
+                notifications.map((notif) => (
+                  <div
+                    key={notif._id}
+                    className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-pointer relative ${
+                      !notif.read ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500" : ""
+                    }`}
+                    onClick={async () => {
+                      if (!notif.read) await markAsRead(notif._id);
+                      setIsOpen(false);
+                      if (notif.link) {
+                        setTimeout(() => {
+                          window.location.href = notif.link;
+                        }, 100);
+                      }
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-md">
+                        {notif.sender?.profilePicture ? (
+                          <img src={getOptimizedUrl(notif.sender.profilePicture)} alt="" className="w-full h-full rounded-full object-cover" />
+                        ) : (
+                          notif.sender?.name?.[0] || "S"
                         )}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-slate-900 dark:text-white leading-snug">
+                          <span className="font-semibold">{notif.sender?.name || "Someone"}</span>{" "}
+                          <span className="text-slate-600 dark:text-slate-400">{notif.message.replace(notif.sender?.name || "", "").trim()}</span>
+                        </p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
+                          {!notif.read && (
+                            <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
 
-          {notifications.length > 0 && (
-            <Link href="/notifications">
-              <div className="p-4 text-center text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-semibold cursor-pointer border-t border-slate-200 dark:border-slate-800 transition-colors">
-                See all notifications
-              </div>
-            </Link>
-          )}
-        </div>
-      )}
+            {notifications.length > 0 && (
+              <Link href="/notifications">
+                <div className="p-4 text-center text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-semibold cursor-pointer border-t border-slate-200 dark:border-slate-800 transition-colors">
+                  See all notifications
+                </div>
+              </Link>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

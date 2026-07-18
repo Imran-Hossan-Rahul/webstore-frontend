@@ -1,3 +1,4 @@
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { PenTool, Layout, Code, Heart, Eye, MessageCircle, HelpCircle, CheckCircle, AlertCircle, Lightbulb, Flame, BookOpen, Share2, Edit3, Bookmark } from "lucide-react";
@@ -163,7 +164,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                    <CraftsmanHoverCard userId={authorId} username={item.user?.username || item.author?.username} avatarUrl={finalAvatar} displayName={authorName}>
                        <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-white/10 relative">
                             {finalAvatar ? (
-                                <img src={finalAvatar} className="w-full h-full object-cover" />
+                                <img src={getOptimizedUrl(finalAvatar)} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white font-bold">{authorName[0]}</div>
                             )}
@@ -213,7 +214,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                    <div className="relative w-full h-[90px] sm:h-[110px] rounded-xl overflow-hidden mb-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/10 transition-colors">
                        <Link href={href} className="block w-full h-full">
                             {displayImage ? (
-                                <img src={displayImage} className="object-cover w-full h-full" />
+                                <img src={getOptimizedUrl(displayImage)} className="object-cover w-full h-full" />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-gray-300"><Layout size={32}/></div>
                             )}
@@ -327,7 +328,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                          <CraftsmanHoverCard userId={authorId} username={item.user?.username || item.author?.username} avatarUrl={finalAvatar} displayName={authorName}>
                              <div className="w-7 h-7 rounded-full bg-slate-200 overflow-hidden ring-1 ring-gray-100 dark:ring-white/10 shrink-0 border border-transparent">
                                 {finalAvatar ? (
-                                    <img src={finalAvatar} className="w-full h-full object-cover" />
+                                    <img src={getOptimizedUrl(finalAvatar)} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-[10px] font-bold text-white">{authorName[0]}</div>
                                 )}

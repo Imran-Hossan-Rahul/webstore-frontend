@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect } from "react";
 import { Mail, Lock, Shield, Smartphone, History, Check, Loader2, Eye, EyeOff, AlertTriangle, Monitor, Globe, Link2 } from "lucide-react";
 import { api } from "@/utils/api";
@@ -242,7 +243,7 @@ function TwoFASection({ user, refreshUser, showToast }) {
           {qrCode && (
             <div className="flex justify-center">
               <div className="p-4 bg-white rounded-none border-4 border-black">
-                <img src={qrCode} alt="2FA QR Code" className="w-40 h-40" />
+                <img src={getOptimizedUrl(qrCode)} alt="2FA QR Code" className="w-40 h-40" />
               </div>
             </div>
           )}

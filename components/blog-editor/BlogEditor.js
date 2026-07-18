@@ -111,6 +111,7 @@ import { BlockMenu } from "./BlockMenu";
 import { HistoryViewer } from "./HistoryViewer";
 import AIChat from "./AIChat";
 import PublishModal from "./PublishModal";
+import { TableOfContents } from "./extensions/TableOfContents";
 
 // ----------------------
 // Custom Node Extensions
@@ -778,6 +779,7 @@ export const getExtensions = (options = {}) => [
   }),
   MarkdownShortcuts,
   HighlightedBlock,
+  TableOfContents,
 ];
 
 export default function CodexEditor() {

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
 import { User, ArrowRight, Heart, Eye, Share2, Clock, Calendar, Tag, Bookmark } from 'lucide-react';
 import Image from 'next/image';
@@ -221,7 +222,7 @@ const CodexRightSidebar = ({ currentCodexSlug }) => {
                           <div className="flex items-center gap-2 mb-3">
                               <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-200">
                                   {note.user?.profilePicture ? (
-                                      <img src={note.user.profilePicture} alt={note.user.name} className="w-full h-full object-cover" />
+                                      <img src={getOptimizedUrl(note.user.profilePicture)} alt={note.user.name} className="w-full h-full object-cover" />
                                   ) : (
                                       <div className="w-full h-full bg-indigo-500 text-white flex items-center justify-center text-[8px] font-bold">
                                           {note.user?.name?.[0]}

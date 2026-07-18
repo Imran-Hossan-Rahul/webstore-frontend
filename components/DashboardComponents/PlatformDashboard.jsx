@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -493,7 +494,7 @@ function ContentCard({ item, router }) {
               <div className="relative group/profile cursor-pointer">
                   <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-white/50 dark:border-slate-700 shadow-sm group-hover/profile:border-purple-500 transition-colors">
                       {author?.profilePic || author?.avatar ? (
-                          <img src={author.profilePic || author.avatar} alt={author?.name} className="w-full h-full object-cover" />
+                          <img src={getOptimizedUrl(author.profilePic || author.avatar)} alt={author?.name} className="w-full h-full object-cover" />
                       ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-indigo-400 to-purple-500 text-white text-[12px] font-bold">
                               {author?.name?.charAt(0).toUpperCase()}

@@ -72,7 +72,7 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
 
    if (loading) {
        return (
-           <div className="w-full max-w-6xl px-4 flex flex-col">
+           <div className="w-full max-w-6xl px-0 flex flex-col">
                <style>{`
                  @keyframes shimmer {
                    0%   { background-position: -600px 0; }
@@ -226,9 +226,9 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
          {/* <QuickPostBox user={user} onPostCreated={(post) => setFeedItems([post, ...feedItems])} /> */}
          
          {/* Feed List Container - Clean Layout */}
-         <div className="flex flex-col min-h-screen px-4">
+         <div className="flex flex-col min-h-screen px-0">
              {filteredFeedItems.map((item, index) => (
-                 <div key={item._id || item.id} className={`w-full border-x border-b border-slate-200 dark:border-white/10 ${index === 0 ? 'rounded-t-2xl overflow-hidden border-t' : ''} bg-white dark:bg-slate-900/20`}>
+                 <div key={item._id || item.id} className={`w-full overflow-hidden sm:border-x sm:border-b border-slate-200 dark:border-white/10 ${index === 0 ? 'sm:rounded-t-2xl sm:border-t' : ''} bg-transparent sm:bg-white dark:sm:bg-slate-900/20 mb-4 sm:mb-0`}>
                       {item.type === 'artifact' ? (
                            <ArtifactPostCard
                               item={item}

@@ -1,3 +1,4 @@
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState } from "react";
 import { X, Calendar, Clock, Loader2, Video } from "lucide-react";
 import { api } from "@/utils/api";
@@ -52,7 +53,7 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
         <div className="p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50">
           <div className="flex items-center gap-3">
              <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0 border border-slate-300 dark:border-white/20">
-               {mentor.profilePicture ? <img src={mentor.profilePicture} className="w-full h-full object-cover" /> : null}
+               {mentor.profilePicture ? <img src={getOptimizedUrl(mentor.profilePicture)} className="w-full h-full object-cover" /> : null}
              </div>
              <div>
                <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">Book {mentor.name}</h3>

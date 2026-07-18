@@ -1,3 +1,4 @@
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useRef, useEffect } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import { Image as ImageIcon, Send, X, Smile, Calendar, MapPin, BarChart2, Link, Plus, FileText } from 'lucide-react';
@@ -165,7 +166,7 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
                      <div className="flex flex-wrap gap-3 mt-4 animate-in fade-in zoom-in-95 duration-200">
                          {previews.map((url, idx) => (
                              <div key={idx} className="relative w-48 h-48 rounded-2xl overflow-hidden group/preview ring-1 ring-black/5 dark:ring-white/10 shadow-lg">
-                                 <img src={url} alt="To upload" className="w-full h-full object-cover" />
+                                 <img src={getOptimizedUrl(url)} alt="To upload" className="w-full h-full object-cover" />
                                  <button 
                                     onClick={() => removeImage(idx)}
                                     className="absolute top-2 right-2 p-1.5 bg-black/60 text-white rounded-full opacity-0 group-hover/preview:opacity-100 transition-all hover:bg-red-500 backdrop-blur-sm"

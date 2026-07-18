@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useContext } from 'react';
 import { DashboardContext } from '@/app/(dashboard)/layout';
@@ -279,7 +280,7 @@ const VerificationForm = () => {
                   >
                      <input type="file" id="idUp" hidden onChange={(e) => uploadFile(e.target.files[0], 'idDocumentFront')} />
                      {uploading === 'idDocumentFront' ? <Loader2 className="animate-spin text-blue-600" /> : 
-                      formData.idDocumentFront ? <img src={getFullUrl(formData.idDocumentFront)} className="w-full h-full object-cover rounded-xl" alt="" /> :
+                      formData.idDocumentFront ? <img src={getOptimizedUrl(getFullUrl(formData.idDocumentFront))} className="w-full h-full object-cover rounded-xl" alt="" /> :
                       <div className="flex flex-col items-center gap-3 opacity-40"><Upload size={20}/><span className="text-[9px] font-bold uppercase tracking-widest">Upload Front of ID</span></div>
                      }
                   </div>
@@ -300,7 +301,7 @@ const VerificationForm = () => {
                      className={`w-full h-full rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden transition-all ${formData.selfieWithId ? 'border-blue-600 shadow-xl shadow-blue-600/10' : 'border-slate-100 dark:border-white/5 hover:border-blue-600/30 bg-slate-50/50 dark:bg-white/[0.01]'}`}
                   >
                      {uploading === 'selfieWithId' ? <Loader2 className="animate-spin text-blue-600" size={28} /> : 
-                      formData.selfieWithId ? <img src={getFullUrl(formData.selfieWithId)} className="w-full h-full object-cover scale-105" alt="" /> :
+                      formData.selfieWithId ? <img src={getOptimizedUrl(getFullUrl(formData.selfieWithId))} className="w-full h-full object-cover scale-105" alt="" /> :
                       <div className="flex flex-col items-center gap-3 opacity-40"><Camera size={28}/><span className="text-[9px] font-bold uppercase tracking-widest">Take Selfie</span></div>
                      }
                   </div>

@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React from "react";
 import { Trophy, Clock, Users, ArrowRight, ArrowUpRight, Zap, Heart } from "lucide-react";
 import { api } from "@/utils/api";
@@ -72,7 +73,7 @@ export const ChallengeCard = ({ challenge, isGuest, onRequireAuth }) => {
         {/* Cover Image */}
         <div className="h-56 relative overflow-hidden bg-slate-50 dark:bg-black/40">
           {challenge.coverImage ? (
-            <img src={challenge.coverImage} alt={challenge.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+            <img src={getOptimizedUrl(challenge.coverImage)} alt={challenge.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
           ) : (
             <div className="w-full h-full flex items-center justify-center relative opacity-20 group-hover:opacity-30 transition-opacity duration-500 bg-indigo-600">
                <Trophy size={80} className="text-white mix-blend-overlay" />
@@ -116,7 +117,7 @@ export const ChallengeCard = ({ challenge, isGuest, onRequireAuth }) => {
             <div className="flex items-center gap-3 mb-4">
                <div className="w-8 h-8 rounded-full border border-slate-200 dark:border-white/10 flex items-center justify-center overflow-hidden bg-slate-50 dark:bg-white/5">
                   {challenge.craftsman?.profilePicture && challenge.craftsman.profilePicture !== "" ? (
-                     <img src={challenge.craftsman.profilePicture} alt="Host" className="w-full h-full object-cover" />
+                     <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} alt="Host" className="w-full h-full object-cover" />
                   ) : (
                      <span className="text-[10px] font-bold text-slate-500">{challenge.craftsman?.name?.charAt(0) || 'P'}</span>
                   )}

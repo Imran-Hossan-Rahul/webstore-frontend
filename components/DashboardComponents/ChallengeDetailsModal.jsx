@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { X, Trophy, Calendar, Gift, Code, PenTool, Layout as LayoutIcon, ArrowRight, CheckCircle, ExternalLink, Link as LinkIcon, FileText, Heart, Clock, Users } from "lucide-react";
 import { api } from "@/utils/api";
@@ -276,7 +277,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-50 dark:border-white/5">
                         <div className="w-8 h-8 rounded bg-slate-100 dark:bg-white/10 overflow-hidden">
                           {submission.user?.profilePicture ? (
-                            <img src={submission.user.profilePicture} alt="" className="w-full h-full object-cover" />
+                            <img src={getOptimizedUrl(submission.user.profilePicture)} alt="" className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100 dark:bg-slate-800">
                                <Trophy size={14} />

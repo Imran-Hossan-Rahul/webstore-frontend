@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
@@ -198,7 +199,7 @@ function JudgingQueue({ challenge, onSelect }) {
                                     displayName={sub.user?.name}
                                  >
                                     <div className="flex items-center gap-3 cursor-pointer">
-                                       <img src={sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-8 h-8 rounded-full border border-zinc-800/50 object-cover" />
+                                       <img src={getOptimizedUrl(sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-8 h-8 rounded-full border border-zinc-800/50 object-cover" />
                                        <span className="text-sm font-medium text-zinc-200 hover:text-white transition-colors">{sub.user?.name}</span>
                                     </div>
                                  </CraftsmanHoverCard>
@@ -305,7 +306,7 @@ function SubmissionReview({ submission, challenge, onBack, onSuccess }) {
                          displayName={submission.user?.name}
                       >
                          <div className="flex items-center gap-3 cursor-pointer">
-                            <img src={submission.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-10 h-10 rounded-full border border-zinc-800 object-cover shrink-0" />
+                            <img src={getOptimizedUrl(submission.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-10 h-10 rounded-full border border-zinc-800 object-cover shrink-0" />
                             <div>
                                <p className="text-zinc-100 font-medium hover:text-white transition-colors">{submission.user?.name}</p>
                                <p className="text-zinc-500 text-xs">Submitted {new Date(submission.submittedAt).toLocaleDateString()}</p>
@@ -334,7 +335,7 @@ function SubmissionReview({ submission, challenge, onBack, onSuccess }) {
                    <div className="grid grid-cols-2 gap-3">
                       {submission.screenshots.map((src, i) => (
                          <a key={i} href={src} target="_blank" className="rounded-xl overflow-hidden border border-zinc-800/50 aspect-video block">
-                            <img src={src} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            <img src={getOptimizedUrl(src)} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                          </a>
                       ))}
                    </div>
@@ -399,7 +400,7 @@ function SubmissionReview({ submission, challenge, onBack, onSuccess }) {
                             displayName={m?.name}
                          >
                             <div className="flex items-center gap-2 px-3 py-2 bg-zinc-900/50 border border-zinc-800/50 rounded-lg cursor-pointer hover:border-zinc-600 transition-colors">
-                               <img src={m?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-6 h-6 rounded-full object-cover border border-zinc-700" />
+                               <img src={getOptimizedUrl(m?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-6 h-6 rounded-full object-cover border border-zinc-700" />
                                <span className="text-xs text-zinc-300 font-medium">{m?.name || 'Member'}</span>
                             </div>
                          </CraftsmanHoverCard>
@@ -517,7 +518,7 @@ function Leaderboard({ challenge }) {
                            displayName={sub.user?.name}
                         >
                            <div className="flex items-center gap-3 cursor-pointer">
-                              <img src={sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png'} className="w-10 h-10 rounded-full border border-zinc-800/50 object-cover" />
+                              <img src={getOptimizedUrl(sub.user?.profilePicture || 'https://i.ibb.co/L9L7PzY/user.png')} className="w-10 h-10 rounded-full border border-zinc-800/50 object-cover" />
                               <div>
                                  <p className="text-sm font-medium text-zinc-100">{sub.title || sub.tagline || 'Untitled'}</p>
                                  <p className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">{sub.user?.name}</p>

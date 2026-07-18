@@ -1,4 +1,5 @@
 "use client";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, User, Link as LinkIcon, BookOpen, Layers, Github, Eye, Heart, Code2, Users, UserCheck, Zap } from 'lucide-react';
@@ -145,7 +146,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                         {/* Cover */}
                         <div className="relative h-44 md:h-52 w-full shrink-0">
                             {profile.coverPicture ? (
-                                <img src={profile.coverPicture} alt="Cover" className="w-full h-full object-cover" />
+                                <img src={getOptimizedUrl(profile.coverPicture)} alt="Cover" className="w-full h-full object-cover" />
                             ) : (
                                 <div className={`w-full h-full bg-gradient-to-br ${coverGradient}`} />
                             )}
@@ -333,7 +334,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
                                                             {review.reviewerId?.profilePicture ? (
-                                                                <img src={review.reviewerId.profilePicture} alt="" className="w-full h-full object-cover" />
+                                                                <img src={getOptimizedUrl(review.reviewerId.profilePicture)} alt="" className="w-full h-full object-cover" />
                                                             ) : (
                                                                 <div className="w-full h-full flex items-center justify-center text-[10px] font-bold text-slate-400">
                                                                     {review.reviewerId?.name?.[0]}

@@ -23,7 +23,8 @@ export default function DevlogsPage() {
   const fetchDevlogs = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/posts?limit=100&type=devlog");
+      // Reduce limit to prevent main thread freeze on mobile
+      const response = await api.get("/posts?limit=24&type=devlog");
       if (response.data) {
         setDevlogs(response.data);
       }
@@ -48,7 +49,7 @@ export default function DevlogsPage() {
   categories.push(...baseCategories);
 
   return (
-    <div className="w-full max-w-6xl pb-20 animate-in fade-in duration-500">
+    <div className="w-full max-w-6xl pb-20 px-4 md:px-0 lg:px-2">
       
       <div className="flex items-center justify-between gap-6 mb-10 border-b border-slate-100 dark:border-white/10 pb-4">
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase font-[var(--font-syne)] shrink-0">Devlogs Explore</h1>

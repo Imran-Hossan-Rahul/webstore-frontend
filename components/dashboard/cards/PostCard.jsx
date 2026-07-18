@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { api } from "@/utils/api";
 import dynamic from 'next/dynamic';
 import { useShare } from "@/hooks/useShare";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 const DevlogPostCard = dynamic(() => import('./DevlogPostCard'), { ssr: false });
 
@@ -167,7 +168,7 @@ const PostCard = ({
   return (
     <>
     <div 
-        className="border-b border-slate-100 dark:border-white/5 hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group cursor-pointer flex gap-3 p-4" 
+        className="sm:border-b border-slate-100 dark:border-white/5 hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group cursor-pointer flex gap-2 sm:gap-3 p-4" 
         onClick={handleNavigate}
     >
        <div className="flex-shrink-0">
@@ -193,7 +194,7 @@ const PostCard = ({
        <div className="flex-1 min-w-0">
            <div className="flex justify-between items-start mb-1">
                <div className="flex items-center gap-2 flex-wrap">
-                   <Link href={`/u/${user?.username || ''}`} className="font-medium text-slate-900 dark:text-white text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 cursor-pointer font-sans">
+                   <Link href={`/u/${user?.username || ''}`} className="font-bold text-slate-900 dark:text-white text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 cursor-pointer font-sans">
                         {user?.name}
                    </Link>
                    {user?.isVerified && (
@@ -241,11 +242,10 @@ const PostCard = ({
                                 displayImages.length === 1 ? 'aspect-video max-h-[500px]' : 
                                 (displayImages.length === 3 && idx === 0) ? 'row-span-2 aspect-[1/2]' : 'aspect-square'
                             }`}>
-                                <Image 
-                                     src={img} 
-                                     fill 
-                                     className="object-cover" 
-                                     alt="Post attachment" 
+                                <img 
+                                     src={getOptimizedUrl(img)} 
+                                     className="object-cover w-full h-full" 
+                                     alt={`Post content ${idx + 1}`}
                                  />
                             </div>
                         ))}
