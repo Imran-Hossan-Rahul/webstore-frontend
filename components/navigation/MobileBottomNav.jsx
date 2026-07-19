@@ -174,7 +174,7 @@ export default function MobileBottomNav() {
       {/* Bottom Nav Bar */}
       <div
         ref={containerRef}
-        className="md:hidden fixed bottom-0 left-0 right-0 z-[60] pb-safe shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_25px_-5px_rgba(0,0,0,0.5)] transform-gpu"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-[60] pb-safe transform-gpu"
       >
         {/* Hidden SVG for clip path */}
         <svg width="0" height="0" className="absolute pointer-events-none">
