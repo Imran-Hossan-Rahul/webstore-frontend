@@ -300,8 +300,8 @@ export default function ProductDetails({ params }) {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-2 mx-4 flex flex-col lg:flex-row gap-6 items-start">
         
-        {/* Left: Image Gallery (Sticky) */}
-        <div className="lg:w-5/12 sticky top-[120px]">
+        {/* Left: Image Gallery (Sticky on Desktop) */}
+        <div className="lg:w-5/12 lg:sticky lg:top-[120px] z-10">
           <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative group bg-[#f5f5f7] flex items-center justify-center w-full p-8 md:p-12">
                 {activeImage ? (
                   <img 
