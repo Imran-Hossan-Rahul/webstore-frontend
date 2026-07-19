@@ -302,7 +302,7 @@ export default function ProductDetails({ params }) {
         
         {/* Left: Image Gallery (Sticky on Desktop) */}
         <div className="lg:w-5/12 lg:sticky lg:top-[120px] z-10">
-          <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative group bg-[#f5f5f7] flex items-center justify-center w-full p-8 md:p-12">
+          <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12">
                 {activeImage ? (
                   <img 
                     src={getOptimizedUrl(activeImage)} 
@@ -314,12 +314,12 @@ export default function ProductDetails({ params }) {
                 )}
               </div>
               
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex justify-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
                 {images.map((img, idx) => (
                   <button 
                     key={idx} 
                     onClick={() => setActiveImage(img)}
-                    className={`shrink-0 w-20 h-20 bg-[#f5f5f7] rounded-xl flex items-center justify-center p-2 overflow-hidden border-2 transition-all ${activeImage === img ? 'border-gray-800 shadow-md' : 'border-transparent hover:border-gray-300'}`}
+                    className={`shrink-0 w-20 h-20 bg-transparent rounded-xl flex items-center justify-center p-2 overflow-hidden border-2 transition-all ${activeImage === img ? 'border-gray-800 shadow-md' : 'border-transparent hover:border-gray-300'}`}
                   >
                     <img src={getOptimizedUrl(img)} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-contain mix-blend-multiply" />
                   </button>
