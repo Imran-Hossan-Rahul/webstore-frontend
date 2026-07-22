@@ -68,11 +68,30 @@ export default function MarketHome() {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
-  useEffect(() => {
-    api.get('/market/products')
-      .then(data => {
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProducts = (pageNum, reset = false) => {
+    setLoading(true);
+    api.get(`/market/products?page=${pageNum}&limit=12`)
+      .then(res => {
+        // Backend now returns { data, pagination }
+        const data = res.data || [];
+        const pagination = res.pagination || {};
         const liveProducts = data.filter(p => p.status === 'Live');
-        setProducts(liveProducts);
+        
+        if (reset) {
+            setProducts(liveProducts);
+        } else {
+            setProducts(prev => [...prev, ...liveProducts]);
+        }
+        
+        if (pagination.currentPage >= pagination.pages) {
+            setHasMore(false);
+        } else {
+            setHasMore(true);
+        }
         
         if (user) {
           const initialLikes = {};
@@ -81,11 +100,25 @@ export default function MarketHome() {
               initialLikes[p.id] = true;
             }
           });
-          setLikedProducts(initialLikes);
+          setLikedProducts(prev => ({ ...prev, ...initialLikes }));
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchProducts(1, true);
+    setPage(1);
   }, [user]);
+
+  const loadMore = () => {
+    if (!loading && hasMore) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+        fetchProducts(nextPage, false);
+    }
+  };
 
   const toggleLike = async (e, productId) => {
     e.preventDefault();
@@ -303,13 +336,21 @@ export default function MarketHome() {
               </div>
             </div>
           ))}
-          {displayedProducts.length === 0 && (
-            <p className="text-gray-500 col-span-full text-center py-12">No products available at the moment.</p>
-          )}
         </div>
         )}
-
-
+        
+        {/* Load More Button */}
+        {!query && hasMore && (
+          <div className="mt-12 flex justify-center">
+            <button 
+              onClick={loadMore}
+              disabled={loading}
+              className={`bg-white border border-gray-300 text-gray-800 px-8 py-3 rounded-full font-medium hover:bg-gray-50 transition shadow-sm ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {loading ? 'Loading...' : 'Load More Products'}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

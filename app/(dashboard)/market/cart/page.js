@@ -17,9 +17,9 @@ export default function CartPage() {
         if (cartStr) {
           const cartIds = JSON.parse(cartStr);
           if (cartIds.length > 0) {
-            // Fetch all products and filter
-            const products = await api.get('/market/products');
-            const filteredProducts = products.filter(p => cartIds.includes(p.id.toString()));
+            // Fetch ONLY the specific products in the cart
+            const res = await api.get(`/market/products?ids=${cartIds.join(',')}`);
+            const filteredProducts = res.data || [];
             
             const detailsStr = localStorage.getItem('cartDetails');
             const cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
