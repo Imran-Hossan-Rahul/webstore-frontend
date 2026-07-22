@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
@@ -131,7 +132,7 @@ export default function MarketHome() {
                 className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? 'opacity-100' : 'opacity-0 z-0'} ${idx === currentSlide ? 'z-10' : ''}`}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0"></div>
-                <img src={slide.image} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten" />
+                <Image src={slide.image} alt={slide.titleBottom} width={1200} height={800} priority={idx === 0} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten" />
                 
                 <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%]">
                   <h3 className="text-white text-lg md:text-3xl font-medium mb-1 md:mb-2 drop-shadow-md transition-transform duration-700 translate-y-0">{slide.titleTop}</h3>
@@ -173,7 +174,7 @@ export default function MarketHome() {
           <div className="lg:w-1/3 flex flex-row lg:flex-col gap-2 md:gap-4 h-[140px] sm:h-[180px] md:h-[220px] lg:h-[450px]">
             {/* Top Side Banner */}
             <div className="flex-1 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden relative group cursor-pointer flex flex-col justify-center items-center text-center p-4 shadow-sm">
-              <img src="https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Laptops" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay group-hover:scale-105 transition duration-500" />
+              <Image src="https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Laptops" width={600} height={400} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay group-hover:scale-105 transition duration-500" />
               <div className="relative z-10">
                 <p className="text-gray-300 text-[10px] md:text-sm font-medium mb-0.5 md:mb-1">Best deals on</p>
                 <h3 className="text-yellow-400 text-sm md:text-2xl font-black uppercase tracking-wider mb-2 md:mb-4 drop-shadow-md">Windows Laptops</h3>
@@ -183,7 +184,7 @@ export default function MarketHome() {
             
             {/* Bottom Side Banner */}
             <div className="flex-1 bg-gradient-to-r from-teal-900 to-slate-900 rounded-xl overflow-hidden relative group cursor-pointer flex flex-col justify-center px-4 md:px-6 shadow-sm">
-              <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Electronics" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity group-hover:scale-105 transition duration-500" />
+              <Image src="https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Electronics" width={600} height={400} className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity group-hover:scale-105 transition duration-500" />
               <div className="relative z-10">
                 <h3 className="text-cyan-400 text-[9px] md:text-xs font-semibold tracking-widest mb-0.5 md:mb-1 uppercase">Largest Electronic</h3>
                 <h2 className="text-white text-lg md:text-3xl font-light italic mb-2 md:mb-3">Hypermarket</h2>
