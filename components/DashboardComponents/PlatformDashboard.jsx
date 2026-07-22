@@ -434,8 +434,9 @@ function ContentCard({ item, router }) {
                           </div>
                       ) : (
                           /* Other Types: Tags & Description */
-                          <>
-                              <div className="absolute inset-0 opacity-100 group-hover:opacity-0 transition-opacity duration-300 flex flex-wrap gap-1.5 items-center">
+                          <div className="grid grid-cols-1 grid-rows-1 pr-16">
+                              {/* Tags Layer */}
+                              <div className="col-start-1 row-start-1 opacity-100 group-hover:opacity-0 transition-opacity duration-300 flex flex-wrap gap-1.5 items-center self-end">
                                   {displayedTags.length > 0 ? (
                                       displayedTags.map((t, i) => (
                                          <span key={i} className="text-[10px] uppercase font-semibold tracking-wide text-white/90 bg-white/10 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/5">
@@ -446,12 +447,13 @@ function ContentCard({ item, router }) {
                                       <span className="text-[10px] text-white/60 italic">No tags</span>
                                   )}
                               </div>
-                              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              {/* Description Layer */}
+                              <div className="col-start-1 row-start-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
                                    <p className="text-gray-200 text-xs line-clamp-2 leading-relaxed">
                                        {description || "No description available."}
                                    </p>
                               </div>
-                          </>
+                          </div>
                       )}
                  </div>
              </div>
