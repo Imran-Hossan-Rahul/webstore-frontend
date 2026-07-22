@@ -35,9 +35,9 @@ export default function ScanLandingPage() {
       >
         {/* Logo Section */}
         <motion.div variants={itemVariants} className="flex flex-col items-center justify-center mb-12">
-          {/* Logo container matching the packaging C design */}
-          <div className="w-20 h-20 bg-white flex items-center justify-center rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] mb-6 transition-transform hover:scale-105 cursor-default relative overflow-hidden">
-             <img src="/codalina-logo.png" alt="Codalina Logo" className="w-full h-full object-cover" />
+          {/* Logo container */}
+          <div className="w-24 h-24 flex items-center justify-center mb-4 transition-transform hover:scale-105 cursor-default relative overflow-hidden">
+             <img src="/codalina-logo.png" alt="Codalina Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-2 text-center">
             Codalina
