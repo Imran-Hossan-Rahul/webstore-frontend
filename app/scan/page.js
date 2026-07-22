@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, BookOpen, Users, ArrowRight, ShieldCheck } from 'lucide-react';
+import { CheckCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ScanLandingPage() {
@@ -74,13 +74,14 @@ export default function ScanLandingPage() {
 
 
         {/* Footer */}
-        <motion.div variants={itemVariants} className="mt-16 text-center">
+        <motion.div variants={itemVariants} className="mt-12 text-center flex flex-col items-center">
+          <Link href="/market" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium text-sm hover:scale-105 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] mb-8">
+            Explore our Marketplace
+            <ArrowRight className="w-4 h-4" />
+          </Link>
           <p className="text-neutral-600 text-xs font-mono">
             © {new Date().getFullYear()} Codalina.
           </p>
-          <a href="https://www.codalina.com" className="text-neutral-500 text-xs mt-1 block hover:text-brand-primary transition-colors">
-            www.codalina.com
-          </a>
         </motion.div>
       </motion.div>
     </div>
