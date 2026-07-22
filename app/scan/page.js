@@ -36,7 +36,7 @@ export default function ScanLandingPage() {
         {/* Logo Section */}
         <motion.div variants={itemVariants} className="flex flex-col items-center justify-center mb-12">
           {/* Logo container */}
-          <div className="w-24 h-24 flex items-center justify-center mb-4 mt-16 cursor-default relative overflow-hidden">
+          <div className="w-24 h-24 flex items-center justify-center -mb-6 mt-16 cursor-default relative overflow-hidden">
              <img src="/codalina-logo.png" alt="Codalina Logo" className="w-full h-full object-contain" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-2 text-center">
