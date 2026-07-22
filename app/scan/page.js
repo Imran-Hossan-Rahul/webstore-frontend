@@ -36,12 +36,8 @@ export default function ScanLandingPage() {
         {/* Logo Section */}
         <motion.div variants={itemVariants} className="flex flex-col items-center justify-center mb-12">
           {/* Logo container matching the packaging C design */}
-          <div className="w-16 h-16 bg-black text-white flex items-center justify-center rounded-xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] mb-6 transition-transform hover:scale-105 cursor-default relative">
-             <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Minimalist C logo path inspired by the poly bag */}
-                <path d="M70 25 L45 50 L70 75" stroke="white" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M45 50 L70 75" stroke="white" strokeWidth="16" strokeLinecap="round" strokeLinejoin="round" />
-             </svg>
+          <div className="w-20 h-20 bg-white flex items-center justify-center rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] mb-6 transition-transform hover:scale-105 cursor-default relative overflow-hidden">
+             <img src="/codalina-logo.png" alt="Codalina Logo" className="w-full h-full object-cover" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 mb-2 text-center">
             Codalina
