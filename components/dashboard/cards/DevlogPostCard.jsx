@@ -271,8 +271,7 @@ const DevlogPostCard = ({
                  </button>
              </div>
 
-            <div className="relative">
-                {/* Devlog Title & Status */}
+            {/* Devlog Title & Status */}
                 <div className="mb-3 flex justify-between items-start gap-4">
                     <div>
                         <h2 className="text-base font-normal text-slate-900 dark:text-white mb-0.5 font-sans">
@@ -289,6 +288,7 @@ const DevlogPostCard = ({
                     </div>
                 </div>
 
+                <div className="relative">
                 {/* Main Content Grid: Image + Details */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 lg:overflow-visible">
                 
@@ -509,7 +509,6 @@ const DevlogPostCard = ({
                     </div>
                 </div>
             </div>
-            </div>
 
             {/* Action Bar (Evenly Distributed) */}
             <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5 w-full">
@@ -542,6 +541,7 @@ const DevlogPostCard = ({
                 >
                     <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
                 </button>
+            </div>
             </div>
         </div>
 

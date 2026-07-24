@@ -270,8 +270,7 @@ const ArtifactPostCard = ({
                  </button>
              </div>
 
-            <div className="relative">
-                {/* Artifact Title & Pricing */}
+            {/* Artifact Title & Pricing */}
                 <div className="mb-3 flex justify-between items-start gap-4">
                     <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans">
                         {title}
@@ -289,6 +288,7 @@ const ArtifactPostCard = ({
                     </div>
                 </div>
 
+                <div className="relative">
                 {/* Main Content Grid: Image + Details */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 lg:overflow-visible">
                 
@@ -460,7 +460,6 @@ const ArtifactPostCard = ({
                     </div>
                 </div>
             </div>
-            </div>
 
             {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
             <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
@@ -555,6 +554,7 @@ const ArtifactPostCard = ({
                     </button>
 
                  </div>
+            </div>
             </div>
         </div>
 
