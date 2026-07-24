@@ -522,7 +522,7 @@ const DevlogPostCard = ({
                 {/* 2. Views (Center-Left) */}
                 <div className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200">
                     <Eye size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
-                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{viewsCount || 0}</span>
+                    <span className="text-xs mt-[2px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{viewsCount || 0}</span>
                 </div>
 
                 {/* 3. Star (Center-Right) */}
@@ -531,7 +531,7 @@ const DevlogPostCard = ({
                     className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                 >
                     <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
-                    <span className={`text-xs font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likeCount}</span>
+                    <span className={`text-xs mt-[2px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likeCount}</span>
                 </button>
 
                 {/* 4. Share (Right) */}

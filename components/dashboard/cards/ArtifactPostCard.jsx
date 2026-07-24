@@ -531,7 +531,7 @@ const ArtifactPostCard = ({
                         className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                     >
                         <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
-                        <span className={`text-xs font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
+                        <span className={`text-xs mt-[2px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
                     </button>
 
                     {/* Share */}
@@ -549,10 +549,9 @@ const ArtifactPostCard = ({
                         onClick={handleDownload}
                         className="group/btn flex items-center gap-1.5 py-1 pl-1 transition-all duration-200 cursor-pointer"
                     >
-                        <Download size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-purple-600 dark:group-hover/btn:text-purple-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
-                        <span className="text-xs font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
+                        <Download size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-purple-600 dark:group-hover/btn:purple-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
+                        <span className="text-xs mt-[2px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
                     </button>
-
                  </div>
             </div>
             </div>
