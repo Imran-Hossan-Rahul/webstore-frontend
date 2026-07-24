@@ -472,6 +472,7 @@ const ArtifactPostCard = ({
                             </div>
                         </div>
                     </div>
+                </div>
             </div>
             </div>
 

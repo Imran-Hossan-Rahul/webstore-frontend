@@ -507,6 +507,7 @@ const DevlogPostCard = ({
 
                         </div>
                     </div>
+                </div>
             </div>
             </div>
 
