@@ -11,7 +11,7 @@ import {
     SiTailwindcss, SiBootstrap, SiMui, SiChakraui, SiAntdesign,
     SiGit, SiGithub, SiGitlab, SiBitbucket, SiJira, SiTrello, SiNotion,
     SiWebpack, SiVite, SiBabel, SiEslint, SiPrettier, SiJest, SiCypress,
-    SiTwilio, SiCloudinary, SiVercel, SiNetlify
+    SiTwilio, SiVercel, SiNetlify
 } from "react-icons/si";
 import { FaJava, FaNetworkWired } from "react-icons/fa";
 import { Code2 } from "lucide-react";
@@ -88,7 +88,6 @@ export const techIconMap = {
     "cypress": SiCypress,
     "twilio": SiTwilio,
     "sendgrid": SiTwilio, // fallback
-    "cloudinary": SiCloudinary,
     "vercel": SiVercel,
     "netlify": SiNetlify
 };
