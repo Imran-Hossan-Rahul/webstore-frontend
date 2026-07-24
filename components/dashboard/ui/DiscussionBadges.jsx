@@ -55,7 +55,7 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                 const hasCount = count > 0;
 
                 const hoverColorMap = {
-                    comment: 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200',
+                    comment: 'group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200',
                     question: 'group-hover/btn:text-indigo-500 dark:group-hover/btn:text-indigo-400',
                     answer: 'group-hover/btn:text-emerald-500 dark:group-hover/btn:text-emerald-400',
                     issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
@@ -64,9 +64,9 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                     kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                 };
 
-                const baseColor = 'text-slate-700 dark:text-slate-300';
+                const baseColor = 'text-slate-500 dark:text-slate-400';
                 
-                const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
+                const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200';
 
                 const isMainComment = stat.id === 'comment';
 
@@ -85,8 +85,9 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                         }}
                     >
                         <Icon 
-                            size={16} 
-                            className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
+                            size={18} 
+                            strokeWidth={1.5}
+                            className={`${baseColor} ${hoverColor} group-hover/btn:scale-105 transition-all duration-200`} 
                         />
                         {hasCount && (
                             <span className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
