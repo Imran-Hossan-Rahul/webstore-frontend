@@ -277,11 +277,11 @@ const ArtifactPostCard = ({
                     </h2>
                     <div className="flex-shrink-0 hidden sm:block">
                         {isFree ? (
-                            <span className="px-2.5 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[10px] font-mono font-medium rounded uppercase tracking-[0.2em]">
+                            <span className="px-2.5 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-xs font-semibold rounded">
                                 Free
                             </span>
                         ) : (
-                            <span className="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-mono font-medium rounded flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                            <span className="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold rounded flex items-center gap-1 shadow-sm">
                                 <Zap size={12} /> {price} TKNS
                             </span>
                         )}
@@ -335,7 +335,7 @@ const ArtifactPostCard = ({
                             
                             {/* Header: Links & Resources */}
                             <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
-                                <span className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-[0.2em] flex items-center gap-1">
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                                     <FileText size={14}/> Details
                                 </span>
                                 <div className="flex gap-2">
@@ -407,13 +407,13 @@ const ArtifactPostCard = ({
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
                                       <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
                                       <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
@@ -422,7 +422,7 @@ const ArtifactPostCard = ({
 
                             {/* Description - Always Show */}
                             <div className="mt-1">
-                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
+                                <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Description</div>
                                 <div className="text-xs text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {description ? (
                                         description.length > 160
@@ -436,12 +436,12 @@ const ArtifactPostCard = ({
 
                             {/* Tech Stack - Always Show */}
                             <div className="pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
-                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2.5} /> Tech Stack</div>
+                                <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2.5} /> Tech Stack</div>
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tech) && tech.length > 0 ? (
                                         <>
                                             {tech.slice(0, 4).map((t, idx) => (
-                                                <span key={idx} className={`text-[9px] font-mono font-bold px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity uppercase tracking-wider ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
+                                                <span key={idx} className={`text-[11px] font-semibold px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
                                                     {t}
                                                 </span>
                                             ))}

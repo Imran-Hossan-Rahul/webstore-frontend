@@ -279,7 +279,7 @@ const DevlogPostCard = ({
                         </h2>
                     </div>
                     <div className="flex-shrink-0 hidden sm:block">
-                        <span className={`px-2.5 py-1 text-[9px] font-mono font-medium rounded border tracking-[0.2em] uppercase shadow-sm ${
+                        <span className={`px-2.5 py-1 text-[11px] font-semibold rounded border shadow-sm ${
                             status === 'Completed' ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' : 
                             'bg-white text-slate-900 border-slate-200 dark:bg-black dark:text-white dark:border-white/10'
                         }`}>
@@ -320,7 +320,7 @@ const DevlogPostCard = ({
                                  </div>
                              )}
                              {images.length > 1 && (
-                                 <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[9px] font-mono font-medium px-2 py-1 rounded-full border border-white/10 uppercase tracking-wider">
+                                 <div className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-white text-[11px] font-semibold px-2 py-1 rounded-full border border-white/10">
                                      {images.length} Images
                                  </div>
                              )}
@@ -348,7 +348,7 @@ const DevlogPostCard = ({
                             
                             {/* Header: Links & Resources */}
                             <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
-                                <span className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-[0.2em] flex items-center gap-1">
+                                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1">
                                     <FileText size={14}/> Details
                                 </span>
                                 <div className="flex gap-2">
@@ -440,20 +440,20 @@ const DevlogPostCard = ({
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
                                       <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2.5}/> Team</div>
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2.5}/> Team</div>
                                       <div className="text-xs font-bold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
                                           {collaborators.length > 0 ? `${collaborators.length} Members` : 'Solo'}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2.5}/> Timeline</div>
-                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2.5}/> Timeline</div>
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-2">
                                           <div className="flex-1 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
                                               <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 relative"></div>
                                           </div>
@@ -461,7 +461,7 @@ const DevlogPostCard = ({
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
-                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
+                                      <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
                                       <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
@@ -470,7 +470,7 @@ const DevlogPostCard = ({
 
                             {/* Description - Always Show */}
                             <div className="mt-1">
-                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
+                                <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-2">Description</div>
                                 <div className="text-xs text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {content ? (
                                         plainTextDescription.length > 160
@@ -484,17 +484,17 @@ const DevlogPostCard = ({
 
                             {/* Tech Stack - Always Show */}
                             <div className="pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
-                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2} /> Tech Stack</div>
+                                <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2} /> Tech Stack</div>
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tools) && tools.length > 0 ? (
                                         <>
                                             {tools.slice(0, 4).map((t, idx) => (
-                                                <span key={idx} className={`text-[9px] font-mono font-medium px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity uppercase tracking-wider ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
+                                                <span key={idx} className={`text-[11px] font-semibold px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
                                                     {t}
                                                 </span>
                                             ))}
                                             {tools.length > 4 && (
-                                                <span className="text-[9px] font-mono font-medium px-2 py-0.5 border border-slate-200 dark:border-white/10 rounded text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 uppercase">
+                                                <span className="text-[11px] font-semibold px-2 py-0.5 border border-slate-200 dark:border-white/10 rounded text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 uppercase">
                                                     +{tools.length - 4} more
                                                 </span>
                                             )}

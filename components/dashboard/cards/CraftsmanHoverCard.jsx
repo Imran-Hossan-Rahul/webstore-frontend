@@ -428,7 +428,7 @@ export default function CraftsmanHoverCard({
                       <span className="text-[13px] font-bold text-slate-900 dark:text-white mt-1.5 tabular-nums">
                         {val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}
                       </span>
-                      <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+                      <span className="text-[9px] text-slate-400 font-bold mt-0.5">
                         {label}
                       </span>
                     </div>

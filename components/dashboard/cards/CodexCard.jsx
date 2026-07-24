@@ -202,7 +202,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
           <div className="absolute inset-0 z-20 rounded-xl bg-white/60 dark:bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
             <div className="flex items-center gap-2.5">
               <div className="w-4 h-4 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
-              <span className="text-[11px] font-mono font-bold text-indigo-500 uppercase tracking-widest">Opening...</span>
+              <span className="text-xs font-semibold text-indigo-500">Opening...</span>
             </div>
           </div>
         )}
@@ -251,12 +251,12 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                       </h3>
                     </CraftsmanHoverCard>
                      {/* TYPE BADGE: CODEX */}
-                     <span className="bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/20 text-[9px] font-mono font-medium px-1.5 py-0.5 rounded uppercase tracking-[0.2em] flex items-center gap-1">
+                     <span className="bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/20 text-[11px] font-semibold px-1.5 py-0.5 rounded flex items-center gap-1">
                         <FileText size={10} className="stroke-[3]" /> {codex.category && codex.category !== 'uncategorized' ? codex.category : 'Codex'}
                     </span>
                  </div>
                  <span className="hidden sm:inline text-slate-400 text-sm">·</span>
-                 <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-wider">
+                 <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-xs font-semibold">
                      <span>{new Date(createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                      <span className="text-gray-300 dark:text-slate-600">•</span>
                      <span className="flex items-center gap-1">
@@ -383,7 +383,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                          className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
                        />
                        {hasCount && (
-                           <span className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
+                           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
                                {count}
                            </span>
                        )}

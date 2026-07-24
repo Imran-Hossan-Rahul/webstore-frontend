@@ -143,7 +143,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                 <span className="text-slate-900 dark:text-white">
                     {TypeIcon && <TypeIcon size={11} strokeWidth={1.5} />}
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-900 dark:text-white">
+                <span className="text-[9px] font-bold text-slate-900 dark:text-white">
                     {typeLabel}
                 </span>
             </div>
@@ -202,7 +202,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                                     <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
                                 )}
                             </div>
-                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate hover:text-slate-900 dark:hover:text-white transition-colors">
+                            <span className="text-[10px] font-bold text-slate-500 truncate hover:text-slate-900 dark:hover:text-white transition-colors">
                                 {highlightText(author?.name || "Anonymous", searchQuery)}
                             </span>
                         </div>
@@ -239,7 +239,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                     {(type === 'devlog' || type === 'artifact') && item.tags?.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
                             {item.tags.slice(0, 2).map((tag, i) => (
-                                <span key={i} className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter border border-slate-100 dark:border-white/5 px-1.5 py-0.5 rounded">
+                                <span key={i} className="text-[9px] font-bold text-slate-400er border border-slate-100 dark:border-white/5 px-1.5 py-0.5 rounded">
                                     {tag}
                                 </span>
                             ))}
@@ -255,7 +255,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         
                         <div className="absolute bottom-full left-0 pb-2 w-52 opacity-0 invisible group-hover/folder:opacity-100 group-hover/folder:visible transition-all z-30">
                             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl py-2">
-                                <p className="px-4 py-1 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 mb-1">Move to...</p>
+                                <p className="px-4 py-1 text-[10px] font-black text-slate-400 border-b border-slate-100 dark:border-white/5 mb-1">Move to...</p>
                                 <div className="max-h-48 overflow-y-auto custom-scrollbar">
                                     {(() => {
                                         const itemId = item._id || item.id;

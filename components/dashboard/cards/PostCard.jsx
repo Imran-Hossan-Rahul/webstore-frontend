@@ -202,9 +202,9 @@ const PostCard = ({
                              <CheckCircle2 size={16} className="fill-current" />
                         </span>
                    )}
-                   <span className="text-slate-400 text-[10px] font-mono font-medium uppercase tracking-tight">@{user?.username || "user"}</span>
+                   <span className="text-slate-400 text-xs font-semibold">@{user?.username || "user"}</span>
                    <span className="text-gray-300 dark:text-slate-600 text-xs">•</span>
-                   <span suppressHydrationWarning className="text-slate-400 text-[10px] font-mono font-medium uppercase tracking-tight hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
+                   <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
                </div>
            </div>
            
@@ -217,7 +217,7 @@ const PostCard = ({
                         <button 
                              type="button"
                              onClick={(e) => { e.stopPropagation(); setIsDetailOpen(true); }}
-                             className="text-purple-500 hover:text-purple-600 font-mono font-medium text-[10px] ml-1 hover:underline uppercase tracking-wider"
+                             className="text-purple-500 hover:text-purple-600 font-medium text-[10px] ml-1 hover:underline"
                         >
                             Read Case Study
                         </button>
@@ -263,7 +263,7 @@ const PostCard = ({
                         <div className="relative">
                              <Star className={`w-[1.2rem] h-[1.2rem] ${isLiked ? 'fill-current' : ''}`} />
                         </div>
-                        <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount || 0}</span>
+                        <span className="text-xs font-semibold tabular-nums">{likeCount || 0}</span>
                     </button>
                     
                     <button 
@@ -275,7 +275,7 @@ const PostCard = ({
                         <div>
                             <MessageCircle className="w-[1.2rem] h-[1.2rem]" />
                         </div>
-                        <span className="text-[11px] font-mono font-medium tabular-nums">{currentCommentsCount || 0}</span>
+                        <span className="text-xs font-semibold tabular-nums">{currentCommentsCount || 0}</span>
                     </button>
 
                      <button 
@@ -322,7 +322,7 @@ const PostCard = ({
                                     <div className="flex-1">
                                          <div className="flex items-center gap-2 mb-0.5">
                                              <span className="font-medium text-xs text-slate-900 dark:text-white hover:underline cursor-pointer font-sans">{comment.user?.name}</span>
-                                             <span suppressHydrationWarning className="text-slate-400 text-[10px] font-mono font-medium uppercase tracking-tight">{timeAgo(comment.createdAt)}</span>
+                                             <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold">{timeAgo(comment.createdAt)}</span>
                                          </div>
                                          <p className="text-slate-800 dark:text-gray-300 text-sm">{comment.content}</p>
                                     </div>
@@ -347,7 +347,7 @@ const PostCard = ({
                              <button 
                                  onClick={handlePostComment}
                                  disabled={!commentText.trim()}
-                                 className="text-purple-500 disabled:opacity-50 disabled:cursor-not-allowed font-mono font-medium text-[11px] uppercase tracking-wider"
+                                 className="text-purple-500 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-[11px]"
                              >
                                  Reply
                              </button>
