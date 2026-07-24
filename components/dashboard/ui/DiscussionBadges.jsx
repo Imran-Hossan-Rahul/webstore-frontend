@@ -89,7 +89,7 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                             className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
                         />
                         {hasCount && (
-                            <span className="text-[11px] font-mono font-medium text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
+                            <span className="text-[13px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
                                 {count}
                             </span>
                         )}
