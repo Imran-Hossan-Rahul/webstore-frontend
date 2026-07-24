@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/ToastProvider";
 import CraftsmanHoverCard from './CraftsmanHoverCard';
 import { useEffect } from 'react';
+import { useTheme } from "next-themes";
+import TechIcon from '@/components/ui/TechIcon';
 import { useShare } from "@/hooks/useShare";
 import NProgress from 'nprogress';
 
@@ -440,19 +442,24 @@ const ArtifactPostCard = ({
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tech) && tech.length > 0 ? (
                                         <>
-                                            {tech.slice(0, 4).map((t, idx) => (
-                                                <span key={idx} className={`text-[11px] font-semibold px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
-                                                    {t}
-                                                </span>
+                                            {tech.slice(0, 6).map((t, idx) => (
+                                                <div 
+                                                    key={idx} 
+                                                    onClick={(e) => { e.stopPropagation(); }}
+                                                    title={t}
+                                                    className={`p-1.5 border rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 transition-transform ${getTechColor(t)}`}
+                                                >
+                                                    <TechIcon tech={t} size={14} />
+                                                </div>
                                             ))}
-                                            {tech.length > 4 && (
-                                                <span className="text-[10px] font-bold px-2 py-0.5 border border-slate-200/80 dark:border-white/10 rounded text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-white/5">
-                                                    +{tech.length - 4} more
-                                                </span>
+                                            {tech.length > 6 && (
+                                                <div className="text-[10px] font-bold px-1.5 py-1 border border-slate-200 dark:border-white/10 rounded-lg text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5 flex items-center justify-center h-[28px]">
+                                                    +{tech.length - 6}
+                                                </div>
                                             )}
                                         </>
                                     ) : (
-                                        <span className="text-xs text-slate-500 italic">No tech stack</span>
+                                        <span className="text-slate-500 italic text-[11px]">No tech stack added</span>
                                     )}
                                 </div>
                             </div>
