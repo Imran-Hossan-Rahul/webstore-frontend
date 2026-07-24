@@ -290,7 +290,7 @@ const DevlogPostCard = ({
 
                 <div className="relative">
                 {/* Main Content Grid: Image + Details */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 lg:overflow-visible">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:overflow-visible">
                 
                 {/* Left: Preview Image */}
                 <div className="lg:col-span-7 h-full">
@@ -511,7 +511,7 @@ const DevlogPostCard = ({
             </div>
 
             {/* Action Bar (Evenly Distributed) */}
-            <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5 w-full">
+            <div className="flex items-center justify-between pt-1.5 mt-1.5 border-t border-slate-100 dark:border-white/5 w-full">
                 {/* 1. Discussion (Left) */}
                 <DiscussionBadges 
                     item={post} 
