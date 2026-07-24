@@ -274,7 +274,7 @@ const DevlogPostCard = ({
             {/* Devlog Title & Status */}
                 <div className="mb-3 flex justify-between items-start gap-4">
                     <div>
-                        <h2 className="text-[15px] sm:text-base font-semibold leading-snug text-slate-900 dark:text-white mb-0.5 font-sans line-clamp-2">
+                        <h2 className="text-[15px] font-normal leading-snug text-slate-900 dark:text-white mb-0.5 font-sans line-clamp-2">
                             {title || "Untitled Devlog"}
                         </h2>
                     </div>
