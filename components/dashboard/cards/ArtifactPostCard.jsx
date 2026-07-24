@@ -261,7 +261,7 @@ const ArtifactPostCard = ({
                         </CraftsmanHoverCard>
                      </div>
                      <span className="text-slate-400 text-sm">·</span>
-                     <span className="text-slate-500 dark:text-slate-400 text-[13px] font-normal">
+                     <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">
                          {formatDate(createdAt)}
                      </span>
                  </div>
@@ -408,13 +408,13 @@ const ArtifactPostCard = ({
                             <div className="grid grid-cols-2 gap-2">
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
                                  </div>
@@ -423,7 +423,7 @@ const ArtifactPostCard = ({
                             {/* Description - Always Show */}
                             <div className="mt-1">
                                 <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
-                                <div className="text-[13px] text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                                <div className="text-xs text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {description ? (
                                         description.length > 160
                                           ? `${description.substring(0, 160)}...`
@@ -513,7 +513,7 @@ const ArtifactPostCard = ({
                                         className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
                                     />
                                     {hasCount && (
-                                        <span className="text-[13px] font-normal text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
+                                        <span className="text-xs font-normal text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
                                             {count}
                                         </span>
                                     )}
@@ -531,7 +531,7 @@ const ArtifactPostCard = ({
                         className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                     >
                         <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
-                        <span className={`text-[13px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
+                        <span className={`text-xs font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
                     </button>
 
                     {/* Share */}
@@ -550,7 +550,7 @@ const ArtifactPostCard = ({
                         className="group/btn flex items-center gap-1.5 py-1 pl-1 transition-all duration-200 cursor-pointer"
                     >
                         <Download size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-purple-600 dark:group-hover/btn:text-purple-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
-                        <span className="text-[13px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
+                        <span className="text-xs font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
                     </button>
 
                  </div>

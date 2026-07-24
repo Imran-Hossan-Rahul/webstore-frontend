@@ -262,7 +262,7 @@ const DevlogPostCard = ({
                         </CraftsmanHoverCard>
                      </div>
                      <span className="text-slate-400 text-sm">·</span>
-                     <span className="text-slate-500 dark:text-slate-400 text-[13px] font-normal">
+                     <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">
                          {formatDate(createdAt)}
                      </span>
                  </div>
@@ -441,19 +441,19 @@ const DevlogPostCard = ({
                             <div className="grid grid-cols-2 gap-2">
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2.5}/> Team</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
                                           {collaborators.length > 0 ? `${collaborators.length} Members` : 'Solo'}
                                       </div>
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2.5}/> Timeline</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
                                           <div className="flex-1 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
                                               <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 relative"></div>
                                           </div>
@@ -462,7 +462,7 @@ const DevlogPostCard = ({
                                  </div>
                                  <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
                                       <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
-                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                      <div className="text-xs font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
                                  </div>
@@ -471,7 +471,7 @@ const DevlogPostCard = ({
                             {/* Description - Always Show */}
                             <div className="mt-1">
                                 <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
-                                <div className="text-[13px] text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                                <div className="text-xs text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {content ? (
                                         plainTextDescription.length > 160
                                           ? `${plainTextDescription.substring(0, 160)}...`
@@ -522,7 +522,7 @@ const DevlogPostCard = ({
                 {/* 2. Views (Center-Left) */}
                 <div className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200">
                     <Eye size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
-                    <span className="text-[13px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{viewsCount || 0}</span>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{viewsCount || 0}</span>
                 </div>
 
                 {/* 3. Star (Center-Right) */}
@@ -531,7 +531,7 @@ const DevlogPostCard = ({
                     className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                 >
                     <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
-                    <span className={`text-[13px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likeCount}</span>
+                    <span className={`text-xs font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likeCount}</span>
                 </button>
 
                 {/* 4. Share (Right) */}
