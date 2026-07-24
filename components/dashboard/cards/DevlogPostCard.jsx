@@ -246,7 +246,7 @@ const DevlogPostCard = ({
         {/* Right Column: Content */}
         <div className="flex-1 min-w-0">
              {/* Header */}
-             <div className="flex justify-between items-start mb-0.5">
+             <div className="flex justify-between items-start mb-0">
                  <div className="flex flex-row items-center gap-1.5 flex-wrap">
                      <div className="flex items-center gap-2">
                         <CraftsmanHoverCard
@@ -256,7 +256,7 @@ const DevlogPostCard = ({
                           displayName={userName}
                           wrapperDisplay="inline"
                         >
-                           <h3 className="font-bold text-slate-900 dark:text-gray-100 text-[15px] leading-tight hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
+                           <h3 className="font-bold text-slate-900 dark:text-gray-100 text-[15px] leading-snug hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
                                {userName}
                           </h3>
                         </CraftsmanHoverCard>
