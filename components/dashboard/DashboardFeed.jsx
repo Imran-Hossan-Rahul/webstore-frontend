@@ -64,7 +64,84 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
       setSize(size + 1);
   };
   
-  const filteredFeedItems = React.useMemo(() => feedItems, [feedItems]);
+  const DEMO_ARTIFACTS = [
+    {
+      _id: "demo-1",
+      type: "artifact",
+      title: "Glassmorphism Login UI Component",
+      description: "A highly professional glassmorphism login UI component ready to use in your next Next.js project. Built with Tailwind CSS and Framer Motion for smooth animations.",
+      previewFile: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000",
+      thumbnail: "https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1000",
+      likes: 124,
+      likeCount: 124,
+      viewsCount: 3400,
+      downloadsCount: 56,
+      priceType: "free",
+      price: 0,
+      tech: ["React", "Next.js", "Tailwind CSS", "Framer Motion"],
+      createdAt: new Date().toISOString(),
+      user: {
+        _id: "u1",
+        name: "Imran Hossan",
+        username: "imran",
+        avatar: "https://avatars.githubusercontent.com/u/124599?v=4",
+        role: "craftsman",
+        badges: ["pro"]
+      }
+    },
+    {
+      _id: "demo-2",
+      type: "artifact",
+      title: "E-Commerce Dashboard Template",
+      description: "Complete responsive dashboard layout for e-commerce platforms. Features dark mode, sidebar navigation, and dynamic chart widgets.",
+      previewFile: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000",
+      thumbnail: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000",
+      likes: 89,
+      likeCount: 89,
+      viewsCount: 2100,
+      downloadsCount: 34,
+      priceType: "paid",
+      price: 49,
+      tech: ["Vue.js", "Nuxt", "Tailwind CSS", "TypeScript"],
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
+      user: {
+        _id: "u2",
+        name: "Alex Dev",
+        username: "alexdev",
+        avatar: "https://avatars.githubusercontent.com/u/30113222?v=4",
+        role: "craftsman"
+      }
+    },
+    {
+      _id: "demo-3",
+      type: "artifact",
+      title: "Minimalist Developer Portfolio",
+      description: "Clean, responsive, and minimalist portfolio template. Perfect for developers and designers to showcase their work effectively and get hired.",
+      previewFile: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000",
+      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000",
+      likes: 312,
+      likeCount: 312,
+      viewsCount: 8500,
+      downloadsCount: 420,
+      priceType: "free",
+      price: 0,
+      tech: ["React", "HTML5", "CSS3", "Vite"],
+      createdAt: new Date(Date.now() - 172800000).toISOString(),
+      user: {
+        _id: "u3",
+        name: "Sarah Parker",
+        username: "sarahp",
+        avatar: "https://avatars.githubusercontent.com/u/823758?v=4",
+        role: "craftsman"
+      }
+    }
+  ];
+
+  const filteredFeedItems = React.useMemo(() => {
+      // Temporarily filter to ONLY show artifacts + inject DEMO ones
+      const artifacts = feedItems.filter(item => item.type === 'artifact');
+      return [...DEMO_ARTIFACTS, ...artifacts];
+  }, [feedItems]);
 
   const handlePostCreated = (newPost) => {
       setPosts([newPost, ...posts]);
