@@ -107,18 +107,6 @@ const DevlogPostCard = ({
       return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
   
-  const getTechColor = (tool) => {
-      if (!tool) return 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-white/5 dark:text-gray-300 dark:border-white/10';
-      const t = tool.toLowerCase();
-      if (t.includes('react') || t.includes('flutter')) return 'bg-indigo-600/10 text-indigo-600 border-indigo-600/20';
-      if (t.includes('node') || t.includes('mongo') || t.includes('vue')) return 'bg-green-500/10 text-green-500 border-green-500/20';
-      if (t.includes('next') || t.includes('vercel')) return 'bg-slate-800 text-gray-200 border-slate-600 dark:bg-white/10 dark:text-gray-200 dark:border-white/20';
-      if (t.includes('tailwind') || t.includes('css')) return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20';
-      if (t.includes('js') || t.includes('javascript') || t.includes('html')) return 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20';
-      if (t.includes('python') || t.includes('figma')) return 'bg-pink-500/10 text-pink-500 border-pink-500/20';
-      return 'bg-slate-100 text-slate-600 border-slate-200 dark:bg-white/5 dark:text-gray-300 dark:border-white/10';
-  };
-  
   const handleNavigation = (e) => {
       if (isDetailPage) return;
       NProgress.start();
@@ -494,7 +482,7 @@ const DevlogPostCard = ({
                                                     key={idx} 
                                                     onClick={(e) => { e.stopPropagation(); }}
                                                     title={t}
-                                                    className={`p-1.5 border rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 transition-transform ${getTechColor(t)}`}
+                                                    className={`p-1.5 border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 hover:bg-slate-50 dark:hover:bg-white/10 transition-all`}
                                                 >
                                                     <TechIcon tech={t} size={14} />
                                                 </div>

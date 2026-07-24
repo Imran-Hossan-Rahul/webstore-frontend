@@ -1,114 +1,179 @@
 "use client";
-import React from 'react';
-import { 
-    SiReact, SiNodedotjs, SiFigma, SiAdobexd, SiVuedotjs, SiPython, SiMongodb, SiTensorflow,
-    SiAngular, SiNextdotjs, SiExpress, SiDjango, SiFlask, SiFastapi, SiSpringboot,
-    SiPostgresql, SiMysql, SiRedis, SiDocker, SiKubernetes, SiAmazonaws, SiMicrosoftazure, SiGooglecloud,
-    SiTypescript, SiJavascript, SiCplusplus, SiCsharp, SiGo, SiRust, SiSwift, SiKotlin,
-    SiFlutter, SiIonic, SiXamarin, SiUnity, SiUnrealengine,
-    SiAdobephotoshop, SiAdobeillustrator, SiSketch, SiInvision, SiFramer, SiWebflow,
-    SiGraphql, SiSocketdotio, SiWebrtc, SiFirebase, SiSupabase,
-    SiTailwindcss, SiBootstrap, SiMui, SiChakraui, SiAntdesign,
-    SiGit, SiGithub, SiGitlab, SiBitbucket, SiJira, SiTrello, SiNotion,
-    SiWebpack, SiVite, SiBabel, SiEslint, SiPrettier, SiJest, SiCypress,
-    SiTwilio, SiVercel, SiNetlify
-} from "react-icons/si";
-import { FaJava, FaNetworkWired } from "react-icons/fa";
+import React, { useState } from 'react';
 import { Code2 } from "lucide-react";
 
-export const techIconMap = {
-    "react": SiReact,
-    "node.js": SiNodedotjs,
-    "figma": SiFigma,
-    "adobe xd": SiAdobexd,
-    "vue.js": SiVuedotjs,
-    "python": SiPython,
-    "mongodb": SiMongodb,
-    "tensorflow": SiTensorflow,
-    "angular": SiAngular,
-    "next.js": SiNextdotjs,
-    "express": SiExpress,
-    "django": SiDjango,
-    "flask": SiFlask,
-    "fastapi": SiFastapi,
-    "spring boot": SiSpringboot,
-    "postgresql": SiPostgresql,
-    "mysql": SiMysql,
-    "redis": SiRedis,
-    "docker": SiDocker,
-    "kubernetes": SiKubernetes,
-    "aws": SiAmazonaws,
-    "azure": SiMicrosoftazure,
-    "gcp": SiGooglecloud,
-    "typescript": SiTypescript,
-    "javascript": SiJavascript,
-    "java": FaJava,
-    "c++": SiCplusplus,
-    "c#": SiCsharp,
-    "go": SiGo,
-    "rust": SiRust,
-    "swift": SiSwift,
-    "kotlin": SiKotlin,
-    "flutter": SiFlutter,
-    "react native": SiReact, // Same as react
-    "ionic": SiIonic,
-    "xamarin": SiXamarin,
-    "unity": SiUnity,
-    "unreal engine": SiUnrealengine,
-    "photoshop": SiAdobephotoshop,
-    "illustrator": SiAdobeillustrator,
-    "sketch": SiSketch,
-    "invision": SiInvision,
-    "framer": SiFramer,
-    "webflow": SiWebflow,
-    "graphql": SiGraphql,
-    "rest api": FaNetworkWired,
-    "socket.io": SiSocketdotio,
-    "webrtc": SiWebrtc,
-    "firebase": SiFirebase,
-    "supabase": SiSupabase,
-    "tailwind css": SiTailwindcss,
-    "bootstrap": SiBootstrap,
-    "material-ui": SiMui,
-    "chakra ui": SiChakraui,
-    "ant design": SiAntdesign,
-    "git": SiGit,
-    "github": SiGithub,
-    "gitlab": SiGitlab,
-    "bitbucket": SiBitbucket,
-    "jira": SiJira,
-    "trello": SiTrello,
-    "notion": SiNotion,
-    "webpack": SiWebpack,
-    "vite": SiVite,
-    "babel": SiBabel,
-    "eslint": SiEslint,
-    "prettier": SiPrettier,
-    "jest": SiJest,
-    "cypress": SiCypress,
-    "twilio": SiTwilio,
-    "sendgrid": SiTwilio, // fallback
-    "vercel": SiVercel,
-    "netlify": SiNetlify
+export const techSlugMap = {
+    "react": "react",
+    "react native": "react",
+    "node.js": "nodedotjs",
+    "node": "nodedotjs",
+    "figma": "figma",
+    "adobe xd": "adobexd",
+    "vue.js": "vuedotjs",
+    "vue": "vuedotjs",
+    "python": "python",
+    "mongodb": "mongodb",
+    "tensorflow": "tensorflow",
+    "angular": "angular",
+    "next.js": "nextdotjs",
+    "next": "nextdotjs",
+    "express": "express",
+    "express.js": "express",
+    "django": "django",
+    "flask": "flask",
+    "fastapi": "fastapi",
+    "spring boot": "springboot",
+    "spring": "spring",
+    "postgresql": "postgresql",
+    "postgres": "postgresql",
+    "mysql": "mysql",
+    "redis": "redis",
+    "docker": "docker",
+    "kubernetes": "kubernetes",
+    "aws": "amazonaws",
+    "amazon web services": "amazonaws",
+    "azure": "microsoftazure",
+    "gcp": "googlecloud",
+    "google cloud": "googlecloud",
+    "typescript": "typescript",
+    "ts": "typescript",
+    "javascript": "javascript",
+    "js": "javascript",
+    "java": "java",
+    "c++": "cplusplus",
+    "cpp": "cplusplus",
+    "c#": "csharp",
+    "csharp": "csharp",
+    "go": "go",
+    "golang": "go",
+    "rust": "rust",
+    "swift": "swift",
+    "kotlin": "kotlin",
+    "flutter": "flutter",
+    "ionic": "ionic",
+    "xamarin": "xamarin",
+    "unity": "unity",
+    "unreal engine": "unrealengine",
+    "unreal": "unrealengine",
+    "photoshop": "adobephotoshop",
+    "illustrator": "adobeillustrator",
+    "sketch": "sketch",
+    "invision": "invision",
+    "framer": "framer",
+    "framer motion": "framer",
+    "webflow": "webflow",
+    "graphql": "graphql",
+    "socket.io": "socketdotio",
+    "webrtc": "webrtc",
+    "firebase": "firebase",
+    "supabase": "supabase",
+    "tailwind css": "tailwindcss",
+    "tailwind": "tailwindcss",
+    "bootstrap": "bootstrap",
+    "material-ui": "mui",
+    "mui": "mui",
+    "chakra ui": "chakraui",
+    "ant design": "antdesign",
+    "git": "git",
+    "github": "github",
+    "gitlab": "gitlab",
+    "bitbucket": "bitbucket",
+    "jira": "jira",
+    "trello": "trello",
+    "notion": "notion",
+    "webpack": "webpack",
+    "vite": "vite",
+    "babel": "babel",
+    "eslint": "eslint",
+    "prettier": "prettier",
+    "jest": "jest",
+    "cypress": "cypress",
+    "twilio": "twilio",
+    "sendgrid": "sendgrid",
+    "vercel": "vercel",
+    "netlify": "netlify",
+    "apollo": "apollographql",
+    "prisma": "prisma",
+    "php": "php",
+    "laravel": "laravel",
+    "ruby": "ruby",
+    "rails": "rubyonrails",
+    "ruby on rails": "rubyonrails",
+    "svelte": "svelte",
+    "redux": "redux",
+    "linux": "linux",
+    "ubuntu": "ubuntu",
+    "bash": "gnubash",
+    "html": "html5",
+    "html5": "html5",
+    "css": "css3",
+    "css3": "css3",
+    "sass": "sass",
+    "less": "less",
+    "deno": "deno",
+    "bun": "bun",
+    "nestjs": "nestjs",
+    "nest.js": "nestjs",
+    "android": "android",
+    "ios": "ios",
+    "apple": "apple",
+    "windows": "windows",
+    "dart": "dart",
+    "sqlite": "sqlite",
+    "mariadb": "mariadb",
+    "oracle": "oracle",
+    "kafka": "apachekafka",
+    "rabbitmq": "rabbitmq",
+    "nginx": "nginx",
+    "apache": "apache",
+    "digitalocean": "digitalocean",
+    "heroku": "heroku",
+    "cloudflare": "cloudflare",
+    "stripe": "stripe",
+    "paypal": "paypal",
+    "discord": "discord",
+    "slack": "slack",
+    "zoom": "zoom",
+    "wordpress": "wordpress",
+    "shopify": "shopify",
+    "magento": "magento",
+    "wix": "wix",
+    "squarespace": "squarespace"
 };
 
-// Returns just the icon for tech stack tags
+// Returns original colored logo from CDN or fallback
 export default function TechIcon({ tech, className = "", size = 16 }) {
-    const name = (tech || "").toLowerCase().trim();
-    const Icon = techIconMap[name];
+    const [imgError, setImgError] = useState(false);
+    const name = String(tech || "").toLowerCase().trim();
     
-    if (Icon) {
-        return <Icon size={size} className={className} title={tech} />;
+    // Determine slug
+    let slug = techSlugMap[name];
+    if (!slug) {
+        // Guess the slug for unmapped tech (e.g. "three.js" -> "threedotjs")
+        slug = name.replace(/\s+/g, '').replace(/\./g, 'dot').replace(/[^a-z0-9]/g, '');
     }
-    
-    // Fallback: Return first letter or a generic icon
+
+    if (!imgError && slug) {
+        return (
+            <img 
+                src={`https://cdn.simpleicons.org/${slug}`} 
+                alt={tech} 
+                title={tech}
+                style={{ width: size, height: size }}
+                className={`object-contain ${className}`}
+                onError={() => setImgError(true)}
+            />
+        );
+    }
+
+    // Fallback if image fails or no slug exists
     return (
         <div 
             title={tech}
-            className={`flex items-center justify-center font-bold font-mono border rounded ${className}`}
+            className={`flex items-center justify-center font-bold font-mono border border-slate-200 dark:border-white/10 rounded bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-400 ${className}`}
             style={{ width: size, height: size, fontSize: size * 0.6 }}
         >
-            {tech ? tech.charAt(0).toUpperCase() : <Code2 size={size * 0.7} />}
+            {tech ? String(tech).charAt(0).toUpperCase() : <Code2 size={size * 0.7} />}
         </div>
     );
 }
