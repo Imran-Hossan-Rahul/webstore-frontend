@@ -330,15 +330,15 @@ const ArtifactPostCard = ({
                         ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
                         : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
                 `}>
-                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
+                    <div className="bg-white/85 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
                         <div className="space-y-3">
                             
-                            {/* Header: Links & Download */}
+                            {/* Header: Links & Resources */}
                             <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
-                                <span className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] flex items-center gap-1">
+                                <span className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-[0.2em] flex items-center gap-1">
                                     <FileText size={14}/> Details
                                 </span>
-                                <div className="flex flex-wrap gap-2 pb-2 sm:pb-0">
+                                <div className="flex gap-2">
                                      {githubLink ? (
                                          <a 
                                             href={githubLink} 
@@ -352,7 +352,7 @@ const ArtifactPostCard = ({
                                          </a>
                                      ) : (
                                          <button 
-                                            onClick={(e) => { e.stopPropagation(); showToast('GitHub link not available', "info"); }}
+                                            onClick={(e) => { e.stopPropagation(); }}
                                             className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
                                             title="No GitHub link"
                                          >
@@ -361,112 +361,98 @@ const ArtifactPostCard = ({
                                      )}
                                      {liveLink ? (
                                          <button 
-                                            onClick={(e) => { e.stopPropagation(); setShowIframeModal(true); }}
+                                            onClick={(e) => { 
+                                                e.stopPropagation(); 
+                                                setShowIframeModal(true);
+                                            }}
                                             className="p-1.5 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg hover:border-pink-500 hover:text-pink-500 transition-colors shadow-sm" 
-                                            title="Quick Preview"
+                                            title="Live Demo"
                                          >
-                                             <Eye size={14} />
+                                             <ExternalLink size={14} />
                                          </button>
                                      ) : (
                                          <button 
-                                            onClick={(e) => { e.stopPropagation(); showToast('Live demo not available', "info"); }}
+                                            onClick={(e) => { e.stopPropagation(); }}
                                             className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
                                             title="No live demo"
                                          >
                                              <ExternalLink size={14} />
                                          </button>
                                      )}
-                                     {codepenUrl ? (
+
+                                     {/* Download Button */}
+                                     {fileUrl ? (
                                          <a 
-                                            href={codepenUrl} 
+                                            href={fileUrl} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
                                             onClick={(e) => e.stopPropagation()}
-                                            className="p-1.5 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-lg hover:border-indigo-600 hover:text-indigo-600 transition-colors shadow-sm" 
-                                            title="CodePen"
+                                            className="p-1.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded hover:opacity-90 transition-all shadow-sm" 
+                                            title="Download Artifact"
                                          >
-                                             <Code size={14} />
+                                             <Download size={14} />
                                          </a>
                                      ) : (
                                          <button 
-                                            onClick={(e) => { e.stopPropagation(); showToast('CodePen link not available', "info"); }}
+                                            onClick={(e) => { e.stopPropagation(); }}
                                             className="p-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-slate-400 cursor-not-allowed" 
-                                            title="No CodePen"
+                                            title="No file available"
                                          >
-                                             <Code size={14} />
+                                             <Download size={14} />
                                          </button>
                                      )}
-                                     <button 
-                                        onClick={handleDownload}
-                                        className="p-1.5 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all shadow-sm shadow-purple-500/25" 
-                                        title="Download"
-                                     >
-                                         <Download size={14} />
-                                     </button>
                                 </div>
                             </div>
 
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2}/> Category</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
-                                          {category || <span className="text-slate-400 italic font-normal">Uncategorized</span>}
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                          {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Code size={11} strokeWidth={2}/> Type</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
-                                          {fileType || <span className="text-slate-400 italic font-normal">N/A</span>}
-                                      </div>
-                                 </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Zap size={11} strokeWidth={2}/> Size</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
-                                          {fileSize ? formatFileSize(fileSize) : <span className="text-slate-400 italic font-normal">N/A</span>}
-                                      </div>
-                                 </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Download size={11} strokeWidth={2}/> Downloads</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
-                                          {downloadsCount !== undefined ? downloadsCount.toLocaleString() : '0'}
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                          {license}
                                       </div>
                                  </div>
                             </div>
 
                             {/* Description - Always Show */}
                             <div className="mt-1">
-                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Description</div>
-                                <p className="text-[13px] text-slate-600 dark:text-slate-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
+                                <div className="text-[13px] text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {description ? (
-                                        description.length > 160 
-                                            ? `${description.substring(0, 160)}...` 
-                                            : description
+                                        description.length > 160
+                                          ? `${description.substring(0, 160)}...`
+                                          : description
                                     ) : (
-                                        <span className="text-slate-400 italic">No description provided</span>
+                                        <span className="text-slate-500 italic">No description provided</span>
                                     )}
-                                </p>
+                                </div>
                             </div>
 
                             {/* Tech Stack - Always Show */}
                             <div className="pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
-                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2} /> Tech Stack</div>
+                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2.5} /> Tech Stack</div>
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tech) && tech.length > 0 ? (
                                         <>
                                             {tech.slice(0, 4).map((t, idx) => (
-                                                <span key={idx} className={`text-[10px] font-bold px-2 py-0.5 border rounded-md shadow-sm cursor-pointer hover:opacity-80 transition-opacity ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); /* Future filter action */ }}>
+                                                <span key={idx} className={`text-[9px] font-mono font-bold px-2 py-0.5 border rounded shadow-sm cursor-pointer hover:opacity-80 transition-opacity uppercase tracking-wider ${getTechColor(t)}`} onClick={(e) => { e.stopPropagation(); }}>
                                                     {t}
                                                 </span>
                                             ))}
                                             {tech.length > 4 && (
-                                                <span className="text-[10px] font-bold px-2 py-0.5 border border-slate-200 dark:border-white/10 rounded-md text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-white/5">
+                                                <span className="text-[10px] font-bold px-2 py-0.5 border border-slate-200/80 dark:border-white/10 rounded text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-white/5">
                                                     +{tech.length - 4} more
                                                 </span>
                                             )}
                                         </>
                                     ) : (
-                                        <span className="text-xs text-slate-400 italic">No tech stack</span>
+                                        <span className="text-xs text-slate-500 italic">No tech stack</span>
                                     )}
                                 </div>
                             </div>

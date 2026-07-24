@@ -343,12 +343,12 @@ const DevlogPostCard = ({
                         ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
                         : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
                 `}>
-                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
+                    <div className="bg-white/85 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
                         <div className="space-y-3">
                             
                             {/* Header: Links & Resources */}
                             <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
-                                <span className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] flex items-center gap-1">
+                                <span className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-[0.2em] flex items-center gap-1">
                                     <FileText size={14}/> Details
                                 </span>
                                 <div className="flex gap-2">
@@ -439,30 +439,30 @@ const DevlogPostCard = ({
 
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2}/> Category</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
-                                          {category || <span className="text-slate-400 italic font-normal">Uncategorized</span>}
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2.5}/> Category</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
+                                          {category || <span className="text-slate-500 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2}/> Team</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2.5}/> Team</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
                                           {collaborators.length > 0 ? `${collaborators.length} Members` : 'Solo'}
                                       </div>
                                  </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2}/> Timeline</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2.5}/> Timeline</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
                                           <div className="flex-1 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
                                               <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 relative"></div>
                                           </div>
-                                          <span className="text-[11px]">{Math.round(progress)}%</span>
+                                          <span className="text-[11px] font-bold">{Math.round(progress)}%</span>
                                       </div>
                                  </div>
-                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
-                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2}/> License</div>
-                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
+                                 <div className="bg-white/80 dark:bg-white/[0.05] lg:bg-slate-50/50 lg:dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/80 dark:border-white/10">
+                                      <div className="text-[10px] font-mono font-medium text-slate-600 dark:text-slate-300 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2.5}/> License</div>
+                                      <div className="text-[13px] font-bold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
                                  </div>
@@ -470,14 +470,14 @@ const DevlogPostCard = ({
 
                             {/* Description - Always Show */}
                             <div className="mt-1">
-                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Description</div>
-                                <div className="text-[13px] text-slate-600 dark:text-slate-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                                <div className="text-[10px] font-mono font-medium text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">Description</div>
+                                <div className="text-[13px] text-slate-800 dark:text-slate-200 font-medium line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {content ? (
                                         plainTextDescription.length > 160
                                           ? `${plainTextDescription.substring(0, 160)}...`
                                           : plainTextDescription
                                     ) : (
-                                        <span className="text-slate-400 italic">No description provided</span>
+                                        <span className="text-slate-500 italic">No description provided</span>
                                     )}
                                 </div>
                             </div>
