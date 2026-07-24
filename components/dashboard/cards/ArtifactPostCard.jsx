@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/ToastProvider";
 import CraftsmanHoverCard from './CraftsmanHoverCard';
 import { useEffect } from 'react';
-import { useTheme } from "next-themes";
 import TechIcon from '@/components/ui/TechIcon';
 import { useShare } from "@/hooks/useShare";
 import NProgress from 'nprogress';
