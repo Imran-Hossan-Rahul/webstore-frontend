@@ -270,26 +270,27 @@ const ArtifactPostCard = ({
                  </button>
              </div>
 
-            {/* Artifact Title & Pricing */}
-            <div className="mb-3 flex justify-between items-start gap-4">
-                <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans">
-                    {title}
-                </h2>
-                <div className="flex-shrink-0 hidden sm:block">
-                    {isFree ? (
-                        <span className="px-2.5 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[10px] font-mono font-medium rounded uppercase tracking-[0.2em]">
-                            Free
-                        </span>
-                    ) : (
-                        <span className="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-mono font-medium rounded flex items-center gap-1 shadow-sm uppercase tracking-wider">
-                            <Zap size={12} /> {price} TKNS
-                        </span>
-                    )}
+            <div className="relative">
+                {/* Artifact Title & Pricing */}
+                <div className="mb-3 flex justify-between items-start gap-4">
+                    <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans">
+                        {title}
+                    </h2>
+                    <div className="flex-shrink-0 hidden sm:block">
+                        {isFree ? (
+                            <span className="px-2.5 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[10px] font-mono font-medium rounded uppercase tracking-[0.2em]">
+                                Free
+                            </span>
+                        ) : (
+                            <span className="px-2.5 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-mono font-medium rounded flex items-center gap-1 shadow-sm uppercase tracking-wider">
+                                <Zap size={12} /> {price} TKNS
+                            </span>
+                        )}
+                    </div>
                 </div>
-            </div>
 
-            {/* Main Content Grid: Image + Details */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible">
+                {/* Main Content Grid: Image + Details */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 lg:overflow-visible">
                 
                 {/* Left: Preview Image */}
                 <div className="lg:col-span-7 h-full">
@@ -471,7 +472,7 @@ const ArtifactPostCard = ({
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
             </div>
 
             {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}

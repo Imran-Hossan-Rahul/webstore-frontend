@@ -271,25 +271,26 @@ const DevlogPostCard = ({
                  </button>
              </div>
 
-            {/* Devlog Title & Status */}
-            <div className="mb-3 flex justify-between items-start gap-4">
-                <div>
-                    <h2 className="text-base font-normal text-slate-900 dark:text-white mb-0.5 font-sans">
-                        {title || "Untitled Devlog"}
-                    </h2>
+            <div className="relative">
+                {/* Devlog Title & Status */}
+                <div className="mb-3 flex justify-between items-start gap-4">
+                    <div>
+                        <h2 className="text-base font-normal text-slate-900 dark:text-white mb-0.5 font-sans">
+                            {title || "Untitled Devlog"}
+                        </h2>
+                    </div>
+                    <div className="flex-shrink-0 hidden sm:block">
+                        <span className={`px-2.5 py-1 text-[9px] font-mono font-medium rounded border tracking-[0.2em] uppercase shadow-sm ${
+                            status === 'Completed' ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' : 
+                            'bg-white text-slate-900 border-slate-200 dark:bg-black dark:text-white dark:border-white/10'
+                        }`}>
+                            {status}
+                        </span>
+                    </div>
                 </div>
-                <div className="flex-shrink-0 hidden sm:block">
-                    <span className={`px-2.5 py-1 text-[9px] font-mono font-medium rounded border tracking-[0.2em] uppercase shadow-sm ${
-                        status === 'Completed' ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-black' : 
-                        'bg-white text-slate-900 border-slate-200 dark:bg-black dark:text-white dark:border-white/10'
-                    }`}>
-                        {status}
-                    </span>
-                </div>
-            </div>
 
-            {/* Main Content Grid: Image + Details */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible">
+                {/* Main Content Grid: Image + Details */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-3 lg:overflow-visible">
                 
                 {/* Left: Preview Image */}
                 <div className="lg:col-span-7 h-full">
@@ -506,7 +507,7 @@ const DevlogPostCard = ({
 
                         </div>
                     </div>
-                </div>
+            </div>
             </div>
 
             {/* Action Bar (Evenly Distributed) */}
