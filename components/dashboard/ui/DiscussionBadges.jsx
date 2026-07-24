@@ -68,11 +68,13 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                 
                 const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
 
+                const isMainComment = stat.id === 'comment';
+
                 return (
                     <div 
                         key={stat.id} 
                         title={stat.title}
-                        className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
+                        className={`group/btn ${isMainComment ? 'flex' : 'hidden sm:flex'} items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer`}
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
