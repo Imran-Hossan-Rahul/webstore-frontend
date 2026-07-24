@@ -323,7 +323,7 @@ const ArtifactPostCard = ({
                 {/* Right: Details Section */}
                 <div className={`
                     lg:col-span-5 
-                    absolute inset-0 z-20 lg:static lg:z-auto lg:h-full p-2 lg:p-0
+                    absolute -left-3 -right-3 top-0 bottom-0 z-20 lg:static lg:z-auto lg:h-full lg:p-0
                     bg-transparent
                     transition-all duration-300 ease-out
                     ${isExpanded 
