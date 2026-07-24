@@ -262,7 +262,7 @@ const DevlogPostCard = ({
                         </CraftsmanHoverCard>
                      </div>
                      <span className="text-slate-400 text-sm">·</span>
-                     <span className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-wider mt-0.5">
+                     <span className="text-slate-500 dark:text-slate-400 text-[13px] font-normal">
                          {formatDate(createdAt)}
                      </span>
                  </div>
