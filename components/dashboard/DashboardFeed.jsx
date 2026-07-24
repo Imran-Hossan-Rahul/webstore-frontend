@@ -228,7 +228,7 @@ export default function DashboardFeed({ user, isGuest = false, onRequireAuth }) 
          {/* Feed List Container - Clean Layout */}
          <div className="flex flex-col min-h-screen px-0">
              {filteredFeedItems.map((item, index) => (
-                 <div key={item._id || item.id} className={`w-full overflow-hidden sm:border-x sm:border-b border-slate-200 dark:border-white/10 ${index === 0 ? 'sm:rounded-t-2xl sm:border-t' : ''} bg-transparent sm:bg-white dark:sm:bg-slate-900/20 mb-4 sm:mb-0`}>
+                 <div key={item._id || item.id} className={`w-full overflow-hidden sm:border-b border-slate-200 dark:border-white/5 bg-transparent mb-4 sm:mb-0 pb-2`}>
                       {item.type === 'artifact' ? (
                            <ArtifactPostCard
                               item={item}

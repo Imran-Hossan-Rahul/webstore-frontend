@@ -342,7 +342,7 @@ const DevlogPostCard = ({
                         ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
                         : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
                 `}>
-                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-slate-50 lg:dark:bg-[#111] lg:backdrop-blur-none rounded-xl p-4 lg:p-0 sm:lg:p-4 border border-white/60 dark:border-white/10 lg:border-slate-100 lg:dark:border-white/10 h-full flex flex-col shadow-xl sm:shadow-sm overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
+                    <div className="bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
                         <div className="space-y-3">
                             
                             {/* Header: Links & Resources */}
