@@ -343,7 +343,7 @@ const DevlogPostCard = ({
                         ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
                         : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
                 `}>
-                    <div className="bg-white/85 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] transform-gpu backface-hidden">
+                    <div className="bg-white/30 dark:bg-black/40 backdrop-blur-2xl backdrop-saturate-150 lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none lg:backdrop-saturate-100 rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/40 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] transform-gpu backface-hidden">
                         <div className="space-y-3 relative z-10">
                             
                             {/* Header: Links & Resources */}
