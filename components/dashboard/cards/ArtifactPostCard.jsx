@@ -407,36 +407,36 @@ const ArtifactPostCard = ({
 
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[10px] font-bold text-slate-400 uppercase mb-1 flex items-center gap-1"><Tag size={11}/> Category</div>
-                                      <div className="text-sm font-bold text-slate-800 dark:text-gray-200 truncate">
-                                          {category || <span className="text-slate-400 italic">Uncategorized</span>}
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2}/> Category</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
+                                          {category || <span className="text-slate-400 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[10px] font-bold text-slate-400 uppercase mb-1 flex items-center gap-1"><Code size={11}/> Type</div>
-                                      <div className="text-sm font-bold text-slate-800 dark:text-gray-200 truncate uppercase">
-                                          {fileType || <span className="text-slate-400 italic">N/A</span>}
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Code size={11} strokeWidth={2}/> Type</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
+                                          {fileType || <span className="text-slate-400 italic font-normal">N/A</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[10px] font-bold text-slate-400 uppercase mb-1 flex items-center gap-1"><Zap size={11}/> Size</div>
-                                      <div className="text-sm font-bold text-slate-800 dark:text-gray-200 truncate">
-                                          {fileSize ? formatFileSize(fileSize) : <span className="text-slate-400 italic">N/A</span>}
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Zap size={11} strokeWidth={2}/> Size</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
+                                          {fileSize ? formatFileSize(fileSize) : <span className="text-slate-400 italic font-normal">N/A</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[10px] font-bold text-slate-400 uppercase mb-1 flex items-center gap-1"><Download size={11}/> Downloads</div>
-                                      <div className="text-sm font-bold text-slate-800 dark:text-gray-200 truncate">
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Download size={11} strokeWidth={2}/> Downloads</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
                                           {downloadsCount !== undefined ? downloadsCount.toLocaleString() : '0'}
                                       </div>
                                  </div>
                             </div>
 
                             {/* Description - Always Show */}
-                            <div>
-                                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Description</div>
-                                <p className="text-sm text-slate-700 dark:text-gray-300 line-clamp-4 leading-relaxed break-words whitespace-normal">
+                            <div className="mt-1">
+                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Description</div>
+                                <p className="text-[13px] text-slate-600 dark:text-slate-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {description ? (
                                         description.length > 160 
                                             ? `${description.substring(0, 160)}...` 
@@ -448,8 +448,8 @@ const ArtifactPostCard = ({
                             </div>
 
                             {/* Tech Stack - Always Show */}
-                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
-                                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1"><Code size={11} /> Tech Stack</div>
+                            <div className="pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
+                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2} /> Tech Stack</div>
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tech) && tech.length > 0 ? (
                                         <>

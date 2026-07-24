@@ -438,39 +438,39 @@ const DevlogPostCard = ({
 
                             {/* Info Grid - Always Show */}
                             <div className="grid grid-cols-2 gap-2">
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Tag size={11}/> Category</div>
-                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate font-sans">
-                                          {category || <span className="text-slate-400 italic">Uncategorized</span>}
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Tag size={11} strokeWidth={2}/> Category</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
+                                          {category || <span className="text-slate-400 italic font-normal">Uncategorized</span>}
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Users size={11}/> Team</div>
-                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate uppercase font-sans">
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Users size={11} strokeWidth={2}/> Team</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate uppercase font-sans tracking-wide">
                                           {collaborators.length > 0 ? `${collaborators.length} Members` : 'Solo'}
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Clock size={11}/> Timeline</div>
-                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate flex items-center gap-2 font-mono">
-                                          <div className="flex-1 h-1 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
-                                              <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-purple-500 to-pink-500 relative"></div>
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Clock size={11} strokeWidth={2}/> Timeline</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate flex items-center gap-2 font-mono">
+                                          <div className="flex-1 h-1.5 bg-slate-200 dark:bg-white/10 rounded-full overflow-hidden flex">
+                                              <div style={{ width: `${progress}%` }} className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 relative"></div>
                                           </div>
-                                          <span className="text-[10px]">{Math.round(progress)}%</span>
+                                          <span className="text-[11px]">{Math.round(progress)}%</span>
                                       </div>
                                  </div>
-                                 <div className="bg-white dark:bg-black p-2 rounded-lg border border-slate-100 dark:border-white/5">
-                                      <div className="text-[9px] font-mono font-medium text-slate-400 uppercase mb-1 flex items-center gap-1 tracking-[0.2em]"><Shield size={11}/> License</div>
-                                      <div className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate font-sans">
+                                 <div className="bg-slate-50/50 dark:bg-white/[0.02] p-2.5 rounded-md border border-slate-200/60 dark:border-white/5">
+                                      <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase mb-1.5 flex items-center gap-1.5 tracking-wider"><Shield size={11} strokeWidth={2}/> License</div>
+                                      <div className="text-[13px] font-semibold text-slate-900 dark:text-white truncate font-sans">
                                           {license}
                                       </div>
                                  </div>
                             </div>
 
                             {/* Description - Always Show */}
-                            <div>
-                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2">Description</div>
-                                <div className="text-sm text-slate-700 dark:text-gray-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
+                            <div className="mt-1">
+                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Description</div>
+                                <div className="text-[13px] text-slate-600 dark:text-slate-300 line-clamp-4 leading-relaxed break-words whitespace-normal font-sans">
                                     {content ? (
                                         plainTextDescription.length > 160
                                           ? `${plainTextDescription.substring(0, 160)}...`
@@ -482,8 +482,8 @@ const DevlogPostCard = ({
                             </div>
 
                             {/* Tech Stack - Always Show */}
-                            <div className="pt-2 border-t border-slate-200 dark:border-white/10">
-                                <div className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-1"><Code size={11} /> Tech Stack</div>
+                            <div className="pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
+                                <div className="text-[10px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5"><Code size={11} strokeWidth={2} /> Tech Stack</div>
                                 <div className="flex flex-wrap gap-1.5 items-center">
                                     {Array.isArray(tools) && tools.length > 0 ? (
                                         <>
