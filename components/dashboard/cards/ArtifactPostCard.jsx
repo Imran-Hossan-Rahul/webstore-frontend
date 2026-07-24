@@ -272,7 +272,7 @@ const ArtifactPostCard = ({
 
             {/* Artifact Title & Pricing */}
                 <div className="mb-3 flex justify-between items-start gap-4">
-                    <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans">
+                    <h2 className="text-base font-normal text-slate-900 dark:text-white mb-1 font-sans line-clamp-2">
                         {title}
                     </h2>
                     <div className="flex-shrink-0 hidden sm:block">
