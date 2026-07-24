@@ -338,13 +338,13 @@ const DevlogPostCard = ({
                     lg:col-span-5 
                     absolute -left-[7px] -right-[7px] top-0 bottom-0 z-20 lg:static lg:z-auto lg:h-full lg:p-0
                     bg-transparent
-                    transition-all duration-300 ease-out
+                    transition-all duration-300 ease-out transform-gpu
                     ${isExpanded 
                         ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
                         : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
                 `}>
-                    <div className="bg-white/85 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent]">
-                        <div className="space-y-3">
+                    <div className="bg-white/85 dark:bg-[#0a0a0a]/90 backdrop-blur-2xl lg:bg-transparent lg:dark:bg-transparent lg:backdrop-blur-none rounded-xl p-4 lg:p-0 lg:pl-2 border border-white/60 dark:border-white/10 lg:border-transparent lg:dark:border-transparent h-full flex flex-col shadow-xl lg:shadow-none overflow-y-auto lg:overflow-y-visible [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-500 [&::-webkit-scrollbar-thumb]:rounded-full pr-2 [scrollbar-width:thin] [scrollbar-color:#94a3b8_transparent] transform-gpu backface-hidden">
+                        <div className="space-y-3 relative z-10">
                             
                             {/* Header: Links & Resources */}
                             <div className="flex justify-between items-start pb-3 border-b border-slate-200 dark:border-white/10">
