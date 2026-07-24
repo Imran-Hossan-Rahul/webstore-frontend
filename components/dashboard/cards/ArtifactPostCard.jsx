@@ -537,39 +537,33 @@ const ArtifactPostCard = ({
                 </div>
 
                 {/* Right: Engagement & Artifact Stats */}
-                <div className="flex items-center gap-2 sm:gap-4">
+                <div className="flex items-center gap-1 sm:gap-2">
                     {/* Like */}
                     <button 
                         onClick={handleLike}
-                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
+                        className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                     >
-                        <div className="transition-colors">
-                            <Star size={18} fill={isLiked ? 'currentColor' : 'none'} />
-                        </div>
-                        <span className="text-[11px] font-mono font-medium tabular-nums">{likesCount}</span>
+                        <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
+                        <span className={`text-[11px] font-mono font-medium tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-500 dark:text-slate-400 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
                     </button>
 
                     {/* Share */}
                     <button 
-                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-indigo-600 transition-colors group"
+                        className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                         onClick={handleShare}
                     >
-                        <div className="transition-colors">
-                            <Share2 size={18} />
-                        </div>
+                        <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
                     </button>
 
-                    <span className="w-px h-4 bg-slate-200 dark:bg-white/10 mx-1"></span>
+                    <span className="w-px h-3.5 bg-slate-300 dark:bg-white/10 mx-1"></span>
 
                     {/* Download Stats */}
                     <button 
                         onClick={handleDownload}
-                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-purple-600 transition-colors group"
+                        className="group/btn flex items-center gap-1.5 py-1 pl-1 transition-all duration-200 cursor-pointer"
                     >
-                        <div className="transition-colors">
-                            <Download size={18} />
-                        </div>
-                        <span className="font-mono font-medium text-[11px] tabular-nums">{downloadsCount || 0}</span>
+                        <Download size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-purple-600 dark:group-hover/btn:text-purple-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
+                        <span className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
                     </button>
 
                  </div>
