@@ -509,41 +509,41 @@ const DevlogPostCard = ({
                 </div>
             </div>
 
-            {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
-            <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
-                {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
-                <div className="flex items-center gap-1 sm:gap-2">
-                    <DiscussionBadges 
-                        item={post} 
-                        href={`/post/${_id}`} 
-                        initialCounts={{...discussionStats?.types, comment: currentCommentsCount}} 
-                    />
+            {/* Action Bar (Evenly Distributed) */}
+            <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5 w-full">
+                {/* 1. Discussion (Left) */}
+                <DiscussionBadges 
+                    item={post} 
+                    href={`/post/${_id}`} 
+                    initialCounts={{...discussionStats?.types, comment: currentCommentsCount}} 
+                />
+
+                {/* 2. Views (Center-Left) */}
+                <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                    <Eye size={18} strokeWidth={1.5} />
+                    <span className="text-[11px] font-mono font-medium tabular-nums">{viewsCount || 0}</span>
                 </div>
 
-                {/* Right: Engagement Stats */}
-                <div className="flex items-center gap-2 sm:gap-4">
-                    {/* Like */}
-                    <button 
-                        onClick={handleLike}
-                        className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
-                    >
-                        <div className="transition-colors">
-                            <Star size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
-                        </div>
-                        <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount}</span>
-                    </button>
+                {/* 3. Star (Center-Right) */}
+                <button 
+                    onClick={handleLike}
+                    className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-500 dark:text-slate-400 hover:text-pink-600'}`}
+                >
+                    <div className="transition-colors">
+                        <Star size={18} strokeWidth={1.5} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
+                    </div>
+                    <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount}</span>
+                </button>
 
-                    {/* Share */}
-                    <button 
-                        className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-indigo-600 transition-colors group"
-                        onClick={handleShare}
-                    >
-                        <div className="transition-colors">
-                            <Share2 size={18} />
-                        </div>
-                    </button>
-
-                 </div>
+                {/* 4. Share (Right) */}
+                <button 
+                    className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-indigo-600 transition-colors group"
+                    onClick={handleShare}
+                >
+                    <div className="transition-colors">
+                        <Share2 size={18} strokeWidth={1.5} />
+                    </div>
+                </button>
             </div>
         </div>
 
