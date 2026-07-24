@@ -246,7 +246,7 @@ const DevlogPostCard = ({
         {/* Right Column: Content */}
         <div className="flex-1 min-w-0">
              {/* Header */}
-             <div className="flex justify-between items-start mb-1">
+             <div className="flex justify-between items-start mb-0.5">
                  <div className="flex flex-row items-center gap-1.5 flex-wrap">
                      <div className="flex items-center gap-2">
                         <CraftsmanHoverCard
@@ -256,8 +256,8 @@ const DevlogPostCard = ({
                           displayName={userName}
                           wrapperDisplay="inline"
                         >
-                          <h3 className="font-bold text-slate-900 dark:text-gray-100 text-base hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
-                              {userName}
+                           <h3 className="font-bold text-slate-900 dark:text-gray-100 text-[15px] leading-tight hover:text-green-500 dark:hover:text-green-400 transition-colors duration-150 font-sans">
+                               {userName}
                           </h3>
                         </CraftsmanHoverCard>
                      </div>
@@ -274,7 +274,7 @@ const DevlogPostCard = ({
             {/* Devlog Title & Status */}
                 <div className="mb-3 flex justify-between items-start gap-4">
                     <div>
-                        <h2 className="text-base font-normal text-slate-900 dark:text-white mb-0.5 font-sans line-clamp-2">
+                        <h2 className="text-[15px] sm:text-base font-semibold leading-snug text-slate-900 dark:text-white mb-0.5 font-sans line-clamp-2">
                             {title || "Untitled Devlog"}
                         </h2>
                     </div>
