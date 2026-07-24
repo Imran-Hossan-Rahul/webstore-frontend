@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { 
-  Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
-  Download, ExternalLink, Eye, Tag, Globe, Github,
-  FileText, Shield, Layers, Clock, Code, Zap,
-  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, PanelRight, X
-} from 'lucide-react';
+import { MessageCircle, Share2, MoreHorizontal, Bookmark, Download, ExternalLink, Eye, Tag, Globe, Github, FileText, Shield, Layers, Clock, Code, Zap, CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, PanelRight, X, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { useRouter } from 'next/navigation';
 import { useToast } from "@/components/ui/ToastProvider";
@@ -485,7 +480,7 @@ const ArtifactPostCard = ({
                 <div className="flex items-center gap-1 sm:gap-2">
                     {(() => {
                         const stats = [
-                            { id: 'comment', icon: MessageCircle, title: 'Comments' },
+                            { id: 'comment', icon: MessageCircle, title: 'Discussions' },
                             { id: 'question', icon: HelpCircle, title: 'Questions' },
                             { id: 'answer', icon: CheckCircle, title: 'Solutions' },
                             { id: 'issue', icon: AlertCircle, title: 'Issues' },
@@ -549,7 +544,7 @@ const ArtifactPostCard = ({
                         className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
                     >
                         <div className="transition-colors">
-                            <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} />
+                            <Star size={18} fill={isLiked ? 'currentColor' : 'none'} />
                         </div>
                         <span className="text-[11px] font-mono font-medium tabular-nums">{likesCount}</span>
                     </button>

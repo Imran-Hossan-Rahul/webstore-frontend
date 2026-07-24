@@ -96,11 +96,11 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
                   <div className="text-xl font-bold text-[#3ea6ff]">{data.totalViews?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-slate-400 text-xs mb-1">Likes</div>
+                  <div className="text-slate-400 text-xs mb-1">Stars</div>
                   <div className="text-xl font-bold text-[#00C49F]">{data.totalLikes?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
-                  <div className="text-slate-400 text-xs mb-1">Comments</div>
+                  <div className="text-slate-400 text-xs mb-1">Discussions</div>
                   <div className="text-xl font-bold text-[#FFBB28]">{data.totalComments?.toLocaleString()}</div>
                </div>
                <div className="bg-[#282828] p-4 rounded-lg border border-[#3e3e3e]">
@@ -127,7 +127,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
                       <Legend />
                       <Area type="monotone" name="Impressions" dataKey="impressions" stroke="#8884d8" fillOpacity={1} fill="url(#colorImp)" />
                       <Area type="monotone" name="Views" dataKey="views" stroke="#3ea6ff" fillOpacity={1} fill="url(#colorViews)" />
-                      <Area type="monotone" name="Likes" dataKey="likes" stroke="#00C49F" fillOpacity={1} fill="url(#colorLikes)" />
+                      <Area type="monotone" name="Stars" dataKey="likes" stroke="#00C49F" fillOpacity={1} fill="url(#colorLikes)" />
                       <Area type="monotone" name="Shares" dataKey="shares" stroke="#FF8042" fill="none" />
                     </AreaChart>
                   </ResponsiveContainer>

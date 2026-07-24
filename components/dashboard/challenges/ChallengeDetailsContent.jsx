@@ -2,12 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { 
-  Trophy, Calendar, Code, Layout as LayoutIcon, ArrowRight, CheckCircle2, 
-  ExternalLink, Link as LinkIcon, FileText, Clock, Users, ChevronLeft, Github, 
-  Video, ImageIcon, Rocket, X, Download, ShieldCheck, Zap, Info, Scale, Share2, 
-  Loader2, BookOpen, Plus, Upload, Trash2, Radio, Heart, Check, Archive
-} from "lucide-react";
+import { Trophy, Calendar, Code, Layout as LayoutIcon, ArrowRight, CheckCircle2, ExternalLink, Link as LinkIcon, FileText, Clock, Users, ChevronLeft, Github, Video, ImageIcon, Rocket, X, Download, ShieldCheck, Zap, Info, Scale, Share2, Loader2, BookOpen, Plus, Upload, Trash2, Radio, Check, Archive, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import Link from "next/link";

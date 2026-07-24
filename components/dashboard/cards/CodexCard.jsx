@@ -4,10 +4,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import NProgress from 'nprogress';
-import { 
-  Heart, MessageCircle, ArrowRight, TrendingUp, Clock, BookOpen, Share2, Bookmark, MoreHorizontal, FileText,
-  CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, Eye, PanelRight, X
-} from 'lucide-react';
+import { MessageCircle, ArrowRight, TrendingUp, Clock, BookOpen, Share2, Bookmark, MoreHorizontal, FileText, CheckCircle, AlertCircle, HelpCircle, Lightbulb, Flame, Eye, PanelRight, X, Star } from "lucide-react";
 import { api } from '@/utils/api';
 import { useToast } from "@/components/ui/ToastProvider";
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
@@ -340,7 +337,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
             <div className="flex items-center gap-1 sm:gap-2">
               {(() => {
                 const stats = [
-                  { id: 'comment', icon: MessageCircle, title: 'Comments' },
+                  { id: 'comment', icon: MessageCircle, title: 'Discussions' },
                   { id: 'question', icon: HelpCircle, title: 'Questions' },
                   { id: 'answer', icon: CheckCircle, title: 'Solutions' },
                   { id: 'issue', icon: AlertCircle, title: 'Issues' },
@@ -412,7 +409,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                 onClick={handleLike}
                 className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-slate-700 dark:text-slate-300 hover:text-pink-500'}`}
               >
-                <Heart size={18} className={isLiked ? 'fill-current' : ''} />
+                <Star size={18} className={isLiked ? 'fill-current' : ''} />
                 <span className="font-bold tabular-nums text-[11px]">{likesCount}</span>
               </button>
 

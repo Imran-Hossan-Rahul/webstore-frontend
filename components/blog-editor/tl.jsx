@@ -1,25 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import {
-  Bold,
-  Italic,
-  Type,
-  List,
-  ListOrdered,
-  CheckSquare,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Smile,
-  Code as CodeIcon,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  RotateCcw,
-  RotateCw,
-  Star,
-  Video,
-} from "lucide-react";
+import { Bold, Italic, Type, List, ListOrdered, CheckSquare, Link as LinkIcon, Image as ImageIcon, Smile, Code as CodeIcon, AlignLeft, AlignCenter, AlignRight, RotateCcw, RotateCw, Star, Video } from "lucide-react";
 
 export default function Toolbar({ editor, openModal }) {
   const toolbarRef = useRef(null);

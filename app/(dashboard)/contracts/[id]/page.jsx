@@ -6,15 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { 
-  ShieldCheck, ArrowLeft, Calendar, 
-  Check, FileText, Info, Gavel, Clock, Lock,
-  ChevronRight, Play, Square, Monitor, 
-  MousePointer2, Keyboard, RefreshCw, Maximize2, X,
-  AlertCircle, ShieldAlert, History, Plus, CheckCircle, ExternalLink,
-  Eye, Zap, Wallet, BarChart3, ArrowUpRight, Download, Link2, Upload,
-  PenTool, Loader2, ArrowRight, User, Trash2, Video, Image as ImageIcon, Rocket
-} from "lucide-react";
+import { ShieldCheck, ArrowLeft, Calendar, Check, FileText, Info, Gavel, Clock, Lock, ChevronRight, Play, Square, Monitor, MousePointer2, Keyboard, RefreshCw, Maximize2, X, AlertCircle, ShieldAlert, History, Plus, CheckCircle, ExternalLink, Eye, Zap, Wallet, BarChart3, ArrowUpRight, Download, Link2, Upload, PenTool, Loader2, ArrowRight, User, Trash2, Video, Image as ImageIcon, Rocket } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import TrackerEngine from "@/utils/TrackerEngine";
 import socket from "@/utils/socket";

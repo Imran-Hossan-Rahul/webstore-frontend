@@ -6,10 +6,7 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import {
-  Trophy, Users, ChevronRight, Plus, Clock, CheckCircle,
-  XCircle, Loader2, Zap, FileText, BarChart3
-} from "lucide-react";
+import { Trophy, Users, ChevronRight, Plus, Clock, CheckCircle, XCircle, Loader2, Zap, FileText, BarChart3 } from "lucide-react";
 
 const STATUS_CONFIG = {
   active:    { label: "Active",    color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-900/20", dot: "bg-emerald-500" },

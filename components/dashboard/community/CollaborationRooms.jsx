@@ -2,19 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Plus,
-  Users,
-  MessageCircle,
-  Clock,
-  CheckSquare,
-  Hash,
-  Lock,
-  Globe,
-  User as UserIcon,
-  Calendar,
-  Target
-} from "lucide-react";
+import { Plus, Users, MessageCircle, Clock, CheckSquare, Hash, Lock, Globe, User as UserIcon, Calendar, Target } from "lucide-react";
 
 const RoomCard = ({ room, onRoomClick }) => {
   const getTypeColor = (type) => {

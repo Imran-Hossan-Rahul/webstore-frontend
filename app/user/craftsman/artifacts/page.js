@@ -4,12 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { 
-  Eye, Trash2, Edit3, BarChart2,
-  MessageSquare, ThumbsUp, Globe, Lock,
-  Search,
-  LayoutGrid, Mail, Send, Clock, BookOpen, Settings, CheckSquare, FileText
-} from "lucide-react";
+import { Eye, Trash2, Edit3, BarChart2, MessageSquare, ThumbsUp, Globe, Lock, Search, LayoutGrid, Mail, Send, Clock, BookOpen, Settings, CheckSquare, FileText } from "lucide-react";
 
 
 export default function CraftsmanArtifactsPage() {
@@ -308,7 +303,7 @@ export default function CraftsmanArtifactsPage() {
                                       <Eye size={14} className="text-[#3ea6ff]" />
                                       <span>{artifact.viewsCount || 0}</span>
                                   </div>
-                                  <div className="flex items-center gap-1.5" title="Likes">
+                                  <div className="flex items-center gap-1.5" title="Stars">
                                       <ThumbsUp size={14} className="text-[#00C49F]" />
                                       <span>{artifact.likeCount || 0}</span>
                                   </div>

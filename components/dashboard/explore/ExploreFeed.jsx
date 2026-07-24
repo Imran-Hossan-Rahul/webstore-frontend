@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
-import { TrendingUp, Grid, Award, Heart, Eye, PenTool, Layout, Code } from "lucide-react";
+import { TrendingUp, Grid, Award, Eye, PenTool, Layout, Code, Star } from "lucide-react";
 import Link from "next/link";
 import CraftsmanProfileModal from '../modals/CraftsmanProfileModal';
 import ClassicExploreCard from '../cards/ClassicExploreCard';

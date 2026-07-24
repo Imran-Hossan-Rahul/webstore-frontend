@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { api } from "@/utils/api";
-import { 
-  ArrowLeft, MessageCircle, Layers, Flag, CheckCircle2, Clock, Circle, ChevronDown, ChevronUp, Calendar
-} from 'lucide-react';
+import { ArrowLeft, MessageCircle, Layers, Flag, CheckCircle2, Clock, Circle, ChevronDown, ChevronUp, Calendar } from "lucide-react";
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
 import JsonLd, { buildTechArticleSchema, buildBreadcrumbSchema } from '@/components/seo/JsonLd';
 

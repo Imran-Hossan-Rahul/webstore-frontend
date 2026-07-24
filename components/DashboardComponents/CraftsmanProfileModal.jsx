@@ -410,11 +410,11 @@ function OverviewTab({ craftsmanProfile }) {
         <div className="p-4 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 dark:bg-white rounded-lg flex items-center justify-center">
-              <Heart size={20} className="text-white dark:text-black" />
+              <Star size={20} className="text-white dark:text-black" />
             </div>
             <div>
               <p className="text-2xl font-bold text-slate-900 dark:text-white tracking-tighter">{craftsmanProfile?.totalLikes || 0}</p>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Total Likes</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Total Stars</p>
             </div>
           </div>
         </div>

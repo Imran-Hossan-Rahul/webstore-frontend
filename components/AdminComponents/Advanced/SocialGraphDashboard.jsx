@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Users, 
-  Share2, 
-  MessageSquare, 
-  Heart, 
-  TrendingUp,
-  Globe,
-  Zap,
-  Network
-} from 'lucide-react';
+import { Users, Share2, MessageSquare, TrendingUp, Globe, Zap, Network, Star } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const SocialGraphDashboard = () => {

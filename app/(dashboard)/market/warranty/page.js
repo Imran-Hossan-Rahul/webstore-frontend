@@ -1,11 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import {
-  ShieldCheck, RotateCcw, AlertTriangle, CheckCircle2,
-  XCircle, ChevronDown, Phone, Mail, ArrowLeft, Package,
-  Clock, Star, Wrench, HelpCircle
-} from 'lucide-react';
+import { ShieldCheck, RotateCcw, AlertTriangle, CheckCircle2, XCircle, ChevronDown, Phone, Mail, ArrowLeft, Package, Clock, Star, Wrench, HelpCircle } from "lucide-react";
 
 const Section = ({ id, icon: Icon, color, title, children, defaultOpen = false }) => {
   const [open, setOpen] = useState(defaultOpen);

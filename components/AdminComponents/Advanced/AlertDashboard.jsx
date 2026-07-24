@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Bell, AlertTriangle, CheckCircle, Clock, Plus, Loader2 } from 'lucide-react';
+import { Bell, AlertTriangle, CheckCircle, Clock, Plus, Loader2 } from "lucide-react";
 
 export default function AlertDashboard() {
   const [loading, setLoading] = useState(true);

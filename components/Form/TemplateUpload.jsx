@@ -1,12 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { 
-  Plus, X, Upload, Image as ImageIcon, 
-  FileText, Check, ChevronDown, Zap, 
-  ArrowLeft, Github, ExternalLink, ShieldCheck,
-  Layout, ShoppingCart, Smartphone, Box, Monitor,
-  AlertCircle, CheckCircle
-} from "lucide-react";
+import { Plus, X, Upload, Image as ImageIcon, FileText, Check, ChevronDown, Zap, ArrowLeft, Github, ExternalLink, ShieldCheck, Layout, ShoppingCart, Smartphone, Box, Monitor, AlertCircle, CheckCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CustomSelect from "@/components/ui/CustomSelect";
 import { api } from "@/utils/api";

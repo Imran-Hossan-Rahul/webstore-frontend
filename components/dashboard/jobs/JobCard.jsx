@@ -2,7 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 
-import { MapPin, Zap, Users, ArrowUpRight, Heart } from "lucide-react";
+import { MapPin, Zap, Users, ArrowUpRight, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { showToast } from "@/utils/toast";
 
@@ -47,7 +47,7 @@ export const JobCard = ({ job, isGuest, onRequireAuth }) => {
                             isFavorited ? 'text-rose-500' : 'text-slate-400'
                         }`}
                     >
-                        <Heart size={18} fill={isFavorited ? "currentColor" : "none"} />
+                        <Star size={18} fill={isFavorited ? "currentColor" : "none"} />
                     </button>
                     <span className="text-[10px] font-medium text-slate-400 whitespace-nowrap mt-1 uppercase tracking-wider">
                         {new Date(job.createdAt).toLocaleDateString()}

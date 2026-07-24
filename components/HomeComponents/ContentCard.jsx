@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Heart, Eye, Download, MessageCircle } from "lucide-react";
+import { Eye, Download, MessageCircle, Star } from "lucide-react";
 import axios from "axios";
 import { CARD_SHAPES } from "@/constants/cardShapes";
 import { useToast } from "@/components/ui/ToastProvider";

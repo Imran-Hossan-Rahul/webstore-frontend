@@ -1,21 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { api } from '@/utils/api';
-import { 
-  ShieldCheck, 
-  Linkedin, 
-  Github, 
-  ExternalLink, 
-  CheckCircle2, 
-  Award, 
-  Lock,
-  ArrowRight,
-  UserCheck,
-  Zap,
-  Info,
-  Loader2,
-  Check as LucideCheck,
-  X as LucideX
-} from 'lucide-react';
+import { ShieldCheck, Linkedin, Github, ExternalLink, CheckCircle2, Award, Lock, ArrowRight, UserCheck, Zap, Info, Loader2, Check as LucideCheck, X as LucideX } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import VerificationForm from './VerificationForm';

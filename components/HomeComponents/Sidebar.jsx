@@ -2,17 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { 
-  Home, 
-  Package, 
-  BookOpen, 
-  Activity, 
-  Trophy, 
-  User, 
-  Settings,
-  HelpCircle,
-  Store
-} from "lucide-react";
+import { Home, Package, BookOpen, Activity, Trophy, User, Settings, HelpCircle, Store } from "lucide-react";
 
 const SidebarItem = ({ icon: Icon, label, href, isActive }) => (
   <Link 

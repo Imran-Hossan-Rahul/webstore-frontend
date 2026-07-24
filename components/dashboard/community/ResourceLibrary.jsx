@@ -2,23 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
-import {
-  X,
-  Upload,
-  Link as LinkIcon,
-  Download,
-  Heart,
-  Eye,
-  Star,
-  Search,
-  Filter,
-  Package,
-  Code,
-  Palette,
-  FileText,
-  Zap,
-  ExternalLink
-} from "lucide-react";
+import { X, Upload, Link as LinkIcon, Download, Eye, Star, Search, Filter, Package, Code, Palette, FileText, Zap, ExternalLink } from "lucide-react";
 
 const categories = [
   { id: "all", label: "All Resources", icon: Package },
@@ -240,7 +224,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
                   : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
               }`}
             >
-              <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
+              <Star className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
             </button>
             <button
               onClick={handleDownload}

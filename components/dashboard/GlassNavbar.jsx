@@ -1,17 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { 
-  Search, 
-  Bell, 
-  Menu, 
-  MessageCircle, 
-  Plus, 
-  Command,
-  UserCheck,
-  ChevronDown,
-  X,
-} from "lucide-react";
+import { Search, Bell, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { hoverModalVariants } from "@/utils/animations";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";

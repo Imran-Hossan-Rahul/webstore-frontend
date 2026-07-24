@@ -2,7 +2,7 @@
 
 import React from 'react';
 import TieredVerification from '@/components/dashboard/TieredVerification';
-import { ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from "lucide-react";
 
 export default function VerifyPage() {
   return (

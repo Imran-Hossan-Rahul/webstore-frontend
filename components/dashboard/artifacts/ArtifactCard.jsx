@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Heart, Download, Eye } from "lucide-react";
+import { Download, Eye, Star } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
@@ -92,7 +92,7 @@ export const ArtifactCard = ({ artifact }) => {
                                 isLiked ? 'text-red-500' : 'text-slate-700 hover:text-red-500'
                             }`}
                         >
-                            <Heart 
+                            <Star 
                                 size={20} 
                                 strokeWidth={1.5} 
                                 fill={isLiked ? 'currentColor' : 'none'}

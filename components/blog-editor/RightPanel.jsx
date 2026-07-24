@@ -2,23 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 // ধরে নেওয়া হচ্ছে useCurrentNode, DocumentQualityMetrics এই ফাইলের সাথে সম্পর্কিত
 import { useCurrentNode } from "./useCurrentNode";
 import DocumentQualityMetrics from "./DocumentQualityMetrics";
-import {
-  Ruler,
-  AlignLeft,
-  TextCursorInput,
-  Layers,
-  AlertTriangle,
-  Info,
-  Clock,
-  ChevronRight,
-  ChevronLeft,
-  Tag,
-  X,
-  ChevronDown,
-  ChevronUp,
-  Monitor,
-  Download,
-} from "lucide-react";
+import { Ruler, AlignLeft, TextCursorInput, Layers, AlertTriangle, Info, Clock, ChevronRight, ChevronLeft, Tag, X, ChevronDown, ChevronUp, Monitor, Download } from "lucide-react";
 import { api } from "@/utils/api";
 import AdvancedColorPicker from "./AdvancedColorPicker";
 import TurndownService from "turndown";

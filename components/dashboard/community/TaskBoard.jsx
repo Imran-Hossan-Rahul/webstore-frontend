@@ -2,20 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Plus,
-  Search,
-  Filter,
-  AlertCircle,
-  CheckCircle,
-  Clock,
-  Users,
-  MessageCircle,
-  Tag,
-  User,
-  Calendar,
-  Zap
-} from "lucide-react";
+import { Plus, Search, Filter, AlertCircle, CheckCircle, Clock, Users, MessageCircle, Tag, User, Calendar, Zap } from "lucide-react";
 
 const TaskCard = ({ task, onTaskClick }) => {
   const getStatusColor = (status) => {

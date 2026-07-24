@@ -5,12 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import CraftsmanHoverCard from "@/components/dashboard/cards/CraftsmanHoverCard";
-import {
-  ArrowLeft, MessageCircle, UserCheck, ChevronDown, Loader2,
-  Calendar, FileText, Plus, Trash2, CheckCircle,
-  ExternalLink, Clock, Star, User, Send, X,
-  AlertCircle, ShieldCheck, LayoutList
-} from "lucide-react";
+import { ArrowLeft, MessageCircle, UserCheck, ChevronDown, Loader2, Calendar, FileText, Plus, Trash2, CheckCircle, ExternalLink, Clock, Star, User, Send, X, AlertCircle, ShieldCheck, LayoutList } from "lucide-react";
 
 const STAGE_OPTIONS = [
   { key: "under_review",  label: "Reviewing" },

@@ -7,22 +7,7 @@ import ResourceLibrary from "./ResourceLibrary";
 import CreatePostModal from "./CreatePostModal";
 import CreateDiscussionModal from "./CreateDiscussionModal";
 import DiscussionChat from "./DiscussionChatNew";
-import {
-  Plus,
-  Users,
-  MessageSquare,
-  CheckCircle2,
-  Clock,
-  TrendingUp,
-  Zap,
-  Search,
-  Filter,
-  User,
-  Send,
-  Heart,
-  Share2,
-  Bookmark
-} from "lucide-react";
+import { Plus, Users, MessageSquare, CheckCircle2, Clock, TrendingUp, Zap, Search, Filter, User, Send, Share2, Bookmark, Star } from "lucide-react";
 
 export default function CommunityMain() {
   const [activeTab, setActiveTab] = useState("feed");
@@ -447,7 +432,7 @@ const ActivityCard = ({ activity }) => {
             </div>
             <div className="flex items-center gap-3">
               <button className="flex items-center gap-1 text-slate-500 hover:text-red-500 transition-colors">
-                <Heart className="w-4 h-4" />
+                <Star className="w-4 h-4" />
                 <span className="text-sm">{likes}</span>
               </button>
               <button className="flex items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors">

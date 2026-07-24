@@ -9,18 +9,7 @@ import React, {
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import {
-  Eye,
-  Heart,
-  BookOpen,
-  Layers,
-  Users,
-  UserCheck,
-  Github,
-  Globe,
-  MapPin,
-  CheckCircle2,
-} from "lucide-react";
+import { Eye, BookOpen, Layers, Users, UserCheck, Github, Globe, MapPin, CheckCircle2, Star } from "lucide-react";
 import { api } from "@/utils/api";
 
 // ─── Module-level cache ───────────────────────────────────────────────────────
@@ -427,7 +416,7 @@ export default function CraftsmanHoverCard({
                 <div className="grid grid-cols-4 gap-2">
                   {[
                     { icon: <Eye size={14} strokeWidth={1.5} className="text-emerald-500" />, val: profile.totalViews || 0, label: "Views" },
-                    { icon: <Heart size={14} strokeWidth={1.5} className="text-pink-500" />, val: profile.totalLikes || 0, label: "Likes" },
+                    { icon: <Star size={14} strokeWidth={1.5} className="text-pink-500" />, val: profile.totalLikes || 0, label: "Stars" },
                     { icon: <BookOpen size={14} strokeWidth={1.5} className="text-indigo-600" />, val: profile.totalCodex || 0, label: "Codex" },
                     { icon: <Layers size={14} strokeWidth={1.5} className="text-purple-500" />, val: profile.totalArtifacts || 0, label: "Assets" },
                   ].map(({ icon, val, label }) => (

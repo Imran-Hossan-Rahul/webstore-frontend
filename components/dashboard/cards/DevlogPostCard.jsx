@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { 
-  Heart, MessageCircle, Share2, MoreHorizontal, Bookmark, 
-  Calendar, MapPin, ExternalLink, Github, Layers, Clock, 
-  CheckCircle2, Circle, AlertCircle, FileText, Download, ChevronRight,
-  Tag, Shield, Users, Eye, Lightbulb, Flame, CheckCircle, Code, Zap, HelpCircle, Hash, PanelRight, X
-} from 'lucide-react';
+import { MessageCircle, Share2, MoreHorizontal, Bookmark, Calendar, MapPin, ExternalLink, Github, Layers, Clock, CheckCircle2, Circle, AlertCircle, FileText, Download, ChevronRight, Tag, Shield, Users, Eye, Lightbulb, Flame, CheckCircle, Code, Zap, HelpCircle, Hash, PanelRight, X, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import dynamic from 'next/dynamic';
 import { useShare } from "@/hooks/useShare";
@@ -533,7 +528,7 @@ const DevlogPostCard = ({
                         className={`flex items-center gap-1.5 transition-colors group ${isLiked ? 'text-pink-600' : 'text-slate-700 dark:text-slate-300 hover:text-pink-600'}`}
                     >
                         <div className="transition-colors">
-                            <Heart size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
+                            <Star size={18} fill={isLiked ? 'currentColor' : 'none'} className={isLiked ? 'text-pink-600' : ''} />
                         </div>
                         <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount}</span>
                     </button>

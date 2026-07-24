@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Keyboard, 
-  Clock, 
-  Activity, 
-  Fingerprint, 
-  AlertCircle,
-  TrendingUp,
-  BarChart3,
-  MousePointer2
-} from 'lucide-react';
+import { Keyboard, Clock, Activity, Fingerprint, AlertCircle, TrendingUp, BarChart3, MousePointer2 } from "lucide-react";
 import { motion } from 'framer-motion';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,

@@ -1,17 +1,6 @@
 "use client";
 import React from "react";
-import { 
-  Zap, 
-  Coins, 
-  ShieldCheck, 
-  UserPlus, 
-  FileText, 
-  Rocket, 
-  MessageSquare, 
-  Heart,
-  TrendingUp,
-  Award
-} from "lucide-react";
+import { Zap, Coins, ShieldCheck, UserPlus, FileText, Rocket, MessageSquare, TrendingUp, Award, Star } from "lucide-react";
 
 const WalletRightSidebar = () => {
   const earningRules = [
@@ -26,7 +15,7 @@ const WalletRightSidebar = () => {
         { label: "Publish Post", reward: "10 TKNS", icon: <FileText size={14} /> },
         { label: "Daily Check-in", reward: "5 TKNS", icon: <Zap size={14} /> },
         { label: "Get Comment", reward: "2 TKNS", icon: <MessageSquare size={14} /> },
-        { label: "Get Like", reward: "1 TKNS", icon: <Heart size={14} /> },
+        { label: "Get Like", reward: "1 TKNS", icon: <Star size={14} /> },
       ]
     }
   ];

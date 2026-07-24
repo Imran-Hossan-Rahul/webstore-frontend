@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { api } from '@/utils/api';
-import { Play, Pause, SkipForward, SkipBack, Maximize2, Loader2 } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Maximize2, Loader2 } from "lucide-react";
 
 export default function SessionReplayPlayer({ sessionId }) {
   const [loading, setLoading] = useState(true);

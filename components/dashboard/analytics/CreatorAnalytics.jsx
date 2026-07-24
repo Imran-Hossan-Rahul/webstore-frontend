@@ -6,10 +6,7 @@ import {
     LineChart, Line, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, 
     PieChart, Pie, Cell 
 } from 'recharts';
-import { 
-    TrendingUp, Users, Eye, Heart, Download, Share2, 
-    Globe, Clock, Calendar, BarChart2
-} from 'lucide-react';
+import { TrendingUp, Users, Eye, Download, Share2, Globe, Clock, Calendar, BarChart2, Star } from "lucide-react";
 
 const fetcher = async (url) => {
     const res = await api.get(url);

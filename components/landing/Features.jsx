@@ -1,14 +1,6 @@
 "use client";
 import React from "react";
-import { 
-  Palette, 
-  LayoutArtifact, 
-  Users, 
-  Zap, 
-  Code2, 
-  BarChart, 
-  Globe 
-} from "lucide-react";
+import { Palette, LayoutArtifact, Users, Zap, Code2, BarChart, Globe } from "lucide-react";
 
 const features = [
   {

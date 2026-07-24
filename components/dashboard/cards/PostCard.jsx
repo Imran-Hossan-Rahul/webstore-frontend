@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import NProgress from 'nprogress';
 import Image from 'next/image';
-import { Heart, MessageCircle, Share2, MoreHorizontal, Send, Bookmark, BarChart2, Calendar, MapPin, ExternalLink, Download, FileText, CheckCircle2 } from 'lucide-react';
+import { MessageCircle, Share2, MoreHorizontal, Send, Bookmark, BarChart2, Calendar, MapPin, ExternalLink, Download, FileText, CheckCircle2, Star } from "lucide-react";
 import Link from 'next/link';
 import { api } from "@/utils/api";
 import dynamic from 'next/dynamic';
@@ -261,7 +261,7 @@ const PostCard = ({
                          }`}
                     >
                         <div className="relative">
-                             <Heart className={`w-[1.2rem] h-[1.2rem] ${isLiked ? 'fill-current' : ''}`} />
+                             <Star className={`w-[1.2rem] h-[1.2rem] ${isLiked ? 'fill-current' : ''}`} />
                         </div>
                         <span className="text-[11px] font-mono font-medium tabular-nums">{likeCount || 0}</span>
                     </button>

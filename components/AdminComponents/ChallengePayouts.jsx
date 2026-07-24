@@ -4,7 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
-import { Trophy, CheckCircle2, AlertCircle, Loader2, DollarSign, ExternalLink } from 'lucide-react';
+import { Trophy, CheckCircle2, AlertCircle, Loader2, DollarSign, ExternalLink } from "lucide-react";
 import Link from 'next/link';
 
 export default function ChallengePayouts() {

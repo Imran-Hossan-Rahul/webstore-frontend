@@ -3,15 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import { 
-  Search, 
-  Calendar, 
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  ShieldCheck,
-  ArrowUpRight
-} from 'lucide-react';
+import { Search, Calendar, ChevronLeft, ChevronRight, Clock, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 const UserDirectory = () => {
   const [users, setUsers] = useState([]);

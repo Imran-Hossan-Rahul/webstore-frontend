@@ -1,7 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React from "react";
-import { Trophy, Clock, Users, ArrowRight, ArrowUpRight, Zap, Heart } from "lucide-react";
+import { Trophy, Clock, Users, ArrowRight, ArrowUpRight, Zap, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { showToast } from "@/utils/toast";
 import Link from "next/link";
@@ -95,7 +95,7 @@ export const ChallengeCard = ({ challenge, isGuest, onRequireAuth }) => {
                         isFavorited ? 'text-rose-500' : 'text-slate-500 hover:text-rose-500'
                     }`}
                  >
-                    <Heart size={16} fill={isFavorited ? "currentColor" : "none"} />
+                    <Star size={16} fill={isFavorited ? "currentColor" : "none"} />
                  </button>
                  
                  <div className="bg-white/90 dark:bg-black/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 shadow-lg">

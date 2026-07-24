@@ -4,14 +4,12 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { api } from "@/utils/api";
-import { 
-    ArrowLeft, Layers, MessageCircle, Clock, Calendar, Eye, Share2, Bookmark
-} from 'lucide-react';
+import { ArrowLeft, Layers, MessageCircle, Clock, Calendar, Eye, Share2, Bookmark } from "lucide-react";
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
 import { motion, AnimatePresence } from 'framer-motion';
 import JsonLd, { buildArticleSchema, buildBreadcrumbSchema } from '@/components/seo/JsonLd';
 import SaveNoteModal from '@/components/dashboard/modals/SaveNoteModal';
-import { BookmarkPlus } from 'lucide-react';
+import { BookmarkPlus } from "lucide-react";
 
 
 // Syntax Highlighting

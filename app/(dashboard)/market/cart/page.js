@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Trash2, Plus, Minus } from 'lucide-react';
+import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
 
 export default function CartPage() {

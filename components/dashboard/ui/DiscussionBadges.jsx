@@ -28,7 +28,7 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
     }, [item, initialCounts, fetched]);
 
     const stats = [
-        { id: 'comment', icon: MessageCircle, title: 'Comments' },
+        { id: 'comment', icon: MessageCircle, title: 'Discussions' },
         { id: 'question', icon: HelpCircle, title: 'Questions' },
         { id: 'answer', icon: CheckCircle, title: 'Solutions' },
         { id: 'issue', icon: AlertCircle, title: 'Issues' },

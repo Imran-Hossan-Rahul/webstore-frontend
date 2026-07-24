@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Users, Truck, ArrowLeft, ClipboardList } from 'lucide-react';
+import { ShoppingBag, Users, Truck, ArrowLeft, ClipboardList } from "lucide-react";
 
 export default function MarketAdminLayout({ children }) {
   const pathname = usePathname();

@@ -2,7 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Plus, X, Loader2, Image as ImageIcon, Upload, Film, Edit, Eye } from 'lucide-react';
+import { Plus, X, Loader2, Image as ImageIcon, Upload, Film, Edit, Eye } from "lucide-react";
 
 export default function ProductsManager() {
   const [products, setProducts] = useState([]);

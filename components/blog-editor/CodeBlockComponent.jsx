@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/react';
-import { Check, Copy, ChevronDown, Code2 } from 'lucide-react';
+import { Check, Copy, ChevronDown, Code2 } from "lucide-react";
 
 const languages = [
   { value: 'javascript', label: 'JavaScript' },

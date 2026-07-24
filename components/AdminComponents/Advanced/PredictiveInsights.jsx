@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Brain, TrendingDown, DollarSign, Target, Loader2 } from 'lucide-react';
+import { Brain, TrendingDown, DollarSign, Target, Loader2 } from "lucide-react";
 
 export default function PredictiveInsights({ userId }) {
   const [loading, setLoading] = useState(true);

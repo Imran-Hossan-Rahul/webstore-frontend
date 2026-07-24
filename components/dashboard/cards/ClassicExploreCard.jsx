@@ -1,7 +1,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { PenTool, Layout, Code, Heart, Eye, MessageCircle, HelpCircle, CheckCircle, AlertCircle, Lightbulb, Flame, BookOpen, Share2, Edit3, Bookmark } from "lucide-react";
+import { PenTool, Layout, Code, Eye, MessageCircle, HelpCircle, CheckCircle, AlertCircle, Lightbulb, Flame, BookOpen, Share2, Edit3, Bookmark, Star } from "lucide-react";
 import Link from "next/link";
 import CraftsmanHoverCard from "./CraftsmanHoverCard";
 import { api } from "@/utils/api";
@@ -244,7 +244,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                              onClick={handleLike}
                              className={`flex items-center gap-1.5 transition-colors ${isLiked ? 'text-pink-500' : 'hover:text-pink-500'}`}
                         >
-                             <Heart size={16} className={isLiked ? 'fill-current' : ''}/> 
+                             <Star size={16} className={isLiked ? 'fill-current' : ''}/> 
                              <span className="text-[13px]">{likesCount}</span>
                         </button>
                         <span className="flex items-center gap-1.5">
@@ -347,7 +347,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                                  onClick={handleLike}
                                  className={`flex items-center gap-1 transition-colors ${isLiked ? 'text-pink-500' : 'hover:text-pink-500'}`}
                              >
-                                 <Heart size={16} className={isLiked ? 'fill-current' : ''} /> 
+                                 <Star size={16} className={isLiked ? 'fill-current' : ''} /> 
                                  <span>{likesCount}</span>
                              </button>
                              <span className="flex items-center gap-1">

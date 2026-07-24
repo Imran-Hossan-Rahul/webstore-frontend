@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Image as ImageIcon, Copy, Eye, FileText, Loader2, ShoppingBag, Package } from 'lucide-react';
+import { Search, Image as ImageIcon, Copy, Eye, FileText, Loader2, ShoppingBag, Package } from "lucide-react";
 import { api } from '@/utils/api';
 import { generateInvoice } from '@/utils/generateInvoice';
 

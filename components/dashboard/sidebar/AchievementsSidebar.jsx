@@ -3,7 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React from "react";
 import useSWR from "swr";
 import { api } from "@/utils/api";
-import { Trophy, TrendingUp, Zap, Star, User as UserIcon, Award, Heart, Eye } from "lucide-react";
+import { Trophy, TrendingUp, Zap, Star, User as UserIcon, Award, Eye } from "lucide-react";
 import Image from "next/image";
 
 const fetcher = (url) => api.get(url).then((res) => res.data);
@@ -144,7 +144,7 @@ export default function AchievementsSidebar() {
           </li>
           <li className="flex items-start gap-3">
             <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 flex items-center justify-center shrink-0">
-              <Heart size={10} />
+              <Star size={10} />
             </div>
             <div>
               <span className="block text-[12px] font-bold text-slate-900 dark:text-white">Community Engagement</span>

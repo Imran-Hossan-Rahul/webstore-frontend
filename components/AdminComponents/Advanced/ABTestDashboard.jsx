@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { FlaskConical, TrendingUp, Users, Zap, Loader2 } from 'lucide-react';
+import { FlaskConical, TrendingUp, Users, Zap, Loader2 } from "lucide-react";
 
 export default function ABTestDashboard() {
   const [loading, setLoading] = useState(true);

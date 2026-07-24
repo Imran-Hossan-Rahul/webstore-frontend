@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import { X, Upload, Highlighter, Heart, MessageCircle, Clock, FileText, Bookmark, Share2 } from "lucide-react";
+import { X, Upload, Highlighter, MessageCircle, Clock, FileText, Bookmark, Share2, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import CodexCard from "../dashboard/cards/CodexCard";
@@ -251,7 +251,7 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
       user: user || { name: "You", profilePicture: "" },
       views: 0,
       likesCount: 0,
-      comments: [],
+      discussions: [],
       createdAt: new Date().toISOString()
   };
 

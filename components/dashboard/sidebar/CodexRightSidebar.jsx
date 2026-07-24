@@ -1,7 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
-import { User, ArrowRight, Heart, Eye, Share2, Clock, Calendar, Tag, Bookmark } from 'lucide-react';
+import { User, ArrowRight, Eye, Share2, Clock, Calendar, Tag, Bookmark, Star } from "lucide-react";
 import Image from 'next/image';
 import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
@@ -167,15 +167,15 @@ const CodexRightSidebar = ({ currentCodexSlug }) => {
                   <span className="text-sm font-semibold text-slate-900 dark:text-white">{viewsCount}</span>
               </div>
               <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Likes</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">Stars</span>
                   <span className="text-sm font-semibold text-slate-900 dark:text-white">{likesCount}</span>
               </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3 pt-2">
               <button onClick={handleLike} className={`py-3.5 rounded-xl border-2 font-semibold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-colors ${isLiked ? 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20 text-red-500' : 'bg-white dark:bg-black border-slate-100 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-                  <Heart size={14} className={isLiked ? 'fill-current text-red-500' : ''} />
-                  {isLiked ? 'Liked' : 'Like'}
+                  <Star size={14} className={isLiked ? 'fill-current text-red-500' : ''} />
+                  {isLiked ? 'Starred' : 'Star'}
               </button>
               <button onClick={handleShare} className="py-3.5 rounded-xl border-2 bg-white dark:bg-black border-slate-100 dark:border-white/10 text-slate-600 dark:text-slate-400 font-semibold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
                   <Share2 size={14} /> Share

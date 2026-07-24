@@ -1,7 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
-import { X, Trophy, Calendar, Gift, Code, PenTool, Layout as LayoutIcon, ArrowRight, CheckCircle, ExternalLink, Link as LinkIcon, FileText, Heart, Clock, Users } from "lucide-react";
+import { X, Trophy, Calendar, Gift, Code, PenTool, Layout as LayoutIcon, ArrowRight, CheckCircle, ExternalLink, Link as LinkIcon, FileText, Clock, Users, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 
@@ -312,7 +312,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                               : "bg-white text-slate-500 border-slate-200 dark:bg-white/5 dark:border-white/10 hover:bg-slate-50"
                           }`}
                         >
-                          <Heart size={10} fill={submission.likes?.includes(user?._id) ? "currentColor" : "none"} />
+                          <Star size={10} fill={submission.likes?.includes(user?._id) ? "currentColor" : "none"} />
                           {submission.likes?.length || 0}
                         </button>
                       </div>

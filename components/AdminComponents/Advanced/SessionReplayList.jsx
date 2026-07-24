@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { Play, Clock, User, Monitor, AlertCircle, CheckCircle2, Info, Search, Filter, Loader2, ChevronRight } from 'lucide-react';
+import { Play, Clock, User, Monitor, AlertCircle, CheckCircle2, Info, Search, Filter, Loader2, ChevronRight } from "lucide-react";
 import { motion } from 'framer-motion';
 
 export default function SessionReplayList({ onSelectSession }) {

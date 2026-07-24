@@ -4,21 +4,7 @@ import { motion } from "framer-motion";
 import { api } from "@/utils/api";
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useToast } from "@/components/ui/ToastProvider";
-import { 
-  ArrowLeft, 
-  Clock, 
-  Zap, 
-  User, 
-  Calendar, 
-  FileText, 
-  ExternalLink, 
-  Briefcase, 
-  MessageSquare,
-  CheckCircle2,
-  XCircle,
-  AlertCircle,
-  ChevronRight
-} from "lucide-react";
+import { ArrowLeft, Clock, Zap, User, Calendar, FileText, ExternalLink, Briefcase, MessageSquare, CheckCircle2, XCircle, AlertCircle, ChevronRight } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import CraftsmanHoverCard from "./cards/CraftsmanHoverCard";

@@ -3,12 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api } from '@/utils/api';
-import { 
-  ChevronLeft,
-  Ban,
-  UserCheck,
-  Shield
-} from 'lucide-react';
+import { ChevronLeft, Ban, UserCheck, Shield } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import UserIntelligenceHub from '@/components/AdminComponents/UserIntelligenceHub';
 

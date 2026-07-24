@@ -10,11 +10,7 @@ import {
   AreaChart, Area, LineChart, Line, PieChart, Pie, Cell, RadarChart,
   Radar, PolarGrid, PolarAngleAxis, Filler, Legend
 } from 'recharts';
-import {
-  TrendingUp, Users, Globe, Monitor, Smartphone, Clock,
-  MousePointer2, ArrowRight, Loader2, ChevronUp, ChevronDown,
-  AlertCircle, Zap, Activity, BarChart3, Map, Filter, RefreshCw
-} from 'lucide-react';
+import { TrendingUp, Users, Globe, Monitor, Smartphone, Clock, MousePointer2, ArrowRight, Loader2, ChevronUp, ChevronDown, AlertCircle, Zap, Activity, BarChart3, Map, Filter, RefreshCw } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const PALETTE = {

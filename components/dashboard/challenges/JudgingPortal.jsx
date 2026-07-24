@@ -3,11 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
-import { 
-  ArrowLeft, LayoutDashboard, Scale, CheckCircle2, ChevronRight, 
-  ExternalLink, Github, Loader2, Trophy, Users, AlertCircle,
-  List, BarChart2, Settings, X, Search, Filter, Play, Check, Minus, MessageSquare
-} from "lucide-react";
+import { ArrowLeft, LayoutDashboard, Scale, CheckCircle2, ChevronRight, ExternalLink, Github, Loader2, Trophy, Users, AlertCircle, List, BarChart2, Settings, X, Search, Filter, Play, Check, Minus, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import CraftsmanHoverCard from "../cards/CraftsmanHoverCard";

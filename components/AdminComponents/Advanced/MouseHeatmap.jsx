@@ -3,7 +3,7 @@
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { api } from '@/utils/api';
-import { MousePointer2, Activity, Zap, Loader2, Maximize2, Layers, MousePointer, Info, Filter, Download, RefreshCcw } from 'lucide-react';
+import { MousePointer2, Activity, Zap, Loader2, Maximize2, Layers, MousePointer, Info, Filter, Download, RefreshCcw } from "lucide-react";
 
 export default function MouseHeatmap({ page = "/", timeRange = 7 }) {
   const canvasRef = useRef(null);

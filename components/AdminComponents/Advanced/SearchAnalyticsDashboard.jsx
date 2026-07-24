@@ -2,11 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import {
-  Search, TrendingUp, AlertCircle, MousePointer2,
-  Clock, BarChart3, HelpCircle, Hash, RefreshCw,
-  Loader2, Database, Zap
-} from 'lucide-react';
+import { Search, TrendingUp, AlertCircle, MousePointer2, Clock, BarChart3, HelpCircle, Hash, RefreshCw, Loader2, Database, Zap } from "lucide-react";
 
 const EMPTY_STATE = {
   popular: [],

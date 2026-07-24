@@ -2,7 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, User, Link as LinkIcon, BookOpen, Layers, Github, Eye, Heart, Code2, Users, UserCheck, Zap } from 'lucide-react';
+import { X, User, Link as LinkIcon, BookOpen, Layers, Github, Eye, Code2, Users, UserCheck, Zap, Star } from "lucide-react";
 import { api } from '@/utils/api';
 
 const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
@@ -261,9 +261,9 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Views</span>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
-                                    <Heart size={18} className="text-pink-500 mb-1.5" />
+                                    <Star size={18} className="text-pink-500 mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalLikes || 0).toLocaleString()}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Likes</span>
+                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Stars</span>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <BookOpen size={18} className="text-indigo-600 mb-1.5" />

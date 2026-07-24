@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Star, TrendingUp, BookOpen, ArrowRight, Heart, FileText } from "lucide-react";
+import { Star, TrendingUp, BookOpen, ArrowRight, FileText } from "lucide-react";
 import { api } from "@/utils/api";
 import Image from "next/image";
 import CraftsmanHoverCard from "../cards/CraftsmanHoverCard";
@@ -116,7 +116,7 @@ export default function DevlogsListSidebar() {
                     <div className="flex items-center gap-2 mt-1">
                       {craftsman.totalLikes > 0 && (
                         <span className="flex items-center gap-0.5 text-[10px] text-pink-500 font-semibold">
-                          <Heart size={9} fill="currentColor" /> {craftsman.totalLikes}
+                          <Star size={9} fill="currentColor" /> {craftsman.totalLikes}
                         </span>
                       )}
                       {craftsman.postCount > 0 && (

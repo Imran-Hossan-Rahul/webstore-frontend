@@ -4,7 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api, getHasCraftsmanAccount } from "@/utils/api";
-import { Search, Heart, Eye, Download, MessageCircle } from "lucide-react";
+import { Search, Eye, Download, MessageCircle, Star } from "lucide-react";
 import axios from "axios";
 import { CARD_SHAPES } from "@/constants/cardShapes";
 import CraftsmanAccountModal from "./CraftsmanAccountModal";
@@ -464,7 +464,7 @@ function ContentCard({ item, router }) {
                     onClick={handleLike} 
                     className="flex items-center gap-1.5 hover:text-pink-400 transition-colors bg-white/10 hover:bg-white/20 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5"
                  >
-                     <Heart size={14} className={liked ? "fill-pink-500 text-pink-500" : "text-white"} />
+                     <Star size={14} className={liked ? "fill-pink-500 text-pink-500" : "text-white"} />
                      <span className="text-[10px] font-bold text-white">{likeCount}</span>
                  </button>
                  

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CreditCard, Truck, FileText, Check, Plus, Minus } from 'lucide-react';
+import { CreditCard, Truck, FileText, Check, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
 import { districts, upazilas } from '@/utils/bdData';
 

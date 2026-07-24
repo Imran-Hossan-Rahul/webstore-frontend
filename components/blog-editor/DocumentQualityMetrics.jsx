@@ -1,20 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import {
-  Text,
-  Clock,
-  TrendingUp,
-  Search,
-  CheckCircle,
-  AlertTriangle,
-  Info,
-  XCircle,
-  Link as LinkIcon,
-  List,
-  Activity,
-  ThumbsUp,
-  ThumbsDown,
-  BarChart2
-} from "lucide-react";
+import { Text, Clock, TrendingUp, Search, CheckCircle, AlertTriangle, Info, XCircle, Link as LinkIcon, List, Activity, ThumbsUp, ThumbsDown, BarChart2 } from "lucide-react";
 
 // --- Helper Functions (Pure Logic) ---
 

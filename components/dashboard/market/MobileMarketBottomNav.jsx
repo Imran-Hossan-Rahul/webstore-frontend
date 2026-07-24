@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Package } from 'lucide-react';
+import { ShoppingCart, Package } from "lucide-react";
 
 export default function MobileMarketBottomNav() {
   const pathname = usePathname();

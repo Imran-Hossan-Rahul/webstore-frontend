@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { FileText, AlertTriangle, Clock, CheckCircle, Loader2 } from 'lucide-react';
+import { FileText, AlertTriangle, Clock, CheckCircle, Loader2 } from "lucide-react";
 
 export default function FormAnalyticsDashboard({ formId }) {
   const [loading, setLoading] = useState(true);

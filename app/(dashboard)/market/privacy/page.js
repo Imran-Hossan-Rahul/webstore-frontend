@@ -1,10 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import {
-  Shield, ChevronDown, Lock, Eye, Database, Share2, UserCheck, 
-  Settings, Mail, Globe, AlertTriangle, FileText, CheckCircle2
-} from 'lucide-react';
+import { Shield, ChevronDown, Lock, Eye, Database, Share2, UserCheck, Settings, Mail, Globe, AlertTriangle, FileText, CheckCircle2 } from "lucide-react";
 
 const TOC_ITEMS = [
   { id: 'collection',    label: '1. Information We Collect' },

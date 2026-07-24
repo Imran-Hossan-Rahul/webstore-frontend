@@ -3,9 +3,7 @@ import React from "react";
 import useSWR from "swr";
 import { api } from "@/utils/api";
 import { usePathname } from "next/navigation";
-import { 
-  ArrowRight, Briefcase, DollarSign, Github, CheckCircle, ShieldCheck, Linkedin
-} from "lucide-react";
+import { ArrowRight, Briefcase, DollarSign, Github, CheckCircle, ShieldCheck, Linkedin } from "lucide-react";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import BecomePatronModal from "../../DashboardComponents/BecomePatronModal";
 import CraftsmanAccountModal from "../../DashboardComponents/CraftsmanAccountModal";

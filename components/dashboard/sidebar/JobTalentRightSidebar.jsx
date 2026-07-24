@@ -1,10 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from "react";
-import { 
-   Clock, Users, MapPin, ArrowRight, CheckCircle, ShieldCheck, Info, X,
-   FileSignature, Star, Heart, TrendingUp, Layout, ChevronRight
-} from "lucide-react";
+import { Clock, Users, MapPin, ArrowRight, CheckCircle, ShieldCheck, Info, X, FileSignature, Star, TrendingUp, Layout, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import { DashboardContext } from "@/app/(dashboard)/layout";

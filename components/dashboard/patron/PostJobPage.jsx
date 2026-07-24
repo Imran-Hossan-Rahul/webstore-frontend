@@ -4,12 +4,7 @@ import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useRouter } from "next/navigation";
-import { 
-  MapPin, Award, ArrowRight, X, 
-  Code, Palette, Megaphone, FileText, Headset, 
-  Database, Shield, PieChart, PenTool, Layers,
-  ChevronDown
-} from "lucide-react";
+import { MapPin, Award, ArrowRight, X, Code, Palette, Megaphone, FileText, Headset, Database, Shield, PieChart, PenTool, Layers, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CustomSelect from "../../ui/CustomSelect";
 

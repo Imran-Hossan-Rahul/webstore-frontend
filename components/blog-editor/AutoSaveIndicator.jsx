@@ -1,7 +1,7 @@
 // AutoSaveIndicator.jsx - Auto-save Status Indicator
 
 import React from 'react';
-import { Check, Loader2, AlertCircle } from 'lucide-react';
+import { Check, Loader2, AlertCircle } from "lucide-react";
 
 export default function AutoSaveIndicator({ saveState, lastSaved }) {
   const getTimeAgo = (date) => {

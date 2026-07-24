@@ -3,11 +3,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import {
-  TrendingUp, ArrowRight, Loader2, BarChart2, Clock,
-  MousePointer2, Users, RefreshCw, AlertCircle, ChevronRight,
-  Activity, Eye, Layers
-} from 'lucide-react';
+import { TrendingUp, ArrowRight, Loader2, BarChart2, Clock, MousePointer2, Users, RefreshCw, AlertCircle, ChevronRight, Activity, Eye, Layers } from "lucide-react";
 
 const TIME_RANGES = [
   { label: '24H', days: 1 },

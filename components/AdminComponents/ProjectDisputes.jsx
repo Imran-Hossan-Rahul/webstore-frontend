@@ -4,7 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
-import { AlertTriangle, CheckCircle, XCircle, Loader2, ExternalLink, User, DollarSign, MessageSquare } from 'lucide-react';
+import { AlertTriangle, CheckCircle, XCircle, Loader2, ExternalLink, User, DollarSign, MessageSquare } from "lucide-react";
 import Link from 'next/link';
 
 export default function DevlogDisputes() {

@@ -2,11 +2,7 @@
 
 import React, { useState, useEffect, useContext, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { 
-  Rocket, ChevronLeft, Plus, Trash2, Upload, 
-  Link as LinkIcon, Video, FileText, Info, 
-  Loader2, X, CheckCircle2, Image as ImageIcon
-} from "lucide-react";
+import { Rocket, ChevronLeft, Plus, Trash2, Upload, Link as LinkIcon, Video, FileText, Info, Loader2, X, CheckCircle2, Image as ImageIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";

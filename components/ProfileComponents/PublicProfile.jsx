@@ -4,50 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  User, 
-  MapPin, 
-  Calendar,
-  Share2,
-  MessageSquare,
-  Users,
-  UserCheck,
-  Verified,
-  Globe,
-  ExternalLink,
-  ChevronRight,
-  Bookmark,
-  Camera,
-  Edit2,
-  LogOut,
-  Settings as SettingsIcon,
-  LayoutGrid,
-  Info,
-  Clock,
-  ArrowLeft,
-  Shield,
-  Link as LinkIcon,
-  CreditCard,
-  Plus,
-  X,
-  Check,
-  Mail,
-  Lock,
-  Building,
-  Github,
-  Linkedin,
-  Twitter,
-  Trophy,
-  Layers,
-  Loader2,
-  Zap,
-  Palette,
-  Code,
-  FileText,
-  CheckCircle,
-  Chrome, // For Google Badge
-  ShieldCheck,
-} from 'lucide-react';
+import { User, MapPin, Calendar, Share2, MessageSquare, Users, UserCheck, Verified, Globe, ExternalLink, ChevronRight, Bookmark, Camera, Edit2, LogOut, Settings as SettingsIcon, LayoutGrid, Info, Clock, ArrowLeft, Shield, Link as LinkIcon, CreditCard, Plus, X, Check, Mail, Lock, Building, Github, Linkedin, Twitter, Trophy, Layers, Loader2, Zap, Palette, Code, FileText, CheckCircle, Chrome, // For Google Badge
+  ShieldCheck } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useToast } from '@/components/ui/ToastProvider';

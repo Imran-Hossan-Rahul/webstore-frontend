@@ -2,7 +2,7 @@
 import React from "react";
 import useSWR from "swr";
 import { api } from "@/utils/api";
-import { Trophy, Star, Zap, Target, Award, ShieldCheck, Flame, TrendingUp, Heart, Eye, Users, ArrowUpRight, History } from "lucide-react";
+import { Trophy, Star, Zap, Target, Award, ShieldCheck, Flame, TrendingUp, Eye, Users, ArrowUpRight, History } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { DashboardContext } from "../../app/(dashboard)/layout";
@@ -62,7 +62,7 @@ export default function AchievementsPage() {
     { label: "Level", value: achievementsData?.level || 1, icon: Target, color: "text-indigo-500" },
     { label: "Streak", value: user?.gamification?.streak?.current || 0, icon: Flame, color: "text-orange-500" },
     { label: "Views", value: craftsman?.totalViews || 0, icon: Eye, color: "text-emerald-500" },
-    { label: "Likes", value: craftsman?.totalLikes || 0, icon: Heart, color: "text-rose-500" },
+    { label: "Stars", value: craftsman?.totalLikes || 0, icon: Heart, color: "text-rose-500" },
     { label: "Followers", value: user?.followers?.length || 0, icon: Users, color: "text-purple-500" },
     { label: "Tokens", value: user?.walletBalance || 0, icon: Star, color: "text-yellow-500" },
   ].filter(s => s.value > 0 || ["Total XP", "Level"].includes(s.label));

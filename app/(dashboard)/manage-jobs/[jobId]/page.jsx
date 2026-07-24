@@ -4,9 +4,7 @@ import { api } from "@/utils/api";
 import { useRouter, useParams } from "next/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import {
-  Users, Loader2, ChevronRight, ChevronLeft, ArrowLeft
-} from "lucide-react";
+import { Users, Loader2, ChevronRight, ChevronLeft, ArrowLeft } from "lucide-react";
 import CraftsmanHoverCard from "@/components/dashboard/cards/CraftsmanHoverCard";
 
 const STAGE_CONFIG = {

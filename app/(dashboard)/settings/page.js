@@ -1,10 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import {
-  User, Link as LinkIcon, Shield, Bell, Eye,
-  Palette, Plug, Ban, Download, Loader2
-} from "lucide-react";
+import { User, Link as LinkIcon, Shield, Bell, Eye, Palette, Plug, Ban, Download, Loader2 } from "lucide-react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import { Lock, ArrowRight } from "lucide-react";

@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Play, 
-  Pause, 
-  Square, 
-  Activity, 
-  Clock,
-  Eye,
-  Maximize,
-  Volume2
-} from 'lucide-react';
+import { Play, Pause, Square, Activity, Clock, Eye, Maximize, Volume2 } from "lucide-react";
 import { motion } from 'framer-motion';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,

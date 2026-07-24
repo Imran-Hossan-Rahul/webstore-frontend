@@ -4,7 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { Edit, Trash2, BarChart2, Eye, Download, Heart, Zap, Clock, AlertCircle, CheckCircle } from "lucide-react";
+import { Edit, Trash2, BarChart2, Eye, Download, Zap, Clock, AlertCircle, CheckCircle, Star } from "lucide-react";
 import Image from "next/image";
 import { useToast } from "@/components/ui/ToastProvider";
 
@@ -162,7 +162,7 @@ function EngineerArtifactCard({ artifact, router, onDelete }) {
                             <Eye size={14} /> {artifact.viewsCount || 0}
                         </span>
                         <span className="flex items-center gap-1.5 hover:text-red-500 transition-colors">
-                            <Heart size={14} /> {artifact.likeCount || 0}
+                            <Star size={14} /> {artifact.likeCount || 0}
                         </span>
                     </div>
                     <span className="flex items-center gap-1.5">

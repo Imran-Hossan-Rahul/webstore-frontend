@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Eye, 
-  EyeOff, 
-  Clock, 
-  Activity, 
-  Monitor,
-  MousePointer2,
-  Timer,
-  AlertCircle
-} from 'lucide-react';
+import { Eye, EyeOff, Clock, Activity, Monitor, MousePointer2, Timer, AlertCircle } from "lucide-react";
 import { motion } from 'framer-motion';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,

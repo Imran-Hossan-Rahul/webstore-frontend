@@ -4,11 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { api } from "@/utils/api";
-import { 
-  ArrowLeft, Heart, Eye, Share2, Download, Github, ExternalLink, 
-  FileText, Tag, Users, Calendar, Shield, Zap, Code, Hash, 
-  MessageCircle, Layers, MoreHorizontal, ChevronRight, Edit3, ArrowUpCircle
-} from 'lucide-react';
+import { ArrowLeft, Eye, Share2, Download, Github, ExternalLink, FileText, Tag, Users, Calendar, Shield, Zap, Code, Hash, MessageCircle, Layers, MoreHorizontal, ChevronRight, Edit3, ArrowUpCircle, Star } from "lucide-react";
 import AdvancedCommentSection from '@/components/dashboard/comments/AdvancedCommentSection';
 import { useUser } from '@/context/UserContext';
 import JsonLd, { buildSoftwareSchema, buildBreadcrumbSchema } from '@/components/seo/JsonLd';

@@ -4,11 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
-import { 
-  ArrowLeft, ArrowRight, LayoutDashboard, Scale, CheckCircle2, ChevronRight, ChevronLeft,
-  ExternalLink, Github, Loader2, Trophy, Users, AlertCircle,
-  List, BarChart2, Settings, X, Search, Filter, Play, Check, Minus, MessageSquare, Radio, Crown, Zap, ShieldCheck, Send, Info, Star, Clock, Download
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, LayoutDashboard, Scale, CheckCircle2, ChevronRight, ChevronLeft, ExternalLink, Github, Loader2, Trophy, Users, AlertCircle, List, BarChart2, Settings, X, Search, Filter, Play, Check, Minus, MessageSquare, Radio, Crown, Zap, ShieldCheck, Send, Info, Star, Clock, Download } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import CraftsmanHoverCard from '../cards/CraftsmanHoverCard';

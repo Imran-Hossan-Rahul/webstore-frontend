@@ -1,11 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import {
-  FileText, ChevronDown, Shield, Users, ShoppingBag,
-  AlertTriangle, Lock, RotateCcw, Gavel, Globe,
-  Mail, Phone, CheckCircle2, XCircle, Eye, CreditCard
-} from 'lucide-react';
+import { FileText, ChevronDown, Shield, Users, ShoppingBag, AlertTriangle, Lock, RotateCcw, Gavel, Globe, Mail, Phone, CheckCircle2, XCircle, Eye, CreditCard } from "lucide-react";
 
 const TOC_ITEMS = [
   { id: 'acceptance',    label: '1. Acceptance of Terms' },

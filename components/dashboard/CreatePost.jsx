@@ -1,7 +1,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useRef, useEffect } from 'react';
 import EmojiPicker from 'emoji-picker-react';
-import { Image as ImageIcon, Send, X, Smile, Calendar, MapPin, BarChart2, Link, Plus, FileText } from 'lucide-react';
+import { Image as ImageIcon, Send, X, Smile, Calendar, MapPin, BarChart2, Link, Plus, FileText } from "lucide-react";
 import { api } from "@/utils/api";
 import AIEnhanceButton from '../AIEnhanceButton';
 

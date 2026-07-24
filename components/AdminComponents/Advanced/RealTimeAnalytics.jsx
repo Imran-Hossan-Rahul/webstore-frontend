@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
-import { Activity, Users, MousePointer, Eye, TrendingUp, Zap } from 'lucide-react';
+import { Activity, Users, MousePointer, Eye, TrendingUp, Zap } from "lucide-react";
 
 export default function RealTimeAnalytics() {
   const [liveData, setLiveData] = useState({

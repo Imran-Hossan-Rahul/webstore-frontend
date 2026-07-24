@@ -1,7 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
-import { TrendingUp, PenTool, ArrowUpRight, Trophy, Layout, Clock, Heart, Eye, Code } from "lucide-react";
+import { TrendingUp, PenTool, ArrowUpRight, Trophy, Layout, Clock, Eye, Code, Star } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/utils/api";
 
@@ -13,7 +13,7 @@ const TopCodexItem = ({ codex }) => (
         <div className="flex-1 min-w-0">
             <div className="font-bold text-sm text-slate-900 dark:text-gray-100 group-hover:text-orange-500 transition-colors truncate">{codex.title}</div>
             <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-1">
-                <span className="flex items-center gap-1"><Heart size={10} /> {codex.likes || codex.likesCount || 0}</span>
+                <span className="flex items-center gap-1"><Star size={10} /> {codex.likes || codex.likesCount || 0}</span>
                 <span className="flex items-center gap-1"><Eye size={10} /> {codex.views || codex.viewsCount || 0}</span>
             </div>
         </div>

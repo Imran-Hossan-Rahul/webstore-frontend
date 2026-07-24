@@ -3,23 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {  
-  Bookmark, 
-  Trash2, 
-  Eye, 
-  Heart, 
-  Clock, 
-  PenTool, 
-  Layout, 
-  Code,
-  Share2,
-  ExternalLink,
-  Trophy,
-  Zap,
-  FolderPlus,
-  Loader2,
-  Quote
-} from "lucide-react";
+import { Bookmark, Trash2, Eye, Clock, PenTool, Layout, Code, Share2, ExternalLink, Trophy, Zap, FolderPlus, Loader2, Quote, Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import CraftsmanHoverCard from "./CraftsmanHoverCard";
 import { api } from "@/utils/api";
@@ -317,9 +301,9 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         <button 
                             onClick={handleLike} 
                             className={`p-1.5 transition-colors flex items-center gap-1 rounded-md ${isLiked ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10' : 'text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-slate-50 dark:hover:bg-white/5'}`} 
-                            title={isLiked ? "Unlike" : "Like"}
+                            title={isLiked ? "Unlike" : "Star"}
                         >
-                            <Heart size={14} strokeWidth={1.5} className={isLiked ? 'fill-current' : ''} />
+                            <Star size={14} strokeWidth={1.5} className={isLiked ? 'fill-current' : ''} />
                             <span className={`text-[10px] font-bold ${isLiked ? 'text-rose-500' : 'text-slate-400'}`}>{likeCount}</span>
                         </button>
                         <div className="flex items-center gap-1 px-1.5">

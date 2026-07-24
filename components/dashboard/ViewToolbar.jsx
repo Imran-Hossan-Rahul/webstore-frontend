@@ -1,6 +1,6 @@
 "use client";
 import React, { memo, useState, useEffect } from 'react';
-import { LayoutGrid, StretchHorizontal } from 'lucide-react';
+import { LayoutGrid, StretchHorizontal } from "lucide-react";
 import CustomSelect from '../ui/CustomSelect';
 
 const VIEW_OPTIONS = [

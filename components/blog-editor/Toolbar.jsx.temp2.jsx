@@ -1,52 +1,7 @@
 // components/codex-editor/Toolbar.jsx
 
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import {
-  Bold,
-  Italic,
-  Strikethrough,
-  Code,
-  List,
-  ListOrdered,
-  Quote,
-  Table,
-  Image,
-  Video,
-  Link,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Heading6,
-  Undo,
-  Redo,
-  Trash2,
-  FileText,
-  ChevronDown,
-  CheckSquare,
-  CornerDownLeft,
-  CornerDownRight,
-  Mic2,
-  Square,
-  Type,
-  Moon,
-  Sun,
-  Minimize2,
-  Maximize2,
-  Monitor,
-  Palette,
-  Highlighter,
-  Globe,
-  Clock,
-  Zap,
-  Minus,
-  CaseUpper,
-} from "lucide-react";
+import { Bold, Italic, Strikethrough, Code, List, ListOrdered, Quote, Table, Image, Video, Link, AlignLeft, AlignCenter, AlignRight, AlignJustify, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, Undo, Redo, Trash2, FileText, ChevronDown, CheckSquare, CornerDownLeft, CornerDownRight, Mic2, Square, Type, Moon, Sun, Minimize2, Maximize2, Monitor, Palette, Highlighter, Globe, Clock, Zap, Minus, CaseUpper } from "lucide-react";
 
 import { useTheme } from "./ThemeContext";
 import AutoSaveIndicator from "./AutoSaveIndicator";

@@ -1,10 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { 
-  Search, 
-  Grid2X2, 
-  LayoutList,
-  X
-} from "lucide-react";
+import { Search, Grid2X2, LayoutList, X } from "lucide-react";
 import SavedItemCard from "./cards/SavedItemCard";
 import EmptyState from "../ui/EmptyState";
 import React, { useState, useMemo, useContext } from "react";

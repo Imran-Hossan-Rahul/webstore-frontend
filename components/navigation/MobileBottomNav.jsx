@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
-import { Home, Terminal, Layout, FileText, Store, ShoppingCart, Package, X } from 'lucide-react';
+import { Home, Terminal, Layout, FileText, Store, ShoppingCart, Package, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
 

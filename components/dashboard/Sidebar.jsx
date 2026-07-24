@@ -5,27 +5,7 @@ import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
-import {
-  Home,
-  Compass,
-  Zap,
-  Users,
-  Grid,
-  Bookmark,
-  TrendingUp,
-  Settings,
-  MessageCircle,
-  Trophy,
-  FileText,
-  Layout,
-  BarChart2,
-  Target,
-  Clock,
-  ShieldCheck,
-  Briefcase,
-  Terminal,
-  Store,
-} from "lucide-react";
+import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
   <Link

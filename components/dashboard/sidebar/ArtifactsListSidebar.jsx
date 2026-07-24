@@ -2,10 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  Flame, TrendingUp, Star, Layout, Tag, ArrowRight,
-  Heart, Eye, Download, Sparkles, Zap, Package, ChevronRight
-} from "lucide-react";
+import { Flame, TrendingUp, Star, Layout, Tag, ArrowRight, Eye, Download, Sparkles, Zap, Package, ChevronRight } from "lucide-react";
 import { api } from "@/utils/api";
 
 export default function ArtifactsListSidebar() {
@@ -152,7 +149,7 @@ export default function ArtifactsListSidebar() {
                       <Eye size={9} /> {artifact.viewsCount || 0}
                     </span>
                     <span className="text-[10px] text-pink-500 font-semibold flex items-center gap-0.5">
-                      <Heart size={9} fill="currentColor" /> {artifact.likeCount || 0}
+                      <Star size={9} fill="currentColor" /> {artifact.likeCount || 0}
                     </span>
                     {artifact.priceType === "free" ? (
                       <span className="text-[9px] font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 px-1.5 py-0.5 rounded-full">Free</span>

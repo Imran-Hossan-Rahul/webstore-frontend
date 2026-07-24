@@ -2,7 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { Camera, RefreshCw, Check, X, Loader2, ShieldCheck, Zap, AlertCircle } from 'lucide-react';
+import { Camera, RefreshCw, Check, X, Loader2, ShieldCheck, Zap, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CameraCapture = ({ onCapture, onClose }) => {

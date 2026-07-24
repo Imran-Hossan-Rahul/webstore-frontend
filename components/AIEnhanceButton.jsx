@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Zap, Loader2, Wand2, Check } from 'lucide-react';
+import { Zap, Loader2, Wand2, Check } from "lucide-react";
 
 const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) => {
   const [loading, setLoading] = useState(false);

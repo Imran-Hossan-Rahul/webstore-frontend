@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { api } from '@/utils/api';
-import { ShieldCheck, Loader2, XCircle, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Loader2, XCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion } from 'framer-motion';
 
 export default function VerifyEmailPage() {

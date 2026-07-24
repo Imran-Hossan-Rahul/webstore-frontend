@@ -3,44 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState } from 'react';
 import { api, API_BASE_URL } from '@/utils/api';
-import { 
-  ShieldCheck, 
-  Clock, 
-  Check, 
-  X, 
-  MapPin, 
-  Mail, 
-  Calendar, 
-  Activity, 
-  CreditCard, 
-  Globe, 
-  Monitor, 
-  History, 
-  CheckCircle2, 
-  XCircle, 
-  FileSignature, 
-  Zap, 
-  ArrowUpRight, 
-  ArrowDownLeft, 
-  Maximize2,
-  Lock,
-  Unlock,
-  AlertTriangle,
-  Search,
-  ChevronRight,
-  TrendingUp,
-  User,
-  ExternalLink,
-  ShieldAlert,
-  Fingerprint,
-  MessageSquare,
-  FileText,
-  Image,
-  PenTool,
-  MessageCircle,
-  Palette,
-  Trophy
-} from 'lucide-react';
+import { ShieldCheck, Clock, Check, X, MapPin, Mail, Calendar, Activity, CreditCard, Globe, Monitor, History, CheckCircle2, XCircle, FileSignature, Zap, ArrowUpRight, ArrowDownLeft, Maximize2, Lock, Unlock, AlertTriangle, Search, ChevronRight, TrendingUp, User, ExternalLink, ShieldAlert, Fingerprint, MessageSquare, FileText, Image, PenTool, MessageCircle, Palette, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 
 const UserIntelligenceHub = ({ dossier }) => {
@@ -451,7 +414,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                           contracts: <FileText size={14} />, 
                           posts: <Image size={14} />, 
                           codex: <PenTool size={14} />, 
-                          comments: <MessageCircle size={14} />, 
+                          discussions: <MessageCircle size={14} />, 
                           artifacts: <Palette size={14} />, 
                           challenges: <Trophy size={14} /> 
                         };

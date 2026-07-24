@@ -1,5 +1,5 @@
 import { NodeViewWrapper, NodeViewContent } from '@tiptap/react';
-import { AlertCircle, Info, Plus } from 'lucide-react';
+import { AlertCircle, Info, Plus } from "lucide-react";
 
 export default function HighlightedBlockComponent(props) {
   const { node, getPos, editor } = props;

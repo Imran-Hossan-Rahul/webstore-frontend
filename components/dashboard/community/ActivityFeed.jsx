@@ -2,17 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Zap,
-  Palette,
-  Code,
-  FileText,
-  MessageCircle,
-  CheckCircle,
-  User,
-  Users,
-  Image as ImageIcon
-} from "lucide-react";
+import { Zap, Palette, Code, FileText, MessageCircle, CheckCircle, User, Users, Image as ImageIcon } from "lucide-react";
 
 const ActivityIcon = ({ type }) => {
   const iconProps = { className: "w-5 h-5" };

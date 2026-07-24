@@ -2,7 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Bell, X, Check, Trash2, ExternalLink, MessageCircle, Heart, UserPlus, ShoppingBag, Info } from "lucide-react";
+import { Bell, X, Check, Trash2, ExternalLink, MessageCircle, UserPlus, ShoppingBag, Info, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import socket from "@/utils/socket";
 import DraggableResizableWindow from "../chat/DraggableResizableWindow";
@@ -144,7 +144,7 @@ export default function NotificationModal({ isOpen, onClose }) {
   const getIcon = (type) => {
     switch (type) {
       case "message": return <MessageCircle className="text-indigo-600" size={18} />;
-      case "like": return <Heart className="text-red-500 fill-red-500" size={18} />;
+      case "like": return <Star className="text-red-500 fill-red-500" size={18} />;
       case "follow": return <UserPlus className="text-purple-500" size={18} />;
       case "purchase": return <ShoppingBag className="text-emerald-500" size={18} />;
       case "comment": return <MessageCircle className="text-amber-500" size={18} />;

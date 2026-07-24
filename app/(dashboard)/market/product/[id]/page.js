@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Star, Truck, ShieldCheck, Undo2, ShoppingCart, CreditCard, ChevronRight, Check, Minus, Plus, Home, Heart, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit } from 'lucide-react';
+import { Star, Truck, ShieldCheck, Undo2, ShoppingCart, CreditCard, ChevronRight, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit } from "lucide-react";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useShare } from "@/hooks/useShare";
 import { api } from "@/utils/api";
@@ -353,7 +353,7 @@ export default function ProductDetails({ params }) {
                 onClick={handleLike}
                 className={`w-9 h-9 border border-[#111827] flex items-center justify-center rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition ${isLiked ? 'text-pink-500 border-pink-200 dark:border-pink-900' : 'text-gray-700 dark:text-gray-300'}`}
               >
-                <Heart size={16} className={isLiked ? 'fill-current' : ''} />
+                <Star size={16} className={isLiked ? 'fill-current' : ''} />
               </button>
               <button 
                 onClick={handleShare}

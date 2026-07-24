@@ -1,10 +1,6 @@
 "use client";
 import React, { useState, useCallback, useEffect, useContext } from "react";
-import { 
-   MapPin, Clock, Users, Calendar, 
-   ArrowRight, CheckCircle, Send, Link, ChevronLeft, ShieldCheck, Info, X,
-   FileSignature, ShieldAlert, Star, FileText, Check, Trophy, Heart
-} from "lucide-react";
+import { MapPin, Clock, Users, Calendar, ArrowRight, CheckCircle, Send, Link, ChevronLeft, ShieldCheck, Info, X, FileSignature, ShieldAlert, Star, FileText, Check, Trophy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import { DashboardContext } from "@/app/(dashboard)/layout";

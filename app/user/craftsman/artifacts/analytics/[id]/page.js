@@ -1,11 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { 
-  Calendar, Globe, User, TrendingUp, 
-  ArrowLeft, Download, Eye, ThumbsUp, Share2, 
-  BarChart2, MapPin, Clock, LayoutGrid
-} from "lucide-react";
+import { Calendar, Globe, User, TrendingUp, ArrowLeft, Download, Eye, ThumbsUp, Share2, BarChart2, MapPin, Clock, LayoutGrid } from "lucide-react";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, 
   ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Legend 
@@ -143,7 +139,7 @@ export default function ArtifactAnalyticsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
           <MetricCard title="Impressions" value={data.totalImpressions} icon={<Eye size={18} />} color="text-slate-400" />
           <MetricCard title="Total Views" value={data.totalViews} icon={<Eye size={18} />} color="text-[#3ea6ff]" />
-          <MetricCard title="Engagement" value={data.totalLikes} icon={<ThumbsUp size={18} />} color="text-[#00C49F]" label="Likes" />
+          <MetricCard title="Engagement" value={data.totalLikes} icon={<ThumbsUp size={18} />} color="text-[#00C49F]" label="Stars" />
           <MetricCard title="Conversions" value={data.totalDownloads} icon={<Download size={18} />} color="text-[#FFBB28]" label="Downloads" />
           <MetricCard title="Virality" value={data.totalShares} icon={<Share2 size={18} />} color="text-[#FF8042]" label="Shares" />
         </div>

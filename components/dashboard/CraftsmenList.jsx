@@ -3,7 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { Users, Star, MessageCircle, UserPlus, UserCheck, Eye, Heart, CheckCircle2, Trophy, Activity as ActivityIcon, Code, Briefcase } from "lucide-react";
+import { Users, Star, MessageCircle, UserPlus, UserCheck, Eye, CheckCircle2, Trophy, Activity as ActivityIcon, Code, Briefcase } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 import ViewToolbar from "./ViewToolbar";
 
@@ -418,7 +418,7 @@ export default function CraftsmenList() {
                       <div className="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></div>
                       <div className="flex items-center gap-1.5">
                            <span>{(craftsman.totalLikes || 0).toLocaleString()}</span>
-                           <span className="text-slate-400 dark:text-slate-500 font-semibold text-xs uppercase tracking-wider">Likes</span>
+                           <span className="text-slate-400 dark:text-slate-500 font-semibold text-xs uppercase tracking-wider">Stars</span>
                       </div>
                   </div>
 

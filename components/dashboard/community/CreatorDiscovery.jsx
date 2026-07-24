@@ -2,19 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
-import {
-  X,
-  Search,
-  MapPin,
-   Star,
-   MessageCircle,
-  UserPlus,
-  Filter,
-  TrendingUp,
-  Award,
-  Zap,
-  CheckCircle
-} from "lucide-react";
+import { X, Search, MapPin, Star, MessageCircle, UserPlus, Filter, TrendingUp, Award, Zap, CheckCircle } from "lucide-react";
 
 export default function CraftsmanDiscovery({ isOpen, onClose }) {
   const [craftsmen, setCraftsmen] = useState([]);

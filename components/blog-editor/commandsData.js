@@ -1,32 +1,6 @@
 // commandsData.js - Slash Commands Data with Icons and Descriptions
 
-import {
-  FileText,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Heading6,
-  List,
-  ListOrdered,
-  CheckSquare,
-  Quote,
-  Code,
-  Minus,
-  Table,
-  Image,
-  Video,
-  Mic2,
-  CornerDownRight,
-  Bold,
-  Italic,
-  Strikethrough,
-  Underline,
-  Highlighter,
-  Globe,
-  Zap,
-} from "lucide-react";
+import { FileText, Heading1, Heading2, Heading3, Heading4, Heading5, Heading6, List, ListOrdered, CheckSquare, Quote, Code, Minus, Table, Image, Video, Mic2, CornerDownRight, Bold, Italic, Strikethrough, Underline, Highlighter, Globe, Zap } from "lucide-react";
 
 export const SLASH_COMMANDS = [
   // ==================== TEXT BLOCKS ====================

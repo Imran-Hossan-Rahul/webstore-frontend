@@ -3,18 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { api, API_BASE_URL } from '@/utils/api';
 import { useRouter } from 'next/navigation';
-import { 
-  ShieldCheck, 
-  Clock, 
-  Check, 
-  X, 
-  ChevronRight,
-  Globe,
-  CheckCircle2,
-  XCircle,
-  ArrowUpRight,
-  Zap
-} from 'lucide-react';
+import { ShieldCheck, Clock, Check, X, ChevronRight, Globe, CheckCircle2, XCircle, ArrowUpRight, Zap } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 

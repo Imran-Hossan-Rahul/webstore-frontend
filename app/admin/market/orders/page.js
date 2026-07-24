@@ -1,10 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Loader2, ChevronDown, Search, RefreshCw, 
-  Package, CheckCircle2, Truck, Home, XCircle, Clock, FileText, Filter, Calendar
-} from 'lucide-react';
+import { Loader2, ChevronDown, Search, RefreshCw, Package, CheckCircle2, Truck, Home, XCircle, Clock, FileText, Filter, Calendar } from "lucide-react";
 import { generateInvoice } from '@/utils/generateInvoice';
 
 const STATUS_FLOW = ['Order placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];

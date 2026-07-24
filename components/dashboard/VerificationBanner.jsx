@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, Send, Loader2, X, ShieldAlert } from 'lucide-react';
+import { Mail, Send, Loader2, X, ShieldAlert } from "lucide-react";
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
 import { motion, AnimatePresence } from 'framer-motion';

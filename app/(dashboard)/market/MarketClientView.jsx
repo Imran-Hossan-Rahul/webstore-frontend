@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 
 // Cloudinary optimization for free extreme performance
@@ -304,7 +304,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                     className="absolute top-3 right-3 bg-[#f5f5f7] hover:bg-gray-200 p-2 rounded-full text-gray-500 hover:text-gray-900 transition-opacity duration-200 opacity-0 group-hover:opacity-100 shadow-sm border border-gray-200/50 z-10"
                     title="Add to Wishlist"
                   >
-                    <Heart size={16} strokeWidth={2} className={likedProducts[product.id] ? 'fill-current text-pink-500' : ''} />
+                    <Star size={16} strokeWidth={2} className={likedProducts[product.id] ? 'fill-current text-pink-500' : ''} />
                   </button>
                   {(user?.role === 'admin' || user?.role === 'superadmin') && (
                     <Link 

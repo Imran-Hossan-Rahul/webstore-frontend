@@ -1,25 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useEditor } from "@tiptap/react";
 import { TextSelection, NodeSelection } from "@tiptap/pm/state";
-import {
-  ChevronRight,
-  ChevronDown,
-  FileText,
-  Type,
-  List,
-  Image,
-  Video,
-  Code,
-  Table,
-  ChevronsRight,
-  Trash2,
-  Eye,
-  EyeOff,
-  Palette,
-  Wand2,
-  X,
-  CheckCircle2
-} from "lucide-react";
+import { ChevronRight, ChevronDown, FileText, Type, List, Image, Video, Code, Table, ChevronsRight, Trash2, Eye, EyeOff, Palette, Wand2, X, CheckCircle2 } from "lucide-react";
 
 // ----------------------------------------
 // ১. ইউটিলিটি ফাংশন (Display Name এবং Icon)

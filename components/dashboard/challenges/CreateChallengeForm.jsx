@@ -2,14 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import { api } from "@/utils/api";
-import { 
-  Trophy, Calendar, Zap, Code, PenTool, 
-  ArrowRight, ArrowLeft, Clock, Users, Image as ImageIcon, 
-  Plus, X, ShieldCheck, Loader2, FileText, Upload,
-  Trash2, ChevronRight, Scale, Link as LinkIcon, Link2, CheckCircle2, Palette, Search, 
-  UserMinus, UserCheck, EyeOff, Megaphone, Music, Layers, Rocket, Info, Video, Palette as PaletteIcon,
-  Cpu, Gamepad2, Camera, Box
-} from "lucide-react";
+import { Trophy, Calendar, Zap, Code, PenTool, ArrowRight, ArrowLeft, Clock, Users, Image as ImageIcon, Plus, X, ShieldCheck, Loader2, FileText, Upload, Trash2, ChevronRight, Scale, Link as LinkIcon, Link2, CheckCircle2, Palette, Search, UserMinus, UserCheck, EyeOff, Megaphone, Music, Layers, Rocket, Info, Video, Palette as PaletteIcon, Cpu, Gamepad2, Camera, Box } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DashboardContext } from "@/app/(dashboard)/layout";

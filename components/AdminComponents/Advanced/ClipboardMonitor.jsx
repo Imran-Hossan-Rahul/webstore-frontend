@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Clipboard, 
-  ShieldAlert, 
-  FileText, 
-  Copy, 
-  Trash2,
-  Lock,
-  Search,
-  CheckCircle2
-} from 'lucide-react';
+import { Clipboard, ShieldAlert, FileText, Copy, Trash2, Lock, Search, CheckCircle2 } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const ClipboardMonitor = () => {

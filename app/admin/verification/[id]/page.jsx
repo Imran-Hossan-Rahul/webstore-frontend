@@ -4,14 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { api, API_BASE_URL } from '@/utils/api';
-import { 
-  ChevronLeft,
-  CheckCircle2,
-  XCircle,
-  X,
-  Maximize2,
-  ArrowUpRight
-} from 'lucide-react';
+import { ChevronLeft, CheckCircle2, XCircle, X, Maximize2, ArrowUpRight } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import UserIntelligenceHub from '@/components/AdminComponents/UserIntelligenceHub';

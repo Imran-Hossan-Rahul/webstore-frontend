@@ -4,12 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { 
-  Eye, Trash2, Edit3, BarChart2,
-  MessageSquare, ThumbsUp, Globe, Lock,
-  Search,
-  LayoutGrid, Mail, Send, Clock, BookOpen, Settings, CheckSquare, FileText
-} from "lucide-react";
+import { Eye, Trash2, Edit3, BarChart2, MessageSquare, ThumbsUp, Globe, Lock, Search, LayoutGrid, Mail, Send, Clock, BookOpen, Settings, CheckSquare, FileText } from "lucide-react";
 import PostAnalyticsModal from "@/components/DashboardComponents/PostAnalyticsModal";
 
 export default function CraftsmanPostsPage() {
@@ -300,11 +295,11 @@ export default function CraftsmanPostsPage() {
                                       <Eye size={14} className="text-[#3ea6ff]" />
                                       <span>{post.views || 0}</span>
                                   </div>
-                                  <div className="flex items-center gap-1.5" title="Likes">
+                                  <div className="flex items-center gap-1.5" title="Stars">
                                       <ThumbsUp size={14} className="text-[#00C49F]" />
                                       <span>{post.likes || 0}</span>
                                   </div>
-                                  <div className="flex items-center gap-1.5" title="Comments">
+                                  <div className="flex items-center gap-1.5" title="Discussions">
                                       <MessageSquare size={14} className="text-[#FFBB28]" />
                                       <span>{post.commentsCount || 0}</span>
                                   </div>

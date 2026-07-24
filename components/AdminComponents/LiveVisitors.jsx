@@ -2,27 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
-import { 
-  Activity, 
-  MapPin, 
-  Monitor, 
-  Smartphone, 
-  Globe, 
-  Clock,
-  Shield,
-  Zap,
-  ZapOff,
-  X,
-  Navigation,
-  Link as LinkIcon,
-  MousePointer2,
-  Calendar,
-  Cpu,
-  Info,
-  ChevronRight,
-  Loader2,
-  Radio
-} from "lucide-react";
+import { Activity, MapPin, Monitor, Smartphone, Globe, Clock, Shield, Zap, ZapOff, X, Navigation, Link as LinkIcon, MousePointer2, Calendar, Cpu, Info, ChevronRight, Loader2, Radio } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/utils/api";
 

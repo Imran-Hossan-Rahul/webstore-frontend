@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import axios from "axios";
-import { Heart, Download } from "lucide-react";
+import { Download, Star } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 
 const ArtifactCard = ({
@@ -209,7 +209,7 @@ const ArtifactCard = ({
               onClick={handleLike}
               className="bg-white p-2 rounded-full shadow flex items-center gap-1"
             >
-              <Heart
+              <Star
                 size={18}
                 className={`transition-colors duration-300 ${
                   liked ? "text-pink-600 fill-pink-600" : "text-slate-600"

@@ -5,11 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { 
-  ShieldCheck, ArrowLeft, 
-  Calendar, Plus, Trash2, Check, FileText, Info,
-  Gavel, Clock, Lock, Zap, Send
-} from "lucide-react";
+import { ShieldCheck, ArrowLeft, Calendar, Plus, Trash2, Check, FileText, Info, Gavel, Clock, Lock, Zap, Send } from "lucide-react";
 
 export default function HirePage() {
   const params = useParams();

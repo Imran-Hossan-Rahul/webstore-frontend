@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Wifi, 
-  Zap, 
-  Activity, 
-  Globe, 
-  Server,
-  Download,
-  Upload,
-  Clock
-} from 'lucide-react';
+import { Wifi, Zap, Activity, Globe, Server, Download, Upload, Clock } from "lucide-react";
 import { motion } from 'framer-motion';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,

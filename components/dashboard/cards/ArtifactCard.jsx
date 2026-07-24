@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { Download, Heart, Eye, MoreHorizontal, Layers } from "lucide-react";
+import { Download, Eye, MoreHorizontal, Layers, Star } from "lucide-react";
 
 /**
  * ArtifactCard
@@ -70,7 +70,7 @@ const ArtifactCard = ({
                 <Download className="w-5 h-5" />
             </button>
             <button className="text-white hover:text-pink-500 hover:scale-110 transition-all">
-                <Heart className="w-5 h-5" />
+                <Star className="w-5 h-5" />
             </button>
         </div>
 
@@ -103,7 +103,7 @@ const ArtifactCard = ({
                 {category}
              </span>
              <div className="flex items-center gap-1 text-slate-400 text-[10px]">
-                <Heart className="w-3 h-3 group-hover:text-pink-500 transition-colors" />
+                <Star className="w-3 h-3 group-hover:text-pink-500 transition-colors" />
                 <span>{likes}</span>
              </div>
         </div>

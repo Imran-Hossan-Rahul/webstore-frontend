@@ -3,11 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { 
-   CheckCircle, FileText, ArrowRight, 
-   Search, Filter, Clock, User, ShieldCheck,
-   ChevronRight, Calendar
-} from "lucide-react";
+import { CheckCircle, FileText, ArrowRight, Search, Filter, Clock, User, ShieldCheck, ChevronRight, Calendar } from "lucide-react";
 import { useRouter } from "next/navigation";
 import EmptyState from "../ui/EmptyState";
 import CraftsmanHoverCard from "./cards/CraftsmanHoverCard";

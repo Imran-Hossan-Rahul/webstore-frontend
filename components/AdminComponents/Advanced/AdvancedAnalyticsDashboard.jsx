@@ -4,11 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { api } from '@/utils/api';
-import { 
-  MousePointer2, Keyboard, Clipboard, Eye, Wifi, Battery, 
-  Play, TrendingUp, FlaskConical, Brain, FileText, Video,
-  Search, Users as UsersIcon, Bell, Download, Loader2, BarChart3, ChevronLeft
-} from 'lucide-react';
+import { MousePointer2, Keyboard, Clipboard, Eye, Wifi, Battery, Play, TrendingUp, FlaskConical, Brain, FileText, Video, Search, Users as UsersIcon, Bell, Download, Loader2, BarChart3, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Dynamic Imports for Sub-Dashboards

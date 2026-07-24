@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, RotateCcw, Clock } from 'lucide-react';
+import { X, RotateCcw, Clock } from "lucide-react";
 
 export const HistoryViewer = ({ editor, isOpen, onClose }) => {
   const [history, setHistory] = useState([]);

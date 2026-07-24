@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github } from 'lucide-react';
+import { Github } from "lucide-react";
 
 const SocialAuth = ({ onGoogle, onGithub }) => {
   return (

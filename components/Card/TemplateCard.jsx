@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useContext } from "react";
-import { Heart, Download } from "lucide-react";
+import { Download, Star } from "lucide-react";
 import { api } from "@/utils/api";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { DashboardContext } from "@/app/(dashboard)/layout";
@@ -193,7 +193,7 @@ const handleDownload = async (e) => {
               onClick={handleLike}
               className="bg-transparent backdrop:blur-3xl rounded-full flex items-center gap-1 transition-all duration-150"
             >
-              <Heart
+              <Star
                 size={20}
                 className={`transition-colors duration-300 stroke-white ${
                   liked

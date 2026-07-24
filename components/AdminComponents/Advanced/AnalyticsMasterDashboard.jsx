@@ -11,7 +11,7 @@ import FormAnalyticsDashboard from './FormAnalyticsDashboard';
 import RealTimeAnalytics from './RealTimeAnalytics';
 import AlertDashboard from './AlertDashboard';
 import ExportPanel from './ExportPanel';
-import { BarChart3, Brain, FlaskConical, MousePointer, Play, TrendingUp, FileText, Bell, Download } from 'lucide-react';
+import { BarChart3, Brain, FlaskConical, MousePointer, Play, TrendingUp, FileText, Bell, Download } from "lucide-react";
 
 export default function AnalyticsMasterDashboard() {
   const [activeTab, setActiveTab] = useState('overview');

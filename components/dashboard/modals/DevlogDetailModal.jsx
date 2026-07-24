@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from 'react';
-import { X, Calendar, MapPin, BarChart2, ExternalLink, Github, FileText, Download, CheckCircle2 } from 'lucide-react';
+import { X, Calendar, MapPin, BarChart2, ExternalLink, Github, FileText, Download, CheckCircle2 } from "lucide-react";
 import Image from 'next/image';
 
 const DevlogDetailModal = ({ post, onClose }) => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Copy, Trash2, Eye, EyeOff } from 'lucide-react';
+import { Copy, Trash2, Eye, EyeOff } from "lucide-react";
 
 export const BlockMenu = ({ editor }) => {
   const [menuState, setMenuState] = useState({

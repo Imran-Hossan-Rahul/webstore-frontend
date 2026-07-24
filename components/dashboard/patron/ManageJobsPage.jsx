@@ -5,10 +5,7 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/ToastProvider";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import {
-   Users, ChevronRight, Plus, Clock, CheckCircle,
-   XCircle, Loader2, ArrowUpRight, TrendingUp, FileText
-} from "lucide-react";
+import { Users, ChevronRight, Plus, Clock, CheckCircle, XCircle, Loader2, ArrowUpRight, TrendingUp, FileText } from "lucide-react";
 
 const STATUS_CONFIG = {
   open:        { label: "Open",        color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-900/20", dot: "bg-emerald-500" },

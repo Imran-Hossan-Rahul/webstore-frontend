@@ -3,14 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React from "react";
 import Link from "next/link";
-import { 
-    Search, 
-    User, 
-    Layout, 
-    FileText, 
-    BookOpen, 
-    Trophy 
-} from "lucide-react";
+import { Search, User, Layout, FileText, BookOpen, Trophy } from "lucide-react";
 
 /**
  * 🔍 SEARCH SUGGESTIONS COMPONENT

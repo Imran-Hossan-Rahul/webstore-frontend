@@ -4,18 +4,7 @@ import { api } from "@/utils/api";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { 
-  ShieldCheck, 
-  Zap, 
-  Clock, 
-  Calendar,
-  User,
-  ArrowUpRight,
-  MessageSquare,
-  CheckCircle2,
-  XCircle,
-  Briefcase
-} from "lucide-react";
+import { ShieldCheck, Zap, Clock, Calendar, User, ArrowUpRight, MessageSquare, CheckCircle2, XCircle, Briefcase } from "lucide-react";
 import CraftsmanHoverCard from "../cards/CraftsmanHoverCard";
 
 export default function ProposalDetailSidebar() {

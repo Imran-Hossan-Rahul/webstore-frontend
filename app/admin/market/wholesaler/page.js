@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api'; // using secure api client for CSRF/tokens
-import { Plus, X, Loader2, Image as ImageIcon, Upload, BadgeCheck, Search, Filter, ShieldCheck, MapPin, Clock, Phone, DollarSign, Package, Facebook, Instagram, Linkedin, Mail, MessageCircle, Globe, Link2 } from 'lucide-react';
+import { Plus, X, Loader2, Image as ImageIcon, Upload, BadgeCheck, Search, Filter, ShieldCheck, MapPin, Clock, Phone, DollarSign, Package, Facebook, Instagram, Linkedin, Mail, MessageCircle, Globe, Link2 } from "lucide-react";
 
 export default function WholesalerLedger() {
   const [wholesalers, setWholesalers] = useState([]);

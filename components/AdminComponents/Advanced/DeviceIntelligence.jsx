@@ -2,19 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { 
-  Battery, 
-  Smartphone, 
-  Monitor, 
-  Cpu, 
-  ShieldCheck,
-  Camera,
-  Mic,
-  MapPin,
-  Wifi,
-  Thermometer,
-  ShieldAlert
-} from 'lucide-react';
+import { Battery, Smartphone, Monitor, Cpu, ShieldCheck, Camera, Mic, MapPin, Wifi, Thermometer, ShieldAlert } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const DeviceIntelligence = () => {

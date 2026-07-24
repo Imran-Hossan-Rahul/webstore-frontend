@@ -4,25 +4,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from 'react';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { api, API_BASE_URL } from '@/utils/api';
-import { 
-  User, 
-  Building2, 
-  Upload, 
-  CheckCircle2, 
-  ChevronRight, 
-  ChevronLeft,
-  ShieldCheck,
-  AlertCircle,
-  Loader2,
-  Camera,
-  Smartphone,
-  Fingerprint,
-  FileCheck,
-  ShieldAlert,
-  Info,
-  Check as LucideCheck,
-  X as LucideX
-} from 'lucide-react';
+import { User, Building2, Upload, CheckCircle2, ChevronRight, ChevronLeft, ShieldCheck, AlertCircle, Loader2, Camera, Smartphone, Fingerprint, FileCheck, ShieldAlert, Info, Check as LucideCheck, X as LucideX } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import CameraCapture from '@/components/ui/CameraCapture';
 import { motion, AnimatePresence } from 'framer-motion';

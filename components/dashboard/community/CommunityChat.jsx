@@ -2,16 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
-import {
-  Send,
-  Users,
-  MessageCircle,
-  Search,
-  Hash,
-  User as UserIcon,
-  MoreVertical,
-  Smile
-} from "lucide-react";
+import { Send, Users, MessageCircle, Search, Hash, User as UserIcon, MoreVertical, Smile } from "lucide-react";
 
 const MessageBubble = ({ message, isOwn }) => {
   return (
