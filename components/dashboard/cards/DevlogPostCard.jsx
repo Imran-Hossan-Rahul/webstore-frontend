@@ -246,8 +246,8 @@ const DevlogPostCard = ({
         {/* Right Column: Content */}
         <div className="flex-1 min-w-0">
              {/* Header */}
-             <div className="flex justify-between items-start mb-0">
-                 <div className="flex flex-row items-center gap-1.5 flex-wrap">
+             <div className="relative mb-0">
+                 <div className="flex flex-row items-center gap-1.5 flex-wrap pr-8 lg:pr-0">
                      <div className="flex items-center gap-2">
                         <CraftsmanHoverCard
                           userId={user?._id || user}
@@ -266,13 +266,13 @@ const DevlogPostCard = ({
                          {formatDate(createdAt)}
                      </span>
                  </div>
-                 <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
+                 <button className="lg:hidden absolute top-[-2px] right-0 flex-shrink-0 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
                      {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
                  </button>
              </div>
 
             {/* Devlog Title & Status */}
-                <div className="mb-3 -mt-1.5 flex justify-between items-start gap-4">
+                <div className="mb-3 flex justify-between items-start gap-4">
                     <div>
                         <h2 className="text-[15px] font-normal leading-snug text-slate-900 dark:text-white font-sans line-clamp-2">
                             {title || "Untitled Devlog"}
