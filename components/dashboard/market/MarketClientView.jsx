@@ -246,11 +246,10 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {/* Shop by Categories */}
       {!query && (
         <div className="p-2 pt-6 md:p-8 md:pb-2 max-w-[1320px] mx-auto">
-          <div className="flex justify-between items-center mb-4 md:mb-6">
+          <div className="mb-4 md:mb-6">
             <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink">Shop by Categories</h2>
-            <button className="text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors font-medium">SEE ALL</button>
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-6">
             {[
               { name: 'Smart Watch', icon: Watch },
               { name: 'Earbuds', icon: Headphones },
@@ -260,9 +259,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
             ].map((cat, idx) => {
               const Icon = cat.icon;
               return (
-                <div key={idx} className="bg-gray-200/50 hover:bg-gray-200 cursor-pointer rounded-lg flex flex-col items-center justify-center p-3 md:p-5 transition-colors">
-                  <Icon size={36} strokeWidth={1.2} className="text-gray-800 mb-2 md:mb-3" />
-                  <span className="text-[10px] md:text-[13px] font-medium text-gray-800 text-center leading-tight">{cat.name}</span>
+                <div key={idx} className="bg-[#f5f5f7] hover:bg-[#e5e5ea] cursor-pointer rounded-2xl md:rounded-[20px] flex flex-col items-center justify-center p-4 md:p-6 transition-all duration-300">
+                  <Icon size={32} strokeWidth={1.2} className="text-apple-ink mb-3 md:mb-4" />
+                  <span className="text-[12px] md:text-[14px] font-medium text-apple-ink text-center leading-tight">{cat.name}</span>
                 </div>
               );
             })}
