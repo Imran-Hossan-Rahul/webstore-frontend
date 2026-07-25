@@ -244,32 +244,39 @@ export default function MarketClientView({ initialData = [], initialPagination =
       )}
 
       {/* Shop by Categories */}
-      {categories && categories.length > 0 && (
-        <div className="max-w-[1320px] mx-auto px-4 mt-8 md:mt-12">
-          <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink mb-6">Shop by Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {categories.filter(c => !c.isSubcategory).map(category => (
-              <div key={category._id} className="bg-white border border-apple-hairline rounded-apple-lg p-4 flex flex-col items-center hover:shadow-lg transition-shadow cursor-pointer">
-                {category.image ? (
-                  <img src={category.image} alt={category.name} className="w-16 h-16 object-cover rounded-full mb-3" />
-                ) : (
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                    <span className="text-gray-400 text-xs text-center">{category.name[0]}</span>
-                  </div>
-                )}
-                <h3 className="text-sm font-medium text-apple-ink text-center">{category.name}</h3>
-                
-                {/* Subcategories (only show first 3) */}
-                <div className="mt-2 flex flex-col items-center w-full">
-                  {categories.filter(sub => sub.isSubcategory && String(sub.parentCategory?._id) === String(category._id)).slice(0,3).map(sub => (
-                    <span key={sub._id} className="text-xs text-apple-muted hover:text-blue-600 truncate w-full text-center">{sub.name}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="max-w-[1320px] mx-auto px-4 mt-8 md:mt-12">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl md:text-[24px] font-medium text-gray-800">Shop by Categories</h2>
+          <button className="text-[11px] font-medium text-gray-600 border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">SEE ALL</button>
         </div>
-      )}
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 md:gap-4">
+          {[
+            { name: 'Phones', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80' },
+            { name: 'Tablet', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&q=80' },
+            { name: 'Laptop', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&q=80' },
+            { name: 'Smart Watch', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=300&q=80' },
+            { name: 'AirPods', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&q=80' },
+            { name: 'Sounds', image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=300&q=80' },
+            { name: 'Accessories', image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&q=80' },
+            { name: 'Gadgets', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&q=80' },
+            { name: 'Earbuds', image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&q=80' },
+            { name: 'Phone Cases', image: 'https://images.unsplash.com/photo-1601593346740-925612772716?w=300&q=80' },
+            { name: 'Screen Protectors', image: 'https://images.unsplash.com/photo-1551817958-20204d6ab212?w=300&q=80' },
+            { name: 'Over-Ear Headphones', image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&q=80' },
+            { name: 'MacBook Case', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&q=80' },
+            { name: 'Power Banks', image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300&q=80' },
+            { name: 'Adapters', image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=300&q=80' },
+            { name: 'Smart TV', image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=300&q=80' }
+          ].map((cat, idx) => (
+            <div key={idx} className="bg-[#eeeeee] hover:bg-[#e4e4e4] cursor-pointer flex flex-col items-center justify-center p-4 transition-colors">
+              <div className="w-16 h-16 md:w-20 md:h-20 mb-3 overflow-hidden flex items-center justify-center">
+                <img src={cat.image} alt={cat.name} className="w-full h-full object-contain mix-blend-multiply" />
+              </div>
+              <span className="text-[11px] md:text-[13px] font-medium text-gray-800 text-center leading-tight">{cat.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
       {/* Product Grid */}
       <div className="p-2 pt-2 md:py-8 md:px-3 max-w-[1320px] mx-auto -mt-4 md:mt-2">
         <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-4 md:mb-8 text-apple-ink mt-6 md:mt-0">
