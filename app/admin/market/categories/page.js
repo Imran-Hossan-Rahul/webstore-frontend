@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useToast } from '@/components/ui/ToastProvider';
 
 export default function AdminCategoriesPage() {
-  const { addToast } = useToast();
+  const { showToast } = useToast();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -29,9 +29,9 @@ export default function AdminCategoriesPage() {
   const fetchCategories = async () => {
     try {
       const res = await api.get('/market/categories/all');
-      setCategories(res.data);
+      setCategories(res.data || res || []);
     } catch (err) {
-      addToast('Failed to load categories', 'error');
+      showToast('Failed to load categories', 'error');
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export default function AdminCategoriesPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.isSubcategory && !formData.parentCategory) {
-      addToast('Please select a parent category', 'error');
+      showToast('Please select a parent category', 'error');
       return;
     }
     
@@ -82,17 +82,17 @@ export default function AdminCategoriesPage() {
         await api.put(`/market/categories/${editId}`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        addToast('Category updated', 'success');
+        showToast('Category updated', 'success');
       } else {
         await api.post('/market/categories', data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        addToast('Category created', 'success');
+        showToast('Category created', 'success');
       }
       setShowModal(false);
       fetchCategories();
     } catch (err) {
-      addToast(err.response?.data?.message || 'Error saving category', 'error');
+      showToast(err.response?.data?.message || 'Error saving category', 'error');
     } finally {
       setSaving(false);
     }
@@ -102,10 +102,10 @@ export default function AdminCategoriesPage() {
     if (!confirm(`Are you sure you want to delete this ${isSub ? 'sub-category' : 'category'}? ${!isSub ? 'All its sub-categories will also be deleted!' : ''}`)) return;
     try {
       await api.delete(`/market/categories/${id}`);
-      addToast('Category deleted', 'success');
+      showToast('Category deleted', 'success');
       fetchCategories();
     } catch (err) {
-      addToast('Error deleting category', 'error');
+      showToast('Error deleting category', 'error');
     }
   };
 
@@ -114,7 +114,7 @@ export default function AdminCategoriesPage() {
       await api.put(`/market/categories/${category._id}`, { isActive: !category.isActive });
       fetchCategories();
     } catch (err) {
-      addToast('Error updating status', 'error');
+      showToast('Error updating status', 'error');
     }
   };
 

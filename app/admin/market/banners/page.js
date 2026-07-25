@@ -28,7 +28,7 @@ export default function AdminBannersPage() {
   const fetchBanners = async () => {
     try {
       const res = await api.get('/market/banners/all');
-      setBanners(res.data);
+      setBanners(res.data || res || []);
     } catch (err) {
       showToast('Failed to load banners', 'error');
     } finally {
