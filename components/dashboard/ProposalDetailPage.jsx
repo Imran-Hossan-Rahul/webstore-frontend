@@ -134,7 +134,7 @@ export default function ProposalDetailPage() {
           onClick={() => router.push("/proposals")}
           className="group flex items-center gap-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-4"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-opacity" />
           <span className="text-[10px] font-black uppercase tracking-[0.2em]">Back to Proposals</span>
         </button>
         
@@ -216,7 +216,7 @@ export default function ProposalDetailPage() {
                     </div>
                     <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{link.label || "Devlog Link"}</span>
                   </div>
-                  <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight size={14} className="text-slate-300 group-hover:translate-x-1 transition-opacity" />
                 </a>
               ))}
             </div>

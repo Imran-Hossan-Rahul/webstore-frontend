@@ -149,7 +149,7 @@ function ArtifactCard({ artifact, onClick }) {
             <img
               src={artifact.thumbnailSource}
               alt={artifact.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="w-full h-full object-cover transition-opacity duration-300 group-hover:-translate-y-0.5"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-slate-400">

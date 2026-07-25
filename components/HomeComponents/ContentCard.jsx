@@ -170,7 +170,7 @@ export default function VideoCard({ item, type }) {
           <img
             src={image || "/placeholder.png"}
             alt={title}
-            className="w-full h-full object-cover group-hover:-translate-y-0.5 transition-transform duration-300" 
+            className="w-full h-full object-cover group-hover:-translate-y-0.5 transition-opacity duration-300" 
           />
         )}
       </div>

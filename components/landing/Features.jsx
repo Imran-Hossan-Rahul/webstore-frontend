@@ -49,7 +49,7 @@ export default function Features() {
               key={index} 
               className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 hover:shadow-2xl transition-all duration-300 ${feature.className}`}
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-150 duration-500" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-8 -mt-8 transition-opacity group-hover:opacity-80 duration-500" />
               
               <div className="relative z-10">
                 <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-6 text-slate-900 dark:text-white group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">

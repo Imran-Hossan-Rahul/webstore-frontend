@@ -15,6 +15,7 @@ import { useUser } from "@/context/UserContext";
 import SearchSuggestions from "./navbar/SearchSuggestions";
 import CreateDropdown from "./navbar/CreateDropdown";
 import BetaBanner from "../BetaBanner";
+import { features } from "@/constants/features";
 
 const GlassNavbar = ({ 
   toggleSidebar, 
@@ -154,7 +155,7 @@ const GlassNavbar = ({
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
       <BetaBanner />
-      <div className="max-w-[1800px] mx-auto bg-white/40 md:bg-white/80 dark:bg-[#0a0a0a]/60 md:dark:bg-slate-900/80 backdrop-blur-xl border-b border-white/60 dark:border-white/10 pl-[7px] pr-[10px] h-[64px] flex items-center justify-between shadow-sm relative overflow-visible">
+      <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] rounded-b-[24px] pl-[12px] pr-[16px] h-[44px] flex items-center justify-between relative overflow-visible">
         
         {/* Mobile Search Overlay */}
         <AnimatePresence>
@@ -196,47 +197,7 @@ const GlassNavbar = ({
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                 />
-                <div className="relative flex-shrink-0">
-                   <button 
-                     type="button"
-                     onClick={(e) => { 
-                       e.preventDefault(); 
-                       setIsDropdownOpen(!isDropdownOpen); 
-                       document.getElementById('mobile-search-input')?.focus();
-                     }}
-                     className="flex items-center gap-1 px-2 py-1 rounded border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-[10px] font-mono font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white uppercase transition-colors"
-                   >
-                     {searchType === 'all' ? 'All' : searchType} <ChevronDown className="w-3 h-3" />
-                   </button>
-                   
-                   <AnimatePresence>
-                     {isDropdownOpen && (
-                       <motion.div
-                         initial={{ opacity: 0, y: -5 }}
-                         animate={{ opacity: 1, y: 0 }}
-                         exit={{ opacity: 0, y: -5 }}
-                         transition={{ duration: 0.15, ease: "easeOut" }}
-                         className="absolute right-0 top-[calc(100%+8px)] w-32 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[110]"
-                       >
-                         {['all', 'posts', 'artifacts', 'codex', 'jobs', 'challenges', 'marketplace', 'workspace', 'proposals', 'saved'].map((type) => (
-                           <button
-                             key={type}
-                             onClick={(e) => { 
-                               e.preventDefault();
-                               e.stopPropagation();
-                               setSearchType(type); 
-                               setIsDropdownOpen(false); 
-                               document.getElementById('mobile-search-input')?.focus();
-                             }}
-                             className={`w-full text-left px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-colors ${searchType === type ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'}`}
-                           >
-                             {type === 'posts' ? 'Devlogs' : type}
-                           </button>
-                         ))}
-                       </motion.div>
-                     )}
-                   </AnimatePresence>
-                </div>
+
 
                 {searchFocused && searchQuery?.trim() && (
                   <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[100]">
@@ -287,19 +248,19 @@ const GlassNavbar = ({
                 document.getElementById('mobile-search-input')?.focus();
               }, 250);
             }}
-            className={`md:hidden flex w-full max-w-[200px] items-center justify-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/80 dark:hover:bg-slate-700/80 border border-transparent rounded-full px-4 h-9 transition-colors ml-2 transition-opacity duration-200 ${mobileSearchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            className={`md:hidden flex w-full max-w-[200px] items-center justify-center gap-2 bg-apple-parchment dark:bg-apple-surfaceDark hover:bg-slate-200/80 dark:hover:bg-slate-700/80 border border-apple-hairline rounded-apple-pill px-4 h-8 ml-2 transition-opacity duration-200 ${mobileSearchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
           >
-            <img src="/logo.png" alt="Codalina" className="w-5 h-5 object-contain" />
-            <span className="text-[13px] font-semibold font-sans text-black dark:text-white">Search Codalina</span>
+            <img src="/logo.png" alt="Codalina" className="w-4 h-4 object-contain" />
+            <span className="text-[14px] font-sans text-apple-ink dark:text-apple-ink">Search</span>
           </button>
 
-          <div className={`hidden md:flex w-full max-w-lg items-center bg-slate-50 dark:bg-white/5 border ${searchFocused ? 'border-slate-900 dark:border-white bg-white dark:bg-slate-900 shadow-sm' : 'border-slate-200 dark:border-white/10'} rounded-xl px-3 h-10 transition-all duration-200 relative`}>
-              <Search strokeWidth={1.5} className={`w-4 h-4 ${searchFocused ? 'text-slate-900 dark:text-white' : 'text-slate-400'} mr-2`} />
+          <div className={`hidden md:flex w-full max-w-lg items-center bg-apple-parchment dark:bg-apple-surfaceDark border ${searchFocused ? 'border-[#0071E3] dark:border-[#0071E3]' : 'border-apple-hairline'} rounded-apple-md px-3 h-[32px] transition-all duration-200 relative`}>
+              <Search strokeWidth={1.5} className={`w-4 h-4 ${searchFocused ? 'text-apple-ink dark:text-apple-ink' : 'text-apple-muted'} mr-2`} />
               <input 
                   id="desktop-search-input"
                   type="text" 
                   placeholder="Search Codalina..." 
-                  className="bg-transparent border-none outline-none text-sm w-full text-slate-900 dark:text-white font-medium font-sans"
+                  className="bg-transparent border-none outline-none text-[14px] w-full text-apple-ink font-sans"
                   value={searchQuery || ""}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => {
@@ -312,50 +273,7 @@ const GlassNavbar = ({
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               />
               
-              <div 
-                className="relative hidden lg:flex flex-shrink-0"
-                onMouseEnter={() => setIsDropdownOpen(true)}
-                onMouseLeave={() => setIsDropdownOpen(false)}
-              >
-                 <button 
-                   type="button"
-                   onClick={(e) => { 
-                     e.preventDefault(); 
-                     if (!isDropdownOpen) setIsDropdownOpen(true); 
-                     document.getElementById('desktop-search-input')?.focus();
-                   }}
-                   className="flex items-center gap-1 px-2 py-1 rounded border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-[10px] font-mono font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white uppercase transition-colors"
-                 >
-                   {searchType === 'all' ? 'All' : searchType} <ChevronDown className="w-3 h-3" />
-                 </button>
-                 
-                 <AnimatePresence>
-                   {isDropdownOpen && (
-                     <motion.div
-                       initial={{ opacity: 0, y: -5, scale: 0.95 }}
-                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                       exit={{ opacity: 0, y: -5, scale: 0.95 }}
-                       transition={{ duration: 0.1, ease: [0.4, 0, 0.2, 1] }}
-                       className="absolute right-0 top-[calc(100%+8px)] w-32 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[110]"
-                     >
-                       {['all', 'posts', 'artifacts', 'codex', 'jobs', 'challenges', 'marketplace', 'workspace', 'proposals', 'saved'].map((type) => (
-                         <button
-                           key={type}
-                           onClick={(e) => { 
-                             e.preventDefault();
-                             setSearchType(type); 
-                             setIsDropdownOpen(false); 
-                             document.getElementById('desktop-search-input')?.focus();
-                           }}
-                           className={`w-full text-left px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-colors ${searchType === type ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'}`}
-                         >
-                           {type === 'posts' ? 'Devlogs' : type}
-                         </button>
-                       ))}
-                     </motion.div>
-                   )}
-                 </AnimatePresence>
-              </div>
+
 
               {/* Modular Suggestions */}
               {searchFocused && searchQuery?.trim() && (
@@ -378,7 +296,7 @@ const GlassNavbar = ({
               <div className="relative">
                 <button
                   onClick={() => setShowCreateDropdown(!showCreateDropdown)}
-                  className="hidden sm:flex items-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl text-[10px] font-mono font-medium hover:bg-blue-600 dark:hover:bg-blue-50 transition-all uppercase tracking-wider"
+                  className="hidden sm:flex items-center gap-2 bg-apple-ink dark:bg-apple-canvas text-white dark:text-black px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans hover:opacity-80 transition-opacity"
                 >
                   <Plus strokeWidth={1.5} className="w-4 h-4" /> <span>Create</span>
                 </button>
@@ -418,9 +336,9 @@ const GlassNavbar = ({
             </div>
 
             {isGuest ? (
-              <div className="flex items-center gap-2 sm:gap-3">
-                <Link href="/auth/login" className="px-2 sm:px-3 py-1.5 text-[11px] font-mono font-bold text-black dark:text-white hover:opacity-60 transition-opacity uppercase tracking-wider">Log in</Link>
-                <Link href="/auth/register" className="px-4 sm:px-5 py-1.5 text-[11px] font-mono font-bold border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black hover:bg-transparent hover:text-black dark:hover:bg-transparent dark:hover:text-white rounded-lg transition-colors uppercase tracking-wider">Join</Link>
+              <div className="flex items-center gap-2 sm:gap-3 z-50 relative">
+                <a href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink hover:opacity-80 transition-opacity">Log in</a>
+                <a href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</a>
               </div>
             ) : (
               <div onClick={() => router.push(`/u/${user.username}`)} className="flex items-center gap-3 cursor-pointer group">

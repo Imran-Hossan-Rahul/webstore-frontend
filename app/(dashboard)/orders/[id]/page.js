@@ -57,7 +57,7 @@ export default function OrderDetailPage({ params }) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-slate-950 text-gray-500">
         <h2 className="text-xl font-bold mb-2">Order Not Found</h2>
-        <button onClick={() => router.push('/market/orders')} className="mt-4 text-[#111827] hover:underline">
+        <button onClick={() => router.push('/orders')} className="mt-4 text-[#111827] hover:underline">
           Back to My Orders
         </button>
       </div>
@@ -94,7 +94,7 @@ export default function OrderDetailPage({ params }) {
           <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-4 md:pb-6 mb-4 md:mb-6">
             <h1 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-gray-100">Order Details</h1>
             <button
-              onClick={() => router.push('/market/orders')}
+              onClick={() => router.push('/orders')}
               className="text-xs md:text-sm font-semibold text-gray-500 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition"
             >
               <ArrowLeft size={16} /> Go Back
@@ -185,7 +185,7 @@ export default function OrderDetailPage({ params }) {
                     {photo ? <img src={photo} alt="" className="w-full h-full object-contain mix-blend-multiply" /> : <ImageIcon size={20} className="text-gray-300" strokeWidth={1.5} />}
                   </div>
                   <div className="flex-1 min-w-0 pr-2">
-                    <Link href={item.product?.id ? `/market/product/${item.product.id}` : '#'}>
+                    <Link href={item.product?.id ? `/product/${item.product.id}` : '#'}>
                       <h3 className="text-[13px] md:text-[14px] font-bold text-gray-900 dark:text-gray-200 mb-1 hover:text-blue-600 transition cursor-pointer line-clamp-2 leading-tight">
                         {item.product?.title || 'Unknown Product'}
                       </h3>

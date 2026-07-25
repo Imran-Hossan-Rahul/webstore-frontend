@@ -162,7 +162,7 @@ export default function CraftsmanArtifactsPage() {
                 )}
                 <button 
                     onClick={() => router.push('/user/craftsman/artifacts/upload')}
-                    className="flex items-center gap-2 px-6 py-2.5 bg-[#3ea6ff] text-[#0f0f0f] rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-[#3ea6ff]/10 active:scale-[0.98]"
+                    className="flex items-center gap-2 px-6 py-2.5 bg-[#3ea6ff] text-[#0f0f0f] rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-[#3ea6ff]/10 active:opacity-60"
                 >
                     <Plus size={18} />
                     Upload Artifact

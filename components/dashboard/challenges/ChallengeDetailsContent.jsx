@@ -177,7 +177,7 @@ const ChallengeDetailsContent = ({ challenge, isGuest, onRequireAuth, user }) =>
                 <img 
                   src={currentChallenge.coverImage} 
                   alt="Banner" 
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+                  className="w-full h-full object-cover hover:opacity-80 transition-opacity duration-700" 
                 />
               </div>
             )}

@@ -553,7 +553,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       <div className="fixed bottom-6 right-20 z-[9999]">
         <button 
           onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-indigo-500 shadow-2xl flex items-center justify-center overflow-hidden hover:scale-110 transition-transform relative"
+          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-indigo-500 shadow-2xl flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
         >
           {selectedChat && avatar ? <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" /> : <MessageCircle size={24} className="text-indigo-500" />}
           {selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id) && (

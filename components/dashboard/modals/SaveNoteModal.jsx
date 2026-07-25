@@ -151,7 +151,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
                   }`}
                 >
                   <div
-                    className={`absolute top-1 bg-white w-4 h-4 rounded-full transition-transform ${
+                    className={`absolute top-1 bg-white w-4 h-4 rounded-full transition-opacity ${
                       isPublic ? "left-7" : "left-1"
                     }`}
                   />

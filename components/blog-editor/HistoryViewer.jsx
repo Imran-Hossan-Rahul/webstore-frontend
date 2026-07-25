@@ -73,7 +73,7 @@ export const HistoryViewer = ({ editor, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[60] border-l transform transition-transform duration-200 ease-in-out">
+    <div className="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-[60] border-l transform transition-opacity duration-200 ease-in-out">
       <div className="flex items-center justify-between p-4 border-b bg-slate-50">
         <h3 className="font-semibold flex items-center gap-2">
             <Clock size={16} /> History

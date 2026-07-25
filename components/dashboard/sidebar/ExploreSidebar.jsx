@@ -102,7 +102,7 @@ export default function ExploreSidebar() {
                   <img
                     src={craftsman.profilePicture || craftsman.profile_img || "/default-avatar.png"}
                     alt={craftsman.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
                     onError={(e) => { e.target.src = "/default-avatar.png"; }}
                   />
                 </div>

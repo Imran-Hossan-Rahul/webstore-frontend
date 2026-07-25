@@ -135,7 +135,7 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
   return (
     <div className={`group bg-white dark:bg-black/40 backdrop-blur-md border border-slate-100 dark:border-white/5 rounded-[2rem] p-4 mb-8 transition-all duration-300 ${isFocused ? 'shadow-xl ring-1 ring-purple-500/20 border-purple-500/30' : 'shadow-sm hover:shadow-md'}`}>
         <div className="flex gap-4">
-             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px] flex-shrink-0 cursor-pointer hover:-translate-y-0.5 transition-transform">
+             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[2px] flex-shrink-0 cursor-pointer hover:-translate-y-0.5 transition-opacity">
                  <div className="w-full h-full rounded-full bg-white dark:bg-black overflow-hidden">
                     {/* Placeholder Avatar */}
                     <div className="w-full h-full bg-slate-100 dark:bg-slate-800" />
@@ -337,7 +337,7 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
                          <div className="flex items-center gap-1">
                              <button 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="p-2.5 text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-full transition-all hover:scale-110"
+                                className="p-2.5 text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 rounded-full transition-all hover:opacity-80"
                                 title="Media"
                              >
                                  <ImageIcon className="w-5 h-5" />
@@ -352,7 +352,7 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
                              <div className="relative">
                                 <button 
                                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                                    className={`p-2.5 rounded-full transition-all hover:scale-110 ${showEmojiPicker ? 'text-yellow-500 bg-yellow-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
+                                    className={`p-2.5 rounded-full transition-all hover:opacity-80 ${showEmojiPicker ? 'text-yellow-500 bg-yellow-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
                                 >
                                     <Smile className="w-5 h-5" />
                                 </button>
@@ -378,19 +378,19 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
                              </div>
                              <button 
                                 onClick={() => setShowDifficulty(!showDifficulty)}
-                                className={`p-2.5 rounded-full transition-all hover:scale-110 ${showDifficulty ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
+                                className={`p-2.5 rounded-full transition-all hover:opacity-80 ${showDifficulty ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
                              >
                                  <BarChart2 className="w-5 h-5" />
                              </button>
                              <button 
                                 onClick={() => setShowDate(!showDate)}
-                                className={`p-2.5 rounded-full transition-all hover:scale-110 ${showDate ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
+                                className={`p-2.5 rounded-full transition-all hover:opacity-80 ${showDate ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
                              >
                                  <Calendar className="w-5 h-5" />
                              </button>
                              <button 
                                 onClick={() => setShowLocation(!showLocation)}
-                                className={`p-2.5 rounded-full transition-all hover:scale-110 ${showLocation ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
+                                className={`p-2.5 rounded-full transition-all hover:opacity-80 ${showLocation ? 'text-purple-600 bg-purple-50' : 'text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10'}`}
                              >
                                  <MapPin className="w-5 h-5" />
                              </button>
@@ -422,7 +422,7 @@ const CreatePost = ({ onPostCreated, forceShow = false, defaultIsDevlogMode = fa
                              <button 
                                 onClick={handleSubmit}
                                 disabled={(!content.trim() && selectedFiles.length === 0) || loading}
-                                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-sm shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
+                                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-sm shadow-lg shadow-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 active:opacity-60 flex items-center gap-2"
                              >
                                  {loading ? (
                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

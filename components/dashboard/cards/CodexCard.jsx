@@ -158,6 +158,24 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
     });
   };
 
+  const timeAgo = (dateStr) => {
+      const date = new Date(dateStr);
+      const now = new Date();
+      const seconds = Math.floor((now - date) / 1000);
+      
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + "y";
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + "mo";
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + "d";
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + "h";
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + "m";
+      return "just now";
+  };
+
   // ----------------------------------------------------------------------
   // Dynamic Avatar Fetching (Mirroring CraftsmanProfileModal logic)
   // ----------------------------------------------------------------------
@@ -194,7 +212,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
   return (
     <div className="border-b border-slate-100 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors p-4 sm:p-5">
       <div
-        className="group relative cursor-pointer flex gap-4 sm:gap-5"
+        className="group relative cursor-pointer"
         onClick={handleNavigate}
       >
         {/* Instant-navigation overlay — shows immediately on click, zero blank gap */}
@@ -206,222 +224,193 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
             </div>
           </div>
         )}
-        {/* Left Column: Avatar */}
-        <div className="flex-shrink-0">
-          <CraftsmanHoverCard
-            userId={author?._id}
-            username={author?.username}
-            avatarUrl={finalAvatar}
-            displayName={author?.name}
-          >
-            <div className="relative group/avatar">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-slate-200 dark:border-white/10">
-                {finalAvatar ? (
-                  <Image
-                    src={finalAvatar}
-                    fill
-                    className="object-cover"
-                    alt={author?.name || 'Author'}
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white font-bold text-lg">
-                    {author?.name?.[0] || 'A'}
-                  </div>
-                )}
-              </div>
-            </div>
-          </CraftsmanHoverCard>
-        </div>
-
-        {/* Right Column: Content */}
-        <div className="flex-1 min-w-0 flex flex-col">
-          {/* Header */}
-          <div className="flex justify-between items-start mb-1">
-             <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                 <div className="flex items-center gap-2">
-                    <CraftsmanHoverCard
-                      userId={author?._id}
-                      username={author?.username}
-                      avatarUrl={finalAvatar}
-                      displayName={author?.name}
-                      wrapperDisplay="inline"
-                    >
-                      <h3 className="font-medium text-slate-900 dark:text-gray-100 text-[15px] hover:text-slate-700 dark:hover:text-white transition-colors duration-150 font-sans">
-                          {author?.name || 'Anonymous'}
-                      </h3>
-                    </CraftsmanHoverCard>
-                     {/* TYPE BADGE: CODEX */}
-                     <span className="bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border border-slate-200 dark:border-white/20 text-[11px] font-semibold px-1.5 py-0.5 rounded flex items-center gap-1">
-                        <FileText size={10} className="stroke-[3]" /> {codex.category && codex.category !== 'uncategorized' ? codex.category : 'Codex'}
-                    </span>
-                 </div>
-                 <span className="hidden sm:inline text-slate-400 text-sm">·</span>
-                 <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-xs font-semibold">
-                     <span>{new Date(createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                     <span className="text-gray-300 dark:text-slate-600">•</span>
-                     <span className="flex items-center gap-1">
-                         <Clock size={12} /> {readTime}
-                     </span>
-                 </div>
-             </div>
-             <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
-                 {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
-             </button>
-          </div>
-
-          {/* Title — full width above */}
-          <div className="mt-1 mb-2">
-            <h2 className="text-[20px] sm:text-[22px] font-medium text-slate-900 dark:text-white leading-snug tracking-tight font-sans">
-              {title}
-            </h2>
-          </div>
-
-          {/* Body: image left column + text right column */}
-          <div className={`mb-3 relative overflow-hidden rounded-xl lg:rounded-none lg:overflow-visible ${coverImage ? 'lg:flex lg:items-start lg:gap-3' : ''}`}>
-            {coverImage && (
-              <div className={`w-full lg:w-[42%] flex-shrink-0 rounded-xl overflow-hidden border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5`}>
-                <div className="aspect-[4/3] relative w-full">
-                  {isPreview && typeof coverImage === 'string' && coverImage.startsWith('blob:') ? (
-                    <img src={coverImage} alt={title} className="object-cover w-full h-full" />
-                  ) : (
-                    <Image
-                      src={coverImage}
-                      alt={title}
-                      fill
-                      className="object-cover"
+        
+        {/* Top Row: Avatar + Header + Title */}
+        <div className="flex gap-4 sm:gap-5 mb-2">
+          {/* Left Column: Avatar */}
+          <div className="flex-shrink-0">
+            <CraftsmanHoverCard
+              userId={author?._id}
+              username={author?.username}
+              avatarUrl={finalAvatar}
+              displayName={author?.name}
+            >
+              <div className="relative group/avatar">
+                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-white dark:bg-black border border-slate-200 dark:border-white/10">
+                  {finalAvatar ? (
+                    <img
+                      src={finalAvatar}
+                      className="object-cover w-full h-full"
+                      alt={author?.name || 'Author'}
                     />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-emerald-400 to-teal-500 text-white font-bold text-lg">
+                      {author?.name?.[0] || 'A'}
+                    </div>
                   )}
                 </div>
               </div>
-            )}
-
-            {(excerpt || subtitle) && (
-              <div
-                className={`text-slate-600 dark:text-gray-300 text-[14px] sm:text-[15px] leading-relaxed flex-1 
-                absolute inset-0 z-20 lg:static lg:z-auto 
-                bg-white/40 dark:bg-[#0a0a0a]/60 lg:bg-transparent lg:dark:bg-transparent backdrop-blur-xl lg:backdrop-blur-none
-                p-4 lg:p-0 m-2 lg:m-0 rounded-xl lg:rounded-none border border-white/60 dark:border-white/10 lg:border-none shadow-xl lg:shadow-none
-                transition-all duration-300 ease-out
-                ${isExpanded 
-                    ? 'translate-x-0 opacity-100 visible pointer-events-auto' 
-                    : 'translate-x-8 opacity-0 invisible pointer-events-none lg:translate-x-0 lg:opacity-100 lg:visible lg:pointer-events-auto'}
-                ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-indigo-500/30' : ''}`}
-                style={{
-                  display: '-webkit-box',
-                  WebkitLineClamp: coverImage ? 11 : 8,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-                contentEditable={isPreview ? true : undefined}
-                suppressContentEditableWarning={isPreview ? true : undefined}
-                ref={excerptRef}
-                onInput={onExcerptInput}
-                onBlur={onExcerptInput}
-                onClick={isPreview ? (e) => e.stopPropagation() : undefined}
-                dangerouslySetInnerHTML={
-                  isPreview
-                    ? { __html: excerpt || "Type your excerpt here..." }
-                    : (excerpt && excerpt.includes('<mark>'))
-                      ? { __html: excerpt }
-                      : undefined
-                }
-              >
-                {(!isPreview && !(excerpt && excerpt.includes('<mark>'))) ? (subtitle || excerpt || "Read the full codex to discover more insights and details.") : undefined}
-              </div>
-            )}
+            </CraftsmanHoverCard>
           </div>
 
-          {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
-          <div className="flex items-center justify-between pt-3 mt-1 border-t border-slate-100 dark:border-white/5">
-            {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
-            <div className="flex items-center gap-1 sm:gap-2">
-              {(() => {
-                const stats = [
-                  { id: 'comment', icon: MessageCircle, title: 'Discussions' },
-                  { id: 'question', icon: HelpCircle, title: 'Questions' },
-                  { id: 'answer', icon: CheckCircle, title: 'Solutions' },
-                  { id: 'issue', icon: AlertCircle, title: 'Issues' },
-                  { id: 'suggestion', icon: Lightbulb, title: 'Ideas' },
-                  { id: 'critique', icon: Eye, title: 'Critiques' },
-                  { id: 'kudos', icon: Flame, title: 'Kudos' }
-                ];
-
-                const counts = codex.discussionStats?.types || {};
-
-                return stats.map((stat, idx) => {
-                  const count = counts[stat.id] || (stat.id === 'comment' ? commentsCount : 0);
-                  const Icon = stat.icon;
-                  const hasCount = count > 0;
-
-                  const hoverColorMap = {
-                      comment: 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200',
-                      question: 'group-hover/btn:text-indigo-500 dark:group-hover/btn:text-indigo-400',
-                      answer: 'group-hover/btn:text-emerald-500 dark:group-hover/btn:text-emerald-400',
-                      issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
-                      suggestion: 'group-hover/btn:text-amber-500 dark:group-hover/btn:text-amber-400',
-                      critique: 'group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400',
-                      kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
-                  };
-
-                  const baseColor = 'text-slate-700 dark:text-slate-300';
-                  
-                  const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
-
-                  return (
-                    <div 
-                      key={stat.id} 
-                      title={stat.title}
-                      className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        const filterType = stat.id === 'total' ? 'all' : stat.id;
-                        router.push(`/codex/${codex.slug}?filter=${filterType}#comments`);
-                      }}
-                    >
-                       <Icon 
-                         size={16} 
-                         className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
-                       />
-                       {hasCount && (
-                           <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
-                               {count}
-                           </span>
-                       )}
-                    </div>
-                  );
-                });
-              })()}
+          {/* Right Column: Header & Title */}
+          <div className="flex-1 min-w-0 flex flex-col">
+            {/* Header */}
+            <div className="flex justify-between items-start mb-1">
+                 <div className="flex items-center gap-2 flex-wrap">
+                     <CraftsmanHoverCard
+                        userId={author?._id}
+                        username={author?.username}
+                        avatarUrl={finalAvatar}
+                        displayName={author?.name}
+                        wrapperDisplay="inline"
+                      >
+                        <span className="font-bold text-slate-900 dark:text-white text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 cursor-pointer font-sans">
+                            {author?.name || 'Anonymous'}
+                        </span>
+                     </CraftsmanHoverCard>
+                     {author?.isVerified && (
+                          <span className="text-indigo-600">
+                               <CheckCircle size={16} className="fill-current" />
+                          </span>
+                     )}
+                     <span className="text-slate-400 text-xs font-semibold">@{author?.username || "user"}</span>
+                     <span className="text-gray-300 dark:text-slate-600 text-xs">•</span>
+                     <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
+                 </div>
+                 
+                 <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
+                   {isExpanded ? <X size={18} /> : <PanelRight size={18} />}
+                 </button>
             </div>
 
-            {/* Middle: Discovery Tags */}
-            <div className="hidden md:flex items-center gap-2 flex-1 justify-center px-4 overflow-hidden">
-               {codex.tags && codex.tags.slice(0, 2).map((tag, idx) => (
-                  <span key={idx} className="text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors text-[10px] font-bold truncate max-w-[80px]">
-                    #{tag}
-                  </span>
-               ))}
+            {/* Title — full width above */}
+            <div className="mt-0 mb-1">
+              <h2 className="text-black dark:text-white text-base leading-relaxed whitespace-pre-wrap break-words font-normal font-sans">
+                {title}
+              </h2>
             </div>
+          </div>
+        </div>
 
-            {/* Right: Engagement & Read Status */}
-            <div className="flex items-center gap-2 sm:gap-4">
-              {/* Like */}
-              <button
+        {/* Body: text only (Full Width) */}
+        <div className="mb-4">
+          {(excerpt || subtitle) && (
+            <div
+              className={`text-black dark:text-white text-base leading-relaxed whitespace-pre-wrap break-words font-normal font-sans ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-indigo-500/30 rounded-lg p-2' : ''}`}
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 6,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+              contentEditable={isPreview ? true : undefined}
+              suppressContentEditableWarning={isPreview ? true : undefined}
+              ref={excerptRef}
+              onInput={onExcerptInput}
+              onBlur={onExcerptInput}
+              onClick={isPreview ? (e) => e.stopPropagation() : undefined}
+              dangerouslySetInnerHTML={
+                isPreview
+                  ? { __html: excerpt || "Type your excerpt here..." }
+                  : (excerpt && excerpt.includes('<mark>'))
+                    ? { __html: excerpt }
+                    : undefined
+              }
+            >
+              {(!isPreview && !(excerpt && excerpt.includes('<mark>'))) ? (excerpt || subtitle || "Read the full codex to discover more insights and details.") : undefined}
+            </div>
+          )}
+        </div>
+
+        {/* Action Bar (Evenly Distributed on Mobile, Grouped on Desktop) */}
+        <div className="flex items-center justify-between pt-3 mt-1 w-full border-t border-slate-100 dark:border-white/5">
+          {/* Left: Discussion Intelligence Box & Like */}
+          <div className="contents sm:flex sm:items-center sm:gap-4">
+            {(() => {
+              const stats = [
+                { id: 'comment', icon: MessageCircle, title: 'Discussions' },
+                { id: 'question', icon: HelpCircle, title: 'Questions' },
+                { id: 'answer', icon: CheckCircle, title: 'Solutions' },
+                { id: 'issue', icon: AlertCircle, title: 'Issues' },
+                { id: 'suggestion', icon: Lightbulb, title: 'Ideas' },
+                { id: 'critique', icon: Eye, title: 'Critiques' },
+                { id: 'kudos', icon: Flame, title: 'Kudos' }
+              ];
+
+              const counts = codex.discussionStats?.types || {};
+
+              return stats.map((stat, idx) => {
+                const count = counts[stat.id] || (stat.id === 'comment' ? commentsCount : 0);
+                const Icon = stat.icon;
+                const hasCount = count > 0;
+
+                const hoverColorMap = {
+                    comment: 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200',
+                    question: 'group-hover/btn:text-indigo-500 dark:group-hover/btn:text-indigo-400',
+                    answer: 'group-hover/btn:text-emerald-500 dark:group-hover/btn:text-emerald-400',
+                    issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
+                    suggestion: 'group-hover/btn:text-amber-500 dark:group-hover/btn:text-amber-400',
+                    critique: 'group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400',
+                    kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
+                };
+
+                const baseColor = 'text-slate-700 dark:text-slate-300';
+                
+                const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
+
+                return (
+                  <div 
+                    key={stat.id} 
+                    title={stat.title}
+                    className={`group/btn items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer ${stat.id === 'comment' ? 'flex' : 'hidden sm:flex'}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      const filterType = stat.id === 'total' ? 'all' : stat.id;
+                      router.push(`/codex/${codex.slug}?filter=${filterType}#comments`);
+                    }}
+                  >
+                     <Icon 
+                       size={16} 
+                       className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
+                     />
+                     {hasCount && (
+                         <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
+                             {count}
+                         </span>
+                     )}
+                  </div>
+                );
+              });
+            })()}
+
+            {/* Like */}
+            <button 
                 onClick={handleLike}
-                className={`flex items-center gap-1 transition-all ${isLiked ? 'text-pink-500' : 'text-slate-700 dark:text-slate-300 hover:text-pink-500'}`}
-              >
-                <Star size={18} className={isLiked ? 'fill-current' : ''} />
-                <span className="font-bold tabular-nums text-[11px]">{likesCount}</span>
-              </button>
+                className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
+            >
+                <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
+                <span className={`text-[11px] mt-[2px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
+            </button>
+          </div>
 
-              {/* Share */}
-              <button 
-                  className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors"
-                  onClick={handleShare}
-              >
-                  <Share2 size={18} />
-              </button>
+          {/* Middle: Discovery Tags */}
+          <div className="hidden md:flex items-center gap-2 flex-1 justify-center px-4 overflow-hidden">
+             {codex.tags && codex.tags.slice(0, 2).map((tag, idx) => (
+                <span key={idx} className="text-slate-400 dark:text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors text-[10px] font-bold truncate max-w-[80px]">
+                  #{tag}
+                </span>
+             ))}
+          </div>
 
-            </div>
+          {/* Right: Share */}
+          <div className="contents sm:flex sm:items-center sm:gap-3">
+            <button 
+                className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
+                onClick={handleShare}
+            >
+                <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
+            </button>
           </div>
         </div>
       </div>

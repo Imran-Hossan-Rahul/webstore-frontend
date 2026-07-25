@@ -416,7 +416,7 @@ export default function PublishModal({ isOpen, onClose, editor, existingSlug, in
                               className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                               <label htmlFor="coverImageUpload" className="px-6 py-2 bg-white text-black rounded-full text-xs font-bold cursor-pointer hover:scale-105 transition-transform">
+                               <label htmlFor="coverImageUpload" className="px-6 py-2 bg-white text-black rounded-full text-xs font-bold cursor-pointer hover:opacity-80 transition-opacity">
                                   Change Image
                                </label>
                             </div>

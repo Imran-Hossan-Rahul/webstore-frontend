@@ -179,7 +179,7 @@ export default function ArtifactClientView({ initialArtifact }) {
                                     onClick={() => router.push(`/upload-artifact?mode=edit&id=${id}`)}
                                     className="flex flex-col items-center justify-center gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-xl hover:border-slate-900 dark:hover:border-white transition-all group/btn"
                                 >
-                                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
+                                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover/btn:scale-110 transition-opacity">
                                         <Edit3 size={18} className="text-slate-600 dark:text-slate-300" />
                                     </div>
                                     <span className="text-[9px] font-mono font-medium uppercase tracking-wider text-slate-500 group-hover/btn:text-slate-900 dark:group-hover/btn:text-white transition-colors">Edit Content</span>
@@ -188,7 +188,7 @@ export default function ArtifactClientView({ initialArtifact }) {
                                     onClick={() => router.push(`/upload-artifact?mode=upgrade&id=${id}`)}
                                     className="flex flex-col items-center justify-center gap-3 p-4 bg-slate-900 dark:bg-white border border-slate-900 dark:border-white rounded-xl hover:shadow-xl hover:shadow-indigo-500/20 transition-all group/btn"
                                 >
-                                    <div className="w-10 h-10 rounded-full bg-white/10 dark:bg-slate-900/10 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
+                                    <div className="w-10 h-10 rounded-full bg-white/10 dark:bg-slate-900/10 flex items-center justify-center group-hover/btn:scale-110 transition-opacity">
                                         <ArrowUpCircle size={18} className="text-white dark:text-slate-900" />
                                     </div>
                                     <span className="text-[9px] font-mono font-medium uppercase tracking-wider text-white dark:text-slate-900">Upgrade Ver</span>
@@ -236,7 +236,7 @@ export default function ArtifactClientView({ initialArtifact }) {
                                             </div>
                                             <span className="text-[10px] font-mono font-medium uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Live Preview</span>
                                         </div>
-                                        <ChevronRight size={14} className="text-emerald-400 group-hover:translate-x-0.5 transition-transform" />
+                                        <ChevronRight size={14} className="text-emerald-400 group-hover:translate-x-0.5 transition-opacity" />
                                     </a>
                                 )}
                                 {artifact.githubLink && (
@@ -247,7 +247,7 @@ export default function ArtifactClientView({ initialArtifact }) {
                                             </div>
                                             <span className="text-[10px] font-mono font-medium uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Source Code</span>
                                         </div>
-                                        <ChevronRight size={14} className="text-indigo-400 group-hover:translate-x-0.5 transition-transform" />
+                                        <ChevronRight size={14} className="text-indigo-400 group-hover:translate-x-0.5 transition-opacity" />
                                     </a>
                                 )}
                             </div>

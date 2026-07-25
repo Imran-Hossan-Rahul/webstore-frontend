@@ -69,7 +69,7 @@ export default function MarketNavbar() {
               >
                 <category.icon size={16} />
                 {category.name}
-                <ChevronDown size={14} className={`transition-transform duration-300 ${hoveredCategory === category.name ? 'rotate-180' : ''}`} />
+                <ChevronDown size={14} className={`transition-opacity duration-300 ${hoveredCategory === category.name ? 'rotate-180' : ''}`} />
               </button>
 
               <AnimatePresence>

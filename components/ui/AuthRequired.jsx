@@ -28,10 +28,10 @@ export default function AuthRequired() {
         <div className="pt-4 flex flex-col gap-3">
           <Link 
             href="/auth/login"
-            className="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group"
+            className="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-2xl shadow-xl hover:opacity-80 active:opacity-60 transition-all flex items-center justify-center gap-2 group"
           >
             {t("sign_in_to_continue") || "Sign in to Continue"}
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={18} className="group-hover:translate-x-1 transition-opacity" />
           </Link>
           <Link 
             href="/"

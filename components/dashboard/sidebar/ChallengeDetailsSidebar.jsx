@@ -119,7 +119,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
               </div>
               <Link 
                 href={`/manage-challenges/${challenge._id}`}
-                className="w-full py-4 bg-slate-900 dark:bg-black text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:scale-95"
+                className="w-full py-4 bg-slate-900 dark:bg-black text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:opacity-60"
               >
                 <ShieldCheck size={18} /> Manage Mission
               </Link>
@@ -134,7 +134,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
                 <button 
                   onClick={handleJoin}
                   disabled={isJoining}
-                  className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 active:scale-95"
+                  className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 active:opacity-60"
                 >
                   {isJoining ? <Loader2 size={18} className="animate-spin" /> : <>Accept Mission <ArrowRight size={18} /></>}
                 </button>
@@ -154,7 +154,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
               {canSubmit ? (
                 <Link 
                   href={`/challenges/${challenge._id}/submit`}
-                  className="w-full py-4 bg-white text-black dark:bg-black dark:text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:scale-95"
+                  className="w-full py-4 bg-white text-black dark:bg-black dark:text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:opacity-60"
                 >
                   <Rocket size={18} /> Submit Artifact
                 </Link>

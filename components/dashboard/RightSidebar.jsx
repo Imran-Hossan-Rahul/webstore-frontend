@@ -33,6 +33,7 @@ import CraftsmanHoverCard from "./cards/CraftsmanHoverCard";
 
 import BecomePatronModal from "../DashboardComponents/BecomePatronModal";
 import { useToast } from "@/components/ui/ToastProvider";
+import { features } from "@/constants/features";
 
 export default function RightSidebar() {
   const pathname = usePathname();
@@ -69,7 +70,7 @@ export default function RightSidebar() {
   const isProposals = pathname?.startsWith('/proposals') && !isProposalDetail;
   const isExplore = pathname === '/explore';
   const isVerify = pathname === '/verify';
-  const isMarket = pathname?.startsWith('/market');
+  const isMarket = pathname === '/' || pathname?.startsWith('/product') || pathname?.startsWith('/cart') || pathname?.startsWith('/checkout') || pathname?.startsWith('/orders') || !features.enableCommunity;
 
   useEffect(() => {
     if (!isMarket) return;
@@ -78,7 +79,7 @@ export default function RightSidebar() {
         const response = await fetch('http://localhost:5000/api/v1/market/products');
         const data = await response.json();
         let liveProducts = data.filter(p => p.status === 'Live');
-        const currentId = pathname.startsWith('/market/product/') ? pathname.split('/')[3] : null;
+        const currentId = pathname.startsWith('/product/') ? pathname.split('/')[2] : null;
         if (currentId) {
             liveProducts = liveProducts.filter(p => p.id.toString() !== currentId);
         }
@@ -446,7 +447,7 @@ export default function RightSidebar() {
         </div>
 
         {/* Collections Manager */}
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-lg p-8 shadow-sm">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-8">
            <div className="flex items-center justify-between mb-8">
               <h3 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
                 <Layers size={14} className="text-indigo-600" /> My Folders
@@ -461,7 +462,7 @@ export default function RightSidebar() {
            
            <div className="space-y-1.5">
               {isCreateFolderModalOpen && (
-                <div className="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-lg shadow-sm mb-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="p-3 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-sm mb-3 animate-in fade-in slide-in-from-top-2 duration-200">
                   <form onSubmit={handleCreateFolderSubmit} className="flex flex-col gap-2">
                     <input
                       type="text"
@@ -501,7 +502,7 @@ export default function RightSidebar() {
                          }`}
                        >
                          <div
-                           className={`absolute top-0.5 bg-white w-3 h-3 rounded-full transition-transform ${
+                           className={`absolute top-0.5 bg-white w-3 h-3 rounded-full transition-opacity ${
                              isPublicFolder ? "left-4.5" : "left-0.5"
                            }`}
                            style={{ transform: isPublicFolder ? 'translateX(14px)' : 'translateX(0px)' }}
@@ -782,7 +783,7 @@ export default function RightSidebar() {
         />
 
         {/* Professional Success Guide */}
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6">
           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
             <ShieldCheck size={14} className="text-emerald-500" /> Success Guide
           </h3>
@@ -809,15 +810,15 @@ export default function RightSidebar() {
         </div>
 
         {/* Quick Links */}
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-4 shadow-sm">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-4">
            <div className="space-y-1">
                <Link href="/proposals" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">My Applications</span>
-                   <ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-transform" />
+                   <ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-opacity" />
                </Link>
                <Link href="/wallet" className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Payment History</span>
-                   <ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-transform" />
+                   <ChevronRight size={14} className="text-slate-400 group-hover:translate-x-1 transition-opacity" />
                </Link>
            </div>
         </div>
@@ -831,21 +832,21 @@ export default function RightSidebar() {
       <aside className="h-full flex flex-col gap-6 pb-10">
         <div className="flex flex-col gap-3">
             <Link 
-              href="/market/cart" 
-              className="relative flex items-center justify-center gap-2 border border-gray-900 bg-gray-900 hover:bg-black text-white px-4 py-3.5 rounded-xl text-sm font-bold transition shadow-sm"
+              href="/cart"
+              className="relative flex items-center justify-center gap-2 bg-apple-accent text-white px-[22px] py-[11px] rounded-apple-pill text-[17px] font-sans transition-opacity hover:opacity-80"
             >
               <ShoppingCart size={18} className={showCartSuccess ? 'animate-bounce text-emerald-400' : ''} /> 
               CART
               {cartCount > 0 && (
-                <span className={`absolute top-1/2 -translate-y-1/2 right-3 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md transition-transform duration-300 ${showCartSuccess ? 'scale-125' : 'scale-100'}`}>
+                <span className={`absolute top-1/2 -translate-y-1/2 right-3 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full shadow-md transition-opacity duration-300 ${showCartSuccess ? 'scale-125' : 'scale-100'}`}>
                   {cartCount}
                 </span>
               )}
             </Link>
             
             <Link 
-              href="/market/orders" 
-              className="flex items-center justify-center gap-2 border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-slate-900/40 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300 px-4 py-3.5 rounded-xl text-sm font-bold transition shadow-sm"
+              href="/orders"
+              className="flex items-center justify-center gap-2 border border-apple-accent bg-transparent text-apple-accent px-[22px] py-[11px] rounded-apple-pill text-[17px] font-sans transition-opacity hover:opacity-80"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               MY ORDERS
@@ -853,7 +854,7 @@ export default function RightSidebar() {
         </div>
 
         {/* Recommended Products Widget (Algorithm) */}
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm mt-4">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 mt-4">
            <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
              <Star size={14} className="text-[#111827]" /> Related Products
            </h3>
@@ -865,10 +866,10 @@ export default function RightSidebar() {
                   : photo;
                   
                return (
-                 <Link href={`/market/product/${product.id}`} key={product.id} className="flex gap-4 group items-center p-2 -m-2 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-4 group items-center p-2 -m-2 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
                    <div className="w-16 h-16 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
                      {photoUrl ? (
-                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:opacity-80 transition duration-500" />
                      ) : (
                        <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 bg-slate-100">Img</div>
                      )}
@@ -907,7 +908,7 @@ export default function RightSidebar() {
   return (
     <aside className="h-full flex flex-col gap-8 pb-20">
       {/* Featured Craftsmen */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
+      <section className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Star className="text-amber-500" size={18} /> Elite Talents
@@ -963,7 +964,7 @@ export default function RightSidebar() {
       </section>
 
       {/* Trending Community Tags */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
+      <section className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6">
         <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
           <TrendingUp className="text-indigo-500" size={18} /> Trending Now
         </h3>
@@ -994,7 +995,7 @@ export default function RightSidebar() {
 
       {/* Community / Rewards CTA */}
       <div className="bg-indigo-600 rounded-lg p-6 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden group">
-         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:scale-125 transition-transform duration-700" />
+         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:opacity-80 transition-opacity duration-700" />
          <h3 className="font-bold text-lg mb-2 relative z-10">Elite Rewards</h3>
          <p className="text-indigo-100 text-[11px] mb-4 leading-relaxed relative z-10">
            Complete challenges and contribute to earn exclusive tokens and badges.

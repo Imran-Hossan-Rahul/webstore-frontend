@@ -66,7 +66,7 @@ const CustomSelect = ({ label, value, options, onChange, icon: Icon, themeColor 
               {options.find(opt => opt.value === value)?.label || "Select Option"}
             </span>
           </div>
-          <ChevronRight size={14} className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`} />
+          <ChevronRight size={14} className={`text-slate-400 transition-opacity duration-300 ${isOpen ? "rotate-90" : ""}`} />
         </button>
 
         <AnimatePresence>
@@ -625,7 +625,7 @@ const CreateChallengeForm = () => {
                       <input type="file" accept="image/*" onChange={(e) => { handleImageChange(e); setErrors(p => ({...p, coverImage: false})); }} className="absolute inset-0 opacity-0 cursor-pointer z-20" />
                       {imagePreview ? (
                         <>
-                          <img src={getOptimizedUrl(imagePreview)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                          <img src={getOptimizedUrl(imagePreview)} className="w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-80" />
                           <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px] flex flex-col items-center justify-center z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
                              <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 flex items-center gap-2 shadow-2xl">
                                 <Zap size={14} className="text-white" />
@@ -898,7 +898,7 @@ const CreateChallengeForm = () => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="px-8 py-4 rounded-2xl font-bold text-sm shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center gap-3"
+                className="px-8 py-4 rounded-2xl font-bold text-sm shadow-xl hover:opacity-80 active:opacity-60 transition-all disabled:opacity-50 flex items-center gap-3"
                 style={{ 
                   backgroundColor: themeStyle.primary,
                   color: themeStyle.textOnPrimary

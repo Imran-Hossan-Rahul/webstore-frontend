@@ -366,7 +366,7 @@ export default function ContractPage() {
             onClick={() => router.back()} 
             className="group flex items-center gap-2 text-slate-500 hover:text-black dark:hover:text-white transition-colors font-medium text-sm mb-4"
           >
-            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-opacity" />
             Back to Devlogs
           </button>
           <div className="flex items-center gap-4">
@@ -606,7 +606,7 @@ export default function ContractPage() {
                           onClick={() => handleOpenImage(url)}
                           className="group relative aspect-video bg-slate-100 dark:bg-white/5 rounded-xl overflow-hidden border border-slate-200 dark:border-white/10 block cursor-zoom-in w-full"
                         >
-                           <img src={url} alt="Visual Proof" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                           <img src={url} alt="Visual Proof" className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-500" />
                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                              <Maximize2 size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md" />
                            </div>
@@ -812,7 +812,7 @@ export default function ContractPage() {
                   <button 
                     disabled={ (confirmConfig.type === "escrow_fund" || confirmConfig.type === "confirm") && !confirmConfig.hasConsent }
                     onClick={() => confirmConfig.onConfirm(confirmConfig.inputValue)}
-                    className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-slate-900/10 dark:shadow-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:grayscale"
+                    className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-black rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-slate-900/10 dark:shadow-white/10 hover:opacity-80 active:opacity-60 transition-all disabled:opacity-30 disabled:cursor-not-allowed disabled:grayscale"
                   >
                     {confirmConfig.confirmText}
                   </button>

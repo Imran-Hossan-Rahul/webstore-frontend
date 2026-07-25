@@ -12,7 +12,7 @@ export default function SettingsToggle({ checked, onChange, disabled }) {
       }`}
     >
       <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-black shadow-md transition-transform duration-300 ${
+        className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-black shadow-md transition-opacity duration-300 ${
           checked ? "translate-x-6" : "translate-x-1"
         }`}
       />

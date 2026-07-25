@@ -191,7 +191,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 <button 
                   onClick={capture}
                   disabled={!isReady}
-                  className="group relative w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center shadow-lg transition-all hover:bg-indigo-700 active:scale-95 disabled:opacity-50"
+                  className="group relative w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center shadow-lg transition-all hover:bg-indigo-700 active:opacity-60 disabled:opacity-50"
                 >
                   <Camera strokeWidth={1.5} className="text-white" size={24} />
                 </button>
@@ -210,7 +210,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 <button 
                   onClick={confirm}
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-slate-900/10"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-xl shadow-slate-900/10"
                 >
                   {loading ? (
                     <Loader2 strokeWidth={1.5} className="animate-spin" size={16} />

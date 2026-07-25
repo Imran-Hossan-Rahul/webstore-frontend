@@ -291,7 +291,7 @@ function SubmissionReview({ submission, challenge, onBack, onSuccess }) {
           <div className="p-8 md:p-10 max-w-4xl mx-auto space-y-10">
              <div className="space-y-5">
                 <button onClick={onBack} className="group flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
-                   <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Queue
+                   <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-opacity" /> Back to Queue
                 </button>
                 <div className="flex items-start justify-between gap-6 flex-wrap">
                    <div className="space-y-3 flex-1 min-w-0">
@@ -331,7 +331,7 @@ function SubmissionReview({ submission, challenge, onBack, onSuccess }) {
                    <div className="grid grid-cols-2 gap-3">
                       {submission.screenshots.map((src, i) => (
                          <a key={i} href={src} target="_blank" className="rounded-xl overflow-hidden border border-zinc-800/50 aspect-video block">
-                            <img src={getOptimizedUrl(src)} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                            <img src={getOptimizedUrl(src)} className="w-full h-full object-cover hover:opacity-80 transition-opacity duration-500" />
                          </a>
                       ))}
                    </div>

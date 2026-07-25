@@ -70,7 +70,7 @@ export default function LandingNavbar() {
           <Link href="/auth/register">
             <button className="px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black text-sm font-bold rounded-full hover:opacity-80 transition-all flex items-center gap-2 group">
               Get Started
-              <ArrowRight strokeWidth={1.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight strokeWidth={1.5} className="w-4 h-4 group-hover:translate-x-1 transition-opacity" />
             </button>
           </Link>
         </div>

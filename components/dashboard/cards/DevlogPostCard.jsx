@@ -482,7 +482,7 @@ const DevlogPostCard = ({
                                                     key={idx} 
                                                     onClick={(e) => { e.stopPropagation(); }}
                                                     title={t}
-                                                    className={`p-1.5 border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 hover:bg-slate-50 dark:hover:bg-white/10 transition-all`}
+                                                    className={`p-1.5 border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:opacity-80 hover:bg-slate-50 dark:hover:bg-white/10 transition-all`}
                                                 >
                                                     <TechIcon tech={t} size={14} />
                                                 </div>

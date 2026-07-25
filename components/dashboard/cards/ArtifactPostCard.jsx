@@ -42,6 +42,8 @@ const ArtifactPostCard = ({
     codepenUrl,
     fileType,
     fileSize,
+    fileUrl,
+    license,
     versions = [],
     tech = [],
     commentsCount: initialCommentsCount = 0,
@@ -435,7 +437,7 @@ const ArtifactPostCard = ({
                                                     key={idx} 
                                                     onClick={(e) => { e.stopPropagation(); }}
                                                     title={t}
-                                                    className={`p-1.5 border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:scale-110 hover:bg-slate-50 dark:hover:bg-white/10 transition-all`}
+                                                    className={`p-1.5 border border-slate-200/60 dark:border-white/10 bg-white/50 dark:bg-white/5 rounded-lg shadow-sm flex items-center justify-center cursor-pointer hover:opacity-80 hover:bg-slate-50 dark:hover:bg-white/10 transition-all`}
                                                 >
                                                     <TechIcon tech={t} size={14} />
                                                 </div>
@@ -455,11 +457,11 @@ const ArtifactPostCard = ({
                     </div>
                 </div>
             </div>
-
-            {/* Action Bar (Souled-Out Refactor: High-Density Discussion Intelligence) */}
-            <div className="flex items-center justify-between mt-3">
-                {/* Left: Discussion Intelligence Box (Fisheye "Dock" Effect) */}
-                <div className="flex items-center gap-1 sm:gap-2">
+            {/* Action Bar (Evenly Distributed) */}
+            <div className="flex items-center justify-between mt-3 w-full">
+                {/* Left Side: Discussion & Likes */}
+                <div className="contents sm:flex sm:items-center sm:gap-4">
+                    {/* 1. Discussion Intelligence Box */}
                     {(() => {
                         const stats = [
                             { id: 'comment', icon: MessageCircle, title: 'Discussions' },
@@ -473,7 +475,7 @@ const ArtifactPostCard = ({
 
                         const counts = item.discussionStats?.types || {};
 
-                        return stats.map((stat, idx) => {
+                        return stats.map((stat) => {
                             const count = counts[stat.id] || (stat.id === 'comment' ? currentCommentsCount : 0);
                             const Icon = stat.icon;
                             const hasCount = count > 0;
@@ -489,14 +491,13 @@ const ArtifactPostCard = ({
                             };
 
                             const baseColor = 'text-slate-700 dark:text-slate-300';
-                            
                             const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
 
                             return (
                                 <div 
                                     key={stat.id} 
                                     title={stat.title}
-                                    className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
+                                    className={`group/btn items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer ${stat.id === 'comment' ? 'flex' : 'hidden sm:flex'}`}
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         const filterType = stat.id === 'total' ? 'all' : stat.id;
@@ -516,11 +517,8 @@ const ArtifactPostCard = ({
                             );
                         });
                     })()}
-                </div>
 
-                {/* Right: Engagement & Artifact Stats */}
-                <div className="flex items-center gap-1 sm:gap-2">
-                    {/* Like */}
+                    {/* 2. Like */}
                     <button 
                         onClick={handleLike}
                         className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
@@ -528,8 +526,11 @@ const ArtifactPostCard = ({
                         <Star size={16} fill={isLiked ? 'currentColor' : 'none'} className={`${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'} group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} />
                         <span className={`text-[11px] mt-[2px] font-normal tabular-nums transition-colors duration-200 ${isLiked ? 'text-pink-600 dark:text-pink-500' : 'text-slate-700 dark:text-slate-300 group-hover/btn:text-pink-600 dark:group-hover/btn:text-pink-500'}`}>{likesCount}</span>
                     </button>
+                </div>
 
-                    {/* Share */}
+                {/* Right Side: Share & Download */}
+                <div className="contents sm:flex sm:items-center sm:gap-3">
+                    {/* 3. Share */}
                     <button 
                         className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                         onClick={handleShare}
@@ -537,21 +538,19 @@ const ArtifactPostCard = ({
                         <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
                     </button>
 
-                    <span className="w-px h-3.5 bg-slate-300 dark:bg-white/10 mx-1"></span>
-
-                    {/* Download Stats */}
+                    {/* 4. Download Stats */}
                     <button 
                         onClick={handleDownload}
-                        className="group/btn flex items-center gap-1.5 py-1 pl-1 transition-all duration-200 cursor-pointer"
+                        className="group/btn flex items-center gap-1.5 py-1 transition-all duration-200 cursor-pointer"
                     >
                         <Download size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-purple-600 dark:group-hover/btn:purple-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
                         <span className="text-[11px] mt-[2px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">{downloadsCount || 0}</span>
                     </button>
-                 </div>
-            </div>
+                </div>
             </div>
         </div>
-
+        </div>
+        
         {/* Quick Preview Modal */}
         {showIframeModal && liveLink && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8 animate-in fade-in" onClick={(e) => { e.stopPropagation(); setShowIframeModal(false); }}>

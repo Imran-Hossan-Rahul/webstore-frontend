@@ -381,7 +381,7 @@ export default function ChatPage() {
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
         <button 
           onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-blue-500 shadow-2xl flex items-center justify-center overflow-hidden hover:scale-110 transition-transform relative"
+          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-blue-500 shadow-2xl flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
         >
           {selectedChat && avatar ? (
              <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />

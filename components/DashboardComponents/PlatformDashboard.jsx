@@ -393,7 +393,7 @@ function ContentCard({ item, router }) {
           <img
             src={image || "/placeholder.png"}
             alt={title || "Content"}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:-translate-y-0.5 will-change-transform" 
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:-translate-y-0.5 will-change-transform" 
           />
         )}
 

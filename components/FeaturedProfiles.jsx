@@ -88,7 +88,7 @@ export default function FeaturedProfiles({ type, title }) {
         {canScrollLeft && (
           <button
             onClick={() => scrollRow(-0.6)}
-            className="absolute left-2 z-50 bg-white p-2 rounded-full shadow hover:scale-110"
+            className="absolute left-2 z-50 bg-white p-2 rounded-full shadow hover:opacity-80"
           >
             {"<"}
           </button>
@@ -115,7 +115,7 @@ export default function FeaturedProfiles({ type, title }) {
         {canScrollRight && (
           <button
             onClick={() => scrollRow(0.6)}
-            className="absolute right-2 z-50 bg-white p-2 rounded-full shadow hover:scale-110"
+            className="absolute right-2 z-50 bg-white p-2 rounded-full shadow hover:opacity-80"
           >
             {">"}
           </button>

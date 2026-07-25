@@ -16,7 +16,7 @@ export default function ManageChallengesSidebar() {
         </p>
         <Link 
           href="/challenges/create"
-          className="w-full py-3 bg-white text-slate-900 hover:bg-slate-100 rounded-xl font-bold text-xs shadow-xl transition-all relative z-10 flex items-center justify-center gap-2 active:scale-[0.98]"
+          className="w-full py-3 bg-white text-slate-900 hover:bg-slate-100 rounded-xl font-bold text-xs shadow-xl transition-all relative z-10 flex items-center justify-center gap-2 active:opacity-60"
         >
           <Plus size={16} strokeWidth={1.5} /> Create New Challenge
         </Link>

@@ -70,7 +70,7 @@ export default function MyOrdersPage() {
       <div className="max-w-[1200px] mx-auto py-2 md:py-8 px-3 sm:px-6 lg:px-8 -mt-4 md:mt-0">
         
         {/* Header */}
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-4 md:p-6 mb-4 md:mb-6">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-4 md:p-6 mb-4 md:mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
               <Package size={24} className="text-[#111827]" /> My Orders
@@ -99,7 +99,7 @@ export default function MyOrdersPage() {
             <ShoppingBag size={40} className="mb-3 opacity-30" />
             <p className="text-sm font-medium">No orders found</p>
             <button
-              onClick={() => router.push('/market')}
+              onClick={() => router.push('/')}
               className="mt-4 text-[#111827] text-sm hover:underline"
             >
               Start shopping
@@ -117,8 +117,8 @@ export default function MyOrdersPage() {
               return (
                 <div
                   key={oid}
-                  onClick={() => router.push(`/market/orders/${oid}`)}
-                  className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-white/5 rounded-xl overflow-hidden cursor-pointer hover:border-gray-400 hover:shadow-lg transition-all duration-300 group"
+                  onClick={() => router.push(`/orders/${oid}`)}
+                  className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg overflow-hidden cursor-pointer hover:border-gray-400 transition-all duration-300 group"
                 >
                   {/* Order Header */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-gray-100 dark:border-white/5">
@@ -166,7 +166,7 @@ export default function MyOrdersPage() {
                         </span>
 
                         <button
-                          onClick={e => { e.stopPropagation(); router.push(`/market/orders/${oid}`); }}
+                          onClick={e => { e.stopPropagation(); router.push(`/orders/${oid}`); }}
                           className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 hover:text-blue-600 transition"
                           title="View Details"
                         >

@@ -115,19 +115,19 @@ function EngineerArtifactCard({ artifact, router, onDelete }) {
                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[2px]">
                      <button 
                         onClick={(e) => { e.stopPropagation(); router.push(`/artifact/edit/${artifact._id}`); }}
-                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-slate-900 shadow-lg transform hover:scale-110 transition-all" title="Edit"
+                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-slate-900 shadow-lg transform hover:opacity-80 transition-all" title="Edit"
                      >
                          <Edit size={18} />
                      </button>
                      <button 
                         onClick={(e) => { e.stopPropagation(); /* Open analytics modal */ }}
-                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-blue-600 shadow-lg transform hover:scale-110 transition-all" title="Analytics"
+                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-blue-600 shadow-lg transform hover:opacity-80 transition-all" title="Analytics"
                      >
                          <BarChart2 size={18} />
                      </button>
                       <button 
                         onClick={(e) => { e.stopPropagation(); onDelete(); }}
-                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-red-600 shadow-lg transform hover:scale-110 transition-all" title="Delete"
+                        className="p-3 bg-white rounded-full hover:bg-slate-50 text-red-600 shadow-lg transform hover:opacity-80 transition-all" title="Delete"
                      >
                          <Trash2 size={18} />
                      </button>

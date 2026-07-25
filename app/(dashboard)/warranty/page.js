@@ -17,7 +17,7 @@ const Section = ({ id, icon: Icon, color, title, children, defaultOpen = false }
           </div>
           <h2 className="text-[17px] font-bold text-gray-900 dark:text-white group-hover:text-[#111827] transition">{title}</h2>
         </div>
-        <ChevronDown size={20} className={`text-gray-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={20} className={`text-gray-400 transition-opacity duration-300 ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && <div className="px-6 pb-6 border-t border-gray-100 dark:border-white/10 pt-5">{children}</div>}
     </div>
@@ -258,7 +258,7 @@ export default function WarrantyPage() {
 
         {/* ── Back ── */}
         <div className="flex justify-center pt-2">
-          <Link href="/market" className="inline-flex items-center gap-2 text-[14px] text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition">
+          <Link href="/" className="inline-flex items-center gap-2 text-[14px] text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition">
             <ArrowLeft size={16} /> Back to Marketplace
           </Link>
         </div>

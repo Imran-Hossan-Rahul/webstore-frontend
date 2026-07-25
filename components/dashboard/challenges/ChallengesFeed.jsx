@@ -146,7 +146,7 @@ export default function ChallengesFeed() {
                 <button 
                     onClick={handleLoadMore}
                     disabled={loadingMore}
-                    className="flex items-center gap-2 px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-bold text-sm tracking-widest uppercase hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                    className="flex items-center gap-2 px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-bold text-sm tracking-widest uppercase hover:opacity-80 transition-opacity disabled:opacity-50 disabled:hover:opacity-80"
                 >
                     {loadingMore ? <Loader2 className="animate-spin" size={18} /> : "Load More Challenges"}
                 </button>

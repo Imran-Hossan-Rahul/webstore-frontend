@@ -193,7 +193,7 @@ export default function MouseHeatmap({ page = "/", timeRange = 7 }) {
       <div className="p-8 border-b border-slate-100 dark:border-white/[0.03] bg-white/50 dark:bg-black/20 backdrop-blur-xl">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 rotate-3 hover:rotate-0 transition-transform duration-300">
+            <div className="w-14 h-14 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 rotate-3 hover:rotate-0 transition-opacity duration-300">
               <Zap size={28} />
             </div>
             <div>

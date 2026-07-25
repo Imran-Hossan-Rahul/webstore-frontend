@@ -52,7 +52,7 @@ export function ViewsWidget({ title, totalViews, data, onClick }) {
 
   return (
     <div 
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-transform hover:scale-[1.01] hover:shadow-md group"
+        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
     >
       <div className="flex justify-between items-start mb-4">
         <div onClick={onClick}>
@@ -119,7 +119,7 @@ export function DownloadsWidget({ title, totalDownloads, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-transform hover:scale-[1.01] hover:shadow-md group"
+        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
     >
         <div className="flex justify-between items-start mb-4">
             <div>
@@ -154,7 +154,7 @@ export function CountryWidget({ title, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-transform hover:scale-[1.01] hover:shadow-md group"
+        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
     >
        <div className="flex justify-between items-start mb-2">
            <h3 className="font-medium text-base text-slate-800 group-hover:text-yellow-600 transition-colors font-sans">{title}</h3>
@@ -183,7 +183,7 @@ export function EarningsWidget({ title, totalEarnings, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-transform hover:scale-[1.01] hover:shadow-md group"
+        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
     >
       <div className="flex justify-between items-start mb-2">
         <div>

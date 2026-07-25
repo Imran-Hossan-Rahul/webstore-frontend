@@ -106,17 +106,17 @@ export default function Checkout() {
 
   if (!productId) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center text-gray-800">
+      <div className="min-h-screen bg-apple-canvas flex flex-col items-center justify-center text-apple-ink">
         <h2 className="text-2xl font-bold mb-4">No Checkout Item Selected</h2>
         <p className="text-gray-500 mb-6">Please select a product from your cart to proceed with checkout.</p>
-        <button onClick={() => router.push('/market/cart')} className="bg-[#111] text-white px-6 py-3 rounded-lg hover:bg-black font-semibold">
+        <button onClick={() => router.push('/cart')} className="bg-[#111] text-white px-6 py-3 rounded-lg hover:bg-black font-semibold">
           Return to Cart
         </button>
       </div>
     );
   }
 
-  if (!product) return <div className="min-h-screen bg-gray-50 flex items-center justify-center text-gray-500">Loading product...</div>;
+  if (!product) return <div className="min-h-screen bg-apple-canvas flex items-center justify-center text-apple-muted">Loading product...</div>;
 
   const subTotal = baseFinalPrice * quantity;
   const deliveryCharge = 150; // Mock delivery charge
@@ -157,7 +157,7 @@ export default function Checkout() {
           <div className="w-full lg:w-7/12 flex flex-col gap-6 md:gap-8">
             
             {/* Payment Section */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-white/10 p-5 md:p-6">
+            <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-5 md:p-6">
               <div className="flex items-center gap-3 mb-5 md:mb-6">
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 flex items-center justify-center font-bold text-sm">1</div>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Payment</h2>
@@ -175,7 +175,7 @@ export default function Checkout() {
             </div>
 
             {/* Delivery Section */}
-            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-white/10 p-5 md:p-6">
+            <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-5 md:p-6">
               <div className="flex items-center gap-3 mb-5 md:mb-6">
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 flex items-center justify-center font-bold text-sm">2</div>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Delivery</h2>
@@ -292,7 +292,7 @@ export default function Checkout() {
 
           {/* Right Column */}
           <div className="w-full lg:w-5/12">
-            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-gray-200 dark:border-white/10 p-5 md:p-6 sticky top-24">
+            <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-5 md:p-6 sticky top-24">
               <div className="flex items-center gap-3 mb-5 md:mb-6">
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 flex items-center justify-center font-bold text-sm">3</div>
                 <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">Product Description</h2>
@@ -300,7 +300,7 @@ export default function Checkout() {
 
               <div className="flex gap-4 mb-6 pt-2">
                 <div className="flex-1 min-w-0 pr-2">
-                  <Link href={`/market/product/${product.id}`}>
+                  <Link href={`/product/${product.id}`}>
                     <h3 className="font-semibold text-gray-800 text-sm mb-1 hover:text-blue-600 hover:underline transition truncate">{product.title}</h3>
                   </Link>
                   {variantSummary && (
@@ -357,12 +357,12 @@ export default function Checkout() {
                 <button 
                   type={orderConfirmed ? 'button' : 'submit'}
                   disabled={!isFormValid && !orderConfirmed}
-                  className={`font-bold text-sm py-3.5 px-6 rounded-lg transition w-full flex items-center justify-center gap-2 uppercase tracking-wide shadow-sm ${
+                  className={`font-sans font-normal text-[17px] py-[11px] px-[22px] rounded-apple-pill transition-opacity w-full flex items-center justify-center gap-2 ${
                     orderConfirmed 
-                      ? 'bg-emerald-100 text-emerald-700 cursor-default shadow-none' 
+                      ? 'bg-apple-accent/20 text-apple-accent cursor-default' 
                       : isFormValid 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/30' 
-                        : 'bg-gray-100 text-gray-400 cursor-not-allowed shadow-none'
+                        ? 'bg-apple-accent hover:bg-apple-accent/90 text-white hover:opacity-80' 
+                        : 'bg-apple-canvas border border-apple-hairline text-apple-muted cursor-not-allowed'
                   }`}
                 >
                   {orderConfirmed ? (
@@ -384,7 +384,7 @@ export default function Checkout() {
       {/* Order Error Modal */}
       {showErrorModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6 text-center transform transition-all">
+          <div className="bg-apple-parchment rounded-apple-lg w-full max-w-sm p-6 text-center transform transition-all border border-apple-hairline">
             <div className="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-red-100 mb-4">
               <span className="text-red-600 font-bold text-xl">!</span>
             </div>

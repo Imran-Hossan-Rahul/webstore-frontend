@@ -195,7 +195,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     <button
                                         onClick={handleFollow}
                                         disabled={followLoading}
-                                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all active:scale-95 shadow-sm ${
+                                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all active:opacity-60 shadow-sm ${
                                             isFollowing
                                                 ? 'bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-700 dark:text-gray-200'
                                                 : 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/25'

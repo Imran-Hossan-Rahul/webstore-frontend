@@ -73,7 +73,7 @@ export const ChallengeCard = ({ challenge, isGuest, onRequireAuth }) => {
         {/* Cover Image */}
         <div className="h-56 relative overflow-hidden bg-slate-50 dark:bg-black/40">
           {challenge.coverImage ? (
-            <img src={getOptimizedUrl(challenge.coverImage)} alt={challenge.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+            <img src={getOptimizedUrl(challenge.coverImage)} alt={challenge.title} className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-700 ease-out" />
           ) : (
             <div className="w-full h-full flex items-center justify-center relative opacity-20 group-hover:opacity-30 transition-opacity duration-500 bg-indigo-600">
                <Trophy size={80} className="text-white mix-blend-overlay" />
@@ -153,7 +153,7 @@ export const ChallengeCard = ({ challenge, isGuest, onRequireAuth }) => {
               </div>
               
               <div className="w-12 h-12 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 transition-all duration-300">
-                 <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                 <ArrowUpRight size={20} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-opacity" />
               </div>
           </div>
         </div>

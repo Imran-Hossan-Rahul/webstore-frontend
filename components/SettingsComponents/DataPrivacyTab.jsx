@@ -83,7 +83,7 @@ function CookiePrefs({ showToast }) {
       ) : (
         <button type="button" onClick={() => setPrefs(p => ({ ...p, [k]: !p[k] }))}
           className={`relative inline-flex h-5 w-10 items-center rounded-none transition-all ${prefs[k] ? "bg-black dark:bg-white" : "bg-slate-200 dark:bg-white/10"}`}>
-          <span className={`inline-block h-3 w-3 bg-white dark:bg-black shadow transform transition-transform ${prefs[k] ? "translate-x-6" : "translate-x-1"}`} />
+          <span className={`inline-block h-3 w-3 bg-white dark:bg-black shadow transform transition-opacity ${prefs[k] ? "translate-x-6" : "translate-x-1"}`} />
         </button>
       )}
     </div>

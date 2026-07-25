@@ -217,7 +217,7 @@ export default function ProfileTab({ user, refreshUser }) {
               </div>
               <button type="button" onClick={() => set("openToWork", !form.openToWork)}
                 className={`relative inline-flex h-5 w-10 items-center rounded-full transition-all ${form.openToWork ? "bg-black dark:bg-white" : "bg-slate-200 dark:bg-white/10"}`}>
-                <span className={`inline-block h-3 w-3 rounded-full ${form.openToWork ? "bg-white dark:bg-black" : "bg-white"} shadow transform transition-transform ${form.openToWork ? "translate-x-6" : "translate-x-1"}`} />
+                <span className={`inline-block h-3 w-3 rounded-full ${form.openToWork ? "bg-white dark:bg-black" : "bg-white"} shadow transform transition-opacity ${form.openToWork ? "translate-x-6" : "translate-x-1"}`} />
               </button>
             </div>
 

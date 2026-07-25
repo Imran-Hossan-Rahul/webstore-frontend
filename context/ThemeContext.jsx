@@ -10,43 +10,23 @@ export function ThemeProvider({ children }) {
   const applyTheme = (newTheme) => {
     if (typeof window === "undefined") return;
 
-    let effectiveTheme = newTheme;
-    if (newTheme === "system") {
-      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    }
+    // Force light mode permanently for the marketplace pivot
+    setTheme("light");
+    localStorage.setItem("app-theme", "light");
 
-    setTheme(newTheme);
-    localStorage.setItem("app-theme", newTheme);
-
-    if (effectiveTheme === "dark") {
-      document.documentElement.classList.add("dark");
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      document.documentElement.setAttribute("data-theme", "light");
-    }
+    document.documentElement.classList.remove("dark");
+    document.documentElement.setAttribute("data-theme", "light");
   };
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("app-theme") || "system";
-    applyTheme(savedTheme);
+    applyTheme("light"); // Force light on mount
 
-    // Listen for system theme changes if in system mode
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => {
-      if (localStorage.getItem("app-theme") === "system") {
-        applyTheme("system");
-      }
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+    // Theme is locked to light mode
+    return () => {};
   }, []);
 
   const toggleTheme = () => {
-    if (theme === "light") applyTheme("dark");
-    else if (theme === "dark") applyTheme("system");
-    else applyTheme("light");
+    // Disabled: platform is strictly light mode for now
   };
 
   return (

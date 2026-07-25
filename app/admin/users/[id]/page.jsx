@@ -60,7 +60,7 @@ export default function UserDetailsPage() {
                 onClick={() => router.back()}
                 className="group flex items-center gap-3 text-[10px] font-medium uppercase tracking-widest text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
               >
-                <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-opacity" />
                 Registry
               </button>
               <div className="h-4 w-[1px] bg-slate-200 dark:bg-white/10" />

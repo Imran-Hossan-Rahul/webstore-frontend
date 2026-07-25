@@ -197,7 +197,7 @@ const CraftsmanCard = ({ craftsman }) => {
   };
 
   return (
-    <div className="group relative bg-white dark:bg-black/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl p-6 hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+    <div className="group relative bg-white dark:bg-black/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl p-6 hover:shadow-2xl hover:opacity-80 transition-all duration-300">
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/5 group-hover:to-pink-500/5 rounded-2xl transition-all duration-300" />
       

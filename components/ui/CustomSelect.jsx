@@ -58,7 +58,7 @@ export default function CustomSelect({
             {Icon && !ActiveIcon && <Icon size={16} strokeWidth={1.5} className="text-slate-400" />}
             <span className="text-slate-900 dark:text-white truncate">{displayLabel || placeholder}</span>
           </div>
-          <ChevronDown size={16} strokeWidth={1.5} className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+          <ChevronDown size={16} strokeWidth={1.5} className={`text-slate-400 transition-opacity duration-300 ${isOpen ? "rotate-180" : ""}`} />
         </button>
 
         <AnimatePresence>

@@ -21,10 +21,21 @@ module.exports = {
           surface: '#F8FAFC',
           dark: '#0F172A',
           "glass": 'rgba(255, 255, 255, 0.02)',
+        },
+        apple: {
+          ink: 'var(--apple-ink)',
+          secondary: 'var(--apple-text-secondary)',
+          muted: 'var(--apple-text-muted)',
+          canvas: 'var(--apple-canvas)',
+          parchment: 'var(--apple-parchment)',
+          surfaceDark: 'var(--apple-surface-dark)',
+          hairline: 'var(--apple-hairline)',
+          accent: 'var(--apple-accent)',
+          accentDark: 'var(--apple-accent-ondark)',
         }
       },
       fontFamily: {
-        sans: ['"SF Pro Display"', '"SF Pro Text"', 'var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'liberation mono', 'courier new', 'monospace'],
       },
       borderRadius: {
@@ -37,6 +48,21 @@ module.exports = {
         '2xl': '8px',
         '3xl': '8px',
         'full': '9999px',
+        'apple-sm': '8px',
+        'apple-md': '11px',
+        'apple-lg': '18px',
+        'apple-pill': '980px',
+      },
+      boxShadow: {
+        sm: 'none',
+        DEFAULT: 'none',
+        md: 'none',
+        lg: 'none',
+        xl: 'none',
+        '2xl': 'none',
+        inner: 'none',
+        none: 'none',
+        product: '3px 5px 30px rgba(0,0,0,0.22)',
       },
       keyframes: {
         jelly: {

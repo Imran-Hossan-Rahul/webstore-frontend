@@ -416,7 +416,7 @@ export default function CodexClientView({ initialCodex, slug }) {
                 <p className="text-slate-500 dark:text-slate-400 mb-10 max-w-sm text-base font-normal leading-relaxed font-sans">The codex you are looking for has either moved to a new galaxy or never existed.</p>
                 <button 
                     onClick={() => router.push('/codexs')} 
-                    className="px-8 py-4 bg-slate-950 dark:bg-white text-white dark:text-black font-semibold rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl"
+                    className="px-8 py-4 bg-slate-950 dark:bg-white text-white dark:text-black font-semibold rounded-2xl hover:opacity-80 active:opacity-60 transition-all shadow-xl"
                 >
                     Back to Feed
                 </button>
@@ -515,7 +515,7 @@ export default function CodexClientView({ initialCodex, slug }) {
                                 src={coverImage} 
                                 alt={title} 
                                 fill 
-                                className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                className="object-cover transition-opacity duration-1000 group-hover:opacity-80"
                                 priority
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -557,7 +557,7 @@ export default function CodexClientView({ initialCodex, slug }) {
                         initial={{ opacity: 0, y: 10, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                        className="highlight-tooltip-btn absolute z-50 flex items-center gap-2 px-3 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold rounded-lg shadow-xl hover:scale-105 transition-transform"
+                        className="highlight-tooltip-btn absolute z-50 flex items-center gap-2 px-3 py-2 bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-xs font-semibold rounded-lg shadow-xl hover:opacity-80 transition-opacity"
                         style={{ 
                             top: tooltipPosition.top, 
                             left: tooltipPosition.left, 

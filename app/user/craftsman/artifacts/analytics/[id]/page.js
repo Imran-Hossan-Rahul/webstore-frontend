@@ -336,7 +336,7 @@ function MetricCard({ title, value, icon, color, label }) {
         </span>
       </div>
       <div className="flex flex-col">
-        <span className="text-3xl font-black tracking-tight text-white group-hover:scale-105 transition-transform origin-left">
+        <span className="text-3xl font-black tracking-tight text-white group-hover:opacity-80 transition-opacity origin-left">
           {value?.toLocaleString() || 0}
         </span>
         {label && (

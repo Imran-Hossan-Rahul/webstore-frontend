@@ -429,7 +429,7 @@ function SubmissionReview({ submission, challenge, selectedWinners, onSelectWinn
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    {submission.screenshots.map((src, i) => (
                       <button key={i} onClick={() => setSelectedImage(src)} className="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 aspect-video block group relative shadow-sm cursor-zoom-in">
-                         <img src={getOptimizedUrl(src)} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                         <img src={getOptimizedUrl(src)} className="w-full h-full object-cover transition-opacity duration-1000 group-hover:opacity-80" />
                          <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </button>
                    ))}
@@ -537,7 +537,7 @@ function SubmissionReview({ submission, challenge, selectedWinners, onSelectWinn
                    })}
                </div>
                
-               <button onClick={onBack} className="w-full py-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold transition-all hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 shadow-md">
+               <button onClick={onBack} className="w-full py-4 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold transition-all hover:opacity-80 active:opacity-60 flex items-center justify-center gap-2 shadow-md">
                   Save & Return <ArrowRight size={14} />
                </button>
             </div>
@@ -656,7 +656,7 @@ function PrizePodium({ challenge, selectedWinners, onSaveWinners, submitting }) 
                  <button 
                    onClick={onSaveWinners}
                    disabled={submitting || selectedWinners.length < sortedDistribution.length}
-                   className="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-[24px] text-sm font-medium transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-30 flex items-center justify-center gap-3 shadow-2xl shadow-slate-900/10 dark:shadow-white/10"
+                   className="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-[24px] text-sm font-medium transition-all hover:opacity-80 active:opacity-60 disabled:opacity-30 flex items-center justify-center gap-3 shadow-2xl shadow-slate-900/10 dark:shadow-white/10"
                  >
                    {submitting ? <Loader2 size={16} className="animate-spin" /> : <>Execute Finalization & Payout Protocols <ChevronRight size={16} /></>}
                  </button>
@@ -699,7 +699,7 @@ function Broadcast({ challenge, updateContent, setUpdateContent, onPostUpdate, s
                <button 
                  onClick={onPostUpdate}
                  disabled={submitting || !updateContent.trim()}
-                 className="absolute right-6 bottom-6 px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl text-sm font-medium hover:scale-[1.02] active:scale-[0.98] disabled:opacity-30 transition-all shadow-xl shadow-slate-900/10 dark:shadow-white/10 flex items-center gap-2"
+                 className="absolute right-6 bottom-6 px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl text-sm font-medium hover:opacity-80 active:opacity-60 disabled:opacity-30 transition-all shadow-xl shadow-slate-900/10 dark:shadow-white/10 flex items-center gap-2"
                >
                   {submitting ? <Loader2 size={14} className="animate-spin" /> : <>Execute Dispatch <Send size={14} /></>}
                </button>
@@ -721,7 +721,7 @@ function OperationalLogs({ challenge }) {
             <div className="space-y-4">
                {challenge.updates?.length > 0 ? [...challenge.updates].reverse().map((update, idx) => (
                  <div key={idx} className="flex gap-6 p-8 bg-white dark:bg-white/2 border border-slate-100 dark:border-white/5 rounded-[24px] hover:border-slate-900/30 transition-all group shadow-sm">
-                    <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0 group-hover:opacity-80 transition-opacity">
                        <Radio size={18} className="text-slate-900" />
                     </div>
                     <div className="space-y-3">

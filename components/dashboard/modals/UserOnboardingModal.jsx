@@ -127,7 +127,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                     <img src={getOptimizedUrl(previewUrl)} alt="Preview" className="w-full h-full object-cover" />
                                 ) : (
                                     <>
-                                        <Upload className="text-slate-400 mb-2 group-hover:scale-110 transition-transform" />
+                                        <Upload className="text-slate-400 mb-2 group-hover:opacity-80 transition-opacity" />
                                         <span className="text-xs text-slate-400 font-bold">Upload Photo</span>
                                     </>
                                 )}
@@ -143,7 +143,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
 
                         <button 
                             onClick={() => setStep(2)}
-                            className="w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
+                            className="w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2"
                         >
                             Continue <ArrowRight size={18} />
                         </button>
@@ -185,7 +185,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         <button 
                             onClick={handleSubmit}
                             disabled={loading}
-                            className={`w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:scale-[1.02] transition-all flex items-center justify-center gap-2 ${loading ? "opacity-70 cursor-wait" : ""}`}
+                            className={`w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2 ${loading ? "opacity-70 cursor-wait" : ""}`}
                         >
                             {loading ? "Setting up..." : "Finish Setup"}
                         </button>

@@ -12,7 +12,7 @@ export default function ProposalsSidebar() {
     <aside className="h-full flex flex-col gap-6 pb-10">
       {/* Primary Action Card */}
       <div className="bg-slate-900 dark:bg-white rounded-2xl p-6 text-white dark:text-black shadow-xl shadow-slate-900/10 dark:shadow-white/5 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.03] dark:bg-black/[0.03] rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-500" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.03] dark:bg-black/[0.03] rounded-full -mr-16 -mt-16 group-hover:opacity-80 transition-opacity duration-500" />
         
         <h3 className="font-bold text-lg mb-2 relative z-10 flex items-center gap-2">
           {isPatron ? "Find More Talent" : "Boost Your Career"}

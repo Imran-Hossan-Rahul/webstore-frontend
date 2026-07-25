@@ -460,7 +460,7 @@ export default function AdminOrdersPage() {
                     <span>Change Status: <span className="text-blue-300 font-semibold">{order.status}</span></span>
                     {updating === orderId
                       ? <Loader2 size={14} className="animate-spin" />
-                      : <ChevronDown size={14} className={`transition-transform duration-200 ${activeStatusPicker === orderId ? 'rotate-180' : ''}`} />
+                      : <ChevronDown size={14} className={`transition-opacity duration-200 ${activeStatusPicker === orderId ? 'rotate-180' : ''}`} />
                     }
                   </button>
                   {activeStatusPicker === orderId && (

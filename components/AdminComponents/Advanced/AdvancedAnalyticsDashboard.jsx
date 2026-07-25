@@ -220,7 +220,7 @@ export default function AdvancedAnalyticsDashboard() {
         onClick={() => setActiveView('overview')} 
         className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-8 group w-fit"
       >
-        <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> 
+        <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-opacity" /> 
         Back to Intelligence Overview
       </button>
     );

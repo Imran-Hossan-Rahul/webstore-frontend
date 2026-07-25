@@ -6,6 +6,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Home, Terminal, Layout, FileText, Store, ShoppingCart, Package, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
+import { features } from "@/constants/features";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
@@ -19,18 +20,20 @@ export default function MobileBottomNav() {
   const [cartCount, setCartCount] = useState(0);
   const containerRef = useRef(null);
 
-  // Initialize with window width to avoid clipping on first render
-  const [width, setWidth] = useState(() =>
-    typeof window !== 'undefined' ? window.innerWidth : 400
-  );
+  // Initialize with a static width to prevent hydration mismatch
+  const [width, setWidth] = useState(400);
 
-  const navItems = [
-    { icon: Home, label: t("feed") || "Feed", href: "/" },
-    { icon: Terminal, label: t("Devlogs") || "Devlogs", href: "/devlogs" },
-    { icon: Layout, label: t("artifacts") || "Artifacts", href: "/artifacts" },
-    { icon: FileText, label: t("codex") || "Codex", href: "/codex" },
+  const baseNavItems = [
+    { icon: Home, label: t("feed") || "Feed", href: "/", isCommunity: true },
+    { icon: Terminal, label: t("Devlogs") || "Devlogs", href: "/devlogs", isCommunity: true },
+    { icon: Layout, label: t("artifacts") || "Artifacts", href: "/artifacts", isCommunity: true },
+    { icon: FileText, label: t("codex") || "Codex", href: "/codex", isCommunity: true },
     { icon: Store, label: "Market", href: "/market", isMarket: true },
   ];
+
+  const navItems = features.enableCommunity 
+    ? baseNavItems 
+    : baseNavItems.filter(item => !item.isCommunity);
 
   // Cart count from localStorage
   useEffect(() => {
@@ -87,9 +90,9 @@ export default function MobileBottomNav() {
 
   useEffect(() => {
     if (activeIndex !== -1 && width > 0) {
-      springX.set((width / 5) * activeIndex + (width / 10));
+      springX.set((width / navItems.length) * activeIndex + (width / (navItems.length * 2)));
     }
-  }, [activeIndex, width, springX]);
+  }, [activeIndex, width, springX, navItems.length]);
 
   // The perfectly smooth SVG notch path
   const clipPathD = useTransform(springX, (x) => {
@@ -110,7 +113,8 @@ export default function MobileBottomNav() {
   const circleLeft = useTransform(springX, (x) => x - 28);
 
   // Market icon x position for popup alignment
-  const marketCenterX = width > 0 ? (width / 5) * 4 + (width / 10) : 0;
+  const marketIndex = navItems.findIndex(item => item.isMarket);
+  const marketCenterX = width > 0 && marketIndex !== -1 ? (width / navItems.length) * marketIndex + (width / (navItems.length * 2)) : 0;
 
   return (
     <>
@@ -144,7 +148,7 @@ export default function MobileBottomNav() {
               <Link
                 href="/market/cart"
                 onClick={() => setMarketOpen(false)}
-                className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl text-slate-800 dark:text-slate-100 font-semibold text-[14px] active:scale-95 transition-transform"
+                className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl text-slate-800 dark:text-slate-100 font-semibold text-[14px] active:opacity-60 transition-opacity"
               >
                 <div className="relative">
                   <ShoppingCart size={18} strokeWidth={2} />
@@ -161,7 +165,7 @@ export default function MobileBottomNav() {
               <Link
                 href="/market/orders"
                 onClick={() => setMarketOpen(false)}
-                className="flex items-center gap-3 px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl shadow-xl font-semibold text-[14px] active:scale-95 transition-transform"
+                className="flex items-center gap-3 px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl shadow-xl font-semibold text-[14px] active:opacity-60 transition-opacity"
               >
                 <Package size={18} strokeWidth={2} />
                 My Orders

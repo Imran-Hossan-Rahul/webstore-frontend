@@ -1,19 +1,20 @@
 "use client";
 import React, { useState, useContext } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
-import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store } from "lucide-react";
+import { features } from "@/constants/features";
+import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store, Smartphone, Monitor, Laptop, Shirt, Box, ChevronRight, X } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
   <Link
     href={href || "#"}
-    className={`group relative flex items-center px-3 py-2.5 mb-0.5 rounded-lg transition-all duration-200 ${
+    className={`group relative flex items-center px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
       active
-        ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-md shadow-slate-900/20 dark:shadow-white/20"
-        : "text-black dark:text-white hover:bg-slate-100/60 dark:hover:bg-white/5"
+        ? "bg-[#e5e5ea] text-apple-ink dark:bg-[#2c2c2e] dark:text-white"
+        : "text-apple-ink dark:text-white hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e]"
     }`}
   >
     <div className="relative z-10 flex items-center gap-3 w-full">
@@ -21,20 +22,20 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isColl
         <div className="flex items-center justify-center shrink-0 transition-all duration-300 group-hover:animate-jelly origin-center">
           <Icon
             className={`w-[18px] h-[18px] ${
-              active ? "stroke-[2.5px] text-white dark:text-slate-900" : "stroke-[2px] text-black dark:text-white"
+              active ? "stroke-[2.5px] text-apple-ink dark:text-white" : "stroke-[2px] text-apple-ink dark:text-white opacity-80"
             }`}
           />
         </div>
       )}
-      <span className={`text-[13.5px] font-medium tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${active ? 'font-semibold' : ''} ${isCollapsed ? 'lg:opacity-0 lg:w-0' : 'opacity-100 w-auto'}`}>
+      <span className={`text-[14px] font-sans tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${active ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:w-0' : 'opacity-100 w-auto'}`}>
         {label}
       </span>
       {count && (
         <span
-          className={`ml-auto shrink-0 relative z-10 text-[10px] font-bold px-2 py-0.5 rounded-full transition-all duration-300 ${isCollapsed ? 'lg:opacity-0 lg:w-0 lg:px-0 lg:overflow-hidden' : 'opacity-100'} ${
+          className={`ml-auto shrink-0 relative z-10 text-[12px] font-sans font-bold px-[8px] py-[2px] rounded-apple-pill transition-all duration-300 ${isCollapsed ? 'lg:opacity-0 lg:w-0 lg:px-0 lg:overflow-hidden' : 'opacity-100'} ${
             active
-              ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900"
-              : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+              ? "bg-white text-apple-ink dark:bg-black dark:text-white shadow-sm"
+              : "bg-apple-parchment dark:bg-[#1c1c1e] text-apple-muted"
           }`}
         >
           {count}
@@ -44,7 +45,7 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isColl
     
     {/* Tooltip for collapsed state */}
     {isCollapsed && (
-      <div className="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-900 text-white text-xs font-medium rounded shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 hidden lg:block whitespace-nowrap z-50">
+      <div className="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-900 text-white text-xs font-normal rounded shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 hidden lg:block whitespace-nowrap z-50">
         {label}
       </div>
     )}
@@ -60,164 +61,184 @@ export default function Sidebar({ isHovered }) {
   const { user } = useContext(DashboardContext) || {};
   const { t } = useLanguage();
 
+  const q = searchParams?.get("q");
+
+  const [openCategory, setOpenCategory] = useState(null);
+  const hoverTimeoutRef = React.useRef(null);
+
+  const handleMouseEnter = (catName) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setOpenCategory(catName);
+    }, 150); // Apple-style slight delay
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setOpenCategory(null);
+    }, 400); // Revert after delay
+  };
+
+  // TODO: Fetch categories from API and set active based on query
+  React.useEffect(() => {
+    if (q) {
+      // Set active category logic here when data is fetched
+    }
+  }, [q]);
+  
   // Safely extract 'view' parameter
   const view = searchParams?.get("view");
-  const isMarket = pathname?.startsWith("/market");
-  const isCollapsed = isMarket && !isHovered;
+  const isCollapsed = false;
 
   return (
-    <aside className="h-full flex flex-col bg-transparent lg:bg-white/80 dark:bg-transparent lg:dark:bg-slate-900/40 lg:backdrop-blur-md border-0 lg:border lg:border-slate-200 lg:dark:border-white/10 rounded-none lg:rounded-2xl p-0 lg:p-3 lg:shadow-sm overflow-hidden">
+    <aside className="h-full flex flex-col bg-transparent lg:bg-apple-canvas dark:bg-transparent lg:dark:bg-apple-canvas border-0 lg:border lg:border-apple-hairline rounded-none lg:rounded-apple-lg p-0 lg:p-3 overflow-hidden">
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
         {/* Main Nav (Hidden on Mobile, moved to bottom nav) */}
         <div className="hidden lg:block space-y-1">
-          <SidebarItem
-            icon={Home}
-            label={t("feed")}
-            href="/"
-            active={pathname === "/" && view !== "saved" && view !== "craftsmen"}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Terminal}
-            label={t("Devlogs")}
-            href="/devlogs"
-            active={pathname?.startsWith("/devlogs")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Layout}
-            label={t("artifacts")}
-            href="/artifacts"
-            active={pathname?.startsWith("/artifacts")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={FileText}
-            label={t("codex")}
-            href="/codex"
-            active={pathname?.startsWith("/codex")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Store}
-            label="Marketplace"
-            href="/market"
-            active={pathname?.startsWith("/market")}
-            isCollapsed={isCollapsed}
-          />
-        </div>
-
-        <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
-
-        {/* Library + Saved */}
-        <div className="space-y-1">
-          <SidebarItem
-            icon={Bookmark}
-            label={t("saved")}
-            href="/?view=saved"
-            active={pathname === "/" && view === "saved"}
-            count=""
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Trophy}
-            label={t("achievements")}
-            href="/achievements"
-            active={pathname?.startsWith("/achievements")}
-            isCollapsed={isCollapsed}
-          />
-        </div>
-
-        <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
-
-        {/* Community section */}
-        <div className="space-y-1">
-          <SidebarItem
-            icon={Trophy}
-            label={t("challenges")}
-            href="/challenges"
-            active={pathname?.startsWith("/challenges")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Briefcase}
-            label={t("jobs")}
-            href="/jobs"
-            active={pathname?.startsWith("/jobs")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
-            icon={Target}
-            label={t("proposals")}
-            href="/proposals"
-            active={pathname?.startsWith("/proposals")}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem 
-            icon={ShieldCheck} 
-            label={t("rewards_wallet")} 
-            href="/wallet" 
-            active={pathname?.startsWith("/wallet")}
-            isCollapsed={isCollapsed}
-          />
-
-          {(user?.role === "patron" || user?.role === "admin" || user?.isHost) && (
-            <>
-              <div className={`mt-8 mb-3 px-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] transition-opacity duration-300 ${isCollapsed ? 'lg:opacity-0 lg:hidden' : 'lg:opacity-100'}`}>
-                {t("host_panel")}
-              </div>
-              {user?.role === "patron" || user?.role === "admin" ? (
-                <>
-                  <SidebarItem
-                    icon={Users}
-                    label={t("manage_jobs")}
-                    href="/manage-jobs"
-                    active={pathname?.startsWith("/manage-jobs")}
-                    isCollapsed={isCollapsed}
-                  />
-                </>
-              ) : null}
-
-              {user?.isHost || user?.role === "admin" ? (
-                <>
-                  <SidebarItem
-                    icon={Zap}
-                    label={t("host_challenge")}
-                    href="/challenges/create"
-                    active={pathname?.startsWith("/challenges/create")}
-                    isCollapsed={isCollapsed}
-                  />
-                  <SidebarItem
-                    icon={Trophy}
-                    label={t("manage_challenges")}
-                    href="/manage-challenges"
-                    active={pathname?.startsWith("/manage-challenges")}
-                    isCollapsed={isCollapsed}
-                  />
-                </>
-              ) : null}
+          {features.enableCommunity && (
+              <>
+              <SidebarItem
+                icon={Terminal}
+                label={t("Devlogs")}
+                href="/devlogs"
+                active={pathname?.startsWith("/devlogs")}
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem
+                icon={Layout}
+                label={t("artifacts")}
+                href="/artifacts"
+                active={pathname?.startsWith("/artifacts")}
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem
+                icon={FileText}
+                label={t("codex")}
+                href="/codex"
+                active={pathname?.startsWith("/codex")}
+                isCollapsed={isCollapsed}
+              />
             </>
           )}
-
-          <SidebarItem
-            icon={Clock}
-            label={t("workspace")}
-            href="/workspace"
-            active={pathname?.startsWith("/workspace")}
-            isCollapsed={isCollapsed}
-          />
-
-          <SidebarItem 
-            icon={ShieldCheck} 
-            label={t("verify_identity")} 
-            href="/verify" 
-            active={pathname === "/verify"}
-            isCollapsed={isCollapsed}
-          />
+          {/* Categories Accordion (TODO: Fetch from API and render here) */}
         </div>
-        
-        <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-4" />
+
+        <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
+
+        {features.enableCommunity && (
+          <>
+            {/* Library + Saved */}
+            <div className="space-y-1">
+              <SidebarItem
+                icon={Bookmark}
+                label={t("saved")}
+                href="/?view=saved"
+                active={pathname === "/" && view === "saved"}
+                count=""
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem
+                icon={Trophy}
+                label={t("achievements")}
+                href="/achievements"
+                active={pathname?.startsWith("/achievements")}
+                isCollapsed={isCollapsed}
+              />
+            </div>
+
+            <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
+
+            {/* Community section */}
+            <div className="space-y-1">
+              <SidebarItem
+                icon={Trophy}
+                label={t("challenges")}
+                href="/challenges"
+                active={pathname?.startsWith("/challenges")}
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem
+                icon={Briefcase}
+                label={t("jobs")}
+                href="/jobs"
+                active={pathname?.startsWith("/jobs")}
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem
+                icon={Target}
+                label={t("proposals")}
+                href="/proposals"
+                active={pathname?.startsWith("/proposals")}
+                isCollapsed={isCollapsed}
+              />
+              <SidebarItem 
+                icon={ShieldCheck} 
+                label={t("rewards_wallet")} 
+                href="/wallet" 
+                active={pathname?.startsWith("/wallet")}
+                isCollapsed={isCollapsed}
+              />
+
+              {(user?.role === "patron" || user?.role === "admin" || user?.isHost) && (
+                <>
+                  <div className={`mt-8 mb-3 px-4 text-[11px] font-sans font-semibold text-apple-muted uppercase tracking-[0.04em] transition-opacity duration-300 ${isCollapsed ? 'lg:opacity-0 lg:hidden' : 'lg:opacity-100'}`}>
+                    {t("host_panel")}
+                  </div>
+                  {user?.role === "patron" || user?.role === "admin" ? (
+                    <>
+                      <SidebarItem
+                        icon={Users}
+                        label={t("manage_jobs")}
+                        href="/manage-jobs"
+                        active={pathname?.startsWith("/manage-jobs")}
+                        isCollapsed={isCollapsed}
+                      />
+                    </>
+                  ) : null}
+
+                  {user?.isHost || user?.role === "admin" ? (
+                    <>
+                      <SidebarItem
+                        icon={Zap}
+                        label={t("host_challenge")}
+                        href="/challenges/create"
+                        active={pathname?.startsWith("/challenges/create")}
+                        isCollapsed={isCollapsed}
+                      />
+                      <SidebarItem
+                        icon={Trophy}
+                        label={t("manage_challenges")}
+                        href="/manage-challenges"
+                        active={pathname?.startsWith("/manage-challenges")}
+                        isCollapsed={isCollapsed}
+                      />
+                    </>
+                  ) : null}
+                </>
+              )}
+
+              <SidebarItem
+                icon={Clock}
+                label={t("workspace")}
+                href="/workspace"
+                active={pathname?.startsWith("/workspace")}
+                isCollapsed={isCollapsed}
+              />
+
+              <SidebarItem 
+                icon={ShieldCheck} 
+                label={t("verify_identity")} 
+                href="/verify" 
+                active={pathname === "/verify"}
+                isCollapsed={isCollapsed}
+              />
+            </div>
+            
+            <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-4" />
+          </>
+        )}
 
         {/* Settings & Help (Moved inside scrollable area) */}
         <div className="space-y-1 pb-4">

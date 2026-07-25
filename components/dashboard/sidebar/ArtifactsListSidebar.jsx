@@ -126,7 +126,7 @@ export default function ArtifactsListSidebar() {
                     <img
                       src={artifact.previewFile}
                       alt={artifact.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:opacity-80 transition-opacity duration-300"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-slate-400">
@@ -253,7 +253,7 @@ export default function ArtifactsListSidebar() {
                 </span>
                 <span className="flex items-center gap-1 text-[10px] text-slate-400 font-medium">
                   {cat.artifactCount !== undefined && <span>{cat.artifactCount}</span>}
-                  <ChevronRight size={10} className="group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight size={10} className="group-hover:translate-x-0.5 transition-opacity" />
                 </span>
               </Link>
             ))
@@ -296,7 +296,7 @@ export default function ArtifactsListSidebar() {
 
       {/* ── Upload CTA ── */}
       <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl p-6 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full -mr-14 -mt-14 group-hover:scale-125 transition-transform duration-700" />
+        <div className="absolute top-0 right-0 w-28 h-28 bg-white/10 rounded-full -mr-14 -mt-14 group-hover:opacity-80 transition-opacity duration-700" />
         <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full -ml-8 -mb-8" />
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">

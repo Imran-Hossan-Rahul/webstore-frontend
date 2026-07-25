@@ -268,7 +268,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || twoFaCode.length !== 6}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/20 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -375,7 +375,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group mt-8"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group mt-8"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -384,7 +384,7 @@ export default function LoginPage() {
                     <span className="text-[17px] tracking-tight">Access Platform</span>
                     <ArrowRight
                       size={20}
-                      className="group-hover:translate-x-1 transition-transform duration-300"
+                      className="group-hover:translate-x-1 transition-opacity duration-300"
                     />
                   </>
                 )}

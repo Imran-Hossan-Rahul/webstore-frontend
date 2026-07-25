@@ -76,7 +76,7 @@ export default function EmptyState({
        
        {displayActionText && displayActionHref && (
          <Link href={displayActionHref}>
-            <button className="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black text-sm font-bold rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-sm active:scale-95">
+            <button className="px-5 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black text-sm font-bold rounded-lg hover:bg-slate-800 dark:hover:bg-slate-200 transition-all shadow-sm active:opacity-60">
               {displayActionText}
             </button>
          </Link>

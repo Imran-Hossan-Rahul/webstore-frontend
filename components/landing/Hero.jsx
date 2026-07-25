@@ -39,7 +39,7 @@ export default function Hero() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
           <Link href="/auth/register">
-            <button className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold text-lg hover:-translate-y-0.5 transition-transform duration-200 flex items-center gap-2 shadow-lg shadow-blue-500/20">
+            <button className="px-8 py-4 bg-black dark:bg-white text-white dark:text-black rounded-full font-bold text-lg hover:-translate-y-0.5 transition-opacity duration-200 flex items-center gap-2 shadow-lg shadow-blue-500/20">
               Start Creating for Free
               <ArrowRight className="w-5 h-5" />
             </button>

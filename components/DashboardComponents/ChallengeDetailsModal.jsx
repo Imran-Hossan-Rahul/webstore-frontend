@@ -339,7 +339,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                     ? "bg-green-50 text-green-600 border-green-100 dark:bg-green-500/10 dark:text-green-400 cursor-not-allowed" 
                     : !isActive
                     ? "bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed border-slate-200 dark:border-white/10"
-                    : "bg-slate-900 dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-slate-100 shadow-lg active:scale-98"
+                    : "bg-slate-900 dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-slate-100 shadow-lg active:opacity-60"
                 }`}
               >
                 {hasSubmitted ? "Entry Submitted" : !isActive ? "Closed" : "Submit Entry"}

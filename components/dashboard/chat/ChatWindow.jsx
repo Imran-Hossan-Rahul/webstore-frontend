@@ -335,7 +335,7 @@ export default function ChatWindow({
                               <button
                                 key={emoji}
                                 onClick={() => onReactMessage?.(msg._id, emoji)}
-                                className="text-xl hover:scale-125 transition-transform p-0.5"
+                                className="text-xl hover:opacity-80 transition-opacity p-0.5"
                               >
                                 {emoji}
                               </button>
@@ -378,7 +378,7 @@ export default function ChatWindow({
                     {Object.entries(reactionGroups).map(([emoji, count]) => (
                       <span 
                         key={emoji}
-                        className="inline-flex items-center gap-0.5 bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-full px-2 py-0.5 text-[13px] shadow-sm cursor-pointer hover:-translate-y-0.5 transition-transform"
+                        className="inline-flex items-center gap-0.5 bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-full px-2 py-0.5 text-[13px] shadow-sm cursor-pointer hover:-translate-y-0.5 transition-opacity"
                         onClick={() => onReactMessage?.(msg._id, emoji)}
                         title="Click to react"
                       >

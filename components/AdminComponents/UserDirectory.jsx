@@ -103,7 +103,7 @@ const UserDirectory = () => {
                 >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-md group-hover:-translate-y-0.5 transition-transform duration-500">
+                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-md group-hover:-translate-y-0.5 transition-opacity duration-500">
                         <img 
                           src={user.profilePicture || 'https://ui-avatars.com/api/?name=User&background=random'} 
                           alt="" 

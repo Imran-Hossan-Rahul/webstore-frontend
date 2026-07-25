@@ -23,7 +23,7 @@ export default function Explore() {
       <p className="text-slate-500 max-w-md mx-auto mb-8 font-medium leading-relaxed">
         We are currently upgrading our community architecture to bring you a more elite, powerful networking experience. Please check back later.
       </p>
-      <Link href="/" className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:scale-105 transition-all shadow-xl">
+      <Link href="/" className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-80 transition-all shadow-xl">
         Return to Dashboard
       </Link>
     </div>

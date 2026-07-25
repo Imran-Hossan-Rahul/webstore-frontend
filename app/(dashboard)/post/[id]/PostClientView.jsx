@@ -236,7 +236,7 @@ export default function PostClientView({ initialPost }) {
                         <button 
                             onClick={handleConnect}
                             disabled={isConnecting}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-70"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-500/30 transition-all active:opacity-60 disabled:opacity-70"
                         >
                             <MessageCircle size={18} />
                             {isConnecting ? "Connecting..." : "Connect / Hire Me"}
@@ -266,7 +266,7 @@ export default function PostClientView({ initialPost }) {
                     <div className="mt-6 flex gap-4 overflow-x-auto pb-4 no-scrollbar">
                         {images.slice(1).map((img, idx) => (
                             <div key={idx} className="relative w-48 aspect-video rounded-xl overflow-hidden flex-shrink-0 border border-slate-100 dark:border-white/10 group cursor-pointer">
-                                <Image src={img} alt={`Gallery ${idx + 1}`} fill className="object-cover transition-transform group-hover:scale-105" />
+                                <Image src={img} alt={`Gallery ${idx + 1}`} fill className="object-cover transition-opacity group-hover:opacity-80" />
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
                                     <Layers className="text-white" size={20} />
                                 </div>

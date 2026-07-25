@@ -110,7 +110,7 @@ const VerificationRequests = () => {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="relative">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm transition-transform duration-300">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm transition-opacity duration-300">
                           <img 
                             src={request.user?.profilePicture || 'https://ui-avatars.com/api/?name=User&background=random'} 
                             alt="" 

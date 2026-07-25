@@ -14,7 +14,7 @@ const fetcher = (url) => api.get(url).then((res) => res.data);
 const AchievementCard = ({ icon: Icon, title, description, date, color, isUnlocked = true, href }) => {
   const content = (
     <div className={`bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 transition-all group ${!isUnlocked && "opacity-50 grayscale"} ${href ? 'cursor-pointer hover:shadow-lg hover:border-indigo-500/30' : 'hover:shadow-lg'}`}>
-      <div className={`w-12 h-12 rounded-2xl ${color} flex items-center justify-center mb-4 ${href && "group-hover:scale-110"} transition-transform`}>
+      <div className={`w-12 h-12 rounded-2xl ${color} flex items-center justify-center mb-4 ${href && "group-hover:opacity-80"} transition-opacity`}>
         <Icon className="w-6 h-6 text-white" />
       </div>
       <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>

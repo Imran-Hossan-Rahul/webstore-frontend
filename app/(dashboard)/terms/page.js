@@ -32,7 +32,7 @@ const Section = ({ id, icon: Icon, color, title, children }) => {
           </div>
           <h2 className="text-[16px] font-bold text-gray-900 dark:text-white group-hover:text-[#111827] transition">{title}</h2>
         </div>
-        <ChevronDown size={18} className={`text-gray-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={18} className={`text-gray-400 transition-opacity duration-300 ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="px-6 pb-6 border-t border-gray-100 dark:border-white/10 pt-5 space-y-3 text-[14px] text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -113,8 +113,8 @@ export default function TermsPage() {
                 ))}
               </nav>
               <div className="mt-5 pt-4 border-t border-gray-100 dark:border-white/10">
-                <Link href="/market/warranty" className="text-[12px] text-blue-500 hover:underline block">→ Warranty Policy</Link>
-                <Link href="/market" className="text-[12px] text-gray-400 hover:underline block mt-1">→ Back to Marketplace</Link>
+                <Link href="/warranty" className="text-[12px] text-blue-500 hover:underline block">→ Warranty Policy</Link>
+                <Link href="/" className="text-[12px] text-gray-400 hover:underline block mt-1">→ Back to Marketplace</Link>
               </div>
             </div>
           </aside>
@@ -284,10 +284,10 @@ export default function TermsPage() {
                 We believe in transparency and fair dealing. If anything here is unclear or you need help, just ask — we&apos;re real people who want to help.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Link href="/market" className="inline-flex items-center justify-center gap-2 bg-[#111827] hover:bg-[#374151] text-slate-900 font-bold px-6 py-2.5 rounded-xl transition text-[14px]">
+                <Link href="/" className="inline-flex items-center justify-center gap-2 bg-[#111827] hover:bg-[#374151] text-slate-900 font-bold px-6 py-2.5 rounded-xl transition text-[14px]">
                   <ShoppingBag size={16}/> Continue Shopping
                 </Link>
-                <Link href="/market/warranty" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-2.5 rounded-xl transition text-[14px] border border-white/10">
+                <Link href="/warranty" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-2.5 rounded-xl transition text-[14px] border border-white/10">
                   <Shield size={16}/> View Warranty Policy
                 </Link>
               </div>

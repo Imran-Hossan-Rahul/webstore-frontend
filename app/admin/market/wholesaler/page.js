@@ -845,7 +845,7 @@ export default function WholesalerLedger() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     {selectedWholesaler.shopPhotos && selectedWholesaler.shopPhotos !== "[]" && JSON.parse(selectedWholesaler.shopPhotos).map((url, idx) => (
                       <div key={`shop-${idx}`} className="relative aspect-square rounded-xl overflow-hidden border border-gray-800 group">
-                        <img src={url} alt="Shop" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                        <img src={url} alt="Shop" className="w-full h-full object-cover group-hover:opacity-80 transition duration-500" />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3">
                           <p className="text-[10px] font-bold text-white">Shop Photo</p>
                         </div>
@@ -853,7 +853,7 @@ export default function WholesalerLedger() {
                     ))}
                     {selectedWholesaler.idPhotos && selectedWholesaler.idPhotos !== "[]" && JSON.parse(selectedWholesaler.idPhotos).map((url, idx) => (
                       <div key={`id-${idx}`} className="relative aspect-square rounded-xl overflow-hidden border border-gray-800 group">
-                        <img src={url} alt="ID" className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                        <img src={url} alt="ID" className="w-full h-full object-cover group-hover:opacity-80 transition duration-500" />
                         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3">
                           <p className="text-[10px] font-bold text-white">ID Document</p>
                         </div>

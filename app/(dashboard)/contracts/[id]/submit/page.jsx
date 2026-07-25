@@ -169,7 +169,7 @@ function ContractSubmitContent() {
           onClick={() => router.back()}
           className="flex items-center gap-2 text-slate-500 hover:text-black dark:hover:text-white transition-colors font-medium text-sm group"
         >
-          <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-opacity" />
           Back to Workspace
         </button>
       </div>
@@ -284,7 +284,7 @@ function ContractSubmitContent() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
                     <label className="aspect-square rounded-3xl border-2 border-dashed border-slate-200 dark:border-white/10 flex flex-col items-center justify-center gap-3 cursor-pointer hover:bg-slate-50 dark:hover:bg-white/5 transition-all group hover:border-black dark:hover:border-white bg-slate-50/50 dark:bg-transparent">
-                        <div className="w-10 h-10 bg-white dark:bg-white/5 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                        <div className="w-10 h-10 bg-white dark:bg-white/5 rounded-2xl flex items-center justify-center shadow-sm group-hover:opacity-80 transition-opacity">
                             <ImageIcon size={20} className="text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
                         </div>
                         <span className="text-[9px] font-black uppercase text-slate-400 group-hover:text-black dark:group-hover:text-white transition-colors tracking-widest">Add Insight</span>
@@ -292,7 +292,7 @@ function ContractSubmitContent() {
                     </label>
                     {screenshotPreviews.map((preview, index) => (
                         <div key={index} className="aspect-square relative rounded-3xl overflow-hidden border border-slate-200 dark:border-white/10 group shadow-md hover:shadow-xl transition-all">
-                            <img src={preview} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="" />
+                            <img src={preview} className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-80" alt="" />
                             <div className="absolute inset-0 bg-gradient-to-t from-rose-600/90 to-rose-600/40 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
                                 <button onClick={() => removeScreenshot(index)} className="p-3 bg-white/20 backdrop-blur-md rounded-2xl text-white hover:bg-white/40 transition-colors">
                                     <Trash2 size={24} />
@@ -308,9 +308,9 @@ function ContractSubmitContent() {
                 <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="w-full max-w-md py-6 bg-slate-900 dark:bg-white text-white dark:text-black rounded-[28px] font-black text-xs uppercase tracking-[0.2em] shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group"
+                    className="w-full max-w-md py-6 bg-slate-900 dark:bg-white text-white dark:text-black rounded-[28px] font-black text-xs uppercase tracking-[0.2em] shadow-2xl hover:opacity-80 active:opacity-60 transition-all flex items-center justify-center gap-4 group"
                 >
-                    {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Rocket size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />}
+                    {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : <Rocket size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-opacity" />}
                     Final Deployment
                 </button>
                 <div className="flex items-center gap-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest">

@@ -327,7 +327,7 @@ export default function ChallengeSubmitPage() {
             <button
               onClick={handleDeploy}
               disabled={isSubmitting}
-              className="w-full py-5 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-base hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3 shadow-xl"
+              className="w-full py-5 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-base hover:opacity-90 active:opacity-60 transition-all flex items-center justify-center gap-3 shadow-xl"
             >
               {isSubmitting ? <Loader2 size={20} className="animate-spin" /> : <Rocket size={20} />}
               Final Deployment

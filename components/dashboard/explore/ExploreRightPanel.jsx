@@ -7,7 +7,7 @@ import { api } from "@/utils/api";
 
 const TopCodexItem = ({ codex }) => (
     <Link href={`/codex/${codex.slug}`} className="flex items-center gap-3 py-3 border-b border-slate-100 dark:border-white/5 last:border-0 group cursor-pointer transition-all hover:bg-black/5 dark:hover:bg-white/5 px-2 rounded-lg">
-        <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0 shadow-sm border border-orange-100 dark:border-orange-500/20 group-hover:-translate-y-0.5 transition-transform">
+        <div className="w-10 h-10 rounded-lg bg-orange-50 dark:bg-orange-500/10 flex items-center justify-center text-orange-500 shrink-0 shadow-sm border border-orange-100 dark:border-orange-500/20 group-hover:-translate-y-0.5 transition-opacity">
             <PenTool size={18} />
         </div>
         <div className="flex-1 min-w-0">
@@ -96,7 +96,7 @@ export default function ExploreRightPanel() {
                    
                    <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 border border-slate-800 dark:border-white/5 shadow-inner">
                         {featuredDevlog.previewFile || featuredDevlog.coverImage ? (
-                            <img src={getOptimizedUrl(featuredDevlog.previewFile || featuredDevlog.coverImage)} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-[1.5s] ease-out" alt="Featured" />
+                            <img src={getOptimizedUrl(featuredDevlog.previewFile || featuredDevlog.coverImage)} className="w-full h-full object-cover transform scale-100 group-hover:opacity-80 transition-opacity duration-[1.5s] ease-out" alt="Featured" />
                         ) : (
                             <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-600"><Code size={30} /></div>
                         )}
@@ -105,7 +105,7 @@ export default function ExploreRightPanel() {
                    <h3 className="text-[15px] font-bold text-white mb-3 line-clamp-1 group-hover:text-purple-300 transition-colors drop-shadow-md">{featuredDevlog.title}</h3>
                    
                    <Link href={`/post/${featuredDevlog._id}`}>
-                       <button className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 border border-white/5 active:scale-95">
+                       <button className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-2 border border-white/5 active:opacity-60">
                            View Devlog <ArrowUpRight size={16} />
                        </button>
                    </Link>

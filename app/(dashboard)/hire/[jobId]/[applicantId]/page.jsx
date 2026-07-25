@@ -160,7 +160,7 @@ export default function HirePage() {
           onClick={() => router.back()}
           className="group flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-black dark:hover:text-white transition-all"
         >
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Candidates
+          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-opacity" /> Back to Candidates
         </button>
         <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
            <Zap size={14} className="text-emerald-500" />
@@ -389,7 +389,7 @@ export default function HirePage() {
                     <button 
                        onClick={handleDeployContract}
                        disabled={submitting || !termsAccepted || !isBudgetMatched || firstMilestonePct < 20}
-                       className="w-full py-6 bg-white dark:bg-black text-black dark:text-white rounded-2xl text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-[1.03] active:scale-95 transition-all shadow-xl disabled:opacity-30"
+                       className="w-full py-6 bg-white dark:bg-black text-black dark:text-white rounded-2xl text-[11px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 hover:opacity-80 active:opacity-60 transition-all shadow-xl disabled:opacity-30"
                     >
                        {submitting ? (
                          <div className="w-5 h-5 border-2 border-black/30 border-t-black dark:border-white/30 dark:border-t-white rounded-full animate-spin" />

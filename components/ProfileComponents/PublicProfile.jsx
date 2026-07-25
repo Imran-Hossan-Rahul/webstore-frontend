@@ -892,7 +892,7 @@ const PublicProfile = ({ username }) => {
               <div className="flex justify-end mb-6">
                 <Link 
                   href="/settings"
-                  className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white dark:bg-white dark:text-black rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-slate-900/10 dark:shadow-white/10"
+                  className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white dark:bg-white dark:text-black rounded-xl text-[10px] font-bold uppercase tracking-widest hover:opacity-80 active:opacity-60 transition-all shadow-xl shadow-slate-900/10 dark:shadow-white/10"
                 >
                   <SettingsIcon size={14} />
                   Edit Profile Settings
@@ -1010,7 +1010,7 @@ const PublicProfile = ({ username }) => {
                   <div key={activity._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm hover:shadow-md transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 mt-1">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:opacity-80 transition-opacity">
                           <ActivityIcon type={activity.type} />
                         </div>
                       </div>

@@ -7,6 +7,24 @@ export async function middleware(req) {
   const token    = req.cookies.get("accessToken")?.value;
   const JWT_SECRET = process.env.JWT_ACCESS_SECRET;
 
+  // ─── Community Feature Flag Redirect ──────────────────────────────────────
+  const enableCommunity = process.env.NEXT_PUBLIC_ENABLE_COMMUNITY === "true";
+  
+  if (!enableCommunity) {
+    const isCommunityRoute = 
+      pathname.startsWith("/devlogs") ||
+      pathname.startsWith("/artifacts") ||
+      pathname.startsWith("/codex") ||
+      pathname.startsWith("/studio") ||
+      pathname.startsWith("/challenges") ||
+      pathname.startsWith("/jobs") ||
+      pathname.startsWith("/achievements");
+
+    if (isCommunityRoute) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  }
+
   // ─── Dev warning if secret missing ────────────────────────────────────────
   if (!JWT_SECRET) {
     if (process.env.NODE_ENV === "development") {
@@ -108,6 +126,14 @@ export async function middleware(req) {
 export const config = {
   matcher: [
     "/",
+    "/devlogs/:path*",
+    "/artifacts/:path*",
+    "/codex/:path*",
+    "/studio/:path*",
+    "/challenges/:path*",
+    "/jobs/:path*",
+    "/achievements/:path*",
+    "/market/:path*",
     "/admin/:path*",
     "/dashboard/:path*",
     "/user/:path*",

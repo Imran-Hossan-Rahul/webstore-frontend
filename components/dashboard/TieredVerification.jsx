@@ -114,7 +114,7 @@ const TieredVerification = () => {
               onClick={() => tier.eligible && tier.status === 'available' && setActiveTier(tier.id)}
               className={`relative bg-white dark:bg-slate-900 border rounded-3xl p-8 transition-all flex flex-col justify-between overflow-hidden group ${
                 tier.status === 'completed' ? 'border-emerald-500/30 shadow-emerald-500/5 shadow-xl' : 'border-slate-200 dark:border-white/10 hover:border-indigo-600/30 shadow-sm'
-              } ${tier.eligible && tier.status === 'available' ? 'cursor-pointer hover:scale-[1.02] active:scale-[0.98]' : 'opacity-60 cursor-not-allowed grayscale-[0.2]'}`}
+              } ${tier.eligible && tier.status === 'available' ? 'cursor-pointer hover:opacity-80 active:opacity-60' : 'opacity-60 cursor-not-allowed grayscale-[0.2]'}`}
             >
                {tier.status === 'completed' && (
                  <div className="absolute top-6 right-6 text-emerald-500">
@@ -162,7 +162,7 @@ const TieredVerification = () => {
                   ) : (
                     <button 
                       onClick={(e) => { e.stopPropagation(); setActiveTier(tier.id); }}
-                      className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:scale-110 active:scale-95 transition-all shadow-lg"
+                      className="p-3 bg-black dark:bg-white text-white dark:text-black rounded-xl hover:opacity-80 active:opacity-60 transition-all shadow-lg"
                     >
                       <ArrowRight size={18} />
                     </button>
@@ -244,7 +244,7 @@ const TieredVerification = () => {
                     <button 
                       onClick={handleLinkSubmit}
                       disabled={loading || !selectedPlatform || !linkUrl}
-                      className="w-full py-6 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-20 flex items-center justify-center gap-3"
+                      className="w-full py-6 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl hover:opacity-80 active:opacity-60 transition-all disabled:opacity-20 flex items-center justify-center gap-3"
                     >
                        {loading ? <Loader2 className="animate-spin" size={18} /> : "Finalize Linkage"}
                     </button>
@@ -288,7 +288,7 @@ const TieredVerification = () => {
                         disabled={loading || !isTier3RequirementsMet}
                         className={`w-full py-6 rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all flex items-center justify-center gap-3 ${
                           isTier3RequirementsMet 
-                            ? 'bg-black dark:bg-white text-white dark:text-black hover:scale-[1.02] active:scale-95' 
+                            ? 'bg-black dark:bg-white text-white dark:text-black hover:opacity-80 active:opacity-60' 
                             : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed opacity-60 grayscale-[0.5]'
                         }`}
                       >

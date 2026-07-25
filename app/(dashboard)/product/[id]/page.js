@@ -166,7 +166,7 @@ export default function ProductDetails({ params }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-apple-canvas flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -174,9 +174,9 @@ export default function ProductDetails({ params }) {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-apple-canvas flex flex-col items-center justify-center">
         <h2 className="text-2xl font-bold text-gray-800">Product Not Found</h2>
-        <Link href="/market" className="mt-4 text-blue-600 hover:underline">Return to Market</Link>
+        <Link href="/" className="mt-4 text-blue-600 hover:underline">Return to Market</Link>
       </div>
     );
   }
@@ -220,7 +220,7 @@ export default function ProductDetails({ params }) {
       finalPrice,
       originalPrice: finalOriginalPrice
     }).toString();
-    router.push(`/market/checkout?${query}`);
+    router.push(`/checkout?${query}`);
   };
 
   const handleAddToCart = () => {
@@ -272,7 +272,7 @@ export default function ProductDetails({ params }) {
     await share({
         title: product.title,
         text: product.description ? product.description.slice(0, 100) : "",
-        url: `/market/product/${product.id}`
+        url: `/product/${product.id}`
     });
   };
 
@@ -291,7 +291,7 @@ export default function ProductDetails({ params }) {
               <Home size={16} />
             </Link>
             <span className="text-blue-600 mx-3">/</span>
-            <Link href="/market" className="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition">Codalina Market</Link>
+            <Link href="/" className="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition">Codalina Market</Link>
             <span className="text-blue-600 mx-3">/</span>
             <span className="text-blue-600 truncate max-w-[200px] md:max-w-md">{product.title}</span>
           </div>
@@ -307,7 +307,7 @@ export default function ProductDetails({ params }) {
                   <img 
                     src={getOptimizedUrl(activeImage)} 
                     alt={product.title} 
-                    className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:scale-105 transition-transform duration-500 ease-out"
+                    className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:opacity-80 transition-opacity duration-500 ease-out"
                   />
                 ) : (
                   <div className="text-gray-400">No Image Available</div>
@@ -492,10 +492,10 @@ export default function ProductDetails({ params }) {
                 <button 
                   onClick={handleAddToCart}
                   disabled={addedToCart}
-                  className={`py-4 rounded font-semibold transition flex items-center justify-center gap-3 text-sm tracking-wide ${
+                  className={`py-[11px] px-[22px] rounded-apple-pill font-sans font-normal transition-opacity hover:opacity-80 flex items-center justify-center gap-3 text-[17px] tracking-wide ${
                     addedToCart 
                       ? 'bg-[#4bc133] text-white cursor-default' 
-                      : 'bg-[#111315] hover:bg-black text-[#f9fafb]'
+                      : 'bg-apple-ink hover:bg-black text-white'
                   }`}
                 >
                   {addedToCart ? (
@@ -506,11 +506,10 @@ export default function ProductDetails({ params }) {
                 </button>
                 
                 {/* Buy Now */}
-                <div className="relative p-[2px] overflow-hidden rounded-md flex w-full shadow-lg hover:shadow-orange-500/50 transition-shadow">
-                  <div className="absolute -top-[500px] -bottom-[500px] -left-[500px] -right-[500px] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_0deg,#ea580c,#fef08a,#9a3412,#fef08a,#ea580c)]"></div>
+                <div className="relative overflow-hidden rounded-apple-pill flex w-full transition-shadow">
                   <button 
                     onClick={handleBuyNow}
-                    className="relative w-full bg-[linear-gradient(to_right,#f97316,#ea580c,#9a3412,#ea580c,#f97316)] bg-[length:200%_auto] bg-left hover:bg-right transition-all duration-700 ease-in-out text-white py-4 rounded-sm font-extrabold flex items-center justify-center gap-3 text-sm tracking-widest"
+                    className="relative w-full bg-apple-accent hover:bg-apple-accent/90 transition-opacity hover:opacity-80 ease-in-out text-white py-[11px] px-[22px] rounded-apple-pill font-sans font-normal flex items-center justify-center gap-3 text-[17px] tracking-widest"
                   >
                     <ShoppingBag size={18} /> BUY NOW
                   </button>
@@ -526,7 +525,7 @@ export default function ProductDetails({ params }) {
                 </div>
 
                 {/* Warranty */}
-                <Link href="/market/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
+                <Link href="/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
                   <div className="shrink-0"><CreditCard size={28} strokeWidth={1.5} /></div>
                   <div className="flex flex-col">
                     <span className="font-bold text-[17px] leading-tight">{product.warranty_info ? product.warranty_info.replace(/ warranty/i, '') : "1 Year"}</span>

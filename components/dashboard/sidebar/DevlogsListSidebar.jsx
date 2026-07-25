@@ -208,7 +208,7 @@ export default function DevlogsListSidebar() {
 
       {/* Community CTA */}
       <div className="bg-pink-600 rounded-lg p-6 text-white shadow-xl shadow-pink-500/20 relative overflow-hidden group">
-         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:scale-125 transition-transform duration-700" />
+         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:opacity-80 transition-opacity duration-700" />
          <h3 className="font-bold text-lg mb-2 relative z-10">Share Your Journey</h3>
          <p className="text-pink-100 text-[11px] mb-4 leading-relaxed relative z-10">
            Document your creative process, share insights, and connect with other developers.

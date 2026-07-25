@@ -73,7 +73,7 @@ const AdvancedColorPicker = ({ label, value, onChange }) => {
         <label className="text-sm font-medium text-slate-700 w-24 truncate" title={label}>{label}</label>
         <div
           onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); }}
-          className="w-10 h-8 rounded border border-slate-300 cursor-pointer shadow-sm relative overflow-hidden transition-transform active:scale-95"
+          className="w-10 h-8 rounded border border-slate-300 cursor-pointer shadow-sm relative overflow-hidden transition-opacity active:opacity-60"
           style={{ background: value || "#fff" }}
         >
           {/* Transparency grid simulated */}

@@ -379,7 +379,7 @@ function SecuritySettings({ user, showToast }) {
                     onClick={() => { setTwoFactor(!twoFactor); /* Call API */ }}
                     className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors flex items-center ${twoFactor ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'}`}
                 >
-                    <div className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${twoFactor ? 'translate-x-7' : 'translate-x-0'}`} />
+                    <div className={`w-5 h-5 bg-white rounded-full shadow-md transition-opacity ${twoFactor ? 'translate-x-7' : 'translate-x-0'}`} />
                 </div>
             </div>
         </div>

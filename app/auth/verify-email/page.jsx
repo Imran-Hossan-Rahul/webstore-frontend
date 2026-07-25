@@ -82,7 +82,7 @@ export default function VerifyEmailPage() {
           className="w-full py-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-3 group transition-all"
         >
           {status === 'success' ? "Access Command Center" : "Return to Base"}
-          <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          <ArrowRight size={14} className="group-hover:translate-x-1 transition-opacity" />
         </button>
       </motion.div>
     </div>

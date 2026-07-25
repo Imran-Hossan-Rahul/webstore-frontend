@@ -55,7 +55,7 @@ const ArtifactCard = ({
              src={thumbnail} 
              alt={title} 
              fill 
-             className="object-cover transition-transform duration-700 group-hover:-translate-y-0.5"
+             className="object-cover transition-opacity duration-700 group-hover:-translate-y-0.5"
            />
         ) : (
            <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400">
@@ -66,10 +66,10 @@ const ArtifactCard = ({
 
         {/* Hover Actions (Clean - Only on Image) */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2 backdrop-blur-[2px]">
-            <button className="text-white hover:scale-110 transition-transform">
+            <button className="text-white hover:opacity-80 transition-opacity">
                 <Download className="w-5 h-5" />
             </button>
-            <button className="text-white hover:text-pink-500 hover:scale-110 transition-all">
+            <button className="text-white hover:text-pink-500 hover:opacity-80 transition-all">
                 <Star className="w-5 h-5" />
             </button>
         </div>

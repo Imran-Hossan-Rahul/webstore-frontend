@@ -451,7 +451,7 @@ export default function ProposalDetailPage() {
             {!alreadyHired && !showHireForm && (
               <button
                 onClick={() => setShowHireForm(true)}
-                className="flex items-center gap-2 px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-xl text-xs font-bold uppercase tracking-widest hover:-translate-y-0.5 active:scale-95 transition-all shadow-md"
+                className="flex items-center gap-2 px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black rounded-xl text-xs font-bold uppercase tracking-widest hover:-translate-y-0.5 active:opacity-60 transition-all shadow-md"
               >
                 <UserCheck size={14} /> Hire
               </button>
@@ -477,7 +477,7 @@ export default function ProposalDetailPage() {
                 {isCraftsman ? (
                   <button
                     onClick={() => router.push(`/contracts/${applicant.offer?._id || applicant.offer}`)} 
-                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-md"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:opacity-80 active:opacity-60 transition-all shadow-md"
                   >
                     <ShieldCheck size={14} /> View & Accept Offer
                   </button>
@@ -671,7 +671,7 @@ export default function ProposalDetailPage() {
               <button
                 onClick={handleSendAgreement}
                 disabled={submitting}
-                className="flex-[2] py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all shadow-md disabled:opacity-50"
+                className="flex-[2] py-3 bg-black dark:bg-white text-white dark:text-black rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-80 active:opacity-60 transition-all shadow-md disabled:opacity-50"
               >
                 {submitting ? <Loader2 size={14} className="animate-spin" /> : (applicant.offer?._id && applicant.stage === 'offer_sent' ? <CheckCircle size={14} /> : <Send size={14} />)}
                 {submitting ? "Processing..." : (applicant.offer?._id && applicant.stage === 'offer_sent' ? "Update Hiring Offer" : "Send Hiring Offer")}

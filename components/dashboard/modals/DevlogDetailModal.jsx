@@ -114,7 +114,7 @@ const DevlogDetailModal = ({ post, onClose }) => {
                     
                     {/* Live Demo Card */}
                     {devlogStats?.livePreviewUrl && (
-                        <div className="p-6 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl text-white shadow-lg transform hover:scale-[1.02] transition-transform">
+                        <div className="p-6 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl text-white shadow-lg transform hover:opacity-80 transition-opacity">
                             <h3 className="font-bold text-lg mb-2">Live Demo Available</h3>
                             <p className="text-white/80 text-sm mb-4">Check out the live version of this devlog.</p>
                             <a 

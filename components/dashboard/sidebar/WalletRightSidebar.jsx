@@ -56,7 +56,7 @@ const WalletRightSidebar = () => {
 
       {/* 3. Authority CTA */}
       <div className="bg-slate-900 dark:bg-white rounded-3xl p-6 text-white dark:text-slate-900 shadow-xl shadow-slate-900/10 dark:shadow-slate-200/50 relative overflow-hidden group shrink-0">
-         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 dark:bg-slate-900/5 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-700" />
+         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 dark:bg-slate-900/5 rounded-full blur-2xl group-hover:opacity-80 transition-opacity duration-700" />
          <div className="flex items-center gap-3 mb-4">
             <div className="w-8 h-8 rounded-full bg-white/10 dark:bg-slate-100 flex items-center justify-center shrink-0 text-white dark:text-slate-900">
                <Award size={16} />

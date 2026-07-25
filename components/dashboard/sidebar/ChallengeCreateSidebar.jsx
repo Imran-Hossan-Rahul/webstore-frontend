@@ -61,7 +61,7 @@ export default function ChallengeCreateSidebar() {
         <div className="relative z-10">
           <h4 className="text-lg font-bold mb-2">Need Assistance?</h4>
           <p className="text-xs opacity-70 leading-relaxed mb-6">Our challenge architects can help you refine your mission briefing and judging criteria.</p>
-          <button type="button" className="w-full py-3 bg-white dark:bg-slate-900 text-black dark:text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all">
+          <button type="button" className="w-full py-3 bg-white dark:bg-slate-900 text-black dark:text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:opacity-80 active:opacity-60 transition-all">
             Consult an Architect
           </button>
         </div>

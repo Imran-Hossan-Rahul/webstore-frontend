@@ -44,8 +44,6 @@ export default function DashboardLayout({ children }) {
 
   if (isAuthPage) return <>{children}</>;
 
-  const isMarket = pathname?.startsWith("/market");
-
   const hideRightSidebar = 
     pathname.startsWith("/chat") || 
     pathname.startsWith("/settings") || 
@@ -130,12 +128,12 @@ export default function DashboardLayout({ children }) {
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 flex pt-[64px] md:pt-24 px-0 sm:px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
+        <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
           {/* Left Sidebar */}
           {!isFullWidthPage && (
-            <div className={`hidden lg:block ${isMarket ? 'w-[64px]' : 'w-[280px]'} flex-shrink-0 transition-all duration-300 z-50`}>
+            <div className={`hidden lg:block w-[260px] flex-shrink-0 transition-all duration-300 z-50`}>
               <div 
-                className={`fixed top-24 bottom-6 ${isMarket ? (isSidebarHovered ? 'w-[280px]' : 'w-[64px]') : 'w-[280px]'} overflow-y-auto scrollbar-hide transition-all duration-300 z-50`}
+                className={`fixed top-16 bottom-6 w-[260px] overflow-y-auto scrollbar-hide transition-all duration-300 z-50`}
                 onMouseEnter={() => setIsSidebarHovered(true)}
                 onMouseLeave={() => setIsSidebarHovered(false)}
               >
@@ -145,16 +143,14 @@ export default function DashboardLayout({ children }) {
           )}
 
           {/* Main Content Area */}
-          <main className="flex-1 w-full min-w-0">
-              <div className="pb-24">
-                  {children}
-              </div>
+          <main className={`flex-1 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-260px)] xl:w-[calc(100%-300px-260px-2rem)]' : 'w-full'}`}>
+            {children}
           </main>
 
           {/* Right Sidebar */}
           {!isFullWidthPage && !hideRightSidebar && (
-            <div className="hidden xl:block w-[320px] flex-shrink-0">
-                 <div className="fixed top-24 bottom-6 w-[320px] overflow-y-auto scrollbar-hide">
+            <div className="hidden xl:block w-[300px] flex-shrink-0">
+                 <div className="fixed top-16 bottom-6 w-[300px] overflow-y-auto scrollbar-hide">
                      <RightSidebar />
                  </div>
             </div>

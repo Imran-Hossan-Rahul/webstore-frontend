@@ -214,7 +214,7 @@ export default function JobProposalsPage() {
                         <img
                           src={app.user?.profilePicture || `https://api.dicebear.com/7.x/initials/svg?seed=${app.user?.name || 'User'}`}
                           alt={app.user?.name}
-                          className="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-slate-800 shadow-sm transition-transform group-hover/avatar:scale-105"
+                          className="w-12 h-12 rounded-full object-cover border-2 border-white dark:border-slate-800 shadow-sm transition-opacity group-hover/avatar:scale-105"
                           onError={(e) => {
                             e.target.src = `https://api.dicebear.com/7.x/initials/svg?seed=${app.user?.name || 'User'}`;
                           }}

@@ -460,10 +460,10 @@ export default function PostJobPage({ editId }) {
                 <button
                   type="submit"
                   disabled={isSubmitting || (Number(formData.budgetMode === 'fixed' ? formData.budgetMin : formData.budgetMax) > (user?.walletBalance || 0))}
-                  className="group flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-black px-10 py-4 rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 shadow-xl shadow-slate-900/10 dark:shadow-white/5"
+                  className="group flex items-center gap-3 bg-slate-900 dark:bg-white text-white dark:text-black px-10 py-4 rounded-2xl font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-xl shadow-slate-900/10 dark:shadow-white/5"
                 >
                   {isSubmitting ? "Launching..." : (editId ? "Save Changes" : "Launch Devlog")}
-                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight size={20} className="group-hover:translate-x-1 transition-opacity" />
                 </button>
               </div>
             </div>

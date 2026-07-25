@@ -162,7 +162,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
   };
 
   return (
-    <div className="group bg-white dark:bg-black/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+    <div className="group bg-white dark:bg-black/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden hover:shadow-2xl hover:opacity-80 transition-all duration-300">
       {/* Preview */}
       <div className="relative aspect-video bg-gradient-to-br from-blue-500/10 to-purple-500/10 overflow-hidden">
         {resource.previewImage ? (

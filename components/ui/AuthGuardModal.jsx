@@ -83,7 +83,7 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
             <div className="space-y-3">
               <button
                 onClick={() => router.push("/auth/register")}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg transition-all hover:bg-slate-800 dark:hover:bg-slate-100 active:scale-95 shadow-sm"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg transition-all hover:bg-slate-800 dark:hover:bg-slate-100 active:opacity-60 shadow-sm"
               >
                 Create Free Account
                 <ArrowRight size={16} strokeWidth={1.5} />

@@ -106,14 +106,14 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
 
       {/* Support Node */}
       <div className="bg-slate-900 dark:bg-white rounded-3xl p-6 space-y-5 shadow-xl shadow-slate-900/10 relative overflow-hidden group">
-         <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/5 dark:bg-black/5 rounded-full -mb-16 -mr-16 blur-2xl group-hover:scale-150 transition-transform duration-1000" />
+         <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/5 dark:bg-black/5 rounded-full -mb-16 -mr-16 blur-2xl group-hover:opacity-80 transition-opacity duration-1000" />
          <div className="space-y-2 relative z-10">
             <p className="text-[9px] font-black text-white/50 dark:text-slate-400 uppercase tracking-[0.3em]">Technical Support</p>
             <p className="text-xs font-bold text-white dark:text-slate-900 leading-relaxed tracking-tight">
                Encountering structural conflicts or transmission errors?
             </p>
          </div>
-         <button className="w-full py-3.5 bg-white/10 dark:bg-slate-900/10 backdrop-blur-md border border-white/20 dark:border-slate-900/20 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white dark:text-slate-900 hover:bg-white/20 dark:hover:bg-slate-900/20 transition-all relative z-10 active:scale-95 flex items-center justify-center gap-2">
+         <button className="w-full py-3.5 bg-white/10 dark:bg-slate-900/10 backdrop-blur-md border border-white/20 dark:border-slate-900/20 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white dark:text-slate-900 hover:bg-white/20 dark:hover:bg-slate-900/20 transition-all relative z-10 active:opacity-60 flex items-center justify-center gap-2">
             Initialize Discord Node <ArrowRight size={12} />
          </button>
       </div>

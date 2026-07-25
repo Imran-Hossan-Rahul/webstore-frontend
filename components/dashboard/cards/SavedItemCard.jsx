@@ -175,7 +175,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         <img 
                             src={imageUrl} 
                             alt={item.title}
-                            className="w-full h-full object-cover transition-transform duration-500"
+                            className="w-full h-full object-cover transition-opacity duration-500"
                         />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center text-slate-200 dark:text-slate-700">

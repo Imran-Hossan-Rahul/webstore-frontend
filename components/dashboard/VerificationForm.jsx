@@ -341,7 +341,7 @@ const RuleBlock = ({ icon, title, text }) => (
 
 const CategoryBtn = ({ active, label, icon, onClick }) => (
    <button onClick={onClick} className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${active ? 'border-blue-600 bg-blue-50/50 dark:bg-indigo-600/5 text-blue-600 shadow-md shadow-blue-500/5' : 'border-slate-100 dark:border-white/5 text-slate-400 hover:border-indigo-600/20'}`}>
-      <div className={`transition-transform duration-300 ${active ? 'scale-110' : ''}`}>
+      <div className={`transition-opacity duration-300 ${active ? 'scale-110' : ''}`}>
          {icon}
       </div>
       <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>

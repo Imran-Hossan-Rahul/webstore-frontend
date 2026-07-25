@@ -22,7 +22,7 @@ export default function ChallengesSidebar() {
           
           <Link 
             href={isAuthorized ? "/challenges/create" : "/verify"}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-white text-slate-900 rounded-xl text-xs font-bold transition-all hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-black/20"
+            className="flex items-center justify-center gap-2 w-full py-3 bg-white text-slate-900 rounded-xl text-xs font-bold transition-all hover:bg-slate-100 hover:opacity-80 active:opacity-60 shadow-xl shadow-black/20"
           >
             {isAuthorized ? (
               <>
