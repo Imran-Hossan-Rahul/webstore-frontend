@@ -37,22 +37,25 @@ export default function MarketClientView({ initialData = [], initialPagination =
   useEffect(() => {
     api.get('/market/banners')
       .then(res => {
+        const geeooBanner = {
+          image: "/geeoo-banner.jpg",
+          titleTop: "GEEOO",
+          titleBottom: "Lightning Adapter",
+          link: "#"
+        };
+        
         if (res.data && res.data.length > 0) {
-          setHeroSlides(res.data);
+          // Prepend the new banner if there are existing ones, or just replace if they want only this
+          setHeroSlides([geeooBanner, ...res.data]);
         } else {
-          setHeroSlides([{
-            image: "https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-            titleTop: "Best Deals on",
-            titleBottom: "Windows Laptops",
-            link: "#"
-          }]);
+          setHeroSlides([geeooBanner]);
         }
       })
       .catch(err => {
         setHeroSlides([{
-          image: "https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-          titleTop: "Best Deals on",
-          titleBottom: "Windows Laptops",
+          image: "/geeoo-banner.jpg",
+          titleTop: "GEEOO",
+          titleBottom: "Lightning Adapter",
           link: "#"
         }]);
       });
