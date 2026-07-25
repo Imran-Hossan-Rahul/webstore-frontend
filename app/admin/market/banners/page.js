@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useToast } from '@/components/ui/ToastProvider';
 
 export default function AdminBannersPage() {
-  const { addToast } = useToast();
+  const { showToast } = useToast();
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -30,7 +30,7 @@ export default function AdminBannersPage() {
       const res = await api.get('/market/banners/all');
       setBanners(res.data);
     } catch (err) {
-      addToast('Failed to load banners', 'error');
+      showToast('Failed to load banners', 'error');
     } finally {
       setLoading(false);
     }
@@ -76,7 +76,7 @@ export default function AdminBannersPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!editId && !formData.image) {
-      addToast('Image is required for new banners', 'error');
+      showToast('Image is required for new banners', 'error');
       return;
     }
     
@@ -96,17 +96,17 @@ export default function AdminBannersPage() {
         await api.put(`/market/banners/${editId}`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        addToast('Banner updated', 'success');
+        showToast('Banner updated', 'success');
       } else {
         await api.post('/market/banners', data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        addToast('Banner created', 'success');
+        showToast('Banner created', 'success');
       }
       setShowModal(false);
       fetchBanners();
     } catch (err) {
-      addToast(err.response?.data?.message || 'Error saving banner', 'error');
+      showToast(err.response?.data?.message || 'Error saving banner', 'error');
     } finally {
       setSaving(false);
     }
@@ -116,10 +116,10 @@ export default function AdminBannersPage() {
     if (!confirm('Are you sure you want to delete this banner?')) return;
     try {
       await api.delete(`/market/banners/${id}`);
-      addToast('Banner deleted', 'success');
+      showToast('Banner deleted', 'success');
       fetchBanners();
     } catch (err) {
-      addToast('Error deleting banner', 'error');
+      showToast('Error deleting banner', 'error');
     }
   };
 
@@ -128,7 +128,7 @@ export default function AdminBannersPage() {
       await api.put(`/market/banners/${banner._id}`, { isActive: !banner.isActive });
       fetchBanners();
     } catch (err) {
-      addToast('Error updating status', 'error');
+      showToast('Error updating status', 'error');
     }
   };
 
