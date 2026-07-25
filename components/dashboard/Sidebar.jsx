@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { api } from '@/utils/api';
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
 import { features } from "@/constants/features";
@@ -64,6 +65,7 @@ export default function Sidebar({ isHovered }) {
   const q = searchParams?.get("q");
 
   const [openCategory, setOpenCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
   const hoverTimeoutRef = React.useRef(null);
 
   const handleMouseEnter = (catName) => {
@@ -80,7 +82,14 @@ export default function Sidebar({ isHovered }) {
     }, 400); // Revert after delay
   };
 
-  // TODO: Fetch categories from API and set active based on query
+  React.useEffect(() => {
+    api.get('/market/categories/all')
+      .then(res => {
+        if (res.data) setCategories(res.data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
   React.useEffect(() => {
     if (q) {
       // Set active category logic here when data is fetched
@@ -122,7 +131,68 @@ export default function Sidebar({ isHovered }) {
               />
             </>
           )}
-          {/* Categories Accordion (TODO: Fetch from API and render here) */}
+          {/* Categories Accordion */}
+          {categories.filter(c => !c.isSubcategory).map(category => {
+            const subcats = categories.filter(sub => sub.isSubcategory && String(sub.parentCategory?._id) === String(category._id));
+            const isActive = q === category.name.toLowerCase() || subcats.some(sub => sub.name.toLowerCase() === q);
+            const isOpen = openCategory === category._id || isActive;
+            
+            return (
+              <div key={category._id} className="relative"
+                   onMouseEnter={() => handleMouseEnter(category._id)}
+                   onMouseLeave={handleMouseLeave}>
+                <button
+                  onClick={() => {
+                    if (isCollapsed) return;
+                    setOpenCategory(isOpen ? null : category._id);
+                    if (subcats.length === 0) {
+                      router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
+                    }
+                  }}
+                  className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#e5e5ea] text-apple-ink dark:bg-[#2c2c2e] dark:text-white"
+                      : "text-apple-ink dark:text-white hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e]"
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Box className="w-[18px] h-[18px] opacity-80" />
+                    <span className={`text-[14px] font-sans ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'hidden' : 'block'}`}>
+                      {category.name}
+                    </span>
+                  </div>
+                  {!isCollapsed && subcats.length > 0 && (
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+                  )}
+                </button>
+                
+                <AnimatePresence>
+                  {!isCollapsed && isOpen && subcats.length > 0 && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden ml-[32px]"
+                    >
+                      {subcats.map(sub => (
+                        <Link
+                          key={sub._id}
+                          href={`/market?q=${encodeURIComponent(sub.name.toLowerCase())}`}
+                          className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
+                            q === sub.name.toLowerCase()
+                              ? "text-blue-600 dark:text-blue-400 font-medium"
+                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                          }`}
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
 
         <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />

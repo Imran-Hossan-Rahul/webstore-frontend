@@ -27,6 +27,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = React.useContext(DashboardContext) || {};
   const searchParams = useSearchParams();
+  const [categories, setCategories] = useState([]);
   const query = searchParams.get('q')?.toLowerCase() || '';
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
@@ -55,6 +56,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
           link: "#"
         }]);
       });
+
+    api.get('/market/categories/all')
+      .then(res => {
+        if (res.data) setCategories(res.data);
+      })
+      .catch(err => console.error("Failed to load categories:", err));
   }, []);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -236,8 +243,33 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       )}
 
-      {/* Shop by Categories (TODO: Fetch from API and render here) */}
-      
+      {/* Shop by Categories */}
+      {categories && categories.length > 0 && (
+        <div className="max-w-[1320px] mx-auto px-4 mt-8 md:mt-12">
+          <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink mb-6">Shop by Categories</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {categories.filter(c => !c.isSubcategory).map(category => (
+              <div key={category._id} className="bg-white border border-apple-hairline rounded-apple-lg p-4 flex flex-col items-center hover:shadow-lg transition-shadow cursor-pointer">
+                {category.image ? (
+                  <img src={category.image} alt={category.name} className="w-16 h-16 object-cover rounded-full mb-3" />
+                ) : (
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                    <span className="text-gray-400 text-xs text-center">{category.name[0]}</span>
+                  </div>
+                )}
+                <h3 className="text-sm font-medium text-apple-ink text-center">{category.name}</h3>
+                
+                {/* Subcategories (only show first 3) */}
+                <div className="mt-2 flex flex-col items-center w-full">
+                  {categories.filter(sub => sub.isSubcategory && String(sub.parentCategory?._id) === String(category._id)).slice(0,3).map(sub => (
+                    <span key={sub._id} className="text-xs text-apple-muted hover:text-blue-600 truncate w-full text-center">{sub.name}</span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {/* Product Grid */}
       <div className="p-2 pt-2 md:py-8 md:px-3 max-w-[1320px] mx-auto -mt-4 md:mt-2">
         <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-4 md:mb-8 text-apple-ink mt-6 md:mt-0">

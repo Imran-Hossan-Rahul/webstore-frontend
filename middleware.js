@@ -116,9 +116,9 @@ export async function middleware(req) {
   }
 
   // ─── Already logged-in users shouldn't see auth pages ────────────────────
-  if (decoded && pathname.startsWith("/auth")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // if (decoded && pathname.startsWith("/auth")) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
   return NextResponse.next();
 }

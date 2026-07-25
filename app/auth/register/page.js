@@ -65,20 +65,20 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
   return (
     <div className="space-y-2 mb-6">
       <div className="px-1">
-        <label className="text-[13px] font-bold text-slate-700 dark:text-zinc-400 tracking-wide uppercase">
+        <label className="text-[12px] font-semibold text-apple-secondary uppercase tracking-[0.06em]">
           {label}
         </label>
       </div>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors duration-300">
-          <Icon size={20} strokeWidth={1.5} />
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-apple-muted transition-colors duration-300">
+          <Icon size={18} strokeWidth={2} />
         </div>
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-12 ${isPassword ? "pr-12" : "pr-4"} py-4 bg-slate-50 dark:bg-zinc-950/50 border-2 ${
-            error ? "border-red-500/50" : "border-slate-100 dark:border-zinc-800"
-          } rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-950 focus:outline-none transition-all duration-300`}
+          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-4"} py-[14px] bg-apple-canvas dark:bg-apple-surface-dark border ${
+            error ? "border-red-500" : "border-apple-hairline"
+          } rounded-apple-sm text-[17px] text-apple-ink placeholder-apple-muted focus:border-apple-focus focus:ring-[2px] focus:ring-apple-focus focus:outline-none transition-all duration-300`}
         />
         {isPassword && (
           <button
@@ -199,11 +199,11 @@ export default function RegisterPage() {
       title="Create account"
       subtitle="Join the elite community of modern craftsmen"
       footer={
-        <p className="text-center text-[15px] text-slate-500 dark:text-zinc-500 font-medium">
+        <p className="text-center text-[15px] text-apple-secondary font-normal">
           Already a member?{" "}
           <Link
             href="/auth/login"
-            className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all"
+            className="text-apple-accent hover:underline transition-all"
           >
             Sign in here
           </Link>
@@ -248,11 +248,11 @@ export default function RegisterPage() {
             {/* Divider */}
             <div className="relative mb-10">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-100 dark:border-zinc-800" />
+                <div className="w-full border-t border-apple-hairline" />
               </div>
-              <div className="relative flex justify-center text-[11px] uppercase tracking-[0.2em] font-black text-slate-400">
-                <span className="px-4 bg-white dark:bg-[#121212] rounded-full">
-                  Register Account
+              <div className="relative flex justify-center text-[12px] text-apple-muted">
+                <span className="px-4 bg-apple-parchment dark:bg-apple-parchment">
+                  or
                 </span>
               </div>
             </div>
@@ -333,7 +333,7 @@ export default function RegisterPage() {
                     <input
                       type="checkbox"
                       required
-                      className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border-2 border-slate-200 dark:border-zinc-800 transition-all checked:bg-indigo-600 checked:border-indigo-600"
+                      className="peer h-5 w-5 cursor-pointer appearance-none rounded-sm border border-apple-hairline transition-all checked:bg-apple-accent checked:border-apple-accent"
                     />
                     <svg
                       className="absolute h-3.5 w-3.5 pointer-events-none hidden peer-checked:block text-white left-0.5 top-0.5"
@@ -348,9 +348,9 @@ export default function RegisterPage() {
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <span className="text-sm text-slate-500 dark:text-zinc-500 group-hover:text-slate-700 dark:group-hover:text-zinc-300 transition-colors">
+                  <span className="text-[14px] text-apple-secondary transition-colors">
                     I agree to the{" "}
-                    <span className="font-bold underline text-slate-700 dark:text-zinc-300">
+                    <span className="font-semibold underline text-apple-ink hover:text-apple-accent transition-colors">
                       Community Guidelines
                     </span>
                   </span>
@@ -360,7 +360,7 @@ export default function RegisterPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
+                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

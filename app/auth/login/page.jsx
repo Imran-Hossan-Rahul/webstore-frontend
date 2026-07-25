@@ -40,28 +40,28 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
   return (
     <div className="space-y-2 mb-6">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[13px] font-bold text-slate-700 dark:text-zinc-400 tracking-wide uppercase">
+        <label className="text-[12px] font-semibold text-apple-secondary uppercase tracking-[0.06em]">
           {label}
         </label>
         {forgotLink && (
           <Link
             href="/auth/forgot-password"
-            className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+            className="text-[13px] text-apple-accent hover:underline"
           >
             Forgot?
           </Link>
         )}
       </div>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors duration-300">
-          <Icon size={18} strokeWidth={2.5} />
+        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-apple-muted transition-colors duration-300">
+          <Icon size={18} strokeWidth={2} />
         </div>
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-12 ${isPassword ? "pr-12" : "pr-4"} py-4 bg-slate-50 dark:bg-zinc-950/50 border-2 ${
-            error ? "border-red-500/50" : "border-slate-100 dark:border-zinc-800"
-          } rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-950 focus:outline-none transition-all duration-300`}
+          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-4"} py-[14px] bg-apple-canvas dark:bg-apple-surface-dark border ${
+            error ? "border-red-500" : "border-apple-hairline"
+          } rounded-apple-sm text-[17px] text-apple-ink placeholder-apple-muted focus:border-apple-focus focus:ring-[2px] focus:ring-apple-focus focus:outline-none transition-all duration-300`}
         />
         {isPassword && (
           <button
@@ -207,11 +207,11 @@ export default function LoginPage() {
       }
       footer={
         !requires2FA && (
-          <p className="text-center text-[15px] text-slate-500 dark:text-zinc-500 font-medium">
+          <p className="text-center text-[15px] text-apple-secondary font-normal">
             New here?{" "}
             <Link
               href="/auth/register"
-              className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline transition-all"
+              className="text-apple-accent hover:underline transition-all"
             >
               Create an account
             </Link>
@@ -248,7 +248,7 @@ export default function LoginPage() {
                 placeholder="000000"
                 value={twoFaCode}
                 onChange={(e) => setTwoFaCode(e.target.value.replace(/\D/g, ""))}
-                className="w-full text-center tracking-[0.5em] font-mono text-4xl py-6 bg-slate-50 dark:bg-zinc-950/50 border-2 border-slate-100 dark:border-zinc-800 rounded-3xl text-slate-900 dark:text-white focus:border-indigo-500/50 focus:outline-none transition-all duration-300"
+                className="w-full text-center tracking-[0.5em] font-mono text-[32px] py-4 bg-apple-canvas dark:bg-apple-surface-dark border border-apple-hairline rounded-apple-lg text-apple-ink focus:border-apple-focus focus:ring-[2px] focus:ring-apple-focus focus:outline-none transition-all duration-300"
               />
               <AnimatePresence>
                 {twoFaError && (
@@ -268,7 +268,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading || twoFaCode.length !== 6}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/20 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -322,11 +322,11 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="relative mb-10">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-100 dark:border-zinc-800" />
+                <div className="w-full border-t border-apple-hairline" />
               </div>
-              <div className="relative flex justify-center text-[11px] uppercase tracking-[0.2em] font-black text-slate-400">
-                <span className="px-4 bg-white dark:bg-[#121212] rounded-full">
-                  Secure Login
+              <div className="relative flex justify-center text-[12px] text-apple-muted">
+                <span className="px-4 bg-apple-parchment dark:bg-apple-parchment">
+                  or
                 </span>
               </div>
             </div>
@@ -375,7 +375,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group mt-8"
+                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-8"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

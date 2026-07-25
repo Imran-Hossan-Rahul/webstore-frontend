@@ -292,34 +292,12 @@ const GlassNavbar = ({
 
         {/* Right Section */}
         <div className="flex items-center gap-2 sm:gap-4">
-            {!isGuest && user?.hasCraftsmanAccount && !pathname?.startsWith("/market") && (
-              <div className="relative">
-                <button
-                  onClick={() => setShowCreateDropdown(!showCreateDropdown)}
-                  className="hidden sm:flex items-center gap-2 bg-apple-ink dark:bg-apple-canvas text-white dark:text-black px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans hover:opacity-80 transition-opacity"
-                >
-                  <Plus strokeWidth={1.5} className="w-4 h-4" /> <span>Create</span>
-                </button>
-                <CreateDropdown 
-                  isOpen={showCreateDropdown} 
-                  setIsOpen={setShowCreateDropdown} 
-                  onOpenCreatePost={onOpenCreatePost} 
-                />
-              </div>
-            )}
+
 
             <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-2 sm:pr-4">
                 
                 {!isGuest && (
                   <>
-                    <button onClick={onToggleChat} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
-                        <MessageCircle strokeWidth={1.5} className="w-5 h-5" />
-                        {unreadChatCount > 0 && (
-                          <span className="absolute top-0 right-0 sm:top-1 sm:right-1 w-4 h-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
-                            {unreadChatCount}
-                          </span>
-                        )}
-                    </button>
                     <button onClick={onToggleNotification} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
                         <Bell strokeWidth={1.5} className="w-5 h-5" />
                         {unreadNotifications > 0 && (
@@ -337,16 +315,13 @@ const GlassNavbar = ({
 
             {isGuest ? (
               <div className="flex items-center gap-2 sm:gap-3 z-50 relative">
-                <a href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink hover:opacity-80 transition-opacity">Log in</a>
-                <a href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</a>
+                <Link href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity">Log in</Link>
+                <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</Link>
               </div>
             ) : (
               <div onClick={() => router.push(`/u/${user.username}`)} className="flex items-center gap-3 cursor-pointer group">
                   <div className="text-right hidden xl:block">
-                      <div className="text-sm font-medium text-slate-900 dark:text-white font-sans">{user.name}</div>
-                      <div className="text-[9px] text-slate-500 dark:text-slate-400 font-mono font-medium flex items-center justify-end gap-1 uppercase tracking-[0.2em]">
-                          <UserCheck strokeWidth={1.5} className="w-2.5 h-2.5" /> {user.hasCraftsmanAccount ? "Craftsman" : "Member"}
-                      </div>
+                      <div className="text-[14px] font-semibold text-apple-ink dark:text-apple-ink font-sans leading-tight">{user.name}</div>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                       {user.profilePicture ? (

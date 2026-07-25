@@ -18,6 +18,8 @@ export default function ProductsManager() {
   const [sku, setSku] = useState('');
   const [brand, setBrand] = useState('');
   const [categoryId, setCategoryId] = useState('');
+  const [subCategoryId, setSubCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
   const [description, setDescription] = useState('');
   const [costPrice, setCostPrice] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
@@ -43,7 +45,17 @@ export default function ProductsManager() {
   useEffect(() => {
     fetchProducts();
     fetchWholesalers();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await api.get('/market/categories/all');
+      setCategories(res.data || []);
+    } catch (err) {
+      console.error("Failed to fetch categories", err);
+    }
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -92,6 +104,7 @@ export default function ProductsManager() {
       formData.append('sku', sku);
       formData.append('brand', brand);
       formData.append('category_id', categoryId);
+      if (subCategoryId) formData.append('subCategory_id', subCategoryId);
       formData.append('description', description);
       formData.append('cost_price', parseFloat(costPrice) || 0);
       formData.append('selling_price', parseFloat(sellingPrice) || 0);
@@ -140,7 +153,7 @@ export default function ProductsManager() {
         setShowModal(false);
         setEditingProductId(null);
         // Reset form
-        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
+        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
         fetchProducts();
       }
     } catch (err) {
@@ -157,6 +170,7 @@ export default function ProductsManager() {
     setSku(p.sku || '');
     setBrand(p.brand || '');
     setCategoryId(p.category_id || '');
+    setSubCategoryId(p.subCategory_id || '');
     setDescription(p.description || '');
     setCostPrice(p.cost_price || '');
     setSellingPrice(p.selling_price || '');
@@ -197,7 +211,7 @@ export default function ProductsManager() {
         <button 
           onClick={() => {
             setEditingProductId(null);
-            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
+            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
             setShowModal(true);
           }}
           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition shadow-lg shadow-blue-900/20 shrink-0"
@@ -346,7 +360,7 @@ export default function ProductsManager() {
                 <div>
                   <h4 className="text-lg font-semibold text-blue-400 mb-3 border-b border-gray-800 pb-2">Core Details</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-400 mb-1.5">Product Title *</label>
                         <input 
@@ -362,18 +376,33 @@ export default function ProductsManager() {
                         <div className="relative">
                           <select 
                             required
-                            value={categoryId} onChange={(e) => setCategoryId(e.target.value)}
+                            value={categoryId} onChange={(e) => { setCategoryId(e.target.value); setSubCategoryId(''); }}
                             className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
                           >
                             <option value="" disabled>Select a category</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Clothing & Fashion">Clothing & Fashion</option>
-                            <option value="Home & Garden">Home & Garden</option>
-                            <option value="Beauty & Health">Beauty & Health</option>
-                            <option value="Sports & Outdoors">Sports & Outdoors</option>
-                            <option value="Automotive">Automotive</option>
-                            <option value="Gadgets">Gadgets</option>
-                            <option value="Other">Other</option>
+                            {categories.filter(c => !c.isSubcategory).map(c => (
+                              <option key={c._id} value={c._id}>{c.name}</option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-400 mb-1.5">Sub-category</label>
+                        <div className="relative">
+                          <select 
+                            value={subCategoryId} onChange={(e) => setSubCategoryId(e.target.value)}
+                            className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
+                            disabled={!categoryId}
+                          >
+                            <option value="">Select a sub-category</option>
+                            {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id) === categoryId).map(c => (
+                              <option key={c._id} value={c._id}>{c.name}</option>
+                            ))}
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
                             <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
