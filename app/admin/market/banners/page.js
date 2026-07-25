@@ -1,11 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import api from '@/lib/api';
+import { api } from '@/utils/api';
 import { Plus, Trash2, Edit2, Check, X } from 'lucide-react';
 import Image from 'next/image';
-import { toast } from 'react-hot-toast';
+import { useToast } from '@/components/ui/ToastProvider';
 
 export default function AdminBannersPage() {
+  const { addToast } = useToast();
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ export default function AdminBannersPage() {
       const res = await api.get('/market/banners/all');
       setBanners(res.data);
     } catch (err) {
-      toast.error('Failed to load banners');
+      addToast('Failed to load banners', 'error');
     } finally {
       setLoading(false);
     }
@@ -75,7 +76,7 @@ export default function AdminBannersPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!editId && !formData.image) {
-      toast.error('Image is required for new banners');
+      addToast('Image is required for new banners', 'error');
       return;
     }
     
@@ -95,17 +96,17 @@ export default function AdminBannersPage() {
         await api.put(`/market/banners/${editId}`, data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        toast.success('Banner updated');
+        addToast('Banner updated', 'success');
       } else {
         await api.post('/market/banners', data, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        toast.success('Banner created');
+        addToast('Banner created', 'success');
       }
       setShowModal(false);
       fetchBanners();
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Error saving banner');
+      addToast(err.response?.data?.message || 'Error saving banner', 'error');
     } finally {
       setSaving(false);
     }
@@ -115,10 +116,10 @@ export default function AdminBannersPage() {
     if (!confirm('Are you sure you want to delete this banner?')) return;
     try {
       await api.delete(`/market/banners/${id}`);
-      toast.success('Banner deleted');
+      addToast('Banner deleted', 'success');
       fetchBanners();
     } catch (err) {
-      toast.error('Error deleting banner');
+      addToast('Error deleting banner', 'error');
     }
   };
 
@@ -127,7 +128,7 @@ export default function AdminBannersPage() {
       await api.put(`/market/banners/${banner._id}`, { isActive: !banner.isActive });
       fetchBanners();
     } catch (err) {
-      toast.error('Error updating status');
+      addToast('Error updating status', 'error');
     }
   };
 
