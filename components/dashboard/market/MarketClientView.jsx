@@ -59,7 +59,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
     api.get('/market/categories/all')
       .then(res => {
-        if (res.data) setCategories(res.data);
+        setCategories(res.data || res || []);
       })
       .catch(err => console.error("Failed to load categories:", err));
   }, []);
