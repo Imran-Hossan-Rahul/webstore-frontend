@@ -659,7 +659,7 @@ export default function ProductsManager() {
                             />
                             Highlight
                           </label>
-                          {specifications.length > 1 && (
+                          {true && (
                             <button 
                               type="button" 
                               onClick={() => {
@@ -701,7 +701,7 @@ export default function ProductsManager() {
                               placeholder="Group Name (e.g. Color, Storage)" 
                               className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2 text-white text-sm focus:border-blue-500"
                             />
-                            {variantGroups.length > 1 && (
+                            {true && (
                               <button 
                                 type="button" 
                                 onClick={() => setVariantGroups(variantGroups.filter((_, i) => i !== groupIdx))} 
@@ -767,7 +767,7 @@ export default function ProductsManager() {
                                     className="w-full md:w-1/5 bg-gray-950 border border-gray-800 rounded-lg px-3 py-1.5 text-white text-sm focus:border-blue-500"
                                   />
                                 )}
-                                {group.options.length > 1 && (
+                                {true && (
                                   <button 
                                     type="button" 
                                     onClick={() => {
