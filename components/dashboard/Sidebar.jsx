@@ -139,7 +139,7 @@ export default function Sidebar({ isHovered }) {
             { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging, subcats: [{ id: 'power-banks-geeoo', name: 'GEEOO' }] },
             { id: 'adapters', name: 'Adapters', icon: Cable, subcats: [{ id: 'adapters-geeoo', name: 'GEEOO' }] },
           ].map(category => {
-            const isActive = q === category.name.toLowerCase() || category.subcats.some(sub => q === sub.name.toLowerCase());
+            const isActive = q === category.name.toLowerCase() || category.subcats.some(sub => q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`);
             const isOpen = openCategory === category.id || isActive;
             const Icon = category.icon;
             
@@ -183,9 +183,9 @@ export default function Sidebar({ isHovered }) {
                       {category.subcats.map(sub => (
                         <Link
                           key={sub.id}
-                          href={`/market?q=${encodeURIComponent(sub.name.toLowerCase())}`}
+                          href={`/market?q=${encodeURIComponent(`${category.name.toLowerCase()} ${sub.name.toLowerCase()}`)}`}
                           className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                            q === sub.name.toLowerCase()
+                            q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`
                               ? "text-blue-600 dark:text-blue-400 font-medium"
                               : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                           }`}
