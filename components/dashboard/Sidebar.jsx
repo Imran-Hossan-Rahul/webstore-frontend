@@ -7,7 +7,7 @@ import { api } from '@/utils/api';
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
 import { features } from "@/constants/features";
-import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store, Smartphone, Monitor, Laptop, Shirt, Box, ChevronRight, X } from "lucide-react";
+import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store, Smartphone, Monitor, Laptop, Shirt, Box, ChevronRight, X, Watch, Headphones, BatteryCharging, Cable } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
   <Link
@@ -132,22 +132,22 @@ export default function Sidebar({ isHovered }) {
             </>
           )}
           {/* Categories Accordion */}
-          {categories.filter(c => !c.isSubcategory).map(category => {
-            const subcats = categories.filter(sub => sub.isSubcategory && String(sub.parentCategory?._id) === String(category._id));
-            const isActive = q === category.name.toLowerCase() || subcats.some(sub => sub.name.toLowerCase() === q);
-            const isOpen = openCategory === category._id || isActive;
+          {[
+            { id: 'smart-watch', name: 'Smart Watch', icon: Watch },
+            { id: 'earbuds', name: 'Earbuds', icon: Headphones },
+            { id: 'over-ear-headphones', name: 'Over-Ear Headphones', icon: Headphones },
+            { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging },
+            { id: 'adapters', name: 'Adapters', icon: Cable },
+          ].map(category => {
+            const isActive = q === category.name.toLowerCase();
+            const Icon = category.icon;
             
             return (
-              <div key={category._id} className="relative"
-                   onMouseEnter={() => handleMouseEnter(category._id)}
-                   onMouseLeave={handleMouseLeave}>
+              <div key={category.id} className="relative">
                 <button
                   onClick={() => {
                     if (isCollapsed) return;
-                    setOpenCategory(isOpen ? null : category._id);
-                    if (subcats.length === 0) {
-                      router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
-                    }
+                    router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
                     isActive
@@ -156,40 +156,12 @@ export default function Sidebar({ isHovered }) {
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Box className="w-[18px] h-[18px] opacity-80" />
+                    <Icon className="w-[18px] h-[18px] opacity-80" />
                     <span className={`text-[14px] font-sans ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'hidden' : 'block'}`}>
                       {category.name}
                     </span>
                   </div>
-                  {!isCollapsed && subcats.length > 0 && (
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
-                  )}
                 </button>
-                
-                <AnimatePresence>
-                  {!isCollapsed && isOpen && subcats.length > 0 && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden ml-[32px]"
-                    >
-                      {subcats.map(sub => (
-                        <Link
-                          key={sub._id}
-                          href={`/market?q=${encodeURIComponent(sub.name.toLowerCase())}`}
-                          className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                            q === sub.name.toLowerCase()
-                              ? "text-blue-600 dark:text-blue-400 font-medium"
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                          }`}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             );
           })}
