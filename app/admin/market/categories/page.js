@@ -245,7 +245,7 @@ export default function AdminCategoriesPage() {
                   type="text" 
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-transparent focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-transparent text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   required
                 />
               </div>
@@ -269,7 +269,7 @@ export default function AdminCategoriesPage() {
                   <select
                     value={formData.parentCategory}
                     onChange={e => setFormData({...formData, parentCategory: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-transparent focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-transparent text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     required={formData.isSubcategory}
                   >
                     <option value="">Select Parent</option>
