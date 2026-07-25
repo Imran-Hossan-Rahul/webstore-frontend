@@ -41,7 +41,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
           image: "/geeoo-banner.jpg",
           titleTop: "GEEOO",
           titleBottom: "Lightning Adapter",
-          link: "#"
+          link: "#",
+          isFullBanner: true
         };
         
         if (res.data && res.data.length > 0) {
@@ -56,7 +57,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
           image: "/geeoo-banner.jpg",
           titleTop: "GEEOO",
           titleBottom: "Lightning Adapter",
-          link: "#"
+          link: "#",
+          isFullBanner: true
         }]);
       });
 
@@ -181,16 +183,24 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 key={idx}
                 className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? 'opacity-100' : 'opacity-0 z-0'} ${idx === currentSlide ? 'z-10' : ''}`}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0"></div>
-                <img src={slide.image?.startsWith('http') ? slide.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${slide.image}`} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten" />
-                
-                <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%]">
-                  <h3 className="text-white text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-1 md:mb-2 transition-opacity duration-700 translate-y-0">{slide.titleTop}</h3>
-                  <h1 className="text-[#fbbf24] text-2xl md:text-[56px] font-semibold tracking-[-0.015em] leading-[1.08] mb-4 md:mb-6 uppercase">{slide.titleBottom}</h1>
-                  <div className="flex gap-4 items-center">
-                    <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-[22px] py-[11px] rounded-apple-pill font-sans text-[17px] font-normal hover:opacity-80 transition-opacity flex items-center">Buy Now <span className="ml-1 text-lg">↗</span></Link>
-                  </div>
-                </div>
+                {slide.isFullBanner ? (
+                  <Link href={slide.link || '#'}>
+                    <img src={slide.image} alt={slide.titleBottom} className="absolute inset-0 w-full h-full object-cover z-10" />
+                  </Link>
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0"></div>
+                    <img src={slide.image?.startsWith('http') ? slide.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${slide.image}`} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten" />
+                    
+                    <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%]">
+                      <h3 className="text-white text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-1 md:mb-2 transition-opacity duration-700 translate-y-0">{slide.titleTop}</h3>
+                      <h1 className="text-[#fbbf24] text-2xl md:text-[56px] font-semibold tracking-[-0.015em] leading-[1.08] mb-4 md:mb-6 uppercase">{slide.titleBottom}</h1>
+                      <div className="flex gap-4 items-center">
+                        <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-[22px] py-[11px] rounded-apple-pill font-sans text-[17px] font-normal hover:opacity-80 transition-opacity flex items-center">Buy Now <span className="ml-1 text-lg">↗</span></Link>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
 
