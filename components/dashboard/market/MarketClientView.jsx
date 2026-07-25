@@ -35,32 +35,16 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [heroSlides, setHeroSlides] = useState([]);
 
   useEffect(() => {
-    api.get('/market/banners')
-      .then(res => {
-        const geeooBanner = {
-          image: "/geeoo-banner.jpg",
-          titleTop: "GEEOO",
-          titleBottom: "Lightning Adapter",
-          link: "#",
-          isFullBanner: true
-        };
-        
-        if (res.data && res.data.length > 0) {
-          // Prepend the new banner if there are existing ones, or just replace if they want only this
-          setHeroSlides([geeooBanner, ...res.data]);
-        } else {
-          setHeroSlides([geeooBanner]);
-        }
-      })
-      .catch(err => {
-        setHeroSlides([{
-          image: "/geeoo-banner.jpg",
-          titleTop: "GEEOO",
-          titleBottom: "Lightning Adapter",
-          link: "#",
-          isFullBanner: true
-        }]);
-      });
+    const geeooBanner = {
+      image: "/geeoo-banner.jpg",
+      titleTop: "GEEOO",
+      titleBottom: "Lightning Adapter",
+      link: "#",
+      isFullBanner: true
+    };
+    setHeroSlides([geeooBanner]);
+    
+    api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
     api.get('/market/categories/all')
       .then(res => {
@@ -176,7 +160,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 max-w-[1320px] mx-auto flex flex-col lg:flex-row gap-2 md:gap-4">
           {/* Main Banner Slider */}
-          <div className="lg:w-2/3 w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-black rounded-apple-lg overflow-hidden relative group cursor-pointer">
+          <div className="lg:w-2/3 w-full aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] bg-[#1a1a1a] rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
             
             {heroSlides.map((slide, idx) => (
               <div 
@@ -184,8 +168,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? 'opacity-100' : 'opacity-0 z-0'} ${idx === currentSlide ? 'z-10' : ''}`}
               >
                 {slide.isFullBanner ? (
-                  <Link href={slide.link || '#'}>
-                    <img src={slide.image} alt={slide.titleBottom} className="absolute inset-0 w-full h-full object-cover z-10" />
+                  <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full">
+                    <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-contain z-10" />
                   </Link>
                 ) : (
                   <>
