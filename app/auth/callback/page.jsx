@@ -36,10 +36,17 @@ export default function AuthCallback() {
     if (userDataStr) {
       try {
         const userData = JSON.parse(decodeURIComponent(userDataStr));
+        
+        // Inject token into userData so api.js getAccessToken() can find it
+        if (token) {
+          userData.accessToken = token;
+        }
+        
         localStorage.setItem("user",                JSON.stringify(userData));
         localStorage.setItem("hasCraftsmanAccount", String(userData.hasCraftsmanAccount));
         localStorage.setItem("userId",              userData._id);
         
+        if (token) localStorage.setItem("token", token);
         if (csrf) localStorage.setItem("XSRF-TOKEN", csrf);
 
         // Delay slightly for the "70k dollar" smooth experience
