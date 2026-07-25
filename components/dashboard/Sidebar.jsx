@@ -133,21 +133,27 @@ export default function Sidebar({ isHovered }) {
           )}
           {/* Categories Accordion */}
           {[
-            { id: 'smart-watch', name: 'Smart Watch', icon: Watch },
-            { id: 'earbuds', name: 'Earbuds', icon: Headphones },
-            { id: 'over-ear-headphones', name: 'Over-Ear Headphones', icon: Headphones },
-            { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging },
-            { id: 'adapters', name: 'Adapters', icon: Cable },
+            { id: 'smart-watch', name: 'Smart Watch', icon: Watch, subcats: [{ id: 'smart-watch-geeoo', name: 'GEEOO' }] },
+            { id: 'earbuds', name: 'Earbuds', icon: Headphones, subcats: [{ id: 'earbuds-geeoo', name: 'GEEOO' }] },
+            { id: 'over-ear-headphones', name: 'Over-Ear Headphones', icon: Headphones, subcats: [{ id: 'over-ear-geeoo', name: 'GEEOO' }] },
+            { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging, subcats: [{ id: 'power-banks-geeoo', name: 'GEEOO' }] },
+            { id: 'adapters', name: 'Adapters', icon: Cable, subcats: [{ id: 'adapters-geeoo', name: 'GEEOO' }] },
           ].map(category => {
-            const isActive = q === category.name.toLowerCase();
+            const isActive = q === category.name.toLowerCase() || category.subcats.some(sub => q === sub.name.toLowerCase());
+            const isOpen = openCategory === category.id || isActive;
             const Icon = category.icon;
             
             return (
-              <div key={category.id} className="relative">
+              <div key={category.id} className="relative"
+                   onMouseEnter={() => handleMouseEnter(category.id)}
+                   onMouseLeave={handleMouseLeave}>
                 <button
                   onClick={() => {
                     if (isCollapsed) return;
-                    router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
+                    setOpenCategory(isOpen ? null : category.id);
+                    if (category.subcats.length === 0) {
+                      router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
+                    }
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
                     isActive
@@ -161,7 +167,35 @@ export default function Sidebar({ isHovered }) {
                       {category.name}
                     </span>
                   </div>
+                  {!isCollapsed && category.subcats.length > 0 && (
+                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+                  )}
                 </button>
+                
+                <AnimatePresence>
+                  {!isCollapsed && isOpen && category.subcats.length > 0 && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden ml-[32px]"
+                    >
+                      {category.subcats.map(sub => (
+                        <Link
+                          key={sub.id}
+                          href={`/market?q=${encodeURIComponent(sub.name.toLowerCase())}`}
+                          className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
+                            q === sub.name.toLowerCase()
+                              ? "text-blue-600 dark:text-blue-400 font-medium"
+                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                          }`}
+                        >
+                          {sub.name}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}
