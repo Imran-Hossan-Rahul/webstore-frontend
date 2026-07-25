@@ -79,14 +79,10 @@ export default function AdminCategoriesPage() {
 
     try {
       if (editId) {
-        await api.put(`/market/categories/${editId}`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.put(`/market/categories/${editId}`, data);
         showToast('Category updated', 'success');
       } else {
-        await api.post('/market/categories', data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.post('/market/categories', data);
         showToast('Category created', 'success');
       }
       setShowModal(false);

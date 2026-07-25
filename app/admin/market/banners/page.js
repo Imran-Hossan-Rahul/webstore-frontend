@@ -93,14 +93,10 @@ export default function AdminBannersPage() {
 
     try {
       if (editId) {
-        await api.put(`/market/banners/${editId}`, data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.put(`/market/banners/${editId}`, data);
         showToast('Banner updated', 'success');
       } else {
-        await api.post('/market/banners', data, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        await api.post('/market/banners', data);
         showToast('Banner created', 'success');
       }
       setShowModal(false);
