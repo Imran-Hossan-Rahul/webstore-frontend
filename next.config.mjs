@@ -44,6 +44,21 @@ const nextConfig = {
   },
   // ✅ OPTIMIZATION: Re-enabled font optimization (was incorrectly set to false)
   optimizeFonts: true,
+  
+  async redirects() {
+    return [
+      {
+        source: '/market',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/market/:path*',
+        destination: '/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

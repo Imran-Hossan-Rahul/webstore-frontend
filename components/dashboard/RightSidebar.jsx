@@ -76,9 +76,9 @@ export default function RightSidebar() {
     if (!isMarket) return;
     const fetchRecommended = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/v1/market/products');
-        const data = await response.json();
-        let liveProducts = data.filter(p => p.status === 'Live');
+        const response = await api.get('/market/products');
+        const productsData = response.data || [];
+        let liveProducts = productsData.filter(p => p.status === 'Live');
         const currentId = pathname.startsWith('/product/') ? pathname.split('/')[2] : null;
         if (currentId) {
             liveProducts = liveProducts.filter(p => p.id.toString() !== currentId);
