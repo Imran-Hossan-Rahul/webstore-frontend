@@ -85,7 +85,7 @@ export default function Sidebar({ isHovered }) {
   React.useEffect(() => {
     api.get('/market/categories/all')
       .then(res => {
-        if (res.data) setCategories(res.data);
+        setCategories(res.data || res || []);
       })
       .catch(err => console.error(err));
   }, []);

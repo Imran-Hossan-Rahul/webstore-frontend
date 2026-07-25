@@ -244,39 +244,42 @@ export default function MarketClientView({ initialData = [], initialPagination =
       )}
 
       {/* Shop by Categories */}
-      <div className="max-w-[1320px] mx-auto px-4 mt-8 md:mt-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl md:text-[24px] font-medium text-gray-800">Shop by Categories</h2>
-          <button className="text-[11px] font-medium text-gray-600 border border-gray-300 rounded px-3 py-1 hover:bg-gray-50">SEE ALL</button>
+      {!query && (
+        <div className="p-2 pt-6 md:p-8 md:pb-2 max-w-[1320px] mx-auto">
+          <div className="flex justify-between items-center mb-4 md:mb-6">
+            <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink">Shop by Categories</h2>
+            <button className="text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2 border border-gray-300 rounded hover:bg-gray-100 transition-colors font-medium">SEE ALL</button>
+          </div>
+          <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4">
+            {[
+              { name: 'Phones', icon: Smartphone },
+              { name: 'Tablet', icon: Tablet },
+              { name: 'Laptop', icon: Laptop },
+              { name: 'Smart Watch', icon: Watch },
+              { name: 'AirPods', icon: Headphones },
+              { name: 'Sounds', icon: Speaker },
+              { name: 'Accessories', icon: Cable },
+              { name: 'Gadgets', icon: Gamepad2 },
+              { name: 'Earbuds', icon: Headphones },
+              { name: 'Phone Cases', icon: Smartphone },
+              { name: 'Screen Protectors', icon: Shield },
+              { name: 'Over-Ear Headphones', icon: Headphones },
+              { name: 'MacBook Case', icon: Laptop },
+              { name: 'Power Banks', icon: BatteryCharging },
+              { name: 'Adapters', icon: Cable },
+              { name: 'Smart TV', icon: Tv },
+            ].map((cat, idx) => {
+              const Icon = cat.icon;
+              return (
+                <div key={idx} className="bg-gray-200/50 hover:bg-gray-200 cursor-pointer rounded-lg flex flex-col items-center justify-center p-3 md:p-5 transition-colors">
+                  <Icon size={36} strokeWidth={1.2} className="text-gray-800 mb-2 md:mb-3" />
+                  <span className="text-[10px] md:text-[13px] font-medium text-gray-800 text-center leading-tight">{cat.name}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-3 md:gap-4">
-          {[
-            { name: 'Phones', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&q=80' },
-            { name: 'Tablet', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=300&q=80' },
-            { name: 'Laptop', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&q=80' },
-            { name: 'Smart Watch', image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=300&q=80' },
-            { name: 'AirPods', image: 'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?w=300&q=80' },
-            { name: 'Sounds', image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=300&q=80' },
-            { name: 'Accessories', image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300&q=80' },
-            { name: 'Gadgets', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&q=80' },
-            { name: 'Earbuds', image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=300&q=80' },
-            { name: 'Phone Cases', image: 'https://images.unsplash.com/photo-1601593346740-925612772716?w=300&q=80' },
-            { name: 'Screen Protectors', image: 'https://images.unsplash.com/photo-1551817958-20204d6ab212?w=300&q=80' },
-            { name: 'Over-Ear Headphones', image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&q=80' },
-            { name: 'MacBook Case', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&q=80' },
-            { name: 'Power Banks', image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=300&q=80' },
-            { name: 'Adapters', image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=300&q=80' },
-            { name: 'Smart TV', image: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=300&q=80' }
-          ].map((cat, idx) => (
-            <div key={idx} className="bg-[#eeeeee] hover:bg-[#e4e4e4] cursor-pointer flex flex-col items-center justify-center p-4 transition-colors">
-              <div className="w-16 h-16 md:w-20 md:h-20 mb-3 overflow-hidden flex items-center justify-center">
-                <img src={cat.image} alt={cat.name} className="w-full h-full object-contain mix-blend-multiply" />
-              </div>
-              <span className="text-[11px] md:text-[13px] font-medium text-gray-800 text-center leading-tight">{cat.name}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
       {/* Product Grid */}
       <div className="p-2 pt-2 md:py-8 md:px-3 max-w-[1320px] mx-auto -mt-4 md:mt-2">
         <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-4 md:mb-8 text-apple-ink mt-6 md:mt-0">
