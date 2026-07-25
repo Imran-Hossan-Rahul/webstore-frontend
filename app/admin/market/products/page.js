@@ -51,7 +51,7 @@ export default function ProductsManager() {
   const fetchCategories = async () => {
     try {
       const res = await api.get('/market/categories/all');
-      setCategories(res.data || []);
+      setCategories(res.data || res || []);
     } catch (err) {
       console.error("Failed to fetch categories", err);
     }
