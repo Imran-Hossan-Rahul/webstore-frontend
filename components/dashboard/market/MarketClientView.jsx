@@ -252,22 +252,11 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
           <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2 md:gap-4">
             {[
-              { name: 'Phones', icon: Smartphone },
-              { name: 'Tablet', icon: Tablet },
-              { name: 'Laptop', icon: Laptop },
               { name: 'Smart Watch', icon: Watch },
-              { name: 'AirPods', icon: Headphones },
-              { name: 'Sounds', icon: Speaker },
-              { name: 'Accessories', icon: Cable },
-              { name: 'Gadgets', icon: Gamepad2 },
               { name: 'Earbuds', icon: Headphones },
-              { name: 'Phone Cases', icon: Smartphone },
-              { name: 'Screen Protectors', icon: Shield },
               { name: 'Over-Ear Headphones', icon: Headphones },
-              { name: 'MacBook Case', icon: Laptop },
               { name: 'Power Banks', icon: BatteryCharging },
               { name: 'Adapters', icon: Cable },
-              { name: 'Smart TV', icon: Tv },
             ].map((cat, idx) => {
               const Icon = cat.icon;
               return (
