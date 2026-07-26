@@ -55,7 +55,7 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isColl
 
 SidebarItem.displayName = "SidebarItem";
 
-export default function Sidebar({ isHovered }) {
+export default function Sidebar({ isHovered, isCollapsed = false }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -98,7 +98,6 @@ export default function Sidebar({ isHovered }) {
   
   // Safely extract 'view' parameter
   const view = searchParams?.get("view");
-  const isCollapsed = false;
 
   return (
     <aside className="h-full flex flex-col bg-transparent lg:bg-apple-canvas dark:bg-transparent lg:dark:bg-apple-canvas border-0 lg:border lg:border-apple-hairline rounded-none lg:rounded-apple-lg p-0 lg:p-3 overflow-hidden">

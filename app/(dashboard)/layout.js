@@ -121,7 +121,7 @@ export default function DashboardLayout({ children }) {
                   </button>
                 </div>
                 <div className="flex-1 overflow-hidden pb-6">
-                  <Sidebar />
+                  <Sidebar isHovered={true} isCollapsed={false} />
                 </div>
               </motion.div>
             </div>
@@ -131,26 +131,26 @@ export default function DashboardLayout({ children }) {
         <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
           {/* Left Sidebar */}
           {!isFullWidthPage && (
-            <div className={`hidden lg:block w-[260px] flex-shrink-0 transition-all duration-300 z-50`}>
+            <div className={`hidden lg:block w-[72px] flex-shrink-0 transition-all duration-300 z-50`}>
               <div 
-                className={`fixed top-16 bottom-6 w-[260px] overflow-y-auto scrollbar-hide transition-all duration-300 z-50`}
+                className={`fixed top-16 bottom-6 w-[72px] hover:w-[260px] overflow-x-hidden overflow-y-auto scrollbar-hide transition-all duration-300 z-50 bg-[#fafafa] dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 rounded-r-3xl`}
                 onMouseEnter={() => setIsSidebarHovered(true)}
                 onMouseLeave={() => setIsSidebarHovered(false)}
               >
-                <Sidebar isHovered={isSidebarHovered} />
+                <Sidebar isHovered={isSidebarHovered} isCollapsed={!isSidebarHovered} />
               </div>
             </div>
           )}
 
           {/* Main Content Area */}
-          <main className={`flex-1 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-260px)] xl:w-[calc(100%-300px-260px-2rem)]' : 'w-full'}`}>
+          <main className={`flex-1 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-72px)] xl:w-[calc(100%-240px-72px-2rem)]' : 'w-full'}`}>
             {children}
           </main>
 
           {/* Right Sidebar */}
           {!isFullWidthPage && !hideRightSidebar && (
-            <div className="hidden xl:block w-[300px] flex-shrink-0">
-                 <div className="fixed top-16 bottom-6 w-[300px] overflow-y-auto scrollbar-hide">
+            <div className="hidden xl:block w-[240px] flex-shrink-0">
+                 <div className="fixed top-16 bottom-6 w-[240px] overflow-y-auto scrollbar-hide">
                      <RightSidebar />
                  </div>
             </div>

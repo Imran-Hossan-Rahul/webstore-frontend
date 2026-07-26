@@ -57,6 +57,31 @@ const GlassNavbar = ({
     else setSearchType('all');
   }, [pathname]);
 
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+        const cartStr = localStorage.getItem('cartIds');
+        if (cartStr) {
+          try {
+            const cartIds = JSON.parse(cartStr);
+            setCartCount(Array.isArray(cartIds) ? cartIds.length : 0);
+          } catch(e) {
+            setCartCount(0);
+          }
+        } else {
+          setCartCount(0);
+        }
+    };
+    updateCartCount();
+    window.addEventListener('addedToCart', updateCartCount);
+    window.addEventListener('cartUpdated', updateCartCount);
+    return () => {
+      window.removeEventListener('addedToCart', updateCartCount);
+      window.removeEventListener('cartUpdated', updateCartCount);
+    };
+  }, []);
+
   // Sync counts from props or fetch initially
   useEffect(() => {
     if (isGuest) return;
@@ -293,6 +318,20 @@ const GlassNavbar = ({
         {/* Right Section */}
         <div className="flex items-center gap-2 sm:gap-4">
 
+            {/* Cart and Orders Links */}
+            <div className="hidden sm:flex items-center gap-2">
+              <Link href="/cart" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative group flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                {cartCount > 0 && (
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+              <Link href="/orders" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </Link>
+            </div>
 
             <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-2 sm:pr-4">
                 
