@@ -128,7 +128,7 @@ export default function DashboardLayout({ children }) {
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
+        <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-1 min-h-screen max-w-[1800px] mx-auto">
           {/* Left Sidebar */}
           {!isFullWidthPage && (
             <div className={`hidden lg:block w-[72px] flex-shrink-0 transition-all duration-300 z-50`}>
@@ -143,7 +143,7 @@ export default function DashboardLayout({ children }) {
           )}
 
           {/* Main Content Area */}
-          <main className={`flex-1 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-72px)] xl:w-[calc(100%-240px-72px-2rem)]' : 'w-full'}`}>
+          <main className={`flex-1 min-w-0 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-72px-4px)] xl:w-[calc(100%-240px-72px-8px)]' : 'w-full'}`}>
             {children}
           </main>
 
