@@ -831,9 +831,9 @@ export default function RightSidebar() {
     return (
       <aside className="h-full flex flex-col gap-6 pb-10">
         {/* Flash Deals Widget */}
-        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
+        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
            <div className="flex items-center justify-between mb-4">
-             <h3 className="text-[12px] font-bold text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
+             <h3 className="text-[12px] font-bold font-sans text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
                <Zap size={14} className="fill-[#ff3b30]" /> Flash Deals
              </h3>
              <div className="bg-[#ff3b30]/10 text-[#ff3b30] text-[11px] font-mono px-2 py-1 rounded-[4px] flex items-center gap-1">
@@ -853,14 +853,14 @@ export default function RightSidebar() {
                      {photoUrl ? (
                        <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                      ) : (
-                       <div className="w-full h-full flex items-center justify-center text-[10px] text-apple-muted bg-white dark:bg-black">Img</div>
+                       <div className="w-full h-full flex items-center justify-center text-[10px] font-sans text-apple-muted bg-white dark:bg-black">Img</div>
                      )}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-semibold text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                     <h4 className="text-[13px] font-semibold font-sans text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
                      <div className="flex items-center gap-2">
-                       <p className="text-[12px] font-semibold text-[#ff3b30]">BDT {Math.floor(product.selling_price * 0.8)}</p>
-                       <p className="text-[11px] font-medium text-apple-muted line-through">BDT {product.selling_price}</p>
+                       <p className="text-[12px] font-semibold font-sans text-[#ff3b30]">BDT {Math.floor(product.selling_price * 0.8)}</p>
+                       <p className="text-[11px] font-medium font-sans text-apple-muted line-through">BDT {product.selling_price}</p>
                      </div>
                    </div>
                  </Link>
@@ -870,8 +870,8 @@ export default function RightSidebar() {
         </div>
 
         {/* Trending Now Widget */}
-        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
-           <h3 className="text-[12px] font-bold text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
+        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
+           <h3 className="text-[12px] font-bold font-sans text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
              <TrendingUp size={14} /> Trending Now
            </h3>
            <div className="flex flex-col">
@@ -883,13 +883,13 @@ export default function RightSidebar() {
                   
                return (
                  <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center py-3 border-b border-apple-hairline last:border-0 last:pb-0 transition-all">
-                   <span className="text-[15px] font-bold text-apple-muted w-3">{idx + 1}</span>
+                   <span className="text-[15px] font-bold font-sans text-apple-muted w-3">{idx + 1}</span>
                    <div className="w-10 h-10 rounded-[8px] bg-white dark:bg-black flex-shrink-0 overflow-hidden border border-apple-hairline relative">
                      {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-semibold text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
-                     <p className="text-[12px] font-medium text-apple-secondary">BDT {product.selling_price}</p>
+                     <h4 className="text-[13px] font-semibold font-sans text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                     <p className="text-[12px] font-medium font-sans text-apple-secondary">BDT {product.selling_price}</p>
                    </div>
                  </Link>
                );
@@ -898,7 +898,7 @@ export default function RightSidebar() {
         </div>
 
         {/* Brand Spotlight */}
-        <div className="bg-[#272729] rounded-apple-lg p-6 relative overflow-hidden group cursor-pointer text-white">
+        <div className="shrink-0 bg-[#272729] rounded-apple-lg p-6 relative overflow-hidden group cursor-pointer text-white">
            <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
               <img src="/geeoo-banner.jpg" alt="GEEOO" className="w-full h-full object-cover" />
            </div>
@@ -906,24 +906,24 @@ export default function RightSidebar() {
              <div className="w-12 h-12 bg-white rounded-[11px] flex items-center justify-center p-2 mb-3 shadow-[3px_5px_30px_rgba(0,0,0,0.22)]">
                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
              </div>
-             <h3 className="text-white text-[17px] font-semibold tracking-[-0.015em] mb-1">Brand Spotlight</h3>
-             <p className="text-[#86868b] text-[12px] font-bold uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
-             <button className="bg-[#fafafc] text-[#333] border-[3px] border-[rgba(0,0,0,0.04)] text-[14px] font-semibold px-[14px] py-[8px] rounded-[11px] hover:bg-white transition-colors">
+             <h3 className="text-white text-[17px] font-semibold font-sans tracking-[-0.015em] mb-1">Brand Spotlight</h3>
+             <p className="text-[#86868b] text-[12px] font-bold font-sans uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
+             <button className="bg-[#fafafc] text-[#333] border-[3px] border-[rgba(0,0,0,0.04)] text-[14px] font-semibold font-sans px-[14px] py-[8px] rounded-[11px] hover:bg-white transition-colors">
                Explore Store
              </button>
            </div>
         </div>
 
         {/* Today's Offer */}
-        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 flex flex-col items-center text-center relative overflow-hidden">
-           <h3 className="text-[12px] font-bold text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
+        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 flex flex-col items-center text-center relative overflow-hidden">
+           <h3 className="text-[12px] font-bold font-sans text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
              <Gift size={14} /> Today's Offer
            </h3>
-           <h4 className="text-[24px] font-semibold text-apple-ink tracking-[-0.015em] leading-[1.1] mb-2 mt-2">Get 20% OFF<br/>on Audio Gear</h4>
+           <h4 className="text-[24px] font-semibold font-sans text-apple-ink tracking-[-0.015em] leading-[1.1] mb-2 mt-2">Get 20% OFF<br/>on Audio Gear</h4>
            <div className="font-mono bg-white dark:bg-black border border-apple-hairline px-2 py-1 rounded-[4px] text-[12px] mb-4 text-apple-secondary mt-2">
              Use code: AUDIO20
            </div>
-           <button className="bg-[#0071e3] text-white text-[17px] font-normal px-[15px] py-[8px] rounded-apple-pill w-full hover:opacity-80 transition-opacity mt-2">
+           <button className="bg-[#0071e3] text-white text-[17px] font-sans font-normal px-[15px] py-[8px] rounded-apple-pill w-full hover:opacity-80 transition-opacity mt-2">
              Claim Offer
            </button>
         </div>
