@@ -133,7 +133,7 @@ export default function DashboardLayout({ children }) {
           {!isFullWidthPage && (
             <div className={`hidden lg:block w-[72px] flex-shrink-0 transition-all duration-300 z-50`}>
               <div 
-                className={`fixed top-16 bottom-6 w-[72px] hover:w-[260px] overflow-x-hidden overflow-y-auto scrollbar-hide transition-all duration-300 z-50 bg-[#fafafa] dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 rounded-r-3xl`}
+                className={`fixed top-16 bottom-6 w-[72px] hover:w-[260px] overflow-x-hidden overflow-y-auto scrollbar-hide transition-all duration-300 z-50 bg-transparent`}
                 onMouseEnter={() => setIsSidebarHovered(true)}
                 onMouseLeave={() => setIsSidebarHovered(false)}
               >
