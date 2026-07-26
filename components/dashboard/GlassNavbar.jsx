@@ -365,7 +365,7 @@ const GlassNavbar = ({
             ) : (
               <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group">
                   <div className="text-right hidden xl:block">
-                      <div className="text-[14px] font-semibold text-apple-ink dark:text-apple-ink font-sans leading-tight">{user?.name}</div>
+                      <div className="text-[14px] font-normal text-apple-ink dark:text-apple-ink font-sans leading-tight">{user?.name}</div>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                       {user?.profilePicture ? (
