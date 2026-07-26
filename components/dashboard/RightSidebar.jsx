@@ -833,10 +833,10 @@ export default function RightSidebar() {
         {/* Flash Deals Widget */}
         <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
            <div className="flex items-center justify-between mb-4">
-             <h3 className="text-[10px] font-bold text-red-500 uppercase tracking-widest flex items-center gap-1.5">
-               <Zap size={14} className="fill-current" /> Flash Deals
+             <h3 className="text-[12px] font-bold text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
+               <Zap size={14} className="fill-[#ff3b30]" /> Flash Deals
              </h3>
-             <div className="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+             <div className="bg-[#ff3b30]/10 text-[#ff3b30] text-[11px] font-mono px-2 py-1 rounded-[4px] flex items-center gap-1">
                <Clock size={10} /> 12:45:00
              </div>
            </div>
@@ -848,19 +848,19 @@ export default function RightSidebar() {
                   : photo;
                   
                return (
-                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center -mx-2 px-2 rounded-xl transition-all">
-                   <div className="w-12 h-12 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
+                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center transition-all">
+                   <div className="w-12 h-12 rounded-[8px] bg-white dark:bg-black flex-shrink-0 overflow-hidden border border-apple-hairline relative">
                      {photoUrl ? (
                        <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                      ) : (
-                       <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 bg-slate-100">Img</div>
+                       <div className="w-full h-full flex items-center justify-center text-[10px] text-apple-muted bg-white dark:bg-black">Img</div>
                      )}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[12px] font-bold text-slate-900 dark:text-white mb-0.5 truncate group-hover:text-red-500 transition-colors">{product.title}</h4>
+                     <h4 className="text-[13px] font-semibold text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
                      <div className="flex items-center gap-2">
-                       <p className="text-[11px] font-bold text-red-500">BDT {Math.floor(product.selling_price * 0.8)}</p>
-                       <p className="text-[10px] font-medium text-slate-400 line-through">BDT {product.selling_price}</p>
+                       <p className="text-[12px] font-semibold text-[#ff3b30]">BDT {Math.floor(product.selling_price * 0.8)}</p>
+                       <p className="text-[11px] font-medium text-apple-muted line-through">BDT {product.selling_price}</p>
                      </div>
                    </div>
                  </Link>
@@ -871,10 +871,10 @@ export default function RightSidebar() {
 
         {/* Trending Now Widget */}
         <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
-           <h3 className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+           <h3 className="text-[12px] font-bold text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
              <TrendingUp size={14} /> Trending Now
            </h3>
-           <div className="space-y-4">
+           <div className="flex flex-col">
              {recommendedProducts.slice(2, 5).map((product, idx) => {
                const photo = product.photos && JSON.parse(product.photos)[0];
                const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
@@ -882,14 +882,14 @@ export default function RightSidebar() {
                   : photo;
                   
                return (
-                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center -mx-2 px-2 rounded-xl transition-all">
-                   <span className="text-[12px] font-black text-slate-300 w-3">{idx + 1}</span>
-                   <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
+                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center py-3 border-b border-apple-hairline last:border-0 last:pb-0 transition-all">
+                   <span className="text-[15px] font-bold text-apple-muted w-3">{idx + 1}</span>
+                   <div className="w-10 h-10 rounded-[8px] bg-white dark:bg-black flex-shrink-0 overflow-hidden border border-apple-hairline relative">
                      {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[11px] font-bold text-slate-900 dark:text-white mb-0.5 truncate group-hover:text-indigo-500 transition-colors">{product.title}</h4>
-                     <p className="text-[10px] font-bold text-slate-500">BDT {product.selling_price}</p>
+                     <h4 className="text-[13px] font-semibold text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                     <p className="text-[12px] font-medium text-apple-secondary">BDT {product.selling_price}</p>
                    </div>
                  </Link>
                );
@@ -898,30 +898,32 @@ export default function RightSidebar() {
         </div>
 
         {/* Brand Spotlight */}
-        <div className="bg-gradient-to-br from-slate-900 to-black border border-apple-hairline rounded-apple-lg p-5 relative overflow-hidden group cursor-pointer">
+        <div className="bg-[#272729] rounded-apple-lg p-6 relative overflow-hidden group cursor-pointer text-white">
            <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
-              <img src="/geeoo-banner.jpg" alt="GEEOO" className="w-full h-full object-cover blur-[2px]" />
+              <img src="/geeoo-banner.jpg" alt="GEEOO" className="w-full h-full object-cover" />
            </div>
            <div className="relative z-10 flex flex-col items-center text-center py-2">
-             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center p-2 mb-3 shadow-lg shadow-black/50">
+             <div className="w-12 h-12 bg-white rounded-[11px] flex items-center justify-center p-2 mb-3 shadow-[3px_5px_30px_rgba(0,0,0,0.22)]">
                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
              </div>
-             <h3 className="text-white text-[13px] font-bold tracking-tight mb-1">Brand Spotlight</h3>
-             <p className="text-slate-400 text-[9px] font-bold uppercase tracking-[0.15em] mb-4">GEEOO Premium Gear</p>
-             <button className="bg-white/10 text-white border border-white/20 text-[10px] font-bold px-4 py-1.5 rounded-full hover:bg-white hover:text-black transition-colors">
+             <h3 className="text-white text-[17px] font-semibold tracking-[-0.015em] mb-1">Brand Spotlight</h3>
+             <p className="text-[#86868b] text-[12px] font-bold uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
+             <button className="bg-[#fafafc] text-[#333] border-[3px] border-[rgba(0,0,0,0.04)] text-[14px] font-semibold px-[14px] py-[8px] rounded-[11px] hover:bg-white transition-colors">
                Explore Store
              </button>
            </div>
         </div>
 
         {/* Today's Offer */}
-        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 rounded-apple-lg p-5 relative overflow-hidden">
-           <h3 className="text-[10px] font-bold text-amber-700 dark:text-amber-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 flex flex-col items-center text-center relative overflow-hidden">
+           <h3 className="text-[12px] font-bold text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
              <Gift size={14} /> Today's Offer
            </h3>
-           <h4 className="text-amber-900 dark:text-amber-100 text-lg font-black leading-tight mb-1">Get 20% OFF<br/>on Audio Gear</h4>
-           <p className="text-amber-700/80 dark:text-amber-500/80 text-[11px] font-bold mb-4">Use code: AUDIO20</p>
-           <button className="bg-amber-500 text-white text-[11px] font-bold px-4 py-2 rounded-apple-pill uppercase tracking-wider hover:bg-amber-600 transition-colors w-full">
+           <h4 className="text-[24px] font-semibold text-apple-ink tracking-[-0.015em] leading-[1.1] mb-2 mt-2">Get 20% OFF<br/>on Audio Gear</h4>
+           <div className="font-mono bg-white dark:bg-black border border-apple-hairline px-2 py-1 rounded-[4px] text-[12px] mb-4 text-apple-secondary mt-2">
+             Use code: AUDIO20
+           </div>
+           <button className="bg-[#0071e3] text-white text-[17px] font-normal px-[15px] py-[8px] rounded-apple-pill w-full hover:opacity-80 transition-opacity mt-2">
              Claim Offer
            </button>
         </div>
