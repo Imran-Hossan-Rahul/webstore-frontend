@@ -35,6 +35,15 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [heroSlides, setHeroSlides] = useState([]);
 
   useEffect(() => {
+    const appleStyleBanner = {
+      isAppleStyle: true,
+      title: "iPad air",
+      subtitle: "Now supercharged by M4.",
+      image: "https://www.apple.com/v/ipad-air/y/images/overview/hero/hero_ipad_air__cx8pdvymdm2m_large_2x.png",
+      bgColor: "bg-gradient-to-b from-[#d1e8f5] to-[#f5f7f8]",
+      link: "#"
+    };
+
     const geeooBanner = {
       image: "/geeoo-banner.jpg",
       titleTop: "GEEOO",
@@ -42,7 +51,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
       link: "#",
       isFullBanner: true
     };
-    setHeroSlides([geeooBanner]);
+    
+    setHeroSlides([appleStyleBanner, geeooBanner]);
     
     api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
@@ -172,9 +182,23 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 key={idx}
                 className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? 'opacity-100' : 'opacity-0 z-0'} ${idx === currentSlide ? 'z-10' : ''}`}
               >
-                {slide.isFullBanner ? (
-                  <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full">
-                    <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-contain z-10" />
+                {slide.isAppleStyle ? (
+                  <div className={`absolute inset-0 flex flex-col items-center justify-between w-full h-full ${slide.bgColor}`}>
+                    <div className="pt-10 md:pt-16 px-4 text-center z-20 flex flex-col items-center">
+                      <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-2 font-sans">{slide.title}</h1>
+                      <p className="text-lg md:text-2xl font-normal text-gray-800 tracking-tight mb-5">{slide.subtitle}</p>
+                      <div className="flex gap-4 items-center justify-center">
+                        <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-5 py-2 rounded-full font-sans text-[15px] font-normal hover:bg-[#0055b3] transition-colors">Learn more</Link>
+                        <Link href={slide.link || '#'} className="bg-transparent border border-[#0066CC] text-[#0066CC] px-5 py-2 rounded-full font-sans text-[15px] font-normal hover:bg-[#0066CC] hover:text-white transition-colors">Buy</Link>
+                      </div>
+                    </div>
+                    <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pb-0">
+                      <img src={slide.image} alt={slide.title} className="w-[90%] md:w-[70%] lg:w-[60%] h-auto object-contain max-h-[85%] z-10 drop-shadow-2xl translate-y-6 md:translate-y-10" />
+                    </div>
+                  </div>
+                ) : slide.isFullBanner ? (
+                  <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-black">
+                    <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-cover md:object-contain z-10" />
                   </Link>
                 ) : (
                   <>
