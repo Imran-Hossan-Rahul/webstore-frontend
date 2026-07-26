@@ -284,7 +284,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
             {displayedProducts.map(product => (
               <div key={product.id} className="bg-apple-parchment rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
-              <Link href={`/product/${product.id}`} className="absolute inset-0 z-0"></Link>
+              <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
               {product.photos && JSON.parse(product.photos)[0] ? (
                 <div className="aspect-square w-full bg-transparent flex items-center justify-center p-4 md:p-8 overflow-hidden relative transition-colors duration-300">
                   <img 
@@ -297,7 +297,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                   {(user?.role === 'admin' || user?.role === 'superadmin') && (
                     <Link 
                       href={`/admin/market/products?edit=${product.id}`}
-                      className="absolute top-2 right-2 bg-white/90 p-2 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-md z-10"
+                      className="absolute top-2 right-2 bg-white/90 p-2 rounded-full text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-md z-20"
                       onClick={(e) => e.stopPropagation()}
                       title="Edit Product"
                     >
@@ -318,7 +318,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                     <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
                   )}
                 </div>
-                <div className="w-full flex flex-col xl:flex-row gap-3 mt-auto relative z-10">
+                <div className="w-full flex flex-col xl:flex-row gap-3 mt-auto relative z-20">
                   <button 
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                     className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center"
