@@ -345,11 +345,11 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
                   <button 
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                    className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center"
+                    className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] active:bg-[#004085] flex items-center justify-center"
                   >
                     Add to Cart
                   </button>
-                  <Link href={`/product/${product.id}`} className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center">
+                  <Link href={`/product/${product.id}`} className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white active:bg-[#0055b3] active:text-white flex items-center justify-center">
                     View
                   </Link>
                 </div>
