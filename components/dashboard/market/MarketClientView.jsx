@@ -286,7 +286,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div key={product.id} className="bg-apple-parchment rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
               <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
               {product.photos && JSON.parse(product.photos)[0] ? (
-                <div className="aspect-square w-full bg-transparent flex items-center justify-center p-4 md:p-8 overflow-hidden relative transition-colors duration-300">
+                <div className="aspect-square w-full bg-transparent flex items-center justify-center p-2 md:p-4 overflow-hidden relative transition-colors duration-300">
                   <img 
                     src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
                     alt={product.title} 
@@ -310,9 +310,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
                   No Image
                 </div>
               )}
-              <div className="p-4 md:p-6 flex flex-col flex-1 items-center bg-apple-parchment text-center">
-                <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-2 md:mb-3 line-clamp-2">{product.title}</h3>
-                <div className="flex justify-center items-center gap-2 mb-4 md:mb-6 flex-1">
+              <div className="p-3 md:p-4 flex flex-col flex-1 items-center bg-apple-parchment text-center">
+                <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2">{product.title}</h3>
+                <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
                   <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
                   {product.original_price && product.original_price > product.selling_price && (
                     <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
