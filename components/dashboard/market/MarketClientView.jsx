@@ -281,7 +281,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
             <p className="text-gray-500 mt-2">Try adjusting your search query</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5">
             {displayedProducts.map(product => (
               <div key={product.id} className="bg-apple-parchment rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
               <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
