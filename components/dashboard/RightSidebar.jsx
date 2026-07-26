@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe, Gift, FileText, ShoppingCart, Check } from "lucide-react";
+import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe, Gift, FileText, ShoppingCart, Check, Zap, Clock, Award } from "lucide-react";
 import { api } from "@/utils/api";
 import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -830,38 +830,100 @@ export default function RightSidebar() {
   if (isMarket) {
     return (
       <aside className="h-full flex flex-col gap-6 pb-10">
-        {/* Recommended Products Widget (Algorithm) */}
-        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 mt-4">
-           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-             <Star size={14} className="text-[#111827]" /> Related Products
-           </h3>
+        {/* Flash Deals Widget */}
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
+           <div className="flex items-center justify-between mb-4">
+             <h3 className="text-[10px] font-bold text-red-500 uppercase tracking-widest flex items-center gap-1.5">
+               <Zap size={14} className="fill-current" /> Flash Deals
+             </h3>
+             <div className="bg-red-100 text-red-600 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+               <Clock size={10} /> 12:45:00
+             </div>
+           </div>
            <div className="space-y-4">
-             {recommendedProducts.map((product) => {
+             {recommendedProducts.slice(0, 2).map((product) => {
                const photo = product.photos && JSON.parse(product.photos)[0];
                const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
                   ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
                   : photo;
                   
                return (
-                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-4 group items-center p-2 -m-2 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
-                   <div className="w-16 h-16 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
+                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center -mx-2 px-2 rounded-xl transition-all">
+                   <div className="w-12 h-12 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
                      {photoUrl ? (
-                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:opacity-80 transition duration-500" />
+                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                      ) : (
                        <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400 bg-slate-100">Img</div>
                      )}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 truncate group-hover:text-[#111827] transition-colors">{product.title}</h4>
-                     <p className="text-[12px] font-bold text-slate-600 dark:text-slate-300">BDT {product.selling_price}</p>
+                     <h4 className="text-[12px] font-bold text-slate-900 dark:text-white mb-0.5 truncate group-hover:text-red-500 transition-colors">{product.title}</h4>
+                     <div className="flex items-center gap-2">
+                       <p className="text-[11px] font-bold text-red-500">BDT {Math.floor(product.selling_price * 0.8)}</p>
+                       <p className="text-[10px] font-medium text-slate-400 line-through">BDT {product.selling_price}</p>
+                     </div>
                    </div>
                  </Link>
                );
              })}
-             {recommendedProducts.length === 0 && (
-               <div className="text-center text-[11px] text-slate-400 py-4 animate-pulse">Analyzing preferences...</div>
-             )}
            </div>
+        </div>
+
+        {/* Trending Now Widget */}
+        <div className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
+           <h3 className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+             <TrendingUp size={14} /> Trending Now
+           </h3>
+           <div className="space-y-4">
+             {recommendedProducts.slice(2, 5).map((product, idx) => {
+               const photo = product.photos && JSON.parse(product.photos)[0];
+               const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
+                  ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
+                  : photo;
+                  
+               return (
+                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center -mx-2 px-2 rounded-xl transition-all">
+                   <span className="text-[12px] font-black text-slate-300 w-3">{idx + 1}</span>
+                   <div className="w-10 h-10 rounded-lg bg-gray-100 flex-shrink-0 overflow-hidden border border-gray-100 relative">
+                     {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
+                   </div>
+                   <div className="flex-1 min-w-0">
+                     <h4 className="text-[11px] font-bold text-slate-900 dark:text-white mb-0.5 truncate group-hover:text-indigo-500 transition-colors">{product.title}</h4>
+                     <p className="text-[10px] font-bold text-slate-500">BDT {product.selling_price}</p>
+                   </div>
+                 </Link>
+               );
+             })}
+           </div>
+        </div>
+
+        {/* Brand Spotlight */}
+        <div className="bg-gradient-to-br from-slate-900 to-black border border-apple-hairline rounded-apple-lg p-5 relative overflow-hidden group cursor-pointer">
+           <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
+              <img src="/geeoo-banner.jpg" alt="GEEOO" className="w-full h-full object-cover blur-[2px]" />
+           </div>
+           <div className="relative z-10 flex flex-col items-center text-center py-2">
+             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center p-2 mb-3 shadow-lg shadow-black/50">
+               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
+             </div>
+             <h3 className="text-white text-[13px] font-bold tracking-tight mb-1">Brand Spotlight</h3>
+             <p className="text-slate-400 text-[9px] font-bold uppercase tracking-[0.15em] mb-4">GEEOO Premium Gear</p>
+             <button className="bg-white/10 text-white border border-white/20 text-[10px] font-bold px-4 py-1.5 rounded-full hover:bg-white hover:text-black transition-colors">
+               Explore Store
+             </button>
+           </div>
+        </div>
+
+        {/* Today's Offer */}
+        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/30 rounded-apple-lg p-5 relative overflow-hidden">
+           <h3 className="text-[10px] font-bold text-amber-700 dark:text-amber-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+             <Gift size={14} /> Today's Offer
+           </h3>
+           <h4 className="text-amber-900 dark:text-amber-100 text-lg font-black leading-tight mb-1">Get 20% OFF<br/>on Audio Gear</h4>
+           <p className="text-amber-700/80 dark:text-amber-500/80 text-[11px] font-bold mb-4">Use code: AUDIO20</p>
+           <button className="bg-amber-500 text-white text-[11px] font-bold px-4 py-2 rounded-apple-pill uppercase tracking-wider hover:bg-amber-600 transition-colors w-full">
+             Claim Offer
+           </button>
         </div>
 
         {/* Cart Success Toast */}
