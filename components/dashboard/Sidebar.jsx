@@ -28,12 +28,12 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isColl
           />
         </div>
       )}
-      <span className={`text-[14px] font-sans tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${active ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:w-0' : 'opacity-100 w-auto'}`}>
+      <span className={`text-[14px] font-sans tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 ${active ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
         {label}
       </span>
       {count && (
         <span
-          className={`ml-auto shrink-0 relative z-10 text-[12px] font-sans font-bold px-[8px] py-[2px] rounded-apple-pill transition-all duration-300 ${isCollapsed ? 'lg:opacity-0 lg:w-0 lg:px-0 lg:overflow-hidden' : 'opacity-100'} ${
+          className={`ml-auto shrink-0 relative z-10 text-[12px] font-sans font-bold py-[2px] rounded-apple-pill overflow-hidden transition-all duration-300 flex items-center justify-center ${isCollapsed ? 'lg:opacity-0 lg:max-w-0 lg:px-0 lg:border-0 lg:m-0' : 'opacity-100 lg:max-w-[40px] px-[8px]'} ${
             active
               ? "bg-white text-apple-ink dark:bg-black dark:text-white shadow-sm"
               : "bg-apple-parchment dark:bg-[#1c1c1e] text-apple-muted"
@@ -160,14 +160,14 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                       : "text-apple-ink dark:text-white hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e]"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-[18px] h-[18px] opacity-80" />
-                    <span className={`text-[14px] font-sans ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'hidden' : 'block'}`}>
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
+                    <span className={`text-[14px] font-sans whitespace-nowrap transition-all duration-300 ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
                       {category.name}
                     </span>
                   </div>
-                  {!isCollapsed && category.subcats.length > 0 && (
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-90' : ''}`} />
+                  {category.subcats.length > 0 && (
+                    <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${isOpen ? 'rotate-90' : ''} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0 lg:scale-0 lg:ml-0' : 'opacity-100 lg:max-w-[20px] lg:scale-100 ml-auto'}`} />
                   )}
                 </button>
                 
