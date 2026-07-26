@@ -160,7 +160,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 w-full flex flex-col lg:flex-row gap-2 md:gap-4">
           {/* Main Banner Slider */}
-          <div className="lg:w-2/3 w-full aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] bg-[#1a1a1a] rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
+          <div className="lg:w-2/3 w-full aspect-square md:aspect-auto md:h-[400px] lg:h-[600px] bg-[#1a1a1a] rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
             
             {heroSlides.map((slide, idx) => (
               <div 
