@@ -286,12 +286,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div key={product.id} className="bg-apple-parchment rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
               <Link href={`/product/${product.id}`} className="absolute inset-0 z-0"></Link>
               {product.photos && JSON.parse(product.photos)[0] ? (
-                <div className="aspect-square w-full bg-[#f5f5f7] flex items-center justify-center p-4 md:p-8 overflow-hidden relative transition-colors duration-300">
+                <div className="aspect-square w-full bg-transparent flex items-center justify-center p-4 md:p-8 overflow-hidden relative transition-colors duration-300">
                   <img 
                     src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
                     alt={product.title} 
                     loading="lazy"
-                    className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 ease-in-out group-hover:shadow-product"
+                    className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 ease-in-out"
                   />
 
                   {(user?.role === 'admin' || user?.role === 'superadmin') && (
