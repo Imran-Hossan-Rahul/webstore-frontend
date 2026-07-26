@@ -158,7 +158,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
       {/* Hero Banners */}
       {!query && (
-        <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 max-w-[1320px] mx-auto flex flex-col lg:flex-row gap-2 md:gap-4">
+        <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 w-full flex flex-col lg:flex-row gap-2 md:gap-4">
           {/* Main Banner Slider */}
           <div className="lg:w-2/3 w-full aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] bg-[#1a1a1a] rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
             
@@ -242,7 +242,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
       {/* Shop by Categories */}
       {!query && (
-        <div className="p-2 pt-6 md:p-8 md:pb-2 max-w-[1320px] mx-auto">
+        <div className="p-2 pt-6 md:p-8 md:pb-2 w-full">
           <div className="mb-4 md:mb-6">
             <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink">Shop by Categories</h2>
           </div>
@@ -266,7 +266,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       )}
       {/* Product Grid */}
-      <div className="p-2 pt-2 md:py-8 md:px-3 max-w-[1320px] mx-auto -mt-4 md:mt-2">
+      <div className="p-2 pt-2 md:py-8 md:px-3 w-full -mt-4 md:mt-2">
         <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-4 md:mb-8 text-apple-ink mt-6 md:mt-0">
           {query ? `Search Results for "${searchParams.get('q')}"` : "Featured Products"}
         </h2>
