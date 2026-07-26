@@ -338,7 +338,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2">{product.title}</h3>
                 <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
                   <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
-                  {product.original_price && product.original_price > product.selling_price && (
+                  {Number(product.original_price) > Number(product.selling_price) && (
                     <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
                   )}
                 </div>
