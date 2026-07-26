@@ -13,8 +13,8 @@ export default async function Home() {
     
     try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
-        // Fetch first page on the server (SSR) with 60 second cache revalidation
-        const res = await fetch(`${apiUrl}/market/products?page=1&limit=12`, { next: { revalidate: 60 } }); 
+        // Fetch first page on the server (SSR) with no cache to ensure live data
+        const res = await fetch(`${apiUrl}/market/products?page=1&limit=12`, { cache: 'no-store' }); 
         
         if (res.ok) {
             const data = await res.json();
