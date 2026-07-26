@@ -30,7 +30,7 @@ const GlassNavbar = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, isGuest, logout } = useUser();
+  const { user, isGuest, logout, loading } = useUser();
   const [searchFocused, setSearchFocused] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showCreateDropdown, setShowCreateDropdown] = useState(false);
@@ -352,21 +352,26 @@ const GlassNavbar = ({
                 </div>
             </div>
 
-            {isGuest ? (
+            {loading ? (
+              <div className="flex items-center gap-3 z-50 relative">
+                 <div className="hidden xl:block w-24 h-4 bg-slate-200 dark:bg-slate-800 rounded animate-pulse"></div>
+                 <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+              </div>
+            ) : isGuest ? (
               <div className="flex items-center gap-2 sm:gap-3 z-50 relative">
                 <Link href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity">Log in</Link>
                 <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</Link>
               </div>
             ) : (
-              <div onClick={() => router.push(`/u/${user.username}`)} className="flex items-center gap-3 cursor-pointer group">
+              <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group">
                   <div className="text-right hidden xl:block">
-                      <div className="text-[14px] font-semibold text-apple-ink dark:text-apple-ink font-sans leading-tight">{user.name}</div>
+                      <div className="text-[14px] font-semibold text-apple-ink dark:text-apple-ink font-sans leading-tight">{user?.name}</div>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
-                      {user.profilePicture ? (
+                      {user?.profilePicture ? (
                         <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold">{user.name?.[0]}</div>
+                        <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold">{user?.name?.[0]}</div>
                       )}
                   </div>
               </div>
