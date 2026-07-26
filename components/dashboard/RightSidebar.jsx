@@ -833,7 +833,7 @@ export default function RightSidebar() {
         {/* Flash Deals Widget */}
         <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
            <div className="flex items-center justify-between mb-4">
-             <h3 className="text-[12px] font-bold font-sans text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
+             <h3 className="text-[12px] font-semibold font-sans text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
                <Zap size={14} className="fill-[#ff3b30]" /> Flash Deals
              </h3>
              <div className="bg-[#ff3b30]/10 text-[#ff3b30] text-[11px] font-mono px-2 py-1 rounded-[4px] flex items-center gap-1">
@@ -871,7 +871,7 @@ export default function RightSidebar() {
 
         {/* Trending Now Widget */}
         <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
-           <h3 className="text-[12px] font-bold font-sans text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
+           <h3 className="text-[12px] font-semibold font-sans text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
              <TrendingUp size={14} /> Trending Now
            </h3>
            <div className="flex flex-col">
@@ -907,7 +907,7 @@ export default function RightSidebar() {
                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
              </div>
              <h3 className="text-white text-[17px] font-semibold font-sans tracking-[-0.015em] mb-1">Brand Spotlight</h3>
-             <p className="text-[#86868b] text-[12px] font-bold font-sans uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
+             <p className="text-[#86868b] text-[12px] font-semibold font-sans uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
              <button className="bg-[#fafafc] text-[#333] border-[3px] border-[rgba(0,0,0,0.04)] text-[14px] font-semibold font-sans px-[14px] py-[8px] rounded-[11px] hover:bg-white transition-colors">
                Explore Store
              </button>
@@ -916,7 +916,7 @@ export default function RightSidebar() {
 
         {/* Today's Offer */}
         <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 flex flex-col items-center text-center relative overflow-hidden">
-           <h3 className="text-[12px] font-bold font-sans text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
+           <h3 className="text-[12px] font-semibold font-sans text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
              <Gift size={14} /> Today's Offer
            </h3>
            <h4 className="text-[24px] font-semibold font-sans text-apple-ink tracking-[-0.015em] leading-[1.1] mb-2 mt-2">Get 20% OFF<br/>on Audio Gear</h4>
