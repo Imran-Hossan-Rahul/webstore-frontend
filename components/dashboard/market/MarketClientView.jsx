@@ -51,7 +51,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
         setCategories(res.data || res || []);
       })
       .catch(err => console.error("Failed to load categories:", err));
-  }, []);
+
+    // Fallback: If SSR failed (common on Windows local with IPv6 localhost resolution), fetch on client mount
+    if (initialData.length === 0) {
+      fetchProducts(1, true);
+    }
+  }, [initialData.length]);
 
   const [currentSlide, setCurrentSlide] = useState(0);
 
