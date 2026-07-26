@@ -96,7 +96,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
         if (user) {
           const initialLikes = {};
           liveProducts.forEach(p => {
-            if (p.likes && p.likes.includes(user.id)) {
+            if (p.likedBy && p.likedBy.includes(user.id)) {
               initialLikes[p.id] = true;
             }
           });
@@ -112,7 +112,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
     if (user && products.length > 0) {
       const initialLikes = {};
       products.forEach(p => {
-        if (p.likes && p.likes.includes(user.id)) {
+        if (p.likedBy && p.likedBy.includes(user.id)) {
           initialLikes[p.id] = true;
         }
       });
