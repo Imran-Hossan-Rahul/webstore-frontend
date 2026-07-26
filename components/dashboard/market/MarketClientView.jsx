@@ -293,14 +293,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                     loading="lazy"
                     className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 ease-in-out group-hover:shadow-product"
                   />
-                  {/* Hover Like Button */}
-                  <button 
-                    onClick={(e) => toggleLike(e, product.id)}
-                    className="absolute top-3 right-3 w-[44px] h-[44px] bg-[rgba(210,210,215,0.64)] rounded-full text-apple-ink flex items-center justify-center hover:opacity-80 transition-all duration-200 opacity-0 group-hover:opacity-100 z-10"
-                    title="Add to Wishlist"
-                  >
-                    <Star size={20} strokeWidth={1.5} className={likedProducts[product.id] ? 'fill-current text-apple-ink' : ''} />
-                  </button>
+
                   {(user?.role === 'admin' || user?.role === 'superadmin') && (
                     <Link 
                       href={`/admin/market/products?edit=${product.id}`}
@@ -328,11 +321,11 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 <div className="w-full flex flex-col xl:flex-row gap-3 mt-auto relative z-10">
                   <button 
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                    className="flex-1 bg-[#0066CC] text-white py-[8px] md:py-[11px] px-[15px] md:px-[22px] text-[14px] md:text-[17px] font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center"
+                    className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center"
                   >
                     Add to Cart
                   </button>
-                  <Link href={`/product/${product.id}`} className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[8px] md:py-[11px] px-[15px] md:px-[22px] text-[14px] md:text-[17px] font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center">
+                  <Link href={`/product/${product.id}`} className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center">
                     View
                   </Link>
                 </div>
