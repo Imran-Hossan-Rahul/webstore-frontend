@@ -255,9 +255,6 @@ const GlassNavbar = ({
                   <span className="font-medium text-xl tracking-tight text-slate-900 dark:text-white font-sans">
                       Codalina
                   </span>
-                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 rounded-full">
-                    Beta
-                  </span>
                 </div>
             </Link>
         </div>
