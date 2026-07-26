@@ -102,7 +102,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
   return (
     <aside className="h-full flex flex-col bg-transparent lg:bg-apple-canvas dark:bg-transparent lg:dark:bg-apple-canvas border-0 lg:border lg:border-apple-hairline rounded-none lg:rounded-apple-lg p-0 lg:p-3 overflow-hidden">
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
         {/* Main Nav (Hidden on Mobile, moved to bottom nav) */}
         <div className="hidden lg:block space-y-1">
           {features.enableCommunity && (
