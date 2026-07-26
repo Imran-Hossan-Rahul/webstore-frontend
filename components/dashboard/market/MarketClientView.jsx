@@ -281,7 +281,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
             <p className="text-gray-500 mt-2">Try adjusting your search query</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-5">
             {displayedProducts.map(product => (
               <div key={product.id} className="bg-apple-parchment rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
               <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
@@ -318,7 +318,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                     <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
                   )}
                 </div>
-                <div className="w-full flex flex-col xl:flex-row gap-3 mt-auto relative z-20">
+                <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
                   <button 
                     onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                     className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-opacity hover:opacity-80 flex items-center justify-center"
