@@ -124,17 +124,18 @@ export default function MarketPromotionsForm() {
     }
   };
 
-  const filteredProducts = products.filter(p => 
-    (p.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
-    p.sku?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
+  // filtering is moved inside ProductSelector to handle selected state
   if (loading) {
     return <div className="flex items-center justify-center p-12"><Loader2 className="animate-spin text-slate-400" size={32} /></div>;
   }
 
   const ProductSelector = ({ listName, label }) => {
     const list = listName.includes('.') ? config[listName.split('.')[0]][listName.split('.')[1]] : config[listName];
+    
+    const displayProducts = searchQuery 
+      ? products.filter(p => (p.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || p.sku?.toLowerCase().includes(searchQuery.toLowerCase()))
+      : products.filter(p => list?.includes(p._id));
+
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -146,15 +147,21 @@ export default function MarketPromotionsForm() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input 
             type="text" 
-            placeholder="Search products..." 
+            placeholder="Search to add products..." 
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-gray-900 border border-gray-800 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-white placeholder:text-gray-500"
           />
         </div>
 
+        {displayProducts.length === 0 && !searchQuery && (
+          <div className="py-8 text-center border-2 border-dashed border-gray-800 rounded-xl text-gray-500 text-sm">
+            No products selected. Search above to add products.
+          </div>
+        )}
+
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto pr-2">
-          {filteredProducts.map(product => {
+          {displayProducts.map(product => {
             const isSelected = list?.includes(product._id);
             const photo = product.photos && JSON.parse(product.photos)[0];
             return (
