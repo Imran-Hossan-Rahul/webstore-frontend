@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Calendar, Link as LinkIcon, Loader2, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2 } from "lucide-react";
+import { MapPin, Calendar, Link as LinkIcon, Loader2, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { format } from "date-fns";
@@ -45,6 +45,22 @@ export default function PublicProfile({ username }) {
   const [passData, setPassData] = useState({ currentPassword: '', newPassword: '' });
   const [addresses, setAddresses] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
+
+  const handleLogout = async () => {
+    if (!confirmLogout) {
+      setConfirmLogout(true);
+      setTimeout(() => setConfirmLogout(false), 3000);
+      return;
+    }
+    try {
+      await api.post("/auth/logout");
+      window.location.href = '/login';
+    } catch (e) {
+      console.error("Logout error", e);
+      window.location.href = '/login';
+    }
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -366,6 +382,14 @@ export default function PublicProfile({ username }) {
                 </button>
                 <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'password' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   Password
+                </button>
+                <div className="w-[1px] h-6 bg-gray-300 dark:bg-gray-700 my-auto mx-1"></div>
+                <button 
+                  onClick={handleLogout} 
+                  className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all flex items-center gap-1.5 ${confirmLogout ? 'bg-red-500 text-white' : 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'}`}
+                >
+                  <LogOut className="w-4 h-4" />
+                  {confirmLogout ? 'Confirm?' : 'Logout'}
                 </button>
               </>
             )}
