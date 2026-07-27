@@ -75,6 +75,8 @@ export function UserProvider({ children }) {
       console.error("Logout failed:", err);
     } finally {
       localStorage.removeItem("token"); // Legacy cleanup
+      localStorage.removeItem("user"); // Clear the user object (and accessToken)
+      localStorage.removeItem("userId");
       localStorage.removeItem("hasCraftsmanAccount");
       setIsGuest(true);
       setUser(null);
