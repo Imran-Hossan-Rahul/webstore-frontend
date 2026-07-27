@@ -381,7 +381,7 @@ export default function LoginPage() {
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span className="text-[17px] tracking-tight">Access Platform</span>
+                    <span className="text-[17px] tracking-tight">Login</span>
                     <ArrowRight
                       size={20}
                       className="group-hover:translate-x-1 transition-opacity duration-300"
