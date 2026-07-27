@@ -83,7 +83,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
   };
 
   React.useEffect(() => {
-    api.get('/market/categories/all')
+    api.get('/market/categories')
       .then(res => {
         setCategories(res.data || res || []);
       })
@@ -107,27 +107,22 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
         <div className="hidden lg:block space-y-1">
           {/* Removed legacy links (Devlogs, Artifacts, Codex) */}
           {/* Categories Accordion */}
-          {[
-            { id: 'earbuds', name: 'Earbuds', icon: Headphones, subcats: [{ id: 'earbuds-geeoo', name: 'GEEOO' }] },
-            { id: 'smart-watch', name: 'Smart Watch', icon: Watch, subcats: [{ id: 'smart-watch-geeoo', name: 'GEEOO' }] },
-            { id: 'over-ear-headphones', name: 'Over-Ear Headphones', icon: Headphones, subcats: [{ id: 'over-ear-geeoo', name: 'GEEOO' }] },
-            { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging, subcats: [{ id: 'power-banks-geeoo', name: 'GEEOO' }] },
-            { id: 'adapters', name: 'Adapters', icon: Cable, subcats: [{ id: 'adapters-geeoo', name: 'GEEOO' }] },
-          ].map(category => {
-            const isActive = q === category.name.toLowerCase() || category.subcats.some(sub => q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`);
-            const isOpen = openCategory === category.id || isActive;
-            const Icon = category.icon;
+          {categories.map(category => {
+            const subcats = category.subcategories || [];
+            const isActive = q === category.name.toLowerCase() || subcats.some(sub => q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`);
+            const isOpen = openCategory === category._id || isActive;
+            const Icon = Box; // Default icon for dynamic categories
             
             return (
-              <div key={category.id} className="relative"
-                   onMouseEnter={() => handleMouseEnter(category.id)}
+              <div key={category._id} className="relative"
+                   onMouseEnter={() => handleMouseEnter(category._id)}
                    onMouseLeave={handleMouseLeave}>
                 <button
                   onClick={() => {
                     if (isCollapsed) return;
-                    setOpenCategory(isOpen ? null : category.id);
-                    if (category.subcats.length === 0) {
-                      router.push(`/category/${encodeURIComponent(category.id)}`);
+                    setOpenCategory(isOpen ? null : category._id);
+                    if (subcats.length === 0) {
+                      router.push(`/market/category/${encodeURIComponent(category.name.toLowerCase().replace(/\s+/g, '-'))}`);
                     }
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
@@ -137,30 +132,34 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                   }`}
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
-                    <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
+                    {category.image ? (
+                        <img src={category.image} alt={category.name} className="w-[18px] h-[18px] object-cover rounded opacity-80 shrink-0" />
+                    ) : (
+                        <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
+                    )}
                     <span className={`text-[14px] font-sans whitespace-nowrap transition-all duration-300 ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
                       {category.name}
                     </span>
                   </div>
-                  {category.subcats.length > 0 && (
+                  {subcats.length > 0 && (
                     <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${isOpen ? 'rotate-90' : ''} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0 lg:scale-0 lg:ml-0' : 'opacity-100 lg:max-w-[20px] lg:scale-100 ml-auto'}`} />
                   )}
                 </button>
                 
                 <AnimatePresence>
-                  {!isCollapsed && isOpen && category.subcats.length > 0 && (
+                  {!isCollapsed && isOpen && subcats.length > 0 && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden ml-[32px]"
                     >
-                      {category.subcats.map(sub => (
+                      {subcats.map(sub => (
                         <Link
-                          key={sub.id}
-                          href={`/category/${encodeURIComponent(sub.id)}`}
+                          key={sub._id}
+                          href={`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`}
                           className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                            pathname.includes(`/category/${sub.id}`)
+                            pathname.includes(`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`)
                               ? "text-blue-600 dark:text-blue-400 font-medium"
                               : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                           }`}
