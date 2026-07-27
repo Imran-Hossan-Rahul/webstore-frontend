@@ -157,6 +157,10 @@ async function apiFetch(endpoint, options = {}) {
     const isJson = contentType.includes("application/json");
     const data = isJson ? await response.json() : await response.text();
 
+    // Extract CSRF token from header (for cross-origin support)
+    const newCsrf = response.headers.get("x-csrf-token");
+    if (newCsrf) setCsrfToken(newCsrf);
+
     if (!response.ok) {
       const message = isJson
         ? data?.message || `Request failed (${response.status})`
