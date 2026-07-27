@@ -841,71 +841,74 @@ export default function RightSidebar() {
     return (
       <aside className="h-full flex flex-col gap-8 pb-10">
         {/* Flash Deals Widget */}
-        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
-           <div className="flex items-center justify-between mb-5">
-             <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white flex items-center">
-               Flash Deals
-             </h3>
-             <div className="bg-slate-100 dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center">
-               12:45:00
+        {marketConfig?.flashDeals?.length > 0 && (
+          <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+             <div className="flex items-center justify-between mb-5">
+               <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white flex items-center">
+                 Flash Deals
+               </h3>
+               <div className="bg-slate-100 dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center">
+                 12:45:00
+               </div>
              </div>
-           </div>
-           <div className="space-y-4">
-             {(marketConfig?.flashDeals?.length ? marketConfig.flashDeals : recommendedProducts).slice(0, 2).map((product) => {
-               const photo = product.photos && JSON.parse(product.photos)[0];
-               const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
-                  ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
-                  : photo;
-                  
-               return (
-                 <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center transition-all">
-                   <div className="w-14 h-14 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
-                     {photoUrl ? (
-                       <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
-                     ) : (
-                       <div className="w-full h-full flex items-center justify-center text-[10px] font-sans text-apple-muted">Img</div>
-                     )}
-                   </div>
-                   <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-medium font-sans text-apple-ink dark:text-white mb-1 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
-                     <div className="flex items-center gap-2">
-                       <p className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white">BDT {Math.floor(product.selling_price * 0.8)}</p>
-                       <p className="text-[11px] font-medium font-sans text-apple-muted line-through">BDT {product.selling_price}</p>
+             <div className="space-y-4">
+               {marketConfig.flashDeals.slice(0, 2).map((product) => {
+                 const photo = product.photos && JSON.parse(product.photos)[0];
+                 const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
+                    ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
+                    : photo;
+                    
+                 return (
+                   <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center transition-all">
+                     <div className="w-14 h-14 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
+                       {photoUrl ? (
+                         <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+                       ) : (
+                         <div className="w-full h-full flex items-center justify-center text-[10px] font-sans text-apple-muted">Img</div>
+                       )}
                      </div>
-                   </div>
-                 </Link>
-               );
-             })}
-           </div>
-        </div>
+                     <div className="flex-1 min-w-0">
+                       <h4 className="text-[13px] font-medium font-sans text-apple-ink dark:text-white mb-1 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                       <div className="flex items-center gap-2">
+                         <p className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white">BDT {product.selling_price}</p>
+                       </div>
+                     </div>
+                   </Link>
+                 );
+               })}
+             </div>
+          </div>
+        )}
 
         {/* Trending Now Widget */}
-        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
-           <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white mb-2 flex items-center">
-             Trending Now
-           </h3>
-           <div className="flex flex-col">
-             {(marketConfig?.trendingNow?.length ? marketConfig.trendingNow : recommendedProducts).slice(0, 4).map((product, idx) => {
-               const photo = product.photos && JSON.parse(product.photos)[0];
-               const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
-                  ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
-                  : photo;
-                  
-               return (
-                 <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center py-4 border-b border-slate-100 dark:border-[#2c2c2e] last:border-0 last:pb-0 transition-all">
-                   <span className="text-[14px] font-bold font-sans text-slate-200 dark:text-slate-700 w-3">{idx + 1}</span>
-                   <div className="w-12 h-12 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
-                     {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
-                   </div>
-                   <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-medium font-sans text-apple-ink dark:text-white mb-1 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
-                     <p className="text-[12px] font-medium font-sans text-[#1d1d1f] dark:text-white">BDT {product.selling_price}</p>
-                   </div>
-                 </Link>
-               );
-             })}
-           </div>
-        </div>
+        {marketConfig?.trendingNow?.length > 0 && (
+          <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+             <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white mb-2 flex items-center">
+               Trending Now
+             </h3>
+             <div className="flex flex-col">
+               {marketConfig.trendingNow.slice(0, 4).map((product, idx) => {
+                 const photo = product.photos && JSON.parse(product.photos)[0];
+                 const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
+                    ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
+                    : photo;
+                    
+                 return (
+                   <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center py-4 border-b border-slate-100 dark:border-[#2c2c2e] last:border-0 last:pb-0 transition-all">
+                     <span className="text-[14px] font-bold font-sans text-slate-200 dark:text-slate-700 w-3">{idx + 1}</span>
+                     <div className="w-12 h-12 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
+                       {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
+                     </div>
+                     <div className="flex-1 min-w-0">
+                       <h4 className="text-[12px] font-medium font-sans text-apple-ink dark:text-white truncate group-hover:text-[#0071e3] transition-colors mb-1">{product.title}</h4>
+                       <p className="text-[12px] font-semibold font-sans text-[#1d1d1f] dark:text-white">BDT {product.selling_price}</p>
+                     </div>
+                   </Link>
+                 );
+               })}
+             </div>
+          </div>
+        )}
 
         {/* Brand Spotlight - Hidden by request */}
 
