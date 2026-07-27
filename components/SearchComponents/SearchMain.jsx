@@ -8,24 +8,8 @@ import { Search, Loader2, User, FileText, Layout, ArrowRight, Trophy, Zap, BookO
 import Link from "next/link";
 import AIEnhanceButton from '../AIEnhanceButton';
 
-const HighlightMatch = ({ text, query }) => {
-  if (!query || !text || typeof text !== 'string') return <>{text}</>;
-  // Escape regex characters in query
-  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const parts = text.split(new RegExp(`(${escapedQuery})`, 'gi'));
-  return (
-    <>
-      {parts.map((part, i) =>
-        part.toLowerCase() === query.toLowerCase() ? (
-          <mark key={i} className="bg-amber-100/80 dark:bg-amber-500/20 text-slate-900 dark:text-amber-100 px-0.5 rounded-sm font-semibold">
-            {part}
-          </mark>
-        ) : (
-          part
-        )
-      )}
-    </>
-  );
+const HighlightMatch = ({ text }) => {
+  return <>{text}</>;
 };
 
 const HighlightedSnippet = ({ text, query, maxLength = 120 }) => {
@@ -99,16 +83,7 @@ export default function SearchMain() {
   const [displayedQuery, setDisplayedQuery] = useState(query);
   
   const [results, setResults] = useState({ 
-      users: [], 
-      posts: [], 
-      artifacts: [], 
-      codex: [],
-      jobs: [],
-      challenges: [],
-      marketplace: [],
-      workspace: [],
-      proposals: [],
-      saved: []
+      marketplace: []
   });
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(typeParam);
@@ -138,7 +113,7 @@ export default function SearchMain() {
       if (res.success) {
         setResults(res.data);
       } else {
-        setResults({ users: [], posts: [], artifacts: [], codex: [], jobs: [], challenges: [], marketplace: [], workspace: [], proposals: [], saved: [] });
+        setResults({ marketplace: [] });
       }
     } catch (error) {
       console.error("Search error:", error);
@@ -155,52 +130,42 @@ export default function SearchMain() {
   };
 
   // Helper to count total results
-  const totalResults = (results.users?.length || 0) + (results.posts?.length || 0) + (results.artifacts?.length || 0) + (results.codex?.length || 0) + (results.jobs?.length || 0) + (results.challenges?.length || 0) + (results.marketplace?.length || 0);
+  const totalResults = (results.marketplace?.length || 0);
 
   return (
     <div className="bg-transparent">
       <div className="max-w-6xl">
         
         {/* Search Results Summary */}
-        <div className="mb-8 flex flex-col gap-6">
+        <div className="mb-8 flex flex-col gap-4">
             <div>
-                <h1 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <Search className="w-5 h-5 text-slate-900 dark:text-white" />
+                <h1 className="text-[28px] font-semibold tracking-tight text-slate-900 dark:text-white">
                     Search Results
                 </h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
+                <p className="text-[15px] text-slate-500 dark:text-slate-400 mt-1">
                     {loading ? "Searching..." : `Found ${totalResults} results for "${displayedQuery}"`}
                 </p>
             </div>
 
             {/* Tabs */}
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 bg-slate-100/50 dark:bg-white/5 p-1 rounded-2xl w-fit">
                 {[
                     { id: "all", label: "All", icon: Layout },
-                    { id: "patrons", label: "Craftsmen", icon: User, count: results.users?.length },
-                    { id: "posts", label: "Posts", icon: FileText, count: results.posts?.length },
-                    { id: "artifacts", label: "Artifacts", icon: Layout, count: results.artifacts?.length },
-                    { id: "codex", label: "Codex", icon: BookOpen, count: results.codex?.length },
-                    { id: "jobs", label: "Jobs", icon: null, count: results.jobs?.length },
-                    { id: "challenges", label: "Challenges", icon: Trophy, count: results.challenges?.length },
                     { id: "marketplace", label: "Marketplace", icon: Layout, count: results.marketplace?.length },
-                    { id: "workspace", label: "Workspace", icon: Briefcase, count: 0 },
-                    { id: "proposals", label: "Proposals", icon: Send, count: 0 },
-                    { id: "saved", label: "Saved", icon: CheckCircle, count: 0 },
                 ].map((tab) => (
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition-all whitespace-nowrap ${
+                        className={`flex items-center gap-2 px-4 py-1.5 rounded-xl font-medium text-[13px] transition-all whitespace-nowrap ${
                             activeTab === tab.id
-                            ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm"
-                            : "bg-white dark:bg-white/5 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/10 border border-slate-100 dark:border-white/5"
+                            ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
+                            : "bg-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                         }`}
                     >
                         {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
                         {tab.label}
                         {tab.count > 0 && (
-                            <span className={`ml-1 text-[10px] px-1.5 py-0.5 rounded ${activeTab === tab.id ? 'bg-white/20' : 'bg-slate-100 dark:bg-white/10'}`}>
+                            <span className={`ml-1 text-[10px] px-1.5 py-0.5 rounded-full ${activeTab === tab.id ? 'bg-slate-100 dark:bg-slate-700' : 'bg-slate-200/50 dark:bg-white/10'}`}>
                                 {tab.count}
                             </span>
                         )}
@@ -231,297 +196,33 @@ export default function SearchMain() {
         ) : (
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
                 
-                {/* Users Section */}
-                {results.users?.length > 0 && (activeTab === 'all' || activeTab === 'users' || activeTab === 'patrons') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Craftsmen</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.users} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                            renderItem={(user) => (
-                                <Link href={`/u/${user.username || user._id}`} key={user._id}>
-                                    <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/10 overflow-hidden border border-slate-50 dark:border-white/10">
-                                                {user.profilePicture ? (
-                                                    <img src={getOptimizedUrl(user.profilePicture)} alt={user.name} className="w-full h-full object-cover" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-sm font-bold text-slate-400">
-                                                        {user.name?.[0]}
-                                                    </div>
-                                                )}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <h3 className="font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors truncate flex items-center gap-1.5">
-                                                    <HighlightMatch text={user.name} query={displayedQuery} />
-                                                    {user.isVerified && <CheckCircle className="w-3.5 h-3.5 text-slate-900 dark:text-white" fill="currentColor" />}
-                                                </h3>
-                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">
-                                                    @<HighlightMatch text={user.username || "user"} query={displayedQuery} />
-                                                </p>
-                                                {user.bio && (
-                                                    <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">
-                                                        <HighlightedSnippet text={user.bio} query={displayedQuery} maxLength={60} />
-                                                    </p>
-                                                )}
-                                            </div>
-                                            <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-all opacity-0 group-hover:opacity-100" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
-
-                {/* Artifacts Section */}
-                {results.artifacts?.length > 0 && (activeTab === 'all' || activeTab === 'artifacts') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Artifacts</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.artifacts} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                            renderItem={(artifact) => (
-                                <Link href={`/artifacts/${artifact._id}`} key={artifact._id} className="group">
-                                    <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
-                                            <HighlightMatch text={artifact.title} query={displayedQuery} />
-                                        </h3>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 font-medium">
-                                            <HighlightedSnippet text={artifact.description} query={displayedQuery} maxLength={100} />
-                                        </p>
-                                        <div className="flex flex-wrap gap-1.5 mt-3">
-                                            {(() => {
-                                                const matchedTags = artifact.tags?.filter(t => t.toLowerCase().includes(displayedQuery.toLowerCase())) || [];
-                                                const otherTags = artifact.tags?.filter(t => !t.toLowerCase().includes(displayedQuery.toLowerCase())) || [];
-                                                return [...matchedTags, ...otherTags].slice(0,3).map(tag => (
-                                                    <span key={tag} className="text-[9px] font-bold px-2 py-0.5 bg-slate-50 dark:bg-white/5 rounded text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-white/5">
-                                                        #<HighlightMatch text={tag} query={displayedQuery} />
-                                                    </span>
-                                                ));
-                                            })()}
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
-
-                {/* Posts/Codex Section */}
-                {results.posts?.length > 0 && (activeTab === 'all' || activeTab === 'posts') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Posts & Codex</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.posts} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 gap-3"
-                            renderItem={(post) => (
-                                <Link href={`/post/${post._id}`} key={post._id}>
-                                    <div className="bg-white dark:bg-white/5 p-4 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all flex items-start gap-4 group">
-                                        <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
-                                            <FileText className="w-4 h-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
-                                        </div>
-                                         <div className="flex-1 min-w-0">
-                                             <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
-                                                <HighlightMatch text={post.title || (post.content ? post.content.substring(0, 50) : "Untitled Post")} query={displayedQuery} />
-                                             </h3>
-                                             {post.content && (
-                                                <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mb-1 font-medium">
-                                                    <HighlightedSnippet text={post.content} query={displayedQuery} maxLength={120} />
-                                                </p>
-                                             )}
-
-                                             <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-tight">
-                                                 <span className="text-slate-500 dark:text-slate-300 flex items-center gap-1">
-                                                     {post.user?.name}
-                                                     {post.user?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
-                                                 </span>
-                                                <span>•</span>
-                                                <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-                                             </div>
-                                        </div>
-                                        <ArrowRight className="w-4 h-4 text-slate-300 group-hover:translate-x-1 transition-all" />
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
-
-                {/* Codex Section */}
-                {results.codex?.length > 0 && (activeTab === 'all' || activeTab === 'codex') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Codex & Codex</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.codex} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
-                            renderItem={(codex) => (
-                                <Link href={`/codex/${codex.slug}`} key={codex._id} className="block h-full">
-                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <span className="text-[9px] font-black bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white px-2 py-0.5 rounded uppercase transition-colors">{codex.category || 'Codex'}</span>
-                                            <span className="text-[9px] text-slate-400 font-bold">{codex.readTime || '5 min read'}</span>
-                                        </div>
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1 leading-tight">
-                                            <HighlightMatch text={codex.title} query={displayedQuery} />
-                                        </h3>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
-                                            <HighlightedSnippet text={codex.subtitle || codex.content} query={displayedQuery} maxLength={120} />
-                                        </p>
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-5 h-5 rounded-full bg-slate-200 overflow-hidden">
-                                                    {codex.author?.profilePicture && <img src={getOptimizedUrl(codex.author.profilePicture)} className="w-full h-full object-cover" />}
-                                                </div>
-                                                <span className="text-[10px] text-slate-500 font-bold flex items-center gap-1">
-                                                    {codex.author?.name}
-                                                    {codex.author?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
-                                                </span>
-                                            </div>
-                                            <div className="w-7 h-7 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 dark:group-hover:bg-white group-hover:text-white dark:group-hover:text-slate-900 transition-all">
-                                                <ArrowRight size={14} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
-
-                {/* Jobs Section */}
-                {results.jobs?.length > 0 && (activeTab === 'all' || activeTab === 'jobs') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Jobs</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.jobs} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-                            renderItem={(job) => (
-                                <Link href={`/jobs/${job._id}`} key={job._id}>
-                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
-                                                {/* Icon removed */}
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1">
-                                                    {job.patron?.name}
-                                                    {job.patron?.isVerified && <CheckCircle className="w-2.5 h-2.5 text-slate-900 dark:text-white" fill="currentColor" />}
-                                                </span>
-                                                <span className="text-[10px] font-bold text-slate-500">{job.budget?.type === "hourly" ? "Hourly" : "Fixed-price"}</span>
-                                            </div>
-                                        </div>
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-2 leading-tight">
-                                            <HighlightMatch text={job.title} query={displayedQuery} />
-                                        </h3>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
-                                            <HighlightedSnippet text={job.description} query={displayedQuery} maxLength={100} />
-                                        </p>
-                                        <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-white/5">
-                                            <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                <Zap size={12} className="text-slate-900 dark:text-white" />
-                                                {job.budget?.min}–{job.budget?.max} {job.budget?.currency || 'TKNS'}
-                                            </span>
-                                            <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-1 transition-all" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
-
-                {/* Challenges Section */}
-                {results.challenges?.length > 0 && (activeTab === 'all' || activeTab === 'challenges') && (
-                    <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Challenges</h2>
-                        </div>
-                        <MatchRenderer 
-                            items={results.challenges} 
-                            query={displayedQuery} 
-                            gridClassName="grid grid-cols-1 md:grid-cols-2 gap-4"
-                            renderItem={(challenge) => (
-                                <Link href={`/challenges/${challenge._id}`} key={challenge._id}>
-                                    <div className="bg-white dark:bg-white/5 p-5 rounded-2xl border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all group relative overflow-hidden flex flex-col h-full">
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-slate-100 dark:group-hover:bg-white/10 transition-colors">
-                                                <Trophy className="w-4 h-4 text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{challenge.difficulty || 'All Levels'}</span>
-                                                <span className="text-[10px] font-bold text-slate-500 capitalize">{challenge.status?.replace('_', ' ')}</span>
-                                            </div>
-                                        </div>
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2 group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-2 leading-tight">
-                                            <HighlightMatch text={challenge.title} query={displayedQuery} />
-                                        </h3>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 font-medium mb-4 flex-grow">
-                                            <HighlightedSnippet text={challenge.description} query={displayedQuery} maxLength={120} />
-                                        </p>
-                                        <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-white/5">
-                                            <span className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
-                                                <Trophy size={12} className="text-amber-500" />
-                                                Prize: {challenge.prize}
-                                            </span>
-                                            <ArrowRight size={14} className="text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white group-hover:translate-x-1 transition-all" />
-                                        </div>
-                                    </div>
-                                </Link>
-                            )}
-                        />
-                    </section>
-                )}
+                {/* Removed legacy sections */}
 
                 {/* Marketplace Section */}
                 {results.marketplace?.length > 0 && (activeTab === 'all' || activeTab === 'marketplace') && (
                     <section>
-                        <div className="flex items-center gap-2 mb-4">
-                            <div className="w-1 h-4 bg-slate-300 dark:bg-slate-700 rounded-full" />
-                            <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Marketplace</h2>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <h2 className="text-xl font-semibold tracking-tight text-slate-900 dark:text-white mb-6">Marketplace</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                              {results.marketplace.map((product) => (
                                  <Link href={`/market/product/${product._id}`} key={product._id} className="group">
-                                     <div className="bg-white dark:bg-white/5 rounded-2xl p-4 border border-slate-100 dark:border-white/5 hover:border-slate-300 dark:hover:border-white/20 hover:shadow-md transition-all">
-                                        <div className="w-full h-32 mb-3 bg-slate-100 dark:bg-white/5 rounded-xl overflow-hidden relative">
+                                     <div className="bg-white dark:bg-[#1d1d1f] rounded-[18px] p-5 shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-lg transition-all duration-300">
+                                        <div className="w-full h-36 mb-4 bg-slate-50 dark:bg-white/5 rounded-xl overflow-hidden relative border border-slate-100 dark:border-transparent flex items-center justify-center">
                                             {product.photos && (() => {
                                                 try {
                                                     const parsedPhotos = JSON.parse(product.photos);
-                                                    return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-cover" /> : null;
+                                                    return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal p-2" /> : null;
                                                 } catch(e) { return null; }
                                             })()}
                                         </div>
-                                        <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors line-clamp-1">
-                                            <HighlightMatch text={product.title} query={displayedQuery} />
+                                        <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white group-hover:text-[#0066CC] transition-colors line-clamp-1">
+                                            <HighlightMatch text={product.title} />
                                         </h3>
-                                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 font-medium">
+                                        <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
                                             <HighlightedSnippet text={product.description} query={displayedQuery} maxLength={100} />
                                         </p>
-                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-50 dark:border-white/5">
-                                            <span className="text-xs font-bold text-slate-900 dark:text-white">BDT {product.selling_price}</span>
-                                            <span className="text-[9px] font-bold px-2 py-0.5 bg-slate-50 dark:bg-white/5 rounded text-slate-500 dark:text-slate-400 border border-slate-100 dark:border-white/5">
+                                        <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
+                                            <span className="text-[15px] font-semibold text-slate-900 dark:text-white">BDT {product.selling_price}</span>
+                                            <span className="text-[11px] font-medium px-2.5 py-1 bg-slate-50 dark:bg-white/5 rounded-full text-slate-500 dark:text-slate-400">
                                                 {product.category || 'Product'}
                                             </span>
                                         </div>

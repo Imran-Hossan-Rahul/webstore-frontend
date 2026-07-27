@@ -11,6 +11,7 @@ export default function MarketAdminLayout({ children }) {
     { name: 'Banners', href: '/admin/market/banners', icon: ClipboardList },
     { name: 'Categories', href: '/admin/market/categories', icon: Tags },
     { name: 'Products', href: '/admin/market/products', icon: ShoppingBag },
+    { name: 'Promotions', href: '/admin/market/promotions', icon: Tags },
     { name: 'Wholesalers', href: '/admin/market/wholesaler', icon: Users },
     { name: 'Procurement', href: '/admin/market/procurement', icon: Truck },
     { name: 'Orders', href: '/admin/market/orders', icon: ClipboardList },

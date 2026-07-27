@@ -57,7 +57,7 @@ export default function OrderDetailPage({ params }) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-slate-950 text-gray-500">
         <h2 className="text-xl font-bold mb-2">Order Not Found</h2>
-        <button onClick={() => router.push('/orders')} className="mt-4 text-[#111827] hover:underline">
+        <button onClick={() => router.back()} className="mt-4 text-[#111827] hover:underline">
           Back to My Orders
         </button>
       </div>
@@ -87,15 +87,15 @@ export default function OrderDetailPage({ params }) {
 
   return (
     <div className="min-h-screen pb-24 md:pb-0 bg-[#fafafa] dark:bg-slate-950">
-      <div className="max-w-[1200px] mx-auto py-2 md:py-8 px-3 sm:px-6 lg:px-8 -mt-4 md:mt-0">
+      <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
         <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-4 md:p-8 mb-4 md:mb-8">
           
           {/* Header */}
           <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-4 md:pb-6 mb-4 md:mb-6">
-            <h1 className="text-lg md:text-2xl font-bold text-gray-900 dark:text-gray-100">Order Details</h1>
+            <h1 className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">Order Details</h1>
             <button
-              onClick={() => router.push('/orders')}
-              className="text-xs md:text-sm font-semibold text-gray-500 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition"
+              onClick={() => router.back()}
+              className="text-[13px] font-medium text-[#86868b] hover:text-[#1d1d1f] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
             >
               <ArrowLeft size={16} /> Go Back
             </button>
@@ -105,7 +105,7 @@ export default function OrderDetailPage({ params }) {
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6 gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-base md:text-[17px] font-bold text-gray-900 dark:text-gray-200">Order #{((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}</span>
+                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">Order #{((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}</span>
                 <button
                   onClick={() => copyToClipboard(order.id || order._id?.toString())}
                   className="text-gray-400 hover:text-gray-700 transition"
@@ -113,13 +113,13 @@ export default function OrderDetailPage({ params }) {
                 >
                   <Copy size={16} />
                 </button>
-                {copied && <span className="text-[10px] bg-green-50 text-green-600 font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Copied</span>}
+                {copied && <span className="font-text text-[10px] bg-green-50 text-green-600 font-semibold px-1.5 py-0.5 rounded uppercase tracking-[0.06em]">Copied</span>}
               </div>
-              <p className="text-[11px] md:text-xs font-medium text-gray-500">Placed on {placedDate}</p>
+              <p className="text-[12px] font-normal tracking-[-0.01em] text-[#86868b]">Placed on {placedDate}</p>
             </div>
             <div className="flex flex-col md:items-end">
-              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Total Amount</span>
-              <div className="text-xl md:text-2xl font-black text-blue-600 md:text-gray-900 dark:text-white">
+              <span className="font-text text-[10px] font-semibold uppercase tracking-[0.06em] text-[#86868b] mb-1">Total Amount</span>
+              <div className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">
                 {formatPrice(subtotal)} BDT
               </div>
             </div>
@@ -130,17 +130,16 @@ export default function OrderDetailPage({ params }) {
             <div className="mb-8">
               <div className="flex items-center justify-center gap-3 py-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl">
                 <XCircle size={22} className="text-red-500" strokeWidth={1.5} />
-                <span className="font-bold text-red-600 dark:text-red-400 text-sm tracking-wide">ORDER CANCELLED</span>
+                <span className="font-text font-semibold text-red-600 dark:text-red-400 text-sm tracking-[0.06em]">ORDER CANCELLED</span>
               </div>
             </div>
           ) : (
             <div className="mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0">
               <div className="flex items-center justify-between relative min-w-[360px] sm:min-w-[480px] mx-auto py-2 px-2">
                 {/* Gray background track */}
-                <div className="absolute left-[10%] right-[10%] top-[19px] md:top-[19px] h-[2px] bg-gray-200 dark:bg-gray-700 -z-0 rounded-full overflow-hidden">
-                  {/* Green progress fill */}
+                <div className="absolute left-[12%] right-[12%] top-[19px] md:top-[19px] h-[2px] bg-[#e5e5ea] dark:bg-[#2c2c2e] -z-0 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-green-500 rounded-full transition-all duration-700 ease-out"
+                    className="h-full bg-[#34c759] rounded-full transition-all duration-700 ease-out"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
@@ -151,21 +150,21 @@ export default function OrderDetailPage({ params }) {
                   { label: 'Shipped',    active: isShipped },
                   { label: 'Delivered',  active: isDelivered },
                 ].map(({ label, active }) => (
-                  <div key={label} className="flex flex-col items-center gap-2 bg-white dark:bg-slate-900 px-1 relative z-10 w-16 md:w-20">
+                  <div key={label} className="flex flex-col items-center gap-2.5 bg-white dark:bg-slate-900 px-1 relative z-10 w-16 md:w-20">
                     {active ? (
-                      <CheckCircle2 size={24} className="text-green-500 bg-white fill-green-50 dark:fill-green-900/30 rounded-full shadow-sm" strokeWidth={1.5} />
+                      <CheckCircle2 size={24} className="text-[#34c759] bg-white rounded-full" strokeWidth={1.25} />
                     ) : (
-                      <div className="w-[24px] h-[24px] rounded-full border-2 border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-900"></div>
+                      <div className="w-[24px] h-[24px] rounded-full border-[1.5px] border-[#d2d2d7] dark:border-[#2c2c2e] bg-white dark:bg-slate-900"></div>
                     )}
-                    <span className={`font-bold text-[9px] sm:text-[10px] md:text-[11px] text-center uppercase tracking-wider ${active ? 'text-gray-900 dark:text-gray-200' : 'text-gray-400 dark:text-gray-500'}`}>{label}</span>
+                    <span className={`font-text font-semibold tracking-[0.06em] text-[10px] sm:text-[11px] text-center uppercase ${active ? 'text-[#4b4b4b] dark:text-[#f5f5f7]' : 'text-[#999999] dark:text-[#6e6e73]'}`}>{label}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
           
-          <div className="text-center text-xs text-gray-500 mb-12 flex flex-col items-center gap-1.5">
-          <p>Status: <span className="font-semibold uppercase text-gray-700 dark:text-gray-300">{order.status || 'ORDER PLACED'}</span> &mdash; {formatDate(order.createdAt)}</p>
+          <div className="text-center text-[13px] text-[#86868b] mb-12 flex flex-col items-center gap-1.5">
+          <p>Status: <span className="font-text font-semibold tracking-[0.06em] uppercase text-[12px] text-[#1d1d1f] dark:text-gray-300">{order.status || 'ORDER PLACED'}</span> &mdash; {formatDate(order.createdAt)}</p>
           {(order.tracking_id || order.courier_name) && ['Shipped', 'Delivered'].includes(order.status) && (
             <p className="mt-2 bg-blue-50 dark:bg-blue-950/30 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-900/50 text-blue-800 dark:text-blue-300">
               {order.courier_name && <span className="mr-3"><strong>Courier:</strong> {order.courier_name}</span>}
@@ -179,26 +178,26 @@ export default function OrderDetailPage({ params }) {
             let photo = null;
             try { photo = JSON.parse(item.product?.photos || '[]')[0]; } catch(e) {}
             return (
-              <div key={idx} className="bg-[#f8f9fa] dark:bg-slate-800/30 rounded-xl p-3 md:p-4 flex items-center justify-between mb-3 border border-gray-100 dark:border-white/5 shadow-sm">
-                <div className="flex items-center gap-3 md:gap-4 flex-1">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center shrink-0 p-1">
+              <div key={idx} className="bg-white dark:bg-[#1c1c1e] rounded-[12px] p-4 flex items-center justify-between mb-4 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-sm">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="w-16 h-16 bg-white dark:bg-black rounded-[8px] border border-[#e5e5ea] dark:border-[#2c2c2e] overflow-hidden flex items-center justify-center shrink-0 p-1.5">
                     {photo ? <img src={photo} alt="" className="w-full h-full object-contain mix-blend-multiply" /> : <ImageIcon size={20} className="text-gray-300" strokeWidth={1.5} />}
                   </div>
                   <div className="flex-1 min-w-0 pr-2">
                     <Link href={item.product?.id ? `/product/${item.product.id}` : '#'}>
-                      <h3 className="text-[13px] md:text-[14px] font-bold text-gray-900 dark:text-gray-200 mb-1 hover:text-blue-600 transition cursor-pointer line-clamp-2 leading-tight">
+                      <h3 className="text-[17px] font-bold tracking-[-0.022em] text-[#1d1d1f] dark:text-white mb-1 hover:text-[#0066cc] transition cursor-pointer line-clamp-1 leading-tight">
                         {item.product?.title || 'Unknown Product'}
                       </h3>
                     </Link>
-                    <div className="flex flex-wrap items-start gap-2 mt-1.5">
-                      <span className="text-[10px] md:text-[11px] font-bold text-gray-600 bg-white border border-gray-200 px-1.5 py-0.5 rounded shadow-sm shrink-0 mt-0.5">Qty: {item.quantity}</span>
-                      {item.variants && <span className="text-[10px] md:text-xs text-gray-500 leading-relaxed max-w-[80%] break-words">({item.variants})</span>}
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-[12px] font-bold tracking-[-0.01em] text-[#1d1d1f] dark:text-white bg-white border border-[#e5e5ea] px-2 py-0.5 rounded-[6px] shrink-0">Qty: {item.quantity}</span>
+                      {item.variants && <span className="text-[13px] font-normal tracking-[-0.01em] text-[#86868b] leading-relaxed truncate">({item.variants})</span>}
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-end shrink-0 ml-2">
-                  <span className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Price</span>
-                  <div className="text-[13px] md:text-[14px] font-black text-gray-900 tracking-wide">
+                  <span className="font-text text-[10px] font-semibold tracking-[0.06em] uppercase text-[#86868b] mb-1">Price</span>
+                  <div className="text-[17px] font-bold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">
                     {formatPrice(item.price_at_purchase * item.quantity)} BDT
                   </div>
                   {item.quantity > 1 && (
@@ -213,46 +212,46 @@ export default function OrderDetailPage({ params }) {
 
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8">
-            <div className="flex-1 bg-gray-50/50 border border-gray-100 rounded-xl p-5 md:p-6">
+            <div className="flex-1 bg-[#f5f5f7] dark:bg-[#151515] rounded-[16px] p-5 md:p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-[15px] uppercase tracking-wider">Shipping Address</h3>
-                <span className="text-[10px] font-bold bg-white border border-gray-200 px-2 py-1 rounded text-gray-600 shadow-sm uppercase tracking-wider">Regular Delivery</span>
+                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[12px] uppercase">Shipping Address</h3>
+                <span className="font-text text-[10px] font-semibold tracking-[0.06em] bg-white border border-[#d2d2d7] px-2.5 py-1 rounded-[4px] text-[#1d1d1f] shadow-sm uppercase">Regular Delivery</span>
               </div>
-              <div className="text-xs md:text-[13px] text-gray-700 dark:text-gray-400 space-y-2 leading-relaxed">
-                <p className="font-bold text-gray-900">{addressObj.name || ''} <span className="text-gray-400 font-normal ml-2">| {order.phone || ''}</span></p>
+              <div className="text-[14px] tracking-[-0.016em] text-[#1d1d1f] dark:text-[#86868b] space-y-2 leading-relaxed">
+                <p className="font-semibold text-[#1d1d1f] dark:text-white">{addressObj.name || ''} <span className="text-[#86868b] font-normal ml-2">| {order.phone || ''}</span></p>
                 <p>{addressObj.details || ''}, {addressObj.upazila || ''}</p>
                 <p>{addressObj.district || ''}, {addressObj.division || ''}, Bangladesh</p>
               </div>
             </div>
 
-            <div className="w-full md:w-[380px] bg-[#f8f9fa] border border-gray-100 rounded-xl p-5 md:p-6">
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-bold text-gray-900 dark:text-gray-100 text-sm md:text-[15px] uppercase tracking-wider">Order Summary</h3>
-                <span className="text-[10px] font-bold bg-white border border-gray-200 px-2 py-1 rounded text-gray-600 shadow-sm uppercase tracking-wider">Cash on Delivery</span>
+            <div className="w-full md:w-[380px] bg-[#fdfdfd] border border-[#f5f5f7] dark:bg-[#151515] rounded-[12px] p-5 md:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[12px] uppercase">Order Summary</h3>
+                <span className="font-text text-[10px] font-semibold tracking-[0.06em] bg-white border border-[#e5e5ea] px-2.5 py-1 rounded-[4px] text-[#1d1d1f] uppercase">Cash on Delivery</span>
               </div>
               
-              <div className="space-y-3.5">
-                <div className="flex justify-between text-[13px] font-medium text-gray-600 dark:text-gray-400">
+              <div className="space-y-3.5 mt-2">
+                <div className="flex justify-between text-[14px] font-normal tracking-[-0.016em] text-[#4b4b4b] dark:text-gray-300">
                   <span>Items Total</span><span>{formatPrice(itemsPrice)} BDT</span>
                 </div>
-                <div className="flex justify-between text-[13px] font-medium text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[14px] font-normal tracking-[-0.016em] text-[#4b4b4b] dark:text-gray-300">
                   <span>Delivery Charge</span><span>{formatPrice(codCharge)} BDT</span>
                 </div>
                 
-                <div className="border-t border-dashed border-gray-300 dark:border-gray-700 my-2"></div>
+                <div className="border-t border-dashed border-[#d2d2d7] dark:border-gray-700 my-2"></div>
                 
-                <div className="flex justify-between font-black text-gray-900 dark:text-gray-100 text-[15px]">
+                <div className="flex justify-between font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white text-[15px]">
                   <span>Subtotal</span><span>{formatPrice(subtotal)} BDT</span>
                 </div>
-                <div className="flex justify-between text-[13px] font-bold text-emerald-500">
+                <div className="flex justify-between text-[14px] font-semibold text-[#1d1d1f] dark:text-white">
                   <span>Paid Amount</span><span>- 0 BDT</span>
                 </div>
                 
-                <div className="border-t border-solid border-gray-200 dark:border-gray-700 my-2"></div>
+                <div className="border-t border-solid border-[#e5e5ea] dark:border-[#2c2c2e] my-3"></div>
                 
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-gray-900 text-sm uppercase tracking-wider">Due Amount</span>
-                  <span className="font-black text-blue-600 text-lg md:text-xl">{formatPrice(subtotal)} BDT</span>
+                <div className="flex justify-between items-center mt-2">
+                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[12px] uppercase">Due Amount</span>
+                  <span className="font-bold text-[#1d1d1f] dark:text-white tracking-[-0.015em] text-[28px]">{formatPrice(subtotal)} BDT</span>
                 </div>
               </div>
             </div>

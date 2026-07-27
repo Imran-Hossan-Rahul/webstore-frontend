@@ -51,8 +51,16 @@ export default function MarketClientView({ initialData = [], initialPagination =
       link: "#",
       isFullBanner: true
     };
+
+    const rainyBanner = {
+      image: "/geeoo-rainy-banner.jpg",
+      titleTop: "",
+      titleBottom: "Rainy Season Offer",
+      link: "#",
+      isFullBanner: true
+    };
     
-    setHeroSlides([appleStyleBanner, geeooBanner]);
+    setHeroSlides([rainyBanner, appleStyleBanner, geeooBanner]);
     
     api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
@@ -277,8 +285,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-6">
             {[
-              { name: 'Smart Watch', icon: Watch },
               { name: 'Earbuds', icon: Headphones },
+              { name: 'Smart Watch', icon: Watch },
               { name: 'Over-Ear Headphones', icon: Headphones },
               { name: 'Power Banks', icon: BatteryCharging },
               { name: 'Adapters', icon: Cable },

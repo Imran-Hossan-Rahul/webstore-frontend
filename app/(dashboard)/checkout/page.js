@@ -35,6 +35,11 @@ export default function Checkout() {
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  
+  const [marketConfig, setMarketConfig] = useState(null);
+  const [promoCodeInput, setPromoCodeInput] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState(null);
+  const [promoError, setPromoError] = useState('');
 
   const selectedDistrictId = districts.find(d => d.name === form.district)?.id;
   const filteredThanas = selectedDistrictId 
@@ -47,6 +52,12 @@ export default function Checkout() {
         .then(res => setProduct(res))
         .catch(err => console.error(err));
     }
+    api.get('/market/config')
+      .then(res => {
+        const config = res.data || (res.singletonKey ? res : null);
+        setMarketConfig(config);
+      })
+      .catch(console.error);
   }, [productId]);
 
   useEffect(() => {
@@ -70,10 +81,13 @@ export default function Checkout() {
         details: form.address_line
       };
 
+      const discountAmountPerItem = appliedPromo ? (baseFinalPrice * appliedPromo.discountPercentage) / 100 : 0;
+      const finalPriceAfterDiscount = baseFinalPrice - discountAmountPerItem;
+
       const payload = {
         phone: form.phone,
         address,
-        items: [{ product_id: product.id, quantity, price: baseFinalPrice, variants: variantSummary }],
+        items: [{ product_id: product.id, quantity, price: finalPriceAfterDiscount, variants: variantSummary }],
         source_channel: 'organic:direct'
       };
 
@@ -86,6 +100,38 @@ export default function Checkout() {
       setErrorMessage(err?.data?.error || err.message || 'Checkout failed');
       setShowErrorModal(true);
     }
+  };
+
+  const handleApplyPromo = () => {
+    setPromoError('');
+    if (!marketConfig?.todaysOffer?.isActive) {
+      setPromoError("No active promotions available.");
+      return;
+    }
+    const offer = marketConfig.todaysOffer;
+    if (promoCodeInput.trim().toUpperCase() !== offer.code.toUpperCase()) {
+      setPromoError("Invalid promo code.");
+      return;
+    }
+    
+    // API returns object ids or strings. We check against string.
+    const isApplicable = offer.applicableProducts && offer.applicableProducts.some(id => typeof id === 'object' ? id._id === productId : id === productId);
+    
+    if (!isApplicable) {
+      setPromoError("This promo code is not applicable for this product.");
+      return;
+    }
+    
+    setAppliedPromo({
+      code: offer.code,
+      discountPercentage: offer.discountPercentage || 0
+    });
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCodeInput('');
+    setPromoError('');
   };
 
   const handleSaveAddress = () => {
@@ -119,8 +165,9 @@ export default function Checkout() {
   if (!product) return <div className="min-h-screen bg-apple-canvas flex items-center justify-center text-apple-muted">Loading product...</div>;
 
   const subTotal = baseFinalPrice * quantity;
+  const discountAmount = appliedPromo ? (subTotal * appliedPromo.discountPercentage) / 100 : 0;
   const deliveryCharge = 150; // Mock delivery charge
-  const total = subTotal + deliveryCharge;
+  const total = subTotal - discountAmount + deliveryCharge;
   const totalOriginal = baseOriginalPrice * quantity + deliveryCharge;
 
   const isFormValid = 
@@ -148,7 +195,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-slate-950 pb-24 md:pb-0">
-      <div className="max-w-[1200px] mx-auto py-4 md:py-8 px-4 sm:px-6 lg:px-8 -mt-2 md:mt-0">
+      <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
         <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8">Checkout</h1>
         
         <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6 lg:gap-8">
@@ -325,16 +372,51 @@ export default function Checkout() {
                   </div>
                 </div>
               </div>
-              <div className="space-y-3 mb-6 mt-8">
+              
+              {/* Promo Code Section */}
+              <div className="mt-8 mb-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+                <span className="font-semibold text-sm text-gray-800 dark:text-gray-200 block mb-3">Have a Promo Code?</span>
+                {appliedPromo ? (
+                  <div className="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 rounded p-3">
+                    <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
+                      <Check size={16} />
+                      <span className="text-sm font-medium">{appliedPromo.code} Applied ({appliedPromo.discountPercentage}%)</span>
+                    </div>
+                    <button type="button" onClick={handleRemovePromo} className="text-xs text-red-500 hover:underline">Remove</button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={promoCodeInput}
+                        onChange={e => setPromoCodeInput(e.target.value)}
+                        placeholder="Enter code" 
+                        className="flex-1 border border-gray-200 dark:border-gray-800 dark:bg-gray-900 rounded py-2 px-3 text-sm focus:outline-none focus:border-blue-600 uppercase"
+                      />
+                      <button type="button" onClick={handleApplyPromo} className="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-white text-sm font-medium rounded hover:bg-black transition">Apply</button>
+                    </div>
+                    {promoError && <p className="text-xs text-red-500">{promoError}</p>}
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-3 mb-6 mt-4">
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Sub total</span>
                   <span className="font-semibold">{formatPrice(subTotal)} BDT</span>
                 </div>
+                {appliedPromo && (
+                  <div className="flex justify-between text-sm text-emerald-600">
+                    <span>Discount ({appliedPromo.code})</span>
+                    <span className="font-semibold">- {formatPrice(discountAmount)} BDT</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm text-gray-600 border-b border-gray-200 pb-3 border-dashed">
                   <span>Delivery Charge</span>
                   <span className="font-semibold">{formatPrice(deliveryCharge)} BDT</span>
                 </div>
-                <div className="flex justify-between text-gray-800 pt-1">
+                <div className="flex justify-between text-gray-800 dark:text-white pt-1">
                   <span className="font-bold">Total</span>
                   <span className="font-bold text-lg">৳ {formatPrice(total)}</span>
                 </div>

@@ -105,35 +105,11 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
       <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
         {/* Main Nav (Hidden on Mobile, moved to bottom nav) */}
         <div className="hidden lg:block space-y-1">
-          {features.enableCommunity && (
-              <>
-              <SidebarItem
-                icon={Terminal}
-                label={t("Devlogs")}
-                href="/devlogs"
-                active={pathname?.startsWith("/devlogs")}
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem
-                icon={Layout}
-                label={t("artifacts")}
-                href="/artifacts"
-                active={pathname?.startsWith("/artifacts")}
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem
-                icon={FileText}
-                label={t("codex")}
-                href="/codex"
-                active={pathname?.startsWith("/codex")}
-                isCollapsed={isCollapsed}
-              />
-            </>
-          )}
+          {/* Removed legacy links (Devlogs, Artifacts, Codex) */}
           {/* Categories Accordion */}
           {[
-            { id: 'smart-watch', name: 'Smart Watch', icon: Watch, subcats: [{ id: 'smart-watch-geeoo', name: 'GEEOO' }] },
             { id: 'earbuds', name: 'Earbuds', icon: Headphones, subcats: [{ id: 'earbuds-geeoo', name: 'GEEOO' }] },
+            { id: 'smart-watch', name: 'Smart Watch', icon: Watch, subcats: [{ id: 'smart-watch-geeoo', name: 'GEEOO' }] },
             { id: 'over-ear-headphones', name: 'Over-Ear Headphones', icon: Headphones, subcats: [{ id: 'over-ear-geeoo', name: 'GEEOO' }] },
             { id: 'power-banks', name: 'Power Banks', icon: BatteryCharging, subcats: [{ id: 'power-banks-geeoo', name: 'GEEOO' }] },
             { id: 'adapters', name: 'Adapters', icon: Cable, subcats: [{ id: 'adapters-geeoo', name: 'GEEOO' }] },
@@ -151,7 +127,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                     if (isCollapsed) return;
                     setOpenCategory(isOpen ? null : category.id);
                     if (category.subcats.length === 0) {
-                      router.push(`/market?q=${encodeURIComponent(category.name.toLowerCase())}`);
+                      router.push(`/category/${encodeURIComponent(category.id)}`);
                     }
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
@@ -182,9 +158,9 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                       {category.subcats.map(sub => (
                         <Link
                           key={sub.id}
-                          href={`/market?q=${encodeURIComponent(`${category.name.toLowerCase()} ${sub.name.toLowerCase()}`)}`}
+                          href={`/category/${encodeURIComponent(sub.id)}`}
                           className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                            q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`
+                            pathname.includes(`/category/${sub.id}`)
                               ? "text-blue-600 dark:text-blue-400 font-medium"
                               : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                           }`}
@@ -204,96 +180,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
         {features.enableCommunity && (
           <>
-            {/* Library + Saved */}
             <div className="space-y-1">
-              <SidebarItem
-                icon={Bookmark}
-                label={t("saved")}
-                href="/?view=saved"
-                active={pathname === "/" && view === "saved"}
-                count=""
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem
-                icon={Trophy}
-                label={t("achievements")}
-                href="/achievements"
-                active={pathname?.startsWith("/achievements")}
-                isCollapsed={isCollapsed}
-              />
-            </div>
-
-            <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
-
-            {/* Community section */}
-            <div className="space-y-1">
-              <SidebarItem
-                icon={Trophy}
-                label={t("challenges")}
-                href="/challenges"
-                active={pathname?.startsWith("/challenges")}
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem
-                icon={Briefcase}
-                label={t("jobs")}
-                href="/jobs"
-                active={pathname?.startsWith("/jobs")}
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem
-                icon={Target}
-                label={t("proposals")}
-                href="/proposals"
-                active={pathname?.startsWith("/proposals")}
-                isCollapsed={isCollapsed}
-              />
-              <SidebarItem 
-                icon={ShieldCheck} 
-                label={t("rewards_wallet")} 
-                href="/wallet" 
-                active={pathname?.startsWith("/wallet")}
-                isCollapsed={isCollapsed}
-              />
-
-              {(user?.role === "patron" || user?.role === "admin" || user?.isHost) && (
-                <>
-                  <div className={`mt-8 mb-3 px-4 text-[11px] font-sans font-semibold text-apple-muted uppercase tracking-[0.04em] transition-opacity duration-300 ${isCollapsed ? 'lg:opacity-0 lg:hidden' : 'lg:opacity-100'}`}>
-                    {t("host_panel")}
-                  </div>
-                  {user?.role === "patron" || user?.role === "admin" ? (
-                    <>
-                      <SidebarItem
-                        icon={Users}
-                        label={t("manage_jobs")}
-                        href="/manage-jobs"
-                        active={pathname?.startsWith("/manage-jobs")}
-                        isCollapsed={isCollapsed}
-                      />
-                    </>
-                  ) : null}
-
-                  {user?.isHost || user?.role === "admin" ? (
-                    <>
-                      <SidebarItem
-                        icon={Zap}
-                        label={t("host_challenge")}
-                        href="/challenges/create"
-                        active={pathname?.startsWith("/challenges/create")}
-                        isCollapsed={isCollapsed}
-                      />
-                      <SidebarItem
-                        icon={Trophy}
-                        label={t("manage_challenges")}
-                        href="/manage-challenges"
-                        active={pathname?.startsWith("/manage-challenges")}
-                        isCollapsed={isCollapsed}
-                      />
-                    </>
-                  ) : null}
-                </>
-              )}
-
               <SidebarItem
                 icon={Clock}
                 label={t("workspace")}
@@ -320,8 +207,8 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
           <SidebarItem
             icon={Settings}
             label={t("settings")}
-            href="/settings"
-            active={pathname === "/settings"}
+            href={user?.username ? `/u/${user.username}?tab=settings` : "/auth/login"}
+            active={pathname === `/u/${user?.username}`}
             isCollapsed={isCollapsed}
           />
           

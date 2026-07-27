@@ -48,6 +48,7 @@ export default function RightSidebar() {
   const [items, setItems] = useState([]);
   const [itemsLoading, setItemsLoading] = useState(false);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [marketConfig, setMarketConfig] = useState(null);
   const [showCartSuccess, setShowCartSuccess] = useState(false);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
@@ -76,8 +77,17 @@ export default function RightSidebar() {
     if (!isMarket) return;
     const fetchRecommended = async () => {
       try {
-        const response = await api.get('/market/products');
-        const productsData = response.data || [];
+        const [configRes, productsRes] = await Promise.all([
+          api.get(`/market/config?_t=${Date.now()}`).catch(() => ({ data: null })),
+          api.get('/market/products')
+        ]);
+        
+        const actualConfig = configRes.data || (configRes.singletonKey ? configRes : null);
+        if (actualConfig) {
+          setMarketConfig(actualConfig);
+        }
+        
+        const productsData = productsRes.data || [];
         let liveProducts = productsData.filter(p => p.status === 'Live');
         const currentId = pathname.startsWith('/product/') ? pathname.split('/')[2] : null;
         if (currentId) {
@@ -829,37 +839,37 @@ export default function RightSidebar() {
   // --- MARKET CONTEXT SIDEBAR ---
   if (isMarket) {
     return (
-      <aside className="h-full flex flex-col gap-6 pb-10">
+      <aside className="h-full flex flex-col gap-8 pb-10">
         {/* Flash Deals Widget */}
-        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5 mt-4">
-           <div className="flex items-center justify-between mb-4">
-             <h3 className="text-[12px] font-semibold font-sans text-[#ff3b30] uppercase tracking-[0.06em] flex items-center gap-1.5">
-               <Zap size={14} className="fill-[#ff3b30]" /> Flash Deals
+        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+           <div className="flex items-center justify-between mb-5">
+             <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white flex items-center">
+               Flash Deals
              </h3>
-             <div className="bg-[#ff3b30]/10 text-[#ff3b30] text-[11px] font-mono px-2 py-1 rounded-[4px] flex items-center gap-1">
-               <Clock size={10} /> 12:45:00
+             <div className="bg-slate-100 dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center">
+               12:45:00
              </div>
            </div>
            <div className="space-y-4">
-             {recommendedProducts.slice(0, 2).map((product) => {
+             {(marketConfig?.flashDeals?.length ? marketConfig.flashDeals : recommendedProducts).slice(0, 2).map((product) => {
                const photo = product.photos && JSON.parse(product.photos)[0];
                const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
                   ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
                   : photo;
                   
                return (
-                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center transition-all">
-                   <div className="w-12 h-12 rounded-[8px] bg-white dark:bg-black flex-shrink-0 overflow-hidden border border-apple-hairline relative">
+                 <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center transition-all">
+                   <div className="w-14 h-14 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
                      {photoUrl ? (
                        <img src={photoUrl} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
                      ) : (
-                       <div className="w-full h-full flex items-center justify-center text-[10px] font-sans text-apple-muted bg-white dark:bg-black">Img</div>
+                       <div className="w-full h-full flex items-center justify-center text-[10px] font-sans text-apple-muted">Img</div>
                      )}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-semibold font-sans text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                     <h4 className="text-[13px] font-medium font-sans text-apple-ink dark:text-white mb-1 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
                      <div className="flex items-center gap-2">
-                       <p className="text-[12px] font-semibold font-sans text-[#ff3b30]">BDT {Math.floor(product.selling_price * 0.8)}</p>
+                       <p className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white">BDT {Math.floor(product.selling_price * 0.8)}</p>
                        <p className="text-[11px] font-medium font-sans text-apple-muted line-through">BDT {product.selling_price}</p>
                      </div>
                    </div>
@@ -870,26 +880,26 @@ export default function RightSidebar() {
         </div>
 
         {/* Trending Now Widget */}
-        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-5">
-           <h3 className="text-[12px] font-semibold font-sans text-[#0066cc] uppercase tracking-[0.06em] mb-4 flex items-center gap-1.5">
-             <TrendingUp size={14} /> Trending Now
+        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+           <h3 className="text-[13px] font-semibold font-sans text-[#1d1d1f] dark:text-white mb-2 flex items-center">
+             Trending Now
            </h3>
            <div className="flex flex-col">
-             {recommendedProducts.slice(2, 5).map((product, idx) => {
+             {(marketConfig?.trendingNow?.length ? marketConfig.trendingNow : recommendedProducts).slice(0, 4).map((product, idx) => {
                const photo = product.photos && JSON.parse(product.photos)[0];
                const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
                   ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
                   : photo;
                   
                return (
-                 <Link href={`/product/${product.id}`} key={product.id} className="flex gap-3 group items-center py-3 border-b border-apple-hairline last:border-0 last:pb-0 transition-all">
-                   <span className="text-[15px] font-bold font-sans text-apple-muted w-3">{idx + 1}</span>
-                   <div className="w-10 h-10 rounded-[8px] bg-white dark:bg-black flex-shrink-0 overflow-hidden border border-apple-hairline relative">
+                 <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center py-4 border-b border-slate-100 dark:border-[#2c2c2e] last:border-0 last:pb-0 transition-all">
+                   <span className="text-[14px] font-bold font-sans text-slate-200 dark:text-slate-700 w-3">{idx + 1}</span>
+                   <div className="w-12 h-12 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
                      {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
                    </div>
                    <div className="flex-1 min-w-0">
-                     <h4 className="text-[13px] font-semibold font-sans text-apple-ink dark:text-white mb-0.5 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
-                     <p className="text-[12px] font-medium font-sans text-apple-secondary">BDT {product.selling_price}</p>
+                     <h4 className="text-[13px] font-medium font-sans text-apple-ink dark:text-white mb-1 truncate group-hover:text-[#0071e3] transition-colors">{product.title}</h4>
+                     <p className="text-[12px] font-medium font-sans text-[#1d1d1f] dark:text-white">BDT {product.selling_price}</p>
                    </div>
                  </Link>
                );
@@ -897,36 +907,25 @@ export default function RightSidebar() {
            </div>
         </div>
 
-        {/* Brand Spotlight */}
-        <div className="shrink-0 bg-[#272729] rounded-apple-lg p-6 relative overflow-hidden group cursor-pointer text-white">
-           <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-500">
-              <img src="/geeoo-banner.jpg" alt="GEEOO" className="w-full h-full object-cover" />
-           </div>
-           <div className="relative z-10 flex flex-col items-center text-center py-2">
-             <div className="w-12 h-12 bg-white rounded-[11px] flex items-center justify-center p-2 mb-3 shadow-[3px_5px_30px_rgba(0,0,0,0.22)]">
-               <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
-             </div>
-             <h3 className="text-white text-[17px] font-semibold font-sans tracking-[-0.015em] mb-1">Brand Spotlight</h3>
-             <p className="text-[#86868b] text-[12px] font-semibold font-sans uppercase tracking-[0.06em] mb-4">GEEOO Premium Gear</p>
-             <button className="bg-[#fafafc] text-[#333] border-[3px] border-[rgba(0,0,0,0.04)] text-[14px] font-semibold font-sans px-[14px] py-[8px] rounded-[11px] hover:bg-white transition-colors">
-               Explore Store
-             </button>
-           </div>
-        </div>
+        {/* Brand Spotlight - Hidden by request */}
 
         {/* Today's Offer */}
-        <div className="shrink-0 bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6 flex flex-col items-center text-center relative overflow-hidden">
-           <h3 className="text-[12px] font-semibold font-sans text-[#ff9f0a] uppercase tracking-[0.06em] mb-2 flex items-center justify-center gap-1.5">
+        {marketConfig?.todaysOffer?.isActive !== false && (
+        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 flex flex-col items-center text-center relative overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+           <h3 className="text-[12px] font-semibold font-sans text-[#86868b] uppercase tracking-wide mb-3 flex items-center justify-center gap-1.5">
              <Gift size={14} /> Today's Offer
            </h3>
-           <h4 className="text-[24px] font-semibold font-sans text-apple-ink tracking-[-0.015em] leading-[1.1] mb-2 mt-2">Get 20% OFF<br/>on Audio Gear</h4>
-           <div className="font-mono bg-white dark:bg-black border border-apple-hairline px-2 py-1 rounded-[4px] text-[12px] mb-4 text-apple-secondary mt-2">
-             Use code: AUDIO20
+           <h4 className="text-[20px] font-semibold font-sans text-apple-ink dark:text-white tracking-tight leading-snug mb-3 mt-1 whitespace-pre-line">
+             {marketConfig?.todaysOffer?.title || "Get 20% OFF\non Audio Gear"}
+           </h4>
+           <div className="font-mono bg-[#f5f5f7] dark:bg-[#2c2c2e] text-apple-ink dark:text-white px-4 py-1.5 rounded-full text-[12px] font-medium mb-5">
+             Use code: {marketConfig?.todaysOffer?.code || "AUDIO20"}
            </div>
-           <button className="bg-[#0071e3] text-white text-[17px] font-sans font-normal px-[15px] py-[8px] rounded-apple-pill w-full hover:opacity-80 transition-opacity mt-2">
+           <Link href={marketConfig?.todaysOffer?.link || "#"} className="bg-[#0071e3] text-white text-[14px] font-medium px-4 py-2.5 rounded-full w-full hover:bg-[#0077ED] transition-colors inline-block">
              Claim Offer
-           </button>
+           </Link>
         </div>
+        )}
 
         {/* Cart Success Toast */}
         {showCartSuccess && (

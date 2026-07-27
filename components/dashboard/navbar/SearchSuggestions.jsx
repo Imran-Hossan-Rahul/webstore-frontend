@@ -43,138 +43,37 @@ export default function SearchSuggestions({
     }
 
     return (
-        <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto custom-scrollbar">
+        <div className="flex flex-col p-2 max-h-[60vh] overflow-y-auto custom-scrollbar font-sans antialiased">
             {marketplace.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Marketplace</div>
-                    {marketplace.slice(0, 2).map(item => (
+                <div className="mb-2 mt-1">
+                    {marketplace.slice(0, 5).map(item => (
                         <Link 
-                            href={`/market/product/${item._id}`} 
+                            href={`/product/${item._id}`} 
                             key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
+                            className="flex items-center gap-3 px-3 py-2 mx-1 hover:bg-slate-100/80 dark:hover:bg-white/5 rounded-[14px] transition-all group"
                         >
-                             <div className="w-8 h-8 rounded-md overflow-hidden bg-slate-100 flex-shrink-0">
+                             <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5">
                                 {item.photos && (() => {
                                     try {
                                         const parsedPhotos = JSON.parse(item.photos);
-                                        return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-cover" /> : null;
+                                        return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" /> : null;
                                     } catch(e) { return null; }
                                 })()}
                              </div>
-                             <div className="flex flex-col">
-                                 <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</span>
-                                 <span className="text-[10px] font-bold text-slate-500">BDT {item.selling_price}</span>
+                             <div className="flex flex-col flex-1 min-w-0 justify-center">
+                                 <span className="text-[13.5px] font-medium tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] transition-colors truncate">{item.title}</span>
+                                 <span className="text-[11.5px] font-medium tracking-tight text-[#86868b] dark:text-[#86868b] transition-colors">BDT {item.selling_price}</span>
                              </div>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {users.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Craftsmen</div>
-                    {users.slice(0, 2).map(user => (
-                        <Link 
-                            href={`/u/${user.username || user._id}`} 
-                            key={user._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
-                                 {user.profilePicture ? <img src={getOptimizedUrl(user.profilePicture)} className="w-full h-full object-cover" alt="" /> : <User className="w-full h-full p-1 text-slate-400" />}
-                             </div>
-                             <div className="flex flex-col">
-                                 <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{user.name}</span>
-                             </div>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {artifacts.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Artifacts</div>
-                    {artifacts.slice(0, 3).map(artifact => (
-                        <Link 
-                            href={`/artifacts/${artifact._id}`} 
-                            key={artifact._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <Layout className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 flex-shrink-0" />
-                             <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{artifact.title}</span>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {codex.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Codex</div>
-                    {codex.slice(0, 2).map(item => (
-                        <Link 
-                            href={`/codex/${item.slug}`} 
-                            key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <BookOpen className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 flex-shrink-0" />
-                             <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</span>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {posts.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Posts</div>
-                    {posts.slice(0, 2).map(item => (
-                        <Link 
-                            href={`/post/${item._id}`} 
-                            key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 flex-shrink-0" />
-                             <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title || "Untitled Post"}</span>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {jobs.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Jobs</div>
-                    {jobs.slice(0, 2).map(item => (
-                        <Link 
-                            href={`/jobs/${item._id}`} 
-                            key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <Layout className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 flex-shrink-0" />
-                             <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</span>
-                        </Link>
-                    ))}
-                </div>
-            )}
-
-            {challenges.length > 0 && (
-                <div className="mb-2">
-                    <div className="px-3 py-1 text-[9px] font-bold text-slate-400 uppercase tracking-widest">Challenges</div>
-                    {challenges.slice(0, 2).map(item => (
-                        <Link 
-                            href={`/challenges/${item._id}`} 
-                            key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg transition-colors group"
-                        >
-                             <Trophy className="w-4 h-4 text-slate-400 group-hover:text-indigo-600 flex-shrink-0" />
-                             <span className="text-sm font-medium text-slate-700 dark:text-slate-200 group-hover:text-indigo-600 transition-colors line-clamp-1">{item.title}</span>
                         </Link>
                     ))}
                 </div>
             )}
 
             {totalResults > 0 && (
-                <div className="border-t border-slate-100 dark:border-white/5 mt-1 pt-2 px-2">
+                <div className="border-t border-slate-100 dark:border-white/10 mt-1 pt-2 px-1">
                     <button 
                         onClick={handleSearch} 
-                        className="w-full text-center px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors"
+                        className="w-full text-center px-3 py-2 text-[13px] font-medium text-[#0071e3] dark:text-[#2997ff] hover:underline rounded-xl transition-all"
                     >
                         See all {totalResults} results
                     </button>

@@ -225,7 +225,7 @@ const GlassNavbar = ({
 
 
                 {searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[100]">
+                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[100]">
                     <SearchSuggestions 
                       suggestions={suggestions} 
                       isSearching={isSearching} 
@@ -276,13 +276,13 @@ const GlassNavbar = ({
             <span className="text-[14px] font-sans text-apple-ink dark:text-apple-ink">Search</span>
           </button>
 
-          <div className={`hidden md:flex w-full max-w-lg items-center bg-apple-parchment dark:bg-apple-surfaceDark border ${searchFocused ? 'border-[#0071E3] dark:border-[#0071E3]' : 'border-apple-hairline'} rounded-apple-md px-3 h-[32px] transition-all duration-200 relative`}>
-              <Search strokeWidth={1.5} className={`w-4 h-4 ${searchFocused ? 'text-apple-ink dark:text-apple-ink' : 'text-apple-muted'} mr-2`} />
+          <div className={`hidden md:flex w-full max-w-lg items-center ${searchFocused ? 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 shadow-sm' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] border-transparent'} border rounded-full px-4 h-[36px] transition-all duration-200 relative`}>
+              <Search strokeWidth={1.5} className={`w-[15px] h-[15px] ${searchFocused ? 'text-slate-900 dark:text-white' : 'text-slate-500'} mr-2.5 transition-colors`} />
               <input 
                   id="desktop-search-input"
                   type="text" 
                   placeholder="Search Codalina..." 
-                  className="bg-transparent border-none outline-none text-[14px] w-full text-apple-ink font-sans"
+                  className="bg-transparent border-none outline-none text-[14px] w-full text-slate-900 dark:text-white font-sans placeholder:text-slate-500"
                   value={searchQuery || ""}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => {
@@ -296,10 +296,9 @@ const GlassNavbar = ({
               />
               
 
-
               {/* Modular Suggestions */}
               {searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl overflow-hidden z-[100]">
+                  <div className="absolute top-[calc(100%+12px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100] transform transition-all">
                       <SearchSuggestions 
                         suggestions={suggestions} 
                         isSearching={isSearching} 
@@ -325,7 +324,7 @@ const GlassNavbar = ({
                   </span>
                 )}
               </Link>
-              <Link href="/orders" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all">
+              <Link href={user ? `/u/${user.username}?tab=orders` : "/login"} className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               </Link>
             </div>

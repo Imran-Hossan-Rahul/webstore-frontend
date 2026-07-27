@@ -47,6 +47,7 @@ export default function DashboardLayout({ children }) {
   const hideRightSidebar = 
     pathname.startsWith("/chat") || 
     pathname.startsWith("/settings") || 
+    pathname.startsWith("/u/") || 
     (pathname.startsWith("/challenges/") && (
       pathname.split('/').filter(Boolean).length === 1 ||
       pathname.endsWith("/manage") ||
@@ -76,7 +77,7 @@ export default function DashboardLayout({ children }) {
         openChatWithUser,
       }}
     >
-      <div className="min-h-screen bg-[#fafafa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-blue-100 dark:selection:bg-indigo-500/30">
+      <div className="min-h-screen bg-[#fafafa] dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans">
         <GlassNavbar 
           user={user} 
           isSidebarHovered={isSidebarHovered} 

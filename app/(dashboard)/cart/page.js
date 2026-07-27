@@ -110,7 +110,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen pb-24 md:pb-0">
-      <div className="max-w-[1200px] mx-auto py-2 md:py-8 px-4 sm:px-6 lg:px-8 -mt-6 md:mt-0">
+      <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
         <h1 className="text-xl md:text-2xl font-semibold text-apple-ink mb-4 md:mb-8 flex items-center gap-2 md:gap-3">
           <ShoppingCart size={24} className="text-[#111827] md:w-7 md:h-7" /> Shopping Cart
         </h1>

@@ -2,7 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Plus, X, Loader2, Image as ImageIcon, Upload, Film, Edit, Eye } from "lucide-react";
+import { Plus, X, Loader2, Image as ImageIcon, Upload, Film, Edit, Eye, Trash2 } from "lucide-react";
 
 export default function ProductsManager() {
   const [products, setProducts] = useState([]);
@@ -164,6 +164,17 @@ export default function ProductsManager() {
     }
   };
 
+  const handleDeleteProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product? This action cannot be undone.")) return;
+    try {
+      await api.delete(`/market/products/${id}`);
+      setProducts(products.filter(p => p.id !== id && p._id !== id));
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+      alert("Failed to delete product. Please try again.");
+    }
+  };
+
   const handleEditClick = (p) => {
     setEditingProductId(p.id);
     setTitle(p.title || '');
@@ -277,6 +288,9 @@ export default function ProductsManager() {
                       <button onClick={() => handleEditClick(p)} className="p-2 bg-blue-900/30 hover:bg-blue-800/50 text-blue-400 hover:text-blue-300 border border-blue-900/50 rounded-lg transition" title="Edit Product">
                         <Edit size={16} />
                       </button>
+                      <button onClick={() => handleDeleteProduct(p.id || p._id)} className="p-2 bg-red-900/30 hover:bg-red-800/50 text-red-400 hover:text-red-300 border border-red-900/50 rounded-lg transition" title="Delete Product">
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -326,6 +340,9 @@ export default function ProductsManager() {
                 </a>
                 <button onClick={() => handleEditClick(p)} className="p-2 bg-blue-900/30 text-blue-400 border border-blue-900/50 rounded-lg transition" title="Edit">
                   <Edit size={15} />
+                </button>
+                <button onClick={() => handleDeleteProduct(p.id || p._id)} className="p-2 bg-red-900/30 text-red-400 border border-red-900/50 rounded-lg transition" title="Delete">
+                  <Trash2 size={15} />
                 </button>
               </div>
             </div>
