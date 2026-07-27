@@ -64,8 +64,8 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
 
   return (
     <div className="space-y-2 mb-6">
-      <div className="px-1">
-        <label className="text-[12px] font-semibold text-apple-secondary uppercase tracking-[0.06em]">
+      <div className="flex justify-between items-center px-1">
+        <label className="text-[13px] font-semibold text-apple-secondary">
           {label}
         </label>
       </div>
@@ -98,7 +98,7 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="text-red-500 text-[11px] font-bold mt-1.5 ml-1 uppercase tracking-tighter"
+            className="text-red-500 text-[12px] font-medium mt-1.5 ml-1"
           >
             {error}
           </motion.p>
@@ -126,9 +126,13 @@ function PasswordStrengthBar({ password }) {
           />
         ))}
       </div>
-      <p className={`text-[11px] font-bold uppercase tracking-wider ${STRENGTH_TEXT[score]}`}>
-        {STRENGTH_LABELS[score]} password
-      </p>
+      <div className="mt-3 space-y-2">
+        <div className="flex justify-between items-center px-1">
+          <p className={`text-[12px] font-medium ${STRENGTH_TEXT[score]}`}>
+            {STRENGTH_LABELS[score]} password
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -318,10 +322,12 @@ export default function RegisterPage() {
                     exit={{ opacity: 0 }}
                     className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)] flex-shrink-0" />
-                    <p className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-tighter">
-                      {generalError}
-                    </p>
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                    <div className="flex items-center gap-2">
+                      <p className="text-red-600 dark:text-red-400 text-[12px] font-medium">
+                        {generalError}
+                      </p>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>

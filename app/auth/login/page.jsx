@@ -40,7 +40,7 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
   return (
     <div className="space-y-2 mb-6">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[12px] font-semibold text-apple-secondary uppercase tracking-[0.06em]">
+        <label className="text-[13px] font-semibold text-apple-secondary">
           {label}
         </label>
         {forgotLink && (
@@ -81,7 +81,7 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="text-red-500 text-[11px] font-bold mt-1.5 ml-1 uppercase tracking-tighter"
+            className="text-red-500 text-[12px] font-medium mt-1.5 ml-1"
           >
             {error}
           </motion.p>
@@ -256,7 +256,7 @@ export default function LoginPage() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="text-red-500 text-xs font-bold uppercase tracking-tighter"
+                    className="text-red-500 text-[12px] font-medium"
                   >
                     {twoFaError}
                   </motion.p>
@@ -280,7 +280,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setRequires2FA(false); setTwoFaCode(""); setTwoFaError(""); }}
-                className="w-full py-2 text-sm font-bold text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors uppercase tracking-widest"
+                className="w-full py-2 text-[14px] font-medium text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors"
               >
                 Cancel
               </button>
@@ -364,10 +364,11 @@ export default function LoginPage() {
                     exit={{ opacity: 0 }}
                     className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)] flex-shrink-0" />
-                    <p className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-tighter">
-                      {generalError}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-red-600 dark:text-red-400 text-[12px] font-medium">
+                        {generalError}
+                      </p>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
