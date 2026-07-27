@@ -154,19 +154,40 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden ml-[32px]"
                     >
-                      {subcats.map(sub => (
-                        <Link
-                          key={sub._id}
-                          href={`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`}
-                          className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                            pathname.includes(`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`)
-                              ? "text-blue-600 dark:text-blue-400 font-medium"
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                          }`}
-                        >
-                          {sub.name}
-                        </Link>
-                      ))}
+                      {subcats.map(sub => {
+                        const childCats = sub.subcategories || [];
+                        return (
+                          <div key={sub._id}>
+                            <Link
+                              href={`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`}
+                              className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
+                                pathname.includes(`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`)
+                                  ? "text-blue-600 dark:text-blue-400 font-medium"
+                                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                              }`}
+                            >
+                              {sub.name}
+                            </Link>
+                            {childCats.length > 0 && (
+                              <div className="ml-4 border-l border-slate-100 dark:border-white/5 pl-2 mt-1 mb-2 space-y-1">
+                                {childCats.map(child => (
+                                  <Link
+                                    key={child._id}
+                                    href={`/market/category/${encodeURIComponent(child.name.toLowerCase().replace(/\s+/g, '-'))}`}
+                                    className={`block py-1 px-2 text-[12px] font-sans rounded-apple-sm transition-colors ${
+                                      pathname.includes(`/market/category/${encodeURIComponent(child.name.toLowerCase().replace(/\s+/g, '-'))}`)
+                                        ? "text-blue-600 dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
+                                        : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                    }`}
+                                  >
+                                    {child.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>

@@ -114,8 +114,20 @@ export default function AdminCategoriesPage() {
     }
   };
 
-  // Group categories for display
-  const parentCategories = categories.filter(c => !c.isSubcategory);
+  // We don't filter into parentCategories and subCategories anymore. 
+  // We'll build a flat tree representation for display
+  const buildFlatTree = (cats, parentId = null, level = 0) => {
+    let result = [];
+    const children = cats.filter(c => (c.parentCategory?._id || c.parentCategory) === parentId || (parentId === null && !c.parentCategory));
+    for (const child of children) {
+      result.push({ ...child, level });
+      result = result.concat(buildFlatTree(cats, child._id, level + 1));
+    }
+    return result;
+  };
+  
+  const displayCategories = buildFlatTree(categories);
+  const potentialParents = categories.filter(c => c._id !== editId);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -138,93 +150,67 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-xl shadow-sm border border-gray-100 dark:border-zinc-800 overflow-hidden">
-        {loading ? (
-          <div className="p-8 text-center text-gray-500">Loading categories...</div>
-        ) : categories.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
-            <Folder size={48} className="mx-auto text-gray-300 mb-4" />
-            <p className="text-lg font-medium text-gray-900 dark:text-white">No categories found</p>
-            <p className="mb-4">Get started by creating your first category.</p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 dark:bg-zinc-800 border-b border-gray-100 dark:border-zinc-700">
-                  <th className="p-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Name</th>
-                  <th className="p-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Image</th>
-                  <th className="p-4 text-sm font-semibold text-gray-600 dark:text-gray-300">Status</th>
-                  <th className="p-4 text-sm font-semibold text-gray-600 dark:text-gray-300 text-right">Actions</th>
+      <div className="bg-white dark:bg-[#1c1c1e] rounded-xl border border-gray-200 dark:border-zinc-800 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50 dark:bg-zinc-800/50 border-b border-gray-200 dark:border-zinc-800">
+                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Category Structure</th>
+                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Status</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
+              {displayCategories.length === 0 ? (
+                <tr>
+                  <td colSpan="3" className="px-6 py-8 text-center text-sm text-gray-500">No categories found</td>
                 </tr>
-              </thead>
-              <tbody>
-                {parentCategories.map(parent => (
-                  <React.Fragment key={parent._id}>
-                    {/* Parent Row */}
-                    <tr className="border-b border-gray-50 dark:border-zinc-800 hover:bg-gray-50/50 dark:hover:bg-zinc-800/50">
-                      <td className="p-4 font-medium text-gray-900 dark:text-white flex items-center gap-2">
-                        <Folder size={16} className="text-blue-500" /> {parent.name}
-                      </td>
-                      <td className="p-4">
-                        {parent.image ? (
-                          <img src={parent.image} alt={parent.name} className="w-10 h-10 rounded object-cover" />
-                        ) : (
-                          <span className="text-xs text-gray-400">No image</span>
-                        )}
-                      </td>
-                      <td className="p-4">
-                        <button 
-                          onClick={() => toggleStatus(parent)}
-                          className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${parent.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
-                        >
-                          {parent.isActive ? <Check size={12} /> : <X size={12} />}
-                          {parent.isActive ? 'Active' : 'Inactive'}
-                        </button>
-                      </td>
-                      <td className="p-4 text-right">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => handleEdit(parent)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></button>
-                          <button onClick={() => handleDelete(parent._id, false)} className="p-1.5 text-red-600 hover:bg-red-50 rounded"><Trash2 size={16} /></button>
-                        </div>
-                      </td>
-                    </tr>
-                    {/* Subcategory Rows */}
-                    {categories.filter(c => c.isSubcategory && c.parentCategory?._id === parent._id).map(sub => (
-                      <tr key={sub._id} className="border-b border-gray-50 dark:border-zinc-800 bg-gray-50/30 dark:bg-zinc-900/50 hover:bg-gray-50/80">
-                        <td className="p-4 pl-10 text-gray-700 dark:text-gray-300 flex items-center gap-2 text-sm">
-                          <CornerDownRight size={16} className="text-gray-400" /> {sub.name}
-                        </td>
-                        <td className="p-4">
-                          {sub.image ? (
-                            <img src={sub.image} alt={sub.name} className="w-8 h-8 rounded object-cover" />
+              ) : (
+                displayCategories.map(cat => (
+                  <tr key={cat._id} className="hover:bg-gray-50 dark:hover:bg-zinc-800/30 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3" style={{ paddingLeft: `${cat.level * 24}px` }}>
+                        {cat.level > 0 && <CornerDownRight size={16} className="text-gray-400" />}
+                        <div className="w-10 h-10 rounded-lg bg-gray-100 dark:bg-zinc-800 overflow-hidden flex items-center justify-center shrink-0 border border-gray-200 dark:border-zinc-700">
+                          {cat.image ? (
+                            <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
                           ) : (
-                            <span className="text-xs text-gray-400"></span>
+                            <Folder size={18} className="text-gray-400" />
                           )}
-                        </td>
-                        <td className="p-4">
-                          <button 
-                            onClick={() => toggleStatus(sub)}
-                            className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${sub.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
-                          >
-                            {sub.isActive ? <Check size={12} /> : <X size={12} />}
-                            {sub.isActive ? 'Active' : 'Inactive'}
-                          </button>
-                        </td>
-                        <td className="p-4 text-right">
-                          <div className="flex justify-end gap-2">
-                            <button onClick={() => handleEdit(sub)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"><Edit2 size={16} /></button>
-                            <button onClick={() => handleDelete(sub._id, true)} className="p-1.5 text-red-600 hover:bg-red-50 rounded"><Trash2 size={16} /></button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </React.Fragment>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                        </div>
+                        <div>
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">{cat.name}</span>
+                          {cat.level === 0 && <span className="ml-2 text-[10px] bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-0.5 rounded-full font-medium">Root</span>}
+                          {cat.level === 1 && <span className="ml-2 text-[10px] bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 px-2 py-0.5 rounded-full font-medium">Sub</span>}
+                          {cat.level > 1 && <span className="ml-2 text-[10px] bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2 py-0.5 rounded-full font-medium">Child</span>}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        cat.isActive 
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                          : 'bg-gray-100 text-gray-800 dark:bg-zinc-800 dark:text-gray-400'
+                      }`}>
+                        {cat.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button onClick={() => handleEdit(cat)} className="p-2 text-gray-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                          <Edit2 size={16} />
+                        </button>
+                        <button onClick={() => handleDelete(cat._id, cat.level > 0)} className="p-2 text-gray-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Add/Edit Modal */}
@@ -273,7 +259,7 @@ export default function AdminCategoriesPage() {
                     required={formData.isSubcategory}
                   >
                     <option value="">Select Parent</option>
-                    {parentCategories.map(cat => (
+                    {potentialParents.map(cat => (
                       <option key={cat._id} value={cat._id}>{cat.name}</option>
                     ))}
                   </select>
