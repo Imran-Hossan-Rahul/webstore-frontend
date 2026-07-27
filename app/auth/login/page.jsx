@@ -59,9 +59,9 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-4"} py-[14px] bg-apple-canvas dark:bg-apple-surface-dark border ${
-            error ? "border-red-500" : "border-apple-hairline"
-          } rounded-apple-sm text-[17px] text-apple-ink placeholder-apple-muted focus:border-apple-focus focus:ring-[2px] focus:ring-apple-focus focus:outline-none transition-all duration-300`}
+          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-6"} py-3 bg-white dark:bg-[#1c1c1e] border ${
+            error ? "border-red-500" : "border-gray-200 dark:border-gray-800"
+          } rounded-[12px] text-[15px] text-black dark:text-white placeholder-gray-400 focus:border-[#0071e3] focus:ring-[3px] focus:ring-[#0071e3]/20 focus:outline-none transition-all duration-200 shadow-sm truncate`}
         />
         {isPassword && (
           <button
@@ -316,7 +316,6 @@ export default function LoginPage() {
           >
             <SocialAuth
               onGoogle={() => handleSocialLogin("google")}
-              onGithub={() => handleSocialLogin("github")}
             />
 
             {/* Divider */}
