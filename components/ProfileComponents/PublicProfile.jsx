@@ -55,10 +55,10 @@ export default function PublicProfile({ username }) {
     }
     try {
       await api.post("/auth/logout");
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
     } catch (e) {
       console.error("Logout error", e);
-      window.location.href = '/login';
+      window.location.href = '/auth/login';
     }
   };
 
