@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { MapPin, Calendar, Link as LinkIcon, Loader2, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
+import { useUser } from '@/context/UserContext';
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/ToastProvider";
 import OrdersList from '@/components/orders/OrdersList';
@@ -15,6 +16,7 @@ export default function PublicProfile({ username }) {
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') || "about";
   const { user: currentUser } = useContext(DashboardContext) || {};
+  const { logout } = useUser();
   const { showToast } = useToast();
   
   const [profile, setProfile] = useState(null);
@@ -53,13 +55,8 @@ export default function PublicProfile({ username }) {
       setTimeout(() => setConfirmLogout(false), 3000);
       return;
     }
-    try {
-      await api.post("/auth/logout");
-      window.location.href = '/auth/login';
-    } catch (e) {
-      console.error("Logout error", e);
-      window.location.href = '/auth/login';
-    }
+    await logout();
+    window.location.href = '/auth/login';
   };
 
   useEffect(() => {
