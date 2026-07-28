@@ -397,9 +397,9 @@ export default function ProductDetails({ params }) {
               {/* Gray Info Block */}
               <div className={`bg-[#efefef] dark:bg-slate-800/50 px-5 pt-5 pb-3 flex justify-between items-start ${specs.filter(s => s.isHighlight).length > 0 ? 'rounded-t-lg' : 'rounded-lg mb-5'}`}>
                 <div className="flex-1 pr-4">
-                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
-                    {product.title}
-                  </h1>
+                  <h1 className="text-[32px] sm:text-[40px] font-bold text-[#1d1d1f] dark:text-white tracking-[-0.02em] leading-tight mb-2">
+                  {product.title}
+                </h1>
                   {/* SKU (Admin Only) */}
                   {(user?.role === 'admin' || user?.role === 'superadmin') && product.sku && (
                     <div className="mt-2 flex items-center gap-3">
@@ -432,8 +432,8 @@ export default function ProductDetails({ params }) {
                 </div>
                 
                 <div className="text-right shrink-0 mt-1">
-                  <div className="text-2xl font-bold text-[#1f2937] mb-1">
-                    BDT {formatPrice(finalPrice)}
+                  <div className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-1 tracking-[-0.01em]">
+                    BDT {product.selling_price}
                   </div>
                   {finalOriginalPrice > finalPrice && (
                     <div className="text-sm text-gray-500 dark:text-gray-400 line-through">
@@ -512,56 +512,46 @@ export default function ProductDetails({ params }) {
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                {/* Add to Cart */}
+                  {/* Buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button 
                   onClick={handleAddToCart}
-                  disabled={addedToCart}
-                  className={`py-[11px] px-[22px] rounded-apple-pill font-sans font-normal transition-opacity hover:opacity-80 flex items-center justify-center gap-3 text-[17px] tracking-wide ${
-                    addedToCart 
-                      ? 'bg-[#4bc133] text-white cursor-default' 
-                      : 'bg-apple-ink hover:bg-black text-white'
-                  }`}
+                  className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3]/10 text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
                 >
-                  {addedToCart ? (
-                    <><Check size={18} strokeWidth={3} /> ADDED</>
-                  ) : (
-                    <><ShoppingCart size={18} /> ADD TO CART</>
-                  )}
+                  <ShoppingCart size={18} /> Add to Cart
                 </button>
-                
-                {/* Buy Now */}
-                <div className="relative overflow-hidden rounded-apple-pill flex w-full transition-shadow">
-                  <button 
-                    onClick={handleBuyNow}
-                    className="relative w-full bg-apple-accent hover:bg-apple-accent/90 transition-opacity hover:opacity-80 ease-in-out text-white py-[11px] px-[22px] rounded-apple-pill font-sans font-normal flex items-center justify-center gap-3 text-[17px] tracking-widest"
-                  >
-                    <ShoppingBag size={18} /> BUY NOW
-                  </button>
-                </div>
+                <button 
+                  onClick={handleBuyNow}
+                  className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
+                >
+                  <ShoppingBag size={18} /> Buy Now
+                </button>
+              </div>  
                 
                 {/* In Stock / Delivery */}
-                <div className="bg-[#4bc133] rounded p-4 flex items-center justify-center gap-4 text-white">
-                  <div className="shrink-0"><Package size={28} strokeWidth={1.5} /></div>
+                <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white border border-transparent">
+                  <div className="shrink-0"><Check size={28} strokeWidth={2} className="text-green-600" /></div>
                   <div className="flex flex-col">
-                    <span className="font-bold text-[17px] leading-tight">In Stock</span>
+                    <span className="font-bold text-[16px] leading-tight">In Stock</span>
+                    <span className="text-[12.5px] text-[#86868b] mt-0.5">Ready to ship</span>
                   </div>
                 </div>
 
                 {/* Warranty */}
                 {product.warranty_info ? (
-                  <Link href="/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
-                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#3b82f6]" /></div>
+                  <Link href="/warranty" className="bg-[#f5f5f7] hover:bg-[#e8e8ed] dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white transition group border border-transparent">
+                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#0071e3]" /></div>
                     <div className="flex flex-col">
-                      <span className="font-bold text-[17px] leading-tight capitalize">{product.warranty_info}</span>
-                      <span className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 group-hover:text-[#4b5563] transition">View Policy →</span>
+                      <span className="font-bold text-[16px] leading-tight capitalize">{product.warranty_info}</span>
+                      <span className="text-[12.5px] text-[#86868b] mt-0.5 group-hover:text-[#1d1d1f] transition">View Policy →</span>
                     </div>
                   </Link>
                 ) : (
-                  <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded p-4 flex items-center justify-center gap-4 text-gray-500 dark:text-gray-400 border border-transparent">
+                  <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#86868b] border border-[#e8e8ed] dark:border-gray-700">
                     <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="opacity-40" /></div>
                     <div className="flex flex-col">
                       <span className="font-bold text-[16px] leading-tight">No Warranty</span>
-                      <span className="text-[12px] mt-0.5 opacity-80">Not applicable for this item</span>
+                      <span className="text-[12.5px] mt-0.5">Not applicable for this item</span>
                     </div>
                   </div>
                 )}
