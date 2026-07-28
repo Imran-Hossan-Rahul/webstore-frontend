@@ -313,7 +313,7 @@ export default function ProductDetails({ params }) {
         {/* Left: Image Gallery (Sticky on Desktop) */}
         <div className="lg:w-5/12 lg:sticky lg:top-[120px] z-10">
           <div 
-            className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-pointer bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
+            className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-zoom-in bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
             onClick={() => {
               if (activeImage) setIsLightboxOpen(true);
             }}
@@ -327,7 +327,7 @@ export default function ProductDetails({ params }) {
                       src={getOptimizedUrl(activeImage)} 
                       alt={product.title} 
                       className={`w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-sm transition-transform duration-200 ease-out pointer-events-none ${isZooming ? 'scale-[2.5]' : 'scale-100 group-hover:scale-105'}`}
-                      style={isZooming ? { ...zoomStyle, transition: 'transform-origin 0.1s ease-out, transform 0.2s ease-out' } : { transition: 'transform-origin 0.1s ease-out, transform 0.2s ease-out' }}
+                      style={isZooming ? zoomStyle : {}}
                     />
                     <div className={`absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full transition-opacity duration-300 shadow-sm text-gray-700 dark:text-gray-300 ${isZooming ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'}`}>
                       <ZoomIn size={18} />
