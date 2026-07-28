@@ -278,7 +278,7 @@ export default function ProductDetails({ params }) {
   };
 
   return (
-    <div className="min-h-screen pb-16">
+    <div className="min-h-screen pb-16 font-sans">
       <AuthGuardModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
@@ -458,7 +458,7 @@ export default function ProductDetails({ params }) {
                     return (
                       <div key={groupIdx}>
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="font-bold text-gray-900 dark:text-white uppercase text-[13px] tracking-wider">{group.name}:</span>
+                          <span className="font-bold text-gray-900 dark:text-white capitalize text-[14px] tracking-wide">{group.name}:</span>
                           <span className="text-gray-700 dark:text-gray-300 text-[14px]">{selectedLabel}</span>
                         </div>
                         
@@ -555,12 +555,12 @@ export default function ProductDetails({ params }) {
                 {specs.map((s, idx) => (
                   <li key={idx} className="flex flex-col sm:flex-row sm:items-stretch bg-gray-100 dark:bg-slate-800/50 rounded-sm p-4">
                     <div className="w-full sm:w-[25%] flex items-center mb-2 sm:mb-0 pr-4">
-                      <span className="text-[13px] font-semibold text-gray-800 dark:text-gray-300 uppercase tracking-wider">
+                      <span className="text-[14px] font-semibold text-gray-900 dark:text-gray-200 capitalize tracking-wide">
                         {s.key}
                       </span>
                     </div>
                     <div className="flex-1 sm:border-l-2 sm:border-dotted sm:border-gray-400 dark:border-slate-600 sm:pl-6 py-1 flex items-center">
-                      <span className="text-[13px] text-gray-700 dark:text-gray-400 uppercase leading-relaxed">
+                      <span className="text-[14px] text-gray-800 dark:text-gray-300 leading-relaxed capitalize">
                         {s.value}
                       </span>
                     </div>
