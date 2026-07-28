@@ -552,18 +552,18 @@ export default function ProductDetails({ params }) {
 
           {/* Specifications (Conditional) */}
           {specs.length > 0 && (
-            <div className="mt-4">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-slate-800 pb-4">Specifications</h2>
-              <ul className="space-y-2">
+            <div className="mt-16 mb-8 max-w-[980px]">
+              <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em]">Product Information</h2>
+              <ul className="flex flex-col">
                 {specs.map((s, idx) => (
-                  <li key={idx} className="flex flex-col sm:flex-row sm:items-stretch bg-gray-100 dark:bg-slate-800/50 rounded-sm p-4">
-                    <div className="w-full sm:w-[25%] flex items-center mb-2 sm:mb-0 pr-4">
-                      <span className="text-[14px] font-semibold text-gray-900 dark:text-gray-200 capitalize tracking-wide">
+                  <li key={idx} className="flex flex-col sm:flex-row border-t border-[#e8e8ed] dark:border-slate-800 py-6 sm:py-8">
+                    <div className="w-full sm:w-[25%] mb-3 sm:mb-0 pr-4 shrink-0">
+                      <span className="text-[17px] font-semibold text-[#1d1d1f] dark:text-white capitalize">
                         {s.key}
                       </span>
                     </div>
-                    <div className="flex-1 sm:border-l-2 sm:border-dotted sm:border-gray-400 dark:border-slate-600 sm:pl-6 py-1 flex items-center">
-                      <span className="text-[14px] text-gray-800 dark:text-gray-300 leading-relaxed capitalize">
+                    <div className="flex-1">
+                      <span className="text-[15px] text-[#1d1d1f] dark:text-gray-300 leading-[1.6]">
                         {s.value}
                       </span>
                     </div>
@@ -578,10 +578,10 @@ export default function ProductDetails({ params }) {
 
       {/* Description (Conditional) - Appears after the sticky image container ends */}
       {product.description && (
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-          <div className="w-full">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-slate-800 pb-4">Description</h2>
-            <div className="prose prose-blue dark:prose-invert max-w-none text-gray-600 dark:text-gray-300" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }}></div>
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16">
+          <div className="w-full max-w-[980px] lg:ml-auto">
+            <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em] border-t border-[#e8e8ed] dark:border-slate-800 pt-8">Description</h2>
+            <div className="prose prose-blue dark:prose-invert max-w-none text-[#1d1d1f] dark:text-gray-300 text-[15px] leading-[1.6]" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }}></div>
             
             {images.length > 1 && (
               <div className="mt-8 space-y-4">
