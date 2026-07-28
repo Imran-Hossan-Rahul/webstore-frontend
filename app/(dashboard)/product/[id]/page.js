@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Star, Truck, ShieldCheck, Undo2, ShoppingCart, CreditCard, ChevronRight, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit } from "lucide-react";
+import { Star, Truck, ShieldCheck, Undo2, ShoppingCart, CreditCard, ChevronRight, ChevronLeft, X, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit, ZoomIn } from "lucide-react";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useShare } from "@/hooks/useShare";
 import { api } from "@/utils/api";
@@ -34,6 +34,7 @@ export default function ProductDetails({ params }) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [variantGroups, setVariantGroups] = useState([]);
   const [selectedVariants, setSelectedVariants] = useState({});
   const [addedToCart, setAddedToCart] = useState(false);
@@ -302,13 +303,23 @@ export default function ProductDetails({ params }) {
         
         {/* Left: Image Gallery (Sticky on Desktop) */}
         <div className="lg:w-5/12 lg:sticky lg:top-[120px] z-10">
-          <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12">
+          <div 
+            className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-pointer bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
+            onClick={() => {
+              if (activeImage) setIsLightboxOpen(true);
+            }}
+          >
                 {activeImage ? (
-                  <img 
-                    src={getOptimizedUrl(activeImage)} 
-                    alt={product.title} 
-                    className="w-full h-full object-contain mix-blend-multiply drop-shadow-md group-hover:opacity-80 transition-opacity duration-500 ease-out"
-                  />
+                  <>
+                    <img 
+                      src={getOptimizedUrl(activeImage)} 
+                      alt={product.title} 
+                      className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out"
+                    />
+                    <div className="absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm text-gray-700 dark:text-gray-300">
+                      <ZoomIn size={18} />
+                    </div>
+                  </>
                 ) : (
                   <div className="text-gray-400">No Image Available</div>
                 )}
@@ -572,11 +583,75 @@ export default function ProductDetails({ params }) {
             {images.length > 1 && (
               <div className="mt-8 space-y-4">
                 {images.slice(1).map((img, idx) => (
-                  <img key={idx} src={getOptimizedUrl(img)} alt="Product Description" className="w-full rounded-xl" />
+                  <img key={idx} src={getOptimizedUrl(img)} alt="Product Description" className="w-full rounded-xl hover:opacity-95 transition-opacity cursor-pointer" onClick={() => { setActiveImage(img); setIsLightboxOpen(true); }} />
                 ))}
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-[#000000]/95 backdrop-blur-xl animate-in fade-in duration-300">
+          <button 
+            onClick={() => setIsLightboxOpen(false)}
+            className="absolute top-6 right-6 p-3 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+          >
+            <X size={24} />
+          </button>
+          
+          {images.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = images.indexOf(activeImage);
+                const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
+                setActiveImage(images[prevIndex]);
+              }}
+              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+            >
+              <ChevronLeft size={32} />
+            </button>
+          )}
+
+          <div className="w-full h-full p-12 flex items-center justify-center max-w-7xl mx-auto" onClick={() => setIsLightboxOpen(false)}>
+            <img 
+              src={getOptimizedUrl(activeImage)} 
+              alt="Zoomed Product" 
+              className="max-w-full max-h-full object-contain drop-shadow-2xl animate-in zoom-in-95 duration-500"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+
+          {images.length > 1 && (
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                const currentIndex = images.indexOf(activeImage);
+                const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
+                setActiveImage(images[nextIndex]);
+              }}
+              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+            >
+              <ChevronRight size={32} />
+            </button>
+          )}
+          
+          {/* Thumbnails in Lightbox */}
+          {images.length > 1 && (
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 p-4 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-2xl">
+              {images.map((img, idx) => (
+                <button 
+                  key={idx} 
+                  onClick={() => setActiveImage(img)}
+                  className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${activeImage === img ? 'border-gray-800 dark:border-white scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                >
+                  <img src={getOptimizedUrl(img)} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
