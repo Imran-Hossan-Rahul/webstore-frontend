@@ -511,22 +511,22 @@ export default function ProductDetails({ params }) {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+              <div className="flex flex-col gap-4 mt-6">
                   {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button 
-                  onClick={handleAddToCart}
-                  className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3]/10 text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
-                >
-                  <ShoppingCart size={18} /> Add to Cart
-                </button>
-                <button 
-                  onClick={handleBuyNow}
-                  className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
-                >
-                  <ShoppingBag size={18} /> Buy Now
-                </button>
-              </div>  
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <button 
+                      onClick={handleAddToCart}
+                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3]/10 text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
+                    >
+                      <ShoppingCart size={18} /> Add to Cart
+                    </button>
+                    <button 
+                      onClick={handleBuyNow}
+                      className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
+                    >
+                      <ShoppingBag size={18} /> Buy Now
+                    </button>
+                  </div>  
                 
                 {/* Warranty */}
                 {product.warranty_info ? (
