@@ -38,6 +38,15 @@ export default function ProductDetails({ params }) {
   const [variantGroups, setVariantGroups] = useState([]);
   const [selectedVariants, setSelectedVariants] = useState({});
   const [addedToCart, setAddedToCart] = useState(false);
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomStyle, setZoomStyle] = useState({ transformOrigin: 'center center' });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomStyle({ transformOrigin: `${x}% ${y}%` });
+  };
 
   useEffect(() => {
     if (id) {
@@ -308,15 +317,19 @@ export default function ProductDetails({ params }) {
             onClick={() => {
               if (activeImage) setIsLightboxOpen(true);
             }}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsZooming(true)}
+            onMouseLeave={() => setIsZooming(false)}
           >
                 {activeImage ? (
                   <>
                     <img 
                       src={getOptimizedUrl(activeImage)} 
                       alt={product.title} 
-                      className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-sm group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className={`w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-sm transition-transform duration-200 ease-out pointer-events-none ${isZooming ? 'scale-[2.5]' : 'scale-100 group-hover:scale-105'}`}
+                      style={isZooming ? zoomStyle : {}}
                     />
-                    <div className="absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm text-gray-700 dark:text-gray-300">
+                    <div className={`absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full transition-opacity duration-300 shadow-sm text-gray-700 dark:text-gray-300 ${isZooming ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'}`}>
                       <ZoomIn size={18} />
                     </div>
                   </>
