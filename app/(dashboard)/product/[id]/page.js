@@ -589,8 +589,7 @@ export default function ProductDetails({ params }) {
             )}
           </div>
         </div>
-      </div>
-
+      )}
       {/* Lightbox Modal */}
       {isLightboxOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-[#000000]/95 backdrop-blur-xl animate-in fade-in duration-300">
