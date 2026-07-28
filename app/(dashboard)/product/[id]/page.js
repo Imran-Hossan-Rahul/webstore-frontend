@@ -536,13 +536,23 @@ export default function ProductDetails({ params }) {
                 </div>
 
                 {/* Warranty */}
-                <Link href="/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
-                  <div className="shrink-0"><CreditCard size={28} strokeWidth={1.5} /></div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[17px] leading-tight">{product.warranty_info ? product.warranty_info.replace(/ warranty/i, '') : "No"}</span>
-                    <span className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 group-hover:text-[#4b5563] transition">Warranty — View Policy →</span>
+                {product.warranty_info ? (
+                  <Link href="/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
+                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#3b82f6]" /></div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-[17px] leading-tight capitalize">{product.warranty_info}</span>
+                      <span className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 group-hover:text-[#4b5563] transition">View Policy →</span>
+                    </div>
+                  </Link>
+                ) : (
+                  <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded p-4 flex items-center justify-center gap-4 text-gray-500 dark:text-gray-400 border border-transparent">
+                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="opacity-40" /></div>
+                    <div className="flex flex-col">
+                      <span className="font-bold text-[16px] leading-tight">No Warranty</span>
+                      <span className="text-[12px] mt-0.5 opacity-80">Not applicable for this item</span>
+                    </div>
                   </div>
-                </Link>
+                )}
               </div>
             </div>
           </div>
