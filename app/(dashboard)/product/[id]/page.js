@@ -539,7 +539,7 @@ export default function ProductDetails({ params }) {
                 <Link href="/warranty" className="bg-[#e8e8e8] hover:bg-[#ddd] dark:bg-slate-700 dark:hover:bg-slate-600 rounded p-4 flex items-center justify-center gap-4 text-black dark:text-white transition group">
                   <div className="shrink-0"><CreditCard size={28} strokeWidth={1.5} /></div>
                   <div className="flex flex-col">
-                    <span className="font-bold text-[17px] leading-tight">{product.warranty_info ? product.warranty_info.replace(/ warranty/i, '') : "1 Year"}</span>
+                    <span className="font-bold text-[17px] leading-tight">{product.warranty_info ? product.warranty_info.replace(/ warranty/i, '') : "No"}</span>
                     <span className="text-[12px] text-gray-600 dark:text-gray-400 mt-0.5 group-hover:text-[#4b5563] transition">Warranty — View Policy →</span>
                   </div>
                 </Link>

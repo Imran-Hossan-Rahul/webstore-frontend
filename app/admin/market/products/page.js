@@ -191,22 +191,24 @@ export default function ProductsManager() {
     setWeight(p.weight || '');
     setDimensions(p.dimensions || '');
     setTags(p.tags || '');
-    setProcurementThreshold(p.procurement_threshold || 20);
-    setEstDeliveryDays(p.est_delivery_days || 3);
-    setReportedStockQuantity(p.reportedStockQuantity || 0);
+    setProcurementThreshold(p.procurement_threshold !== undefined ? p.procurement_threshold : 20);
+    setEstDeliveryDays(p.est_delivery_days !== undefined ? p.est_delivery_days : 3);
+    setReportedStockQuantity(p.reportedStockQuantity !== undefined ? p.reportedStockQuantity : 0);
     setIsFeatured(p.isFeatured || false);
     setGroupId(p.groupId || '');
     setWarrantyInfo(p.warranty_info || '');
     setReturnPolicy(p.return_policy || '');
     try {
-      setSpecifications(typeof p.specifications === 'string' ? JSON.parse(p.specifications) : (p.specifications || [{ key: '', value: '', isHighlight: false }]));
+      const parsedSpecs = typeof p.specifications === 'string' ? JSON.parse(p.specifications) : p.specifications;
+      setSpecifications(parsedSpecs && parsedSpecs.length > 0 ? parsedSpecs : []);
     } catch(e) {
-      setSpecifications([{ key: '', value: '', isHighlight: false }]);
+      setSpecifications([]);
     }
     try {
-      setVariantGroups(typeof p.variantGroups === 'string' ? JSON.parse(p.variantGroups) : (p.variantGroups || [{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]));
+      const parsedVars = typeof p.variantGroups === 'string' ? JSON.parse(p.variantGroups) : p.variantGroups;
+      setVariantGroups(parsedVars && parsedVars.length > 0 ? parsedVars : []);
     } catch(e) {
-      setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]);
+      setVariantGroups([]);
     }
     setMediaFiles([]);
     setShowModal(true);
