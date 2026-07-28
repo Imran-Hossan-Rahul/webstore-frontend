@@ -528,15 +528,6 @@ export default function ProductDetails({ params }) {
                 </button>
               </div>  
                 
-                {/* In Stock / Delivery */}
-                <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white border border-transparent">
-                  <div className="shrink-0"><Check size={28} strokeWidth={2} className="text-green-600" /></div>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-[16px] leading-tight">In Stock</span>
-                    <span className="text-[12.5px] text-[#86868b] mt-0.5">Ready to ship</span>
-                  </div>
-                </div>
-
                 {/* Warranty */}
                 {product.warranty_info ? (
                   <Link href="/warranty" className="bg-[#f5f5f7] hover:bg-[#e8e8ed] dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white transition group border border-transparent">
