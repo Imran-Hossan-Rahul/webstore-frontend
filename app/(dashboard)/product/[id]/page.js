@@ -544,7 +544,6 @@ export default function ProductDetails({ params }) {
                   <div className="shrink-0"><Package size={28} strokeWidth={1.5} /></div>
                   <div className="flex flex-col">
                     <span className="font-bold text-[17px] leading-tight">In Stock</span>
-                    <span className="text-[12px] opacity-90 mt-0.5">Check Delivery Time</span>
                   </div>
                 </div>
 
