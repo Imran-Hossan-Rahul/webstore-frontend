@@ -27,6 +27,7 @@ export default function ProductsManager() {
   const [wholesalerId, setWholesalerId] = useState('');
   const [status, setStatus] = useState('Draft');
   const [mediaFiles, setMediaFiles] = useState([]); // Multiple files
+  const [existingPhotos, setExistingPhotos] = useState([]); // Existing photos on edit
   const [weight, setWeight] = useState('');
   const [dimensions, setDimensions] = useState('');
   const [tags, setTags] = useState('');
@@ -133,13 +134,7 @@ export default function ProductsManager() {
 
       // If editing and we want to keep existing photos
       if (editingProductId) {
-        // Find the original product to get its photos
-        const originalProduct = products.find(p => p.id === editingProductId);
-        if (originalProduct && originalProduct.photos) {
-          // If it's already a string, append it directly. If it's an array, stringify it.
-          const photosStr = typeof originalProduct.photos === 'string' ? originalProduct.photos : JSON.stringify(originalProduct.photos);
-          formData.append('photos', photosStr);
-        }
+        formData.append('photos', JSON.stringify(existingPhotos));
       }
       
       let res;
@@ -153,7 +148,7 @@ export default function ProductsManager() {
         setShowModal(false);
         setEditingProductId(null);
         // Reset form
-        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
+        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
         fetchProducts();
       }
     } catch (err) {
@@ -210,6 +205,16 @@ export default function ProductsManager() {
     } catch(e) {
       setVariantGroups([]);
     }
+    
+    let initialPhotos = [];
+    if (p.photos) {
+      try {
+        initialPhotos = typeof p.photos === 'string' ? JSON.parse(p.photos) : p.photos;
+      } catch (e) {
+        initialPhotos = [];
+      }
+    }
+    setExistingPhotos(initialPhotos);
     setMediaFiles([]);
     setShowModal(true);
   };
@@ -224,7 +229,7 @@ export default function ProductsManager() {
         <button 
           onClick={() => {
             setEditingProductId(null);
-            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
+            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
             setShowModal(true);
           }}
           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition shadow-lg shadow-blue-900/20 shrink-0"
@@ -905,6 +910,30 @@ export default function ProductsManager() {
                       </div>
                     </div>
                     
+                    {/* Preview Existing Photos */}
+                    {existingPhotos && existingPhotos.length > 0 && (
+                      <div className="mt-4">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-gray-400">Previously Uploaded ({existingPhotos.length})</span>
+                          <button type="button" onClick={() => setExistingPhotos([])} className="text-sm text-red-400 hover:text-red-300">Remove All</button>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {existingPhotos.map((photoUrl, i) => (
+                            <div key={i} className="relative group w-20 h-20 rounded-md overflow-hidden bg-gray-800 border border-gray-700">
+                              <img src={photoUrl} alt={`Existing ${i}`} className="w-full h-full object-cover" />
+                              <button 
+                                type="button"
+                                onClick={() => setExistingPhotos(existingPhotos.filter((_, idx) => idx !== i))}
+                                className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <X size={20} className="text-red-400" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     {/* Preview selected files count */}
                     {mediaFiles && mediaFiles.length > 0 && (
                       <div className="mt-3">
