@@ -1,10 +1,10 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+@import url('https://fonts.cdnfonts.com/css/sf-pro-text');
+@import './editor-fonts.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './editor-fonts.css';
-@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
-@import url('https://fonts.cdnfonts.com/css/sf-pro-text');
 
 /* =========================================
    UNIVERSAL MACOS STYLE SMOOTH SCROLLBAR
