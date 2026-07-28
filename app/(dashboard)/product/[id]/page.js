@@ -516,7 +516,7 @@ export default function ProductDetails({ params }) {
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <button 
                       onClick={handleAddToCart}
-                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3]/10 text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
+                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors"
                     >
                       <ShoppingCart size={18} /> Add to Cart
                     </button>
