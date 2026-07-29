@@ -76,7 +76,7 @@ export default function LiveVisitors() {
     fetchSessions();
     
     if (!socket) {
-      socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', { withCredentials: true, transports: ['polling', 'websocket'] });
+      socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', { withCredentials: true, transports: ['polling', 'websocket'], autoConnect: typeof window !== 'undefined' });
     }
 
     socket.on("adminLiveEvent", (event) => {

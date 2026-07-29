@@ -4,7 +4,7 @@ const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000"
 
 // More robust socket configuration for production
 const socket = io(SOCKET_URL, {
-  autoConnect: true,
+  autoConnect: typeof window !== "undefined",
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,

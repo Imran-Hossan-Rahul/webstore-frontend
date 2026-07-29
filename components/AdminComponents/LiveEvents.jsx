@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000", { withCredentials: true, transports: ['polling', 'websocket'] });
+const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000", { withCredentials: true, transports: ['polling', 'websocket'], autoConnect: typeof window !== 'undefined' });
 
 export default function LiveEvents() {
   const [sessions, setSessions] = useState([]);

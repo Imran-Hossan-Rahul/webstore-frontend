@@ -17,7 +17,7 @@ export default function RealTimeAnalytics() {
 
   useEffect(() => {
     // Connect to Socket.io
-    socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', { withCredentials: true, transports: ['polling', 'websocket'] });
+    socketRef.current = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', { withCredentials: true, transports: ['polling', 'websocket'], autoConnect: typeof window !== 'undefined' });
 
     // Subscribe to real-time events
     socketRef.current.on('analytics:activeUsers', (data) => {
