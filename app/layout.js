@@ -77,9 +77,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet" />
-        <link href="https://fonts.cdnfonts.com/css/sf-pro-text" rel="stylesheet" />
-      </head>
+        </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>

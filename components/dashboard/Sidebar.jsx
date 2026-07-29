@@ -235,8 +235,8 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
           <SidebarItem
             icon={MessageCircle}
             label={t("help_feedback")}
-            href="/help"
-            active={pathname === "/help"}
+            href="#"
+            active={pathname === "#"}
             isCollapsed={isCollapsed}
           />
         </div>

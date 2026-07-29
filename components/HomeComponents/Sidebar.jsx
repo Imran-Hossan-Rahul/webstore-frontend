@@ -46,7 +46,7 @@ export default function Sidebar({ isOpen = true, className = "" }) {
 
       <div className="px-3 py-2 space-y-1">
         <SidebarItem icon={Settings} label="Settings" href="/settings" />
-        <SidebarItem icon={HelpCircle} label="Help" href="/help" />
+        <SidebarItem icon={HelpCircle} label="Help" href="#" />
       </div>
       
       <div className="px-4 py-4 text-xs text-slate-500 font-medium">

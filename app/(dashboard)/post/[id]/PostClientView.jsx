@@ -124,7 +124,7 @@ export default function PostClientView({ initialPost }) {
         if (!post?.user?._id) return;
         if (!currentUser) {
             alert("Please login to connect with the developer.");
-            router.push('/login');
+            router.push('/auth/login');
             return;
         }
 

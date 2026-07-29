@@ -91,7 +91,7 @@ export default function ProposalsSidebar() {
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Resources</h4>
          <ul className="space-y-3">
            <li>
-             <Link href="/help" className="text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
+             <Link href="#" className="text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
                Help Center <ArrowUpRight size={14} />
              </Link>
            </li>
