@@ -70,7 +70,7 @@ export default function WarrantyPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-8 -mt-8 mb-10 relative z-10">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
-            { icon: RotateCcw,    label: '14-Day Replacement',  sub: 'Hardware defects',        color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
+            { icon: RotateCcw,    label: 'Unbox Replacement',   sub: 'If defect found on unboxing', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
             { icon: Clock,        label: '3–7 Working Days',    sub: 'Repair turnaround',        color: 'text-blue-500',    bg: 'bg-blue-50 dark:bg-blue-950/30' },
             { icon: Package,      label: 'Original Box Required', sub: 'Bring it with you',      color: 'text-purple-500',  bg: 'bg-purple-50 dark:bg-purple-950/30' },
             { icon: Star,         label: 'Real Support',        sub: 'Talk to a real person',    color: 'text-amber-500',   bg: 'bg-amber-50 dark:bg-amber-950/30' },
@@ -108,7 +108,7 @@ export default function WarrantyPage() {
               <p className="text-[12px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-3">✅ What&apos;s Covered</p>
               <ul className="space-y-2">
                 <CheckItem>Manufacturing defects and hardware failures</CheckItem>
-                <CheckItem>14-day instant replacement for any hardware issue from date of purchase</CheckItem>
+                <CheckItem>Instant replacement if any hardware defect is found during unboxing (requires unboxing video)</CheckItem>
                 <CheckItem>Internal component failures (display, battery, motherboard) under warranty period</CheckItem>
                 <CheckItem>Product not matching the description at time of purchase</CheckItem>
                 <CheckItem>Dead-on-arrival (DOA) products — immediate replacement</CheckItem>
@@ -136,9 +136,9 @@ export default function WarrantyPage() {
           </p>
           <div className="space-y-4 mb-5">
             {[
-              { title: '0–14 Days from Purchase', desc: 'Instant replacement for any hardware defect. Bring your product and original box to us — we will swap it on the spot if the replacement is in stock, or within 3–7 working days if not.', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300', badgeText: 'Best Window' },
-              { title: '15 Days – Warranty Period End', desc: 'Free repair service for covered hardware issues. Parts cost is covered under warranty. Turnaround time is 3–21 working days depending on parts availability.', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300', badgeText: 'Repair Covered' },
-              { title: 'Color / Model / Storage Change', desc: 'You may exchange for a different variant within 30 days. A price difference adjustment applies. No deduction fee — you only pay or receive the price difference.', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300', badgeText: '30-Day Window' },
+              { title: 'Defect Found During Unboxing', desc: 'Instant replacement for any hardware defect found right after unboxing. We strongly recommend recording a continuous unboxing video. We will swap it instantly if in stock, or within 3–7 working days if not.', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300', badgeText: 'Instant Swap' },
+              { title: 'Standard Warranty Period', desc: 'Free repair service for covered hardware issues. Parts cost is covered under warranty. Turnaround time is 3–21 working days depending on parts availability.', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300', badgeText: 'Repair Covered' },
+              { title: 'Color / Model / Storage Change', desc: 'You may exchange for a different variant only if the product box is completely sealed and unopened. A price difference adjustment applies.', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300', badgeText: 'Sealed Only' },
             ].map(({ title, desc, badge, badgeText }) => (
               <div key={title} className="flex gap-4 p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-white/5">
                 <div className="shrink-0">
@@ -157,8 +157,8 @@ export default function WarrantyPage() {
         <Section id="categories" icon={Package} color="bg-purple-500" title="3. Warranty by Product Category">
           <div className="space-y-3">
             {[
-              { cat: 'Smartphones & Tablets',  warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: '14-day hardware replacement guaranteed' },
-              { cat: 'Laptops & Computers',    warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: '14-day hardware replacement guaranteed' },
+              { cat: 'Smartphones & Tablets',  warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: 'Instant replacement on unboxing defect' },
+              { cat: 'Laptops & Computers',    warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: 'Instant replacement on unboxing defect' },
               { cat: 'Smartwatches & Wearables', warranty: '3–12 months (stated per product)',                                note: 'Battery and sensor coverage included' },
               { cat: 'Audio & Headphones',     warranty: '3–12 months (stated per product)',                                  note: 'Driver and hardware failures covered' },
               { cat: 'Accessories & Cables',   warranty: 'No warranty (unless explicitly stated)',                            note: 'Please check before purchase' },
@@ -224,8 +224,8 @@ export default function WarrantyPage() {
           <div className="space-y-5">
             {[
               { q: 'Do I need a receipt to claim warranty?', a: 'Your order from Codalina serves as your proof of purchase. If you can share the Order ID, that is enough.' },
-              { q: 'What if my product arrives damaged?', a: 'Contact us within 24 hours of delivery with photos. We will arrange an immediate replacement or pickup at no cost to you.' },
-              { q: 'Can I get a refund instead of a replacement?', a: 'Refunds are handled on a case-by-case basis. For DOA products or significantly misrepresented items, a full refund is possible within 7 days.' },
+              { q: 'What if my product arrives damaged or defective?', a: 'We highly recommend recording a continuous unboxing video. If you find any defect or damage during unboxing, contact us immediately for an instant replacement.' },
+              { q: 'Can I get a refund instead of a replacement?', a: 'Refunds are handled on a case-by-case basis. For DOA (Dead on Arrival) products or significantly misrepresented items, a full refund is possible.' },
               { q: 'Does the warranty transfer if I sell the product?', a: 'No. Warranty is valid only for the original buyer from Codalina. It cannot be transferred.' },
               { q: 'What if the same issue occurs after repair?', a: 'If the same hardware defect recurs within 90 days of repair, it will be fixed again at no charge.' },
               { q: 'How do I track my repair status?', a: 'We will keep you informed via WhatsApp/phone throughout the repair process. You can also contact our support team anytime.' },

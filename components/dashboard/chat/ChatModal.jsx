@@ -386,6 +386,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
     };
 
     socket.on(`user:${currentUser._id}:newMessage`, handleGlobalMessage);
+    socket.on(`global:support:newMessage`, handleGlobalMessage);
     socket.on("call:incoming", handleIncomingCall);
     socket.on("call:accepted", handleCallAccepted);
     socket.on("call:rejected", handleCallRejected);
@@ -398,6 +399,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
 
     return () => {
       socket.off(`user:${currentUser._id}:newMessage`, handleGlobalMessage);
+      socket.off(`global:support:newMessage`, handleGlobalMessage);
       socket.off("call:incoming", handleIncomingCall);
       socket.off("call:accepted", handleCallAccepted);
       socket.off("call:rejected", handleCallRejected);
@@ -619,7 +621,8 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                   loading={loading}
                   onSelectUser={async (user) => {
                     try {
-                      const res = await api.get(`/chat/chat/${user._id}`);
+                      const url = user.isSupportChat ? `/chat/support` : `/chat/chat/${user._id}`;
+                      const res = await api.get(url);
                       setSelectedChat(res.chat);
                       setChats(prev => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev);
                     } catch (e) { console.error(e); }

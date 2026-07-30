@@ -180,7 +180,6 @@ export default function LoginPage() {
     // ✅ Tokens live in httpOnly cookies set by backend — we never touch them.
     // Store only non-sensitive UI state for fast client-side rendering.
     localStorage.setItem("user",                JSON.stringify(userData));
-    localStorage.setItem("hasCraftsmanAccount", String(userData.hasCraftsmanAccount));
     localStorage.setItem("userId",              userData._id);
     
     // Store CSRF token for cross-port/cross-origin requests
@@ -203,7 +202,7 @@ export default function LoginPage() {
       subtitle={
         requires2FA
           ? "Enter the 6-digit code from your authenticator app"
-          : "Sign in to access your craftsman profile"
+          : "Sign in to access your account"
       }
       footer={
         !requires2FA && (
@@ -302,7 +301,7 @@ export default function LoginPage() {
               Authentication Successful
             </h3>
             <p className="text-slate-500 dark:text-zinc-400 mt-2">
-              Preparing your workspace…
+              Preparing your dashboard…
             </p>
           </motion.div>
 
@@ -335,7 +334,7 @@ export default function LoginPage() {
                 label="Email"
                 icon={Mail}
                 type="email"
-                placeholder="patron@example.com"
+                placeholder="user@example.com"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setFieldErrors((p) => ({ ...p, email: "" })); }}

@@ -232,57 +232,6 @@ export default function SearchMain() {
                         </div>
                     </section>
                 )}
-                {/* Workspace Special Section */}
-                {activeTab === 'workspace' && (
-                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <div className="w-16 h-16 bg-blue-50 dark:bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Briefcase className="w-8 h-8 text-blue-500" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Your Workspace</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
-                            Your workspace is private and contains your personal projects and tasks. Click below to go to your workspace.
-                        </p>
-                        <Link href={`/workspace?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20 transition-all">
-                            View Workspace
-                            <ArrowRight size={16} />
-                        </Link>
-                    </div>
-                )}
-
-                {/* Proposals Special Section */}
-                {activeTab === 'proposals' && (
-                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <div className="w-16 h-16 bg-amber-50 dark:bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Send className="w-8 h-8 text-amber-500" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Your Proposals</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
-                            Your proposals are private. Click below to view and search your submitted proposals.
-                        </p>
-                        <Link href={`/proposals?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-xl font-bold text-sm hover:bg-amber-600 hover:shadow-lg hover:shadow-amber-500/20 transition-all">
-                            View Proposals
-                            <ArrowRight size={16} />
-                        </Link>
-                    </div>
-                )}
-
-                {/* Saved Special Section */}
-                {activeTab === 'saved' && (
-                    <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <CheckCircle className="w-8 h-8 text-emerald-500" />
-                        </div>
-                        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Search Saved Items</h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium mb-8">
-                            Your saved items are private to your account. Click below to explore and search your personal saved folder.
-                        </p>
-                        <Link href={`/saved?q=${encodeURIComponent(displayedQuery)}`} className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-500/20 transition-all">
-                            View Saved Items
-                            <ArrowRight size={16} />
-                        </Link>
-                    </div>
-                )}
-
             </div>
         )}
 

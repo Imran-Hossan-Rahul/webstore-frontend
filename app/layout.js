@@ -10,14 +10,13 @@ import NextTopLoader from "nextjs-toploader";
 export const metadata = {
   metadataBase: new URL('https://codalina-frontend-fawn.vercel.app'),
   title: {
-    default: "Codalina — Where Craftsmen Build, Share & Get Hired",
+    default: "Codalina — Digital Marketplace",
     template: "%s | Codalina"
   },
-  description: "Codalina is a professional platform for developers and designers to showcase their projects (Devlogs), publish technical articles (Codex), and share UI components (Artifacts). Get hired. Get noticed.",
+  description: "Codalina is a premium digital marketplace to buy and sell source code, UI components, and software assets.",
   keywords: [
-    "developer portfolio", "web development projects", "UI components", "design artifacts",
-    "devlog", "coding blog", "tech articles", "craftsman", "freelance developer",
-    "open source", "React templates", "Next.js", "frontend development", "Codalina"
+    "marketplace", "digital products", "source code", "UI components", "design assets",
+    "software", "React templates", "Next.js", "frontend development", "Codalina"
   ],
   authors: [{ name: "Codalina" }],
   creator: "Codalina",
@@ -38,22 +37,22 @@ export const metadata = {
     locale: "en_US",
     url: "https://codalina-frontend-fawn.vercel.app",
     siteName: "Codalina",
-    title: "Codalina — Where Craftsmen Build, Share & Get Hired",
-    description: "Showcase your projects, publish technical articles, and share UI components on Codalina. The professional platform for developers and designers.",
+    title: "Codalina — Digital Marketplace",
+    description: "Buy and sell premium software assets, source code, and UI components on Codalina.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Codalina — Professional Developer Platform",
+        alt: "Codalina — Digital Marketplace",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@codalina",
-    title: "Codalina — Where Craftsmen Build, Share & Get Hired",
-    description: "Showcase your projects, publish technical articles, and share UI components. The professional platform for developers.",
+    title: "Codalina — Digital Marketplace",
+    description: "Buy and sell premium software assets, source code, and UI components.",
     images: ["/og-image.jpg"],
   },
 };

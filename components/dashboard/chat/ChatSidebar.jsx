@@ -108,17 +108,17 @@ export default function ChatSidebar({
 
       {/* Tabs */}
       <div className="flex px-2 pt-2 border-b border-slate-200/50 dark:border-white/5 whitespace-nowrap">
-        {["Chats", "Directory"].map((tab) => (
+        {[{ id: "Chats", label: "Chats" }, { id: "Directory", label: currentUser?.role === 'admin' ? "Directory" : "Support Team" }].map((tab) => (
           <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
             className={`flex-1 pb-3 text-sm font-bold transition-colors border-b-2 ${
-              activeTab === tab
+              activeTab === tab.id
                 ? "border-black dark:border-white text-black dark:text-white"
                 : "border-transparent text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
             }`}
           >
-            {tab}
+            {tab.label}
           </button>
         ))}
       </div>
@@ -162,7 +162,28 @@ export default function ChatSidebar({
           </div>
         ) : (
           <div className="space-y-1">
-            {filteredList.map((item) => {
+            {activeTab === "Directory" && currentUser?.role !== 'admin' ? (
+              <div className="relative group">
+                <button
+                  onClick={() => onSelectUser({ _id: "support_channel", name: "Customer Support", username: "support", role: "admin", isSupportChat: true })}
+                  className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5 dark:hover:bg-white/5"
+                >
+                  <div className="relative shrink-0">
+                    <div className="w-11 h-11 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center overflow-hidden border border-indigo-200 dark:border-indigo-500/30">
+                      <MessageCircle size={20} className="text-indigo-600 dark:text-indigo-400" />
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <h3 className="text-[14px] font-bold text-slate-900 dark:text-gray-100 truncate">
+                      Contact Customer Support
+                    </h3>
+                    <p className="text-[12px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                      Get help from our team
+                    </p>
+                  </div>
+                </button>
+              </div>
+            ) : filteredList.map((item) => {
               const isChat = activeTab === "Chats";
               let targetUser = isChat 
                 ? (item.participants?.find(p => p._id !== currentUser?._id) || item.participants[0]) 

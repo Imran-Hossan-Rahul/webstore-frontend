@@ -7,17 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 // Admin Components
-import UsersActivityAreaChart from './UsersActivityGraph';
-import VerificationRequests from './VerificationRequests';
-import TopCountriesBarChart from './TopCountriesBarChart';
-import DeviceStatsChart from './DeviceStatsChart';
-import VisitorAccountPieChart from './VisitorAccountPieChart';
-import LiveVisitors from './LiveVisitors';
 import UserDirectory from './UserDirectory';
-import ChallengePayouts from './ChallengePayouts';
-import DevlogDisputes from './ProjectDisputes';
-import AdminAnalytics from './AdminAnalytics';
-import AdvancedAnalyticsDashboard from './Advanced/AdvancedAnalyticsDashboard';
 import { api } from '@/utils/api';
 import { io } from 'socket.io-client';
 
@@ -119,12 +109,6 @@ const UnifiedAdminDashboard = () => {
 
   const navItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'advanced', label: 'Advanced Analytics', icon: Zap },
-    { id: 'verification', label: 'Verifications', icon: ShieldCheck, badge: stats.pendingVerifications },
-    { id: 'payouts', label: 'Challenge Payouts', icon: Trophy },
-    { id: 'disputes', label: 'Disputes', icon: AlertTriangle },
-    { id: 'live', label: 'Live Monitor', icon: Activity },
     { id: 'users', label: 'Users', icon: Users },
     { id: 'market', label: 'Marketplace', icon: ShoppingBag, isLink: true, href: '/admin/market' },
   ];
@@ -142,22 +126,10 @@ const UnifiedAdminDashboard = () => {
     switch (activeTab) {
       case 'overview':
         return <DashboardOverview stats={stats} overviewData={overviewData} funnel={funnel} liveEvents={liveEvents} platformHealth={platformHealth} onlineCount={onlineCount} />;
-      case 'analytics':
-        return <AdminAnalytics />;
-      case 'advanced':
-        return <AdvancedAnalyticsDashboard />;
-      case 'verification':
-        return <VerificationRequests />;
-      case 'payouts':
-        return <ChallengePayouts />;
-      case 'disputes':
-        return <DevlogDisputes />;
-      case 'live':
-        return <LiveVisitors />;
       case 'users':
         return <UserDirectory />;
       default:
-        return null;
+        return <DashboardOverview stats={stats} overviewData={overviewData} funnel={funnel} liveEvents={liveEvents} platformHealth={platformHealth} onlineCount={onlineCount} />;
     }
   };
 
@@ -543,6 +515,31 @@ const HealthMetric = ({ label, value, sub, icon: Icon, warning, ok }) => (
       {value}
     </p>
     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{sub}</p>
+  </div>
+);
+
+// Minimal Tracking Placeholders
+const UsersActivityAreaChart = () => (
+  <div className="h-[250px] flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-white/10 rounded-xl mt-4">
+    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
+      Deep Activity Tracking Disabled<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
+    </p>
+  </div>
+);
+
+const VisitorAccountPieChart = () => (
+  <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/60 dark:border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[250px]">
+    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
+      Account Distribution Hidden<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
+    </p>
+  </div>
+);
+
+const TopCountriesBarChart = () => (
+  <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/60 dark:border-white/5 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[250px]">
+    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
+      Geographic Tracking Disabled<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
+    </p>
   </div>
 );
 

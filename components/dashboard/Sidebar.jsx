@@ -6,7 +6,6 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { api } from '@/utils/api';
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
-import { features } from "@/constants/features";
 import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store, Smartphone, Monitor, Laptop, Shirt, Box, ChevronRight, X, Watch, Headphones, BatteryCharging, Cable } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
@@ -198,29 +197,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
         <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
 
-        {features.enableCommunity && (
-          <>
-            <div className="space-y-1">
-              <SidebarItem
-                icon={Clock}
-                label={t("workspace")}
-                href="/workspace"
-                active={pathname?.startsWith("/workspace")}
-                isCollapsed={isCollapsed}
-              />
 
-              <SidebarItem 
-                icon={ShieldCheck} 
-                label={t("verify_identity")} 
-                href="/verify" 
-                active={pathname === "/verify"}
-                isCollapsed={isCollapsed}
-              />
-            </div>
-            
-            <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-4" />
-          </>
-        )}
 
         {/* Settings & Help (Moved inside scrollable area) */}
         <div className="space-y-1 pb-4">

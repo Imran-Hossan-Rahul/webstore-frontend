@@ -8,14 +8,11 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { api } from "@/utils/api";
 import socket from "@/utils/socket";
 import ProfileModal from "../DashboardComponents/ProfileModal";
-import CraftsmanProfileModal from "../DashboardComponents/CraftsmanProfileModal";
 import NotificationDropdown from "./NotificationDropdown";
 import ThemeToggle from '../ThemeToggle';
 import { useUser } from "@/context/UserContext";
 import SearchSuggestions from "./navbar/SearchSuggestions";
-import CreateDropdown from "./navbar/CreateDropdown";
 import BetaBanner from "../BetaBanner";
-import { features } from "@/constants/features";
 
 const GlassNavbar = ({ 
   toggleSidebar, 
@@ -33,7 +30,6 @@ const GlassNavbar = ({
   const { user, isGuest, logout, loading } = useUser();
   const [searchFocused, setSearchFocused] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
-  const [showCreateDropdown, setShowCreateDropdown] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [searchType, setSearchType] = useState('all');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -44,15 +40,7 @@ const GlassNavbar = ({
   const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    if (pathname.startsWith('/codex')) setSearchType('codex');
-    else if (pathname.startsWith('/artifacts')) setSearchType('artifacts');
-    else if (pathname.startsWith('/jobs')) setSearchType('jobs');
-    else if (pathname.startsWith('/challenges')) setSearchType('challenges');
-    else if (pathname.startsWith('/market')) setSearchType('marketplace');
-    else if (pathname.startsWith('/workspace')) setSearchType('workspace');
-    else if (pathname.startsWith('/proposals')) setSearchType('proposals');
-    else if (pathname.startsWith('/saved')) setSearchType('saved');
-    else if (pathname.startsWith('/devlogs') || pathname.startsWith('/post')) setSearchType('posts');
+    if (pathname.startsWith('/market')) setSearchType('marketplace');
     else if (pathname.startsWith('/u/')) setSearchType('patrons');
     else setSearchType('all');
   }, [pathname]);
@@ -162,15 +150,7 @@ const GlassNavbar = ({
 
   const handleSearch = () => {
     if (searchQuery?.trim()) {
-        if (searchType === 'workspace') {
-            router.push(`/workspace?q=${encodeURIComponent(searchQuery)}`);
-        } else if (searchType === 'proposals') {
-            router.push(`/proposals?q=${encodeURIComponent(searchQuery)}`);
-        } else if (searchType === 'saved') {
-            router.push(`/saved?q=${encodeURIComponent(searchQuery)}`);
-        } else {
-            router.push(`/search?q=${encodeURIComponent(searchQuery)}&type=${searchType}`);
-        }
+        router.push(`/search?q=${encodeURIComponent(searchQuery)}&type=${searchType}`);
         setSearchFocused(false);
         setMobileSearchOpen(false);
         setIsDropdownOpen(false);
@@ -333,6 +313,14 @@ const GlassNavbar = ({
                 
                 {!isGuest && (
                   <>
+                    <button onClick={onToggleChat} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
+                        <MessageCircle strokeWidth={1.5} className="w-5 h-5" />
+                        {unreadChatCount > 0 && (
+                          <span className="absolute top-0 right-0 sm:top-1 sm:right-1 w-4 h-4 bg-indigo-600 text-white text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
+                            {unreadChatCount}
+                          </span>
+                        )}
+                    </button>
                     <button onClick={onToggleNotification} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
                         <Bell strokeWidth={1.5} className="w-5 h-5" />
                         {unreadNotifications > 0 && (
@@ -376,11 +364,7 @@ const GlassNavbar = ({
       </div>
 
       {/* Modals */}
-      {user?.hasCraftsmanAccount ? (
-        <CraftsmanProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
-      ) : (
-        <ProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
-      )}
+      <ProfileModal isOpen={showProfileModal} onClose={() => setShowProfileModal(false)} />
     </nav>
   );
 };

@@ -13,6 +13,15 @@ export default function ProductsManager() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [editingProductId, setEditingProductId] = useState(null);
 
+  // Pagination & Filters
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterSubCategory, setFilterSubCategory] = useState('');
+  const [filterChildCategory, setFilterChildCategory] = useState('');
+  const limit = 20;
+
   // Form State
   const [title, setTitle] = useState('');
   const [sku, setSku] = useState('');
@@ -45,10 +54,13 @@ export default function ProductsManager() {
   const [showWholesalerDropdown, setShowWholesalerDropdown] = useState(false);
 
   useEffect(() => {
-    fetchProducts();
     fetchWholesalers();
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [page, filterCategory, filterSubCategory, filterChildCategory]);
 
   const fetchCategories = async () => {
     try {
@@ -62,16 +74,28 @@ export default function ProductsManager() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/market/products');
-      const data = res.data || res;
-      setProducts(data);
+      const queryParams = new URLSearchParams({
+        page,
+        limit,
+        ...(searchQuery && { search: searchQuery }),
+        ...(filterCategory && { category_id: filterCategory }),
+        ...(filterSubCategory && { subCategory_id: filterSubCategory }),
+        ...(filterChildCategory && { childCategory_id: filterChildCategory }),
+      }).toString();
+
+      const res = await api.get(`/market/products?${queryParams}`);
+      const payload = res.data || res;
+      setProducts(payload.data || payload);
+      if (payload.pagination) {
+        setTotalPages(payload.pagination.pages);
+      }
       
       // Auto-open edit modal if edit param is in URL
       if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
         const editId = params.get('edit');
         if (editId) {
-          const productToEdit = data.find(p => p.id === editId || p._id === editId);
+          const productToEdit = (payload.data || payload).find(p => p.id === editId || p._id === editId);
           if (productToEdit) {
             setTimeout(() => handleEditClick(productToEdit), 100);
             window.history.replaceState({}, '', '/admin/market/products');
@@ -240,6 +264,71 @@ export default function ProductsManager() {
           <Plus size={18} /> Add Product
         </button>
       </div>
+
+      {/* Filters & Search */}
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-6 md:mb-8 shadow-xl">
+        <div className="flex flex-col md:flex-row gap-3">
+          <div className="flex-[2]">
+            <input 
+              type="text" 
+              placeholder="Search by Title, SKU, or Tags..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if(e.key === 'Enter') {
+                  setPage(1);
+                  fetchProducts();
+                }
+              }}
+              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+            />
+          </div>
+          <div className="flex-1">
+            <select 
+              value={filterCategory}
+              onChange={(e) => { setFilterCategory(e.target.value); setFilterSubCategory(''); setFilterChildCategory(''); setPage(1); }}
+              className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition"
+            >
+              <option value="">All Categories</option>
+              {categories.filter(c => !c.isSubcategory).map(c => (
+                <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
+              ))}
+            </select>
+          </div>
+          {filterCategory && (
+            <div className="flex-1">
+              <select 
+                value={filterSubCategory}
+                onChange={(e) => { setFilterSubCategory(e.target.value); setFilterChildCategory(''); setPage(1); }}
+                className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition"
+              >
+                <option value="">All Sub-categories</option>
+                {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === filterCategory).map(c => (
+                  <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {filterSubCategory && categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === filterSubCategory).length > 0 && (
+            <div className="flex-1">
+              <select 
+                value={filterChildCategory}
+                onChange={(e) => { setFilterChildCategory(e.target.value); setPage(1); }}
+                className="w-full bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 transition"
+              >
+                <option value="">All Child-categories</option>
+                {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === filterSubCategory).map(c => (
+                  <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <div className="flex gap-2 shrink-0">
+            <button onClick={() => { setPage(1); fetchProducts(); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition shadow-lg shadow-blue-900/20">Search</button>
+            <button onClick={() => { setSearchQuery(''); setFilterCategory(''); setFilterSubCategory(''); setFilterChildCategory(''); setPage(1); }} className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg transition">Clear</button>
+          </div>
+        </div>
+      </div>
       
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto bg-gray-900 rounded-xl border border-gray-800 shadow-xl">
@@ -360,6 +449,29 @@ export default function ProductsManager() {
         })}
       </div>
 
+      {/* Pagination UI */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-8 mb-4">
+          <button 
+            disabled={page <= 1} 
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            Previous
+          </button>
+          <span className="text-gray-400 text-sm font-medium px-4">
+            Page {page} of {totalPages}
+          </span>
+          <button 
+            disabled={page >= totalPages} 
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
       {/* Add Product Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -408,7 +520,7 @@ export default function ProductsManager() {
                           >
                             <option value="" disabled>Select a category</option>
                             {categories.filter(c => !c.isSubcategory).map(c => (
-                              <option key={c._id} value={c._id}>{c.name}</option>
+                              <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
                             ))}
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
@@ -426,9 +538,9 @@ export default function ProductsManager() {
                             className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
                             disabled={!categoryId}
                           >
-                            <option value="">Select a sub-category</option>
-                            {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id) === categoryId).map(c => (
-                              <option key={c._id} value={c._id}>{c.name}</option>
+                            <option value="" disabled>Select a sub-category</option>
+                            {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === categoryId).map(c => (
+                              <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
                             ))}
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
@@ -438,7 +550,7 @@ export default function ProductsManager() {
                           </div>
                         </div>
                       </div>
-                      {categoryId && subCategoryId && categories.filter(c => c.isSubcategory && String(c.parentCategory?._id) === subCategoryId).length > 0 && (
+                      {categoryId && subCategoryId && categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === subCategoryId).length > 0 && (
                         <div className="md:col-span-2 mt-4">
                           <label className="block text-sm font-medium text-gray-400 mb-1.5">Child Category</label>
                           <div className="relative">
@@ -446,9 +558,9 @@ export default function ProductsManager() {
                               value={childCategoryId} onChange={(e) => setChildCategoryId(e.target.value)}
                               className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
                             >
-                              <option value="">Select a child category</option>
-                              {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id) === subCategoryId).map(c => (
-                                <option key={c._id} value={c._id}>{c.name}</option>
+                              <option value="" disabled>Select a child category</option>
+                              {categories.filter(c => c.isSubcategory && String(c.parentCategory?._id || c.parentCategory) === subCategoryId).map(c => (
+                                <option key={c._id || c.id} value={c._id || c.id}>{c.name}</option>
                               ))}
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">

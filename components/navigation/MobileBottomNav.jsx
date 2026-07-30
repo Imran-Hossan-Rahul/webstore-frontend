@@ -6,7 +6,6 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Home, Terminal, Layout, FileText, Store, ShoppingCart, Package, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
-import { features } from "@/constants/features";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
@@ -23,17 +22,9 @@ export default function MobileBottomNav() {
   // Initialize with a static width to prevent hydration mismatch
   const [width, setWidth] = useState(400);
 
-  const baseNavItems = [
-    { icon: Home, label: t("feed") || "Feed", href: "/", isCommunity: true },
-    { icon: Terminal, label: t("Devlogs") || "Devlogs", href: "/devlogs", isCommunity: true },
-    { icon: Layout, label: t("artifacts") || "Artifacts", href: "/artifacts", isCommunity: true },
-    { icon: FileText, label: t("codex") || "Codex", href: "/codex", isCommunity: true },
+  const navItems = [
     { icon: Store, label: "Market", href: "/market", isMarket: true },
   ];
-
-  const navItems = features.enableCommunity 
-    ? baseNavItems 
-    : baseNavItems.filter(item => !item.isCommunity);
 
   // Cart count from localStorage
   useEffect(() => {

@@ -178,7 +178,6 @@ export default function RegisterPage() {
 
       // ✅ Tokens live in httpOnly cookies — we store only UI state
       localStorage.setItem("user",                JSON.stringify(data.data));
-      localStorage.setItem("hasCraftsmanAccount", String(data.data.hasCraftsmanAccount));
       localStorage.setItem("userId",              data.data._id);
       
       // Store CSRF token for cross-port/cross-origin requests
@@ -201,7 +200,7 @@ export default function RegisterPage() {
   return (
     <AuthContainer
       title="Create account"
-      subtitle="Join the elite community of modern craftsmen"
+      subtitle="Join the marketplace today"
       footer={
         <p className="text-center text-[15px] text-apple-secondary font-normal">
           Already a member?{" "}
@@ -232,7 +231,7 @@ export default function RegisterPage() {
               Account Created
             </h3>
             <p className="text-slate-500 dark:text-zinc-400 mt-2 text-center">
-              Welcome aboard! Redirecting to your workspace…
+              Welcome aboard! Redirecting to marketplace…
             </p>
           </motion.div>
 

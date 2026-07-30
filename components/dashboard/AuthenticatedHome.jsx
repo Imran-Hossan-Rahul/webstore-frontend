@@ -2,8 +2,6 @@
 import React, { useState, useEffect } from "react";
 import GlassNavbar from "./GlassNavbar";
 import Sidebar from "./Sidebar";
-import DashboardFeed from "./DashboardFeed";
-import RightSidebar from "./RightSidebar";
 import UserOnboardingModal from "./modals/UserOnboardingModal";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import { api } from "@/utils/api";
@@ -91,23 +89,13 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
         <main className="flex-1 w-full min-w-0">
             <div className="pb-20">
                 {children || (
-                  <DashboardFeed
-                    user={userData}
-                    isGuest={isGuest}
-                    onRequireAuth={requireAuth}
-                  />
+                  <div className="flex flex-col items-center justify-center h-[50vh] text-center">
+                    <h1 className="text-3xl font-bold mb-4">Welcome to Antigravity</h1>
+                    <p className="text-slate-500">Select an option from the sidebar to get started.</p>
+                  </div>
                 )}
             </div>
         </main>
-
-        {/* Right Sidebar (Floating) */}
-        {!hideRightSidebar && (
-          <div className="hidden xl:block w-[320px] flex-shrink-0">
-               <div className="fixed top-[84px] bottom-6 w-[320px] overflow-y-auto custom-scrollbar">
-                   <RightSidebar />
-               </div>
-          </div>
-        )}
       </div>
 
 

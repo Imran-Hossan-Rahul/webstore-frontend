@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
+import WhyChooseUs from "./WhyChooseUs";
+import MarketFooter from "./MarketFooter";
 
 // Cloudinary optimization for free extreme performance
 const getOptimizedUrl = (url) => {
@@ -380,6 +382,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
         )}
       </div>
+      
+      <WhyChooseUs />
+      <MarketFooter />
     </div>
   );
 }
