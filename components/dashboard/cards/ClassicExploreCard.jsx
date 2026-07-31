@@ -196,7 +196,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                     {(descriptionText || (item.excerpt && item.excerpt.includes('<mark>'))) && (
                         <div className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-3">
                            {(item.excerpt && item.excerpt.includes('<mark>')) ? (
-                               <span dangerouslySetInnerHTML={{ __html: item.excerpt.replace(/<(?!\/?mark)[^>]+>/gi, "") }} />
+                                <span dangerouslySetInnerHTML={{ __html: item.excerpt.replace(/<mark>/gi, '___MARK_START___').replace(/<\/mark>/gi, '___MARK_END___').replace(/<[^>]+>/g, '').replace(/___MARK_START___/g, '<mark>').replace(/___MARK_END___/g, '</mark>') }} />
                            ) : (
                                descriptionText
                            )}

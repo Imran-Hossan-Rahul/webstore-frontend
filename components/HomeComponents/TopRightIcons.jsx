@@ -79,9 +79,12 @@ export default function TopRightIcons() {
         {/* Theme Toggle */}
         <ThemeToggle />
 
-        <a
-          href="/inbox"
-          onClick={() => handleIconClick("mail")}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleIconClick("mail");
+            window.dispatchEvent(new CustomEvent("toggle-chat"));
+          }}
           className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
           <Mail
@@ -90,11 +93,14 @@ export default function TopRightIcons() {
               activeIcon === "mail" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
             }`}
           />
-        </a>
+        </button>
 
-        <a
-          href="/notifications"
-          onClick={() => handleIconClick("bell")}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            handleIconClick("bell");
+            window.dispatchEvent(new CustomEvent("toggle-notification"));
+          }}
           className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
           <Bell
@@ -103,7 +109,7 @@ export default function TopRightIcons() {
               activeIcon === "bell" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
             }`}
           />
-        </a>
+        </button>
 
         <div
           onClick={() => handleIconClick("profile")}

@@ -10,6 +10,8 @@ import AuthContainer from "@/components/Auth/AuthContainer";
 import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
+export const dynamic = 'force-dynamic';
+
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
   const router = useRouter();

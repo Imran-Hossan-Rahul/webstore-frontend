@@ -1,5 +1,5 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { translations } from "@/utils/translations";
 
 const LanguageContext = createContext();
@@ -16,7 +16,7 @@ export function LanguageProvider({ children }) {
     setMounted(true);
   }, []);
 
-  const setLang = (newLang) => {
+  const setLang = useCallback((newLang) => {
     if (newLang === "en" || newLang === "bn") {
       setLangState(newLang);
       localStorage.setItem("preferred_lang", newLang);
@@ -24,11 +24,11 @@ export function LanguageProvider({ children }) {
       // Update HTML attribute for SEO and accessibility
       document.documentElement.lang = newLang;
     }
-  };
+  }, []);
 
-  const t = (key) => {
+  const t = useCallback((key) => {
     return translations[lang]?.[key] || translations["en"]?.[key] || key;
-  };
+  }, [lang]);
 
   // Prevent hydration mismatch by waiting for mount
   const value = { lang, setLang, t, mounted };

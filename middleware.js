@@ -91,9 +91,7 @@ export async function middleware(req) {
       "/user/",
       "/settings",
       "/upload",
-      "/inbox",
       "/opportunities",
-      "/notifications",
     ];
 
     for (const prefix of protectedPrefixes) {
@@ -139,9 +137,7 @@ export const config = {
     "/user/:path*",
     "/settings/:path*",
     "/upload/:path*",
-    "/inbox/:path*",
     "/opportunities/:path*",
-    "/notifications/:path*",
     "/auth/:path*",
   ],
 };

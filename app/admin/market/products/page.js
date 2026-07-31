@@ -45,6 +45,7 @@ export default function ProductsManager() {
   const [estDeliveryDays, setEstDeliveryDays] = useState(3);
   const [reportedStockQuantity, setReportedStockQuantity] = useState(0);
   const [isFeatured, setIsFeatured] = useState(false);
+  const [isPopular, setIsPopular] = useState(false);
   const [groupId, setGroupId] = useState('');
   const [specifications, setSpecifications] = useState([{ key: '', value: '', isHighlight: false }]);
   const [variantGroups, setVariantGroups] = useState([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]);
@@ -147,6 +148,7 @@ export default function ProductsManager() {
       formData.append('est_delivery_days', estDeliveryDays);
       formData.append('reportedStockQuantity', reportedStockQuantity);
       formData.append('isFeatured', isFeatured);
+      formData.append('isPopular', isPopular);
       formData.append('groupId', groupId);
       formData.append('warranty_info', warrantyInfo);
       formData.append('return_policy', returnPolicy);
@@ -174,7 +176,7 @@ export default function ProductsManager() {
         setShowModal(false);
         setEditingProductId(null);
         // Reset form
-        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
+        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setIsPopular(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
         fetchProducts();
       }
     } catch (err) {
@@ -217,6 +219,7 @@ export default function ProductsManager() {
     setEstDeliveryDays(p.est_delivery_days !== undefined ? p.est_delivery_days : 3);
     setReportedStockQuantity(p.reportedStockQuantity !== undefined ? p.reportedStockQuantity : 0);
     setIsFeatured(p.isFeatured || false);
+    setIsPopular(p.isPopular || false);
     setGroupId(p.groupId || '');
     setWarrantyInfo(p.warranty_info || '');
     setReturnPolicy(p.return_policy || '');
@@ -256,7 +259,7 @@ export default function ProductsManager() {
         <button 
           onClick={() => {
             setEditingProductId(null);
-            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
+            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setIsPopular(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
             setShowModal(true);
           }}
           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition shadow-lg shadow-blue-900/20 shrink-0"
@@ -1020,6 +1023,28 @@ export default function ProductsManager() {
                       <div>
                         <span className="text-gray-200 font-medium block">Feature on Homepage</span>
                         <span className="text-gray-500 text-xs">Highlight this product on the marketplace landing page</span>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <label className="flex items-center gap-3 cursor-pointer p-3 border border-gray-800 rounded-lg hover:bg-gray-800/30 transition">
+                      <div className="relative flex items-center">
+                        <input 
+                          type="checkbox" 
+                          checked={isPopular}
+                          onChange={(e) => setIsPopular(e.target.checked)}
+                          className="w-5 h-5 appearance-none border-2 border-gray-600 rounded-md checked:bg-purple-500 checked:border-purple-500 transition-colors"
+                        />
+                        {isPopular && (
+                          <svg className="absolute w-3.5 h-3.5 text-white left-0.5 top-0.5 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </div>
+                      <div>
+                        <span className="text-gray-200 font-medium block">Mark as Popular</span>
+                        <span className="text-gray-500 text-xs">Show this product in the Popular section on the homepage</span>
                       </div>
                     </label>
                   </div>

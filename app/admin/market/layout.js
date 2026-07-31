@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ShoppingBag, Users, Truck, ArrowLeft, ClipboardList, Tags } from "lucide-react";
+import { ShoppingBag, Users, Truck, ArrowLeft, ClipboardList, Tags, Star, TrendingUp } from "lucide-react";
 
 export default function MarketAdminLayout({ children }) {
   const pathname = usePathname();
@@ -11,6 +11,8 @@ export default function MarketAdminLayout({ children }) {
     { name: 'Banners', href: '/admin/market/banners', icon: ClipboardList },
     { name: 'Categories', href: '/admin/market/categories', icon: Tags },
     { name: 'Products', href: '/admin/market/products', icon: ShoppingBag },
+    { name: 'Featured', href: '/admin/market/featured', icon: Star },
+    { name: 'Popular', href: '/admin/market/popular', icon: TrendingUp },
     { name: 'Promotions', href: '/admin/market/promotions', icon: Tags },
     { name: 'Wholesalers', href: '/admin/market/wholesaler', icon: Users },
     { name: 'Procurement', href: '/admin/market/procurement', icon: Truck },

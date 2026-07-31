@@ -10,16 +10,31 @@ export async function generateMetadata() {
 export default async function Home() {
     let initialData = [];
     let initialPagination = { pages: 1, currentPage: 1 };
+    let initialFeatured = [];
+    let initialPopular = [];
     
     try {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
-        // Fetch first page on the server (SSR) with no cache to ensure live data
-        const res = await fetch(`${apiUrl}/market/products?page=1&limit=12`, { cache: 'no-store' }); 
         
-        if (res.ok) {
-            const data = await res.json();
+        // Fetch paginated, featured, and popular concurrently
+        const [resAll, resFeatured, resPopular] = await Promise.all([
+            fetch(`${apiUrl}/market/products?page=1&limit=12`, { cache: 'no-store' }),
+            fetch(`${apiUrl}/market/products?isFeatured=true&limit=10`, { cache: 'no-store' }),
+            fetch(`${apiUrl}/market/products?isPopular=true&limit=10`, { cache: 'no-store' })
+        ]);
+        
+        if (resAll.ok) {
+            const data = await resAll.json();
             initialData = data.data || [];
             initialPagination = data.pagination || { pages: 1, currentPage: 1 };
+        }
+        if (resFeatured.ok) {
+            const data = await resFeatured.json();
+            initialFeatured = data.data || [];
+        }
+        if (resPopular.ok) {
+            const data = await resPopular.json();
+            initialPopular = data.data || [];
         }
     } catch (error) {
         console.error("Market SSR Fetch Error:", error);
@@ -29,6 +44,8 @@ export default async function Home() {
         <MarketClientView 
             initialData={initialData} 
             initialPagination={initialPagination} 
+            initialFeatured={initialFeatured}
+            initialPopular={initialPopular}
         />
     );
 }

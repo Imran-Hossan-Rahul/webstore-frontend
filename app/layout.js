@@ -1,4 +1,5 @@
 import "./globals.css";
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { UserProvider } from "@/context/UserContext";
@@ -6,6 +7,17 @@ import { ToastProvider } from "@/components/ui/ToastProvider";
 import GlobalTracker from "@/components/GlobalTracker";
 import NextTopLoader from "nextjs-toploader";
 
+const inter = Inter({ 
+  subsets: ['latin'], 
+  variable: '--font-inter',
+  display: 'swap' 
+});
+
+const jetbrainsMono = JetBrains_Mono({ 
+  subsets: ['latin'], 
+  variable: '--font-mono',
+  display: 'swap' 
+});
 
 export const metadata = {
   metadataBase: new URL('https://codalina-frontend-fawn.vercel.app'),
@@ -56,21 +68,6 @@ export const metadata = {
     images: ["/og-image.jpg"],
   },
 };
-
-
-import { Inter, JetBrains_Mono } from 'next/font/google';
-
-const inter = Inter({ 
-  subsets: ['latin'], 
-  variable: '--font-inter',
-  display: 'swap' 
-});
-
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ['latin'], 
-  variable: '--font-mono',
-  display: 'swap' 
-});
 
 export default function RootLayout({ children }) {
   return (

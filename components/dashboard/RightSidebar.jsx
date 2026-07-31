@@ -37,10 +37,8 @@ import { features } from "@/constants/features";
 
 export default function RightSidebar() {
   const pathname = usePathname();
-  const [featuredCraftsmen, setFeaturedCraftsmen] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [trendingTags, setTrendingTags] = useState([]);
-  const [tagsLoading, setTagsLoading] = useState(true);
+
+
   const [artifactCategories, setArtifactCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [artifactTags, setArtifactTags] = useState([]);
@@ -201,43 +199,12 @@ export default function RightSidebar() {
     fetchSavedItems();
   }, [isSaved]);
 
-  // Fetch featured craftsman (Shared logic)
-  const fetchFeaturedCraftsman = async () => {
-    try {
-      const response = await api.get("/user/featured-craftsmen?limit=4");
-      if (response.success && response.data.length > 0) {
-        setFeaturedCraftsmen(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch featured craftsman:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchFeaturedCraftsman();
     if (isArtifact) {
       fetchArtifactCategories();
       fetchArtifactTags();
-    } else {
-      fetchTrendingTags();
     }
   }, [isArtifact]);
-
-  // Fetch trending tags
-  const fetchTrendingTags = async () => {
-    try {
-      const response = await api.get("/feed/trending-tags?limit=6");
-      if (response.success && response.data.length > 0) {
-        setTrendingTags(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch trending tags:", error);
-    } finally {
-      setTagsLoading(false);
-    }
-  };
 
   // Fetch artifact categories
   const fetchArtifactCategories = async () => {
@@ -950,91 +917,6 @@ export default function RightSidebar() {
   // --- DEFAULT FALLBACK SIDEBAR ---
   return (
     <aside className="h-full flex flex-col gap-8 pb-20">
-      {/* Featured Craftsmen */}
-      <section className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Star className="text-amber-500" size={18} /> Elite Talents
-          </h3>
-        </div>
-        
-        <div className="space-y-4">
-          {loading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-3 animate-pulse">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5" />
-                <div className="space-y-1">
-                  <div className="w-24 h-3 bg-slate-100 dark:bg-white/5 rounded" />
-                  <div className="w-16 h-2 bg-slate-100 dark:bg-white/5 rounded" />
-                </div>
-              </div>
-            ))
-          ) : (
-            <div className="space-y-5">
-            {featuredCraftsmen.map((craftsman, idx) => (
-              <CraftsmanHoverCard
-                key={craftsman._id || `craftsman-${idx}`}
-                userId={craftsman._id}
-                username={craftsman.username}
-                avatarUrl={craftsman.avatar}
-                displayName={craftsman.name}
-                wrapperDisplay="block"
-              >
-                <Link href={`/u/${craftsman.username}`} className="flex items-center gap-3 group">
-                  <div className="relative">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-white/10 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all">
-                      <Image 
-                        src={craftsman.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${craftsman.username || craftsman.name || 'Craftsman'}`} 
-                        alt={craftsman.name} 
-                        width={40} 
-                        height={40} 
-                      />
-                    </div>
-                    <div className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-900 rounded-full p-0.5 shadow-sm">
-                      <ShieldCheck size={12} className="text-emerald-500" />
-                    </div>
-                  </div>
-                  <div>
-                    <h4 className="text-[13px] font-bold text-slate-900 dark:text-white transition-colors leading-tight">{craftsman.name}</h4>
-                    <p className="text-[10px] text-slate-500 font-medium">Level {craftsman.gamification?.level || 1} Craftsman</p>
-                  </div>
-                </Link>
-              </CraftsmanHoverCard>
-            ))}
-          </div>
-          )}
-        </div>
-      </section>
-
-      {/* Trending Community Tags */}
-      <section className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-apple-lg p-6">
-        <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="text-indigo-500" size={18} /> Trending Now
-        </h3>
-        
-        <div className="flex flex-wrap gap-2">
-          {tagsLoading ? (
-            Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-7 w-20 bg-slate-100 dark:bg-white/5 rounded-full animate-pulse" />
-            ))
-          ) : trendingTags.length > 0 ? (
-            trendingTags.map((t, idx) => {
-              const tagName = t.name || t.tag || 'unknown';
-              return (
-                <Link 
-                  key={tagName + idx} 
-                  href={`/search?q=${tagName}`}
-                  className="px-3 py-1.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-indigo-600 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
-                >
-                  #{tagName}
-                </Link>
-              );
-            })
-          ) : (
-            <span className="text-xs text-slate-400 italic">No trending tags found</span>
-          )}
-        </div>
-      </section>
 
       {/* Community / Rewards CTA */}
       <div className="bg-indigo-600 rounded-lg p-6 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden group">

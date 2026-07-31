@@ -93,6 +93,8 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
 
 // ─── Login Page ───────────────────────────────────────────────────────────────
 
+export const dynamic = 'force-dynamic';
+
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -581,7 +581,9 @@ export default function ProductDetails({ params }) {
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16">
           <div className="w-full max-w-[980px] lg:ml-auto">
             <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em] border-t border-[#e8e8ed] dark:border-slate-800 pt-8">Description</h2>
-            <div className="prose prose-blue dark:prose-invert max-w-none text-[#1d1d1f] dark:text-gray-300 text-[15px] leading-[1.6]" dangerouslySetInnerHTML={{ __html: product.description.replace(/\n/g, '<br/>') }}></div>
+            <div className="whitespace-pre-line prose prose-blue dark:prose-invert max-w-none text-[#1d1d1f] dark:text-gray-300 text-[15px] leading-[1.6]">
+              {product.description}
+            </div>
             
             {images.length > 1 && (
               <div className="mt-8 space-y-4">

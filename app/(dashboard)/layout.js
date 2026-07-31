@@ -48,6 +48,11 @@ export default function DashboardLayout({ children }) {
     pathname.startsWith("/chat") || 
     pathname.startsWith("/settings") || 
     pathname.startsWith("/u/") || 
+    pathname.startsWith("/privacy") ||
+    pathname.startsWith("/terms") ||
+    pathname.startsWith("/sitemap") ||
+    pathname.startsWith("/legal") ||
+    pathname.startsWith("/shop") ||
     (pathname.startsWith("/challenges/") && (
       pathname.split('/').filter(Boolean).length === 1 ||
       pathname.endsWith("/manage") ||
@@ -130,11 +135,14 @@ export default function DashboardLayout({ children }) {
         </AnimatePresence>
 
         <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-[30px] min-h-screen max-w-[1800px] mx-auto">
-          {/* Left Sidebar */}
+          {/* Left Sidebar - fixed overlay; doesn't shift main content */}
           {!isFullWidthPage && (
-            <div className={`hidden lg:block w-[72px] flex-shrink-0 transition-all duration-300 z-50`}>
+            <div className={`hidden lg:block flex-shrink-0 w-[72px] z-50`}>
               <div 
-                className={`fixed top-16 bottom-6 w-[72px] hover:w-[260px] overflow-x-hidden overflow-y-auto scrollbar-hide transition-all duration-300 z-50 bg-transparent`}
+                className={`fixed top-16 bottom-6 z-50 transition-all duration-300 ${
+                  isSidebarHovered ? 'w-[260px]' : 'w-[72px]'
+                } overflow-x-hidden overflow-y-auto scrollbar-hide`}
+                style={{ background: 'transparent' }}
                 onMouseEnter={() => setIsSidebarHovered(true)}
                 onMouseLeave={() => setIsSidebarHovered(false)}
               >

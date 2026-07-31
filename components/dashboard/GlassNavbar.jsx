@@ -41,7 +41,7 @@ const GlassNavbar = ({
 
   useEffect(() => {
     if (pathname.startsWith('/market')) setSearchType('marketplace');
-    else if (pathname.startsWith('/u/')) setSearchType('patrons');
+    else if (pathname.startsWith('/u/')) setSearchType('users');
     else setSearchType('all');
   }, [pathname]);
 

@@ -1,13 +1,13 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState("system");
 
-  const applyTheme = (newTheme) => {
+  const applyTheme = useCallback((newTheme) => {
     if (typeof window === "undefined") return;
 
     // Force light mode permanently for the marketplace pivot
@@ -16,7 +16,7 @@ export function ThemeProvider({ children }) {
 
     document.documentElement.classList.remove("dark");
     document.documentElement.setAttribute("data-theme", "light");
-  };
+  }, []);
 
   useEffect(() => {
     applyTheme("light"); // Force light on mount

@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { api } from '@/utils/api';
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
-import { Home, Compass, Zap, Users, Grid, Bookmark, TrendingUp, Settings, MessageCircle, Trophy, FileText, Layout, BarChart2, Target, Clock, ShieldCheck, Briefcase, Terminal, Store, Smartphone, Monitor, Laptop, Shirt, Box, ChevronRight, X, Watch, Headphones, BatteryCharging, Cable } from "lucide-react";
+import { Settings, MessageCircle, Box, ChevronRight } from "lucide-react";
 
 const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
   <Link
@@ -62,81 +62,154 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
   const { t } = useLanguage();
 
   const q = searchParams?.get("q");
+  const activeCategoryId = searchParams?.get("category_id");
+  const activeSubCategoryId = searchParams?.get("subCategory_id");
+  const activeChildCategoryId = searchParams?.get("childCategory_id");
 
-  const [openCategory, setOpenCategory] = useState(null);
   const [categories, setCategories] = useState([]);
+  // Track which category is open. Initialised from URL once categories load.
+  const [openCategory, setOpenCategory] = useState(null);
   const hoverTimeoutRef = React.useRef(null);
 
-  const handleMouseEnter = (catName) => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => {
-      setOpenCategory(catName);
-    }, 150); // Apple-style slight delay
-  };
-
-  const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => {
-      setOpenCategory(null);
-    }, 400); // Revert after delay
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     api.get('/market/categories')
       .then(res => {
-        setCategories(res.data || res || []);
+        const cats = res.data || res || [];
+        setCategories(cats);
+
+        // Auto-open the category whose child/sub is currently active in URL
+        if (activeSubCategoryId || activeChildCategoryId || activeCategoryId) {
+          for (const cat of cats) {
+            if (cat._id === activeCategoryId) {
+              setOpenCategory(cat._id);
+              break;
+            }
+            const subcats = cat.subcategories || [];
+            for (const sub of subcats) {
+              if (sub._id === activeSubCategoryId) {
+                setOpenCategory(cat._id);
+                break;
+              }
+              const children = sub.subcategories || [];
+              for (const child of children) {
+                if (child._id === activeChildCategoryId) {
+                  setOpenCategory(cat._id);
+                  break;
+                }
+              }
+            }
+          }
+        }
       })
       .catch(err => console.error(err));
   }, []);
 
-  React.useEffect(() => {
-    if (q) {
-      // Set active category logic here when data is fetched
+  // When URL changes (user navigates), update openCategory to keep active tree open
+  useEffect(() => {
+    if (!categories.length) return;
+    if (!activeCategoryId && !activeSubCategoryId && !activeChildCategoryId) return;
+
+    for (const cat of categories) {
+      if (cat._id === activeCategoryId) {
+        setOpenCategory(cat._id);
+        return;
+      }
+      const subcats = cat.subcategories || [];
+      for (const sub of subcats) {
+        if (sub._id === activeSubCategoryId) {
+          setOpenCategory(cat._id);
+          return;
+        }
+        const children = sub.subcategories || [];
+        for (const child of children) {
+          if (child._id === activeChildCategoryId) {
+            setOpenCategory(cat._id);
+            return;
+          }
+        }
+      }
     }
-  }, [q]);
-  
-  // Safely extract 'view' parameter
+  }, [activeCategoryId, activeSubCategoryId, activeChildCategoryId, categories]);
+
+  // Hover open: only expand — never collapse the active category on mouse leave
+  const handleMouseEnter = (catId) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setOpenCategory(catId);
+    }, 150);
+  };
+
+  const handleMouseLeave = (catId) => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      // Only close if this category is NOT the one that matches the active URL
+      const isCatActive = categories.some(cat => {
+        if (cat._id !== catId) return false;
+        if (cat._id === activeCategoryId) return true;
+        const subcats = cat.subcategories || [];
+        for (const sub of subcats) {
+          if (sub._id === activeSubCategoryId) return true;
+          const children = sub.subcategories || [];
+          for (const child of children) {
+            if (child._id === activeChildCategoryId) return true;
+          }
+        }
+        return false;
+      });
+      if (!isCatActive) {
+        setOpenCategory(null);
+      }
+    }, 350);
+  };
+
   const view = searchParams?.get("view");
 
   return (
     <aside className="h-full flex flex-col bg-transparent lg:bg-apple-canvas dark:bg-transparent lg:dark:bg-apple-canvas border-0 lg:border lg:border-apple-hairline rounded-none lg:rounded-apple-lg p-0 lg:p-3 overflow-hidden">
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
-        {/* Main Nav (Hidden on Mobile, moved to bottom nav) */}
+        {/* Categories Accordion */}
         <div className="hidden lg:block space-y-1">
-          {/* Removed legacy links (Devlogs, Artifacts, Codex) */}
-          {/* Categories Accordion */}
           {categories.map(category => {
             const subcats = category.subcategories || [];
-            const isActive = q === category.name.toLowerCase() || subcats.some(sub => q === `${category.name.toLowerCase()} ${sub.name.toLowerCase()}`);
-            const isOpen = openCategory === category._id || isActive;
-            const Icon = Box; // Default icon for dynamic categories
-            
+            const isOpen = openCategory === category._id;
+            const isActiveCat =
+              category._id === activeCategoryId ||
+              subcats.some(sub =>
+                sub._id === activeSubCategoryId ||
+                (sub.subcategories || []).some(child => child._id === activeChildCategoryId)
+              );
+            const Icon = Box;
+
             return (
-              <div key={category._id} className="relative"
-                   onMouseEnter={() => handleMouseEnter(category._id)}
-                   onMouseLeave={handleMouseLeave}>
+              <div
+                key={category._id}
+                className="relative"
+                onMouseEnter={() => handleMouseEnter(category._id)}
+                onMouseLeave={() => handleMouseLeave(category._id)}
+              >
                 <button
                   onClick={() => {
                     if (isCollapsed) return;
-                    setOpenCategory(isOpen ? null : category._id);
                     if (subcats.length === 0) {
-                      router.push(`/market/category/${encodeURIComponent(category.name.toLowerCase().replace(/\s+/g, '-'))}`);
+                      router.push(`/shop?category_id=${category._id}`);
+                    } else {
+                      setOpenCategory(isOpen ? null : category._id);
                     }
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
-                    isActive
+                    isActiveCat
                       ? "bg-[#e5e5ea] text-apple-ink dark:bg-[#2c2c2e] dark:text-white"
                       : "text-apple-ink dark:text-white hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e]"
                   }`}
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     {category.image ? (
-                        <img src={category.image} alt={category.name} className="w-[18px] h-[18px] object-cover rounded opacity-80 shrink-0" />
+                      <img src={category.image} alt={category.name} className="w-[18px] h-[18px] object-cover rounded opacity-80 shrink-0" />
                     ) : (
-                        <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
+                      <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
                     )}
-                    <span className={`text-[14px] font-sans whitespace-nowrap transition-all duration-300 ${isActive ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
+                    <span className={`text-[14px] font-sans whitespace-nowrap transition-all duration-300 ${isActiveCat ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
                       {category.name}
                     </span>
                   </div>
@@ -144,24 +217,26 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                     <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${isOpen ? 'rotate-90' : ''} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0 lg:scale-0 lg:ml-0' : 'opacity-100 lg:max-w-[20px] lg:scale-100 ml-auto'}`} />
                   )}
                 </button>
-                
+
                 <AnimatePresence>
                   {!isCollapsed && isOpen && subcats.length > 0 && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
                       className="overflow-hidden ml-[32px]"
                     >
                       {subcats.map(sub => {
                         const childCats = sub.subcategories || [];
+                        const isSubActive = sub._id === activeSubCategoryId;
                         return (
                           <div key={sub._id}>
                             <Link
-                              href={`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`}
+                              href={`/shop?subCategory_id=${sub._id}`}
                               className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                                pathname.includes(`/market/category/${encodeURIComponent(sub.name.toLowerCase().replace(/\s+/g, '-'))}`)
-                                  ? "text-blue-600 dark:text-blue-400 font-medium"
+                                isSubActive
+                                  ? "text-[#0071e3] dark:text-blue-400 font-medium"
                                   : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                               }`}
                             >
@@ -169,19 +244,22 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                             </Link>
                             {childCats.length > 0 && (
                               <div className="ml-4 border-l border-slate-100 dark:border-white/5 pl-2 mt-1 mb-2 space-y-1">
-                                {childCats.map(child => (
-                                  <Link
-                                    key={child._id}
-                                    href={`/market/category/${encodeURIComponent(child.name.toLowerCase().replace(/\s+/g, '-'))}`}
-                                    className={`block py-1 px-2 text-[12px] font-sans rounded-apple-sm transition-colors ${
-                                      pathname.includes(`/market/category/${encodeURIComponent(child.name.toLowerCase().replace(/\s+/g, '-'))}`)
-                                        ? "text-blue-600 dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
-                                        : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                                    }`}
-                                  >
-                                    {child.name}
-                                  </Link>
-                                ))}
+                                {childCats.map(child => {
+                                  const isChildActive = child._id === activeChildCategoryId;
+                                  return (
+                                    <Link
+                                      key={child._id}
+                                      href={`/shop?childCategory_id=${child._id}`}
+                                      className={`block py-1 px-2 text-[12px] font-sans rounded-apple-sm transition-colors ${
+                                        isChildActive
+                                          ? "text-[#0071e3] dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
+                                          : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                                      }`}
+                                    >
+                                      {child.name}
+                                    </Link>
+                                  );
+                                })}
                               </div>
                             )}
                           </div>
@@ -197,9 +275,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
         <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
 
-
-
-        {/* Settings & Help (Moved inside scrollable area) */}
+        {/* Settings & Help */}
         <div className="space-y-1 pb-4">
           <SidebarItem
             icon={Settings}
@@ -208,12 +284,11 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
             active={pathname === `/u/${user?.username}`}
             isCollapsed={isCollapsed}
           />
-          
           <SidebarItem
             icon={MessageCircle}
             label={t("help_feedback")}
             href="#"
-            active={pathname === "#"}
+            active={false}
             isCollapsed={isCollapsed}
           />
         </div>

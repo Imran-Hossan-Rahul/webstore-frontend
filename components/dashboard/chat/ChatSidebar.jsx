@@ -76,13 +76,15 @@ export default function ChatSidebar({
         <div className="flex items-center justify-between mb-5">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Messages</h1>
           <div className="flex items-center gap-1">
-            <button
-              onClick={onStartNewChat}
-              className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-600 dark:text-gray-300"
-              title="New Chat"
-            >
-              <Plus size={20} />
-            </button>
+            {currentUser?.role === 'admin' && (
+              <button
+                onClick={onStartNewChat}
+                className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-600 dark:text-gray-300"
+                title="New Chat"
+              >
+                <Plus size={20} />
+              </button>
+            )}
             <button
               onClick={onClose}
               className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 rounded-full transition-colors text-slate-400"
@@ -107,8 +109,9 @@ export default function ChatSidebar({
       </div>
 
       {/* Tabs */}
+      {currentUser?.role === 'admin' && (
       <div className="flex px-2 pt-2 border-b border-slate-200/50 dark:border-white/5 whitespace-nowrap">
-        {[{ id: "Chats", label: "Chats" }, { id: "Directory", label: currentUser?.role === 'admin' ? "Directory" : "Support Team" }].map((tab) => (
+        {[{ id: "Chats", label: "Chats" }, { id: "Directory", label: "Directory" }].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -122,6 +125,7 @@ export default function ChatSidebar({
           </button>
         ))}
       </div>
+      )}
 
       {/* List */}
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 px-2 py-2">

@@ -6,6 +6,8 @@ import { CreditCard, Truck, FileText, Check, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
 import { districts, upazilas } from '@/utils/bdData';
 
+export const dynamic = 'force-dynamic';
+
 export default function Checkout() {
   const router = useRouter();
   const searchParams = useSearchParams();

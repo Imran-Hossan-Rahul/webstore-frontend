@@ -6,6 +6,8 @@ import { api } from '@/utils/api';
 import { ShieldCheck, Loader2, XCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion } from 'framer-motion';
 
+export const dynamic = 'force-dynamic';
+
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
