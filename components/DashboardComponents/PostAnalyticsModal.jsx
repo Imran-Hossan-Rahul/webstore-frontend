@@ -4,6 +4,8 @@ import { X, Calendar, Globe, User, TrendingUp } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Legend } from "recharts";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d", "#ffc658"];
 
 export default function PostAnalyticsModal({ isOpen, onClose, post }) {
@@ -80,7 +82,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
               </div>
 
           {loading ? (
-             <div className="h-96 flex items-center justify-center"><div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-slate-600 rounded-full"></div></div>
+             <div className="h-96 flex items-center justify-center"><AppleSpinner /></div>
           ) : error ? (
              <div className="h-96 flex items-center justify-center text-red-400">{error.message || error}</div>
           ) : (

@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from "react";
 import { Clock, Users, MapPin, ArrowRight, CheckCircle, ShieldCheck, Info, X, FileSignature, Star, TrendingUp, Layout, ChevronRight } from "lucide-react";
@@ -33,12 +35,8 @@ export default function JobTalentRightSidebar({ jobId }) {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-48 bg-white dark:bg-white/5 rounded-2xl" />
-        <div className="h-64 bg-white dark:bg-white/5 rounded-2xl" />
-        <div className="h-48 bg-white dark:bg-white/5 rounded-2xl" />
-      </div>
-    );
+      <div className="flex justify-center p-12"><AppleSpinner /></div>
+      );
   }
 
   if (!job) return null;

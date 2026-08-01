@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
 import { Zap, Clock, Info, ShieldCheck, ArrowRight } from "lucide-react";
@@ -25,11 +27,8 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-64 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-        <div className="h-40 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-      </div>
-    );
+      <div className="flex justify-center p-12"><AppleSpinner /></div>
+      );
   }
 
   if (!challenge) return null;

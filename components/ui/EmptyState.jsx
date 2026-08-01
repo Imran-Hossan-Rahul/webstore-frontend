@@ -33,7 +33,7 @@ export default function EmptyState({
           title: "Nothing saved yet",
           description: "When you find something inspiring, click the heart or save icon to add it to your collection.",
           actionText: "Explore Content",
-          actionHref: "/explore",
+          actionHref: "/",
           bgIcon: "bg-emerald-100 dark:bg-emerald-900/30"
         };
       case 'search':

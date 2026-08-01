@@ -4,9 +4,10 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { api } from "@/utils/api";
-import { Search, Loader2, User, FileText, Layout, ArrowRight, Trophy, Zap, BookOpen, CheckCircle, ShieldCheck, Briefcase, Send } from "lucide-react";
+import { Search, User, FileText, Layout, ArrowRight, Trophy, Zap, BookOpen, CheckCircle, ShieldCheck, Briefcase, Send } from "lucide-react";
 import Link from "next/link";
 import AIEnhanceButton from '../AIEnhanceButton';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const HighlightMatch = ({ text }) => {
   return <>{text}</>;
@@ -190,7 +191,7 @@ export default function SearchMain() {
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">No matches found</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs mx-auto font-medium">
-                    We couldn't find anything matching "{displayedQuery}". Try different keywords.
+                    We couldn&apos;t find anything matching &quot;{displayedQuery}&quot;. Try different keywords.
                 </p>
             </div>
         ) : (

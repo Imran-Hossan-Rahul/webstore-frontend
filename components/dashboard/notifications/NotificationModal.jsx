@@ -7,6 +7,8 @@ import { api } from "@/utils/api";
 import socket from "@/utils/socket";
 import DraggableResizableWindow from "../chat/DraggableResizableWindow";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 /**
  * NotificationModal
  * A floating, draggable notification system.
@@ -211,7 +213,7 @@ export default function NotificationModal({ isOpen, onClose }) {
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 p-3 space-y-2">
           {loading ? (
             <div className="h-full flex items-center justify-center">
-              <div className="w-8 h-8 border-4 border-slate-200 dark:border-white/10 border-t-black dark:border-t-white rounded-full animate-spin" />
+              <AppleSpinner />
             </div>
           ) : notifications.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-50">

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowLeft, Copy, Image as ImageIcon, CheckCircle2, XCircle } from "lucide-react";
 import { api } from '@/utils/api';
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function OrderDetailPage({ params }) {
   const router = useRouter();
   const { id } = params;
@@ -48,7 +50,7 @@ export default function OrderDetailPage({ params }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#fafafa] dark:bg-slate-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-400"></div>
+        <AppleSpinner />
       </div>
     );
   }
@@ -105,7 +107,7 @@ export default function OrderDetailPage({ params }) {
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6 gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">Order #{((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}</span>
+                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">Order #{((order.id || order._id?.toString())?.slice(-8))}</span>
                 <button
                   onClick={() => copyToClipboard(order.id || order._id?.toString())}
                   className="text-gray-400 hover:text-gray-700 transition"
@@ -113,12 +115,12 @@ export default function OrderDetailPage({ params }) {
                 >
                   <Copy size={16} />
                 </button>
-                {copied && <span className="font-text text-[10px] bg-green-50 text-green-600 font-semibold px-1.5 py-0.5 rounded uppercase tracking-[0.06em]">Copied</span>}
+                {copied && <span className="font-text text-[10px] bg-green-50 text-green-600 font-semibold px-1.5 py-0.5 rounded tracking-[0.06em]">Copied</span>}
               </div>
               <p className="text-[12px] font-normal tracking-[-0.01em] text-[#86868b]">Placed on {placedDate}</p>
             </div>
             <div className="flex flex-col md:items-end">
-              <span className="font-text text-[10px] font-semibold uppercase tracking-[0.06em] text-[#86868b] mb-1">Total Amount</span>
+              <span className="font-text text-[11px] font-semibold tracking-[0.06em] text-[#86868b] mb-1">Total Amount</span>
               <div className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">
                 {formatPrice(subtotal)} BDT
               </div>
@@ -130,14 +132,14 @@ export default function OrderDetailPage({ params }) {
             <div className="mb-8">
               <div className="flex items-center justify-center gap-3 py-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl">
                 <XCircle size={22} className="text-red-500" strokeWidth={1.5} />
-                <span className="font-text font-semibold text-red-600 dark:text-red-400 text-sm tracking-[0.06em]">ORDER CANCELLED</span>
+                <span className="font-text font-semibold text-red-600 dark:text-red-400 text-sm tracking-[0.06em]">Order Cancelled</span>
               </div>
             </div>
           ) : (
             <div className="mb-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] -mx-4 px-4 sm:mx-0 sm:px-0">
-              <div className="flex items-center justify-between relative min-w-[360px] sm:min-w-[480px] mx-auto py-2 px-2">
+              <div className="flex items-center justify-between relative min-w-[360px] sm:min-w-[480px] mx-auto py-2">
                 {/* Gray background track */}
-                <div className="absolute left-[12%] right-[12%] top-[19px] md:top-[19px] h-[2px] bg-[#e5e5ea] dark:bg-[#2c2c2e] -z-0 rounded-full overflow-hidden">
+                <div className="absolute left-[32px] md:left-[40px] right-[32px] md:right-[40px] top-[19px] h-[2px] bg-[#e5e5ea] dark:bg-[#2c2c2e] -z-0 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-[#34c759] rounded-full transition-all duration-700 ease-out"
                     style={{ width: `${progressPercent}%` }}
@@ -156,7 +158,7 @@ export default function OrderDetailPage({ params }) {
                     ) : (
                       <div className="w-[24px] h-[24px] rounded-full border-[1.5px] border-[#d2d2d7] dark:border-[#2c2c2e] bg-white dark:bg-slate-900"></div>
                     )}
-                    <span className={`font-text font-semibold tracking-[0.06em] text-[10px] sm:text-[11px] text-center uppercase ${active ? 'text-[#4b4b4b] dark:text-[#f5f5f7]' : 'text-[#999999] dark:text-[#6e6e73]'}`}>{label}</span>
+                    <span className={`font-text font-semibold tracking-[0.06em] text-[11px] sm:text-[12px] text-center ${active ? 'text-[#4b4b4b] dark:text-[#f5f5f7]' : 'text-[#999999] dark:text-[#6e6e73]'}`}>{label}</span>
                   </div>
                 ))}
               </div>
@@ -164,7 +166,7 @@ export default function OrderDetailPage({ params }) {
           )}
           
           <div className="text-center text-[13px] text-[#86868b] mb-12 flex flex-col items-center gap-1.5">
-          <p>Status: <span className="font-text font-semibold tracking-[0.06em] uppercase text-[12px] text-[#1d1d1f] dark:text-gray-300">{order.status || 'ORDER PLACED'}</span> &mdash; {formatDate(order.createdAt)}</p>
+          <p>Status: <span className="font-text font-semibold tracking-[0.06em] text-[13px] text-[#1d1d1f] dark:text-gray-300">{order.status || 'Order Placed'}</span> &mdash; {formatDate(order.createdAt)}</p>
           {(order.tracking_id || order.courier_name) && ['Shipped', 'Delivered'].includes(order.status) && (
             <p className="mt-2 bg-blue-50 dark:bg-blue-950/30 px-4 py-2 rounded-lg border border-blue-200 dark:border-blue-900/50 text-blue-800 dark:text-blue-300">
               {order.courier_name && <span className="mr-3"><strong>Courier:</strong> {order.courier_name}</span>}
@@ -185,7 +187,7 @@ export default function OrderDetailPage({ params }) {
                   </div>
                   <div className="flex-1 min-w-0 pr-2">
                     <Link href={item.product?.id ? `/product/${item.product.id}` : '#'}>
-                      <h3 className="text-[17px] font-bold tracking-[-0.022em] text-[#1d1d1f] dark:text-white mb-1 hover:text-[#0066cc] transition cursor-pointer line-clamp-1 leading-tight">
+                      <h3 className="text-[17px] font-medium tracking-[-0.022em] text-[#1d1d1f] dark:text-white mb-1 hover:text-[#0066cc] transition cursor-pointer line-clamp-1 leading-tight">
                         {item.product?.title || 'Unknown Product'}
                       </h3>
                     </Link>
@@ -196,7 +198,7 @@ export default function OrderDetailPage({ params }) {
                   </div>
                 </div>
                 <div className="flex flex-col items-end shrink-0 ml-2">
-                  <span className="font-text text-[10px] font-semibold tracking-[0.06em] uppercase text-[#86868b] mb-1">Price</span>
+                  <span className="font-text text-[11px] font-semibold tracking-[0.06em] text-[#86868b] mb-1">Price</span>
                   <div className="text-[17px] font-bold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">
                     {formatPrice(item.price_at_purchase * item.quantity)} BDT
                   </div>
@@ -212,10 +214,10 @@ export default function OrderDetailPage({ params }) {
 
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8">
-            <div className="flex-1 bg-[#f5f5f7] dark:bg-[#151515] rounded-[16px] p-5 md:p-6">
+            <div className="flex-1 bg-white dark:bg-[#1c1c1e] rounded-[16px] p-5 md:p-6 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[12px] uppercase">Shipping Address</h3>
-                <span className="font-text text-[10px] font-semibold tracking-[0.06em] bg-white border border-[#d2d2d7] px-2.5 py-1 rounded-[4px] text-[#1d1d1f] shadow-sm uppercase">Regular Delivery</span>
+                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[13px]">Shipping Address</h3>
+                <span className="font-text text-[11px] font-semibold tracking-[0.06em] bg-[#f5f5f7] dark:bg-white/10 px-2.5 py-1 rounded-[4px] text-[#1d1d1f] dark:text-white">Regular Delivery</span>
               </div>
               <div className="text-[14px] tracking-[-0.016em] text-[#1d1d1f] dark:text-[#86868b] space-y-2 leading-relaxed">
                 <p className="font-semibold text-[#1d1d1f] dark:text-white">{addressObj.name || ''} <span className="text-[#86868b] font-normal ml-2">| {order.phone || ''}</span></p>
@@ -224,10 +226,10 @@ export default function OrderDetailPage({ params }) {
               </div>
             </div>
 
-            <div className="w-full md:w-[380px] bg-[#fdfdfd] border border-[#f5f5f7] dark:bg-[#151515] rounded-[12px] p-5 md:p-6 shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+            <div className="w-full md:w-[380px] bg-white dark:bg-[#1c1c1e] rounded-[16px] p-5 md:p-6 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[12px] uppercase">Order Summary</h3>
-                <span className="font-text text-[10px] font-semibold tracking-[0.06em] bg-white border border-[#e5e5ea] px-2.5 py-1 rounded-[4px] text-[#1d1d1f] uppercase">Cash on Delivery</span>
+                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[13px]">Order Summary</h3>
+                <span className="font-text text-[11px] font-semibold tracking-[0.06em] bg-white border border-[#e5e5ea] px-2.5 py-1 rounded-[4px] text-[#1d1d1f]">Cash on Delivery</span>
               </div>
               
               <div className="space-y-3.5 mt-2">
@@ -249,8 +251,8 @@ export default function OrderDetailPage({ params }) {
                 
                 <div className="border-t border-solid border-[#e5e5ea] dark:border-[#2c2c2e] my-3"></div>
                 
-                <div className="flex justify-between items-center mt-2">
-                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[12px] uppercase">Due Amount</span>
+                <div className="flex justify-between mt-4 pt-4 border-t border-[#e5e5ea] dark:border-gray-700">
+                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[13px]">Due Amount</span>
                   <span className="font-bold text-[#1d1d1f] dark:text-white tracking-[-0.015em] text-[28px]">{formatPrice(subtotal)} BDT</span>
                 </div>
               </div>

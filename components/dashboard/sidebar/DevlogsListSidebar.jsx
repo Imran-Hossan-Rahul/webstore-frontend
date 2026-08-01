@@ -193,7 +193,7 @@ export default function DevlogsListSidebar() {
               return (
                 <Link 
                   key={tagName + idx} 
-                  href={`/search?q=${tagName}`}
+                  href={`/shop?q=${tagName}`}
                   className="px-3 py-1.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-indigo-600 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
                 >
                   #{tagName}

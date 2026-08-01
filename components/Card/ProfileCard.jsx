@@ -1,6 +1,5 @@
-// Card/ProfileCard.jsx
 "use client";
-
+// Card/ProfileCard.jsx
 export default function ProfileCard({
   profilePic,
   name,

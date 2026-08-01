@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
-import MarketFooter from "./MarketFooter";
 import MarketSEOContent from "./MarketSEOContent";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 // Cloudinary optimization for free extreme performance
 const getOptimizedUrl = (url) => {
@@ -23,7 +23,8 @@ const getOptimizedUrl = (url) => {
   return url;
 };
 
-const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink }) => {
+
+const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink, isLoading }) => {
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
@@ -43,13 +44,12 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink 
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
-    // Measure the first card's width + its gap (gap-4 = 16px, gap-6 = 24px)
     const firstCard = scrollRef.current.firstElementChild;
     const cardWidth = firstCard ? firstCard.offsetWidth + 24 : 280;
     scrollRef.current.scrollBy({ left: direction === 'left' ? -cardWidth : cardWidth, behavior: 'smooth' });
   };
 
-  if (!products || products.length === 0) return null;
+  if (!isLoading && (!products || products.length === 0)) return null;
 
   return (
     <div className="p-2 pt-2 md:py-8 md:px-3 w-full -mt-4 md:mt-2 relative group">
@@ -64,38 +64,49 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink 
         )}
       </div>
       
-      <div className="relative">
-        {showLeft && (
-          <button 
-            onClick={() => scroll('left')}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 md:-ml-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
-          >
-            <ChevronLeft size={24} />
-          </button>
-        )}
-
-        <div 
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex overflow-x-auto gap-3 md:gap-5 snap-x snap-mandatory pb-4 scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {products.map((product, idx) => (
-            <div key={product.id || idx} className="min-w-[160px] max-w-[160px] md:min-w-[220px] md:max-w-[220px] lg:min-w-[240px] lg:max-w-[240px] snap-start shrink-0">
-              {renderProductCard(product)}
-            </div>
-          ))}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-16">
+          <AppleSpinner size={40} className="text-[#0071e3]" />
         </div>
+      ) : (
+        <div className="relative">
+          {showLeft && (
+            <button 
+              onClick={() => scroll('left')}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 md:-ml-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
+            >
+              <ChevronLeft size={24} />
+            </button>
+          )}
 
-        {showRight && products.length > 3 && (
-          <button 
-            onClick={() => scroll('right')}
-            className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 md:-mr-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
+          <div 
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex overflow-x-auto gap-3 md:gap-5 snap-x snap-mandatory pb-4 scrollbar-hide"
+            style={{ 
+              scrollbarWidth: 'none', 
+              msOverflowStyle: 'none',
+              WebkitMaskImage: `linear-gradient(to right, #000, #000 calc(100% - 32px), ${showRight && products.length > 3 ? 'transparent' : '#000'})`,
+              maskImage: `linear-gradient(to right, #000, #000 calc(100% - 32px), ${showRight && products.length > 3 ? 'transparent' : '#000'})`
+            }}
           >
-            <ChevronRight size={24} />
-          </button>
-        )}
-      </div>
+            {products.map((item, idx) => (
+              <div key={item.id || idx} className="min-w-[160px] max-w-[160px] md:min-w-[220px] md:max-w-[220px] lg:min-w-[240px] lg:max-w-[240px] snap-start shrink-0">
+                {renderProductCard(item)}
+              </div>
+            ))}
+          </div>
+
+          {showRight && products.length > 3 && (
+            <button 
+              onClick={() => scroll('right')}
+              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 md:-mr-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
+            >
+              <ChevronRight size={24} />
+            </button>
+          )}
+        </div>
+      )}
       
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
@@ -162,10 +173,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
       fetchProducts(1, true);
     }
     if (initialFeatured.length === 0) {
-      api.get('/market/products?isFeatured=true&limit=10').then(res => setFeaturedProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error);
+      setLoadingFeatured(true);
+      api.get('/market/products?isFeatured=true&limit=10').then(res => setFeaturedProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingFeatured(false));
     }
     if (initialPopular.length === 0) {
-      api.get('/market/products?isPopular=true&limit=10').then(res => setPopularProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error);
+      setLoadingPopular(true);
+      api.get('/market/products?isPopular=true&limit=10').then(res => setPopularProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingPopular(false));
     }
   }, [initialData.length, initialFeatured.length, initialPopular.length]);
 
@@ -181,7 +194,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
   const [page, setPage] = useState(initialPagination.currentPage || 1);
   const [hasMore, setHasMore] = useState((initialPagination.currentPage || 1) < (initialPagination.pages || 1));
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(initialData.length === 0);
+  const [loadingFeatured, setLoadingFeatured] = useState(initialFeatured.length === 0);
+  const [loadingPopular, setLoadingPopular] = useState(initialPopular.length === 0);
 
   const fetchProducts = (pageNum, reset = false) => {
     setLoading(true);
@@ -292,8 +307,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
           No Image
         </div>
       )}
-      <div className="p-3 md:p-4 flex flex-col flex-1 items-center bg-transparent text-center">
-        <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2">{product.title}</h3>
+      <div className="px-2 py-3 md:p-4 flex flex-col flex-1 items-center bg-transparent text-center">
+        <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2 px-1" style={{ minHeight: 'calc(1.47 * 17px * 2)' }}>{product.title}</h3>
         <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
           <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
           {Number(product.original_price) > Number(product.selling_price) && (
@@ -303,13 +318,16 @@ export default function MarketClientView({ initialData = [], initialPagination =
         <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] active:bg-[#004085] flex items-center justify-center"
+            className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center"
           >
             Add to Cart
           </button>
-          <Link href={`/product/${product.id}`} className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[15px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white active:bg-[#0055b3] active:text-white flex items-center justify-center">
-            View
-          </Link>
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center"
+          >
+            Buy Now
+          </button>
         </div>
       </div>
     </div>
@@ -447,12 +465,13 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       )}
       {/* Latest Products */}
-      {!query && displayedProducts.length > 0 && (
+      {!query && (displayedProducts.length > 0 || loading) && (
         <ScrollableProductRow
           title="Latest Products"
           products={displayedProducts}
           renderProductCard={renderProductCard}
           viewAllLink="/shop?sort=latest"
+          isLoading={loading}
         />
       )}
       {query && displayedProducts.length === 0 && (
@@ -463,27 +482,48 @@ export default function MarketClientView({ initialData = [], initialPagination =
       )}
 
       {/* Popular Products */}
-      {!query && popularProducts.length > 0 && (
+      {!query && (popularProducts.length > 0 || loadingPopular) && (
         <ScrollableProductRow
           title="Popular Products"
           products={popularProducts}
           renderProductCard={renderProductCard}
           viewAllLink="/shop?section=popular"
+          isLoading={loadingPopular}
         />
       )}
 
-      {/* Featured Products */}
-      {!query && featuredProducts.length > 0 && (
+      {/* Featured / Explore More */}
+      {!query && (featuredProducts.length > 0 || loadingFeatured) && (
         <ScrollableProductRow
-          title="Featured Products"
+          title="Explore More"
           products={featuredProducts}
           renderProductCard={renderProductCard}
-          viewAllLink="/shop?section=featured"
+          viewAllLink="/shop"
+          isLoading={loadingFeatured}
         />
+      )}
+
+      {/* Full-width Explore CTA */}
+      {!query && (
+        <div className="px-3 pb-12 pt-2">
+          <Link
+            href="/shop"
+            className="group flex items-center justify-between w-full bg-white dark:bg-[#1c1c1e] border border-apple-hairline rounded-2xl px-7 py-5 hover:shadow-md transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20"
+          >
+            <div>
+              <p className="text-[12px] font-semibold uppercase tracking-widest text-apple-muted mb-1">Marketplace</p>
+              <p className="text-[20px] md:text-[24px] font-semibold tracking-tight text-apple-ink leading-tight">
+                Browse the full collection
+              </p>
+            </div>
+            <div className="shrink-0 ml-4 w-10 h-10 rounded-full bg-apple-ink dark:bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <ChevronRight className="text-white dark:text-apple-ink" size={20} />
+            </div>
+          </Link>
+        </div>
       )}
       
       <MarketSEOContent />
-      <MarketFooter />
     </div>
   );
 }

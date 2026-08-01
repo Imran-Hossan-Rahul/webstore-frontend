@@ -17,7 +17,7 @@ export default function PostJobSidebar() {
             </div>
             <div>
               <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-blue-600 transition-colors">Clear Title</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Use a concise title like "React Frontend Developer for E-commerce" instead of just "Developer needed".</p>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Use a concise title like &quot;React Frontend Developer for E-commerce&quot; instead of just &quot;Developer needed&quot;.</p>
             </div>
           </div>
           <div className="flex gap-4 group">
@@ -35,7 +35,7 @@ export default function PostJobSidebar() {
             </div>
             <div>
               <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-blue-600 transition-colors">Realistic Budget</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Attract top-tier professionals by matching your budget to the devlog's complexity.</p>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Attract top-tier professionals by matching your budget to the devlog&apos;s complexity.</p>
             </div>
           </div>
         </div>

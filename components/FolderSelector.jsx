@@ -1,5 +1,5 @@
+"use client";
 // FolderSelector.jsx - Folder selection component
-'use client';
 import { useState, useEffect } from 'react';
 
 export default function FolderSelector({ onFolderSelect }) {

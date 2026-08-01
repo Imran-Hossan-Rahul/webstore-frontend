@@ -1,8 +1,9 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState } from "react";
-import { X, Calendar, Clock, Loader2, Video } from "lucide-react";
+import { X, Calendar, Clock, Video } from "lucide-react";
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
   const { showToast } = useToast();
@@ -119,7 +120,7 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
              disabled={loading}
              className="w-full mt-4 py-4 bg-slate-900 dark:bg-white hover:bg-black dark:hover:bg-slate-200 text-white dark:text-black font-bold rounded-xl transition-all shadow-xl flex items-center justify-center gap-2"
            >
-             {loading ? <Loader2 className="animate-spin" size={18} /> : null}
+             {loading ? <AppleSpinner className="animate-spin" size={18} /> : null}
              {loading ? "Processing..." : "Confirm & Pay TKNS"}
            </button>
         </form>

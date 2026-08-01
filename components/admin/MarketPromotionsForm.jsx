@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
-import { Loader2, Save, Image as ImageIcon, Search, Plus, X } from 'lucide-react';
+import { Save, Image as ImageIcon, Search, Plus, X } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function MarketPromotionsForm() {
   const { showToast } = useToast();
@@ -126,7 +127,7 @@ export default function MarketPromotionsForm() {
 
   // filtering is moved inside ProductSelector to handle selected state
   if (loading) {
-    return <div className="flex items-center justify-center p-12"><Loader2 className="animate-spin text-slate-400" size={32} /></div>;
+    return <div className="flex items-center justify-center p-12"><AppleSpinner className="animate-spin text-slate-400" /></div>;
   }
 
   const ProductSelector = ({ listName, label }) => {
@@ -318,7 +319,7 @@ export default function MarketPromotionsForm() {
           disabled={saving}
           className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors disabled:opacity-50"
         >
-          {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+          {saving ? <AppleSpinner size={18} className="animate-spin" /> : <Save size={18} />}
           Save Changes
         </button>
       </div>

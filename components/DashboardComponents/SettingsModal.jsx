@@ -6,6 +6,8 @@ import { X, User, CreditCard, Shield, Settings as SettingsIcon, AlertCircle, Che
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function SettingsModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("general");
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
@@ -78,7 +80,7 @@ export default function SettingsModal({ isOpen, onClose }) {
             <div className="flex-1 overflow-y-auto p-10 custom-scrollbar">
                 {loading ? (
                     <div className="h-full flex items-center justify-center flex-col gap-3">
-                        <div className="animate-spin w-8 h-8 border-2 border-black border-t-transparent rounded-full" />
+                        <AppleSpinner />
                         <p className="text-slate-400 text-sm">Loading settings...</p>
                     </div>
                 ) : user ? (

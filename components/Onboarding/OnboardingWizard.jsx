@@ -79,7 +79,7 @@ export default function OnboardingWizard({ onComplete }) {
                 <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
                     <User size={32} />
                 </div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome! Let's get to know you.</h2>
+                <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome! Let&apos;s get to know you.</h2>
                 <p className="text-slate-500">Tell us a bit about yourself to personalize your experience.</p>
               </div>
 

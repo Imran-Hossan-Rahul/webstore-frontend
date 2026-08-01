@@ -73,7 +73,7 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
 
         {/* Benefits */}
         <div className="p-6 bg-slate-50 dark:bg-white/[0.02]">
-          <h3 className="font-semibold text-slate-900 mb-4">What you'll get:</h3>
+          <h3 className="font-semibold text-slate-900 mb-4">What you&apos;ll get:</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">

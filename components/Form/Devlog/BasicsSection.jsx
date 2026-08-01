@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { X, Search, Loader2, Grid } from "lucide-react";
+import { X, Search, Grid } from "lucide-react";
 import { EditorContent } from "@tiptap/react";
 import CustomSelect from "@/components/ui/CustomSelect";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function BasicsSection({
   devlogData,
@@ -101,7 +102,7 @@ export default function BasicsSection({
             placeholder="Search @username..."
             className="w-full pl-9 pr-10 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm"
           />
-          {isSearchingUsers && <Loader2 size={16} strokeWidth={1.5} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-slate-400" />}
+          {isSearchingUsers && <AppleSpinner size={16} strokeWidth={1.5} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-slate-400" />}
         </div>
         
         {userSearchResults.length > 0 && (

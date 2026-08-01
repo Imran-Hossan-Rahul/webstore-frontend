@@ -4,6 +4,8 @@ import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, Search, Filter, AlertCircle, CheckCircle, Clock, Users, MessageCircle, Tag, User, Calendar, Zap } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const TaskCard = ({ task, onTaskClick }) => {
   const getStatusColor = (status) => {
     switch (status) {
@@ -384,7 +386,7 @@ export default function TaskBoard() {
       <div className="p-6">
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4" />
+            <AppleSpinner className="mx-auto mb-4" />
             <p className="text-slate-600 dark:text-slate-400">Loading tasks...</p>
           </div>
         ) : error ? (

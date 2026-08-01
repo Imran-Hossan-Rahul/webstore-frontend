@@ -4,10 +4,11 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect, useContext } from 'react';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { api, API_BASE_URL } from '@/utils/api';
-import { User, Building2, Upload, CheckCircle2, ChevronRight, ChevronLeft, ShieldCheck, AlertCircle, Loader2, Camera, Smartphone, Fingerprint, FileCheck, ShieldAlert, Info, Check as LucideCheck, X as LucideX } from "lucide-react";
+import { User, Building2, Upload, CheckCircle2, ChevronRight, ChevronLeft, ShieldCheck, AlertCircle, Camera, Smartphone, Fingerprint, FileCheck, ShieldAlert, Info, Check as LucideCheck, X as LucideX, Zap } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import CameraCapture from '@/components/ui/CameraCapture';
 import { motion, AnimatePresence } from 'framer-motion';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const VerificationForm = () => {
   const { user: contextUser, fetchUser: refreshContextUser } = useContext(DashboardContext) || {};
@@ -261,7 +262,7 @@ const VerificationForm = () => {
                      className={`aspect-video rounded-2xl border-2 border-dashed flex items-center justify-center cursor-pointer transition-all ${formData.idDocumentFront ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-slate-100 dark:border-white/5 hover:border-indigo-600/30 bg-slate-50/50 dark:bg-white/[0.01]'}`}
                   >
                      <input type="file" id="idUp" hidden onChange={(e) => uploadFile(e.target.files[0], 'idDocumentFront')} />
-                     {uploading === 'idDocumentFront' ? <Loader2 className="animate-spin text-blue-600" /> : 
+                     {uploading === 'idDocumentFront' ? <AppleSpinner className="animate-spin text-blue-600" /> : 
                       formData.idDocumentFront ? <img src={getOptimizedUrl(getFullUrl(formData.idDocumentFront))} className="w-full h-full object-cover rounded-xl" alt="" /> :
                       <div className="flex flex-col items-center gap-3 opacity-40"><Upload size={20}/><span className="text-[9px] font-bold uppercase tracking-widest">Upload Front of ID</span></div>
                      }
@@ -282,7 +283,7 @@ const VerificationForm = () => {
                      onClick={() => setShowCamera(true)}
                      className={`w-full h-full rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden transition-all ${formData.selfieWithId ? 'border-blue-600 shadow-xl shadow-blue-600/10' : 'border-slate-100 dark:border-white/5 hover:border-blue-600/30 bg-slate-50/50 dark:bg-white/[0.01]'}`}
                   >
-                     {uploading === 'selfieWithId' ? <Loader2 className="animate-spin text-blue-600" size={28} /> : 
+                     {uploading === 'selfieWithId' ? <AppleSpinner className="animate-spin text-blue-600" /> : 
                       formData.selfieWithId ? <img src={getOptimizedUrl(getFullUrl(formData.selfieWithId))} className="w-full h-full object-cover scale-105" alt="" /> :
                       <div className="flex flex-col items-center gap-3 opacity-40"><Camera size={28}/><span className="text-[9px] font-bold uppercase tracking-widest">Take Selfie</span></div>
                      }
@@ -300,7 +301,7 @@ const VerificationForm = () => {
                      onClick={handleSubmit} 
                      className="flex-[2] py-4 bg-blue-600 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 disabled:opacity-20 transition-all flex items-center justify-center gap-3"
                   >
-                     {loading ? <Loader2 className="animate-spin" size={16} /> : <><Fingerprint size={16} /> Submit for Review</>}
+                     {loading ? <AppleSpinner className="animate-spin" size={16} /> : <><Fingerprint size={16} /> Submit for Review</>}
                   </button>
                </div>
             </motion.div>

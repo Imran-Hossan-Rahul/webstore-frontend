@@ -31,7 +31,7 @@ export default function AboutMain() {
               The Mission
             </h2>
             <p className="text-[14px] md:text-[16px] font-[400] text-[#424245] leading-relaxed">
-              We built this platform because we believed discovering high-quality products shouldn't be complicated. In a world full of crowded marketplaces with inconsistent standards, we created a space where excellence is the only standard. Our goal is to connect passionate buyers with the very best tech and gadgets available.
+              We built this platform because we believed discovering high-quality products shouldn&apos;t be complicated. In a world full of crowded marketplaces with inconsistent standards, we created a space where excellence is the only standard. Our goal is to connect passionate buyers with the very best tech and gadgets available.
             </p>
           </div>
 
@@ -41,7 +41,7 @@ export default function AboutMain() {
               The Curated Experience
             </h2>
             <p className="text-[14px] md:text-[16px] font-[400] text-[#424245] leading-relaxed">
-              We don't just list products; we curate them. Every item on our platform meets strict standards for design, durability, and innovation. We manually verify sellers and products to ensure that when you shop with us, you are only choosing from the finest selection available in the country.
+              We don&apos;t just list products; we curate them. Every item on our platform meets strict standards for design, durability, and innovation. We manually verify sellers and products to ensure that when you shop with us, you are only choosing from the finest selection available in the country.
             </p>
           </div>
 
@@ -51,7 +51,7 @@ export default function AboutMain() {
               Direct Brand Partnerships
             </h2>
             <p className="text-[14px] md:text-[16px] font-[400] text-[#424245] leading-relaxed">
-              We do not rely on third-party or unverified sellers. Instead, we partner directly with the manufacturers and official distributors of the world's leading technology brands. This direct relationship ensures that every product on our platform is 100% authentic, backed by official warranties, and delivered to you without compromise.
+              We do not rely on third-party or unverified sellers. Instead, we partner directly with the manufacturers and official distributors of the world&apos;s leading technology brands. This direct relationship ensures that every product on our platform is 100% authentic, backed by official warranties, and delivered to you without compromise.
             </p>
           </div>
 

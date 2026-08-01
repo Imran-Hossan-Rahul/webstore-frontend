@@ -9,6 +9,8 @@ import { useShare } from "@/hooks/useShare";
 import { api } from "@/utils/api";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const getOptimizedUrl = (url) => {
   if (!url) return '';
   if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
@@ -174,11 +176,25 @@ export default function ProductDetails({ params }) {
     }
   }, [id]);
 
+  // Signal global loader that we are fetching data
+  if (typeof window !== 'undefined') {
+    if (loading) {
+      window.isFetchingData = true;
+    }
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      if (typeof window !== 'undefined') {
+        window.isFetchingData = false;
+        window.dispatchEvent(new Event('nextPageReady'));
+      }
+    }
+  }, [loading]);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-apple-canvas flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
+      <div className="min-h-screen bg-apple-canvas"></div>
     );
   }
 
@@ -230,6 +246,7 @@ export default function ProductDetails({ params }) {
       finalPrice,
       originalPrice: finalOriginalPrice
     }).toString();
+    window.dispatchEvent(new Event('startNavigation'));
     router.push(`/checkout?${query}`);
   };
 
@@ -397,7 +414,7 @@ export default function ProductDetails({ params }) {
               {/* Gray Info Block */}
               <div className={`bg-[#efefef] dark:bg-slate-800/50 px-5 pt-5 pb-3 flex justify-between items-start ${specs.filter(s => s.isHighlight).length > 0 ? 'rounded-t-lg' : 'rounded-lg mb-5'}`}>
                 <div className="flex-1 pr-4">
-                  <h1 className="text-[32px] sm:text-[40px] font-bold text-[#1d1d1f] dark:text-white tracking-[-0.02em] leading-tight mb-2">
+                  <h1 className="text-[24px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-[-0.02em] leading-tight mb-2">
                   {product.title}
                 </h1>
                   {/* SKU (Admin Only) */}

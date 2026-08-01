@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
 import { User, ArrowRight, Eye, Share2, Clock, Calendar, Tag, Bookmark, Star } from "lucide-react";
@@ -125,10 +127,7 @@ const CodexRightSidebar = ({ currentCodexSlug }) => {
 
   if (loading || !codex) {
       return (
-          <div className="space-y-6 animate-pulse">
-              <div className="h-40 bg-white dark:bg-white/5 rounded-2xl"></div>
-              <div className="h-60 bg-white dark:bg-white/5 rounded-2xl"></div>
-          </div>
+          <div className="flex justify-center p-12"><AppleSpinner /></div>
       );
   }
 
@@ -232,7 +231,7 @@ const CodexRightSidebar = ({ currentCodexSlug }) => {
                               <span className="text-[9px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest">{note.user?.name}</span>
                           </div>
                           <p className="text-xs font-medium italic text-slate-700 dark:text-slate-300 line-clamp-3 mb-2 border-l-2 border-amber-400 pl-2">
-                              "{note.highlightedText}"
+                              &quot;{note.highlightedText}&quot;
                           </p>
                           {note.noteContent && (
                               <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2">

@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { X, User, Link as LinkIcon, BookOpen, Layers, Github, Eye, Code2, Users, UserCheck, Zap, Star } from "lucide-react";
 import { api } from '@/utils/api';
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
     const router = useRouter();
     const [profile, setProfile] = useState(null);
@@ -125,7 +127,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                 {/* Loading */}
                 {loading ? (
                     <div className="p-8 flex flex-col items-center justify-center min-h-[420px]">
-                        <div className="w-12 h-12 rounded-full border-4 border-emerald-500/20 border-t-emerald-500 animate-spin mb-4" />
+                        <AppleSpinner className="mb-4" />
                         <p className="text-slate-500 font-medium animate-pulse">Loading profile...</p>
                     </div>
 
@@ -358,7 +360,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                     </div>
                                                 </div>
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">
-                                                    "{review.comment}"
+                                                    &quot;{review.comment}&quot;
                                                 </p>
                                                 <p className="text-[9px] text-slate-300 dark:text-slate-500 font-bold uppercase tracking-tighter mt-3">
                                                     {new Date(review.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}

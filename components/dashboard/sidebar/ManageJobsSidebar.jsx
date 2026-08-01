@@ -43,7 +43,7 @@ export default function ManageJobsSidebar() {
             </div>
             <div>
               <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-emerald-600 transition-colors">Secure Contracts</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Use the platform's milestone system to manage deliverables safely.</p>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Use the platform&apos;s milestone system to manage deliverables safely.</p>
             </div>
           </div>
         </div>

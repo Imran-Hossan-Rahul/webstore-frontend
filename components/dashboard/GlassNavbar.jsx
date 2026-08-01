@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Search, Bell, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X } from "lucide-react";
+import { Search, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { hoverModalVariants } from "@/utils/animations";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -72,7 +72,7 @@ const GlassNavbar = ({
 
   // Sync counts from props or fetch initially
   useEffect(() => {
-    if (isGuest) return;
+    if (isGuest || user?.role === 'guest') return;
     const fetchCounts = async () => {
         const [notifRes, chatRes] = await Promise.all([
             api.get("/notifications/unread-count"),
@@ -81,8 +81,8 @@ const GlassNavbar = ({
         if (notifRes.success) setUnreadNotifications(notifRes.count);
         if (chatRes.success) setUnreadChatCount(chatRes.count);
     };
-    fetchCounts();
-  }, [isGuest]);
+    if (user) fetchCounts();
+  }, [isGuest, user]);
 
   // Real-time Sync
   useEffect(() => {
@@ -128,8 +128,10 @@ const GlassNavbar = ({
       }
       setIsSearching(true);
       try {
-        const res = await api.get(`/search?q=${encodeURIComponent(searchQuery)}&type=${searchType}`);
-        if (res.success) setSuggestions(res.data);
+        const res = await api.get(`/market/products?search=${encodeURIComponent(searchQuery)}&limit=5`);
+        if (res.data) {
+          setSuggestions({ marketplace: res.data });
+        }
       } catch (err) {
         console.error("Search failed", err);
       } finally {
@@ -139,7 +141,7 @@ const GlassNavbar = ({
 
     const timer = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(timer);
-  }, [searchQuery, searchFocused, searchType]);
+  }, [searchQuery, searchFocused]);
 
   const searchParams = useSearchParams();
 
@@ -150,7 +152,7 @@ const GlassNavbar = ({
 
   const handleSearch = () => {
     if (searchQuery?.trim()) {
-        router.push(`/search?q=${encodeURIComponent(searchQuery)}&type=${searchType}`);
+        router.push(`/shop?q=${encodeURIComponent(searchQuery)}`);
         setSearchFocused(false);
         setMobileSearchOpen(false);
         setIsDropdownOpen(false);
@@ -295,7 +297,7 @@ const GlassNavbar = ({
         <div className="flex items-center gap-2 sm:gap-4">
 
             {/* Cart and Orders Links */}
-            <div className="hidden sm:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2">
               <Link href="/cart" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative group flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 {cartCount > 0 && (
@@ -311,26 +313,7 @@ const GlassNavbar = ({
 
             <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-2 sm:pr-4">
                 
-                {!isGuest && (
-                  <>
-                    <button onClick={onToggleChat} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
-                        <MessageCircle strokeWidth={1.5} className="w-5 h-5" />
-                        {unreadChatCount > 0 && (
-                          <span className="absolute top-0 right-0 sm:top-1 sm:right-1 w-4 h-4 bg-indigo-600 text-white text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
-                            {unreadChatCount}
-                          </span>
-                        )}
-                    </button>
-                    <button onClick={onToggleNotification} className="p-1 sm:p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative">
-                        <Bell strokeWidth={1.5} className="w-5 h-5" />
-                        {unreadNotifications > 0 && (
-                          <span className="absolute top-0 right-0 sm:top-1 sm:right-1 w-4 h-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[9px] font-mono font-medium rounded-full flex items-center justify-center leading-none">
-                            {unreadNotifications}
-                          </span>
-                        )}
-                    </button>
-                  </>
-                )}
+
                 <div className="hidden sm:block">
                   <ThemeToggle />
                 </div>
@@ -341,7 +324,7 @@ const GlassNavbar = ({
                  <div className="hidden xl:block w-24 h-4 bg-slate-200 dark:bg-slate-800 rounded animate-pulse"></div>
                  <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
               </div>
-            ) : isGuest ? (
+            ) : (isGuest || user?.role === 'guest') ? (
               <div className="flex items-center gap-2 sm:gap-3 z-50 relative">
                 <Link href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity">Log in</Link>
                 <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</Link>
@@ -351,7 +334,7 @@ const GlassNavbar = ({
                   <div className="text-right hidden xl:block">
                       <div className="text-[14px] font-normal text-apple-ink dark:text-apple-ink font-sans leading-tight">{user?.name}</div>
                   </div>
-                  <div className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
+                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                       {user?.profilePicture ? (
                         <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
                       ) : (

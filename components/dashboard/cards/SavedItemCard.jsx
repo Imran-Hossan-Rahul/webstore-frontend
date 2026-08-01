@@ -3,13 +3,14 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Bookmark, Trash2, Eye, Clock, PenTool, Layout, Code, Share2, ExternalLink, Trophy, Zap, FolderPlus, Loader2, Quote, Star } from "lucide-react";
+import { Bookmark, Trash2, Eye, Clock, PenTool, Layout, Code, Share2, ExternalLink, Trophy, Zap, FolderPlus, Quote, Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import CraftsmanHoverCard from "./CraftsmanHoverCard";
 import { api } from "@/utils/api";
 import { useToast } from "../../ui/ToastProvider";
 import { useUser } from "@/context/UserContext";
 import { useShare } from "@/hooks/useShare";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const stripHtml = (html) => {
     if (!html) return "";
@@ -166,7 +167,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                 <div className="relative h-48 bg-amber-50 dark:bg-amber-500/10 p-6 flex flex-col justify-center">
                     <Quote className="text-amber-200 dark:text-amber-900/50 absolute top-4 left-4 w-12 h-12 -rotate-6" />
                     <p className="relative z-10 text-sm font-medium italic text-slate-700 dark:text-slate-300 line-clamp-4 leading-relaxed">
-                        "{item.highlightedText}"
+                        &quot;{item.highlightedText}&quot;
                     </p>
                 </div>
             ) : (
@@ -284,7 +285,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                                                 className="w-full text-left px-4 py-2 text-[12px] font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50"
                                             >
                                                 {movingFolderId === folder._id ? (
-                                                    <Loader2 className="w-3 h-3 animate-spin text-indigo-500" />
+                                                    <AppleSpinner className="w-3 h-3 animate-spin text-indigo-500" />
                                                 ) : (
                                                     <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: folder.color || '#64748b' }} />
                                                 )}

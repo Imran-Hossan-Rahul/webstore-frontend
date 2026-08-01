@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Home, Terminal, Layout, FileText, Store, ShoppingCart, Package, X } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { useUser } from "@/context/UserContext";
 import { motion, AnimatePresence, useSpring, useTransform } from 'framer-motion';
 
 export default function MobileBottomNav() {
@@ -13,9 +14,9 @@ export default function MobileBottomNav() {
   const router = useRouter();
   const view = searchParams.get('view');
   const { t } = useLanguage();
+  const { user } = useUser();
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [marketOpen, setMarketOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const containerRef = useRef(null);
 
@@ -23,7 +24,9 @@ export default function MobileBottomNav() {
   const [width, setWidth] = useState(400);
 
   const navItems = [
-    { icon: Store, label: "Market", href: "/market", isMarket: true },
+    { icon: Store, label: "Market", href: "/shop" },
+    { icon: ShoppingCart, label: "Cart", href: "/cart", hasBadge: true },
+    { icon: Package, label: "Orders", href: user ? `/u/${user.username}?tab=orders` : "/auth/login" },
   ];
 
   // Cart count from localStorage
@@ -46,24 +49,14 @@ export default function MobileBottomNav() {
   // Active index tracking
   useEffect(() => {
     const index = navItems.findIndex((item) => {
-      if (item.href === "/") return pathname === "/" && (!view || view === 'discover');
-      return pathname?.startsWith(item.href);
+      if (item.href === "/shop") return pathname?.startsWith("/shop") || pathname?.startsWith("/market");
+      if (item.href === "/cart") return pathname?.startsWith("/cart");
+      if (item.label === "Orders") return pathname?.includes("tab=orders");
+      return false;
     });
     if (index !== -1) setActiveIndex(index);
     else setActiveIndex(-1);
-  }, [pathname, view]);
-
-  // Close market popup on outside click
-  useEffect(() => {
-    if (!marketOpen) return;
-    const handler = (e) => {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
-        setMarketOpen(false);
-      }
-    };
-    document.addEventListener('pointerdown', handler);
-    return () => document.removeEventListener('pointerdown', handler);
-  }, [marketOpen]);
+  }, [pathname, view, user]);
 
   // Track container width
   useEffect(() => {
@@ -103,68 +96,8 @@ export default function MobileBottomNav() {
   // Floating circle position
   const circleLeft = useTransform(springX, (x) => x - 28);
 
-  // Market icon x position for popup alignment
-  const marketIndex = navItems.findIndex(item => item.isMarket);
-  const marketCenterX = width > 0 && marketIndex !== -1 ? (width / navItems.length) * marketIndex + (width / (navItems.length * 2)) : 0;
-
   return (
     <>
-      {/* Market Popup */}
-      <AnimatePresence>
-        {marketOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              className="md:hidden fixed inset-0 z-[55] bg-black/20 backdrop-blur-[2px]"
-              onPointerDown={() => setMarketOpen(false)}
-            />
-
-            {/* Popup cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 16, scale: 0.92 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.94 }}
-              transition={{ type: "spring", stiffness: 420, damping: 28, mass: 0.7 }}
-              className="md:hidden fixed z-[59] flex flex-col gap-2"
-              style={{
-                bottom: '100px',
-                right: '12px',
-              }}
-            >
-              {/* Cart */}
-              <Link
-                href="/market/cart"
-                onClick={() => setMarketOpen(false)}
-                className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl text-slate-800 dark:text-slate-100 font-semibold text-[14px] active:opacity-60 transition-opacity"
-              >
-                <div className="relative">
-                  <ShoppingCart size={18} strokeWidth={2} />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
-                      {cartCount}
-                    </span>
-                  )}
-                </div>
-                Cart
-              </Link>
-
-              {/* My Orders */}
-              <Link
-                href="/market/orders"
-                onClick={() => setMarketOpen(false)}
-                className="flex items-center gap-3 px-5 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl shadow-xl font-semibold text-[14px] active:opacity-60 transition-opacity"
-              >
-                <Package size={18} strokeWidth={2} />
-                My Orders
-              </Link>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
 
       {/* Bottom Nav Bar */}
       <div
@@ -199,96 +132,11 @@ export default function MobileBottomNav() {
           {navItems.map((item, idx) => {
             const isActive = activeIndex === idx;
             const Icon = item.icon;
-            const isMarket = item.isMarket;
-
-            if (isMarket) {
-              const isOnMarket = pathname?.startsWith('/market');
-              return (
-                <div key={idx} className="relative flex-1 flex flex-col items-center justify-center h-full">
-                  
-                  {/* Hamburger toggle button — top-right of the floating circle, merged background */}
-                  <AnimatePresence>
-                    {isOnMarket && (
-                      <motion.button
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setMarketOpen((prev) => !prev);
-                        }}
-                        className="absolute -top-[37px] right-[3px] z-50 w-7 h-7 bg-slate-900 dark:bg-slate-100 rounded-full flex flex-col items-center justify-center gap-[2.5px] outline-none shadow-md"
-                        aria-label="Toggle market menu"
-                      >
-                        <AnimatePresence mode="wait" initial={false}>
-                          {marketOpen ? (
-                            <motion.div
-                              key="x"
-                              initial={{ rotate: -45, opacity: 0 }}
-                              animate={{ rotate: 0, opacity: 1 }}
-                              exit={{ rotate: 45, opacity: 0 }}
-                              transition={{ duration: 0.18 }}
-                              className="flex flex-col items-center gap-[3px]"
-                            >
-                              {/* X shape — two diagonal lines */}
-                              <span className="w-[12px] h-[2px] rounded-full bg-white dark:bg-slate-900 rotate-45 translate-y-[5px]" />
-                              <span className="w-[12px] h-[2px] rounded-full bg-white dark:bg-slate-900 -rotate-45 -translate-y-[0px]" />
-                            </motion.div>
-                          ) : (
-                            <motion.div
-                              key="menu"
-                              initial={{ rotate: 45, opacity: 0 }}
-                              animate={{ rotate: 0, opacity: 1 }}
-                              exit={{ rotate: -45, opacity: 0 }}
-                              transition={{ duration: 0.18 }}
-                              className="flex flex-col items-center gap-[3px]"
-                            >
-                              <span className="w-[12px] h-[1.5px] rounded-full bg-white dark:bg-slate-900" />
-                              <span className="w-[8px] h-[1.5px] rounded-full bg-white dark:bg-slate-900" />
-                              <span className="w-[12px] h-[1.5px] rounded-full bg-white dark:bg-slate-900" />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </motion.button>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Market nav link — always just navigates, icon never changes */}
-                  <Link
-                    href={item.href}
-                    onClick={() => setMarketOpen(false)}
-                    className="relative flex-1 w-full flex flex-col items-center justify-center outline-none group"
-                  >
-                    <motion.div
-                      initial={false}
-                      animate={{ y: isActive ? -31 : 0 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
-                      className={`relative flex items-center justify-center transition-colors duration-300 ${
-                        isActive
-                          ? "text-white dark:text-slate-900"
-                          : "text-black dark:text-white"
-                      }`}
-                    >
-                      <Icon strokeWidth={isActive ? 2.5 : 2} className="w-6 h-6" />
-                    </motion.div>
-
-                    <span
-                      className={`absolute bottom-1.5 text-[10px] font-semibold transition-colors duration-300 text-black dark:text-white`}
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                </div>
-              );
-            }
 
             return (
               <Link
                 key={idx}
                 href={item.href}
-                onClick={() => setMarketOpen(false)}
                 className="relative flex-1 flex flex-col items-center justify-center h-full outline-none group"
               >
                 <motion.div
@@ -301,7 +149,14 @@ export default function MobileBottomNav() {
                       : "text-black dark:text-white"
                   }`}
                 >
-                  <Icon strokeWidth={isActive ? 2.5 : 2} className="w-6 h-6" />
+                  <div className="relative">
+                    <Icon strokeWidth={isActive ? 2.5 : 2} className="w-6 h-6" />
+                    {item.hasBadge && cartCount > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 w-[14px] h-[14px] bg-red-500 text-white text-[8px] font-bold rounded-full flex items-center justify-center leading-none">
+                        {cartCount}
+                      </span>
+                    )}
+                  </div>
                 </motion.div>
 
                 <span

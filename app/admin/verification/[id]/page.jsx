@@ -9,6 +9,8 @@ import { useToast } from '@/components/ui/ToastProvider';
 import { motion, AnimatePresence } from 'framer-motion';
 import UserIntelligenceHub from '@/components/AdminComponents/UserIntelligenceHub';
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function VerificationReviewPage() {
   const params = useParams();
   const router = useRouter();
@@ -75,7 +77,7 @@ export default function VerificationReviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white dark:bg-[#050505] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-slate-200 dark:border-white/5 border-t-slate-900 dark:border-t-white rounded-full animate-spin" />
+        <AppleSpinner />
       </div>
     );
   }

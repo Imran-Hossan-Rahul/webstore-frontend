@@ -4,8 +4,9 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
-import { AlertTriangle, CheckCircle, XCircle, Loader2, ExternalLink, User, DollarSign, MessageSquare } from "lucide-react";
+import { AlertTriangle, CheckCircle, XCircle, ExternalLink, User, DollarSign, MessageSquare } from "lucide-react";
 import Link from 'next/link';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function DevlogDisputes() {
   const [contracts, setContracts] = useState([]);
@@ -54,7 +55,7 @@ export default function DevlogDisputes() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <Loader2 className="animate-spin text-slate-400 mb-4" size={32} />
+        <AppleSpinner className="animate-spin text-slate-400 mb-4" />
         <p className="text-slate-400 text-xs font-bold uppercase tracking-widest">Scanning for Disputes</p>
       </div>
     );
@@ -174,14 +175,14 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                   disabled={isResolving === `${contract._id}-${milestone._id}`}
                   className="flex-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-emerald-600/20 disabled:opacity-50"
                 >
-                  {isResolving === `${contract._id}-${milestone._id}` ? <Loader2 size={14} className="animate-spin mx-auto" /> : 'Release to Craftsman'}
+                  {isResolving === `${contract._id}-${milestone._id}` ? <AppleSpinner size={14} className="animate-spin mx-auto" /> : 'Release to Craftsman'}
                 </button>
                 <button
                   onClick={() => onResolve(contract._id, milestone._id, 'refund', resolveMessage)}
                   disabled={isResolving === `${contract._id}-${milestone._id}`}
                   className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-red-600/20 disabled:opacity-50"
                 >
-                   {isResolving === `${contract._id}-${milestone._id}` ? <Loader2 size={14} className="animate-spin mx-auto" /> : 'Refund to patron'}
+                   {isResolving === `${contract._id}-${milestone._id}` ? <AppleSpinner size={14} className="animate-spin mx-auto" /> : 'Refund to patron'}
                 </button>
               </div>
             </div>

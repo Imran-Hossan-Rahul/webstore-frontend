@@ -4,6 +4,8 @@ import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
 import { Send, Users, MessageCircle, Search, Hash, User as UserIcon, MoreVertical, Smile } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const MessageBubble = ({ message, isOwn }) => {
   return (
     <div className={`flex ${isOwn ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -170,7 +172,7 @@ export default function CommunityChat() {
           <div className="flex-1 overflow-y-auto p-4">
             {loading ? (
               <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
+                <AppleSpinner />
               </div>
             ) : messages.length > 0 ? (
               <div className="space-y-2">

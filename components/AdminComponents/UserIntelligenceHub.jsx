@@ -142,7 +142,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                           </span>
                        </div>
                        <p className="text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl italic">
-                          "{profile.bio || 'No bio provided.'}"
+                          &quot;{profile.bio || 'No bio provided.'}&quot;
                        </p>
                     </div>
 

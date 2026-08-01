@@ -2,11 +2,13 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
-import { X, Camera, MapPin, Calendar, Mail, Edit2, CheckCircle, Eye, EyeOff, FileText, Layout, LayoutDashboard } from "lucide-react";
+import { X, Camera, MapPin, Calendar, Mail, Edit2, CheckCircle, Eye, EyeOff, FileText, Layout, LayoutDashboard, Star } from "lucide-react";
 import Link from "next/link";
 import { api } from "@/utils/api";
 import ImageUploadModal from "./ImageUploadModal";
 import { useToast } from "@/components/ui/ToastProvider";
+
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function CraftsmanProfileModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -95,7 +97,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
 
           {isLoading ? (
             <div className="h-[500px] flex items-center justify-center flex-col gap-3">
-              <div className="w-8 h-8 border-2 border-slate-300 border-t-black rounded-full animate-spin"></div>
+              <AppleSpinner />
               <p className="text-slate-400">Loading craftsman profile...</p>
             </div>
           ) : (

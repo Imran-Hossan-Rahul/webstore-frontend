@@ -1,6 +1,5 @@
-// components/StepCards.jsx
 "use client";
-
+// components/StepCards.jsx
 export default function RoadMap() {
   const steps = [
     "Start learning fundamentals in any field you choose.",

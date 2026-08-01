@@ -59,7 +59,7 @@ export default function Testimonials() {
                 {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-current" />)}
               </div>
               <p className="text-slate-600 dark:text-gray-300 mb-6 text-sm leading-relaxed">
-                "{t.content}"
+                &quot;{t.content}&quot;
               </p>
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 text-white flex items-center justify-center font-bold">

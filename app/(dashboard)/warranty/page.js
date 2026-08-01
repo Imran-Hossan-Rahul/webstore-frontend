@@ -1,268 +1,187 @@
 "use client";
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, RotateCcw, AlertTriangle, CheckCircle2, XCircle, ChevronDown, Phone, Mail, ArrowLeft, Package, Clock, Star, Wrench, HelpCircle } from "lucide-react";
-
-const Section = ({ id, icon: Icon, color, title, children, defaultOpen = false }) => {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div id={id} className="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-white/10 shadow-sm overflow-hidden">
-      <button
-        onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between p-6 text-left group"
-      >
-        <div className="flex items-center gap-4">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${color}`}>
-            <Icon size={22} className="text-white" />
-          </div>
-          <h2 className="text-[17px] font-bold text-gray-900 dark:text-white group-hover:text-[#111827] transition">{title}</h2>
-        </div>
-        <ChevronDown size={20} className={`text-gray-400 transition-opacity duration-300 ${open ? 'rotate-180' : ''}`} />
-      </button>
-      {open && <div className="px-6 pb-6 border-t border-gray-100 dark:border-white/10 pt-5">{children}</div>}
-    </div>
-  );
-};
-
-const CheckItem = ({ children }) => (
-  <li className="flex items-start gap-3 text-[14px] text-gray-700 dark:text-gray-300">
-    <CheckCircle2 size={16} className="text-emerald-500 mt-0.5 shrink-0" />
-    <span>{children}</span>
-  </li>
-);
-
-const CrossItem = ({ children }) => (
-  <li className="flex items-start gap-3 text-[14px] text-gray-700 dark:text-gray-300">
-    <XCircle size={16} className="text-red-400 mt-0.5 shrink-0" />
-    <span>{children}</span>
-  </li>
-);
-
-const StepBadge = ({ num, label }) => (
-  <div className="flex items-start gap-4">
-    <div className="w-9 h-9 rounded-full bg-[#111827]/20 text-[#4b5563] font-bold text-[15px] flex items-center justify-center shrink-0 mt-0.5">{num}</div>
-    <p className="text-[14px] text-gray-700 dark:text-gray-300 pt-1.5">{label}</p>
-  </div>
-);
 
 export default function WarrantyPage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-slate-950 pb-20">
+    <div className="w-full min-h-screen bg-transparent" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
+      
 
-      {/* ── Hero ── */}
-      <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{backgroundImage:'radial-gradient(circle at 30% 50%, #111827 0%, transparent 60%), radial-gradient(circle at 80% 20%, #60a5fa 0%, transparent 50%)'}}/>
-        <div className="max-w-4xl mx-auto px-4 sm:px-8 py-16 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-[#111827]/10 border border-[#111827]/30 text-[#111827] text-xs font-semibold px-4 py-1.5 rounded-full mb-5 tracking-wider uppercase">
-            <ShieldCheck size={14} /> Codalina Marketplace
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-tight mb-4">
-            Warranty & <span className="text-[#111827]">Return Policy</span>
+
+      <div className="max-w-[980px] mx-auto px-6 pt-[100px] pb-[120px]">
+        
+        <header className="text-center mb-[64px]">
+          <p className="uppercase tracking-[.12em] text-[12px] font-[600] text-[#0071e3] mb-[18px]">
+            Codalina Marketplace
+          </p>
+          <h1 className="text-[40px] md:text-[56px] font-[700] text-[#1d1d1f] tracking-[-0.02em] leading-[1.1] mb-[20px]">
+            Warranty & Return Policy
           </h1>
-          <p className="text-slate-400 text-[15px] max-w-xl mx-auto leading-relaxed">
+          <p className="text-[17px] md:text-[21px] font-[400] text-[#86868b] max-w-[640px] mx-auto mb-[16px]">
             We stand behind every product we sell. If something goes wrong, we&apos;ll make it right — simple, honest, no hassle.
           </p>
-          <p className="text-slate-500 text-xs mt-4">Last updated: July 2026</p>
-        </div>
-      </div>
-
-      {/* ── Quick Stats ── */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-8 -mt-8 mb-10 relative z-10">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { icon: RotateCcw,    label: 'Unbox Replacement',   sub: 'If defect found on unboxing', color: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-950/30' },
-            { icon: Clock,        label: '3–7 Working Days',    sub: 'Repair turnaround',        color: 'text-blue-500',    bg: 'bg-blue-50 dark:bg-blue-950/30' },
-            { icon: Package,      label: 'Original Box Required', sub: 'Bring it with you',      color: 'text-purple-500',  bg: 'bg-purple-50 dark:bg-purple-950/30' },
-            { icon: Star,         label: 'Real Support',        sub: 'Talk to a real person',    color: 'text-amber-500',   bg: 'bg-amber-50 dark:bg-amber-950/30' },
-          ].map(({ icon: Icon, label, sub, color, bg }) => (
-            <div key={label} className={`${bg} rounded-2xl p-4 border border-white/60 dark:border-white/5 text-center shadow-sm`}>
-              <Icon size={22} className={`${color} mx-auto mb-2`} />
-              <p className="font-bold text-gray-900 dark:text-white text-[13px] leading-tight">{label}</p>
-              <p className="text-gray-500 dark:text-gray-400 text-[11px] mt-0.5">{sub}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-8 space-y-4">
-
-        {/* ── Our Promise ── */}
-        <div className="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/30 dark:to-teal-950/30 rounded-2xl border border-emerald-200 dark:border-emerald-900/50 p-6">
-          <h2 className="text-[15px] font-bold text-emerald-800 dark:text-emerald-300 mb-3 flex items-center gap-2">
-            <Star size={16} /> Our Promise to You
-          </h2>
-          <p className="text-[14px] text-emerald-900 dark:text-emerald-200 leading-relaxed">
-            Codalina is a growing marketplace that genuinely cares about its customers. We are not a faceless corporation —
-            we are a small, dedicated team that personally checks every product before it ships. If you receive something
-            defective or not as described, <strong>we will fix it, replace it, or refund it</strong>. That is our commitment to you.
+          <p className="text-[13px] text-[#86868b]">
+            Last Updated: July 2026
           </p>
-        </div>
+        </header>
 
-        {/* ── 1. General Warranty ── */}
-        <Section id="general" icon={ShieldCheck} color="bg-emerald-500" title="1. General Warranty — All Products" defaultOpen={true}>
-          <p className="text-[14px] text-gray-600 dark:text-gray-400 mb-5 leading-relaxed">
-            Every product sold on Codalina comes with a standard warranty. The specific duration depends on the product category and is clearly displayed on each product page.
-          </p>
-          <div className="grid sm:grid-cols-2 gap-5">
-            <div>
-              <p className="text-[12px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-3">✅ What&apos;s Covered</p>
-              <ul className="space-y-2">
-                <CheckItem>Manufacturing defects and hardware failures</CheckItem>
-                <CheckItem>Instant replacement if any hardware defect is found during unboxing (requires unboxing video)</CheckItem>
-                <CheckItem>Internal component failures (display, battery, motherboard) under warranty period</CheckItem>
-                <CheckItem>Product not matching the description at time of purchase</CheckItem>
-                <CheckItem>Dead-on-arrival (DOA) products — immediate replacement</CheckItem>
-              </ul>
-            </div>
-            <div>
-              <p className="text-[12px] font-bold text-red-500 uppercase tracking-wider mb-3">❌ What&apos;s NOT Covered</p>
-              <ul className="space-y-2">
-                <CrossItem>Physical damage (drops, cracks, bends, dents)</CrossItem>
-                <CrossItem>Water or liquid damage</CrossItem>
-                <CrossItem>Fire or electrical surge damage</CrossItem>
-                <CrossItem>Cosmetic wear and tear (scratches, discoloration)</CrossItem>
-                <CrossItem>Software bugs, app crashes, or OS update issues</CrossItem>
-                <CrossItem>Accessories in the box (charger, cable, earphones)</CrossItem>
-                <CrossItem>Products repaired by unauthorized third parties</CrossItem>
-              </ul>
-            </div>
-          </div>
-        </Section>
-
-        {/* ── 2. Replacement Policy ── */}
-        <Section id="replacement" icon={RotateCcw} color="bg-blue-500" title="2. Replacement & Exchange Policy">
-          <p className="text-[14px] text-gray-600 dark:text-gray-400 mb-5 leading-relaxed">
-            We want you to be completely satisfied. If a product has a verified defect, here is how we handle it:
-          </p>
-          <div className="space-y-4 mb-5">
-            {[
-              { title: 'Defect Found During Unboxing', desc: 'Instant replacement for any hardware defect found right after unboxing. We strongly recommend recording a continuous unboxing video. We will swap it instantly if in stock, or within 3–7 working days if not.', badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300', badgeText: 'Instant Swap' },
-              { title: 'Standard Warranty Period', desc: 'Free repair service for covered hardware issues. Parts cost is covered under warranty. Turnaround time is 3–21 working days depending on parts availability.', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300', badgeText: 'Repair Covered' },
-              { title: 'Color / Model / Storage Change', desc: 'You may exchange for a different variant only if the product box is completely sealed and unopened. A price difference adjustment applies.', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300', badgeText: 'Sealed Only' },
-            ].map(({ title, desc, badge, badgeText }) => (
-              <div key={title} className="flex gap-4 p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-white/5">
-                <div className="shrink-0">
-                  <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${badge}`}>{badgeText}</span>
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-white text-[14px] mb-1">{title}</p>
-                  <p className="text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        {/* ── 3. Product-Specific Warranty ── */}
-        <Section id="categories" icon={Package} color="bg-purple-500" title="3. Warranty by Product Category">
-          <div className="space-y-3">
-            {[
-              { cat: 'Smartphones & Tablets',  warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: 'Instant replacement on unboxing defect' },
-              { cat: 'Laptops & Computers',    warranty: 'As stated on product page (typically 1 Year Brand Warranty)',        note: 'Instant replacement on unboxing defect' },
-              { cat: 'Smartwatches & Wearables', warranty: '3–12 months (stated per product)',                                note: 'Battery and sensor coverage included' },
-              { cat: 'Audio & Headphones',     warranty: '3–12 months (stated per product)',                                  note: 'Driver and hardware failures covered' },
-              { cat: 'Accessories & Cables',   warranty: 'No warranty (unless explicitly stated)',                            note: 'Please check before purchase' },
-              { cat: 'Smart Home & Gadgets',   warranty: '3–12 months (stated per product)',                                  note: 'Internal component failures covered' },
-            ].map(({ cat, warranty, note }) => (
-              <div key={cat} className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-4 bg-gray-50 dark:bg-slate-800/50 rounded-xl border border-gray-100 dark:border-white/5">
-                <div>
-                  <p className="font-semibold text-gray-900 dark:text-white text-[14px]">{cat}</p>
-                  <p className="text-[12px] text-gray-500 dark:text-gray-400 mt-0.5">{note}</p>
-                </div>
-                <span className="shrink-0 text-[12px] font-semibold bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 px-3 py-1 rounded-full">{warranty}</span>
-              </div>
-            ))}
-          </div>
-          <p className="text-[12px] text-gray-400 dark:text-gray-500 mt-4 italic">
-            * Always check the individual product page for the exact warranty duration and terms for that specific item.
-          </p>
-        </Section>
-
-        {/* ── 4. How to Claim ── */}
-        <Section id="claim" icon={Wrench} color="bg-amber-500" title="4. How to Claim Your Warranty">
-          <p className="text-[14px] text-gray-600 dark:text-gray-400 mb-5">Claiming warranty with Codalina is straightforward. Just follow these steps:</p>
-          <div className="space-y-4 mb-5">
-            <StepBadge num="1" label="Contact us via WhatsApp, phone, or email (details below). Describe the issue and share photos/videos of the defect." />
-            <StepBadge num="2" label="Our support team will verify your claim and guide you on whether to visit us in person or arrange a pickup/courier." />
-            <StepBadge num="3" label="Bring (or send) the product with its original box and a valid purchase receipt. Accessories are not required unless relevant." />
-            <StepBadge num="4" label="Our technician will diagnose the product. You will receive a status update within 24 hours of inspection." />
-            <StepBadge num="5" label="We repair, replace, or exchange the product within the stated timeframe and notify you when it is ready." />
-          </div>
-          <div className="bg-amber-50 dark:bg-amber-950/30 rounded-xl border border-amber-200 dark:border-amber-900/50 p-4">
-            <p className="text-[13px] text-amber-800 dark:text-amber-300 font-semibold mb-1 flex items-center gap-2"><AlertTriangle size={14}/> Important Reminder</p>
-            <p className="text-[13px] text-amber-700 dark:text-amber-400 leading-relaxed">
-              Please inspect your product thoroughly before leaving. Codalina will not be responsible for cosmetic damage (scratches, dents) reported after the product has left our hands or been delivered.
+        <div className="bg-transparent rounded-[18px] px-6 py-4 md:px-[60px] md:py-[40px]">
+          
+          <div className="bg-[#f5f5f7] border border-[#e8e8ed] rounded-[14px] p-6 mb-10">
+            <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-2">Our Promise to You</h3>
+            <p className="text-[15px] text-[#1d1d1f] leading-[1.5]">
+              Codalina is a growing marketplace that genuinely cares about its customers. We are not a faceless corporation — we are a small, dedicated team that personally checks every product before it ships. If you receive something defective or not as described, <strong>we will fix it, replace it, or refund it</strong>. That is our commitment to you.
             </p>
           </div>
-        </Section>
 
-        {/* ── 5. General Terms ── */}
-        <Section id="terms" icon={AlertTriangle} color="bg-rose-500" title="5. General Terms & Conditions">
-          <ul className="space-y-3">
-            {[
-              'Warranty is valid only for the original purchaser. It is non-transferable.',
-              'Original packaging (box) must be retained and presented for all warranty claims.',
-              'Any repair or modification by an unauthorized service center will void the warranty immediately.',
-              'Codalina is not responsible for data loss. Please back up your data before handing in any device.',
-              'Software issues, OS update failures, third-party app bugs, and gaming-related problems are not covered.',
-              'Warranty activation is automatic from the date of purchase. No registration required.',
-              'Codalina reserves the right to make the final decision on all warranty claims based on technical inspection.',
-              'If a UV glass/screen protector has been applied and causes or conceals damage, warranty may be affected.',
-              'Accidental damage (drops, pressure, liquid) is excluded from all standard warranty coverage.',
-              'In the event a replacement unit is not available, Codalina may offer store credit of equal value.',
-            ].map(t => (
-              <li key={t} className="flex items-start gap-3 text-[14px] text-gray-700 dark:text-gray-300">
-                <div className="w-1.5 h-1.5 rounded-full bg-rose-400 mt-2 shrink-0"/>
-                {t}
-              </li>
-            ))}
-          </ul>
-        </Section>
-
-        {/* ── FAQ ── */}
-        <Section id="faq" icon={HelpCircle} color="bg-indigo-500" title="6. Frequently Asked Questions">
-          <div className="space-y-5">
-            {[
-              { q: 'Do I need a receipt to claim warranty?', a: 'Your order from Codalina serves as your proof of purchase. If you can share the Order ID, that is enough.' },
-              { q: 'What if my product arrives damaged or defective?', a: 'We highly recommend recording a continuous unboxing video. If you find any defect or damage during unboxing, contact us immediately for an instant replacement.' },
-              { q: 'Can I get a refund instead of a replacement?', a: 'Refunds are handled on a case-by-case basis. For DOA (Dead on Arrival) products or significantly misrepresented items, a full refund is possible.' },
-              { q: 'Does the warranty transfer if I sell the product?', a: 'No. Warranty is valid only for the original buyer from Codalina. It cannot be transferred.' },
-              { q: 'What if the same issue occurs after repair?', a: 'If the same hardware defect recurs within 90 days of repair, it will be fixed again at no charge.' },
-              { q: 'How do I track my repair status?', a: 'We will keep you informed via WhatsApp/phone throughout the repair process. You can also contact our support team anytime.' },
-            ].map(({ q, a }) => (
-              <div key={q}>
-                <p className="font-semibold text-gray-900 dark:text-white text-[14px] mb-1.5">{q}</p>
-                <p className="text-[13px] text-gray-600 dark:text-gray-400 leading-relaxed pl-3 border-l-2 border-indigo-300 dark:border-indigo-700">{a}</p>
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">1. General Warranty — All Products</h2>
+            <p className="text-[16px] text-[#1d1d1f] leading-[1.5] mb-6">
+              Every product sold on Codalina comes with a standard warranty. The specific duration depends on the product category and is clearly displayed on each product page.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-[12px] font-[700] uppercase tracking-[.05em] text-[#1d1d1f] mb-4">What is Covered</h3>
+                <ul className="list-disc pl-5 space-y-3 text-[15px] text-[#1d1d1f] leading-[1.5]">
+                  <li>Manufacturing defects and hardware failures</li>
+                  <li>Instant replacement if any hardware defect is found during unboxing (requires unboxing video)</li>
+                  <li>Internal component failures (display, battery, motherboard) under warranty period</li>
+                  <li>Product not matching the description at time of purchase</li>
+                  <li>Dead-on-arrival (DOA) products — immediate replacement</li>
+                </ul>
               </div>
-            ))}
-          </div>
-        </Section>
+              <div>
+                <h3 className="text-[12px] font-[700] uppercase tracking-[.05em] text-[#1d1d1f] mb-4">What is Not Covered</h3>
+                <ul className="list-disc pl-5 space-y-3 text-[15px] text-[#86868b] leading-[1.5]">
+                  <li>Physical damage (drops, cracks, bends, dents)</li>
+                  <li>Water or liquid damage</li>
+                  <li>Fire or electrical surge damage</li>
+                  <li>Cosmetic wear and tear (scratches, discoloration)</li>
+                  <li>Software bugs, app crashes, or OS update issues</li>
+                  <li>Accessories in the box (charger, cable, earphones)</li>
+                  <li>Products repaired by unauthorized third parties</li>
+                </ul>
+              </div>
+            </div>
+          </section>
 
-        {/* ── Contact Card ── */}
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 text-center">
-          <ShieldCheck size={36} className="text-[#111827] mx-auto mb-3" />
-          <h3 className="text-2xl font-bold text-white mb-2">Need Help with a Warranty Claim?</h3>
-          <p className="text-slate-400 text-[14px] mb-6 max-w-sm mx-auto">
-            Our support team is real people who genuinely want to help. Reach out anytime — we typically respond within a few hours.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="tel:+8801969991122" className="inline-flex items-center justify-center gap-2 bg-[#111827] hover:bg-[#374151] text-slate-900 font-bold px-6 py-3 rounded-xl transition text-[14px]">
-              <Phone size={16} /> Call Support
-            </a>
-            <a href="mailto:support@codalina.com" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-6 py-3 rounded-xl transition text-[14px] border border-white/10">
-              <Mail size={16} /> Email Us
-            </a>
-          </div>
-          <p className="text-slate-500 text-[12px] mt-4">support@codalina.com &nbsp;·&nbsp; 01969 991 122</p>
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">2. Replacement & Exchange Policy</h2>
+            <p className="text-[16px] text-[#1d1d1f] leading-[1.5] mb-6">
+              We want you to be completely satisfied. If a product has a verified defect, here is how we handle it:
+            </p>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">Defect Found During Unboxing</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">Instant replacement for any hardware defect found right after unboxing. We strongly recommend recording a continuous unboxing video. We will swap it instantly if in stock, or within 3–7 working days if not.</p>
+              </div>
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">Standard Warranty Period</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">Free repair service for covered hardware issues. Parts cost is covered under warranty. Turnaround time is 3–21 working days depending on parts availability.</p>
+              </div>
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">Color / Model / Storage Change</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">You may exchange for a different variant only if the product box is completely sealed and unopened. A price difference adjustment applies.</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">3. Understanding Product Warranties</h2>
+            <p className="text-[16px] text-[#1d1d1f] leading-[1.5] mb-6">
+              As Codalina is a marketplace featuring a wide variety of electronics, warranty terms vary depending on the specific product, brand, and seller. We ensure transparency by displaying the exact warranty coverage directly on each product page.
+            </p>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">Brand Warranty</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">Official warranty provided by the manufacturer. If your product faces an issue, you can visit any authorized brand service center nationwide, or return it to Codalina and we will handle the brand claim for you.</p>
+              </div>
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">Seller Warranty</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">Warranty provided directly by the verified Codalina seller. For any claims, you will return the product to us and our support team will coordinate the repair or replacement with the seller.</p>
+              </div>
+              <div>
+                <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">No Warranty</h3>
+                <p className="text-[15px] text-[#86868b] leading-[1.5]">Certain items, such as consumable accessories, cables, and screen protectors, may not come with a warranty. This will always be explicitly stated on the product page before you make a purchase.</p>
+              </div>
+            </div>
+            <p className="text-[13px] text-[#86868b] mt-6 italic">
+              * The warranty period starts from the date of delivery. Your final invoice serves as your proof of warranty.
+            </p>
+          </section>
+
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">4. How to Claim Your Warranty</h2>
+            <p className="text-[16px] text-[#1d1d1f] leading-[1.5] mb-5">Claiming warranty with Codalina is straightforward. Just follow these steps:</p>
+            <ol className="list-decimal pl-5 space-y-4 text-[16px] text-[#1d1d1f] leading-[1.5]">
+              <li>Contact us via phone or email (details below). Describe the issue and share photos/videos of the defect.</li>
+              <li>Our support team will verify your claim and guide you on whether to visit us in person or arrange a pickup/courier.</li>
+              <li>Bring (or send) the product with its original box and a valid purchase receipt. Accessories are not required unless relevant.</li>
+              <li>Our technician will diagnose the product. You will receive a status update within 24 hours of inspection.</li>
+              <li>We repair, replace, or exchange the product within the stated timeframe and notify you when it is ready.</li>
+            </ol>
+            <p className="mt-6 text-[15px] text-[#86868b] leading-[1.5]">
+              <strong>Important Reminder:</strong> Please inspect your product thoroughly before leaving. Codalina will not be responsible for cosmetic damage (scratches, dents) reported after the product has left our hands or been delivered.
+            </p>
+          </section>
+
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">5. General Terms & Conditions</h2>
+            <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
+              <li>Warranty is valid only for the original purchaser. It is non-transferable.</li>
+              <li>Original packaging (box) must be retained and presented for all warranty claims.</li>
+              <li>Any repair or modification by an unauthorized service center will void the warranty immediately.</li>
+              <li>Codalina is not responsible for data loss. Please back up your data before handing in any device.</li>
+              <li>Software issues, OS update failures, third-party app bugs, and gaming-related problems are not covered.</li>
+              <li>Warranty activation is automatic from the date of purchase. No registration required.</li>
+              <li>Codalina reserves the right to make the final decision on all warranty claims based on technical inspection.</li>
+              <li>If a UV glass/screen protector has been applied and causes or conceals damage, warranty may be affected.</li>
+              <li>Accidental damage (drops, pressure, liquid) is excluded from all standard warranty coverage.</li>
+              <li>In the event a replacement unit is not available, Codalina may offer store credit of equal value.</li>
+            </ul>
+          </section>
+
+          <section className="py-[32px] border-b border-[#e8e8ed]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">6. Frequently Asked Questions</h2>
+            <div className="space-y-6">
+              {[
+                { q: 'Do I need a receipt to claim warranty?', a: 'Your order from Codalina serves as your proof of purchase. If you can share the Order ID, that is enough.' },
+                { q: 'What if my product arrives damaged or defective?', a: 'We highly recommend recording a continuous unboxing video. If you find any defect or damage during unboxing, contact us immediately for an instant replacement.' },
+                { q: 'Can I get a refund instead of a replacement?', a: 'Refunds are handled on a case-by-case basis. For DOA (Dead on Arrival) products or significantly misrepresented items, a full refund is possible.' },
+                { q: 'Does the warranty transfer if I sell the product?', a: 'No. Warranty is valid only for the original buyer from Codalina. It cannot be transferred.' },
+                { q: 'What if the same issue occurs after repair?', a: 'If the same hardware defect recurs within 90 days of repair, it will be fixed again at no charge.' },
+                { q: 'How do I track my repair status?', a: 'We will keep you informed via phone throughout the repair process. You can also contact our support team anytime.' },
+              ].map(({ q, a }) => (
+                <div key={q}>
+                  <h3 className="text-[16px] font-[700] text-[#1d1d1f] mb-1">{q}</h3>
+                  <p className="text-[15px] text-[#86868b] leading-[1.5]">{a}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="pt-[32px]">
+            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">7. Need Help?</h2>
+            <p className="text-[16px] text-[#1d1d1f] leading-[1.5] mb-6">
+              Our support team is real people who genuinely want to help. Reach out anytime — we typically respond within a few hours.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-6">
+              <div>
+                <p className="text-[12px] font-[600] text-[#86868b] uppercase tracking-[.05em] mb-1">Email</p>
+                <a href="mailto:support@codalina.com" className="text-[16px] text-[#0071e3] hover:underline">support@codalina.com</a>
+              </div>
+              <div>
+                <p className="text-[12px] font-[600] text-[#86868b] uppercase tracking-[.05em] mb-1">Phone</p>
+                <a href="tel:+8801951768360" className="text-[16px] text-[#0071e3] hover:underline">01951768360</a>
+              </div>
+            </div>
+          </section>
+
         </div>
-
-        {/* ── Back ── */}
-        <div className="flex justify-center pt-2">
-          <Link href="/" className="inline-flex items-center gap-2 text-[14px] text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 transition">
-            <ArrowLeft size={16} /> Back to Marketplace
-          </Link>
-        </div>
-
       </div>
     </div>
   );

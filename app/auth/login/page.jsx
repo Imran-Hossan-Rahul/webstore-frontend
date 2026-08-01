@@ -11,6 +11,8 @@ import SocialAuth from "@/components/Auth/SocialAuth";
 import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -272,7 +274,7 @@ export default function LoginPage() {
                 className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <AppleSpinner />
                 ) : (
                   <span>Verify Account</span>
                 )}
@@ -379,7 +381,7 @@ export default function LoginPage() {
                 className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-8"
               >
                 {loading ? (
-                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <AppleSpinner />
                 ) : (
                   <>
                     <span className="text-[17px] tracking-tight">Login</span>

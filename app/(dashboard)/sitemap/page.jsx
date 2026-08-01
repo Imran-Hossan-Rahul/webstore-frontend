@@ -13,7 +13,6 @@ export default function SitemapPage() {
       links: [
         { label: "Marketplace Home", href: "/" },
         { label: "Search Products", href: "/search" },
-        { label: "Explore Discoveries", href: "/explore" },
         { label: "Smartwatches", href: "/category/smartwatch" },
         { label: "Audio & Headphones", href: "/category/audio" },
         { label: "Power Banks & Cables", href: "/category/powerbank" },

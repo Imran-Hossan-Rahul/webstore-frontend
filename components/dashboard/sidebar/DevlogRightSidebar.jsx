@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import React, { useEffect, useState } from 'react';
 import { User, ArrowRight, Star, Eye, ShieldCheck, Layers, Github, ExternalLink, Download, Share2, CheckCircle2, Clock, Circle, Flag } from "lucide-react";
 import Image from 'next/image';
@@ -99,10 +101,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
 
   if (loading || !post) {
       return (
-          <div className="space-y-6 animate-pulse">
-              <div className="h-40 bg-white dark:bg-white/5 rounded-lg"></div>
-              <div className="h-60 bg-white dark:bg-white/5 rounded-lg"></div>
-          </div>
+          <div className="flex justify-center p-12"><AppleSpinner /></div>
       );
   }
 

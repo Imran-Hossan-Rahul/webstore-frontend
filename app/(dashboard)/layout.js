@@ -13,6 +13,7 @@ import GlobalSocketListener from "@/components/dashboard/GlobalSocketListener";
 import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import MarketFooter from "@/components/dashboard/market/MarketFooter";
 
 export const DashboardContext = createContext();
 
@@ -50,6 +51,7 @@ export default function DashboardLayout({ children }) {
     pathname.startsWith("/u/") || 
     pathname.startsWith("/privacy") ||
     pathname.startsWith("/terms") ||
+    pathname.startsWith("/warranty") ||
     pathname.startsWith("/sitemap") ||
     pathname.startsWith("/legal") ||
     pathname.startsWith("/shop") ||
@@ -152,8 +154,11 @@ export default function DashboardLayout({ children }) {
           )}
 
           {/* Main Content Area */}
-          <main className={`flex-1 min-w-0 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-72px-30px)] xl:w-[calc(100%-240px-72px-60px)]' : 'w-full'}`}>
-            {children}
+          <main className={`flex-1 min-w-0 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-72px-30px)] xl:w-[calc(100%-240px-72px-60px)]' : 'w-full'} flex flex-col`}>
+            <div className="flex-1">
+              {children}
+            </div>
+            <MarketFooter />
           </main>
 
           {/* Right Sidebar */}
@@ -167,13 +172,13 @@ export default function DashboardLayout({ children }) {
         </div>
 
         {/* Global Modals */}
+        <ChatModal />
         {!isGuest && (
           <>
             <UserOnboardingModal
               isOpen={showOnboarding}
               onClose={() => setShowOnboarding(false)}
             />
-            <ChatModal />
             <NotificationModal />
             <GlobalSocketListener />
           </>

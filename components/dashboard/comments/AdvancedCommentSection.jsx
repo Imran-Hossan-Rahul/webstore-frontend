@@ -8,6 +8,8 @@ import CustomSelect from '../../ui/CustomSelect';
 
 import { useSearchParams } from 'next/navigation';
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const FEEDBACK_TYPES = [
     { id: 'comment', label: 'Discussion', icon: MessageCircle, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-white/10' },
     { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/30 border border-blue-100/50 dark:border-blue-900/30' },
@@ -637,7 +639,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
              <div className="space-y-6 min-h-[300px]">
                  {loading ? (
                      <div className="text-center py-12 text-slate-400 animate-pulse flex flex-col items-center gap-3">
-                        <div className="w-8 h-8 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+                        <AppleSpinner />
                         <span>Loading discussion...</span>
                      </div>
                  ) : filteredTree.length > 0 ? (
@@ -649,7 +651,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                         </div>
                         <div>
                             <p className="font-semibold text-slate-600 dark:text-slate-300">No matches found</p>
-                            <p className="text-xs">Try adjusting your search or filters to find what you're looking for.</p>
+                            <p className="text-xs">Try adjusting your search or filters to find what you&apos;re looking for.</p>
                         </div>
                         { (searchQuery || activeFilter) && (
                             <button 

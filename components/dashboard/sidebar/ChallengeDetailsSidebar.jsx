@@ -1,13 +1,14 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useState, useEffect } from "react";
-import { Zap, Clock, Trophy, ShieldCheck, ArrowRight, Loader2, Rocket, CheckCircle2 } from "lucide-react";
+import { Zap, Clock, Trophy, ShieldCheck, ArrowRight, Rocket, CheckCircle2 } from "lucide-react";
 import { api } from "@/utils/api";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useToast } from "@/components/ui/ToastProvider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CraftsmanHoverCard from "../cards/CraftsmanHoverCard";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function ChallengeDetailsSidebar({ challengeId }) {
   const router = useRouter();
@@ -95,11 +96,8 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-64 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-        <div className="h-40 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-      </div>
-    );
+      <div className="flex justify-center p-12"><AppleSpinner /></div>
+      );
   }
 
   if (!challenge) return null;
@@ -136,7 +134,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
                   disabled={isJoining}
                   className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 active:opacity-60"
                 >
-                  {isJoining ? <Loader2 size={18} className="animate-spin" /> : <>Accept Mission <ArrowRight size={18} /></>}
+                  {isJoining ? <AppleSpinner size={18} className="animate-spin" /> : <>Accept Mission <ArrowRight size={18} /></>}
                 </button>
               ) : (
                 <div className="w-full py-3 px-4 bg-white/5 dark:bg-black/5 rounded-xl border border-white/10 dark:border-black/10 flex items-center justify-center gap-2">

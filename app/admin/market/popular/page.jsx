@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Loader2, Search, Image as ImageIcon } from 'lucide-react';
+import { Search, Image as ImageIcon } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const getOptimizedUrl = (url) => {
   if (!url) return '';
@@ -99,7 +100,7 @@ export default function PopularProductsPage() {
               {loading && page === 1 ? (
                 <tr>
                   <td colSpan="4" className="p-8 text-center text-gray-500">
-                    <Loader2 className="animate-spin mx-auto mb-2" size={24} />
+                    <AppleSpinner className="animate-spin mx-auto mb-2" />
                     Loading...
                   </td>
                 </tr>

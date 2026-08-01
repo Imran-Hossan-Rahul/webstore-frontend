@@ -5,6 +5,8 @@ import React from "react";
 import Link from "next/link";
 import { Search, User, Layout, FileText, BookOpen, Trophy } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 /**
  * 🔍 SEARCH SUGGESTIONS COMPONENT
  * 
@@ -20,7 +22,7 @@ export default function SearchSuggestions({
     if (isSearching) {
         return (
             <div className="p-4 text-center text-xs font-bold text-slate-500 flex items-center justify-center gap-2">
-                <div className="w-4 h-4 border-2 border-slate-200 border-t-indigo-600 rounded-full animate-spin" />
+                <AppleSpinner size={16} />
                 Searching...
             </div>
         );

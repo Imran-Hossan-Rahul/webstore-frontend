@@ -12,6 +12,8 @@ import ProfileModal from "./ProfileModal";
 import CraftsmanProfileModal from "./CraftsmanProfileModal";
 import { useToast } from "@/components/ui/ToastProvider";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function PlatformDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("all"); 
@@ -192,7 +194,7 @@ function ContentGrid({ items, loading, router, limit }) {
             {/* Sentinel for Infinite Scroll */}
             <div id="loader-sentinel" className="h-10 w-full flex items-center justify-center p-4">
                 {/* Optional: Show loading spinner if fetching more */}
-                {/* {loading && <div className="animate-spin h-6 w-6 border-2 border-indigo-500 rounded-full border-t-transparent" />} */}
+                {/* {loading && <AppleSpinner />} */}
             </div>
         </div>
     )

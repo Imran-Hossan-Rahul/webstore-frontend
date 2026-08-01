@@ -9,6 +9,8 @@ import CreateDiscussionModal from "./CreateDiscussionModal";
 import DiscussionChat from "./DiscussionChatNew";
 import { Plus, Users, MessageSquare, CheckCircle2, Clock, TrendingUp, Zap, Search, Filter, User, Send, Share2, Bookmark, Star } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function CommunityMain() {
   const [activeTab, setActiveTab] = useState("feed");
   const [tasks, setTasks] = useState([]);
@@ -787,7 +789,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
 
 const LoadingState = () => (
   <div className="flex items-center justify-center py-12">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600" />
+    <AppleSpinner />
   </div>
 );
 

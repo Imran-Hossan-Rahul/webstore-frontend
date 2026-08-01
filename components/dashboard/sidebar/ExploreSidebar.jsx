@@ -141,7 +141,7 @@ export default function ExploreSidebar() {
               return (
                 <Link
                   key={tagName + idx}
-                  href={`/search?q=${encodeURIComponent('#' + tagName)}`}
+                  href={`/shop?q=${encodeURIComponent('#' + tagName)}`}
                   className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-600 dark:text-slate-300 hover:bg-emerald-500 hover:text-white dark:hover:bg-emerald-500 dark:hover:text-white hover:border-transparent transition-all"
                 >
                   #{tagName}
@@ -170,7 +170,7 @@ export default function ExploreSidebar() {
             artifactCategories.map((cat, idx) => (
               <Link
                 key={cat.category || `cat-${idx}`}
-                href={`/search?q=${encodeURIComponent('category:"' + (cat.category || cat) + '"')}`}
+                href={`/shop?q=${encodeURIComponent('category:"' + (cat.category || cat) + '"')}`}
                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 group transition-all"
               >
                 <span className="text-[12px] font-semibold text-slate-700 dark:text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
@@ -203,7 +203,7 @@ export default function ExploreSidebar() {
             Explore thousands of devlogs, high quality UI artifacts, and codex from elite developers worldwide.
           </p>
           <Link
-            href={`/search?q=${encodeURIComponent(defaultSearchQuery)}`}
+            href={`/shop?q=${encodeURIComponent(defaultSearchQuery)}`}
             className="inline-flex items-center gap-2 text-xs font-bold bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2.5 rounded-lg hover:bg-white hover:text-slate-900 transition-all shadow-lg"
           >
             <Sparkles size={13} /> Advanced Search

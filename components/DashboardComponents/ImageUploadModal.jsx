@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import { X, Upload, Camera, Crop } from "lucide-react";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function ImageUploadModal({ 
   isOpen, 
   onClose, 
@@ -257,7 +259,7 @@ export default function ImageUploadModal({
           >
             {uploading ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <AppleSpinner size={16} />
                 Uploading...
               </>
             ) : (

@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Zap, Loader2, Wand2, Check } from "lucide-react";
+import { Zap, Wand2, Check } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) => {
   const [loading, setLoading] = useState(false);
@@ -47,7 +48,7 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
         title="AI Enhance"
       >
         {loading ? (
-            <Loader2 className="w-5 h-5 animate-spin text-purple-600" />
+            <AppleSpinner className="w-5 h-5 animate-spin text-purple-600" />
         ) : (
             <Zap className={`w-5 h-5 ${text ? 'text-purple-600' : 'text-gray-300'}`} />
         )}

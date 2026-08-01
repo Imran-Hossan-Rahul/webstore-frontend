@@ -5,6 +5,8 @@ import { X, Send, Users, MessageCircle, Paperclip, FileText, Download, Reply, Ch
 import { formatDistanceToNow } from "date-fns";
 import io from "socket.io-client";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function DiscussionChat({ discussionId, onClose }) {
   const [discussion, setDiscussion] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -218,7 +220,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
           {loading ? (
             <div className="flex items-center justify-center h-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+              <AppleSpinner />
             </div>
           ) : getTopLevelMessages().length > 0 ? (
             getTopLevelMessages().map(msg => (

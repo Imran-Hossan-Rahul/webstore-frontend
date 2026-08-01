@@ -9,6 +9,8 @@ import ImageUploadModal from "./ImageUploadModal";
 import CraftsmanAccountModal from "./CraftsmanAccountModal";
 import { useToast } from "@/components/ui/ToastProvider";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAccount }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -187,7 +189,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
               <div className="mt-4">
                   {isLoading ? (
                        <div className="py-10 text-center text-slate-400 flex flex-col items-center gap-3">
-                         <div className="w-6 h-6 border-2 border-slate-300 border-t-black rounded-full animate-spin"></div>
+                         <AppleSpinner />
                          <p>Loading profile...</p>
                        </div>
                   ) : displayProfile ? (

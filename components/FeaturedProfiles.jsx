@@ -1,6 +1,5 @@
-// Components/FeaturedProfiles.jsx
 "use client";
-
+// Components/FeaturedProfiles.jsx
 import { useState, useEffect, useRef } from "react";
 import ProfileCard from "./Card/ProfileCard";
 import { useRouter } from "next/navigation";

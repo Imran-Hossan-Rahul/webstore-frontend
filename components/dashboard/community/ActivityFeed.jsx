@@ -4,6 +4,8 @@ import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
 import { Zap, Palette, Code, FileText, MessageCircle, CheckCircle, User, Users, Image as ImageIcon } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const ActivityIcon = ({ type }) => {
   const iconProps = { className: "w-5 h-5" };
 
@@ -139,7 +141,7 @@ export default function ActivityFeed() {
   if (loading) {
     return (
       <div className="p-8 text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4" />
+        <AppleSpinner className="mx-auto mb-4" />
         <p className="text-slate-600 dark:text-slate-400">Loading community activities...</p>
       </div>
     );
@@ -182,7 +184,7 @@ export default function ActivityFeed() {
               No activities yet
             </h3>
             <p className="text-slate-600 dark:text-slate-400">
-              Be the first to share what you're working on!
+              Be the first to share what you&apos;re working on!
             </p>
           </div>
         )}

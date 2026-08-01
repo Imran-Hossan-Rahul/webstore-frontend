@@ -69,7 +69,7 @@ export default function ProposalsSidebar() {
                 </div>
                 <div>
                   <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-600 transition-colors">Tailored Pitch</h4>
-                  <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Avoid copy-pasting. Address the patron's specific problems directly.</p>
+                  <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Avoid copy-pasting. Address the patron&apos;s specific problems directly.</p>
                 </div>
               </div>
               <div className="flex gap-4 group">

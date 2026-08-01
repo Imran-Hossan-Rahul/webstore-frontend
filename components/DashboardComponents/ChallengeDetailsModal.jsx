@@ -5,6 +5,8 @@ import { X, Trophy, Calendar, Gift, Code, PenTool, Layout as LayoutIcon, ArrowRi
 import { api } from "@/utils/api";
 import { useToast } from "@/components/ui/ToastProvider";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGuest, onRequireAuth, user }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSubmitForm, setShowSubmitForm] = useState(false);
@@ -249,7 +251,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                       className="px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-md transition-all flex items-center gap-2"
                     >
                       {isSubmitting ? (
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <AppleSpinner size={20} />
                       ) : (
                         "Submit Entry"
                       )}

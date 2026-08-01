@@ -4,13 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { User, MapPin, Calendar, Share2, MessageSquare, Users, UserCheck, Verified, Globe, ExternalLink, ChevronRight, Bookmark, Camera, Edit2, LogOut, Settings as SettingsIcon, LayoutGrid, Info, Clock, ArrowLeft, Shield, Link as LinkIcon, CreditCard, Plus, X, Check, Mail, Lock, Building, Github, Linkedin, Twitter, Trophy, Layers, Loader2, Zap, Palette, Code, FileText, CheckCircle, Chrome, // For Google Badge
+import { User, MapPin, Calendar, Share2, MessageSquare, Users, UserCheck, Verified, Globe, ExternalLink, ChevronRight, Bookmark, Camera, Edit2, LogOut, Settings as SettingsIcon, LayoutGrid, Info, Clock, ArrowLeft, Shield, Link as LinkIcon, CreditCard, Plus, X, Check, Mail, Lock, Building, Github, Linkedin, Twitter, Trophy, Layers, Zap, Palette, Code, FileText, CheckCircle, Chrome, // For Google Badge
   ShieldCheck } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useToast } from '@/components/ui/ToastProvider';
 import { formatDistanceToNow } from "date-fns";
 import dynamic from 'next/dynamic';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const ImageUploadModal = dynamic(() => import('../DashboardComponents/ImageUploadModal'), { ssr: false });
 const CraftsmanAccountModal = dynamic(() => import('../DashboardComponents/CraftsmanAccountModal'), { ssr: false });
@@ -387,7 +388,7 @@ const PublicProfile = ({ username }) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh]">
-        <div className="w-8 h-8 border-2 border-slate-200 border-t-slate-900 dark:border-t-white rounded-full animate-spin mb-4" />
+        <AppleSpinner className="mb-4" />
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Loading Profile</p>
       </div>
     );
@@ -559,7 +560,7 @@ const PublicProfile = ({ username }) => {
                     }`}
                   >
                     {followLoading ? (
-                      <div className="w-4 h-4 border-2 border-current border-t-transparent animate-spin rounded-full mx-auto" />
+                      <AppleSpinner size={16} className="mx-auto" />
                     ) : isFollowing ? 'Following' : 'Follow'}
                   </button>
                   <button 
@@ -689,7 +690,7 @@ const PublicProfile = ({ username }) => {
 
             {creationsLoading ? (
               <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-6 h-6 border-2 border-slate-200 border-t-slate-900 dark:border-t-white rounded-full animate-spin mb-4" />
+                <AppleSpinner className="mb-4" />
                 <p className="text-[9px] font-mono font-medium text-slate-400 uppercase tracking-[0.3em]">Indexing Workspace</p>
               </div>
             ) : (
@@ -748,7 +749,7 @@ const PublicProfile = ({ username }) => {
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
             {favoritesLoading ? (
               <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-                <Loader2 size={32} className="animate-spin mb-4" />
+                <AppleSpinner className="animate-spin mb-4" />
                 <p className="text-sm font-bold uppercase tracking-widest">Loading Highlights...</p>
               </div>
             ) : (
@@ -795,7 +796,7 @@ const PublicProfile = ({ username }) => {
                           className="p-6 bg-amber-50 dark:bg-amber-500/5 border-l-4 border-amber-400 rounded-r-2xl cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-500/10 transition-colors"
                         >
                            <p className="text-sm font-medium italic text-slate-700 dark:text-slate-300 mb-4">
-                             "{note.highlightedText}"
+                             &quot;{note.highlightedText}&quot;
                            </p>
                            {note.noteContent && (
                              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
@@ -817,7 +818,7 @@ const PublicProfile = ({ username }) => {
                   <div className="text-center py-20 opacity-50">
                     <Bookmark size={48} className="mx-auto mb-4 stroke-[1px]" />
                     <h4 className="text-lg font-bold">No Public Highlights</h4>
-                    <p className="text-sm">This craftsman hasn't shared any highlights or folders publicly.</p>
+                    <p className="text-sm">This craftsman hasn&apos;t shared any highlights or folders publicly.</p>
                   </div>
                 )}
               </div>
@@ -1001,7 +1002,7 @@ const PublicProfile = ({ username }) => {
           <div className="max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
             {activitiesLoading ? (
               <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-                <Loader2 size={32} className="animate-spin mb-4" />
+                <AppleSpinner className="animate-spin mb-4" />
                 <p className="text-sm font-bold uppercase tracking-widest">Loading Activity...</p>
               </div>
             ) : activities.length > 0 ? (

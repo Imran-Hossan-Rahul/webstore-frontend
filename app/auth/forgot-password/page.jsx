@@ -9,6 +9,8 @@ import AuthContainer from "@/components/Auth/AuthContainer";
 import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 // ─── Validation ───────────────────────────────────────────────────────────────
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -87,11 +89,11 @@ export default function ForgotPasswordPage() {
               <span className="font-semibold text-slate-700 dark:text-zinc-300">
                 {email}
               </span>{" "}
-              exists, you'll receive a reset link shortly.
+              exists, you&apos;ll receive a reset link shortly.
             </p>
 
             <p className="mt-6 text-xs text-slate-400 dark:text-zinc-600 uppercase tracking-widest font-bold">
-              Didn't get it?
+              Didn&apos;t get it?
             </p>
             <button
               onClick={() => { setSuccess(false); setEmail(""); }}
@@ -160,7 +162,7 @@ export default function ForgotPasswordPage() {
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
             >
               {loading ? (
-                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <AppleSpinner />
               ) : (
                 <>
                   <span className="text-[17px] tracking-tight">Send Reset Link</span>

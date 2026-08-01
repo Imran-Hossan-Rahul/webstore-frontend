@@ -78,7 +78,7 @@ export default function BecomePatronModal({ isOpen, onClose, onUpdate }) {
                     className="w-full px-4 py-3.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl outline-none text-sm font-semibold text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all placeholder:text-slate-400/50"
                 />
                 <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed px-1">
-                    If you're hiring for yourself, simply enter your name. This will be shown on your job postings.
+                    If you&apos;re hiring for yourself, simply enter your name. This will be shown on your job postings.
                 </p>
             </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { LayoutDashboard, Users, ShieldCheck, BarChart3, Activity, Globe, Settings, ChevronRight, TrendingUp, UserCheck, Search, Loader2, Bell, Command, Trophy, AlertTriangle, Zap, Server, Cpu, MousePointer2, Clock, Eye, ArrowUp, ArrowDown, Radio, Wifi, RefreshCw, Filter, MoreVertical, ShoppingBag } from "lucide-react";
+import { LayoutDashboard, Users, ShieldCheck, BarChart3, Activity, Globe, Settings, ChevronRight, TrendingUp, UserCheck, Search, Bell, Command, Trophy, AlertTriangle, Zap, Server, Cpu, MousePointer2, Clock, Eye, ArrowUp, ArrowDown, Radio, Wifi, RefreshCw, Filter, MoreVertical, ShoppingBag, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import UserDirectory from './UserDirectory';
 import { api } from '@/utils/api';
 import { io } from 'socket.io-client';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 let socket;
 
@@ -110,6 +111,7 @@ const UnifiedAdminDashboard = () => {
   const navItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'users', label: 'Users', icon: Users },
+    { id: 'messages', label: 'Messages', icon: MessageCircle, isLink: true, href: '/admin/messages' },
     { id: 'market', label: 'Marketplace', icon: ShoppingBag, isLink: true, href: '/admin/market' },
   ];
 
@@ -117,7 +119,7 @@ const UnifiedAdminDashboard = () => {
     if (loading && activeTab === 'overview') {
       return (
         <div className="h-[70vh] flex flex-col items-center justify-center">
-          <Loader2 className="animate-spin text-slate-400 mb-4" size={32} />
+          <AppleSpinner className="animate-spin text-slate-400 mb-4" />
           <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">Loading Intelligence Hub</p>
         </div>
       );

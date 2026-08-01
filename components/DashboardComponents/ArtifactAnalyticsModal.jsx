@@ -4,6 +4,8 @@ import { X, Calendar, Globe, User, TrendingUp } from "lucide-react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, Legend } from "recharts";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d", "#ffc658"];
 
 export default function ArtifactAnalyticsModal({ isOpen, onClose, artifactId, title }) {
@@ -86,7 +88,7 @@ export default function ArtifactAnalyticsModal({ isOpen, onClose, artifactId, ti
 
           {loading ? (
              <div className="h-96 flex items-center justify-center">
-               <div className="animate-spin w-10 h-10 border-4 border-t-[#3ea6ff] border-slate-600 rounded-full"></div>
+               <AppleSpinner />
              </div>
           ) : error ? (
             <div className="h-96 flex flex-col items-center justify-center text-slate-400 gap-4">

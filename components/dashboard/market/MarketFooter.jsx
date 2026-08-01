@@ -35,7 +35,7 @@ export default function MarketFooter() {
         { label: "Facebook", href: "#", icon: <Facebook size={14} className="mr-2" /> },
         { label: "YouTube", href: "#", icon: <Youtube size={14} className="mr-2" /> },
         { label: "Instagram", href: "#", icon: <Instagram size={14} className="mr-2" /> },
-        { label: "WhatsApp", href: "#", icon: <MessageCircle size={14} className="mr-2" /> }
+        { label: "WhatsApp", href: "https://wa.me/8801951768360", icon: <MessageCircle size={14} className="mr-2" /> }
       ]
     }
   ];
@@ -65,10 +65,17 @@ export default function MarketFooter() {
               <ul className="flex flex-col gap-2">
                 {column.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
-                    <Link href={link.href} className="flex items-center hover:text-[#1d1d1f] hover:underline transition-colors">
-                      {link.icon && link.icon}
-                      {link.label}
-                    </Link>
+                    {link.href.startsWith('http') ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-[#1d1d1f] hover:underline transition-colors">
+                        {link.icon && link.icon}
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link href={link.href} className="flex items-center hover:text-[#1d1d1f] hover:underline transition-colors">
+                        {link.icon && link.icon}
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

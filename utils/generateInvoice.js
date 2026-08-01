@@ -1,22 +1,19 @@
 /**
  * generateInvoice.js
- * Opens a browser print dialog with a professionally styled invoice.
- * Uses real order data; missing fields are prefixed with "d".
+ * Generates an exact Apple Store style Invoice Receipt with real order data.
  */
 
 const COMPANY = {
-  name: 'Codalina',
-  tagline: 'MARKETPLACE',
-  branch: 'Codalina Digital Marketplace',
+  name: 'Codalina Store',
+  tagline: 'Codalina Digital Marketplace',
   address: 'House 10/A, Road 3, Dhanmondi, Dhaka, Bangladesh',
-  hotline: '01969991122 or 01972999969',
+  hotline: '01951768360',
   bin: '003313011-0505',
   email: 'support@codalina.com',
   website: 'www.codalina.com',
 };
 
 function d(val, fallback = '') {
-  // Returns value if truthy, else "d" + fallback hint
   if (val && String(val).trim() !== '' && String(val).trim() !== ',') return val;
   return fallback ? `d${fallback}` : 'd—';
 }
@@ -25,23 +22,25 @@ function fmt(price) {
   return new Intl.NumberFormat('en-IN').format(price || 0);
 }
 
-function fmtDate(dateStr) {
+function fmtDateApple(dateStr) {
   if (!dateStr) return 'd—';
-  return new Date(dateStr).toLocaleString('en-US', {
-    year: 'numeric', month: '2-digit', day: '2-digit',
-    hour: '2-digit', minute: '2-digit', second: '2-digit',
-    hour12: false,
-  }).replace(/\//g, '-');
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric'
+  });
 }
 
 export function generateInvoice(order) {
   const oid = order.id?.toString() || order._id?.toString() || 'd000000';
   const shortId = oid.slice(-8).toUpperCase();
+  const formattedDate = fmtDateApple(order.createdAt);
 
   let addrObj = {};
   try { addrObj = typeof order.address === 'string' ? JSON.parse(order.address) : (order.address || {}); } catch(e) {}
 
-  const customerName  = d(addrObj.name,    'CustomerName');
+  const customerName  = d(addrObj.name,    'Customer Name');
   const customerPhone = d(order.phone,     'Phone');
   const customerCity  = d(addrObj.district || addrObj.upazila, 'City');
   const customerAddr  = d(addrObj.details, 'Address');
@@ -50,22 +49,24 @@ export function generateInvoice(order) {
   const itemsPrice   = items.reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
   const codCharge    = Math.round(itemsPrice * 0.01);
   const subtotal     = itemsPrice + codCharge;
-  const status       = order.status || 'Order placed';
+  const status       = order.status || 'Order Placed';
   const isPaid       = status === 'Delivered';
+  const amountDue    = isPaid ? '0.00' : `${fmt(subtotal)}`;
 
   const itemRows = items.map(item => {
-    const title    = d(item.product?.title, 'ProductName');
-    const variant  = item.variants || 'N/A - 0';
+    const title    = d(item.product?.title, 'Product Title');
+    const prodNo   = item.product?.id ? item.product.id.toString().slice(-8).toUpperCase() : (item.variants || 'SKU-N/A');
     const price    = item.price_at_purchase || 0;
     const qty      = item.quantity || 1;
     const lineTotal = price * qty;
     return `
       <tr>
-        <td class="td-left">${title}</td>
-        <td class="td-center">${variant}</td>
-        <td class="td-center">${fmt(price)}</td>
+        <td class="td-left font-medium">${title}</td>
+        <td class="td-left text-muted">${prodNo}</td>
+        <td class="td-right">${fmt(price)} BDT</td>
         <td class="td-center">${qty}</td>
-        <td class="td-right">${fmt(lineTotal)} (1% COD)</td>
+        <td class="td-center">${qty}</td>
+        <td class="td-right font-bold">${fmt(lineTotal)} BDT</td>
       </tr>`;
   }).join('');
 
@@ -74,308 +75,333 @@ export function generateInvoice(order) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invoice #${shortId} — ${COMPANY.name}</title>
+  <title>Invoice Receipt — ${shortId}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 13px;
-      color: #111;
-      background: #fff;
-      padding: 40px 48px;
-      max-width: 820px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 11px;
+      color: #1d1d1f;
+      background: #ffffff;
+      padding: 32px 48px;
+      max-width: 800px;
       margin: 0 auto;
+      line-height: 1.4;
     }
 
-    /* ── INVOICE LABEL ── */
-    .label-invoice {
-      font-size: 11px;
+    /* Print Controls */
+    .print-btn-wrap {
+      text-align: right;
+      margin-bottom: 24px;
+    }
+    .print-btn {
+      background: #0071e3;
+      color: #ffffff;
+      border: none;
+      padding: 8px 20px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 980px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .print-btn:hover { background: #0077ed; }
+
+    /* Header Section */
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
       font-weight: 600;
-      letter-spacing: 3px;
-      color: #888;
-      text-transform: uppercase;
+      color: #1d1d1f;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .header-logo svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .invoice-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
       margin-bottom: 24px;
     }
 
-    /* ── TOP ROW ── */
-    .top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 22px;
-    }
-
-    .brand-name {
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: #111;
-      line-height: 1;
-    }
-    .brand-name sup {
-      font-size: 12px;
+    .invoice-receipt-title {
+      font-size: 20px;
       font-weight: 700;
-      vertical-align: super;
-      margin-left: 1px;
-      color: #555;
-    }
-
-    .invoice-meta {
-      text-align: right;
-      font-size: 12px;
-      color: #333;
-      line-height: 1.8;
-    }
-    .invoice-meta .inv-no {
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    /* ── ADDRESS BLOCK ── */
-    .addr-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      font-size: 12px;
-      color: #444;
-      line-height: 1.9;
-      margin-bottom: 18px;
-    }
-    .addr-row .company-addr {
-      max-width: 260px;
-    }
-    .addr-row .company-addr a { color: #007bff; text-decoration: none; }
-
-    .bill-to-block {
-      text-align: right;
-    }
-    .bill-to-block .bill-to-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: #888;
+      color: #1d1d1f;
       margin-bottom: 2px;
     }
-    .bill-to-block .customer-name {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111;
+
+    .invoice-status-subtitle {
+      font-size: 12px;
+      color: #6e6e73;
     }
 
-    /* ── DUE + STATUS BAR ── */
-    .due-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 14px 0 10px;
-      font-size: 12.5px;
+    .meta-box {
+      text-align: right;
+      font-size: 11px;
+      color: #1d1d1f;
+      line-height: 1.5;
     }
-    .due-row .due-amount {
+    .meta-box .meta-label {
       font-weight: 600;
-      color: #111;
+      color: #1d1d1f;
     }
-    .due-row .due-amount span { color: #d92b2b; font-weight: 700; }
 
-    .status-badge {
+    /* Sold To / Ship To Grid */
+    .address-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 28px;
       font-size: 11px;
+      line-height: 1.5;
+      color: #333336;
+    }
+
+    .address-title {
       font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 3px 10px;
-      border-radius: 3px;
-    }
-    .status-unpaid  { background: #fdecea; color: #c0392b; }
-    .status-paid    { background: #eafaf1; color: #1a7a3c; }
-    .status-pending { background: #fef9ec; color: #b7770d; }
-
-    /* ── DIVIDER ── */
-    hr { border: none; border-top: 1px solid #e0e0e0; margin: 10px 0; }
-    hr.thick { border-top: 2px solid #333; }
-
-    /* ── DISCLAIMER ── */
-    .disclaimer {
-      font-size: 11px;
-      color: #666;
-      font-style: italic;
-      margin: 10px 0 18px;
-      line-height: 1.6;
+      font-size: 12px;
+      color: #1d1d1f;
+      margin-bottom: 4px;
     }
 
-    /* ── TABLE ── */
+    /* Section Headers */
+    .section-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1d1d1f;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+
+    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12.5px;
+      font-size: 10.5px;
+      margin-bottom: 16px;
     }
-    thead tr {
-      border-bottom: 2px solid #333;
-    }
+
     thead th {
-      padding: 8px 6px;
-      font-weight: 700;
-      text-align: center;
-      font-size: 12px;
-      color: #111;
+      font-size: 10px;
+      font-weight: 600;
+      color: #6e6e73;
+      border-bottom: 1px solid #d2d2d7;
+      padding: 6px 4px;
+      text-align: left;
+      white-space: nowrap;
     }
-    thead th:first-child { text-align: left; }
-    thead th:last-child  { text-align: right; }
 
-    tbody tr {
-      border-bottom: 1px solid #eee;
+    tbody td {
+      padding: 8px 4px;
+      border-bottom: 1px solid #e5e5ea;
+      vertical-align: top;
     }
-    tbody tr:last-child { border-bottom: none; }
 
-    td { padding: 9px 6px; vertical-align: top; }
-    .td-left   { text-align: left; }
+    .td-left { text-align: left; }
     .td-center { text-align: center; }
-    .td-right  { text-align: right; }
+    .td-right { text-align: right; }
 
-    /* ── TOTALS ── */
-    .totals-table {
-      margin-top: 4px;
+    .font-medium { font-weight: 500; }
+    .font-bold { font-weight: 600; }
+    .text-muted { color: #6e6e73; }
+
+    /* Summary Totals */
+    .totals-block {
+      width: 240px;
+      margin-left: auto;
+      margin-top: 12px;
+      font-size: 11px;
+      line-height: 1.8;
     }
-    .totals-table td {
-      padding: 5px 6px;
-      font-size: 12.5px;
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      color: #1d1d1f;
     }
-    .totals-table .lbl { color: #333; font-weight: 500; }
-    .totals-table .val { text-align: right; font-weight: 600; }
-    .totals-table .total-row td {
-      font-size: 14px;
+    .totals-row.bold {
       font-weight: 700;
-      padding-top: 8px;
-      border-top: 2px solid #333;
     }
 
-    /* ── FOOTER ── */
+    /* Horizontal Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid #d2d2d7;
+      margin: 24px 0 16px 0;
+    }
+
+    /* Additional Info Table */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10.5px;
+      margin-top: 8px;
+    }
+    .info-table th {
+      font-size: 9.5px;
+      color: #6e6e73;
+      font-weight: 600;
+      border-bottom: 1px solid #d2d2d7;
+      padding: 4px 0;
+      text-align: left;
+    }
+    .info-table td {
+      padding: 6px 0;
+      border-bottom: none;
+    }
+
+    /* Footer */
     .footer {
       margin-top: 40px;
       text-align: center;
-      font-size: 11px;
-      color: #aaa;
-      border-top: 1px solid #eee;
-      padding-top: 14px;
+      font-size: 10px;
+      color: #1d1d1f;
+      line-height: 1.6;
     }
-
-    /* ── PRINT BUTTON (screen only) ── */
-    .print-btn-wrap {
-      text-align: right;
-      margin-bottom: 20px;
+    .footer a {
+      color: #1d1d1f;
+      text-decoration: none;
     }
-    .print-btn {
-      background: #111;
-      color: #fff;
-      border: none;
-      padding: 8px 22px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 5px;
-      cursor: pointer;
-      letter-spacing: 0.3px;
+    .footer a:hover {
+      text-decoration: underline;
     }
-    .print-btn:hover { background: #333; }
 
     @media print {
+      @page { margin: 0; } /* Hides browser headers (date, URL, page numbers) */
       .print-btn-wrap { display: none; }
-      body { padding: 20px 30px; }
+      body { 
+        padding: 48px; /* Adds space inside the printed page */
+        max-width: 100%; 
+        background-color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
     }
   </style>
 </head>
 <body>
 
   <div class="print-btn-wrap">
-    <button class="print-btn" onclick="window.print()">⬇ Download / Print PDF</button>
+    <button class="print-btn" onclick="window.print()">Download / Print PDF</button>
   </div>
 
-  <p class="label-invoice">Invoice</p>
+  <!-- Apple Store Logo Header -->
+  <div class="header-logo">
+    <img src="/logo.png" alt="Codalina Logo" style="width: 22px; height: 22px; object-fit: contain;" />
+    <span>Codalina</span>
+  </div>
 
-  <!-- TOP ROW -->
-  <div class="top-row">
+  <!-- Invoice Title & Order Meta Header -->
+  <div class="invoice-title-row">
     <div>
-      <div class="brand-name">${COMPANY.name.toLowerCase()}<sup>™</sup></div>
+      <div class="invoice-receipt-title">Invoice Receipt</div>
+      <div class="invoice-status-subtitle">${isPaid ? 'Payment Received' : 'Cash on Delivery — Unpaid'}</div>
     </div>
-    <div class="invoice-meta">
-      <div class="inv-no">Invoice no: ${shortId}</div>
-      <div>Date: ${fmtDate(order.createdAt)}</div>
+    <div class="meta-box">
+      <div><span class="meta-label">Order Number:</span></div>
+      <div>WA${shortId}</div>
+      <div style="margin-top: 4px;"><span class="meta-label">Order Date:</span></div>
+      <div>${formattedDate}</div>
     </div>
   </div>
 
-  <!-- ADDRESS + BILL TO -->
-  <div class="addr-row">
-    <div class="company-addr">
-      <div>${COMPANY.branch}, Shop</div>
-      <div>${COMPANY.address}</div>
-      <div>Hotline: ${COMPANY.hotline}</div>
-      <div>BIN NO - ${COMPANY.bin}</div>
-    </div>
-    <div class="bill-to-block">
-      <div class="bill-to-label">Bill to</div>
-      <div class="customer-name">${customerName}</div>
-      <div>${customerPhone}</div>
+  <!-- Sold To / Ship To -->
+  <div class="address-grid">
+    <div>
+      <div class="address-title">Sold To:</div>
+      <div>${customerName}</div>
+      <div>${customerAddr}</div>
       <div>${customerCity}</div>
-      <div>${customerAddr}, Bangladesh</div>
+      <div style="margin-top: 4px;">Phone: ${customerPhone}</div>
+    </div>
+    <div>
+      <div class="address-title">Ship To:</div>
+      <div>${customerName}</div>
+      <div>${customerAddr}</div>
+      <div>${customerCity}</div>
     </div>
   </div>
 
-  <hr />
-
-  <!-- DUE AMOUNT + STATUS -->
-  <div class="due-row">
-    <div class="due-amount">Due Amount: <span>${fmt(subtotal)}</span></div>
-    <span class="status-badge ${isPaid ? 'status-paid' : status === 'Cancelled' ? 'status-unpaid' : 'status-pending'}">
-      Status: ${isPaid ? 'Paid' : status === 'Cancelled' ? 'Cancelled' : 'Unpaid'}
-    </span>
-  </div>
-
-  <hr />
-
-  <!-- PRODUCT TABLE -->
+  <!-- Order Details -->
+  <div class="section-header">Order Details</div>
   <table>
     <thead>
       <tr>
-        <th style="width:38%">Product</th>
-        <th style="width:20%">Accessory</th>
-        <th style="width:13%">Unit Price</th>
-        <th style="width:10%">Quantity</th>
-        <th style="width:19%">Total</th>
+        <th style="width:36%">Product Name</th>
+        <th style="width:16%">Product Number</th>
+        <th style="width:14%; text-align:right;">Item Price</th>
+        <th style="width:10%; text-align:center;">Quantity Ordered</th>
+        <th style="width:10%; text-align:center;">Quantity Shipped</th>
+        <th style="width:14%; text-align:right;">Extended Price</th>
       </tr>
     </thead>
     <tbody>
       ${itemRows}
-      <tr>
-        <td class="td-left" colspan="4" style="color:#555;font-weight:500">Shipping</td>
-        <td class="td-right" style="font-weight:600">0</td>
-      </tr>
     </tbody>
   </table>
 
-  <hr />
+  <!-- Subtotal Summary -->
+  <div class="totals-block">
+    <div class="totals-row">
+      <span>Subtotal:</span>
+      <span>${fmt(itemsPrice)} BDT</span>
+    </div>
+    <div class="totals-row">
+      <span>Delivery Charge:</span>
+      <span>${fmt(codCharge)} BDT</span>
+    </div>
+    <div class="totals-row bold" style="margin-top: 2px;">
+      <span>Total:</span>
+      <span>${fmt(subtotal)} BDT</span>
+    </div>
+    <div class="totals-row bold">
+      <span>Amount Due:</span>
+      <span>${amountDue} ${amountDue === '0.00' ? 'BDT' : 'BDT'}</span>
+    </div>
+  </div>
 
-  <!-- TOTALS -->
-  <table class="totals-table">
+  <!-- Payment Methods Section -->
+  <div class="divider"></div>
+  <div class="section-header">Payment Methods</div>
+  <div style="font-size: 11px; color: #1d1d1f; margin-bottom: 24px;">
+    ${fmt(subtotal)} BDT charged to Cash on Delivery (COD)
+    <br />
+    <span style="font-size: 10px; color: #6e6e73;">For a total of ${fmt(subtotal)} BDT</span>
+  </div>
+
+  <!-- Additional Information Section -->
+  <div class="section-header">Additional Information</div>
+  <table class="info-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Invoice Number</th>
+        <th style="width: 25%;">Invoice Date</th>
+        <th style="width: 25%;">Terms</th>
+        <th style="width: 25%;">Ship Date</th>
+      </tr>
+    </thead>
     <tbody>
       <tr>
-        <td class="lbl" style="width:80%">Discount Total</td>
-        <td class="val">—</td>
-      </tr>
-      <tr>
-        <td class="lbl">Subtotal</td>
-        <td class="val">${fmt(itemsPrice)}</td>
-      </tr>
-      <tr>
-        <td class="lbl">1% COD Charge</td>
-        <td class="val">${fmt(codCharge)}</td>
-      </tr>
-      <tr class="total-row">
-        <td class="lbl">Total</td>
-        <td class="val">${fmt(subtotal)}</td>
+        <td>WA${shortId}</td>
+        <td>${formattedDate}</td>
+        <td>Cash on Delivery</td>
+        <td>${formattedDate}</td>
       </tr>
     </tbody>
   </table>
 
+  <!-- Footer Notice -->
   <div class="footer">
-    Thank you for shopping with ${COMPANY.name} · ${COMPANY.website} · ${COMPANY.email}
+    This order is subject to Codalina's Sales and Refunds Policies.<br />
+    <a href="https://${COMPANY.website}" target="_blank">http://${COMPANY.website}/SalesAndRefunds</a>
   </div>
 
 </body>
@@ -387,3 +413,4 @@ export function generateInvoice(order) {
     win.document.close();
   }
 }
+

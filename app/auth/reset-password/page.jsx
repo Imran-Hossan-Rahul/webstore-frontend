@@ -10,6 +10,8 @@ import AuthContainer from "@/components/Auth/AuthContainer";
 import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export const dynamic = 'force-dynamic';
 
 export default function ResetPasswordPage() {
@@ -201,7 +203,7 @@ export default function ResetPasswordPage() {
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
             >
               {loading ? (
-                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <AppleSpinner />
               ) : (
                 <>
                   <span className="text-[17px] tracking-tight">Save Credentials</span>

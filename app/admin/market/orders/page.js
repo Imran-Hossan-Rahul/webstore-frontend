@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { Loader2, ChevronDown, Search, RefreshCw, Package, CheckCircle2, Truck, Home, XCircle, Clock, FileText, Filter, Calendar } from "lucide-react";
+import { ChevronDown, Search, RefreshCw, Package, CheckCircle2, Truck, Home, XCircle, Clock, FileText, Filter, Calendar } from "lucide-react";
 import { generateInvoice } from '@/utils/generateInvoice';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const STATUS_FLOW = ['Order placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
 
@@ -221,7 +222,7 @@ export default function AdminOrdersPage() {
             {loading ? (
               <tr>
                 <td colSpan="8" className="p-16 text-center text-gray-500">
-                  <Loader2 className="animate-spin mx-auto mb-3" size={28} />
+                  <AppleSpinner className="animate-spin mx-auto mb-3" />
                   <p className="text-sm">Loading orders...</p>
                 </td>
               </tr>
@@ -299,7 +300,7 @@ export default function AdminOrdersPage() {
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-400">
                           {updating === orderId 
-                            ? <Loader2 size={14} className="animate-spin" />
+                            ? <AppleSpinner size={14} className="animate-spin" />
                             : <ChevronDown size={14} />
                           }
                         </div>
@@ -409,7 +410,7 @@ export default function AdminOrdersPage() {
       <div className="md:hidden flex flex-col gap-3 mt-4">
         {loading ? (
           <div className="py-12 flex flex-col items-center text-gray-500">
-            <Loader2 className="animate-spin mb-2" size={24} />
+            <AppleSpinner className="animate-spin mb-2" />
             <span className="text-sm">Loading orders...</span>
           </div>
         ) : filtered.length === 0 ? (
@@ -459,7 +460,7 @@ export default function AdminOrdersPage() {
                   >
                     <span>Change Status: <span className="text-blue-300 font-semibold">{order.status}</span></span>
                     {updating === orderId
-                      ? <Loader2 size={14} className="animate-spin" />
+                      ? <AppleSpinner size={14} className="animate-spin" />
                       : <ChevronDown size={14} className={`transition-opacity duration-200 ${activeStatusPicker === orderId ? 'rotate-180' : ''}`} />
                     }
                   </button>

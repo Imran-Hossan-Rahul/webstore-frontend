@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { api } from '@/utils/api';
-import { ShieldCheck, Linkedin, Github, ExternalLink, CheckCircle2, Award, Lock, ArrowRight, UserCheck, Zap, Info, Loader2, Check as LucideCheck, X as LucideX } from "lucide-react";
+import { ShieldCheck, Linkedin, Github, ExternalLink, CheckCircle2, Award, Lock, ArrowRight, UserCheck, Zap, Info, Check as LucideCheck, X as LucideX } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import VerificationForm from './VerificationForm';
 import { motion, AnimatePresence } from 'framer-motion';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const TieredVerification = () => {
   const { user, fetchUser } = useContext(DashboardContext) || {};
@@ -246,7 +247,7 @@ const TieredVerification = () => {
                       disabled={loading || !selectedPlatform || !linkUrl}
                       className="w-full py-6 bg-black dark:bg-white text-white dark:text-black rounded-2xl text-xs font-bold uppercase tracking-widest shadow-xl hover:opacity-80 active:opacity-60 transition-all disabled:opacity-20 flex items-center justify-center gap-3"
                     >
-                       {loading ? <Loader2 className="animate-spin" size={18} /> : "Finalize Linkage"}
+                       {loading ? <AppleSpinner className="animate-spin" size={18} /> : "Finalize Linkage"}
                     </button>
                  </div>
                )}
@@ -292,7 +293,7 @@ const TieredVerification = () => {
                             : 'bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed opacity-60 grayscale-[0.5]'
                         }`}
                       >
-                         {loading ? <Loader2 className="animate-spin" size={18} /> : (
+                         {loading ? <AppleSpinner className="animate-spin" size={18} /> : (
                            isTier3RequirementsMet ? "Claim 10 TKNS Reward" : "Audit Pending - Requirements Unmet"
                          )}
                       </button>

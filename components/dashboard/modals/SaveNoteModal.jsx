@@ -85,7 +85,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
             {/* Highlighted Text Preview */}
             <div className="p-4 bg-amber-50 dark:bg-amber-500/10 border-l-4 border-amber-400 rounded-r-xl">
               <p className="text-sm font-medium italic text-slate-700 dark:text-slate-300 line-clamp-4">
-                "{selectedText}"
+                &quot;{selectedText}&quot;
               </p>
             </div>
 

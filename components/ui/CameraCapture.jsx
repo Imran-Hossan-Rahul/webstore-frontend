@@ -2,8 +2,9 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { Camera, RefreshCw, Check, X, Loader2, ShieldCheck, Zap, AlertCircle } from "lucide-react";
+import { Camera, RefreshCw, Check, X, ShieldCheck, Zap, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const CameraCapture = ({ onCapture, onClose }) => {
   const videoRef = useRef(null);
@@ -134,7 +135,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
 
                 {!isReady && !error && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-sm">
-                    <Loader2 strokeWidth={1.5} className="animate-spin text-indigo-600 mb-4" size={32} />
+                    <AppleSpinner strokeWidth={1.5} className="animate-spin text-indigo-600 mb-4" />
                     <p className="text-white text-sm font-bold uppercase tracking-widest">Waking up lens...</p>
                   </div>
                 )}
@@ -213,7 +214,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                   className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-xl shadow-slate-900/10"
                 >
                   {loading ? (
-                    <Loader2 strokeWidth={1.5} className="animate-spin" size={16} />
+                    <AppleSpinner strokeWidth={1.5} className="animate-spin" size={16} />
                   ) : (
                     <><Check size={16} strokeWidth={1.5} /> Confirm Identity</>
                   )}

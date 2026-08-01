@@ -30,11 +30,12 @@ export function UserProvider({ children }) {
       const res = await api.get("/user/profile");
       
       if (res.success) {
-        setUser(res.data);
-        setIsGuest(false);
-        
-        // Sync Preferences
-        const dbTheme = res.data.appearancePreferences?.theme;
+        if (res.data) {
+          setUser(res.data);
+          setIsGuest(false);
+          
+          // Sync Preferences
+          const dbTheme = res.data.appearancePreferences?.theme;
         if (dbTheme && dbTheme !== lastSyncedTheme.current) {
           applyTheme(dbTheme);
           lastSyncedTheme.current = dbTheme;
@@ -44,6 +45,10 @@ export function UserProvider({ children }) {
         if (dbLang && dbLang !== lastSyncedLang.current) {
           setLang(dbLang);
           lastSyncedLang.current = dbLang;
+        }
+        } else {
+          setIsGuest(true);
+          setUser(null);
         }
       } else {
         setIsGuest(true);

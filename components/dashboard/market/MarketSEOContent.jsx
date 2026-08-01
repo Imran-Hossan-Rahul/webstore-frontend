@@ -33,7 +33,7 @@ export default function MarketSEOContent() {
         <section>
           <h2 className="text-[18px] md:text-[22px] font-semibold mb-3">Essential Gadgets, Powerbanks, and Accessories</h2>
           <p className="text-[14px] leading-relaxed text-[#424245]">
-            Every tech ecosystem relies on dependable accessories. That's why we are making high-capacity Power Banks, Fast Chargers, durable Cables, and Screen Protectors a core part of our early inventory. We are meticulously selecting gadgets designed for durability and performance. As our platform grows, our commitment to keeping your devices safely powered and protected remains at the heart of our mission.
+            Every tech ecosystem relies on dependable accessories. That&apos;s why we are making high-capacity Power Banks, Fast Chargers, durable Cables, and Screen Protectors a core part of our early inventory. We are meticulously selecting gadgets designed for durability and performance. As our platform grows, our commitment to keeping your devices safely powered and protected remains at the heart of our mission.
           </p>
         </section>
 

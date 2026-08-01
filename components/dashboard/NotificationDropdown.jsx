@@ -136,7 +136,7 @@ export default function NotificationDropdown() {
                     <Bell className="w-8 h-8 text-slate-400" />
                   </div>
                   <p className="font-medium text-slate-600 dark:text-slate-400">No notifications yet</p>
-                  <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">When you get notifications, they'll show up here</p>
+                  <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">When you get notifications, they&apos;ll show up here</p>
                 </div>
               ) : (
                 notifications.map((notif) => (

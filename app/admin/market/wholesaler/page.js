@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api'; // using secure api client for CSRF/tokens
-import { Plus, X, Loader2, Image as ImageIcon, Upload, BadgeCheck, Search, Filter, ShieldCheck, MapPin, Clock, Phone, DollarSign, Package, Facebook, Instagram, Linkedin, Mail, MessageCircle, Globe, Link2 } from "lucide-react";
+import { Plus, X, Image as ImageIcon, Upload, BadgeCheck, Search, Filter, ShieldCheck, MapPin, Clock, Phone, DollarSign, Package, Facebook, Instagram, Linkedin, Mail, MessageCircle, Globe, Link2 } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function WholesalerLedger() {
   const [wholesalers, setWholesalers] = useState([]);
@@ -145,7 +146,7 @@ export default function WholesalerLedger() {
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="6" className="p-8 text-center text-gray-500"><Loader2 className="animate-spin mx-auto mb-2" size={24} />Loading...</td></tr>
+              <tr><td colSpan="6" className="p-8 text-center text-gray-500"><AppleSpinner className="animate-spin mx-auto mb-2" />Loading...</td></tr>
             ) : wholesalers.length === 0 ? (
               <tr><td colSpan="6" className="p-12 text-center text-gray-500">No wholesalers found. Add one to get started.</td></tr>
             ) : wholesalers.map(w => (
@@ -182,7 +183,7 @@ export default function WholesalerLedger() {
       <div className="md:hidden flex flex-col gap-3">
         {loading ? (
           <div className="py-12 flex flex-col items-center text-gray-500">
-            <Loader2 className="animate-spin mb-2" size={24} />
+            <AppleSpinner className="animate-spin mb-2" />
             <span className="text-sm">Loading...</span>
           </div>
         ) : wholesalers.length === 0 ? (
@@ -632,7 +633,7 @@ export default function WholesalerLedger() {
                   disabled={submitting}
                   className="flex-1 px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition flex justify-center items-center gap-2 disabled:opacity-50"
                 >
-                  {submitting && <Loader2 size={16} className="animate-spin" />}
+                  {submitting && <AppleSpinner size={16} className="animate-spin" />}
                   Save Wholesaler
                 </button>
               </div>

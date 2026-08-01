@@ -3,8 +3,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { api } from '@/utils/api';
-import { ShieldCheck, Loader2, XCircle, CheckCircle2, ArrowRight } from "lucide-react";
+import { ShieldCheck, XCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion } from 'framer-motion';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export const dynamic = 'force-dynamic';
 
@@ -53,7 +54,7 @@ export default function VerifyEmailPage() {
         <div className="flex justify-center mb-8">
           {status === 'verifying' && (
             <div className="w-20 h-20 bg-indigo-600/10 rounded-2xl flex items-center justify-center">
-              <Loader2 className="text-indigo-600 animate-spin" size={40} />
+              <AppleSpinner className="text-indigo-600 animate-spin" />
             </div>
           )}
           {status === 'success' && (

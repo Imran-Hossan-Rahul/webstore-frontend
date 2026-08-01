@@ -5,7 +5,9 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { UserProvider } from "@/context/UserContext";
 import { ToastProvider } from "@/components/ui/ToastProvider";
 import GlobalTracker from "@/components/GlobalTracker";
-import NextTopLoader from "nextjs-toploader";
+
+
+import GlobalTransitionLoader from "@/components/GlobalTransitionLoader";
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -79,18 +81,9 @@ export default function RootLayout({ children }) {
           <LanguageProvider>
             <UserProvider>
               <ToastProvider>
-                <NextTopLoader
-                  color="#6252db"
-                  initialPosition={0.7}
-                  crawlSpeed={200}
-                  height={2}
-                  crawl={true}
-                  showSpinner={false}
-                  easing="ease"
-                  speed={200}
-                  shadow="0 0 10px #6252db, 0 0 5px #6252db"
-                />
+
                 <GlobalTracker />
+                <GlobalTransitionLoader />
                 {children}
               </ToastProvider>
             </UserProvider>

@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Image as ImageIcon, Copy, Eye, FileText, Loader2, ShoppingBag, Package } from "lucide-react";
+import { Search, Image as ImageIcon, Copy, Eye, FileText, ShoppingBag, Package } from "lucide-react";
 import { api } from '@/utils/api';
 import { generateInvoice } from '@/utils/generateInvoice';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const STATUS_STYLE = {
   'Order placed': 'bg-yellow-50 text-[#1d1d1f] border-yellow-200',
@@ -93,7 +94,7 @@ export default function OrdersList({ isEmbedded = false }) {
         {/* Content */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 text-gray-400">
-            <Loader2 size={28} className="animate-spin mb-3" />
+            <AppleSpinner className="animate-spin mb-3" />
             <p className="text-sm">Loading your orders...</p>
           </div>
         ) : paginated.length === 0 ? (

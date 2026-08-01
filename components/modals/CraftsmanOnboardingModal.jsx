@@ -156,7 +156,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                 <h3 className="text-xl font-bold text-white mb-1">{formData.displayName}</h3>
                 <p className="text-sm text-slate-400 mb-3">{formData.skills || "Artist"}</p>
                 <p className="text-sm text-slate-500 italic max-w-sm mx-auto">
-                    "{formData.bio || "Ready to create!"}"
+                    &quot;{formData.bio || "Ready to create!"}&quot;
                 </p>
               </div>
             </div>

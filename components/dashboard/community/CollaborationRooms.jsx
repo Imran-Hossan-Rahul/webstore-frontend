@@ -4,6 +4,8 @@ import { api } from "@/utils/api";
 import { formatDistanceToNow } from "date-fns";
 import { Plus, Users, MessageCircle, Clock, CheckSquare, Hash, Lock, Globe, User as UserIcon, Calendar, Target } from "lucide-react";
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 const RoomCard = ({ room, onRoomClick }) => {
   const getTypeColor = (type) => {
     switch (type) {
@@ -344,7 +346,7 @@ export default function CollaborationRooms() {
       <div className="p-6">
         {loading ? (
           <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4" />
+            <AppleSpinner className="mx-auto mb-4" />
             <p className="text-slate-600 dark:text-slate-400">Loading rooms...</p>
           </div>
         ) : error ? (

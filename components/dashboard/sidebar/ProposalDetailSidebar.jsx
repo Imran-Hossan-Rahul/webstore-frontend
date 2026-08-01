@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import React, { useState, useEffect } from "react";
 import { api } from "@/utils/api";
 import { useParams, useRouter } from "next/navigation";
@@ -31,11 +33,8 @@ export default function ProposalDetailSidebar() {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-64 bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-white/5 rounded-[32px]" />
-        <div className="h-48 bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-white/5 rounded-[32px]" />
-      </div>
-    );
+      <div className="flex justify-center p-12"><AppleSpinner /></div>
+      );
   }
 
   if (!data) return null;

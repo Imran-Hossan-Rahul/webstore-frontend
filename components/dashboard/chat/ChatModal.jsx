@@ -10,6 +10,11 @@ import ChatSidebar from "./ChatSidebar";
 import ChatWindow from "./ChatWindow";
 import CallInterface from "./CallInterface";
 import DraggableResizableWindow from "./DraggableResizableWindow";
+import { DashboardContext } from "@/app/(dashboard)/layout";
+import { useContext } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 /**
  * ChatModal
@@ -17,6 +22,7 @@ import DraggableResizableWindow from "./DraggableResizableWindow";
  * Left (List) and Right (Conversation) are separate draggable units.
  */
 export default function ChatModal({ isOpen, onClose, initialUserId, showList = true }) {
+  const { isGuest, requireAuth, user: contextUser } = useContext(DashboardContext) || {};
   const [isOpenInternal, setIsOpenInternal] = useState(false);
   const [activeUserId, setActiveUserId] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
@@ -40,6 +46,14 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       setIsOpenInternal(isOpen);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && sessionStorage.getItem("openChatOnLoad") === "true") {
+      sessionStorage.removeItem("openChatOnLoad");
+      // Wait for initialization
+      setTimeout(() => setIsOpenInternal(true), 1500);
+    }
+  }, []);
   
   const isModalOpen = isOpen !== undefined ? isOpen : isOpenInternal;
 
@@ -107,19 +121,55 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       }
     };
 
+    const handleOpenSupportChatEvent = async () => {
+      setIsOpenInternal(true);
+      setShowGreeting(false);
+      window.dispatchEvent(new CustomEvent('chat-count-update', { detail: { count: 0 } }));
+
+      if (currentUser?.role !== 'admin' && !selectedChat) {
+        try {
+          const res = await api.get("/chat/support");
+          if (res.success && res.chat) {
+            setSelectedChat(res.chat);
+          }
+        } catch (e) {
+          console.error("Failed to fetch support chat from event", e);
+        }
+      }
+    };
+
     window.addEventListener("toggle-chat", handleToggleChatEvent);
     window.addEventListener("open-chat", handleOpenChatEvent);
+    window.addEventListener("open-support-chat", handleOpenSupportChatEvent);
 
     return () => {
       window.removeEventListener("toggle-chat", handleToggleChatEvent);
       window.removeEventListener("open-chat", handleOpenChatEvent);
+      window.removeEventListener("open-support-chat", handleOpenSupportChatEvent);
     };
-  }, [currentUser]);
+  }, [currentUser, selectedChat]);
 
   const handleClose = () => {
     setIsOpenInternal(false);
     if (onClose) onClose();
   };
+
+  // Auto-fetch support chat when modal opens for non-admins
+  useEffect(() => {
+    if (isModalOpen && currentUser && currentUser.role !== 'admin' && !selectedChat && !loading) {
+      const fetchSupportChat = async () => {
+        try {
+          const res = await api.get("/chat/support");
+          if (res.success && res.chat) {
+            setSelectedChat(res.chat);
+          }
+        } catch (e) {
+          console.error("Failed to fetch support chat", e);
+        }
+      };
+      fetchSupportChat();
+    }
+  }, [isModalOpen, currentUser, selectedChat, loading]);
 
   // Call State
   const [isCallOpen, setIsCallOpen] = useState(false);
@@ -129,24 +179,25 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   const [showIncomingToast, setShowIncomingToast] = useState(false);
   const [callStartTime, setCallStartTime] = useState(null);
 
-  // 1. Initial Data Fetch (Runs once on mount)
+  // 1. Initial Data Fetch (Runs once on mount or when contextUser changes)
   useEffect(() => {
     const initialize = async () => {
-      if (currentUser) return;
+      if (!contextUser) return;
+      if (currentUser && currentUser._id === contextUser._id) return;
+      
       try {
         setLoading(true);
-        const [profileRes, usersRes, chatsRes] = await Promise.all([
-          api.get("/user/profile"),
-          api.get("/chat/users"),
-          api.get("/chat/chats"),
-        ]);
-
-        const user = profileRes.user || profileRes.data;
-        if (!user || !user._id) return;
+        setCurrentUser(contextUser);
         
-        setCurrentUser(user);
-        setUsers(usersRes.users || []);
-        setChats(chatsRes.chats || []);
+        // Guests only need the support chat, they don't need the full users/chats list
+        if (contextUser.role !== 'guest') {
+          const [usersRes, chatsRes] = await Promise.all([
+            api.get("/chat/users"),
+            api.get("/chat/chats"),
+          ]);
+          setUsers(usersRes.users || []);
+          setChats(chatsRes.chats || []);
+        }
       } catch (error) {
         console.error("Initialization failed:", error);
       } finally {
@@ -154,7 +205,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       }
     };
     initialize();
-  }, []);
+  }, [contextUser, currentUser]);
 
   // 1.5 Socket Connection & Online Tracking (Runs when currentUser is ready)
   useEffect(() => {
@@ -547,20 +598,92 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   };
 
   // If not open and no active chat, don't render anything (except toast)
-  if (!isModalOpen && !selectedChat && !showIncomingToast) return null;
+  // Admin Profile fetching (public)
+  const [adminProfile, setAdminProfile] = useState(null);
 
-  if (isMinimized && !showIncomingToast) {
-    const avatar = getOtherParticipant(selectedChat)?.profilePicture || getOtherParticipant(selectedChat)?.avatar;
+  useEffect(() => {
+    const fetchAdmin = async () => {
+      try {
+        const res = await api.get("/user/admin-profile");
+        if (res.success && res.admin) {
+          setAdminProfile(res.admin);
+        }
+      } catch (err) {
+        console.error("Failed to fetch admin profile", err);
+      }
+    };
+    fetchAdmin();
+  }, []);
+
+  const adminAvatar = adminProfile?.profilePicture || null;
+  const [showGreeting, setShowGreeting] = useState(true);
+
+  if (!isModalOpen && !showIncomingToast) {
     return (
-      <div className="fixed bottom-6 right-20 z-[9999]">
-        <button 
-          onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-indigo-500 shadow-2xl flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
-        >
-          {selectedChat && avatar ? <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" /> : <MessageCircle size={24} className="text-indigo-500" />}
-          {selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id) && (
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-black rounded-full"></div>
+      <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9990] flex items-end gap-4">
+        {/* Greeting Popup */}
+        <AnimatePresence>
+          {showGreeting && (
+            <motion.div
+              initial={{ opacity: 0, x: 20, scale: 0.9 }}
+              animate={{ opacity: 1, x: 0, scale: 1, transition: { delay: 1, duration: 0.3 } }}
+              exit={{ opacity: 0, x: 20, scale: 0.9, transition: { duration: 0.2 } }}
+              className="relative bg-white dark:bg-[#1c1c1e] text-apple-ink dark:text-white px-5 py-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-2 max-w-[220px]"
+            >
+              <button 
+                onClick={(e) => { e.stopPropagation(); setShowGreeting(false); }}
+                className="absolute -top-2 -left-2 w-5 h-5 bg-white dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
+              >
+                <X size={12} />
+              </button>
+              <p className="text-[13px] font-medium leading-snug">
+                Hi, I'm Imran! 👋<br/>
+                <span className="text-apple-muted font-normal">How can I help you today?</span>
+              </p>
+              {/* Little triangle pointing to the avatar */}
+              <div className="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-[#1c1c1e] border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
+            </motion.div>
           )}
+        </AnimatePresence>
+
+        {/* Floating Button */}
+        <button 
+          onClick={async () => { 
+            // OPEN MODAL IMMEDIATELY
+            setIsOpenInternal(true); 
+            setShowGreeting(false); 
+
+            if (isGuest) {
+              try {
+                // Call guest login API
+                const res = await api.post("/auth/guest-login");
+                if (res.success) {
+                  // Refresh the page to load UserContext seamlessly
+                  sessionStorage.setItem("openChatOnLoad", "true");
+                  window.location.reload();
+                }
+              } catch (e) {
+                console.error("Guest login failed", e);
+                if (requireAuth) requireAuth("chat");
+              }
+              return;
+            }
+          }}
+          className="w-[52px] h-[52px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
+        >
+          {adminAvatar ? (
+            <img 
+              src={getOptimizedUrl(adminAvatar)} 
+              alt="Chat with Imran" 
+              className="w-full h-full object-cover" 
+              onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
+            />
+          ) : (
+            <div className="w-full h-full bg-[#0071e3]/10 flex items-center justify-center">
+              <MessageCircle size={28} className="text-[#0071e3]" />
+            </div>
+          )}
+          <MessageCircle size={28} className="text-[#0071e3] hidden" />
         </button>
       </div>
     );
@@ -570,7 +693,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
     <>
       {/* Incoming Call Toast (Small Floating Modal) */}
       {showIncomingToast && callData && (
-         <div className="fixed bottom-6 right-6 z-[9999] w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-4 flex flex-col gap-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
+         <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9999] w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-4 flex flex-col gap-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
             <div className="flex items-center gap-3">
                <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0 border border-slate-200 dark:border-white/5 flex items-center justify-center">
                  {callData.callerAvatar ? (
@@ -601,158 +724,159 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
          </div>
       )}
 
-      {/* PART 1: CHAT LIST (Sidebar) */}
-      {isModalOpen && showList && (
-          <DraggableResizableWindow 
-            initialWidth={380} 
-            initialHeight={700} 
-            minWidth={320} 
-            minHeight={400}
-            storageKey="chat_sidebar_state"
-          >
-            <div className="flex h-full w-full bg-white/90 dark:bg-black/90 backdrop-blur-xl overflow-hidden relative rounded-2xl shadow-2xl border border-white/20 dark:border-white/5">
+      {/* FIXED CHAT WIDGET */}
+      {isModalOpen && (
+        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-2xl rounded-[24px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
+           
+           {!selectedChat ? (
+              currentUser?.role === 'admin' ? (
+                // Chat Sidebar (List of chats - mostly for admin)
                 <ChatSidebar 
-                  currentUser={currentUser}
-                  users={users} 
-                  chats={chats} 
-                  onlineUsers={onlineUsers} 
-                  selectedChat={selectedChat}
-                  onSelectChat={setSelectedChat}
-                  loading={loading}
-                  onSelectUser={async (user) => {
-                    try {
-                      const url = user.isSupportChat ? `/chat/support` : `/chat/chat/${user._id}`;
-                      const res = await api.get(url);
-                      setSelectedChat(res.chat);
-                      setChats(prev => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev);
-                    } catch (e) { console.error(e); }
-                  }}
-                  onStartNewChat={() => {}}
-                  onClose={handleClose} // Closes via parent toggle
-                  onDeleteChat={async (chatId) => {
-                    if (!window.confirm("Remove this chat from your list?")) return;
-                    try {
-                      await api.delete(`/chat/chat/${chatId}`);
-                      setChats(prev => prev.filter(c => c._id !== chatId));
-                      if (selectedChat?._id === chatId) setSelectedChat(null);
-                    } catch (e) { console.error("Failed to delete chat", e); }
-                  }}
-                  activeCallChatId={(isCallOpen || showIncomingToast) ? callData?.chatId : null}
-                  activeCallStatus={isIncomingCall ? "Ringing..." : "Calling..."}
-                />
-            </div>
-          </DraggableResizableWindow>
-        )}
-
-        {/* PART 2: CONVERSATION WINDOW (Appears only when a chat is selected) */}
-        {selectedChat && (
-          <DraggableResizableWindow 
-            initialWidth={700} 
-            initialHeight={700} 
-            minWidth={450} 
-            minHeight={400}
-            storageKey="chat_content_state"
-          >
-            <div className="flex h-full w-full bg-white dark:bg-black overflow-hidden relative rounded-2xl shadow-2xl border border-white/20 dark:border-white/5">
-              <CallInterface 
-                 isOpen={isCallOpen} isIncoming={isIncomingCall}
-                 callerName={callData?.callerName || getOtherParticipant(selectedChat)?.name || getOtherParticipant(selectedChat)?.username}
-                 callerAvatar={callData?.callerAvatar || getOtherParticipant(selectedChat)?.profilePicture}
-                 isVideoCall={isVideoCall}
-                 onAccept={async () => { if (callData) { setIsIncomingCall(false); setCallStartTime(Date.now()); await webrtcManager.acceptCall(callData.callerId, callData.chatId, isVideoCall, currentUser._id); } }}
-                 onReject={() => { if (callData) socket.emit("call:reject", { targetUserId: callData.callerId, callerId: currentUser._id }); setIsCallOpen(false); }}
-                 onEnd={() => { 
-                   logCallMessage(callStartTime ? "ended" : "missed", callData, isVideoCall, callStartTime);
-                   webrtcManager.endCall(true); 
-                   setIsCallOpen(false); 
-                   setCallStartTime(null);
-                 }}
-              />
-
-              <ChatWindow 
-                chat={selectedChat} messages={messages} isLoadingMessages={isLoadingMessages} currentUser={currentUser}
-                isOnline={selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id)}
-                isTyping={isTyping}
-                onSendMessage={(text) => { notifyTyping(); handleSendMessage(text); }}
-                onSendFile={handleSendFile}
-                onInitiateCall={async (isVideo) => {
-                  if (!selectedChat || !currentUser) return;
-                  const targetUserId = getOtherParticipant(selectedChat)?._id;
-                  if (!targetUserId) return;
-                  setIsVideoCall(isVideo);
-                  setCallData({ targetUserId, chatId: selectedChat._id });
-                  setIsIncomingCall(false);
-                  
-                  try {
-                    await webrtcManager.initializeLocalStream(isVideo);
-                  } catch (e) {
-                    console.error("Failed to get local stream", e);
-                  }
-
-                  setCallStartTime(null); // Reset timer just in case
-                  setIsCallOpen(true);
-                  socket.emit("call:initiate", { targetUserId, callerId: currentUser._id, callType: isVideo ? "video" : "audio", chatId: selectedChat._id });
-                }}
-                onMinimize={() => setIsMinimized(true)}
-                onClose={() => {
-                  if (!showList) handleClose();
-                  else setSelectedChat(null);
-                }} // Closing conversation only
-                onUnsendMessage={(id) => {
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Delete for everyone",
-                    message: "Are you sure you want to unsend this message? It will be removed for everyone in the chat.",
-                    onConfirm: () => {
-                      const updateFn = m => m._id === id ? { ...m, isUnsent: true, content: "This message was unsent" } : m;
-                      setMessages(prev => prev.map(updateFn));
-                      const cached = messageCacheRef.current.get(selectedChat._id);
-                      if (cached) messageCacheRef.current.set(selectedChat._id, cached.map(updateFn));
-                      socket.emit("message:unsend", { chatId: selectedChat._id, messageId: id });
-                    }
-                  });
-                }}
-                onReactMessage={(id, emoji) => {
-                  let nr;
-                  setMessages(prev => prev.map(m => {
-                    if (m._id === id) {
-                      nr = [...(m.reactions || [])];
-                      const idx = nr.findIndex(r => r.user?._id === currentUser._id || r.user === currentUser._id);
-                      if (idx > -1) { if (nr[idx].emoji === emoji) nr.splice(idx, 1); else nr[idx].emoji = emoji; }
-                      else nr.push({ emoji, user: { _id: currentUser._id, name: currentUser.name } });
-                      return { ...m, reactions: nr };
-                    }
-                    return m;
-                  }));
-                  
-                  // Update cache
-                  const cached = messageCacheRef.current.get(selectedChat._id);
-                  if (cached && nr) {
-                    messageCacheRef.current.set(selectedChat._id, cached.map(m => m._id === id ? { ...m, reactions: nr } : m));
-                  }
-                  setTimeout(() => socket.emit("message:react", { chatId: selectedChat._id, messageId: id, reactions: nr }), 0);
-                }}
-                onDeleteMessage={(id) => {
-                  setConfirmDialog({
-                    isOpen: true,
-                    title: "Delete for me",
-                    message: "This message will be deleted for you. Other participants can still see it.",
-                    onConfirm: async () => {
-                      const updateFn = m => m._id !== id;
-                      setMessages(prev => prev.filter(updateFn));
-                      const cached = messageCacheRef.current.get(selectedChat._id);
-                      if (cached) messageCacheRef.current.set(selectedChat._id, cached.filter(updateFn));
+                    currentUser={currentUser}
+                    users={users} 
+                    chats={chats} 
+                    onlineUsers={onlineUsers} 
+                    selectedChat={selectedChat}
+                    onSelectChat={setSelectedChat}
+                    loading={loading}
+                    onSelectUser={async (user) => {
                       try {
-                        await api.delete(`/chat/message/${id}`);
-                      } catch (err) {
-                        console.error("Failed to delete message on backend", err);
-                      }
+                        const url = user.isSupportChat ? `/chat/support` : `/chat/chat/${user._id}`;
+                        const res = await api.get(url);
+                        setSelectedChat(res.chat);
+                        setChats(prev => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev);
+                      } catch (e) { console.error(e); }
+                    }}
+                    onStartNewChat={() => {}}
+                    onClose={handleClose}
+                    onDeleteChat={async (chatId) => {
+                      if (!window.confirm("Remove this chat from your list?")) return;
+                      try {
+                        await api.delete(`/chat/chat/${chatId}`);
+                        setChats(prev => prev.filter(c => c._id !== chatId));
+                        if (selectedChat?._id === chatId) setSelectedChat(null);
+                      } catch (e) { console.error("Failed to delete chat", e); }
+                    }}
+                    activeCallChatId={(isCallOpen || showIncomingToast) ? callData?.chatId : null}
+                    activeCallStatus={isIncomingCall ? "Ringing..." : "Calling..."}
+                />
+              ) : (
+                // Loading spinner for users/guests while support chat fetches
+                <div className="flex-1 flex flex-col items-center justify-center gap-4 relative">
+                  {/* Decorative background blur */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                    <div className="w-32 h-32 bg-indigo-500 rounded-full blur-[60px]"></div>
+                  </div>
+                  <AppleSpinner className="relative z-10" />
+                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 relative z-10">Connecting...</p>
+                  
+                  {/* Close button during loading just in case it hangs */}
+                  <button onClick={handleClose} className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-white/10 hover:bg-slate-200 text-slate-600 dark:text-white transition-colors z-10">
+                    <X size={16} />
+                  </button>
+                </div>
+              )
+           ) : (
+              // Active Conversation Window
+              <div className="flex-1 flex flex-col min-h-0 w-full relative">
+                <CallInterface 
+                   isOpen={isCallOpen} isIncoming={isIncomingCall}
+                   callerName={callData?.callerName || getOtherParticipant(selectedChat)?.name || getOtherParticipant(selectedChat)?.username}
+                   callerAvatar={callData?.callerAvatar || getOtherParticipant(selectedChat)?.profilePicture}
+                   isVideoCall={isVideoCall}
+                   onAccept={async () => { if (callData) { setIsIncomingCall(false); setCallStartTime(Date.now()); await webrtcManager.acceptCall(callData.callerId, callData.chatId, isVideoCall, currentUser._id); } }}
+                   onReject={() => { if (callData) socket.emit("call:reject", { targetUserId: callData.callerId, callerId: currentUser._id }); setIsCallOpen(false); }}
+                   onEnd={() => { 
+                     logCallMessage(callStartTime ? "ended" : "missed", callData, isVideoCall, callStartTime);
+                     webrtcManager.endCall(true); 
+                     setIsCallOpen(false); 
+                     setCallStartTime(null);
+                   }}
+                />
+
+                <ChatWindow 
+                  chat={selectedChat} messages={messages} isLoadingMessages={isLoadingMessages} currentUser={currentUser}
+                  isOnline={selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id)}
+                  isTyping={isTyping}
+                  onSendMessage={(text) => { notifyTyping(); handleSendMessage(text); }}
+                  onSendFile={handleSendFile}
+                  onInitiateCall={async (isVideo) => {
+                    if (!selectedChat || !currentUser) return;
+                    const targetUserId = getOtherParticipant(selectedChat)?._id;
+                    if (!targetUserId) return;
+                    setIsVideoCall(isVideo);
+                    setCallData({ targetUserId, chatId: selectedChat._id });
+                    setIsIncomingCall(false);
+                    
+                    try {
+                      await webrtcManager.initializeLocalStream(isVideo);
+                    } catch (e) {
+                      console.error("Failed to get local stream", e);
                     }
-                  });
-                }}
-              />
-            </div>
-          </DraggableResizableWindow>
+
+                    setCallStartTime(null); // Reset timer just in case
+                    setIsCallOpen(true);
+                    socket.emit("call:initiate", { targetUserId, callerId: currentUser._id, callType: isVideo ? "video" : "audio", chatId: selectedChat._id });
+                  }}
+                  onMinimize={handleClose}
+                  onClose={handleClose}
+                  onBack={currentUser?.role === 'admin' ? () => setSelectedChat(null) : undefined}
+                  onUnsendMessage={(id) => {
+                    setConfirmDialog({
+                      isOpen: true,
+                      title: "Delete for everyone",
+                      message: "Are you sure you want to unsend this message? It will be removed for everyone in the chat.",
+                      onConfirm: () => {
+                        const updateFn = m => m._id === id ? { ...m, isUnsent: true, content: "This message was unsent" } : m;
+                        setMessages(prev => prev.map(updateFn));
+                        const cached = messageCacheRef.current.get(selectedChat._id);
+                        if (cached) messageCacheRef.current.set(selectedChat._id, cached.map(updateFn));
+                        socket.emit("message:unsend", { chatId: selectedChat._id, messageId: id });
+                      }
+                    });
+                  }}
+                  onReactMessage={(id, emoji) => {
+                    let nr;
+                    setMessages(prev => prev.map(m => {
+                      if (m._id === id) {
+                        nr = [...(m.reactions || [])];
+                        const idx = nr.findIndex(r => r.user?._id === currentUser._id || r.user === currentUser._id);
+                        if (idx > -1) { if (nr[idx].emoji === emoji) nr.splice(idx, 1); else nr[idx].emoji = emoji; }
+                        else nr.push({ emoji, user: { _id: currentUser._id, name: currentUser.name } });
+                        return { ...m, reactions: nr };
+                      }
+                      return m;
+                    }));
+                    
+                    // Update cache
+                    const cached = messageCacheRef.current.get(selectedChat._id);
+                    if (cached && nr) {
+                      messageCacheRef.current.set(selectedChat._id, cached.map(m => m._id === id ? { ...m, reactions: nr } : m));
+                    }
+                    setTimeout(() => socket.emit("message:react", { chatId: selectedChat._id, messageId: id, reactions: nr }), 0);
+                  }}
+                  onDeleteMessage={(id) => {
+                    setConfirmDialog({
+                      isOpen: true,
+                      title: "Delete for me",
+                      message: "This message will be deleted for you. Other participants can still see it.",
+                      onConfirm: async () => {
+                        const updateFn = m => m._id !== id;
+                        setMessages(prev => prev.filter(updateFn));
+                        const cached = messageCacheRef.current.get(selectedChat._id);
+                        if (cached) messageCacheRef.current.set(selectedChat._id, cached.filter(updateFn));
+                        try {
+                          await api.delete(`/chat/message/${id}`);
+                        } catch (err) {
+                          console.error("Failed to delete message on backend", err);
+                        }
+                      }
+                    });
+                  }}
+                />
+              </div>
+           )}
+        </div>
       )}
 
       {/* Confirmation Modal */}

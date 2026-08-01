@@ -6,11 +6,64 @@ import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { api } from '@/utils/api';
 import { DashboardContext } from "../../app/(dashboard)/layout";
 import { useLanguage } from "@/context/LanguageContext";
-import { Settings, MessageCircle, Box, ChevronRight } from "lucide-react";
+import { 
+  Settings, 
+  MessageCircle, 
+  Box, 
+  ChevronRight,
+  Smartphone,
+  Shirt,
+  Home,
+  Monitor,
+  Watch,
+  Headphones,
+  ShoppingBag,
+  Dumbbell,
+  Book,
+  Car,
+  Coffee,
+  Heart,
+  Music,
+  Gamepad,
+  Camera,
+  Gift
+} from "lucide-react";
+import FeedbackModal from "./FeedbackModal";
 
-const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed }) => (
+const getCategoryIcon = (categoryName) => {
+  if (!categoryName) return Box;
+  const name = categoryName.toLowerCase();
+  
+  // Custom downloaded icons
+  if (name.includes('charger') || name.includes('adapter')) return '/icons/categories/charger.png';
+  if (name.includes('power') && name.includes('bank')) return '/icons/categories/power-bank.png';
+  if (name.includes('cable') || name.includes('usb')) return '/icons/categories/usb-cable.png';
+  if (name.includes('watch')) return '/icons/categories/smart-watch.png';
+  if (name.includes('smart') || name.includes('bluetooth') || name.includes('speaker')) return '/icons/categories/smart.png';
+  if (name.includes('neckband')) return '/icons/categories/neckband.png';
+  if (name.includes('music') || name.includes('audio') || name.includes('headphone') || name.includes('earphone') || name.includes('earbud') || name.includes('tws')) return '/icons/categories/music.png';
+
+  // Fallbacks
+  if (name.includes('phone') || name.includes('mobile')) return Smartphone;
+  if (name.includes('fashion') || name.includes('cloth') || name.includes('shirt') || name.includes('apparel') || name.includes("men's") || name.includes("women's")) return Shirt;
+  if (name.includes('home') || name.includes('furniture') || name.includes('decor')) return Home;
+  if (name.includes('electronic') || name.includes('computer') || name.includes('pc') || name.includes('laptop')) return Monitor;
+  if (name.includes('bag') || name.includes('luggage')) return ShoppingBag;
+  if (name.includes('sport') || name.includes('fitness') || name.includes('outdoor')) return Dumbbell;
+  if (name.includes('book') || name.includes('stationery')) return Book;
+  if (name.includes('car') || name.includes('auto') || name.includes('vehicle')) return Car;
+  if (name.includes('food') || name.includes('grocery') || name.includes('drink') || name.includes('kitchen')) return Coffee;
+  if (name.includes('health') || name.includes('beauty') || name.includes('care') || name.includes('makeup')) return Heart;
+  if (name.includes('game') || name.includes('toy')) return Gamepad;
+  if (name.includes('camera') || name.includes('photo')) return Camera;
+  if (name.includes('gift') || name.includes('party')) return Gift;
+  return Box;
+};
+
+const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isCollapsed, onClick }) => (
   <Link
     href={href || "#"}
+    onClick={onClick}
     className={`group relative flex items-center px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
       active
         ? "bg-[#e5e5ea] text-apple-ink dark:bg-[#2c2c2e] dark:text-white"
@@ -21,7 +74,7 @@ const SidebarItem = React.memo(({ icon: Icon, label, href, active, count, isColl
       {Icon && (
         <div className="flex items-center justify-center shrink-0 transition-all duration-300 group-hover:animate-jelly origin-center">
           <Icon
-            className={`w-[18px] h-[18px] ${
+            className={`w-[18px] h-[18px] transform transition-transform duration-300 origin-center ${isCollapsed ? 'scale-[1.35]' : 'scale-100'} ${
               active ? "stroke-[2.5px] text-apple-ink dark:text-white" : "stroke-[2px] text-apple-ink dark:text-white opacity-80"
             }`}
           />
@@ -58,6 +111,7 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const { user } = useContext(DashboardContext) || {};
   const { t } = useLanguage();
 
@@ -164,38 +218,47 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
   const view = searchParams?.get("view");
 
+  const leafCategories = React.useMemo(() => {
+    let leaves = [];
+    categories.forEach(cat => {
+      const subcats = cat.subcategories || [];
+      if (subcats.length === 0) {
+        leaves.push({ ...cat, paramKey: 'category_id' });
+      } else {
+        subcats.forEach(sub => {
+          const children = sub.subcategories || [];
+          if (children.length === 0) {
+            leaves.push({ ...sub, paramKey: 'subCategory_id' });
+          } else {
+            children.forEach(child => {
+              leaves.push({ ...child, paramKey: 'childCategory_id' });
+            });
+          }
+        });
+      }
+    });
+    return leaves;
+  }, [categories]);
+
   return (
     <aside className="h-full flex flex-col bg-transparent lg:bg-apple-canvas dark:bg-transparent lg:dark:bg-apple-canvas border-0 lg:border lg:border-apple-hairline rounded-none lg:rounded-apple-lg p-0 lg:p-3 overflow-hidden">
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-1 pr-1 hover:pr-0 transition-all custom-scrollbar">
         {/* Categories Accordion */}
-        <div className="hidden lg:block space-y-1">
-          {categories.map(category => {
-            const subcats = category.subcategories || [];
-            const isOpen = openCategory === category._id;
+        <div className="block space-y-1">
+          {leafCategories.map(leaf => {
             const isActiveCat =
-              category._id === activeCategoryId ||
-              subcats.some(sub =>
-                sub._id === activeSubCategoryId ||
-                (sub.subcategories || []).some(child => child._id === activeChildCategoryId)
-              );
-            const Icon = Box;
+              (leaf.paramKey === 'category_id' && activeCategoryId === leaf._id) ||
+              (leaf.paramKey === 'subCategory_id' && activeSubCategoryId === leaf._id) ||
+              (leaf.paramKey === 'childCategory_id' && activeChildCategoryId === leaf._id);
+            const Icon = getCategoryIcon(leaf.name);
 
             return (
-              <div
-                key={category._id}
-                className="relative"
-                onMouseEnter={() => handleMouseEnter(category._id)}
-                onMouseLeave={() => handleMouseLeave(category._id)}
-              >
+              <div key={leaf._id} className="relative">
                 <button
                   onClick={() => {
                     if (isCollapsed) return;
-                    if (subcats.length === 0) {
-                      router.push(`/shop?category_id=${category._id}`);
-                    } else {
-                      setOpenCategory(isOpen ? null : category._id);
-                    }
+                    router.push(`/shop?${leaf.paramKey}=${leaf._id}`);
                   }}
                   className={`w-full group relative flex items-center justify-between px-[12px] py-[10px] mb-[2px] rounded-apple-sm transition-all duration-200 ${
                     isActiveCat
@@ -203,71 +266,19 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
                       : "text-apple-ink dark:text-white hover:bg-[#f2f2f7] dark:hover:bg-[#1c1c1e]"
                   }`}
                 >
-                  <div className="flex items-center gap-3 overflow-hidden">
-                    {category.image ? (
-                      <img src={category.image} alt={category.name} className="w-[18px] h-[18px] object-cover rounded opacity-80 shrink-0" />
+                  <div className="flex items-center gap-3 w-full">
+                    {leaf.image ? (
+                      <img src={leaf.image} alt={leaf.name} className={`w-[18px] h-[18px] object-cover rounded shrink-0 transform transition-transform duration-300 origin-center ${isCollapsed ? 'scale-[1.35]' : 'scale-100'}`} />
+                    ) : typeof Icon === 'string' ? (
+                      <img src={Icon} alt={leaf.name} className={`w-[18px] h-[18px] object-contain shrink-0 dark:invert transform transition-transform duration-300 origin-center ${isCollapsed ? 'scale-[1.35]' : 'scale-100'}`} />
                     ) : (
-                      <Icon className="w-[18px] h-[18px] opacity-80 shrink-0" />
+                      <Icon className={`w-[18px] h-[18px] shrink-0 transform transition-transform duration-300 origin-center ${isCollapsed ? 'scale-[1.35]' : 'scale-100'} ${isActiveCat ? 'stroke-[2.5px]' : 'opacity-80'}`} />
                     )}
-                    <span className={`text-[14px] font-sans whitespace-nowrap transition-all duration-300 ${isActiveCat ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
-                      {category.name}
+                    <span className={`text-[14px] font-sans whitespace-nowrap overflow-hidden transition-all duration-300 ${isActiveCat ? 'font-semibold' : 'font-normal'} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0' : 'opacity-100 lg:max-w-[200px] w-auto'}`}>
+                      {leaf.name}
                     </span>
                   </div>
-                  {subcats.length > 0 && (
-                    <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${isOpen ? 'rotate-90' : ''} ${isCollapsed ? 'lg:opacity-0 lg:max-w-0 lg:scale-0 lg:ml-0' : 'opacity-100 lg:max-w-[20px] lg:scale-100 ml-auto'}`} />
-                  )}
                 </button>
-
-                <AnimatePresence>
-                  {!isCollapsed && isOpen && subcats.length > 0 && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden ml-[32px]"
-                    >
-                      {subcats.map(sub => {
-                        const childCats = sub.subcategories || [];
-                        const isSubActive = sub._id === activeSubCategoryId;
-                        return (
-                          <div key={sub._id}>
-                            <Link
-                              href={`/shop?subCategory_id=${sub._id}`}
-                              className={`block py-1.5 px-3 text-[13px] font-sans rounded-apple-sm transition-colors ${
-                                isSubActive
-                                  ? "text-[#0071e3] dark:text-blue-400 font-medium"
-                                  : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-                              }`}
-                            >
-                              {sub.name}
-                            </Link>
-                            {childCats.length > 0 && (
-                              <div className="ml-4 border-l border-slate-100 dark:border-white/5 pl-2 mt-1 mb-2 space-y-1">
-                                {childCats.map(child => {
-                                  const isChildActive = child._id === activeChildCategoryId;
-                                  return (
-                                    <Link
-                                      key={child._id}
-                                      href={`/shop?childCategory_id=${child._id}`}
-                                      className={`block py-1 px-2 text-[12px] font-sans rounded-apple-sm transition-colors ${
-                                        isChildActive
-                                          ? "text-[#0071e3] dark:text-blue-400 font-medium bg-blue-50/50 dark:bg-blue-900/10"
-                                          : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-                                      }`}
-                                    >
-                                      {child.name}
-                                    </Link>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             );
           })}
@@ -275,24 +286,30 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
         <div className="h-px bg-slate-100 dark:bg-white/5 mx-2 my-3" />
 
-        {/* Settings & Help */}
+        {/* Help */}
         <div className="space-y-1 pb-4">
           <SidebarItem
-            icon={Settings}
-            label={t("settings")}
-            href={user?.username ? `/u/${user.username}?tab=settings` : "/auth/login"}
-            active={pathname === `/u/${user?.username}`}
-            isCollapsed={isCollapsed}
-          />
-          <SidebarItem
             icon={MessageCircle}
-            label={t("help_feedback")}
+            label="Help & Feedback"
             href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsFeedbackModalOpen(true);
+            }}
             active={false}
             isCollapsed={isCollapsed}
           />
         </div>
       </div>
+
+      <FeedbackModal 
+        isOpen={isFeedbackModalOpen}
+        onClose={() => setIsFeedbackModalOpen(false)}
+        onOpenChat={() => {
+          // Dispatch custom event so ChatModal can catch it and open
+          window.dispatchEvent(new CustomEvent('open-support-chat'));
+        }}
+      />
     </aside>
   );
 }

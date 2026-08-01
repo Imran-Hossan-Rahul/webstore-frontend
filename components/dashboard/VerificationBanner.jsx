@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Mail, Send, Loader2, X, ShieldAlert } from "lucide-react";
+import { Mail, Send, X, ShieldAlert } from "lucide-react";
 import { api } from '@/utils/api';
 import { useToast } from '@/components/ui/ToastProvider';
 import { motion, AnimatePresence } from 'framer-motion';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const VerificationBanner = ({ user }) => {
   const { showToast } = useToast();
@@ -51,7 +52,7 @@ const VerificationBanner = ({ user }) => {
                 disabled={resending}
                 className="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 hover:opacity-70 transition-all flex items-center gap-2"
               >
-                {resending ? <Loader2 size={12} className="animate-spin" /> : <><Send size={12} /> Resend Verification Link</>}
+                {resending ? <AppleSpinner size={12} className="animate-spin" /> : <><Send size={12} /> Resend Verification Link</>}
               </button>
               <button 
                 onClick={() => setIsVisible(false)}

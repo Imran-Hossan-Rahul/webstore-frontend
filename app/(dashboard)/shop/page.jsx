@@ -152,6 +152,22 @@ export default function ShopPage() {
     fetchProducts(1, false);
   }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, sortOrder, minPrice, maxPrice]);
 
+  // Signal global loader that we are fetching data
+  if (typeof window !== 'undefined') {
+    if (loading && page === 1) {
+      window.isFetchingData = true;
+    }
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      if (typeof window !== 'undefined') {
+        window.isFetchingData = false;
+        window.dispatchEvent(new Event('nextPageReady'));
+      }
+    }
+  }, [loading]);
+
   const loadMore = () => {
     const nextPage = page + 1;
     setPage(nextPage);
@@ -194,9 +210,25 @@ export default function ShopPage() {
             <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
           )}
         </div>
-        <button className="bg-[#0071e3] text-white px-[15px] py-[8px] rounded-full font-sans text-[14px] font-normal hover:bg-[#0077ed] transition-colors relative z-20">
-          Buy Now
-        </button>
+        <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
+          <button 
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="flex-1 bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center"
+          >
+            Add to Cart
+          </button>
+          <button 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              e.stopPropagation(); 
+              window.dispatchEvent(new Event('startNavigation'));
+              router.push(`/checkout?productId=${product.id}&quantity=1&finalPrice=${product.selling_price}&originalPrice=${product.original_price || product.selling_price}`);
+            }}
+            className="flex-1 bg-[#0071e3] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0077ed] flex items-center justify-center"
+          >
+            Buy Now
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -322,7 +354,6 @@ export default function ShopPage() {
           <div className="flex-1 p-4 md:p-8">
             {loading && page === 1 ? (
               <div className="flex items-center justify-center h-64">
-                <Loader2 className="w-8 h-8 animate-spin text-[#0071e3]" />
               </div>
             ) : products.length === 0 ? (
               <div className="text-center py-24 bg-white dark:bg-[#1d1d1f] rounded-2xl border border-apple-hairline">

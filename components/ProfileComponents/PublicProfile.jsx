@@ -3,13 +3,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Calendar, Link as LinkIcon, Loader2, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut } from "lucide-react";
+import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useUser } from '@/context/UserContext';
 import { format } from "date-fns";
 import { useToast } from "@/components/ui/ToastProvider";
 import OrdersList from '@/components/orders/OrdersList';
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function PublicProfile({ username }) {
   const router = useRouter();
@@ -163,7 +164,7 @@ export default function PublicProfile({ username }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[50vh] font-sans">
-        <Loader2 className="w-8 h-8 animate-spin text-[#0071e3]" />
+        <AppleSpinner className="w-8 h-8 animate-spin text-[#0071e3]" />
       </div>
     );
   }
@@ -225,7 +226,7 @@ export default function PublicProfile({ username }) {
               </div>
               
               <button type="submit" disabled={isSaving} className="mt-8 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                 Save Changes
               </button>
             </form>
@@ -245,7 +246,7 @@ export default function PublicProfile({ username }) {
                 </div>
               </div>
               <button type="submit" disabled={isSaving} className="mt-8 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2">
-                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
+                {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
                 Update Password
               </button>
             </form>
@@ -299,7 +300,7 @@ export default function PublicProfile({ username }) {
               
               {addresses.length > 0 && (
                 <button onClick={handleUpdateAddresses} disabled={isSaving} className="mt-6 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2 shadow-sm">
-                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                   Save All Addresses
                 </button>
               )}
@@ -354,8 +355,18 @@ export default function PublicProfile({ username }) {
               </div>
             </div>
 
-            {!isOwner && (
-              <div className="flex flex-col gap-3 min-w-[140px]">
+            {isOwner ? (
+              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0">
+                <button 
+                  onClick={handleLogout} 
+                  className={`w-full py-2.5 px-4 rounded-full text-[14px] font-medium transition-all flex items-center justify-center gap-2 ${confirmLogout ? 'bg-red-500 text-white shadow-sm' : 'text-red-500 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20'}`}
+                >
+                  <LogOut className="w-4 h-4" />
+                  {confirmLogout ? 'Confirm?' : 'Logout'}
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0">
                 <button className="w-full py-2.5 px-4 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors">
                   Follow
                 </button>
@@ -380,14 +391,6 @@ export default function PublicProfile({ username }) {
                 <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'password' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   Password
                 </button>
-                <div className="w-[1px] h-6 bg-gray-300 dark:bg-gray-700 my-auto mx-1"></div>
-                <button 
-                  onClick={handleLogout} 
-                  className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all flex items-center gap-1.5 ${confirmLogout ? 'bg-red-500 text-white' : 'text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20'}`}
-                >
-                  <LogOut className="w-4 h-4" />
-                  {confirmLogout ? 'Confirm?' : 'Logout'}
-                </button>
               </>
             )}
           </div>
@@ -409,7 +412,7 @@ export default function PublicProfile({ username }) {
                   </div>
                 </div>
                 <button type="submit" disabled={isSaving} className="mt-8 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2">
-                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
+                  {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
                   Update Password
                 </button>
               </form>
@@ -477,7 +480,7 @@ export default function PublicProfile({ username }) {
                 )}
                 {addresses.length > 0 && (
                   <button onClick={handleUpdateAddresses} disabled={isSaving} className="mt-6 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2 shadow-sm">
-                    {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                    {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
                     Save All Addresses
                   </button>
                 )}

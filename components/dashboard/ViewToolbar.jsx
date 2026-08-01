@@ -109,4 +109,6 @@ const ViewToolbar = memo(({
     );
 });
 
+ViewToolbar.displayName = 'ViewToolbar';
+
 export default ViewToolbar;

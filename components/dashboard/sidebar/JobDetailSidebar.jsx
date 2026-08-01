@@ -1,4 +1,6 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 import React, { useState, useEffect } from "react";
 import { Target, Briefcase, Award, Globe, Layers, Zap } from "lucide-react";
 import { api } from "@/utils/api";
@@ -24,11 +26,8 @@ export default function JobDetailSidebar({ jobId }) {
 
   if (loading) {
     return (
-      <div className="space-y-6 animate-pulse">
-        <div className="h-64 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-        <div className="h-40 bg-slate-100 dark:bg-white/5 rounded-3xl" />
-      </div>
-    );
+      <div className="flex justify-center p-12"><AppleSpinner /></div>
+      );
   }
 
   if (!job) return null;
@@ -88,7 +87,7 @@ export default function JobDetailSidebar({ jobId }) {
             <Award size={14} /> Pro Tip
           </h3>
           <p className="text-xs font-medium text-slate-300 leading-relaxed mb-6">
-            Don't just look at the rate! Review their portfolios and previous patron feedback to ensure the best quality for your devlog.
+            Don&apos;t just look at the rate! Review their portfolios and previous patron feedback to ensure the best quality for your devlog.
           </p>
           <button className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all">
             Edit Job Details

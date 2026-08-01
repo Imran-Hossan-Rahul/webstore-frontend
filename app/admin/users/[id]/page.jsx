@@ -7,6 +7,8 @@ import { ChevronLeft, Ban, UserCheck, Shield } from "lucide-react";
 import { useToast } from '@/components/ui/ToastProvider';
 import UserIntelligenceHub from '@/components/AdminComponents/UserIntelligenceHub';
 
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
 export default function UserDetailsPage() {
   const params = useParams();
   const router = useRouter();
@@ -43,7 +45,7 @@ export default function UserDetailsPage() {
     return (
       <div className="min-h-screen bg-white dark:bg-[#050505] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-           <div className="w-8 h-8 border-2 border-slate-200 dark:border-white/5 border-t-slate-900 dark:border-t-white rounded-full animate-spin" />
+           <AppleSpinner />
            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-400">Syncing Intelligence</p>
         </div>
       </div>

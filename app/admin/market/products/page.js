@@ -2,7 +2,8 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
 import { api } from '@/utils/api';
-import { Plus, X, Loader2, Image as ImageIcon, Upload, Film, Edit, Eye, Trash2 } from "lucide-react";
+import { Plus, X, Image as ImageIcon, Upload, Film, Edit, Eye, Trash2 } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 export default function ProductsManager() {
   const [products, setProducts] = useState([]);
@@ -351,7 +352,7 @@ export default function ProductsManager() {
             {loading ? (
               <tr>
                 <td colSpan="7" className="p-8 text-center text-gray-500">
-                  <Loader2 className="animate-spin mx-auto mb-2" size={24} />
+                  <AppleSpinner className="animate-spin mx-auto mb-2" />
                   Loading...
                 </td>
               </tr>
@@ -406,7 +407,7 @@ export default function ProductsManager() {
       <div className="md:hidden flex flex-col gap-3">
         {loading ? (
           <div className="py-12 flex flex-col items-center text-gray-500">
-            <Loader2 className="animate-spin mb-2" size={24} />
+            <AppleSpinner className="animate-spin mb-2" />
             <span className="text-sm">Loading...</span>
           </div>
         ) : products.length === 0 ? (
@@ -716,7 +717,7 @@ export default function ProductsManager() {
                               </div>
                             ))}
                             {wholesalers.filter(w => w.name.toLowerCase().includes(wholesalerSearch.toLowerCase())).length === 0 && (
-                              <div className="px-4 py-3 text-gray-500">No wholesalers found matching "{wholesalerSearch}"</div>
+                              <div className="px-4 py-3 text-gray-500">No wholesalers found matching &quot;{wholesalerSearch}&quot;</div>
                             )}
                           </div>
                         )}
@@ -1140,7 +1141,7 @@ export default function ProductsManager() {
                     disabled={submitting}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg shadow-blue-900/20"
                   >
-                    {submitting ? <Loader2 size={18} className="animate-spin" /> : null}
+                    {submitting ? <AppleSpinner size={18} className="animate-spin" /> : null}
                     {editingProductId ? "Save Changes" : "Publish Product"}
                   </button>
                 </div>

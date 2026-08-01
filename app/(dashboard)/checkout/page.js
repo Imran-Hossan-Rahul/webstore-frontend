@@ -42,6 +42,10 @@ export default function Checkout() {
   const [promoCodeInput, setPromoCodeInput] = useState('');
   const [appliedPromo, setAppliedPromo] = useState(null);
   const [promoError, setPromoError] = useState('');
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [formErrors, setFormErrors] = useState({});
+  const [deliveryData, setDeliveryData] = useState({ baseCharge: 0, codCharge: 0, totalDeliveryCharge: 0, totalWeightInGrams: 0 });
+  const [isCalculatingDelivery, setIsCalculatingDelivery] = useState(false);
 
   const selectedDistrictId = districts.find(d => d.name === form.district)?.id;
   const filteredThanas = selectedDistrictId 
@@ -60,11 +64,47 @@ export default function Checkout() {
         setMarketConfig(config);
       })
       .catch(console.error);
+      
+    try {
+      const stored = localStorage.getItem('codalina_addresses');
+      if (stored) {
+        setSavedAddresses(JSON.parse(stored));
+      }
+    } catch(e) {}
   }, [productId]);
 
   useEffect(() => {
     setAddressSaved(false);
   }, [form, addressConfirmed]);
+
+  useEffect(() => {
+    if (product && form.district && form.thana) {
+      const fetchDelivery = async () => {
+        setIsCalculatingDelivery(true);
+        try {
+          const payload = {
+            district: form.district,
+            thana: form.thana,
+            items: [{ id: product.id || product._id, quantity }],
+            isCod: paymentType === 'Cash on Delivery'
+          };
+          const res = await api.post('/market/delivery/calculate', payload);
+          if (res && res.data) {
+            setDeliveryData(res.data);
+          }
+        } catch (error) {
+          console.error("Failed to calculate delivery", error);
+        } finally {
+          setIsCalculatingDelivery(false);
+        }
+      };
+      // Debounce slightly to prevent rapid calls while typing
+      const timeoutId = setTimeout(fetchDelivery, 500);
+      return () => clearTimeout(timeoutId);
+    } else {
+      setDeliveryData({ baseCharge: 0, codCharge: 0, totalDeliveryCharge: 0, totalWeightInGrams: 0 });
+    }
+  }, [form.district, form.thana, quantity, paymentType, product]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,10 +133,40 @@ export default function Checkout() {
         source_channel: 'organic:direct'
       };
 
-      await api.post('/market/orders', payload);
+      const response = await api.post('/market/orders', payload);
+      
+      const createdOrder = response?.data || response;
+      const orderId = createdOrder?.id || createdOrder?._id;
+      
       setOrderConfirmed(true);
-      // Dispatch event so RightSidebar can show the order confirmed toast
       window.dispatchEvent(new CustomEvent('orderConfirmed'));
+
+      // Clear the purchased item from the cart
+      try {
+        const prodIdStr = product.id.toString();
+        const cartStr = localStorage.getItem('cartIds');
+        if (cartStr) {
+          let cartIds = JSON.parse(cartStr);
+          if (cartIds.includes(prodIdStr)) {
+            cartIds = cartIds.filter(id => id !== prodIdStr);
+            localStorage.setItem('cartIds', JSON.stringify(cartIds));
+            
+            const detailsStr = localStorage.getItem('cartDetails');
+            if (detailsStr) {
+              let cartDetails = JSON.parse(detailsStr);
+              delete cartDetails[prodIdStr];
+              localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+            }
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+          }
+        }
+      } catch (err) {}
+
+      if (orderId) {
+        // Trigger global loader before pushing
+        window.dispatchEvent(new Event('startNavigation'));
+        router.replace(`/orders/${orderId}`);
+      }
     } catch (err) {
       console.error(err?.data || err);
       setErrorMessage(err?.data?.error || err.message || 'Checkout failed');
@@ -137,17 +207,40 @@ export default function Checkout() {
   };
 
   const handleSaveAddress = () => {
-    if (form.name.trim() === '' || form.phone.trim().length < 11 || form.address_line.trim() === '' || form.district === '' || form.thana === '') {
-      setErrorMessage("Please fill all the address fields correctly before saving.");
-      setShowErrorModal(true);
+    const errors = {};
+    if (form.name.trim() === '') errors.name = "Full name is required";
+    if (form.phone.trim().length < 11) errors.phone = "Valid phone number is required (min 11 digits)";
+    if (form.address_line.trim() === '') errors.address_line = "Detailed address is required";
+    if (form.district === '') errors.district = "Please select a district";
+    if (form.thana === '') errors.thana = "Please select a thana";
+    
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
       return;
     }
+
     if (!addressConfirmed) {
       setErrorMessage("Please confirm that your location matches your address by checking the box.");
       setShowErrorModal(true);
       return;
     }
+    
+    setFormErrors({});
     setAddressSaved(true);
+    
+    try {
+      let addresses = [];
+      const stored = localStorage.getItem('codalina_addresses');
+      if (stored) {
+        addresses = JSON.parse(stored);
+      }
+      const exists = addresses.find(a => a.name === form.name && a.phone === form.phone && a.address_line === form.address_line);
+      if (!exists) {
+        addresses.push(form);
+        localStorage.setItem('codalina_addresses', JSON.stringify(addresses));
+        setSavedAddresses(addresses);
+      }
+    } catch(e) {}
   };
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
@@ -164,11 +257,27 @@ export default function Checkout() {
     );
   }
 
-  if (!product) return <div className="min-h-screen bg-apple-canvas flex items-center justify-center text-apple-muted">Loading product...</div>;
+  // Signal global loader that we are fetching data
+  if (typeof window !== 'undefined') {
+    if (!product) {
+      window.isFetchingData = true;
+    }
+  }
+
+  useEffect(() => {
+    if (product) {
+      if (typeof window !== 'undefined') {
+        window.isFetchingData = false;
+        window.dispatchEvent(new Event('nextPageReady'));
+      }
+    }
+  }, [product]);
+
+  if (!product) return <div className="min-h-screen bg-apple-canvas flex items-center justify-center text-apple-muted"></div>;
 
   const subTotal = baseFinalPrice * quantity;
   const discountAmount = appliedPromo ? (subTotal * appliedPromo.discountPercentage) / 100 : 0;
-  const deliveryCharge = 150; // Mock delivery charge
+  const deliveryCharge = deliveryData.totalDeliveryCharge || 0;
   const total = subTotal - discountAmount + deliveryCharge;
   const totalOriginal = baseOriginalPrice * quantity + deliveryCharge;
 
@@ -261,26 +370,43 @@ export default function Checkout() {
 
                 {addressTab === 'New Address' && (
                   <div className="space-y-4 mt-6">
-                    <input required type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full border border-gray-200 rounded py-2.5 px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600" placeholder="Full Name" />
-                    <div className="flex gap-2 sm:gap-4">
-                      <input required type="tel" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} className="flex-1 min-w-0 border border-gray-200 rounded py-2.5 px-3 sm:px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600" placeholder="Phone Number" />
-                      <input type="text" value={form.zip} onChange={e => setForm({...form, zip: e.target.value})} className="w-20 sm:w-32 shrink-0 border border-gray-200 rounded py-2.5 px-2 sm:px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600" placeholder="ZIP" />
+                    <div>
+                      <input required type="text" value={form.name} onChange={e => { setForm({...form, name: e.target.value}); setFormErrors({...formErrors, name: null}); }} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none focus:ring-1 ${formErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 focus:border-blue-600 focus:ring-blue-600'}`} placeholder="Full Name" />
+                      {formErrors.name && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.name}</p>}
                     </div>
-                    <textarea required value={form.address_line} onChange={e => setForm({...form, address_line: e.target.value})} className="w-full border border-gray-200 rounded py-2.5 px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 resize-y" rows="3" placeholder="Full address"></textarea>
                     
-                    <select required value={form.district} onChange={e => setForm({...form, district: e.target.value, thana: ''})} className="w-full border border-gray-200 rounded py-2.5 px-4 text-sm focus:outline-none focus:border-[#111827] bg-white appearance-none">
-                      <option value="" disabled>Please select your parcel's district</option>
-                      {districts.sort((a, b) => a.name.localeCompare(b.name)).map(d => (
-                        <option key={d.id} value={d.name}>{d.name}</option>
-                      ))}
-                    </select>
+                    <div className="flex gap-2 sm:gap-4">
+                      <div className="flex-1 min-w-0">
+                        <input required type="tel" value={form.phone} onChange={e => { setForm({...form, phone: e.target.value}); setFormErrors({...formErrors, phone: null}); }} className={`w-full border rounded py-2.5 px-3 sm:px-4 text-sm focus:outline-none focus:ring-1 ${formErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 focus:border-blue-600 focus:ring-blue-600'}`} placeholder="Phone Number" />
+                        {formErrors.phone && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.phone}</p>}
+                      </div>
+                      <input type="text" value={form.zip} onChange={e => setForm({...form, zip: e.target.value})} className="w-20 sm:w-32 shrink-0 border border-gray-200 rounded py-2.5 px-2 sm:px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 h-fit" placeholder="ZIP" />
+                    </div>
+                    
+                    <div>
+                      <textarea required value={form.address_line} onChange={e => { setForm({...form, address_line: e.target.value}); setFormErrors({...formErrors, address_line: null}); }} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none focus:ring-1 resize-y ${formErrors.address_line ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 focus:border-blue-600 focus:ring-blue-600'}`} rows="3" placeholder="Full address"></textarea>
+                      {formErrors.address_line && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.address_line}</p>}
+                    </div>
+                    
+                    <div>
+                      <select required value={form.district} onChange={e => { setForm({...form, district: e.target.value, thana: ''}); setFormErrors({...formErrors, district: null}); }} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none appearance-none ${formErrors.district ? 'border-red-500 focus:border-red-500 bg-red-50/30 text-red-600' : 'border-gray-200 focus:border-[#111827] bg-white'}`}>
+                        <option value="" disabled>Please select your parcel&apos;s district</option>
+                        {districts.sort((a, b) => a.name.localeCompare(b.name)).map(d => (
+                          <option key={d.id} value={d.name}>{d.name}</option>
+                        ))}
+                      </select>
+                      {formErrors.district && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.district}</p>}
+                    </div>
 
-                    <select required value={form.thana} onChange={e => setForm({...form, thana: e.target.value})} disabled={!form.district} className={`w-full border border-gray-200 rounded py-2.5 px-4 text-sm focus:outline-none focus:border-[#111827] bg-white appearance-none ${!form.district ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                      <option value="" disabled>{!form.district ? 'Please select a district first' : "Please select your parcel's thana"}</option>
-                      {filteredThanas.sort((a, b) => a.name.localeCompare(b.name)).map(u => (
-                        <option key={u.id} value={u.name}>{u.name}</option>
-                      ))}
-                    </select>
+                    <div>
+                      <select required value={form.thana} onChange={e => { setForm({...form, thana: e.target.value}); setFormErrors({...formErrors, thana: null}); }} disabled={!form.district} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none appearance-none ${!form.district ? 'opacity-50 cursor-not-allowed border-gray-200 bg-white' : formErrors.thana ? 'border-red-500 focus:border-red-500 bg-red-50/30 text-red-600' : 'border-gray-200 focus:border-[#111827] bg-white'}`}>
+                        <option value="" disabled>{!form.district ? 'Please select a district first' : "Please select your parcel's thana"}</option>
+                        {filteredThanas.sort((a, b) => a.name.localeCompare(b.name)).map(u => (
+                          <option key={u.id} value={u.name}>{u.name}</option>
+                        ))}
+                      </select>
+                      {formErrors.thana && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.thana}</p>}
+                    </div>
 
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4 flex items-start gap-3 w-full">
                       <div className="mt-0.5 shrink-0">
@@ -311,12 +437,12 @@ export default function Checkout() {
                       type="button" 
                       onClick={addressSaved ? null : handleSaveAddress} 
                       disabled={!addressConfirmed}
-                      className={`w-full font-semibold py-3 rounded transition mt-2 text-sm flex items-center justify-center gap-2 ${
+                      className={`w-full font-sans font-normal text-[15px] py-[10px] rounded-full transition-all mt-2 flex items-center justify-center gap-2 ${
                         addressSaved 
-                          ? 'bg-emerald-500 text-white cursor-default' 
+                          ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20 cursor-default shadow-sm' 
                           : addressConfirmed 
-                            ? 'bg-[#111] text-white hover:bg-black' 
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            ? 'bg-[#0071e3] text-white hover:bg-[#0077ed] shadow-sm' 
+                            : 'bg-black/5 dark:bg-white/5 border border-apple-hairline text-apple-muted cursor-not-allowed'
                       }`}
                     >
                       {addressSaved ? (
@@ -330,8 +456,28 @@ export default function Checkout() {
                   </div>
                 )}
                 {addressTab === 'Existing Address' && (
-                  <div className="p-4 border border-gray-200 rounded mt-6 text-sm text-gray-500">
-                    No existing addresses found. Please add a new address.
+                  <div className="mt-6 flex flex-col gap-3">
+                    {savedAddresses.length > 0 ? (
+                      savedAddresses.map((addr, idx) => (
+                        <div 
+                          key={idx} 
+                          className="p-4 border border-[#e8e8ed] rounded-apple-lg hover:border-[#0071e3] cursor-pointer transition-colors bg-apple-canvas"
+                          onClick={() => {
+                            setForm(addr);
+                            setAddressConfirmed(true);
+                            setAddressSaved(true);
+                            setAddressTab('New Address');
+                          }}
+                        >
+                          <div className="font-semibold text-[#1d1d1f] mb-1">{addr.name} - {addr.phone}</div>
+                          <div className="text-sm text-[#86868b]">{addr.address_line}, {addr.thana}, {addr.district} - {addr.zip}</div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="p-4 border border-gray-200 rounded text-sm text-gray-500">
+                        No existing addresses found. Please add a new address.
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -340,7 +486,8 @@ export default function Checkout() {
           </div>
 
           {/* Right Column */}
-          <div className="w-full lg:w-5/12">
+          <div className="w-full lg:w-5/12 flex flex-col gap-6 md:gap-8">
+
             <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-5 md:p-6 sticky top-24">
               <div className="flex items-center gap-3 mb-5 md:mb-6">
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 flex items-center justify-center font-bold text-sm">3</div>
@@ -377,14 +524,14 @@ export default function Checkout() {
               
               {/* Promo Code Section */}
               <div className="mt-8 mb-6 pt-6 border-t border-gray-200 dark:border-gray-800">
-                <span className="font-semibold text-sm text-gray-800 dark:text-gray-200 block mb-3">Have a Promo Code?</span>
+                <span className="font-normal text-[15px] text-apple-ink block mb-3">Have a promo code?</span>
                 {appliedPromo ? (
-                  <div className="flex items-center justify-between bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 rounded p-3">
+                  <div className="flex items-center justify-between bg-emerald-50/50 dark:bg-emerald-900/20 border border-emerald-200/50 dark:border-emerald-800/50 rounded-apple-md p-3">
                     <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
                       <Check size={16} />
-                      <span className="text-sm font-medium">{appliedPromo.code} Applied ({appliedPromo.discountPercentage}%)</span>
+                      <span className="text-[14px] font-normal">{appliedPromo.code} Applied ({appliedPromo.discountPercentage}%)</span>
                     </div>
-                    <button type="button" onClick={handleRemovePromo} className="text-xs text-red-500 hover:underline">Remove</button>
+                    <button type="button" onClick={handleRemovePromo} className="text-[13px] text-red-500 hover:opacity-80 transition-opacity">Remove</button>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -394,11 +541,11 @@ export default function Checkout() {
                         value={promoCodeInput}
                         onChange={e => setPromoCodeInput(e.target.value)}
                         placeholder="Enter code" 
-                        className="flex-1 border border-gray-200 dark:border-gray-800 dark:bg-gray-900 rounded py-2 px-3 text-sm focus:outline-none focus:border-blue-600 uppercase"
+                        className="flex-1 border border-apple-hairline bg-white/50 dark:bg-[#1c1c1e]/50 backdrop-blur-xl rounded-apple-md py-[10px] px-[14px] font-sans text-[14px] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3]/20 transition-all"
                       />
-                      <button type="button" onClick={handleApplyPromo} className="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-white text-sm font-medium rounded hover:bg-black transition">Apply</button>
+                      <button type="button" onClick={handleApplyPromo} className="bg-[#0071e3] text-white px-[20px] py-[10px] rounded-full font-sans text-[14px] font-normal hover:bg-[#0077ed] transition-colors">Apply</button>
                     </div>
-                    {promoError && <p className="text-xs text-red-500">{promoError}</p>}
+                    {promoError && <p className="text-[13px] text-red-500">{promoError}</p>}
                   </div>
                 )}
               </div>
@@ -414,9 +561,42 @@ export default function Checkout() {
                     <span className="font-semibold">- {formatPrice(discountAmount)} BDT</span>
                   </div>
                 )}
-                <div className="flex justify-between text-sm text-gray-600 border-b border-gray-200 pb-3 border-dashed">
-                  <span>Delivery Charge</span>
-                  <span className="font-semibold">{formatPrice(deliveryCharge)} BDT</span>
+                <div className="flex justify-between text-sm text-gray-600 border-b border-gray-200 pb-3 border-dashed flex-col gap-2">
+                  <div className="flex justify-between w-full">
+                    <span className="text-gray-600 dark:text-gray-400">Delivery Charge</span>
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      {isCalculatingDelivery ? (
+                        <span className="text-xs text-gray-400 animate-pulse">Calculating...</span>
+                      ) : deliveryCharge > 0 ? (
+                        `${formatPrice(deliveryCharge)} BDT`
+                      ) : (
+                        <span className="text-xs text-gray-400 italic">Add location to calculate</span>
+                      )}
+                    </span>
+                  </div>
+                  
+                  {deliveryData.totalDeliveryCharge > 0 && !isCalculatingDelivery && (
+                    <div className="bg-blue-50/50 dark:bg-blue-900/20 rounded p-2.5 text-[13px] text-gray-500 dark:text-gray-400 flex flex-col gap-1.5 border border-blue-100/50 dark:border-blue-900/50 mt-1">
+                      <div className="flex justify-between">
+                        <span>Destination Zone</span>
+                        <span className="font-medium text-gray-700 dark:text-gray-300">{deliveryData.zone === 'insideDhaka' ? 'Inside Dhaka City' : deliveryData.zone === 'subUrban' ? 'Dhaka Sub-Urban' : 'Outside Dhaka'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Estimated Weight</span>
+                        <span className="font-medium text-gray-700 dark:text-gray-300">{(deliveryData.totalWeightInGrams / 1000).toFixed(2)} KG</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Base Charge</span>
+                        <span className="font-medium text-gray-700 dark:text-gray-300">৳ {formatPrice(deliveryData.baseCharge)}</span>
+                      </div>
+                      {deliveryData.codCharge > 0 && (
+                        <div className="flex justify-between text-blue-600 dark:text-blue-400">
+                          <span>COD Fee (1%)</span>
+                          <span className="font-medium">৳ {formatPrice(deliveryData.codCharge)}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="flex justify-between text-gray-800 dark:text-white pt-1">
                   <span className="font-bold">Total</span>
@@ -430,7 +610,7 @@ export default function Checkout() {
                   id="terms"
                   checked={termsAccepted}
                   onChange={(e) => setTermsAccepted(e.target.checked)}
-                  className="mt-1 shrink-0 accent-[#111827]" 
+                  className="mt-1 shrink-0 accent-[#111827] cursor-pointer" 
                 />
                 <label htmlFor="terms" className="text-xs text-gray-600 leading-relaxed cursor-pointer">
                   I accept the <span className="text-blue-500">Terms & Conditions</span> outlined, including <span className="text-blue-500">Delivery, Refund</span>, and <span className="text-blue-500">Cancellation</span> Policies.
@@ -440,11 +620,11 @@ export default function Checkout() {
               <div className="flex justify-end mt-2">
                 <button 
                   type={orderConfirmed ? 'button' : 'submit'}
-                  disabled={!isFormValid && !orderConfirmed}
+                  disabled={!isFormValid && !orderConfirmed || isCalculatingDelivery}
                   className={`font-sans font-normal text-[17px] py-[11px] px-[22px] rounded-apple-pill transition-opacity w-full flex items-center justify-center gap-2 ${
                     orderConfirmed 
                       ? 'bg-apple-accent/20 text-apple-accent cursor-default' 
-                      : isFormValid 
+                      : (isFormValid && !isCalculatingDelivery)
                         ? 'bg-apple-accent hover:bg-apple-accent/90 text-white hover:opacity-80' 
                         : 'bg-apple-canvas border border-apple-hairline text-apple-muted cursor-not-allowed'
                   }`}
@@ -454,7 +634,7 @@ export default function Checkout() {
                       <Check size={18} strokeWidth={3} className="text-emerald-600" />
                       Confirmed
                     </>
-                  ) : 'CONFIRM ORDER'}
+                  ) : 'Confirm Order'}
                 </button>
               </div>
               

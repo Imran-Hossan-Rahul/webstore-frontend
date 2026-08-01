@@ -52,8 +52,8 @@ export default function VideoCard({ item, type }) {
 
       try {
           const endpoint = isArtifact 
-             ? ${process.env.NEXT_PUBLIC_API_URL}/artifact/${itemId || slug}/like`
-             : ${process.env.NEXT_PUBLIC_API_URL}/codex/${slug}/like`;
+             ? `${process.env.NEXT_PUBLIC_API_URL}/artifact/${itemId || slug}/like`
+             : `${process.env.NEXT_PUBLIC_API_URL}/codex/${slug}/like`;
           
           await axios.post(endpoint, {}, { headers: { Authorization: `Bearer ${token}` } });
       } catch (err) {
