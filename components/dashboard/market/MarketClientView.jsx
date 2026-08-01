@@ -151,14 +151,14 @@ export default function MarketClientView({ initialData = [], initialPagination =
     };
 
     const rainyBanner = {
-      image: "/geeoo-rainy-banner.jpg",
+      image: "/geeoo-rainy-banner-bn.png",
       titleTop: "",
       titleBottom: "Rainy Season Offer",
       link: "#",
       isFullBanner: true
     };
     
-    setHeroSlides([rainyBanner, appleStyleBanner, geeooBanner]);
+    setHeroSlides([rainyBanner]);
     
     api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
@@ -346,7 +346,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 w-full flex flex-col lg:flex-row gap-2 md:gap-4">
           {/* Main Banner Slider */}
-          <div className="lg:w-2/3 w-full aspect-square md:aspect-auto md:h-[400px] lg:h-[600px] bg-transparent rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
+          <div className="lg:w-2/3 w-full aspect-[4/3] md:aspect-auto md:h-[400px] lg:h-[600px] bg-transparent rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
             
             {heroSlides.map((slide, idx) => (
               <div 
@@ -415,9 +415,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
 
           {/* Side Banners */}
-          <div className="lg:w-1/3 flex flex-row lg:flex-col gap-2 md:gap-4 h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+          <div className="lg:w-1/3 grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-2 md:gap-4 sm:h-[400px] md:h-[500px] lg:h-[600px]">
             {/* Top Side Banner */}
-            <div className="flex-1 bg-gradient-to-br from-slate-800 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center items-center text-center p-4">
+            <div className="w-full h-full aspect-[4/3] sm:aspect-auto bg-gradient-to-br from-slate-800 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center items-center text-center p-4">
               <img src="https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Laptops" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay group-hover:opacity-80 transition duration-500" />
               <div className="relative z-10">
                 <p className="text-gray-300 text-[10px] md:text-[14px] font-semibold tracking-[-0.016em] mb-0.5 md:mb-1">Best deals on</p>
@@ -427,7 +427,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
             </div>
             
             {/* Bottom Side Banner */}
-            <div className="flex-1 bg-gradient-to-r from-teal-900 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center px-4 md:px-6">
+            <div className="w-full h-full aspect-[4/3] sm:aspect-auto bg-gradient-to-r from-teal-900 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center px-4 md:px-6">
               <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Electronics" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity group-hover:opacity-80 transition duration-500" />
               <div className="relative z-10">
                 <h3 className="text-cyan-400 text-[9px] md:text-[12px] font-semibold tracking-[0.06em] mb-0.5 md:mb-1 uppercase">Largest Electronic</h3>

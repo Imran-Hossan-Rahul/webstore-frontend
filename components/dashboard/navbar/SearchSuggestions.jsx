@@ -57,7 +57,7 @@ export default function SearchSuggestions({
                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5">
                                 {item.photos && (() => {
                                     try {
-                                        const parsedPhotos = JSON.parse(item.photos);
+                                        const parsedPhotos = Array.isArray(item.photos) ? item.photos : JSON.parse(item.photos);
                                         return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" /> : null;
                                     } catch(e) { return null; }
                                 })()}

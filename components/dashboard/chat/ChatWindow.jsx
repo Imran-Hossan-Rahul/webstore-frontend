@@ -30,6 +30,26 @@ export default function ChatWindow({
   const [filePreview, setFilePreview] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
+  const [virtualGreetingDeleted, setVirtualGreetingDeleted] = useState(false);
+  const [virtualGreetingReactions, setVirtualGreetingReactions] = useState([]);
+
+  const displayMessages = useMemo(() => {
+    if (isLoadingMessages || currentUser?.role === 'admin' || virtualGreetingDeleted) return messages;
+
+    const adminParticipant = chat?.participants?.find(p => p.role === 'admin' || p.role === 'superadmin');
+    
+    const virtualMsg = {
+      _id: 'virtual-greeting',
+      sender: adminParticipant || 'admin',
+      content: "Hi, I'm Imran! 👋\nHow can I help you today?",
+      type: "text",
+      createdAt: chat?.createdAt || new Date().toISOString(),
+      reactions: virtualGreetingReactions,
+      isVirtual: true
+    };
+    
+    return [virtualMsg, ...messages];
+  }, [messages, isLoadingMessages, currentUser, chat, virtualGreetingDeleted, virtualGreetingReactions]);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -121,26 +141,6 @@ export default function ChatWindow({
 
   const statusText = isOnline ? "Online" : formatLastActive(otherUser.lastActiveAt);
 
-  const [virtualGreetingDeleted, setVirtualGreetingDeleted] = useState(false);
-  const [virtualGreetingReactions, setVirtualGreetingReactions] = useState([]);
-
-  const displayMessages = useMemo(() => {
-    if (isLoadingMessages || currentUser?.role === 'admin' || virtualGreetingDeleted) return messages;
-
-    const adminParticipant = chat?.participants?.find(p => p.role === 'admin' || p.role === 'superadmin');
-    
-    const virtualMsg = {
-      _id: 'virtual-greeting',
-      sender: adminParticipant || 'admin',
-      content: "Hi, I'm Imran! 👋\nHow can I help you today?",
-      type: "text",
-      createdAt: chat?.createdAt || new Date().toISOString(),
-      reactions: virtualGreetingReactions,
-      isVirtual: true
-    };
-    
-    return [virtualMsg, ...messages];
-  }, [messages, isLoadingMessages, currentUser, chat, virtualGreetingDeleted, virtualGreetingReactions]);
 
   const handleReactMessage = (msgId, emoji) => {
     if (msgId === 'virtual-greeting') {

@@ -637,7 +637,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                 <X className="w-2.5 h-2.5 md:w-3 md:h-3" />
               </button>
               <p className="text-[11px] md:text-[13px] font-medium leading-snug">
-                Hi, I'm Imran! 👋<br/>
+                Hi, I&apos;m Imran! 👋<br/>
                 <span className="text-apple-muted font-normal text-[10px] md:text-[13px]">How can I help you today?</span>
               </p>
               {/* Little triangle pointing to the avatar */}

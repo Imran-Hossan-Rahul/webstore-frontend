@@ -130,7 +130,7 @@ const GlassNavbar = ({
       try {
         const res = await api.get(`/market/products?search=${encodeURIComponent(searchQuery)}&limit=5`);
         if (res.data) {
-          setSuggestions({ marketplace: res.data });
+          setSuggestions({ marketplace: res.data, total: res.pagination?.total || 0 });
         }
       } catch (err) {
         console.error("Search failed", err);
@@ -147,7 +147,8 @@ const GlassNavbar = ({
 
   const totalResults = useMemo(() => {
     if (!suggestions) return 0;
-    return Object.values(suggestions).reduce((acc, curr) => acc + (curr?.length || 0), 0);
+    if (suggestions.total !== undefined) return suggestions.total;
+    return Object.values(suggestions).reduce((acc, curr) => acc + (Array.isArray(curr) ? curr.length : 0), 0);
   }, [suggestions]);
 
   const handleSearch = () => {
@@ -186,8 +187,8 @@ const GlassNavbar = ({
         {/* Center Section: Optimized Search */}
         <div className={`flex-1 flex justify-center relative transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'px-0' : 'px-2'}`}>
           
-          {/* Mobile Expanding Search Container */}
-          <div className={`md:hidden flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full ${mobileSearchOpen ? 'max-w-full' : 'max-w-[200px] justify-center'}`}>
+          {/* Mobile Search Container (only visible on mobile) */}
+          <div className={`md:hidden flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full relative ${mobileSearchOpen ? 'max-w-full' : 'max-w-[200px] justify-center'}`}>
             <div 
               onClick={() => {
                 if (!mobileSearchOpen) {
@@ -205,7 +206,7 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: mobileSearchOpen ? '1 0 128px' : '0 0 128px' }}
               >
-                <img src="/logo.png" alt="Codalina" className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10" />
+                <img src="/logo.png" alt="Codalina" className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10 mb-[3px]" />
                 
                 <input 
                   id="navbar-search-input"
@@ -228,19 +229,6 @@ const GlassNavbar = ({
 
               {/* Right Flex Spacer for Bulletproof Centering */}
               <div className={`transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'flex-none w-3' : 'flex-1'}`} />
-              
-              {/* Mobile Suggestions inline overlay */}
-              {mobileSearchOpen && searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+12px)] left-0 right-[-45px] bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100]">
-                    <SearchSuggestions 
-                        suggestions={suggestions} 
-                        isSearching={isSearching} 
-                        handleSearch={handleSearch}
-                        totalResults={totalResults}
-                        searchType={searchType}
-                      />
-                  </div>
-              )}
             </div>
 
             <div className={`overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-start shrink-0 ${mobileSearchOpen ? 'w-[65px] opacity-100 ml-1' : 'w-0 opacity-0 ml-0'}`}>
@@ -259,6 +247,19 @@ const GlassNavbar = ({
                 {searchQuery?.trim() ? 'Search' : 'Cancel'}
               </button>
             </div>
+
+            {/* Mobile Suggestions inline overlay */}
+            {mobileSearchOpen && searchFocused && searchQuery?.trim() && (
+                <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100]">
+                  <SearchSuggestions 
+                      suggestions={suggestions} 
+                      isSearching={isSearching} 
+                      handleSearch={handleSearch}
+                      totalResults={totalResults}
+                      searchType={searchType}
+                    />
+                </div>
+            )}
           </div>
 
           {/* Desktop Search Container */}
@@ -281,7 +282,7 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: (searchFocused || searchQuery) ? '1 0 128px' : '0 0 128px' }}
               >
-                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-black dark:text-white" />
+                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-black dark:text-white mb-[3px]" />
                   <input 
                       id="desktop-search-input"
                       type="text" 
@@ -308,7 +309,7 @@ const GlassNavbar = ({
               
               {/* Modular Suggestions */}
               {searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+12px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100] transform transition-all">
+                  <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100] transform transition-all">
                       <SearchSuggestions 
                         suggestions={suggestions} 
                         isSearching={isSearching} 

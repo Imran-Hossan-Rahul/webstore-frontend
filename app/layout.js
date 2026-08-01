@@ -7,7 +7,7 @@ import { ToastProvider } from "@/components/ui/ToastProvider";
 import GlobalTracker from "@/components/GlobalTracker";
 
 
-import GlobalTransitionLoader from "@/components/GlobalTransitionLoader";
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -83,7 +83,7 @@ export default function RootLayout({ children }) {
               <ToastProvider>
 
                 <GlobalTracker />
-                <GlobalTransitionLoader />
+                <NextTopLoader color="#000" showSpinner={false} />
                 {children}
               </ToastProvider>
             </UserProvider>

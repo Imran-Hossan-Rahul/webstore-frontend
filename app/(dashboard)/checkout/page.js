@@ -6,7 +6,7 @@ import { CreditCard, Truck, FileText, Check, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
 import { districts, upazilas } from '@/utils/bdData';
 
-export const dynamic = 'force-dynamic';
+
 
 export default function Checkout() {
   const router = useRouter();
@@ -245,18 +245,6 @@ export default function Checkout() {
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
-  if (!productId) {
-    return (
-      <div className="min-h-screen bg-apple-canvas flex flex-col items-center justify-center text-apple-ink">
-        <h2 className="text-2xl font-bold mb-4">No Checkout Item Selected</h2>
-        <p className="text-gray-500 mb-6">Please select a product from your cart to proceed with checkout.</p>
-        <button onClick={() => router.push('/cart')} className="bg-[#111] text-white px-6 py-3 rounded-lg hover:bg-black font-semibold">
-          Return to Cart
-        </button>
-      </div>
-    );
-  }
-
   // Signal global loader that we are fetching data
   if (typeof window !== 'undefined') {
     if (!product) {
@@ -272,6 +260,18 @@ export default function Checkout() {
       }
     }
   }, [product]);
+
+  if (!productId) {
+    return (
+      <div className="min-h-screen bg-apple-canvas flex flex-col items-center justify-center text-apple-ink">
+        <h2 className="text-2xl font-bold mb-4">No Checkout Item Selected</h2>
+        <p className="text-gray-500 mb-6">Please select a product from your cart to proceed with checkout.</p>
+        <button onClick={() => router.push('/cart')} className="bg-[#111] text-white px-6 py-3 rounded-lg hover:bg-black font-semibold">
+          Return to Cart
+        </button>
+      </div>
+    );
+  }
 
   if (!product) return <div className="min-h-screen bg-apple-canvas flex items-center justify-center text-apple-muted"></div>;
 
@@ -400,7 +400,7 @@ export default function Checkout() {
 
                     <div>
                       <select required value={form.thana} onChange={e => { setForm({...form, thana: e.target.value}); setFormErrors({...formErrors, thana: null}); }} disabled={!form.district} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none appearance-none ${!form.district ? 'opacity-50 cursor-not-allowed border-gray-200 bg-white' : formErrors.thana ? 'border-red-500 focus:border-red-500 bg-red-50/30 text-red-600' : 'border-gray-200 focus:border-[#111827] bg-white'}`}>
-                        <option value="" disabled>{!form.district ? 'Please select a district first' : "Please select your parcel's thana"}</option>
+                        <option value="" disabled>{!form.district ? 'Please select a district first' : "Please select your parcel&apos;s thana"}</option>
                         {filteredThanas.sort((a, b) => a.name.localeCompare(b.name)).map(u => (
                           <option key={u.id} value={u.name}>{u.name}</option>
                         ))}

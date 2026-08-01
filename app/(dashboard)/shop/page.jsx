@@ -372,7 +372,7 @@ export default function ShopPage() {
             {/* Breadcrumbs (Scrolls away on mobile) */}
             <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] md:bg-transparent md:backdrop-blur-none md:saturate-100 relative z-30">
               {searchQuery ? (
-                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] md:text-[14px] text-apple-ink font-semibold w-full pb-0.5 md:pb-0">
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] text-apple-ink font-semibold w-full pb-0.5 md:pb-0">
                   Search Results for &quot;{searchQuery}&quot;
                 </div>
               ) : activeBreadcrumb ? (
@@ -477,7 +477,7 @@ export default function ShopPage() {
                 <Search strokeWidth={1.5} className="w-[60px] h-[60px] text-[#86868b] opacity-40 mb-6" />
                 <h3 className="text-[24px] font-sans font-semibold text-slate-900 dark:text-white tracking-tight mb-2">No Results</h3>
                 <p className="text-[16px] font-sans font-normal text-[#86868b] text-center max-w-[300px] leading-relaxed">
-                  Try adjusting your filters or search query to find what you're looking for.
+                  Try adjusting your filters or search query to find what you&apos;re looking for.
                 </p>
               </div>
             ) : (
