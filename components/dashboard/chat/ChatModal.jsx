@@ -628,20 +628,20 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
               initial={{ opacity: 0, x: 20, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1, transition: { delay: 1, duration: 0.3 } }}
               exit={{ opacity: 0, x: 20, scale: 0.9, transition: { duration: 0.2 } }}
-              className="relative bg-white dark:bg-[#1c1c1e] text-apple-ink dark:text-white px-5 py-3 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-2 max-w-[220px]"
+              className="relative bg-white dark:bg-[#1c1c1e] text-apple-ink dark:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-1 md:mb-2 max-w-[180px] md:max-w-[220px]"
             >
               <button 
                 onClick={(e) => { e.stopPropagation(); setShowGreeting(false); }}
-                className="absolute -top-2 -left-2 w-5 h-5 bg-white dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
+                className="absolute -top-1.5 -left-1.5 md:-top-2 md:-left-2 w-4 h-4 md:w-5 md:h-5 bg-white dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
               >
-                <X size={12} />
+                <X className="w-2.5 h-2.5 md:w-3 md:h-3" />
               </button>
-              <p className="text-[13px] font-medium leading-snug">
+              <p className="text-[11px] md:text-[13px] font-medium leading-snug">
                 Hi, I'm Imran! 👋<br/>
-                <span className="text-apple-muted font-normal">How can I help you today?</span>
+                <span className="text-apple-muted font-normal text-[10px] md:text-[13px]">How can I help you today?</span>
               </p>
               {/* Little triangle pointing to the avatar */}
-              <div className="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-[#1c1c1e] border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
+              <div className="absolute top-1/2 -right-1.5 md:-right-2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-white dark:bg-[#1c1c1e] border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -669,7 +669,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
               return;
             }
           }}
-          className="w-[52px] h-[52px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
+          className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
         >
           {adminAvatar ? (
             <img 
@@ -680,7 +680,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
             />
           ) : (
             <div className="w-full h-full bg-[#0071e3]/10 flex items-center justify-center">
-              <MessageCircle size={28} className="text-[#0071e3]" />
+              <MessageCircle className="w-5 h-5 md:w-7 md:h-7 text-[#0071e3]" />
             </div>
           )}
           <MessageCircle size={28} className="text-[#0071e3] hidden" />

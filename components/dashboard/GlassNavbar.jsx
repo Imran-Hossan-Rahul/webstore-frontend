@@ -164,74 +164,16 @@ const GlassNavbar = ({
       <BetaBanner />
       <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] rounded-b-[24px] pl-[12px] pr-[16px] h-[44px] flex items-center justify-between relative overflow-visible">
         
-        {/* Mobile Search Overlay */}
-        <AnimatePresence>
-          {mobileSearchOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: -4 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: -4 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="absolute inset-0 bg-white dark:bg-slate-900 px-4 h-full flex items-center gap-3 z-[60]"
-            >
-              <button 
-                onClick={() => {
-                  setMobileSearchOpen(false);
-                  setSearchQuery("");
-                }} 
-                className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"
-              >
-                <svg className="w-5 h-5 text-slate-600 dark:text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-              </button>
-              
-              <div className="flex-1 flex items-center bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-xl px-3 h-10 relative">
-                <Search strokeWidth={1.5} className="w-4 h-4 text-slate-400 mr-2" />
-                <input 
-                  id="mobile-search-input"
-                  type="text" 
-                  placeholder="Search Codalina" 
-                  className="bg-transparent border-none outline-none text-[13px] font-semibold font-sans w-full text-slate-900 dark:text-white placeholder:text-slate-600 dark:placeholder:text-slate-300"
-                  value={searchQuery || ""}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => {
-                      window.clearTimeout(window.searchBlurTimeout);
-                      setSearchFocused(true);
-                  }}
-                  onBlur={() => {
-                      window.searchBlurTimeout = window.setTimeout(() => setSearchFocused(false), 200);
-                  }}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                />
-
-
-                {searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden z-[100]">
-                    <SearchSuggestions 
-                      suggestions={suggestions} 
-                      isSearching={isSearching} 
-                      handleSearch={handleSearch}
-                      totalResults={totalResults}
-                      searchType={searchType}
-                    />
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        
         {/* Left Section */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-            <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors outline-none focus:outline-none focus:ring-0 -ml-2">
+        <div className={`flex items-center flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 gap-0 md:max-w-none md:opacity-100 md:gap-2' : 'max-w-[50px] md:max-w-none opacity-100 gap-2'}`}>
+            <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors outline-none focus:outline-none focus:ring-0 -ml-2 shrink-0">
                 {sidebarOpen ? (
                   <X strokeWidth={1.5} className="w-[22px] h-[22px] text-black dark:text-white" />
                 ) : (
                   <Menu strokeWidth={1.5} className="w-[22px] h-[22px] text-black dark:text-white" />
                 )}
             </button>
-            <Link href="/" className="hidden md:flex items-center gap-2 group">
+            <Link href="/" className="hidden md:flex items-center gap-2 group shrink-0">
                 <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
                 <div className="hidden sm:flex items-center gap-2">
                   <span className="font-medium text-xl tracking-tight text-slate-900 dark:text-white font-sans">
@@ -242,42 +184,128 @@ const GlassNavbar = ({
         </div>
 
         {/* Center Section: Optimized Search */}
-        <div className="flex-1 flex justify-center px-2 relative">
+        <div className={`flex-1 flex justify-center relative transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'px-0' : 'px-2'}`}>
           
-          {/* Mobile "Search Codalina" Pill Button */}
-          <button 
-            onClick={() => {
-              setMobileSearchOpen(true);
-              setTimeout(() => {
-                document.getElementById('mobile-search-input')?.focus();
-              }, 250);
-            }}
-            className={`md:hidden flex w-full max-w-[200px] items-center justify-center gap-2 bg-apple-parchment dark:bg-apple-surfaceDark hover:bg-slate-200/80 dark:hover:bg-slate-700/80 border border-apple-hairline rounded-apple-pill px-4 h-8 ml-2 transition-opacity duration-200 ${mobileSearchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-          >
-            <img src="/logo.png" alt="Codalina" className="w-4 h-4 object-contain" />
-            <span className="text-[14px] font-sans text-apple-ink dark:text-apple-ink">Search</span>
-          </button>
+          {/* Mobile Expanding Search Container */}
+          <div className={`md:hidden flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full ${mobileSearchOpen ? 'max-w-full' : 'max-w-[200px] justify-center'}`}>
+            <div 
+              onClick={() => {
+                if (!mobileSearchOpen) {
+                  setMobileSearchOpen(true);
+                  setTimeout(() => document.getElementById('navbar-search-input')?.focus(), 100);
+                }
+              }}
+              className={`relative flex items-center h-[32px] bg-apple-parchment dark:bg-apple-surfaceDark rounded-full transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] border overflow-visible cursor-text w-full ${mobileSearchOpen ? 'border-[#0071e3]/30' : 'border-apple-hairline'}`} 
+            >
+              
+              {/* Left Flex Spacer for Bulletproof Centering */}
+              <div className={`transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'flex-none w-3' : 'flex-1'}`} />
 
-          <div className={`hidden md:flex w-full max-w-lg items-center ${searchFocused ? 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700 shadow-sm' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] border-transparent'} border rounded-full px-4 h-[36px] transition-all duration-200 relative`}>
-              <Search strokeWidth={1.5} className={`w-[15px] h-[15px] ${searchFocused ? 'text-slate-900 dark:text-white' : 'text-slate-500'} mr-2.5 transition-colors`} />
-              <input 
-                  id="desktop-search-input"
+              <div 
+                className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
+                style={{ flex: mobileSearchOpen ? '1 0 128px' : '0 0 128px' }}
+              >
+                <img src="/logo.png" alt="Codalina" className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10" />
+                
+                <input 
+                  id="navbar-search-input"
                   type="text" 
-                  placeholder="Search Codalina..." 
-                  className="bg-transparent border-none outline-none text-[14px] w-full text-slate-900 dark:text-white font-sans placeholder:text-slate-500"
+                  placeholder="Search Codalina" 
+                  className={`bg-transparent border-none outline-none text-[14px] text-left text-apple-ink transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-10 h-full w-full mb-[3px] ${mobileSearchOpen ? 'placeholder:text-apple-muted' : 'placeholder:text-apple-ink cursor-pointer pointer-events-none select-none'}`}
                   value={searchQuery || ""}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => {
-                      window.clearTimeout(window.searchBlurTimeout);
-                      setSearchFocused(true);
+                    window.clearTimeout(window.searchBlurTimeout);
+                    setSearchFocused(true);
+                    if (!mobileSearchOpen) setMobileSearchOpen(true);
                   }}
                   onBlur={() => {
-                      window.searchBlurTimeout = window.setTimeout(() => setSearchFocused(false), 200);
+                    window.searchBlurTimeout = window.setTimeout(() => setSearchFocused(false), 200);
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                />
+              </div>
+
+              {/* Right Flex Spacer for Bulletproof Centering */}
+              <div className={`transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'flex-none w-3' : 'flex-1'}`} />
+              
+              {/* Mobile Suggestions inline overlay */}
+              {mobileSearchOpen && searchFocused && searchQuery?.trim() && (
+                  <div className="absolute top-[calc(100%+12px)] left-0 right-[-45px] bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100]">
+                    <SearchSuggestions 
+                        suggestions={suggestions} 
+                        isSearching={isSearching} 
+                        handleSearch={handleSearch}
+                        totalResults={totalResults}
+                        searchType={searchType}
+                      />
+                  </div>
+              )}
+            </div>
+
+            <div className={`overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] flex justify-start shrink-0 ${mobileSearchOpen ? 'w-[65px] opacity-100 ml-1' : 'w-0 opacity-0 ml-0'}`}>
+              <button 
+                onClick={() => {
+                  if (searchQuery?.trim()) {
+                    handleSearch();
+                  } else {
+                    setMobileSearchOpen(false);
+                    setSearchQuery("");
+                    setSearchFocused(false);
+                  }
+                }} 
+                className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] text-[#007AFF] font-normal`}
+              >
+                {searchQuery?.trim() ? 'Search' : 'Cancel'}
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Search Container */}
+          <div 
+            onClick={() => {
+                if (!searchFocused) {
+                  setTimeout(() => document.getElementById('desktop-search-input')?.focus(), 100);
+                }
+            }}
+            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-white dark:bg-slate-900 border-[#0071e3]/30 shadow-sm' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] border-black/20 dark:border-white/20'} border rounded-full px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-hidden`}
+          >
+              
+              {/* Left Flex Spacer */}
+              <div 
+                className="transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{ flex: (searchFocused || searchQuery) ? '0 0 0px' : '1 0 0px' }}
+              />
+
+              <div 
+                className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
+                style={{ flex: (searchFocused || searchQuery) ? '1 0 128px' : '0 0 128px' }}
+              >
+                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-black dark:text-white" />
+                  <input 
+                      id="desktop-search-input"
+                      type="text" 
+                      placeholder="Search Codalina" 
+                      className={`bg-transparent border-none outline-none text-[14px] text-left w-full mb-[3px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${(searchFocused || searchQuery) ? 'text-black dark:text-white placeholder:text-slate-400' : 'text-black dark:text-white placeholder:text-black dark:placeholder:text-white cursor-pointer pointer-events-none select-none'}`}
+                      value={searchQuery || ""}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onFocus={() => {
+                          window.clearTimeout(window.searchBlurTimeout);
+                          setSearchFocused(true);
+                      }}
+                      onBlur={() => {
+                          window.searchBlurTimeout = window.setTimeout(() => setSearchFocused(false), 200);
+                      }}
+                      onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  />
+              </div>
+
+              {/* Right Flex Spacer */}
+              <div 
+                className="transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{ flex: (searchFocused || searchQuery) ? '0 0 0px' : '1 0 0px' }}
               />
               
-
               {/* Modular Suggestions */}
               {searchFocused && searchQuery?.trim() && (
                   <div className="absolute top-[calc(100%+12px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[18px] shadow-2xl overflow-hidden z-[100] transform transition-all">
@@ -291,13 +319,30 @@ const GlassNavbar = ({
                   </div>
               )}
           </div>
+
+          {/* Desktop Search/Cancel Button */}
+          <div className={`hidden md:flex overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] justify-start shrink-0 ${(searchFocused || searchQuery) ? 'w-[65px] opacity-100 ml-2' : 'w-0 opacity-0 ml-0'}`}>
+            <button 
+              onClick={() => {
+                if (searchQuery?.trim()) {
+                  handleSearch();
+                } else {
+                  setSearchQuery("");
+                  setSearchFocused(false);
+                }
+              }} 
+              className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] text-[#007AFF] font-normal`}
+            >
+              {searchQuery?.trim() ? 'Search' : 'Cancel'}
+            </button>
+          </div>
+
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-2 sm:gap-4">
-
+        <div className={`flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 md:max-w-none md:opacity-100 md:gap-4 gap-0' : 'max-w-[50px] md:max-w-none opacity-100 sm:gap-4 gap-2'}`}>
             {/* Cart and Orders Links */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-2 shrink-0">
               <Link href="/cart" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative group flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 {cartCount > 0 && (
@@ -311,27 +356,25 @@ const GlassNavbar = ({
               </Link>
             </div>
 
-            <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-2 sm:pr-4">
-                
-
-                <div className="hidden sm:block">
+            <div className="flex items-center gap-1 sm:gap-2 border-r border-slate-200 dark:border-white/10 pr-2 sm:pr-4 shrink-0">
+                <div className="hidden sm:block shrink-0">
                   <ThemeToggle />
                 </div>
             </div>
 
             {loading ? (
-              <div className="flex items-center gap-3 z-50 relative">
+              <div className="flex items-center gap-3 z-50 relative shrink-0">
                  <div className="hidden xl:block w-24 h-4 bg-slate-200 dark:bg-slate-800 rounded animate-pulse"></div>
-                 <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse"></div>
+                 <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse shrink-0"></div>
               </div>
             ) : (isGuest || user?.role === 'guest') ? (
-              <div className="flex items-center gap-2 sm:gap-3 z-50 relative">
+              <div className="flex items-center gap-2 sm:gap-3 z-50 relative shrink-0">
                 <Link href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity">Log in</Link>
-                <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity">Join</Link>
+                <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity whitespace-nowrap">Join</Link>
               </div>
             ) : (
-              <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group">
-                  <div className="text-right hidden xl:block">
+              <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group shrink-0">
+                  <div className="text-right hidden xl:block shrink-0">
                       <div className="text-[14px] font-normal text-apple-ink dark:text-apple-ink font-sans leading-tight">{user?.name}</div>
                   </div>
                   <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">

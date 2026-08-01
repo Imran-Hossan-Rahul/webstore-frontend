@@ -315,18 +315,19 @@ export default function MarketClientView({ initialData = [], initialPagination =
             <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
           )}
         </div>
-        <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
+        <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[2px] md:translate-x-0">
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="flex-1 bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center"
+            className="flex-auto bg-[#0066CC] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center"
           >
             Add to Cart
           </button>
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="flex-1 bg-[#0066CC] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center"
+            className="flex-auto bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center"
           >
-            Buy Now
+            <span className="md:hidden">Buy</span>
+            <span className="hidden md:inline">Buy Now</span>
           </button>
         </div>
       </div>
@@ -421,7 +422,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div className="relative z-10">
                 <p className="text-gray-300 text-[10px] md:text-[14px] font-semibold tracking-[-0.016em] mb-0.5 md:mb-1">Best deals on</p>
                 <h3 className="text-yellow-400 text-sm md:text-[24px] font-semibold tracking-[-0.015em] uppercase mb-2 md:mb-4">Windows Laptops</h3>
-                <button className="bg-[#0066CC] text-white px-[15px] py-[8px] rounded-apple-pill font-sans text-[14px] font-normal hover:opacity-80 transition-opacity flex items-center mx-auto">Buy Now <span className="ml-1">↗</span></button>
+                <button className="bg-[#0066CC] text-white px-[15px] py-[8px] rounded-apple-pill font-sans text-[14px] font-normal hover:opacity-80 transition-opacity flex items-center mx-auto">Buy <span className="ml-1">↗</span></button>
               </div>
             </div>
             
@@ -505,19 +506,19 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
       {/* Full-width Explore CTA */}
       {!query && (
-        <div className="px-3 pb-12 pt-2">
+        <div className="px-3 pb-12 pt-2 md:pt-4">
           <Link
             href="/shop"
-            className="group flex items-center justify-between w-full bg-white dark:bg-[#1c1c1e] border border-apple-hairline rounded-2xl px-7 py-5 hover:shadow-md transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20"
+            className="group flex items-center justify-between w-full bg-white dark:bg-[#1c1c1e] border border-black/[0.08] dark:border-white/10 rounded-[20px] md:rounded-[24px] p-6 md:p-8 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-500"
           >
             <div>
-              <p className="text-[12px] font-semibold uppercase tracking-widest text-apple-muted mb-1">Marketplace</p>
-              <p className="text-[20px] md:text-[24px] font-semibold tracking-tight text-apple-ink leading-tight">
+              <p className="text-[11px] md:text-[12px] font-semibold uppercase tracking-[0.1em] text-black/50 dark:text-white/50 mb-1.5 md:mb-2">Marketplace</p>
+              <h2 className="text-[22px] md:text-[28px] font-semibold tracking-[-0.015em] text-[#1d1d1f] dark:text-[#f5f5f7] leading-tight">
                 Browse the full collection
-              </p>
+              </h2>
             </div>
-            <div className="shrink-0 ml-4 w-10 h-10 rounded-full bg-apple-ink dark:bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-              <ChevronRight className="text-white dark:text-apple-ink" size={20} />
+            <div className="shrink-0 ml-4 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#f5f5f7] dark:bg-[#2c2c2e] flex items-center justify-center group-hover:bg-[#e8e8ed] dark:group-hover:bg-[#3a3a3c] transition-colors duration-300">
+              <ChevronRight className="text-[#1d1d1f] dark:text-[#f5f5f7] transition-transform duration-300 group-hover:translate-x-0.5" size={24} strokeWidth={2.5} />
             </div>
           </Link>
         </div>

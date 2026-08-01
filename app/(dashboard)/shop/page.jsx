@@ -6,7 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Search, Loader2, Edit, ChevronDown, Filter, X } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
-
+import AppleSpinner from "@/components/ui/AppleSpinner";
 const getOptimizedUrl = (url) => {
   if (!url) return '';
   if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
@@ -47,8 +47,9 @@ export default function ShopPage() {
   const [tempMaxPrice, setTempMaxPrice] = useState('');
   
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
@@ -67,14 +68,14 @@ export default function ShopPage() {
     for (const cat of categories) {
       if (cat._id === selectedCategory || cat.id === selectedCategory) {
         return [
-          { label: 'Explore', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+          { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
           { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
         ];
       }
       for (const sub of (cat.subcategories || [])) {
         if (sub._id === selectedSubCategory || sub.id === selectedSubCategory) {
           return [
-            { label: 'Explore', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+            { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
             { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
             { label: sub.name, onClick: () => router.push(`/shop?subCategory_id=${sub._id}`) },
           ];
@@ -82,7 +83,7 @@ export default function ShopPage() {
         for (const child of (sub.subcategories || [])) {
           if (child._id === selectedChildCategory || child.id === selectedChildCategory) {
             return [
-              { label: 'Explore', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+              { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
               { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
               { label: sub.name, onClick: () => router.push(`/shop?subCategory_id=${sub._id}`) },
               { label: child.name, onClick: null },
@@ -94,12 +95,12 @@ export default function ShopPage() {
     return null;
   }, [categories, selectedCategory, selectedSubCategory, selectedChildCategory]);
 
-  const fetchProducts = async (pageNum = 1, append = false) => {
+  const fetchProducts = async (pageNum = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
         page: pageNum,
-        limit: 20
+        limit: 30
       });
       if (searchQuery) params.append('search', searchQuery);
       if (selectedCategory) params.append('category_id', selectedCategory);
@@ -123,13 +124,8 @@ export default function ShopPage() {
 
       const liveProducts = data.filter(p => p.status === 'Live');
 
-      if (append) {
-        setProducts(prev => [...prev, ...liveProducts]);
-      } else {
-        setProducts(liveProducts);
-      }
-
-      setHasMore(pagination.currentPage < pagination.pages);
+      setProducts(liveProducts);
+      setTotalPages(pagination.pages || 1);
     } catch (err) {
       console.error(err);
     } finally {
@@ -139,6 +135,7 @@ export default function ShopPage() {
 
   // Sync filter states from URL whenever searchParams change (e.g. sidebar navigation)
   useEffect(() => {
+    setSearchQuery(searchParams.get('q') || '');
     setSelectedCategory(searchParams.get('category_id') || '');
     setSelectedSubCategory(searchParams.get('subCategory_id') || '');
     setSelectedChildCategory(searchParams.get('childCategory_id') || '');
@@ -149,7 +146,7 @@ export default function ShopPage() {
 
   useEffect(() => {
     setPage(1);
-    fetchProducts(1, false);
+    fetchProducts(1);
   }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, sortOrder, minPrice, maxPrice]);
 
   // Signal global loader that we are fetching data
@@ -168,10 +165,86 @@ export default function ShopPage() {
     }
   }, [loading]);
 
-  const loadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchProducts(nextPage, true);
+  const renderPagination = () => {
+    if (totalPages <= 1) return null;
+
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, page - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    const handlePageChange = (newPage) => {
+      if (newPage < 1 || newPage > totalPages || newPage === page) return;
+      setPage(newPage);
+      fetchProducts(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    return (
+      <div className="mt-12 flex justify-center items-center space-x-1 md:space-x-2 pb-8">
+        <button
+          onClick={() => handlePageChange(page - 1)}
+          disabled={page === 1 || loading}
+          className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${page === 1 ? 'opacity-30 cursor-not-allowed text-apple-ink' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'}`}
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {startPage > 1 && (
+          <>
+            <button
+              onClick={() => handlePageChange(1)}
+              className="w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans font-medium text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+            >
+              1
+            </button>
+            {startPage > 2 && <span className="text-apple-muted font-sans tracking-widest px-1">...</span>}
+          </>
+        )}
+
+        {pageNumbers.map(num => (
+          <button
+            key={num}
+            onClick={() => handlePageChange(num)}
+            className={`w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans transition-all ${num === page ? 'bg-[#0071e3] text-white shadow-sm font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+          >
+            {num}
+          </button>
+        ))}
+
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && <span className="text-apple-muted font-sans tracking-widest px-1">...</span>}
+            <button
+              onClick={() => handlePageChange(totalPages)}
+              className="w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans font-medium text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+
+        <button
+          onClick={() => handlePageChange(page + 1)}
+          disabled={page === totalPages || loading}
+          className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${page === totalPages ? 'opacity-30 cursor-not-allowed text-apple-ink' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'}`}
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    );
   };
 
   const handleSearchSubmit = (e) => {
@@ -182,6 +255,7 @@ export default function ShopPage() {
   const applyPriceFilter = () => {
     setMinPrice(tempMinPrice);
     setMaxPrice(tempMaxPrice);
+    setShowMobileFilters(false);
   };
 
   const renderProductCard = (product) => (
@@ -210,10 +284,10 @@ export default function ShopPage() {
             <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
           )}
         </div>
-        <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
+        <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[5px] md:translate-x-0">
           <button 
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="flex-1 bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center"
+            className="flex-auto bg-[#0071e3] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0077ed] flex items-center justify-center"
           >
             Add to Cart
           </button>
@@ -224,9 +298,10 @@ export default function ShopPage() {
               window.dispatchEvent(new Event('startNavigation'));
               router.push(`/checkout?productId=${product.id}&quantity=1&finalPrice=${product.selling_price}&originalPrice=${product.original_price || product.selling_price}`);
             }}
-            className="flex-1 bg-[#0071e3] text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[13px] md:text-[14px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0077ed] flex items-center justify-center"
+            className="flex-auto bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center"
           >
-            Buy Now
+            <span className="md:hidden">Buy</span>
+            <span className="hidden md:inline">Buy Now</span>
           </button>
         </div>
       </div>
@@ -236,24 +311,17 @@ export default function ShopPage() {
   return (
     <div className="min-h-screen font-sans selection:bg-[#0071e3]/30">
       
-      {/* Mobile Filter Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-[#1d1d1f] border-b border-apple-hairline sticky top-0 z-40">
-        <h1 className="text-xl font-semibold text-apple-ink">Shop</h1>
-        <button onClick={() => setShowMobileFilters(true)} className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full text-apple-ink">
-          <Filter size={20} />
-        </button>
-      </div>
 
       <div className="w-full flex flex-col md:flex-row min-h-screen">
         
         {/* Sidebar Filters — mobile: full-screen overlay, desktop: sticky column */}
         <div className={`
-          fixed inset-0 z-[45] bg-white dark:bg-[#1d1d1f] md:bg-transparent
+          fixed inset-0 z-[45] bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl shadow-2xl md:bg-transparent md:backdrop-blur-none md:shadow-none
           md:relative md:inset-auto md:z-auto
-          md:w-64 lg:w-72 flex-shrink-0 border-r border-apple-hairline 
+          md:w-64 lg:w-72 flex-shrink-0 border-r border-white/60 dark:border-white/10 md:border-apple-hairline md:dark:border-apple-hairline
           transform ${showMobileFilters ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300
         `}>
-          <div className="h-full md:sticky md:top-20 md:max-h-[calc(100vh-80px)] overflow-y-auto p-6 scrollbar-hide">
+          <div className="h-full md:sticky md:top-20 md:max-h-[calc(100vh-80px)] overflow-y-auto p-6 pt-20 md:pt-6 scrollbar-hide">
             <div className="flex items-center justify-between mb-8 md:hidden">
               <h2 className="text-2xl font-bold text-apple-ink">Filters</h2>
               <button onClick={() => setShowMobileFilters(false)} className="p-2 text-apple-muted hover:text-apple-ink">
@@ -261,36 +329,12 @@ export default function ShopPage() {
               </button>
             </div>
 
-            <div className="hidden md:block mb-8 mt-4">
-              {activeBreadcrumb ? (
-                <div className="flex items-center gap-1.5 text-[12px] text-apple-muted font-medium tracking-wide flex-wrap">
-                  {activeBreadcrumb.map((crumb, i) => (
-                    <React.Fragment key={i}>
-                      {i > 0 && <span className="opacity-40">›</span>}
-                      {crumb.onClick ? (
-                        <button
-                          onClick={crumb.onClick}
-                          className={`transition-colors hover:text-[#0071e3] ${
-                            i === activeBreadcrumb.length - 1 ? 'text-apple-ink font-semibold pointer-events-none' : ''
-                          }`}
-                        >
-                          {crumb.label}
-                        </button>
-                      ) : (
-                        <span className="text-apple-ink font-semibold">{crumb.label}</span>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              ) : (
-                <h1 className="text-2xl font-bold tracking-tight text-apple-ink">Explore</h1>
-              )}
-            </div>
 
 
 
-            <div className="mb-8">
-              <h3 className="text-xs font-semibold uppercase tracking-widest text-apple-muted mb-4">Price (BDT)</h3>
+
+            <div className="mb-8 mt-4">
+              <h3 className="text-[15px] font-medium text-apple-ink mb-4">Price (BDT)</h3>
               <div className="flex items-center gap-2 mb-3">
                 <input 
                   type="number" 
@@ -322,62 +366,126 @@ export default function ShopPage() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col min-h-screen">
           
-          {/* Top Bar */}
-          <div className="p-4 md:p-8 md:pb-6 flex flex-col md:flex-row items-center justify-between gap-4 border-b border-apple-hairline/50">
-            <form onSubmit={handleSearchSubmit} className="relative w-full md:max-w-md">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-apple-muted" size={18} />
-              <input 
-                type="text" 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search marketplace..." 
-                className="w-full bg-white dark:bg-[#1d1d1f] border border-apple-hairline rounded-full pl-11 pr-4 py-2.5 text-[15px] focus:outline-none focus:border-[#0071e3] focus:ring-1 focus:ring-[#0071e3] transition-all text-apple-ink placeholder:text-apple-muted"
-              />
-            </form>
+          {/* Top Bar Container */}
+          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b md:border-apple-hairline/50">
             
-            <div className="flex items-center gap-2 w-full md:w-auto">
-              <span className="text-[13px] font-semibold text-apple-muted whitespace-nowrap uppercase tracking-wider hidden md:block">Sort by:</span>
-              <select 
-                value={sortOrder}
-                onChange={e => setSortOrder(e.target.value)}
-                className="bg-transparent text-[15px] text-apple-ink font-semibold py-2 pl-2 pr-8 border-none focus:ring-0 appearance-none cursor-pointer hover:bg-black/5 dark:hover:bg-white/10 rounded-lg transition-colors"
-                style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2386868b\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'%3E%3C/path%3E%3C/svg%3E")', backgroundPosition: 'right 0.5rem center', backgroundRepeat: 'no-repeat', backgroundSize: '1.2em' }}
-              >
-                <option value="latest">Latest Arrivals</option>
-                <option value="price_asc">Price: Low to High</option>
-                <option value="price_desc">Price: High to Low</option>
-              </select>
+            {/* Breadcrumbs (Scrolls away on mobile) */}
+            <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] md:bg-transparent md:backdrop-blur-none md:saturate-100 relative z-30">
+              {searchQuery ? (
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] md:text-[14px] text-apple-ink font-semibold w-full pb-0.5 md:pb-0">
+                  Search Results for &quot;{searchQuery}&quot;
+                </div>
+              ) : activeBreadcrumb ? (
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11.5px] md:text-[13px] text-apple-muted font-normal w-full pb-0.5 md:pb-0">
+                  {activeBreadcrumb.map((crumb, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && <span className="opacity-40 shrink-0">›</span>}
+                      {crumb.onClick ? (
+                        <button
+                          onClick={crumb.onClick}
+                          className={`transition-colors hover:text-[#0071e3] shrink-0 ${
+                            i === activeBreadcrumb.length - 1 ? 'text-apple-ink font-normal pointer-events-none' : ''
+                          }`}
+                        >
+                          {crumb.label}
+                        </button>
+                      ) : (
+                        <span className="text-apple-ink font-normal shrink-0">{crumb.label}</span>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 text-[14px] md:text-[14px] text-apple-ink font-semibold md:font-normal">
+                  Shop
+                </div>
+              )}
+            </div>
+            
+            {/* Filter + Sort By (Sticky on mobile globally) */}
+            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-apple-hairline/50 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] md:bg-transparent md:backdrop-blur-none md:saturate-100 flex items-center justify-between md:justify-end gap-2 mt-0">
+              <span className="text-[13px] md:text-[14px] font-normal text-apple-muted whitespace-nowrap hidden md:block">Sort by:</span>
+              
+              <div className="flex items-center gap-2 w-full md:w-auto">
+                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-white dark:bg-black/20 border border-apple-hairline text-[12.5px] text-apple-ink font-medium py-1.5 px-3 rounded-full transition-colors flex-1 shadow-sm hover:bg-gray-50 dark:hover:bg-white/10">
+                  <Filter size={14} className="text-apple-ink" />
+                  Filter
+                </button>
+
+                <div className="relative flex-1 md:flex-none">
+                  <button
+                    onClick={() => setIsSortOpen(!isSortOpen)}
+                    className="w-full md:w-auto bg-white dark:bg-black/20 border border-apple-hairline md:border-none md:bg-transparent text-[12.5px] md:text-[15px] text-apple-ink font-medium md:font-normal py-1.5 px-3 focus:ring-0 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 md:hover:bg-black/5 md:dark:hover:bg-white/10 rounded-full md:rounded-lg transition-colors shadow-sm md:shadow-none"
+                  >
+                    {sortOrder === 'latest' ? 'Latest Arrivals' : sortOrder === 'price_asc' ? 'Price: Low to High' : 'Price: High to Low'}
+                    <ChevronDown className={`w-[14px] h-[14px] md:w-[18px] md:h-[18px] text-apple-muted transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                {isSortOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setIsSortOpen(false)}></div>
+                    <div className="absolute right-0 top-[calc(100%+8px)] w-[220px] bg-white/90 dark:bg-[#2c2c2e]/90 backdrop-blur-2xl border border-apple-hairline rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden z-50 p-1.5">
+                      <button
+                        onClick={() => { setSortOrder('latest'); setIsSortOpen(false); }}
+                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'latest' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                      >
+                        Latest Arrivals
+                        {sortOrder === 'latest' && (
+                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => { setSortOrder('price_asc'); setIsSortOpen(false); }}
+                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                      >
+                        Price: Low to High
+                        {sortOrder === 'price_asc' && (
+                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => { setSortOrder('price_desc'); setIsSortOpen(false); }}
+                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                      >
+                        Price: High to Low
+                        {sortOrder === 'price_desc' && (
+                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                )}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Product Grid */}
           <div className="flex-1 p-4 md:p-8">
-            {loading && page === 1 ? (
-              <div className="flex items-center justify-center h-64">
+            {loading ? (
+              <div className="flex flex-col items-center justify-center h-[50vh] opacity-80">
+                <AppleSpinner className="w-8 h-8 text-apple-muted animate-spin" />
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-24 bg-white dark:bg-[#1d1d1f] rounded-2xl border border-apple-hairline">
-                <Search className="w-12 h-12 text-apple-muted mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-semibold text-apple-ink">No products found</h3>
-                <p className="text-[15px] text-apple-muted mt-2 max-w-sm mx-auto">Try adjusting your filters or search query to find what you're looking for.</p>
+              <div className="flex flex-col items-center justify-center py-32 px-4">
+                <Search strokeWidth={1.5} className="w-[60px] h-[60px] text-[#86868b] opacity-40 mb-6" />
+                <h3 className="text-[24px] font-sans font-semibold text-slate-900 dark:text-white tracking-tight mb-2">No Results</h3>
+                <p className="text-[16px] font-sans font-normal text-[#86868b] text-center max-w-[300px] leading-relaxed">
+                  Try adjusting your filters or search query to find what you're looking for.
+                </p>
               </div>
             ) : (
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
                   {products.map(renderProductCard)}
                 </div>
-                
-                {hasMore && (
-                  <div className="mt-12 flex justify-center pb-8">
-                    <button 
-                      onClick={loadMore}
-                      disabled={loading}
-                      className={`bg-white dark:bg-[#1d1d1f] border border-apple-hairline text-[#0071e3] px-[22px] py-[11px] rounded-full font-sans text-[16px] font-medium transition-all hover:bg-[#0071e3] hover:text-white hover:border-[#0071e3] ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    >
-                      {loading ? 'Loading...' : 'Show More'}
-                    </button>
-                  </div>
-                )}
+                {renderPagination()}
               </>
             )}
           </div>

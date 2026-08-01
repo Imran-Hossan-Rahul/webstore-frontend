@@ -541,7 +541,7 @@ export default function ProductDetails({ params }) {
                       onClick={handleBuyNow}
                       className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
                     >
-                      <ShoppingBag size={18} /> Buy Now
+                      <ShoppingBag size={18} /> Buy
                     </button>
                   </div>  
                 
