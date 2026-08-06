@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { api } from '@/utils/api';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CreditCard, Truck, FileText, Check, Plus, Minus, MapPin, Search, ChevronRight, X } from "lucide-react";
@@ -45,6 +46,7 @@ export default function Checkout() {
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [mounted, setMounted] = useState(false);
   
   const [marketConfig, setMarketConfig] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState('');
@@ -61,6 +63,7 @@ export default function Checkout() {
     : [];
 
   useEffect(() => {
+    setMounted(true);
     if (productId) {
       api.get(`/market/products/${productId}`)
         .then(res => setProduct(res))
@@ -727,7 +730,7 @@ export default function Checkout() {
           </div>
         </div>
       )}
-      {showLocationModal && (
+      {showLocationModal && mounted && createPortal(
         <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowLocationModal(false)} />
           <div className="relative w-full max-w-md bg-white dark:bg-[#1c1c1e] rounded-[24px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 slide-in-from-bottom-10 duration-300">
@@ -865,7 +868,7 @@ export default function Checkout() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }
