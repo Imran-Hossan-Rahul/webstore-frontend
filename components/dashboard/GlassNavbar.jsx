@@ -161,8 +161,8 @@ const GlassNavbar = ({
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] rounded-b-[24px] pl-[12px] pr-[16px] h-[44px] flex items-center justify-between relative overflow-visible">
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-b-[24px] pl-[12px] pr-[16px] h-[44px] flex items-center justify-between relative overflow-visible">
         
         {/* Left Section */}
         <div className={`flex items-center flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 gap-0 md:max-w-none md:opacity-100 md:gap-2' : 'max-w-[50px] md:max-w-none opacity-100 gap-2'}`}>

@@ -422,7 +422,7 @@ export default function ShopPage() {
           <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b md:border-apple-hairline/50">
             
             {/* Breadcrumbs (Scrolls away on mobile) */}
-            <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] md:bg-transparent md:backdrop-blur-none md:saturate-100 relative z-30">
+            <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] md:bg-transparent md:backdrop-blur-none md:backdrop-saturate-100 relative z-30">
               {searchQuery ? (
                 <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] text-apple-ink font-semibold w-full pb-0.5 md:pb-0">
                   Search Results for &quot;{searchQuery}&quot;
@@ -455,7 +455,7 @@ export default function ShopPage() {
             </div>
             
             {/* Filter + Sort By (Sticky on mobile globally) */}
-            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-apple-hairline/50 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] md:bg-transparent md:backdrop-blur-none md:saturate-100 flex items-center justify-between md:justify-end gap-2 mt-0">
+            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-apple-hairline/50 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] md:bg-transparent md:backdrop-blur-none md:backdrop-saturate-100 flex items-center justify-between md:justify-end gap-2 mt-0">
               <span className="text-[13px] md:text-[14px] font-normal text-apple-muted whitespace-nowrap hidden md:block">Sort by:</span>
               
               <div className="flex items-center gap-2 w-full md:w-auto">
