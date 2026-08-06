@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 import FeedbackModal from "./FeedbackModal";
 
-const getCategoryIcon = (categoryName) => {
+export const getCategoryIcon = (categoryName) => {
   if (!categoryName) return Box;
   const name = categoryName.toLowerCase();
   

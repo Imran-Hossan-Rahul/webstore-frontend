@@ -9,6 +9,7 @@ import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Ga
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import MarketSEOContent from "./MarketSEOContent";
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { getCategoryIcon } from "@/components/dashboard/Sidebar";
 
 // Cloudinary optimization for free extreme performance
 const getOptimizedUrl = (url) => {
@@ -178,9 +179,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
     api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
-    api.get('/market/categories/all')
+    api.get('/market/categories')
       .then(res => {
-        setCategories(res.data || res || []);
+        setCategories(res.categories || res.data || []);
       })
       .catch(err => console.error("Failed to load categories:", err));
 
@@ -207,6 +208,28 @@ export default function MarketClientView({ initialData = [], initialPagination =
     }, 4000);
     return () => clearInterval(timer);
   }, [heroSlides.length]);
+
+  const leafCategories = React.useMemo(() => {
+    let leaves = [];
+    categories.forEach(cat => {
+      const subcats = cat.subcategories || [];
+      if (subcats.length === 0) {
+        leaves.push({ ...cat, paramKey: 'category_id' });
+      } else {
+        subcats.forEach(sub => {
+          const children = sub.subcategories || [];
+          if (children.length === 0) {
+            leaves.push({ ...sub, paramKey: 'subCategory_id' });
+          } else {
+            children.forEach(child => {
+              leaves.push({ ...child, paramKey: 'childCategory_id' });
+            });
+          }
+        });
+      }
+    });
+    return leaves;
+  }, [categories]);
 
   useEffect(() => {
     if (bottomScrollRef.current && bottomScrollRef.current.children.length > currentSlide) {
@@ -553,23 +576,26 @@ export default function MarketClientView({ initialData = [], initialPagination =
       )}
 
       {/* Shop by Categories */}
-      {!query && (
+      {!query && leafCategories.length > 0 && (
         <div className="p-2 pt-6 md:p-8 md:pb-2 w-full">
           <div className="mb-4 md:mb-6">
             <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink">Shop by Categories</h2>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-6">
-            {[
-              { name: 'Earbuds', icon: Headphones },
-              { name: 'Smart Watch', icon: Watch },
-              { name: 'Over-Ear Headphones', icon: Headphones },
-              { name: 'Power Banks', icon: BatteryCharging },
-              { name: 'Adapters', icon: Cable },
-            ].map((cat, idx) => {
-              const Icon = cat.icon;
+            {leafCategories.slice(0, 10).map((cat, idx) => {
+              const IconOrImage = getCategoryIcon(cat.name);
+              const isImg = typeof IconOrImage === 'string';
               return (
-                <div key={idx} className="bg-[#f5f5f7] hover:bg-[#e5e5ea] cursor-pointer rounded-2xl md:rounded-[20px] flex flex-col items-center justify-center p-4 md:p-6 transition-all duration-300">
-                  <Icon size={32} strokeWidth={1.2} className="text-apple-ink mb-3 md:mb-4" />
+                <div 
+                  key={cat._id || idx} 
+                  onClick={() => router.push(`/shop?${cat.paramKey}=${cat._id}`)}
+                  className="bg-[#f5f5f7] hover:bg-[#e5e5ea] cursor-pointer rounded-2xl md:rounded-[20px] flex flex-col items-center justify-center p-4 md:p-6 transition-all duration-300"
+                >
+                  {isImg ? (
+                    <img src={IconOrImage} alt={cat.name} className="w-8 h-8 md:w-10 md:h-10 mb-3 md:mb-4 object-contain" />
+                  ) : (
+                    <IconOrImage size={32} strokeWidth={1.2} className="text-apple-ink mb-3 md:mb-4" />
+                  )}
                   <span className="text-[12px] md:text-[14px] font-medium text-apple-ink text-center leading-tight">{cat.name}</span>
                 </div>
               );
@@ -577,6 +603,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
         </div>
       )}
+
       {/* Latest Products */}
       {!query && (displayedProducts.length > 0 || loading) && (
         <ScrollableProductRow
