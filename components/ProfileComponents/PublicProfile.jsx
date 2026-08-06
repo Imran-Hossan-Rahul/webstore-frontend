@@ -375,8 +375,8 @@ export default function PublicProfile({ username }) {
                     <Camera className="w-8 h-8 text-white" />
                   </div>
                   {/* Mobile Camera Badge */}
-                  <div className="md:hidden absolute bottom-1 right-1 bg-[#0071e3] p-2 rounded-full shadow-lg z-20 border-2 border-white dark:border-[#1c1c1e]">
-                     <Camera className="w-4 h-4 text-white" />
+                  <div className="md:hidden absolute bottom-1 right-1 bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-md p-2.5 rounded-full shadow-sm z-20 border border-black/5 dark:border-white/10">
+                     <Camera className="w-4 h-4 text-[#1d1d1f] dark:text-white" />
                   </div>
                   <input type="file" className="hidden" accept="image/*" onChange={handleProfilePicChange} />
                 </label>
