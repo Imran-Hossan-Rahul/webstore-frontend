@@ -5,6 +5,7 @@ import { Search, Image as ImageIcon, Copy, Eye, FileText, ShoppingBag, Package }
 import { api } from '@/utils/api';
 import { generateInvoice } from '@/utils/generateInvoice';
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { useUser } from '@/context/UserContext';
 
 const STATUS_STYLE = {
   'Order placed': 'bg-yellow-50 text-[#1d1d1f] border-yellow-200',
@@ -18,6 +19,7 @@ const STATUS_STYLE = {
 const ITEMS_PER_PAGE = 10;
 
 export default function OrdersList({ isEmbedded = false }) {
+  const { user, isGuest } = useUser();
   const router = useRouter();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,17 @@ export default function OrdersList({ isEmbedded = false }) {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const data = await api.get('/market/orders');
+        let data = [];
+        if (user) {
+          data = await api.get('/market/orders');
+        } else {
+          // Guest flow
+          const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+          if (storedIds.length > 0) {
+            data = await api.post('/market/orders/guest/list', { ids: storedIds });
+          }
+        }
+        
         if (Array.isArray(data)) {
           setOrders(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
         }

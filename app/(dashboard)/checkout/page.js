@@ -5,10 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { CreditCard, Truck, FileText, Check, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
 import { districts, upazilas } from '@/utils/bdData';
+import { useUser } from '@/context/UserContext';
+import { AlertCircle } from 'lucide-react';
 
 
 
 export default function Checkout() {
+  const { user } = useUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const productId = searchParams.get('productId');
@@ -137,13 +140,25 @@ export default function Checkout() {
         total_amount: total
       };
 
-      const response = await api.post('/market/orders', payload);
+      const endpoint = user ? '/market/orders' : '/market/orders/guest';
+      const response = await api.post(endpoint, payload);
       
       const createdOrder = response?.data || response;
       const orderId = createdOrder?.id || createdOrder?._id;
       
       setOrderConfirmed(true);
       window.dispatchEvent(new CustomEvent('orderConfirmed'));
+
+      // Save guest order to local storage
+      if (!user && orderId) {
+        try {
+          const storedOrders = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+          storedOrders.push(orderId);
+          localStorage.setItem('codalina_guest_orders', JSON.stringify(storedOrders));
+        } catch (e) {
+          console.error("Failed to save guest order to local storage", e);
+        }
+      }
 
       // Clear the purchased item from the cart
       try {
@@ -313,6 +328,16 @@ export default function Checkout() {
       <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
         <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8">Checkout</h1>
         
+        {!user && (
+          <div className="mb-6 md:mb-8 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-lg p-4 flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 mt-0.5 shrink-0 text-yellow-600" />
+            <div>
+              <h3 className="font-semibold text-sm">Checking out as a Guest</h3>
+              <p className="text-sm mt-1">We will save your order data in this browser, but it may be lost if you clear your browsing data. We recommend <Link href="/auth/login" className="underline font-medium hover:text-yellow-900">logging in</Link> to keep track of your orders securely.</p>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           
           {/* Left Column */}

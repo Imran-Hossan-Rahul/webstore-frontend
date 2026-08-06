@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { ArrowLeft, Copy, Image as ImageIcon, CheckCircle2, XCircle, FileText } from "lucide-react";
 import { api } from '@/utils/api';
 import { generateInvoice } from '@/utils/generateInvoice';
-
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { useUser } from '@/context/UserContext';
 
 export default function OrderDetailPage({ params }) {
+  const { user } = useUser();
   const router = useRouter();
   const { id } = params;
   const [order, setOrder] = useState(null);
@@ -18,7 +19,16 @@ export default function OrderDetailPage({ params }) {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const data = await api.get('/market/orders');
+        let data = [];
+        if (user) {
+          data = await api.get('/market/orders');
+        } else {
+          const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+          if (storedIds.length > 0) {
+            data = await api.post('/market/orders/guest/list', { ids: storedIds });
+          }
+        }
+        
         if (data && data.length > 0) {
           const found = data.find(o => (o.id?.toString() === id || o._id?.toString() === id));
           setOrder(found || null);
