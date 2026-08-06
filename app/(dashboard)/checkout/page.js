@@ -728,40 +728,64 @@ export default function Checkout() {
         </div>
       )}
       {showLocationModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowLocationModal(false)} />
           <div className="relative w-full max-w-md bg-white dark:bg-[#1c1c1e] rounded-[24px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 slide-in-from-bottom-10 duration-300">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-[#2c2c2e]">
-              <h3 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
-                {modalStep === 1 && "Select District"}
-                {modalStep === 2 && "Select Thana"}
-                {modalStep === 3 && "Enter ZIP Code"}
+            <div className="flex items-center justify-between p-5 pb-3">
+              <h3 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                Delivery Location
               </h3>
-              <button onClick={() => setShowLocationModal(false)} className="p-2 -mr-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-[#2c2c2e] transition-colors">
+              <button onClick={() => setShowLocationModal(false)} className="p-2 -mr-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-[#2c2c2e] transition-colors bg-gray-50 dark:bg-white/5">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
+            {/* Segmented Control / Tabs */}
+            <div className="px-5 pb-3 border-b border-gray-100 dark:border-[#2c2c2e]">
+              <div className="flex bg-gray-100 dark:bg-black/30 p-1 rounded-full w-full">
+                <button 
+                  className={`flex-1 py-1.5 text-[13px] font-semibold rounded-full transition-all duration-300 ${modalStep === 1 ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'}`}
+                  onClick={() => setModalStep(1)}
+                >
+                  District
+                </button>
+                <button 
+                  disabled={!tempLocation.district}
+                  className={`flex-1 py-1.5 text-[13px] font-semibold rounded-full transition-all duration-300 ${modalStep === 2 ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : !tempLocation.district ? 'opacity-50 cursor-not-allowed text-gray-400' : 'text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'}`}
+                  onClick={() => setModalStep(2)}
+                >
+                  Thana
+                </button>
+                <button 
+                  disabled={!tempLocation.thana}
+                  className={`flex-1 py-1.5 text-[13px] font-semibold rounded-full transition-all duration-300 ${modalStep === 3 ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : !tempLocation.thana ? 'opacity-50 cursor-not-allowed text-gray-400' : 'text-gray-500 hover:text-gray-900 dark:hover:text-gray-300'}`}
+                  onClick={() => setModalStep(3)}
+                >
+                  ZIP
+                </button>
+              </div>
+            </div>
+
             {/* Modal Content */}
-            <div className="flex-1 overflow-y-auto p-2">
+            <div className="flex-1 overflow-y-auto p-2 relative">
               {modalStep < 3 && (
                 <div className="p-3 sticky top-0 bg-white dark:bg-[#1c1c1e] z-10">
                   <div className="relative">
                     <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input 
                       type="text" 
-                      placeholder="Search..." 
+                      placeholder={modalStep === 1 ? "Search district..." : "Search thana..."}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-gray-100 dark:bg-black/50 border border-transparent focus:border-[#0071e3] rounded-[12px] pl-10 pr-4 py-2.5 text-[15px] focus:outline-none transition-colors text-black dark:text-white"
+                      className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-transparent focus:border-[#0071e3] rounded-[12px] pl-10 pr-4 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white"
                     />
                   </div>
                 </div>
               )}
 
               {modalStep === 1 && (
-                <div className="px-2 pb-4">
+                <div className="px-2 pb-4 animate-in slide-in-from-left-4 fade-in duration-300">
                   {districts.filter(d => d.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name)).map(d => (
                     <button 
                       key={d.id}
@@ -773,20 +797,18 @@ export default function Checkout() {
                       className="w-full flex items-center justify-between px-4 py-3.5 rounded-[12px] hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
                     >
                       <span className="text-[15px] font-medium text-gray-900 dark:text-gray-100">{d.name}</span>
-                      <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      {tempLocation.district === d.name ? (
+                         <Check className="w-5 h-5 text-[#0071e3]" />
+                      ) : (
+                         <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      )}
                     </button>
                   ))}
                 </div>
               )}
 
               {modalStep === 2 && (
-                <div className="px-2 pb-4">
-                  <button 
-                    onClick={() => { setModalStep(1); setSearchQuery(''); }}
-                    className="mb-2 px-4 py-2 text-[13px] font-semibold text-[#0071e3] hover:underline"
-                  >
-                    &larr; Back to Districts
-                  </button>
+                <div className="px-2 pb-4 animate-in slide-in-from-right-4 fade-in duration-300">
                   {upazilas.filter(u => u.district_id === districts.find(d => d.name === tempLocation.district)?.id && u.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name)).map(u => (
                     <button 
                       key={u.id}
@@ -797,32 +819,32 @@ export default function Checkout() {
                       className="w-full flex items-center justify-between px-4 py-3.5 rounded-[12px] hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
                     >
                       <span className="text-[15px] font-medium text-gray-900 dark:text-gray-100">{u.name}</span>
-                      <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      {tempLocation.thana === u.name ? (
+                         <Check className="w-5 h-5 text-[#0071e3]" />
+                      ) : (
+                         <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                      )}
                     </button>
                   ))}
+                  {upazilas.filter(u => u.district_id === districts.find(d => d.name === tempLocation.district)?.id).length === 0 && (
+                     <div className="text-center py-10 text-gray-500 text-sm">No thanas found for {tempLocation.district}</div>
+                  )}
                 </div>
               )}
 
               {modalStep === 3 && (
-                <div className="p-5">
-                  <button 
-                    onClick={() => { setModalStep(2); setSearchQuery(''); }}
-                    className="mb-4 text-[13px] font-semibold text-[#0071e3] hover:underline block"
-                  >
-                    &larr; Back to Thanas
-                  </button>
-                  
-                  <div className="bg-gray-50 dark:bg-black/30 rounded-[16px] p-4 mb-6">
-                    <p className="text-[13px] font-medium text-gray-500 mb-1">Selected Location</p>
-                    <p className="text-[16px] font-semibold text-gray-900 dark:text-white">{tempLocation.thana}, {tempLocation.district}</p>
+                <div className="p-5 animate-in slide-in-from-right-4 fade-in duration-300">
+                  <div className="bg-blue-50 dark:bg-[#0071e3]/10 border border-blue-100 dark:border-[#0071e3]/20 rounded-[16px] p-5 mb-6 text-center">
+                    <p className="text-[12px] font-semibold text-blue-500 dark:text-[#0071e3] mb-1 uppercase tracking-wider">Selected Location</p>
+                    <p className="text-[18px] font-bold text-gray-900 dark:text-white">{tempLocation.thana}, {tempLocation.district}</p>
                   </div>
 
-                  <label className="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-2">ZIP Code (Optional)</label>
+                  <label className="block text-[13px] font-semibold text-gray-700 dark:text-gray-300 mb-2 ml-1">ZIP / Postal Code (Optional)</label>
                   <input 
                     type="text" 
                     value={tempLocation.zip}
                     onChange={(e) => setTempLocation(prev => ({ ...prev, zip: e.target.value }))}
-                    className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[12px] px-4 py-3.5 text-[15px] focus:outline-none focus:ring-1 focus:ring-[#0071e3] transition-colors text-black dark:text-white mb-8"
+                    className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[16px] px-4 py-3.5 text-[16px] font-medium focus:outline-none focus:ring-1 focus:ring-[#0071e3] transition-all text-black dark:text-white mb-8 shadow-sm"
                     placeholder="e.g. 1212"
                   />
 
@@ -831,12 +853,12 @@ export default function Checkout() {
                       setForm(prev => ({ ...prev, district: tempLocation.district, thana: tempLocation.thana, zip: tempLocation.zip }));
                       setFormErrors(prev => ({ ...prev, district: null, thana: null }));
                       setShowLocationModal(false);
-                      // reset the address confirmed if they change location
                       setAddressConfirmed(false); 
                     }}
-                    className="w-full py-3.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-bold transition-all shadow-[0_4px_14px_0_rgb(0,113,227,0.39)] hover:shadow-[0_6px_20px_rgba(0,113,227,0.23)] flex items-center justify-center gap-2"
                   >
-                    Confirm Location
+                    <MapPin className="w-5 h-5" />
+                    Confirm & Continue
                   </button>
                 </div>
               )}
