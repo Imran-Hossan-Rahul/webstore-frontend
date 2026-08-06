@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { api } from '@/utils/api';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star } from "lucide-react";
@@ -125,6 +125,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = React.useContext(DashboardContext) || {};
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
   const query = searchParams.get('q')?.toLowerCase() || '';
 
@@ -334,7 +335,14 @@ export default function MarketClientView({ initialData = [], initialPagination =
             Add to Cart
           </button>
           <button 
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onClick={(e) => { 
+              e.preventDefault(); 
+              e.stopPropagation(); 
+              const prodId = product.id || product._id;
+              if (prodId) {
+                router.push(`/product/${prodId}`);
+              }
+            }}
             className="flex-auto bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center"
           >
             <span className="md:hidden">Buy</span>
