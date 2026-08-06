@@ -363,7 +363,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
       {/* Hero Banners Section - Apple TV Style */}
       {!query && (
-        <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden">
+        <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden px-2 md:px-0">
           {/* Main Top Banner (Full Width, 16:9 Aspect Ratio) */}
           <div className="w-full relative aspect-[16/9] max-h-[600px] md:max-h-[700px] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-black">
             <div 
@@ -421,14 +421,14 @@ export default function MarketClientView({ initialData = [], initialPagination =
               
               <div 
                 ref={bottomScrollRef}
-                className="flex overflow-x-auto gap-[2px] md:gap-[10px] snap-x snap-mandatory scrollbar-hide pb-4"
+                className="flex overflow-x-auto gap-[6px] md:gap-[10px] snap-x snap-mandatory scrollbar-hide pb-4"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {bottomBanners.map((banner, idx) => (
                   <Link 
                     href={banner.link} 
                     key={banner.id || idx} 
-                    className="flex-none w-[85%] sm:w-[calc(50%-1px)] md:w-[calc(33.333%-6.66px)] lg:w-[calc(33.333%-6.66px)] aspect-[16/9] snap-start overflow-hidden relative group bg-gray-900 shadow-sm block rounded-apple-lg"
+                    className="flex-none w-[42%] sm:w-[calc(33.333%-4px)] md:w-[calc(33.333%-6.66px)] aspect-[16/9] snap-start overflow-hidden relative group bg-gray-900 shadow-sm block rounded-apple-lg"
                   >
                     <img 
                       src={banner.image} 
