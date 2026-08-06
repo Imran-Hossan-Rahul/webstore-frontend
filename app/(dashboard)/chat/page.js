@@ -273,8 +273,6 @@ export default function ChatPage() {
 
   const handleUnsendMessage = (messageId) => {
     if (!selectedChat) return;
-    const confirmed = window.confirm("Are you sure you want to unsend this message?");
-    if (!confirmed) return;
     // Optimistic update first
     setMessages((prev) => prev.map(msg =>
       msg._id === messageId ? { ...msg, isUnsent: true, content: "This message was unsent" } : msg

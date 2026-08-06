@@ -335,24 +335,14 @@ export default function ChatWindow({
                           icon={<Trash2 size={12} />}
                           tooltip="Delete Message"
                           align="left"
-                          popover={
-                            <div className="flex flex-col p-1.5 min-w-[160px]">
-                              <button
-                                onClick={(e) => { e.stopPropagation(); onDeleteMessage?.(msg._id); }}
-                                className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-slate-700 dark:text-slate-300 flex items-center gap-2"
-                              >
-                                <Trash2 size={14} className="text-slate-400" />
-                                Delete for me
-                              </button>
-                              <button
-                                onClick={(e) => { e.stopPropagation(); onUnsendMessage?.(msg._id); }}
-                                className="text-left px-3 py-2 text-[13px] font-medium hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors text-red-500 flex items-center gap-2 mt-0.5"
-                              >
-                                <RotateCcw size={14} />
-                                Delete for everyone
-                              </button>
-                            </div>
-                          }
+                          popover={(closePopover) => (
+                            <DeleteMessageMenu 
+                              msgId={msg._id} 
+                              onDeleteForMe={onDeleteMessage} 
+                              onDeleteForEveryone={onUnsendMessage} 
+                              closePopover={closePopover} 
+                            />
+                          )}
                         />
                       )}
                     </div>
@@ -598,9 +588,57 @@ function MessageHoverAction({ icon, tooltip, popover, align = "center" }) {
       </button>
       {open && popover && (
         <div className={`absolute bottom-9 ${align === 'right' ? 'right-0' : align === 'left' ? 'left-0' : 'left-1/2 -translate-x-1/2'} bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 whitespace-nowrap`}>
-          {popover}
+          {typeof popover === 'function' ? popover(() => setOpen(false)) : popover}
         </div>
       )}
+    </div>
+  );
+}
+
+// Sub-component: Delete Message Menu
+function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePopover }) {
+  const [confirming, setConfirming] = useState(null);
+
+  if (confirming === 'me') {
+    return (
+      <div className="flex flex-col p-2 min-w-[160px] gap-2">
+        <p className="text-[12px] text-slate-500 font-medium text-center">Delete for you?</p>
+        <div className="flex gap-2">
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-slate-700 dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); onDeleteForMe?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (confirming === 'everyone') {
+    return (
+      <div className="flex flex-col p-2 min-w-[160px] gap-2">
+        <p className="text-[12px] text-slate-500 font-medium text-center">Delete for everyone?</p>
+        <div className="flex gap-2">
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-slate-700 dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); onDeleteForEveryone?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col p-1.5 min-w-[160px]">
+      <button
+        onClick={(e) => { e.stopPropagation(); setConfirming('me'); }}
+        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-slate-700 dark:text-slate-300 flex items-center gap-2"
+      >
+        <Trash2 size={14} className="text-slate-400" />
+        Delete for me
+      </button>
+      <button
+        onClick={(e) => { e.stopPropagation(); setConfirming('everyone'); }}
+        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-red-50 dark:hover:bg-red-500/10 rounded-xl transition-colors text-red-500 flex items-center gap-2 mt-0.5"
+      >
+        <RotateCcw size={14} />
+        Delete for everyone
+      </button>
     </div>
   );
 }

@@ -859,18 +859,11 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                   onClose={handleClose}
                   onBack={currentUser?.role === 'admin' ? () => setSelectedChat(null) : undefined}
                   onUnsendMessage={(id) => {
-                    setConfirmDialog({
-                      isOpen: true,
-                      title: "Delete for everyone",
-                      message: "Are you sure you want to unsend this message? It will be removed for everyone in the chat.",
-                      onConfirm: () => {
-                        const updateFn = m => m._id === id ? { ...m, isUnsent: true, content: "This message was unsent" } : m;
-                        setMessages(prev => prev.map(updateFn));
-                        const cached = messageCacheRef.current.get(selectedChat._id);
-                        if (cached) messageCacheRef.current.set(selectedChat._id, cached.map(updateFn));
-                        socket.emit("message:unsend", { chatId: selectedChat._id, messageId: id });
-                      }
-                    });
+                    const updateFn = m => m._id === id ? { ...m, isUnsent: true, content: "This message was unsent" } : m;
+                    setMessages(prev => prev.map(updateFn));
+                    const cached = messageCacheRef.current.get(selectedChat._id);
+                    if (cached) messageCacheRef.current.set(selectedChat._id, cached.map(updateFn));
+                    socket.emit("message:unsend", { chatId: selectedChat._id, messageId: id });
                   }}
                   onReactMessage={(id, emoji) => {
                     let nr;
@@ -892,23 +885,16 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                     }
                     setTimeout(() => socket.emit("message:react", { chatId: selectedChat._id, messageId: id, reactions: nr }), 0);
                   }}
-                  onDeleteMessage={(id) => {
-                    setConfirmDialog({
-                      isOpen: true,
-                      title: "Delete for me",
-                      message: "This message will be deleted for you. Other participants can still see it.",
-                      onConfirm: async () => {
-                        const updateFn = m => m._id !== id;
-                        setMessages(prev => prev.filter(updateFn));
-                        const cached = messageCacheRef.current.get(selectedChat._id);
-                        if (cached) messageCacheRef.current.set(selectedChat._id, cached.filter(updateFn));
-                        try {
-                          await api.delete(`/chat/message/${id}`);
-                        } catch (err) {
-                          console.error("Failed to delete message on backend", err);
-                        }
-                      }
-                    });
+                  onDeleteMessage={async (id) => {
+                    const updateFn = m => m._id !== id;
+                    setMessages(prev => prev.filter(updateFn));
+                    const cached = messageCacheRef.current.get(selectedChat._id);
+                    if (cached) messageCacheRef.current.set(selectedChat._id, cached.filter(updateFn));
+                    try {
+                      await api.delete(`/chat/message/${id}`);
+                    } catch (err) {
+                      console.error("Failed to delete message on backend", err);
+                    }
                   }}
                 />
               </div>
