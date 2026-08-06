@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut } from "lucide-react";
+import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut, ShieldCheck, Mail, Send, AlertCircle, BadgeCheck } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useUser } from '@/context/UserContext';
@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { useToast } from "@/components/ui/ToastProvider";
 import OrdersList from '@/components/orders/OrdersList';
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import VerifyEmailTab from "@/components/ProfileComponents/VerifyEmailTab";
 
 export default function PublicProfile({ username }) {
   const router = useRouter();
@@ -366,11 +367,17 @@ export default function PublicProfile({ username }) {
             </div>
 
             <div className="flex-1">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-[28px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white">
                   {profile.name}
                 </h1>
                 {profile.isVerified && <CheckCircle2 className="w-6 h-6 text-[#0071e3]" />}
+                {profile.emailVerified && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full text-[11px] font-semibold">
+                    <BadgeCheck className="w-3.5 h-3.5" />
+                    Verified
+                  </span>
+                )}
               </div>
               <div className="flex flex-wrap items-center gap-4 mt-5">
                 {profile.location && (
@@ -425,6 +432,10 @@ export default function PublicProfile({ username }) {
                 </button>
                 <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'password' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   Password
+                </button>
+                <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                  {profile.emailVerified ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+                  Verify
                 </button>
               </>
             )}
@@ -530,6 +541,10 @@ export default function PublicProfile({ username }) {
                  <OrdersList isEmbedded={true} />
               </div>
             </div>
+          )}
+
+          {activeTab === 'verify' && isOwner && (
+            <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
           )}
 
           {activeTab === 'about' && (
