@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star, Check } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import MarketSEOContent from "./MarketSEOContent";
 import AppleSpinner from "@/components/ui/AppleSpinner";
