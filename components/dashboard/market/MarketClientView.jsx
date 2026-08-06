@@ -10,6 +10,7 @@ import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import MarketSEOContent from "./MarketSEOContent";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import { getCategoryIcon } from "@/components/dashboard/Sidebar";
+import RightSidebar from "@/components/dashboard/RightSidebar";
 
 // Cloudinary optimization for free extreme performance
 const getOptimizedUrl = (url) => {
@@ -575,13 +576,20 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       )}
 
+      {/* Mobile Right Sidebar (Flash Deals, etc) */}
+      {!query && (
+        <div className="lg:hidden w-full px-2 mt-4 mb-2">
+          <RightSidebar />
+        </div>
+      )}
+
       {/* Shop by Categories */}
       {!query && leafCategories.length > 0 && (
-        <div className="p-2 pt-6 md:p-8 md:pb-2 w-full">
-          <div className="mb-4 md:mb-6">
-            <h2 className="text-xl md:text-[28px] font-semibold text-apple-ink">Shop by Categories</h2>
+        <div className="p-2 pt-2 md:py-8 md:px-3 w-full -mt-4 md:mt-2 relative group">
+          <div className="flex justify-between items-center mb-4 md:mb-8 mt-6 md:mt-0">
+            <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] text-apple-ink">Shop by Categories</h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-5">
             {leafCategories.slice(0, 10).map((cat, idx) => {
               const IconOrImage = getCategoryIcon(cat.name);
               const isImg = typeof IconOrImage === 'string';
