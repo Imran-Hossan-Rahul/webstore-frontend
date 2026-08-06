@@ -162,9 +162,17 @@ async function apiFetch(endpoint, options = {}) {
     if (newCsrf) setCsrfToken(newCsrf);
 
     if (!response.ok) {
-      const message = isJson
-        ? data?.message || `Request failed (${response.status})`
-        : `HTTP ${response.status}: ${String(data).slice(0, 200)}`;
+      let message = `HTTP ${response.status}: ${String(data).slice(0, 200)}`;
+      if (isJson) {
+        if (data?.errors && Array.isArray(data.errors)) {
+          message = data.errors.join(", ");
+        } else if (data?.message) {
+          message = data.message;
+        } else {
+          message = `Request failed (${response.status})`;
+        }
+      }
+      
       const error = new Error(message);
       error.status = response.status;
       error.data = data;

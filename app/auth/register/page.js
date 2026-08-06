@@ -48,6 +48,8 @@ function validateRegister({ name, email, password, confirmPassword }) {
     errors.password = "Must contain at least one uppercase letter";
   } else if (!/\d/.test(password)) {
     errors.password = "Must contain at least one number";
+  } else if (!/[@$!%*?&]/.test(password)) {
+    errors.password = "Must contain at least one special character (@$!%*?&)";
   }
   if (!confirmPassword) {
     errors.confirmPassword = "Please confirm your password";
