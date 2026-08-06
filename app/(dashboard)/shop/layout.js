@@ -1,4 +1,4 @@
-const BASE_URL = 'https://codalina-frontend-fawn.vercel.app';
+const BASE_URL = 'https://codalina.com';
 
 export const metadata = {
   title: 'Shop Electronics & Digital Assets | Codalina',

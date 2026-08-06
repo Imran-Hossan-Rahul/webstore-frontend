@@ -1,5 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
-const BASE_URL = 'https://codalina-frontend-fawn.vercel.app';
+const BASE_URL = 'https://codalina.com';
 
 const getOptimizedUrl = (url) => {
   if (!url) return '';

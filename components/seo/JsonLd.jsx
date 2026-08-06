@@ -31,7 +31,7 @@ export function buildArticleSchema({ title, description, author, publishedAt, up
       "name": "Codalina",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://codalina-frontend-fawn.vercel.app/logo.png"
+        "url": "https://codalina.com/logo.png"
       }
     },
     "datePublished": publishedAt,
@@ -62,7 +62,7 @@ export function buildTechArticleSchema({ title, description, author, publishedAt
       "name": "Codalina",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://codalina-frontend-fawn.vercel.app/logo.png"
+        "url": "https://codalina.com/logo.png"
       }
     },
     "datePublished": publishedAt,

@@ -1,40 +1,31 @@
-# Codalina — Professional Platform for Developers & Designers
+# Codalina — Digital & Electronics Marketplace
 # llms.txt — Optimized for AI Language Model Discovery
 # See: https://llmstxt.org
 
 # About Codalina
-Codalina is a professional community platform where developers and designers (called "Craftsmen") 
-build, showcase, and monetize their work. The platform has three core content sections:
+Welcome to Codalina, a fully digital marketplace built with a vision to make technology more accessible and reliable. We specialize in offering carefully selected digital products, including source codes, UI components, and high-quality electronics (earphones, earbuds, speakers, neckbands, and more)—all through a seamless online experience. 
 
-1. **Codex** — In-depth technical articles, tutorials, and guides written by developers
-2. **Devlogs** — Project showcase posts where developers document their build journey
-3. **Artifacts** — Reusable UI components, templates, and design assets (free and paid)
+At Codalina, we believe in simplicity, transparency, and continuous improvement. Every product we offer is 100% original and chosen with care to deliver value and quality to our customers. As a growing platform, we are committed to building trust through honest service, a smooth shopping experience, and ongoing innovation. Our journey has just begun, and we are excited to grow alongside our community. Thank you for being part of the Codalina story.
 
-Craftsmen can be hired directly through the platform via the "Connect / Hire Me" feature 
-which opens a real-time chat session between clients and developers.
+# Core Categories
+1. **Quality Electronics** — 100% original gadgets including earphones, earbuds, speakers, and neckbands.
+2. **Digital Products** — Carefully selected source codes, UI components, and software assets.
 
 # Content Index
-## Codex Articles
-Codex articles are technical blog posts covering web development, design, and programming topics.
-URL pattern: https://codalina-frontend-fawn.vercel.app/codex/{slug}
-Sitemap: https://codalina-frontend-fawn.vercel.app/sitemap.xml
+## Shop / Market
+The main marketplace to explore and buy premium digital and physical tech products.
+URL: https://codalina.com/shop
 
-## Devlogs
-Devlogs are developer project journals documenting the build process of real projects.
-URL pattern: https://codalina-frontend-fawn.vercel.app/post/{id}
-
-## Artifacts
-Artifacts are reusable UI components, templates, and creative assets.
-URL pattern: https://codalina-frontend-fawn.vercel.app/artifacts/{id}
+## Products
+Individual product pages with detailed descriptions, images, and pricing.
+URL pattern: https://codalina.com/product/{id}
 
 # Permissions
 User-agent: *
-Allow: /codex/
-Allow: /devlogs/
-Allow: /artifacts/
-Allow: /post/
+Allow: /
+Allow: /shop/
+Allow: /product/
 Allow: /explore/
-Allow: /u/
 Disallow: /admin/
 Disallow: /settings/
 Disallow: /wallet/

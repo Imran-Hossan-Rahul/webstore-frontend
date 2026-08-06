@@ -1,4 +1,4 @@
-const BASE_URL = 'https://codalina-frontend-fawn.vercel.app';
+const BASE_URL = 'https://codalina.com';
 
 export default function robots() {
   return {

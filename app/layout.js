@@ -21,14 +21,14 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  metadataBase: new URL('https://codalina-frontend-fawn.vercel.app'),
+  metadataBase: new URL('https://codalina.com'),
   title: {
     default: "Codalina — Digital Marketplace",
     template: "%s | Codalina"
   },
-  description: "Codalina is a premium digital marketplace to buy and sell source code, UI components, and software assets.",
+  description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
   keywords: [
-    "marketplace", "digital products", "source code", "UI components", "design assets",
+    "marketplace", "digital products", "electronics", "earphones", "earbuds", "source code", "UI components", "gadgets",
     "software", "React templates", "Next.js", "frontend development", "Codalina"
   ],
   authors: [{ name: "Codalina" }],
@@ -48,10 +48,10 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://codalina-frontend-fawn.vercel.app",
+    url: "https://codalina.com",
     siteName: "Codalina",
     title: "Codalina — Digital Marketplace",
-    description: "Buy and sell premium software assets, source code, and UI components on Codalina.",
+    description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
     images: [
       {
         url: "/og-image.jpg",
@@ -65,7 +65,7 @@ export const metadata = {
     card: "summary_large_image",
     site: "@codalina",
     title: "Codalina — Digital Marketplace",
-    description: "Buy and sell premium software assets, source code, and UI components.",
+    description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
     images: ["/og-image.jpg"],
   },
 };
@@ -88,8 +88,8 @@ export default function RootLayout({ children }) {
                       "@context": "https://schema.org",
                       "@type": "Organization",
                       "name": "Codalina",
-                      "url": "https://codalina-frontend-fawn.vercel.app",
-                      "logo": "https://codalina-frontend-fawn.vercel.app/logo.png"
+                      "url": "https://codalina.com",
+                      "logo": "https://codalina.com/logo.png"
                     })
                   }}
                 />
