@@ -130,36 +130,31 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
-  const [heroSlides, setHeroSlides] = useState([]);
+  const heroSlides = [
+    { image: "/banners/banner1.png", isFullBanner: true, link: "#" },
+    { image: "/banners/banner2.png", isFullBanner: true, link: "#" },
+    { image: "/banners/banner3.png", isFullBanner: true, link: "#" },
+    { image: "/banners/banner4.png?v=2", isFullBanner: true, link: "#" },
+    { image: "/banners/banner5.png", isFullBanner: true, link: "#" },
+    { image: "/banners/banner6.png", isFullBanner: true, link: "#" },
+  ];
+  
+  const bottomBanners = [
+    { id: 1, image: "/banners/smbanner1.png", link: "#" },
+    { id: 2, image: "/banners/smbanner2.png", link: "#" },
+    { id: 3, image: "/banners/smbanner3.png", link: "#" },
+    { id: 4, image: "/banners/smbanner4.png", link: "#" },
+    { id: 5, image: "/banners/smbanner5.png", link: "#" },
+    { id: 6, image: "/banners/smbanner6.png", link: "#" },
+    { id: 7, image: "/banners/smbanner7.png", link: "#" },
+    { id: 8, image: "/banners/smbanner8.png", link: "#" },
+  ];
+
+  const bottomScrollRef = useRef(null);
+  const topScrollRef = useRef(null);
 
   useEffect(() => {
-    const appleStyleBanner = {
-      isAppleStyle: true,
-      title: "iPad air",
-      subtitle: "Now supercharged by M4.",
-      image: "https://www.apple.com/v/ipad-air/y/images/overview/hero/hero_ipad_air__cx8pdvymdm2m_large_2x.png",
-      bgColor: "bg-gradient-to-b from-[#d1e8f5] to-[#f5f7f8]",
-      link: "#"
-    };
 
-    const geeooBanner = {
-      image: "/geeoo-banner.jpg",
-      titleTop: "GEEOO",
-      titleBottom: "Lightning Adapter",
-      link: "#",
-      isFullBanner: true
-    };
-
-    const rainyBanner = {
-      image: "/geeoo-rainy-banner-bn.png",
-      titleTop: "",
-      titleBottom: "Rainy Season Offer",
-      link: "#",
-      isFullBanner: true
-    };
-    
-    setHeroSlides([rainyBanner]);
-    
     api.get('/market/banners').catch(() => {}); // Just ping it in background if needed, but ignore result
 
     api.get('/market/categories/all')
@@ -188,9 +183,25 @@ export default function MarketClientView({ initialData = [], initialPagination =
     if (heroSlides.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 3000);
+    }, 4000);
     return () => clearInterval(timer);
   }, [heroSlides.length]);
+
+  useEffect(() => {
+    if (bottomScrollRef.current && bottomScrollRef.current.children.length > currentSlide) {
+      const targetChild = bottomScrollRef.current.children[currentSlide];
+      const childWidth = targetChild.getBoundingClientRect().width;
+      const gap = window.innerWidth >= 768 ? 10 : (window.innerWidth >= 640 ? 0 : 2); // gap is 10px on md/lg, 2px on mobile
+      const scrollPos = currentSlide * (childWidth + gap);
+      bottomScrollRef.current.scrollTo({ left: scrollPos, behavior: 'smooth' });
+    }
+    if (topScrollRef.current && topScrollRef.current.children.length > currentSlide) {
+      const targetChild = topScrollRef.current.children[currentSlide];
+      const childWidth = targetChild.getBoundingClientRect().width;
+      const scrollPos = currentSlide * childWidth;
+      topScrollRef.current.scrollTo({ left: scrollPos, behavior: 'smooth' });
+    }
+  }, [currentSlide]);
 
   const [page, setPage] = useState(initialPagination.currentPage || 1);
   const [hasMore, setHasMore] = useState((initialPagination.currentPage || 1) < (initialPagination.pages || 1));
@@ -342,100 +353,107 @@ export default function MarketClientView({ initialData = [], initialPagination =
         reason="like" 
       />
 
-      {/* Hero Banners */}
+      {/* Hero Banners Section - Apple TV Style */}
       {!query && (
-        <div className="p-2 pt-4 md:-mt-4 md:px-3 md:pb-2 w-full flex flex-col lg:flex-row gap-2 md:gap-4">
-          {/* Main Banner Slider */}
-          <div className="lg:w-2/3 w-full aspect-[4/3] md:aspect-auto md:h-[400px] lg:h-[600px] bg-transparent rounded-apple-lg overflow-hidden relative group cursor-pointer flex items-center justify-center">
-            
-            {heroSlides.map((slide, idx) => (
-              <div 
-                key={idx}
-                className={`absolute inset-0 transition-opacity duration-1000 ${idx === currentSlide ? 'opacity-100' : 'opacity-0 z-0'} ${idx === currentSlide ? 'z-10' : ''}`}
-              >
-                {slide.isAppleStyle ? (
-                  <div className={`absolute inset-0 flex flex-col items-center justify-between w-full h-full ${slide.bgColor}`}>
-                    <div className="pt-10 md:pt-16 px-4 text-center z-20 flex flex-col items-center">
-                      <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-2 font-sans">{slide.title}</h1>
-                      <p className="text-lg md:text-2xl font-normal text-gray-800 tracking-tight mb-5">{slide.subtitle}</p>
-                      <div className="flex gap-4 items-center justify-center">
-                        <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-5 py-2 rounded-full font-sans text-[15px] font-normal hover:bg-[#0055b3] transition-colors">Learn more</Link>
-                        <Link href={slide.link || '#'} className="bg-transparent border border-[#0066CC] text-[#0066CC] px-5 py-2 rounded-full font-sans text-[15px] font-normal hover:bg-[#0066CC] hover:text-white transition-colors">Buy</Link>
+        <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden">
+          {/* Main Top Banner (Full Width, 16:9 Aspect Ratio) */}
+          <div className="w-full relative aspect-[16/9] max-h-[600px] md:max-h-[700px] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-black">
+            <div 
+              ref={topScrollRef}
+              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {heroSlides.map((slide, idx) => {
+                return (
+                  <div 
+                    key={idx}
+                    className="flex-none w-full h-full snap-start relative bg-black flex items-center justify-center"
+                  >
+                  {slide.isAppleStyle ? (
+                    <div className={`absolute inset-0 flex flex-col items-center justify-between w-full h-full ${slide.bgColor}`}>
+                      <div className="pt-8 md:pt-16 px-4 text-center z-20 flex flex-col items-center">
+                        <h1 className="text-2xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-1 md:mb-2 font-sans">{slide.title}</h1>
+                        <p className="text-base md:text-2xl font-normal text-gray-800 tracking-tight mb-3 md:mb-5">{slide.subtitle}</p>
+                        <div className="flex gap-3 md:gap-4 items-center justify-center">
+                          <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-4 md:px-5 py-1.5 md:py-2 rounded-full font-sans text-[13px] md:text-[15px] font-normal hover:bg-[#0055b3] transition-colors">Learn more</Link>
+                          <Link href={slide.link || '#'} className="bg-transparent border border-[#0066CC] text-[#0066CC] px-4 md:px-5 py-1.5 md:py-2 rounded-full font-sans text-[13px] md:text-[15px] font-normal hover:bg-[#0066CC] hover:text-white transition-colors">Buy</Link>
+                        </div>
+                      </div>
+                      <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pb-0">
+                        <img src={slide.image} alt={slide.title} className="w-[80%] md:w-[70%] lg:w-[60%] h-auto object-contain max-h-[85%] z-10 drop-shadow-2xl translate-y-6 md:translate-y-10" />
                       </div>
                     </div>
-                    <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pb-0">
-                      <img src={slide.image} alt={slide.title} className="w-[90%] md:w-[70%] lg:w-[60%] h-auto object-contain max-h-[85%] z-10 drop-shadow-2xl translate-y-6 md:translate-y-10" />
-                    </div>
-                  </div>
-                ) : slide.isFullBanner ? (
-                  <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-black">
-                    <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-cover md:object-contain z-10" />
-                  </Link>
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0"></div>
-                    <img src={slide.image?.startsWith('http') ? slide.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${slide.image}`} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten" />
-                    
-                    <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%]">
-                      <h3 className="text-white text-lg md:text-[32px] font-semibold tracking-[-0.015em] mb-1 md:mb-2 transition-opacity duration-700 translate-y-0">{slide.titleTop}</h3>
-                      <h1 className="text-[#fbbf24] text-2xl md:text-[56px] font-semibold tracking-[-0.015em] leading-[1.08] mb-4 md:mb-6 uppercase">{slide.titleBottom}</h1>
-                      <div className="flex gap-4 items-center">
-                        <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-[22px] py-[11px] rounded-apple-pill font-sans text-[17px] font-normal hover:opacity-80 transition-opacity flex items-center">Buy Now <span className="ml-1 text-lg">↗</span></Link>
+                  ) : slide.isFullBanner ? (
+                    <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-black pointer-events-none">
+                      <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-cover z-10" />
+                    </Link>
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0 pointer-events-none"></div>
+                      <img src={slide.image?.startsWith('http') ? slide.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${slide.image}`} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten pointer-events-none" />
+                      
+                      <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%] pointer-events-none">
+                        <h3 className="text-white text-base md:text-[32px] font-semibold tracking-[-0.015em] mb-1 md:mb-2">{slide.titleTop}</h3>
+                        <h1 className="text-[#fbbf24] text-xl md:text-[56px] font-semibold tracking-[-0.015em] leading-[1.08] mb-3 md:mb-6 uppercase">{slide.titleBottom}</h1>
+                        <div className="flex gap-4 items-center pointer-events-auto">
+                          <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-[18px] md:px-[22px] py-[8px] md:py-[11px] rounded-apple-pill font-sans text-[14px] md:text-[17px] font-normal hover:opacity-80 transition-opacity flex items-center">Buy Now <span className="ml-1 text-sm md:text-lg">↗</span></Link>
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
-
-            {/* Slider Arrows */}
-            <button 
-              onClick={(e) => { e.stopPropagation(); setCurrentSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length); }}
-              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/10 hover:bg-white/30 backdrop-blur rounded-full flex items-center justify-center text-white z-30 transition opacity-0 group-hover:opacity-100"
-            >
-              <ChevronLeft size={20} />
-            </button>
-            <button 
-              onClick={(e) => { e.stopPropagation(); setCurrentSlide(prev => (prev + 1) % heroSlides.length); }}
-              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/10 hover:bg-white/30 backdrop-blur rounded-full flex items-center justify-center text-white z-30 transition opacity-0 group-hover:opacity-100"
-            >
-              <ChevronRight size={20} />
-            </button>
-
-            {/* Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-30">
-              {heroSlides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={(e) => { e.stopPropagation(); setCurrentSlide(idx); }}
-                  className={`w-2 h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-[#fbbf24] w-6' : 'bg-white/50 hover:bg-white'}`}
-                />
-              ))}
+                    </>
+                  )}
+                </div>
+              );
+            })}
             </div>
           </div>
 
-          {/* Side Banners */}
-          <div className="lg:w-1/3 grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-2 md:gap-4 sm:h-[400px] md:h-[500px] lg:h-[600px]">
-            {/* Top Side Banner */}
-            <div className="w-full h-full aspect-[4/3] sm:aspect-auto bg-gradient-to-br from-slate-800 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center items-center text-center p-4">
-              <img src="https://images.unsplash.com/photo-1531297172864-822d1fe48bfc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Laptops" className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay group-hover:opacity-80 transition duration-500" />
-              <div className="relative z-10">
-                <p className="text-gray-300 text-[10px] md:text-[14px] font-semibold tracking-[-0.016em] mb-0.5 md:mb-1">Best deals on</p>
-                <h3 className="text-yellow-400 text-sm md:text-[24px] font-semibold tracking-[-0.015em] uppercase mb-2 md:mb-4">Windows Laptops</h3>
-                <button className="bg-[#0066CC] text-white px-[15px] py-[8px] rounded-apple-pill font-sans text-[14px] font-normal hover:opacity-80 transition-opacity flex items-center mx-auto">Buy <span className="ml-1">↗</span></button>
+          {/* Bottom 4-Pic Slider */}
+          <div className="w-full relative mt-[7px] md:mt-[9px]">
+            <div className="relative group/bottom">
+              
+              <div 
+                ref={bottomScrollRef}
+                className="flex overflow-x-auto gap-[2px] md:gap-[10px] snap-x snap-mandatory scrollbar-hide pb-4"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {bottomBanners.map((banner, idx) => (
+                  <Link 
+                    href={banner.link} 
+                    key={banner.id || idx} 
+                    className="flex-none w-[85%] sm:w-[calc(50%-1px)] md:w-[calc(33.333%-6.66px)] lg:w-[calc(33.333%-6.66px)] aspect-[16/9] snap-start overflow-hidden relative group bg-gray-900 shadow-sm block rounded-apple-lg"
+                  >
+                    <img 
+                      src={banner.image} 
+                      alt={`Banner ${idx + 1}`}
+                      className="w-full h-full object-cover transition-all duration-700 ease-out" 
+                    />
+                  </Link>
+                ))}
               </div>
             </div>
             
-            {/* Bottom Side Banner */}
-            <div className="w-full h-full aspect-[4/3] sm:aspect-auto bg-gradient-to-r from-teal-900 to-slate-900 rounded-apple-lg overflow-hidden relative group cursor-pointer flex flex-col justify-center px-4 md:px-6">
-              <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Electronics" className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity group-hover:opacity-80 transition duration-500" />
-              <div className="relative z-10">
-                <h3 className="text-cyan-400 text-[9px] md:text-[12px] font-semibold tracking-[0.06em] mb-0.5 md:mb-1 uppercase">Largest Electronic</h3>
-                <h2 className="text-white text-lg md:text-[32px] font-semibold tracking-[-0.015em] leading-[1.08] italic mb-2 md:mb-3">Hypermarket</h2>
-                <div className="bg-cyan-400 text-slate-900 text-[9px] md:text-[12px] font-semibold px-2 py-1 inline-block mb-1 md:mb-2 rounded-sm">ENJOY UP TO 70% OFF.</div>
-                <p className="text-gray-300 text-[8px] md:text-[12px] font-semibold uppercase">Brand New Replacement Guarantee</p>
-              </div>
+            {/* Apple-style Pagination Dots */}
+            <div className="flex justify-center items-center gap-[6px] md:gap-[8px] mt-2 md:mt-4 mb-2">
+              {heroSlides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`relative h-[6px] rounded-full transition-all duration-300 ease-in-out overflow-hidden ${
+                    currentSlide === idx 
+                      ? 'w-[20px] md:w-[24px] bg-[#e5e5ea] dark:bg-[#333336]' 
+                      : 'w-[6px] bg-[#86868b] hover:bg-[#1d1d1f] dark:hover:bg-white opacity-60'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                >
+                  {currentSlide === idx && (
+                    <div 
+                      className="absolute top-0 left-0 h-full bg-[#1d1d1f] dark:bg-white progress-fill" 
+                    />
+                  )}
+                </button>
+              ))}
             </div>
+            
           </div>
         </div>
       )}

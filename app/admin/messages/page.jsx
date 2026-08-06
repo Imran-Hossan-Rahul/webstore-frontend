@@ -200,6 +200,48 @@ export default function AdminMessagesPage() {
     } catch (error) {}
   };
 
+  const handleUnsendMessage = async (messageId) => {
+    try {
+      await api.post(`/chat/unsend/${messageId}`);
+      setMessages(prev => prev.map(m => m._id === messageId ? { ...m, isUnsent: true, content: '' } : m));
+    } catch (error) {}
+  };
+
+  const handleSendFile = async (file) => {
+    if (!file || !selectedChat) return;
+    const tempId = Date.now().toString();
+    const isImage = file.type.startsWith('image/');
+    const tempMsg = {
+      _id: tempId,
+      chatId: selectedChat._id,
+      sender: currentUser,
+      content: file.name,
+      fileName: file.name,
+      fileUrl: isImage ? URL.createObjectURL(file) : null,
+      type: isImage ? 'image' : 'file',
+      createdAt: new Date().toISOString(),
+      isPending: true
+    };
+    setMessages(prev => [...prev, tempMsg]);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await api.upload(`/chat/upload-media/${selectedChat._id}`, formData);
+      if (res.success) {
+        setMessages(prev => prev.map(m => {
+          if (m._id === tempId) {
+            const merged = res.message;
+            merged.fileUrl = tempMsg.fileUrl; // Preserve local blob URL until Cloudinary is ready
+            return merged;
+          }
+          return m;
+        }));
+      }
+    } catch (error) {
+      setMessages(prev => prev.filter(m => m._id !== tempId));
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center h-[calc(100vh-100px)]">
@@ -235,8 +277,12 @@ export default function AdminMessagesPage() {
             isOnline={selectedChat.participants?.some(p => p._id !== currentUser._id && onlineUsers.has(p._id))}
             isTyping={isTyping}
             onSendMessage={handleSendMessage}
+            onSendFile={handleSendFile}
             onReactMessage={handleReactMessage}
             onDeleteMessage={handleDeleteMessage}
+            onUnsendMessage={handleUnsendMessage}
+            onMinimize={() => {}}
+            onClose={() => {}}
             isFullScreen={true}
           />
         ) : (

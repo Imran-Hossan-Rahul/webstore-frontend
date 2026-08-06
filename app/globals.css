@@ -1,5 +1,3 @@
-
-
 @import './editor-fonts.css';
 
 @tailwind base;
@@ -13,23 +11,28 @@
 
 /* For all elements */
 * {
-  scrollbar-width: thin;               /* Firefox */
+  scrollbar-width: thin;
+  /* Firefox */
   scrollbar-color: #838383 transparent;
 }
 
 /* WebKit Browsers (Chrome, Safari, Edge, Opera) */
 *::-webkit-scrollbar {
-  width: 8px;                          /* Thin like macOS */
+  width: 8px;
+  /* Thin like macOS */
   height: 8px;
 }
 
 *::-webkit-scrollbar-track {
-  background: transparent;             /* Clean macOS track */
+  background: transparent;
+  /* Clean macOS track */
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(180, 180, 180, 0.8); /* Soft grey thumb */
-  border-radius: 20px;                 /* Fully rounded */
+  background: rgba(180, 180, 180, 0.8);
+  /* Soft grey thumb */
+  border-radius: 20px;
+  /* Fully rounded */
 }
 
 *::-webkit-scrollbar-thumb:hover {
@@ -47,19 +50,24 @@
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(200, 200, 200, 0.8);
   border-radius: 10px;
 }
+
 [data-theme="dark"] .custom-scrollbar::-webkit-scrollbar-thumb {
   background: rgba(100, 100, 100, 0.8);
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(150, 150, 150, 0.9);
 }
+
 html {
   scrollbar-gutter: stable;
 }
@@ -70,7 +78,7 @@ html {
   --clr: rgba(228, 228, 228, 0.5);
   --font-inter: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  
+
   /* Apple Design Tokens */
   --apple-ink: #1d1d1f;
   --apple-text-secondary: #6e6e73;
@@ -177,17 +185,20 @@ body {
    ========================================= */
 
 .link-ui {
-  color: #a3a3a3; /* text-neutral-400 */
+  color: #a3a3a3;
+  /* text-neutral-400 */
   transition: color 150ms ease-in-out;
   text-decoration: none;
 }
 
 .link-ui:hover {
-  color: #ffffff; /* text-white */
+  color: #ffffff;
+  /* text-white */
 }
 
 [data-theme="light"] .link-ui {
-  color: #737373; /* text-neutral-500 */
+  color: #737373;
+  /* text-neutral-500 */
 }
 
 [data-theme="light"] .link-ui:hover {
@@ -195,7 +206,8 @@ body {
 }
 
 .link-inline {
-  color: #e5e5e5; /* text-neutral-200 */
+  color: #e5e5e5;
+  /* text-neutral-200 */
   transition: all 150ms ease-in-out;
   text-decoration: none;
 }
@@ -207,7 +219,8 @@ body {
 }
 
 [data-theme="light"] .link-inline {
-  color: #404040; /* text-neutral-700 */
+  color: #404040;
+  /* text-neutral-700 */
 }
 
 [data-theme="light"] .link-inline:hover {
@@ -215,12 +228,14 @@ body {
 }
 
 .link-destructive {
-  color: #a3a3a3; /* text-neutral-400 */
+  color: #a3a3a3;
+  /* text-neutral-400 */
   transition: color 150ms ease-in-out;
 }
 
 .link-destructive:hover {
-  color: #ef4444; /* text-red-500 */
+  color: #ef4444;
+  /* text-red-500 */
 }
 
 /* =========================================
@@ -279,13 +294,15 @@ body {
    ========================================= */
 
 ::selection {
-  background-color: #b3d4fc; /* Apple classic selection blue */
+  background-color: #b3d4fc;
+  /* Apple classic selection blue */
   color: #000000;
   text-shadow: none;
 }
 
 [data-theme="dark"] ::selection {
-  background-color: #0071e3; /* Apple dark mode selection blue */
+  background-color: #0071e3;
+  /* Apple dark mode selection blue */
   color: #ffffff;
   text-shadow: none;
 }
@@ -379,7 +396,8 @@ body {
     4px 4px 10px #bec3cf,
     -4px -4px 10px #ffffff;
   transition: all 0.3s ease;
-  color: #9499b7; /* default text color */
+  color: #9499b7;
+  /* default text color */
 }
 
 [data-theme="dark"] .eye-icon {
@@ -390,7 +408,8 @@ body {
 }
 
 .eye-icon:hover {
-  color: #6c7293; /* hover:text-[#6c7293] */
+  color: #6c7293;
+  /* hover:text-[#6c7293] */
 }
 
 [data-theme="dark"] .eye-icon:hover {
@@ -411,11 +430,15 @@ body {
 
 /* global.css বা component এর style tag এ */
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
+
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .card-artifact {
@@ -469,7 +492,8 @@ body {
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
-  transform: rotate(-45deg); /* arrow pointing right */
+  transform: rotate(-45deg);
+  /* arrow pointing right */
   /* center vertically */
   position: absolute;
   top: 50%;
@@ -529,7 +553,8 @@ body {
   padding: 0.35rem 0.9rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(4px);
-  color: #79c0ff; /* Light blue/cyan for visibility */
+  color: #79c0ff;
+  /* Light blue/cyan for visibility */
   font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
@@ -574,7 +599,8 @@ body {
 }
 
 .copy-code-btn.copied {
-  color: #10b981 !important; /* emerald-500 */
+  color: #10b981 !important;
+  /* emerald-500 */
   border-color: rgba(16, 185, 129, 0.3) !important;
 }
 
@@ -614,27 +640,80 @@ code:not(pre code) {
 }
 
 /* Syntax Token Colors (Professional Palette) */
-.hljs-comment, .hljs-quote { color: #8b949e; font-style: italic; }
-.hljs-keyword, .hljs-selector-tag { color: #ff7b72; font-weight: 600; }
-.hljs-string, .hljs-doctag, .hljs-regexp { color: #a5d6ff; }
-.hljs-title, .hljs-section, .hljs-selector-id { color: #d2a8ff; font-weight: 600; }
-.hljs-variable, .hljs-artifact-variable { color: #ffa657; }
-.hljs-type, .hljs-built_in, .hljs-number { color: #ffa657; }
-.hljs-symbol, .hljs-bullet, .hljs-subst { color: #79c0ff; }
-.hljs-attr, .hljs-attribute { color: #79c0ff; }
-.hljs-function { color: #d2a8ff; }
-.hljs-params { color: #e6edf3; }
-.hljs-literal { color: #79c0ff; }
-.hljs-link { color: #a5d6ff; text-decoration: underline; }
+.hljs-comment,
+.hljs-quote {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+  color: #ff7b72;
+  font-weight: 600;
+}
+
+.hljs-string,
+.hljs-doctag,
+.hljs-regexp {
+  color: #a5d6ff;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #d2a8ff;
+  font-weight: 600;
+}
+
+.hljs-variable,
+.hljs-artifact-variable {
+  color: #ffa657;
+}
+
+.hljs-type,
+.hljs-built_in,
+.hljs-number {
+  color: #ffa657;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-subst {
+  color: #79c0ff;
+}
+
+.hljs-attr,
+.hljs-attribute {
+  color: #79c0ff;
+}
+
+.hljs-function {
+  color: #d2a8ff;
+}
+
+.hljs-params {
+  color: #e6edf3;
+}
+
+.hljs-literal {
+  color: #79c0ff;
+}
+
+.hljs-link {
+  color: #a5d6ff;
+  text-decoration: underline;
+}
 
 /* Scrollbar for code blocks */
 pre::-webkit-scrollbar {
   height: 6px;
 }
+
 pre::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
 }
+
 pre::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
 }
@@ -643,7 +722,8 @@ pre::-webkit-scrollbar-thumb:hover {
 .tiptap-image-handle {
   width: 12px;
   height: 12px;
-  background-color: #3b82f6; /* blue-500 */
+  background-color: #3b82f6;
+  /* blue-500 */
   position: absolute;
   bottom: 0;
   right: 0;
@@ -653,14 +733,17 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* --- Lists --- */
 .tiptap ul {
-  list-style-type: disc !important;  /* bullet */
-  padding-left: 1.5rem !important;   /* proper indent */
+  list-style-type: disc !important;
+  /* bullet */
+  padding-left: 1.5rem !important;
+  /* proper indent */
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
 
 .tiptap ol {
-  list-style-type: decimal !important; /* numbered list */
+  list-style-type: decimal !important;
+  /* numbered list */
   padding-left: 1.5rem !important;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -673,42 +756,48 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* --- Headings --- */
 .tiptap h1 {
-  font-size: 2rem;       /* 32px approx */
+  font-size: 2rem;
+  /* 32px approx */
   font-weight: 700;
   line-height: 1.25;
   margin: 1rem 0 0.5rem;
 }
 
 .tiptap h2 {
-  font-size: 1.75rem;    /* 28px approx */
+  font-size: 1.75rem;
+  /* 28px approx */
   font-weight: 700;
   line-height: 1.3;
   margin: 0.9rem 0 0.45rem;
 }
 
 .tiptap h3 {
-  font-size: 1.5rem;     /* 24px approx */
+  font-size: 1.5rem;
+  /* 24px approx */
   font-weight: 700;
   line-height: 1.35;
   margin: 0.75rem 0 0.5rem;
 }
 
 .tiptap h4 {
-  font-size: 1.25rem;    /* 20px approx */
+  font-size: 1.25rem;
+  /* 20px approx */
   font-weight: 600;
   line-height: 1.4;
   margin: 0.6rem 0 0.4rem;
 }
 
 .tiptap h5 {
-  font-size: 1.125rem;   /* 18px approx */
+  font-size: 1.125rem;
+  /* 18px approx */
   font-weight: 600;
   line-height: 1.4;
   margin: 0.5rem 0 0.25rem;
 }
 
 .tiptap h6 {
-  font-size: 1rem;       /* 16px approx */
+  font-size: 1rem;
+  /* 16px approx */
   font-weight: 600;
   line-height: 1.4;
   margin: 0.5rem 0 0.25rem;
@@ -718,31 +807,49 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* এডিটর কার্সার (caret) ভিজিবিলিটি ফিক্স - ১০০% ইনভার্সন সলিউশন */
 @keyframes dynamicCaret {
-    0%, 100% { caret-color: #000000; }  /* Black */
-    33% { caret-color: #ffffff; }       /* White */
-    66% { caret-color: #3b82f6; }       /* Blue */
+
+  0%,
+  100% {
+    caret-color: #000000;
+  }
+
+  /* Black */
+  33% {
+    caret-color: #ffffff;
+  }
+
+  /* White */
+  66% {
+    caret-color: #3b82f6;
+  }
+
+  /* Blue */
 }
 
 .ProseMirror {
-    animation: dynamicCaret 1.5s steps(1) infinite !important; /* সব ধরনের ব্যাকগ্রাউন্ডে যেন কার্সারটি জ্বলজ্বল করে */
+  animation: dynamicCaret 1.5s steps(1) infinite !important;
+  /* সব ধরনের ব্যাকগ্রাউন্ডে যেন কার্সারটি জ্বলজ্বল করে */
 }
 
 /* ProseMirror দ্বারা নির্বাচিত কোনো নোড */
 .ProseMirror .ProseMirror-selectednode {
-    /* এটি কোনো ব্লক নোডের চারপাশে নীল সিলেকশন তৈরি করে */
-    outline: 2px solid #007bff; /* নীল রঙের বর্ডার */
-    outline-offset: 4px;        /* বর্ডার এবং ইমেজের মধ্যে স্পেস */
-    cursor: pointer;            /* মাউস কার্সারকে চেঞ্জ করে ইউজারকে ইঙ্গিত দিন */
+  /* এটি কোনো ব্লক নোডের চারপাশে নীল সিলেকশন তৈরি করে */
+  outline: 2px solid #007bff;
+  /* নীল রঙের বর্ডার */
+  outline-offset: 4px;
+  /* বর্ডার এবং ইমেজের মধ্যে স্পেস */
+  cursor: pointer;
+  /* মাউস কার্সারকে চেঞ্জ করে ইউজারকে ইঙ্গিত দিন */
 }
 
 [data-theme="dark"] .ProseMirror .ProseMirror-selectednode {
-    outline: 2px solid #60a5fa;
+  outline: 2px solid #60a5fa;
 }
 
 /* আপনার কাস্টম ইমেজ র্যাপার */
 /* যদি আপনি ImageNodeView-এ একটি র্যাপার div ব্যবহার করেন, তবে সেই div এ স্টাইল দিন */
 .ProseMirror .image-wrapper.ProseMirror-selectednode {
-    /* আউটলাইনটি যেন ইমেজের চারপাশে ভালোভাবে দেখা যায়, সেটি নিশ্চিত করুন */
+  /* আউটলাইনটি যেন ইমেজের চারপাশে ভালোভাবে দেখা যায়, সেটি নিশ্চিত করুন */
 }
 
 /* এটি আপনার গ্লোবাল CSS ফাইলে বা এডিটর স্টাইলিং ফাইলে যোগ করুন */
@@ -843,7 +950,8 @@ pre::-webkit-scrollbar-thumb:hover {
 .codex-prose {
   font-family: var(--font-inter), sans-serif;
   font-size: 1rem;
-  line-height: 1.625; /* leading-relaxed approx */
+  line-height: 1.625;
+  /* leading-relaxed approx */
   color: #1a1a1a;
   letter-spacing: -0.011em;
   width: 100%;
@@ -890,41 +998,41 @@ pre::-webkit-scrollbar-thumb:hover {
 }
 
 /* Specific Spacing for Each Heading Level */
-.codex-prose h1 { 
-  font-size: 2.25rem; 
-  font-weight: 800; 
-  margin-top: 3.5rem; 
-  margin-bottom: 1.25rem; 
+.codex-prose h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-top: 3.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1.2;
 }
 
-.codex-prose h2 { 
-  font-size: 1.75rem; 
-  font-weight: 700; 
-  margin-top: 3rem; 
-  margin-bottom: 1rem; 
-  border-bottom: 1px solid rgba(0,0,0,0.05); 
-  padding-bottom: 0.5rem; 
+.codex-prose h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 0.5rem;
   line-height: 1.3;
 }
 
 [data-theme="dark"] .codex-prose h2 {
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.codex-prose h3 { 
-  font-size: 1.35rem; 
-  font-weight: 600; 
-  margin-top: 2.5rem; 
-  margin-bottom: 0.75rem; 
+.codex-prose h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
   line-height: 1.4;
 }
 
-.codex-prose h4 { 
-  font-size: 1.15rem; 
-  font-weight: 600; 
-  margin-top: 2rem; 
-  margin-bottom: 0.5rem; 
+.codex-prose h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
   line-height: 1.5;
 }
 
@@ -991,8 +1099,8 @@ pre::-webkit-scrollbar-thumb:hover {
   font-family: var(--font-mono), monospace !important;
   font-size: 0.95rem !important;
   line-height: 1.7;
-  border: 1px solid rgba(255,255,255,0.05);
-  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
 }
 
 .codex-prose pre::before {
@@ -1000,7 +1108,7 @@ pre::-webkit-scrollbar-thumb:hover {
   position: absolute;
   top: 10px;
   left: 1.5rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-size: 10px;
@@ -1080,7 +1188,7 @@ pre::-webkit-scrollbar-thumb:hover {
 }
 
 /* Inline Code fallback */
-.codex-prose :not(pre) > code {
+.codex-prose :not(pre)>code {
   background: rgba(15, 23, 42, 0.05);
   color: #0f172a;
   padding: 0.2rem 0.4rem;
@@ -1089,7 +1197,7 @@ pre::-webkit-scrollbar-thumb:hover {
   font-weight: 600;
 }
 
-[data-theme="dark"] .codex-prose :not(pre) > code {
+[data-theme="dark"] .codex-prose :not(pre)>code {
   background: rgba(255, 255, 255, 0.1);
   color: #f8fafc;
 }
@@ -1144,9 +1252,19 @@ pre::-webkit-scrollbar-thumb:hover {
   .codex-prose {
     font-size: 1.15rem;
   }
-  .codex-prose h1 { font-size: 2.5rem; }
-  .codex-prose h2 { font-size: 2rem; }
-  .codex-prose blockquote { font-size: 1.4rem; padding: 1.5rem 2rem; }
+
+  .codex-prose h1 {
+    font-size: 2.5rem;
+  }
+
+  .codex-prose h2 {
+    font-size: 2rem;
+  }
+
+  .codex-prose blockquote {
+    font-size: 1.4rem;
+    padding: 1.5rem 2rem;
+  }
 }
 
 /* Images */
@@ -1169,6 +1287,7 @@ pre::-webkit-scrollbar-thumb:hover {
 [data-theme="dark"] .codex-prose hr {
   border-top-color: #333;
 }
+
 /* =========================================
    UI UTILITIES
    ========================================= */
@@ -1190,8 +1309,10 @@ pre::-webkit-scrollbar-thumb:hover {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* =========================================
@@ -1202,29 +1323,26 @@ pre::-webkit-scrollbar-thumb:hover {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.4) 25%,
-    rgba(241, 245, 249, 0.8) 50%,
-    rgba(226, 232, 240, 0.4) 75%
-  );
+  background: linear-gradient(90deg,
+      rgba(226, 232, 240, 0.4) 25%,
+      rgba(241, 245, 249, 0.8) 50%,
+      rgba(226, 232, 240, 0.4) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite linear;
 }
 
 [data-theme="dark"] .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(22, 22, 22, 0.4) 25%,
-    rgba(38, 38, 38, 0.8) 50%,
-    rgba(22, 22, 22, 0.4) 75%
-  );
+  background: linear-gradient(90deg,
+      rgba(22, 22, 22, 0.4) 25%,
+      rgba(38, 38, 38, 0.8) 50%,
+      rgba(22, 22, 22, 0.4) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite linear;
 }
@@ -1242,4 +1360,12 @@ mark {
 .dark mark {
   background-color: rgba(234, 179, 8, 0.35);
   color: inherit;
+}
+@keyframes progressFill {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+.progress-fill {
+  animation: progressFill 4000ms linear forwards;
 }

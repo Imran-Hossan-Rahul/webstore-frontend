@@ -48,6 +48,19 @@ async function fetchAllArtifacts() {
     }
 }
 
+async function fetchAllProducts() {
+    try {
+        const res = await fetch(`${API_URL}/market/products?limit=1000&page=1`, {
+            next: { revalidate: 3600 }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.data || data.products || data || [];
+    } catch {
+        return [];
+    }
+}
+
 export default async function sitemap() {
     // Static pages
     const staticPages = [
@@ -59,10 +72,11 @@ export default async function sitemap() {
     ];
 
     // Fetch dynamic content in parallel
-    const [codexList, devlogList, artifactList] = await Promise.all([
+    const [codexList, devlogList, artifactList, productList] = await Promise.all([
         fetchAllCodex(),
         fetchAllDevlogs(),
         fetchAllArtifacts(),
+        fetchAllProducts(),
     ]);
 
     const codexUrls = codexList.map((item) => ({
@@ -86,5 +100,12 @@ export default async function sitemap() {
         priority: 0.7,
     }));
 
-    return [...staticPages, ...codexUrls, ...devlogUrls, ...artifactUrls];
+    const productUrls = productList.map((item) => ({
+        url: `${BASE_URL}/product/${item.id || item._id}`,
+        lastModified: new Date(item.updatedAt || item.createdAt || Date.now()),
+        changeFrequency: 'daily',
+        priority: 0.9,
+    }));
+
+    return [...staticPages, ...codexUrls, ...devlogUrls, ...artifactUrls, ...productUrls];
 }

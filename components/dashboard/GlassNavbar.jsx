@@ -13,6 +13,7 @@ import ThemeToggle from '../ThemeToggle';
 import { useUser } from "@/context/UserContext";
 import SearchSuggestions from "./navbar/SearchSuggestions";
 import BetaBanner from "../BetaBanner";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 const GlassNavbar = ({ 
   toggleSidebar, 
@@ -380,7 +381,7 @@ const GlassNavbar = ({
                   </div>
                   <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                       {user?.profilePicture ? (
-                        <img src={user.profilePicture} alt="" className="w-full h-full object-cover" />
+                        <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold">{user?.name?.[0]}</div>
                       )}

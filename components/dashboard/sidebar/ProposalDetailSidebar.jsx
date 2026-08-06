@@ -8,6 +8,7 @@ import Image from "next/image";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { ShieldCheck, Zap, Clock, Calendar, User, ArrowUpRight, MessageSquare, CheckCircle2, XCircle, Briefcase } from "lucide-react";
 import CraftsmanHoverCard from "../cards/CraftsmanHoverCard";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 export default function ProposalDetailSidebar() {
   const { id } = useParams();
@@ -62,7 +63,7 @@ export default function ProposalDetailSidebar() {
           >
             <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-white/10 shadow-sm bg-slate-50 dark:bg-white/5 cursor-pointer">
               <Image 
-                src={person?.avatar || person?.profilePicture || `https://api.dicebear.com/7.x/avataaars/svg?seed=${person?.username || person?.name || 'User'}`}
+                src={getOptimizedUrl(person?.avatar || person?.profilePicture) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${person?.username || person?.name || 'User'}`}
                 alt={person?.name}
                 width={56}
                 height={56}

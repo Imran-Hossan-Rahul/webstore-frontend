@@ -162,6 +162,12 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
           const res = await api.get("/chat/support");
           if (res.success && res.chat) {
             setSelectedChat(res.chat);
+            setChats((prev) => {
+              if (!prev.some(c => c._id === res.chat._id)) {
+                return [res.chat, ...prev];
+              }
+              return prev;
+            });
           }
         } catch (e) {
           console.error("Failed to fetch support chat", e);
@@ -189,15 +195,26 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
         setLoading(true);
         setCurrentUser(contextUser);
         
-        // Guests only need the support chat, they don't need the full users/chats list
+        let newUsers = [];
+        let newChats = [];
+
         if (contextUser.role !== 'guest') {
           const [usersRes, chatsRes] = await Promise.all([
             api.get("/chat/users"),
             api.get("/chat/chats"),
           ]);
-          setUsers(usersRes.users || []);
-          setChats(chatsRes.chats || []);
+          newUsers = usersRes.users || [];
+          newChats = chatsRes.chats || [];
+        } else {
+          // Guests only fetch their chats (to get support chat history for the popup)
+          try {
+            const chatsRes = await api.get("/chat/chats");
+            newChats = chatsRes.chats || [];
+          } catch (e) { console.error("Guest chat fetch failed", e); }
         }
+
+        setUsers(newUsers);
+        setChats(newChats);
       } catch (error) {
         console.error("Initialization failed:", error);
       } finally {
@@ -618,6 +635,10 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   const adminAvatar = adminProfile?.profilePicture || null;
   const [showGreeting, setShowGreeting] = useState(true);
 
+  // Derive latest message for popup
+  const supportChat = chats.find(c => c.isSupportChat) || chats.find(c => c.participants?.some(p => p.role === 'admin' || p.role === 'superadmin'));
+  const hasHistory = supportChat && supportChat.lastMessage;
+
   if (!isModalOpen && !showIncomingToast) {
     return (
       <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9990] flex items-end gap-4">
@@ -637,8 +658,19 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                 <X className="w-2.5 h-2.5 md:w-3 md:h-3" />
               </button>
               <p className="text-[11px] md:text-[13px] font-medium leading-snug">
-                Hi, I&apos;m Imran! 👋<br/>
-                <span className="text-apple-muted font-normal text-[10px] md:text-[13px]">How can I help you today?</span>
+                {hasHistory ? "Imran" : "Hi, I'm Imran! 👋"}<br/>
+                <span className={`font-normal text-[10px] md:text-[13px] line-clamp-2 mt-0.5 ${supportChat?.unreadCount > 0 ? 'text-apple-ink dark:text-white font-medium' : 'text-apple-muted'}`}>
+                  {hasHistory ? (
+                    <>
+                      {supportChat.lastMessage.sender?._id === currentUser?._id && "You: "}
+                      {supportChat.lastMessage.type === 'image' ? 'Sent an image' : 
+                       supportChat.lastMessage.type === 'file' ? 'Sent a file' : 
+                       supportChat.lastMessage.content}
+                    </>
+                  ) : (
+                    "How can I help you today?"
+                  )}
+                </span>
               </p>
               {/* Little triangle pointing to the avatar */}
               <div className="absolute top-1/2 -right-1.5 md:-right-2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-white dark:bg-[#1c1c1e] border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>

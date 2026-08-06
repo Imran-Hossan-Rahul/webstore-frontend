@@ -49,6 +49,7 @@ export default function PublicProfile({ username }) {
   const [addresses, setAddresses] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     if (!confirmLogout) {
@@ -56,8 +57,9 @@ export default function PublicProfile({ username }) {
       setTimeout(() => setConfirmLogout(false), 3000);
       return;
     }
+    setIsLoggingOut(true);
     await logout();
-    window.location.href = '/auth/login';
+    window.location.href = '/';
   };
 
   useEffect(() => {
@@ -158,7 +160,36 @@ export default function PublicProfile({ username }) {
   };
 
   const handleProfilePicChange = async (e) => {
-    showToast('Profile picture upload feature coming soon', 'info');
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      showToast('Uploading profile picture...', 'info');
+      
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      // 1. Upload image to get URL
+      const uploadRes = await api.upload('/upload/image', formData);
+      
+      if (uploadRes.success && uploadRes.url) {
+        // 2. Update user profile with new URL
+        const profileRes = await api.patch('/user/profile', { profilePicture: uploadRes.url });
+        
+        if (profileRes.success) {
+          // 3. Update local state
+          setProfile(prev => ({ ...prev, profilePicture: uploadRes.url }));
+          showToast('Profile picture updated successfully!', 'success');
+        } else {
+          showToast('Failed to save profile picture', 'error');
+        }
+      } else {
+        showToast('Image upload failed', 'error');
+      }
+    } catch (err) {
+      console.error('Error uploading profile picture:', err);
+      showToast('Error uploading profile picture', 'error');
+    }
   };
 
   if (loading) {
@@ -355,7 +386,11 @@ export default function PublicProfile({ username }) {
               </div>
             </div>
 
-            {isOwner ? (
+            {isLoggingOut ? (
+              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0 justify-center items-center h-10">
+                <AppleSpinner className="w-5 h-5 text-slate-500" />
+              </div>
+            ) : isOwner ? (
               <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0">
                 <button 
                   onClick={handleLogout} 

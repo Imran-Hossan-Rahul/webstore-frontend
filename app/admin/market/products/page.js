@@ -21,7 +21,8 @@ export default function ProductsManager() {
   const [filterCategory, setFilterCategory] = useState('');
   const [filterSubCategory, setFilterSubCategory] = useState('');
   const [filterChildCategory, setFilterChildCategory] = useState('');
-  const limit = 20;
+  const [loadingMore, setLoadingMore] = useState(false);
+  const limit = 30;
 
   // Form State
   const [title, setTitle] = useState('');
@@ -61,8 +62,16 @@ export default function ProductsManager() {
   }, []);
 
   useEffect(() => {
-    fetchProducts();
-  }, [page, filterCategory, filterSubCategory, filterChildCategory]);
+    setProducts([]);
+    setPage(1);
+    fetchProducts(1, false);
+  }, [filterCategory, filterSubCategory, filterChildCategory]);
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchProducts(nextPage, true);
+  };
 
   const fetchCategories = async () => {
     try {
@@ -73,11 +82,14 @@ export default function ProductsManager() {
     }
   };
 
-  const fetchProducts = async () => {
-    setLoading(true);
+  const fetchProducts = async (pageNum, append) => {
+    const pg = pageNum ?? page;
+    const ap = append ?? false;
+    if (ap) setLoadingMore(true);
+    else setLoading(true);
     try {
       const queryParams = new URLSearchParams({
-        page,
+        page: pg,
         limit,
         ...(searchQuery && { search: searchQuery }),
         ...(filterCategory && { category_id: filterCategory }),
@@ -87,17 +99,22 @@ export default function ProductsManager() {
 
       const res = await api.get(`/market/products?${queryParams}`);
       const payload = res.data || res;
-      setProducts(payload.data || payload);
-      if (payload.pagination) {
-        setTotalPages(payload.pagination.pages);
+      const newProducts = payload.data || payload;
+      if (ap) {
+        setProducts(prev => [...prev, ...newProducts]);
+      } else {
+        setProducts(newProducts);
+      }
+      if (res.pagination) {
+        setTotalPages(res.pagination.pages);
       }
       
       // Auto-open edit modal if edit param is in URL
-      if (typeof window !== 'undefined') {
+      if (!ap && typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
         const editId = params.get('edit');
         if (editId) {
-          const productToEdit = (payload.data || payload).find(p => p.id === editId || p._id === editId);
+          const productToEdit = newProducts.find(p => p.id === editId || p._id === editId);
           if (productToEdit) {
             setTimeout(() => handleEditClick(productToEdit), 100);
             window.history.replaceState({}, '', '/admin/market/products');
@@ -108,6 +125,7 @@ export default function ProductsManager() {
       console.error(err);
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
@@ -251,7 +269,7 @@ export default function ProductsManager() {
   };
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto text-white">
+    <div className="p-4 md:p-6 w-full max-w-full text-white">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 md:mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold mb-1 text-blue-400">Products Inventory</h1>
@@ -327,81 +345,93 @@ export default function ProductsManager() {
               </select>
             </div>
           )}
+      {/* Search Button: also resets list */}
           <div className="flex gap-2 shrink-0">
-            <button onClick={() => { setPage(1); fetchProducts(); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition shadow-lg shadow-blue-900/20">Search</button>
-            <button onClick={() => { setSearchQuery(''); setFilterCategory(''); setFilterSubCategory(''); setFilterChildCategory(''); setPage(1); }} className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg transition">Clear</button>
+            <button onClick={() => { setProducts([]); setPage(1); fetchProducts(1, false); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition shadow-lg shadow-blue-900/20">Search</button>
+            <button onClick={() => { setSearchQuery(''); setFilterCategory(''); setFilterSubCategory(''); setFilterChildCategory(''); setProducts([]); setPage(1); }} className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg transition">Clear</button>
           </div>
         </div>
       </div>
       
-      {/* Desktop Table */}
-      <div className="hidden md:block overflow-x-auto bg-gray-900 rounded-xl border border-gray-800 shadow-xl">
-        <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-950 text-gray-400 text-sm uppercase tracking-wider">
-            <tr>
-              <th className="p-4 font-medium border-b border-gray-800 w-16">Image</th>
-              <th className="p-4 font-medium border-b border-gray-800">Title</th>
-              <th className="p-4 font-medium border-b border-gray-800">Wholesaler</th>
-              <th className="p-4 font-medium border-b border-gray-800">Cost Price</th>
-              <th className="p-4 font-medium border-b border-gray-800">Selling Price</th>
-              <th className="p-4 font-medium border-b border-gray-800">Status</th>
-              <th className="p-4 font-medium border-b border-gray-800 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan="7" className="p-8 text-center text-gray-500">
-                  <AppleSpinner className="animate-spin mx-auto mb-2" />
-                  Loading...
-                </td>
-              </tr>
-            ) : products.length === 0 ? (
-              <tr>
-                <td colSpan="7" className="p-12 text-center text-gray-500">No products listed. Add one to get started.</td>
-              </tr>
-            ) : products.map(p => {
-              let image = null;
-              try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
-              return (
-                <tr key={p.id} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition">
-                  <td className="p-4">
-                    {image ? (
-                      <img src={getOptimizedUrl(image)} alt="Product" className="w-10 h-10 object-cover rounded-md bg-gray-800" />
-                    ) : (
-                      <div className="w-10 h-10 bg-gray-800 rounded-md flex items-center justify-center text-gray-500"><ImageIcon size={16} /></div>
-                    )}
-                  </td>
-                  <td className="p-4 font-medium text-gray-200">{p.title}</td>
-                  <td className="p-4 text-gray-400">{p.wholesaler?.name || 'Unknown'}</td>
-                  <td className="p-4 text-gray-400">BDT {p.cost_price}</td>
-                  <td className="p-4 font-bold text-green-400">BDT {p.selling_price}</td>
-                  <td className="p-4">
-                    <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
-                      p.status === 'Live' ? 'bg-green-900/30 text-green-400 border border-green-900/50' : 
-                      p.status === 'Draft' ? 'bg-gray-800 text-gray-400 border border-gray-700' :
-                      'bg-orange-900/30 text-orange-400 border border-orange-900/50'
-                    }`}>{p.status}</span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <a href={`/market/product/${p.id}`} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white rounded-lg transition" title="View in Store">
-                        <Eye size={16} />
-                      </a>
-                      <button onClick={() => handleEditClick(p)} className="p-2 bg-blue-900/30 hover:bg-blue-800/50 text-blue-400 hover:text-blue-300 border border-blue-900/50 rounded-lg transition" title="Edit Product">
-                        <Edit size={16} />
-                      </button>
-                      <button onClick={() => handleDeleteProduct(p.id || p._id)} className="p-2 bg-red-900/30 hover:bg-red-800/50 text-red-400 hover:text-red-300 border border-red-900/50 rounded-lg transition" title="Delete Product">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      {/* Products Grid — 2 columns */}
+      <div className="hidden md:grid grid-cols-2 gap-3">
+        {loading ? (
+          <div className="col-span-2 py-16 flex flex-col items-center text-gray-500">
+            <AppleSpinner className="animate-spin mb-3" />
+            <span className="text-sm">Loading products...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="col-span-2 py-16 text-center text-gray-500 text-sm">No products found. Add one to get started.</div>
+        ) : products.map(p => {
+          let image = null;
+          try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
+          return (
+            <div key={p.id || p._id} className="bg-gray-900 border border-gray-800 rounded-xl flex items-center gap-3 px-4 py-3 hover:bg-gray-800/50 transition group">
+              {/* Thumbnail */}
+              <div className="shrink-0">
+                {image ? (
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-12 h-12 object-cover rounded-lg bg-gray-800" />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-gray-600">
+                    <ImageIcon size={16} />
+                  </div>
+                )}
+              </div>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold text-gray-100 truncate leading-tight">{p.title}</p>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="text-[11px] text-gray-500">{p.wholesaler?.name || 'Unknown'}</span>
+                  <span className="text-gray-700 text-[11px]">·</span>
+                  <span className="text-[11px] text-gray-400">৳{p.cost_price}</span>
+                  <span className="text-gray-700 text-[11px]">→</span>
+                  <span className="text-[12px] font-bold text-green-400">৳{p.selling_price}</span>
+                </div>
+              </div>
+              {/* Status + Actions */}
+              <div className="flex items-center gap-2 shrink-0">
+                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${
+                  p.status === 'Live' ? 'bg-green-900/30 text-green-400 border border-green-900/50' :
+                  p.status === 'Draft' ? 'bg-gray-800 text-gray-500 border border-gray-700' :
+                  'bg-orange-900/30 text-orange-400 border border-orange-900/50'
+                }`}>{p.status}</span>
+                <a href={`/market/product/${p.id || p._id}`} target="_blank" rel="noopener noreferrer"
+                  className="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-500 hover:text-white transition" title="View">
+                  <Eye size={13} />
+                </a>
+                <button onClick={() => handleEditClick(p)}
+                  className="p-1.5 rounded-lg bg-blue-900/30 hover:bg-blue-800/50 text-blue-400 hover:text-blue-300 border border-blue-900/50 transition" title="Edit">
+                  <Edit size={13} />
+                </button>
+                <button onClick={() => handleDeleteProduct(p.id || p._id)}
+                  className="p-1.5 rounded-lg bg-red-900/30 hover:bg-red-800/50 text-red-400 hover:text-red-300 border border-red-900/50 transition" title="Delete">
+                  <Trash2 size={13} />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
+
+      {/* Load More Button */}
+      {!loading && products.length > 0 && page < totalPages && (
+        <div className="hidden md:flex justify-center mt-6 mb-2">
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            className="flex items-center gap-2.5 px-8 py-2.5 bg-gray-900 hover:bg-gray-800 border border-gray-700 hover:border-blue-600 text-gray-300 hover:text-white rounded-xl font-medium text-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {loadingMore ? (
+              <><AppleSpinner size={16} /><span>Loading...</span></>
+            ) : (
+              <><span>Load More</span><span className="text-gray-500 text-xs">({products.length} loaded)</span></>
+            )}
+          </button>
+        </div>
+      )}
+      {!loading && page >= totalPages && products.length > 0 && (
+        <p className="hidden md:block text-center text-gray-600 text-xs mt-4 mb-1">✓ All {products.length} products loaded</p>
+      )}
 
       {/* Mobile Card List */}
       <div className="md:hidden flex flex-col gap-3">
@@ -453,28 +483,7 @@ export default function ProductsManager() {
         })}
       </div>
 
-      {/* Pagination UI */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2 mt-8 mb-4">
-          <button 
-            disabled={page <= 1} 
-            onClick={() => setPage(page - 1)}
-            className="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
-          >
-            Previous
-          </button>
-          <span className="text-gray-400 text-sm font-medium px-4">
-            Page {page} of {totalPages}
-          </span>
-          <button 
-            disabled={page >= totalPages} 
-            onClick={() => setPage(page + 1)}
-            className="px-4 py-2 rounded-lg bg-gray-900 border border-gray-800 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition"
-          >
-            Next
-          </button>
-        </div>
-      )}
+      {/* Pagination UI - hidden since we use Load More */}
 
       {/* Add Product Modal */}
       {showModal && (

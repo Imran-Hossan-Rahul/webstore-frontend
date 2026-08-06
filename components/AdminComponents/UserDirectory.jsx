@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { Search, Calendar, ChevronLeft, ChevronRight, Clock, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 const UserDirectory = () => {
   const [users, setUsers] = useState([]);
@@ -105,7 +106,7 @@ const UserDirectory = () => {
                     <div className="flex items-center gap-5">
                       <div className="w-12 h-12 rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-md group-hover:-translate-y-0.5 transition-opacity duration-500">
                         <img 
-                          src={user.profilePicture || 'https://ui-avatars.com/api/?name=User&background=random'} 
+                          src={user.profilePicture ? getOptimizedUrl(user.profilePicture) : 'https://ui-avatars.com/api/?name=User&background=random'} 
                           alt="" 
                           className="w-full h-full object-cover"
                         />

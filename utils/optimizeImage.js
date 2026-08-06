@@ -13,5 +13,10 @@ export const getOptimizedUrl = (url, width = 800) => {
     }
   }
   
+  if (url.startsWith('/uploads')) {
+    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1').replace('/api/v1', '');
+    return `${backendUrl}${url}`;
+  }
+  
   return url;
 };

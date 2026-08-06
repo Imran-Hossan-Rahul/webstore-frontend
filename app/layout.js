@@ -81,7 +81,18 @@ export default function RootLayout({ children }) {
           <LanguageProvider>
             <UserProvider>
               <ToastProvider>
-
+                <script
+                  type="application/ld+json"
+                  dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                      "@context": "https://schema.org",
+                      "@type": "Organization",
+                      "name": "Codalina",
+                      "url": "https://codalina-frontend-fawn.vercel.app",
+                      "logo": "https://codalina-frontend-fawn.vercel.app/logo.png"
+                    })
+                  }}
+                />
                 <GlobalTracker />
                 <NextTopLoader color="#000" showSpinner={false} />
                 {children}

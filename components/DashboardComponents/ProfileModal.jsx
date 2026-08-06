@@ -308,7 +308,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                     localStorage.removeItem("token");
                                     localStorage.removeItem("hasCraftsmanAccount");
                                     localStorage.removeItem("user");
-                                    window.location.href = "/auth/login";
+                                    window.location.href = "/";
                                 }}
                                 className="w-full py-3 rounded-xl border border-red-100 dark:border-red-900/30 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 font-bold text-sm transition-colors flex items-center justify-center gap-2"
                              >

@@ -28,8 +28,10 @@ export default function ChatSidebar({
     const searchLower = searchQuery.toLowerCase();
     
     if (activeTab === "Chats") {
-      // Find the other participant to check their name/username
-      const otherUser = item.participants?.find(p => p._id !== currentUser?._id);
+      // For support chats, admin may not be in participants array, so find any participant
+      const currentUserId = currentUser?._id;
+      const otherUser = item.participants?.find(p => p._id !== currentUserId && p._id?.toString() !== currentUserId?.toString())
+        ?? item.participants?.[0]; // fallback: show first participant for support chats
       if (!otherUser) return false;
       
       const name = otherUser.name?.toLowerCase() || "";
@@ -38,6 +40,8 @@ export default function ChatSidebar({
       // Support searching with @ or just the name
       const searchClean = searchLower.startsWith("@") ? searchLower.slice(1) : searchLower;
       
+      // If no search, show all chats
+      if (!searchLower) return true;
       return name.includes(searchLower) || username.includes(searchClean);
     } else {
       // Directory search
@@ -76,7 +80,7 @@ export default function ChatSidebar({
         <div className="flex items-center justify-between mb-5">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Messages</h1>
           <div className="flex items-center gap-1">
-            {currentUser?.role === 'admin' && (
+            {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <button
                 onClick={onStartNewChat}
                 className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-600 dark:text-gray-300"
@@ -166,7 +170,7 @@ export default function ChatSidebar({
           </div>
         ) : (
           <div className="space-y-1">
-            {activeTab === "Directory" && currentUser?.role !== 'admin' ? (
+            {activeTab === "Directory" && currentUser?.role !== 'admin' && currentUser?.role !== 'superadmin' ? (
               <div className="relative group">
                 <button
                   onClick={() => onSelectUser({ _id: "support_channel", name: "Customer Support", username: "support", role: "admin", isSupportChat: true })}

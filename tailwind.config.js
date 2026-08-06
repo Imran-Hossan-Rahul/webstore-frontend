@@ -45,7 +45,7 @@ module.exports = {
         'DEFAULT': '4px',
         'md': '6px',
         'lg': '8px',
-        'xl': '8px', 
+        'xl': '8px',
         '2xl': '8px',
         '3xl': '8px',
         'full': '9999px',

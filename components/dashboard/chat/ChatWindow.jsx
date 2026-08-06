@@ -2,6 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useEffect, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock, ArrowUp, Plus } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 
@@ -32,6 +33,8 @@ export default function ChatWindow({
   const [isCompact, setIsCompact] = useState(false);
   const [virtualGreetingDeleted, setVirtualGreetingDeleted] = useState(false);
   const [virtualGreetingReactions, setVirtualGreetingReactions] = useState([]);
+  const [fullScreenImage, setFullScreenImage] = useState(null);
+  const [zoom, setZoom] = useState(1);
 
   const displayMessages = useMemo(() => {
     if (isLoadingMessages || currentUser?.role === 'admin' || virtualGreetingDeleted) return messages;
@@ -186,28 +189,26 @@ export default function ChatWindow({
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
         
         {/* Profile Info Header in Chat Body (iOS iMessage style) */}
-        {!isLoadingMessages && (
-          <div className="flex flex-col items-center justify-center pt-0 pb-0 mb-6 select-none animate-in fade-in zoom-in-95 duration-500">
-            <div className="relative mb-2.5">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-100 dark:bg-[#2c2c2e] flex items-center justify-center overflow-hidden shrink-0 shadow-sm border border-black/5 dark:border-white/10">
-                {avatar ? (
-                  <img src={getOptimizedUrl(avatar, 150)} className="w-full h-full object-cover" alt="" />
-                ) : (
-                  <User size={32} className="text-[#86868b]" />
-                )}
-              </div>
-              {isOnline && (
-                <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-emerald-500 border-[2.5px] border-[#fafafa] dark:border-black rounded-full shadow-sm"></div>
+        <div className="flex flex-col items-center justify-center pt-0 pb-0 mb-6 select-none animate-in fade-in zoom-in-95 duration-500">
+          <div className="relative mb-2.5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-100 dark:bg-[#2c2c2e] flex items-center justify-center overflow-hidden shrink-0 shadow-sm border border-black/5 dark:border-white/10">
+              {avatar ? (
+                <img src={getOptimizedUrl(avatar, 150)} className="w-full h-full object-cover" alt="" />
+              ) : (
+                <User size={32} className="text-[#86868b]" />
               )}
             </div>
-            <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white tracking-tight">
-              {otherUser.name || otherUser.username}
-            </h2>
-            <p className="text-[12px] text-[#86868b] dark:text-[#98989d] mt-0.5 tracking-tight">
-              Codalina Support
-            </p>
+            {isOnline && (
+              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-emerald-500 border-[2.5px] border-[#fafafa] dark:border-black rounded-full shadow-sm"></div>
+            )}
           </div>
-        )}
+          <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white tracking-tight">
+            {otherUser.name || otherUser.username}
+          </h2>
+          <p className="text-[12px] text-[#86868b] dark:text-[#98989d] mt-0.5 tracking-tight">
+            Codalina Support
+          </p>
+        </div>
 
         {/* Loading Skeleton — only when no cached data exists */}
         {isLoadingMessages && messages.length === 0 && (
@@ -287,7 +288,7 @@ export default function ChatWindow({
             reactionGroups[emoji]++;
           });
 
-          const nextMsg = messages[idx + 1];
+          const nextMsg = displayMessages[idx + 1];
           const currentSenderId = typeof msg.sender === 'object' ? msg.sender?._id : msg.sender;
           const nextSenderId = typeof nextMsg?.sender === 'object' ? nextMsg?.sender?._id : nextMsg?.sender;
           const isLastInGroup = !nextMsg || currentSenderId !== nextSenderId;
@@ -318,12 +319,16 @@ export default function ChatWindow({
                   )}
 
                   <div 
-                    className={`relative px-4 py-2.5 text-[15px] font-sans tracking-tight leading-snug shadow-sm ${
-                      msg.isUnsent
-                        ? "bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500 italic border border-dashed border-slate-200 dark:border-white/10 rounded-2xl"
-                        : isOwn 
-                          ? `bg-[#0071e3] text-white rounded-[20px] ${isLastInGroup ? 'rounded-br-[4px]' : ''} shadow-sm` 
-                          : `bg-[#e5e5ea] dark:bg-[#2c2c2e] text-black dark:text-white rounded-[20px] ${isLastInGroup ? 'rounded-bl-[4px]' : ''} shadow-sm`
+                    className={`relative text-[15px] font-sans tracking-tight leading-snug shadow-sm ${
+                      !msg.isUnsent && msg.type === "image"
+                        ? "p-0 bg-transparent shadow-none"
+                        : `px-4 py-2.5 ${
+                            msg.isUnsent
+                              ? "bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500 italic border border-dashed border-slate-200 dark:border-white/10 rounded-2xl"
+                              : isOwn 
+                                ? `bg-[#0071e3] text-white rounded-[20px] ${isLastInGroup ? 'rounded-br-[4px]' : ''} shadow-sm` 
+                                : `bg-[#e5e5ea] dark:bg-[#2c2c2e] text-black dark:text-white rounded-[20px] ${isLastInGroup ? 'rounded-bl-[4px]' : ''} shadow-sm`
+                          }`
                     }`}
                   >
                     {/* Image rendering */}
@@ -331,8 +336,8 @@ export default function ChatWindow({
                       <img 
                         src={msg.fileUrl} 
                         alt="attachment" 
-                        className="max-w-[220px] rounded-xl mb-1 cursor-pointer"
-                        onClick={() => window.open(msg.fileUrl, '_blank')}
+                        className="max-w-[220px] rounded-[18px] mb-1 cursor-pointer hover:opacity-95 transition-opacity"
+                        onClick={() => { setFullScreenImage(msg.fileUrl); setZoom(1); }}
                       />
                     )}
 
@@ -560,6 +565,38 @@ export default function ChatWindow({
           </div>
         </div>
       </div>
+
+      {/* Full Screen Image Modal */}
+      {fullScreenImage && typeof document !== 'undefined' && createPortal(
+        <div 
+          className="fixed inset-0 z-[999999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => setFullScreenImage(null)}
+        >
+          <button 
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors backdrop-blur-md z-50"
+            onClick={(e) => { e.stopPropagation(); setFullScreenImage(null); }}
+          >
+            <X size={20} />
+          </button>
+          
+          <div 
+            className="w-full h-full flex items-center justify-center overflow-auto scrollbar-none"
+            onClick={(e) => setFullScreenImage(null)}
+          >
+            <img
+              src={fullScreenImage}
+              alt="Fullscreen view"
+              style={{ transform: `scale(${zoom})`, transformOrigin: 'center' }}
+              className={`max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-transform duration-300 ease-out ${zoom === 1 ? 'cursor-zoom-in' : 'cursor-zoom-out'}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoom(prev => prev === 1 ? 1.5 : (prev === 1.5 ? 2 : 1));
+              }}
+            />
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

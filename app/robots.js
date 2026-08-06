@@ -14,6 +14,8 @@ export default function robots() {
           '/post/',
           '/explore/',
           '/u/',
+          '/product/',
+          '/shop/',
         ],
         disallow: [
           '/admin/',

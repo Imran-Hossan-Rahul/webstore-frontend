@@ -378,19 +378,44 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-8"
+                className="relative w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[14px] rounded-apple-pill transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center overflow-hidden mt-8"
               >
-                {loading ? (
-                  <AppleSpinner />
-                ) : (
-                  <>
-                    <span className="text-[17px] tracking-tight">Login</span>
-                    <ArrowRight
-                      size={20}
-                      className="group-hover:translate-x-1 transition-opacity duration-300"
-                    />
-                  </>
-                )}
+                <AnimatePresence mode="wait" initial={false}>
+                  {loading ? (
+                    <motion.span
+                      key="spinner"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex items-center justify-center"
+                    >
+                      <svg
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="animate-spin"
+                      >
+                        <circle cx="12" cy="12" r="10" stroke="white" strokeOpacity="0.3" strokeWidth="2" />
+                        <path d="M22 12C22 6.47715 17.5228 2 12 2" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="label"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex items-center justify-center gap-2"
+                    >
+                      <span className="text-[17px] tracking-tight font-medium">Sign In</span>
+                      <ArrowRight size={18} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
             </form>
           </motion.div>
