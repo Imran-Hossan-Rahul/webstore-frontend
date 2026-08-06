@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }) {
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 flex pt-[44px] md:pt-20 px-0 sm:px-4 lg:px-6 gap-[30px] min-h-screen max-w-[1800px] mx-auto">
+        <div className="relative z-10 flex px-0 sm:px-4 lg:px-6 gap-[30px] min-h-screen max-w-[1800px] mx-auto" style={{ paddingTop: 'calc(44px + env(safe-area-inset-top))' }}>
           {/* Left Sidebar - fixed overlay; doesn't shift main content */}
           {!isFullWidthPage && (
             <div className={`hidden lg:block flex-shrink-0 w-[72px] z-50`}>

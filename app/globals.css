@@ -70,6 +70,14 @@
 
 html {
   scrollbar-gutter: stable;
+  /* Prevent iOS bounce from moving fixed elements */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
 }
 
 :root {
