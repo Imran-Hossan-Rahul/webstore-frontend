@@ -274,7 +274,7 @@ export default function LoginPage() {
                 className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
-                  <AppleSpinner />
+                  <AppleSpinner size={24} />
                 ) : (
                   <span>Verify Account</span>
                 )}

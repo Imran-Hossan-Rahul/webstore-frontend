@@ -203,7 +203,7 @@ export default function ResetPasswordPage() {
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
             >
               {loading ? (
-                <AppleSpinner />
+                <AppleSpinner size={24} />
               ) : (
                 <>
                   <span className="text-[17px] tracking-tight">Save Credentials</span>

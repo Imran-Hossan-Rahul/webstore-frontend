@@ -369,7 +369,7 @@ export default function RegisterPage() {
                 className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
               >
                 {loading ? (
-                  <AppleSpinner />
+                  <AppleSpinner size={24} />
                 ) : (
                   <>
                     <span className="text-[17px] tracking-tight">Create Account</span>
