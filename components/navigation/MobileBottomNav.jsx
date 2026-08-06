@@ -102,7 +102,7 @@ export default function MobileBottomNav() {
       {/* Bottom Nav Bar */}
       <div
         ref={containerRef}
-        className="md:hidden fixed bottom-0 left-0 right-0 z-[60] transform-gpu will-change-transform"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-[60]"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         {/* Hidden SVG for clip path */}

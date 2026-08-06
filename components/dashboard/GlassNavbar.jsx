@@ -161,7 +161,7 @@ const GlassNavbar = ({
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 transform-gpu will-change-transform" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="max-w-[1800px] mx-auto bg-white/80 dark:bg-black/80 backdrop-blur-[20px] saturate-[180%] rounded-b-[24px] pl-[12px] pr-[16px] h-[44px] flex items-center justify-between relative overflow-visible">
         
         {/* Left Section */}
