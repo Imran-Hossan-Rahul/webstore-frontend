@@ -89,7 +89,13 @@ export default function RootLayout({ children }) {
                       "@type": "Organization",
                       "name": "Codalina",
                       "url": "https://codalina.com",
-                      "logo": "https://codalina.com/logo.png"
+                      "logo": "https://codalina.com/logo.png",
+                      "sameAs": [
+                        "https://www.facebook.com/profile.php?id=61591711877853",
+                        "https://www.instagram.com/codalinaglobal/",
+                        "https://x.com/codalinaglobal",
+                        "https://bikroy.com/sellerpage-AWv0rx64T4yTmhkp7goj4Zis"
+                      ]
                     })
                   }}
                 />

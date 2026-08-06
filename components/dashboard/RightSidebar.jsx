@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe, Gift, FileText, ShoppingCart, Check, Zap, Clock, Award } from "lucide-react";
+import { ArrowRight, Star, TrendingUp, Tag, Layers, ShieldCheck, Search, Bookmark, Layout, ChevronRight, Plus, Share2, Trash2, Mail, MessageCircle, Github, Linkedin, Globe, Gift, FileText, ShoppingCart, Check, Zap, Clock, Award, Facebook, Instagram, Twitter, Store } from "lucide-react";
 import { api } from "@/utils/api";
 import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -993,6 +993,18 @@ export default function RightSidebar() {
             </a>
             <a href="https://github.com/Imran-Hossan-Rahul" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-white transition-colors" title="GitHub">
                 <Github className="w-4 h-4" />
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-blue-500 transition-colors" title="Facebook">
+                <Facebook className="w-4 h-4" />
+            </a>
+            <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-pink-500 transition-colors" title="Instagram">
+                <Instagram className="w-4 h-4" />
+            </a>
+            <a href="https://x.com/codalinaglobal" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-blue-400 transition-colors" title="Twitter / X">
+                <Twitter className="w-4 h-4" />
+            </a>
+            <a href="https://bikroy.com/sellerpage-AWv0rx64T4yTmhkp7goj4Zis" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-green-500 transition-colors" title="Bikroy">
+                <Store className="w-4 h-4" />
             </a>
             <a href="https://imran-hossan-rahul-dev.vercel.app/" target="_blank" rel="noreferrer" className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-indigo-400 transition-colors" title="Portfolio">
                 <Globe className="w-4 h-4" />

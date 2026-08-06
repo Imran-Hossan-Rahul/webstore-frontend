@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MessageCircle, Globe } from "lucide-react";
+import { Github, Linkedin, Mail, MessageCircle, Globe, Facebook, Instagram, Twitter, Store } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 
 export default function Footer() {
@@ -66,6 +66,18 @@ export default function Footer() {
                   </a>
                   <a href="https://github.com/Imran-Hossan-Rahul" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors shadow-sm" title="GitHub">
                       <Github className="w-5 h-5" />
+                  </a>
+                  <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-blue-600 transition-colors shadow-sm" title="Facebook">
+                      <Facebook className="w-5 h-5" />
+                  </a>
+                  <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-pink-600 transition-colors shadow-sm" title="Instagram">
+                      <Instagram className="w-5 h-5" />
+                  </a>
+                  <a href="https://x.com/codalinaglobal" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-blue-400 transition-colors shadow-sm" title="Twitter / X">
+                      <Twitter className="w-5 h-5" />
+                  </a>
+                  <a href="https://bikroy.com/sellerpage-AWv0rx64T4yTmhkp7goj4Zis" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-green-600 transition-colors shadow-sm" title="Bikroy">
+                      <Store className="w-5 h-5" />
                   </a>
                   <a href="https://imran-hossan-rahul-dev.vercel.app/" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-indigo-500 transition-colors shadow-sm" title="Portfolio">
                       <Globe className="w-5 h-5" />
