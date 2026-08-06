@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Copy, Image as ImageIcon, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, Copy, Image as ImageIcon, CheckCircle2, XCircle, FileText } from "lucide-react";
 import { api } from '@/utils/api';
+import { generateInvoice } from '@/utils/generateInvoice';
 
 import AppleSpinner from "@/components/ui/AppleSpinner";
 
@@ -70,8 +71,9 @@ export default function OrderDetailPage({ params }) {
   try { addressObj = typeof order.address === 'string' ? JSON.parse(order.address) : order.address; } catch(e) {}
 
   const itemsPrice = order.items?.reduce((sum, item) => sum + (item.price_at_purchase * item.quantity), 0) || 0;
-  const codCharge = Math.round(itemsPrice * 0.01);
-  const subtotal = itemsPrice + codCharge;
+  const deliveryCharge = typeof order.delivery_charge === 'number' ? order.delivery_charge : Math.round(itemsPrice * 0.01);
+  const subtotal = typeof order.subtotal === 'number' && order.subtotal > 0 ? order.subtotal : itemsPrice;
+  const totalAmount = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice + deliveryCharge;
 
   const statusDate = formatDate(order.confirmed_at || order.createdAt);
   const placedDate = formatDate(order.createdAt);
@@ -90,17 +92,25 @@ export default function OrderDetailPage({ params }) {
   return (
     <div className="min-h-screen pb-24 md:pb-0 bg-[#fafafa] dark:bg-slate-950">
       <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-4 md:p-8 mb-4 md:mb-8">
+        <div className="p-4 md:p-8 mb-4 md:mb-8">
           
           {/* Header */}
           <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-4 md:pb-6 mb-4 md:mb-6">
             <h1 className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">Order Details</h1>
-            <button
-              onClick={() => router.back()}
-              className="text-[13px] font-medium text-[#86868b] hover:text-[#1d1d1f] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
-            >
-              <ArrowLeft size={16} /> Go Back
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => generateInvoice(order)}
+                className="text-[13px] font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
+              >
+                <FileText size={16} /> View Invoice
+              </button>
+              <button
+                onClick={() => router.back()}
+                className="text-[13px] font-medium text-[#86868b] hover:text-[#1d1d1f] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
+              >
+                <ArrowLeft size={16} /> Go Back
+              </button>
+            </div>
           </div>
 
           {/* Order Info Row */}
@@ -121,8 +131,8 @@ export default function OrderDetailPage({ params }) {
             </div>
             <div className="flex flex-col md:items-end">
               <span className="font-text text-[11px] font-semibold tracking-[0.06em] text-[#86868b] mb-1">Total Amount</span>
-              <div className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">
-                {formatPrice(subtotal)} BDT
+              <div className="text-[28px] md:text-[32px] font-semibold tracking-[-0.01em] text-[#1d1d1f] dark:text-white leading-none">
+                {formatPrice(totalAmount)} BDT
               </div>
             </div>
           </div>
@@ -152,11 +162,11 @@ export default function OrderDetailPage({ params }) {
                   { label: 'Shipped',    active: isShipped },
                   { label: 'Delivered',  active: isDelivered },
                 ].map(({ label, active }) => (
-                  <div key={label} className="flex flex-col items-center gap-2.5 bg-white dark:bg-slate-900 px-1 relative z-10 w-16 md:w-20">
+                  <div key={label} className="flex flex-col items-center gap-2.5 bg-[#fafafa] dark:bg-slate-950 px-1 relative z-10 w-16 md:w-20">
                     {active ? (
-                      <CheckCircle2 size={24} className="text-[#34c759] bg-white rounded-full" strokeWidth={1.25} />
+                      <CheckCircle2 size={24} className="text-[#34c759] bg-[#fafafa] dark:bg-slate-950 rounded-full" strokeWidth={1.25} />
                     ) : (
-                      <div className="w-[24px] h-[24px] rounded-full border-[1.5px] border-[#d2d2d7] dark:border-[#2c2c2e] bg-white dark:bg-slate-900"></div>
+                      <div className="w-[24px] h-[24px] rounded-full border-[1.5px] border-[#d2d2d7] dark:border-[#2c2c2e] bg-[#fafafa] dark:bg-slate-950"></div>
                     )}
                     <span className={`font-text font-semibold tracking-[0.06em] text-[11px] sm:text-[12px] text-center ${active ? 'text-[#4b4b4b] dark:text-[#f5f5f7]' : 'text-[#999999] dark:text-[#6e6e73]'}`}>{label}</span>
                   </div>
@@ -237,7 +247,7 @@ export default function OrderDetailPage({ params }) {
                   <span>Items Total</span><span>{formatPrice(itemsPrice)} BDT</span>
                 </div>
                 <div className="flex justify-between text-[14px] font-normal tracking-[-0.016em] text-[#4b4b4b] dark:text-gray-300">
-                  <span>Delivery Charge</span><span>{formatPrice(codCharge)} BDT</span>
+                  <span>Delivery Charge</span><span>{formatPrice(deliveryCharge)} BDT</span>
                 </div>
                 
                 <div className="border-t border-dashed border-[#d2d2d7] dark:border-gray-700 my-2"></div>
@@ -245,15 +255,12 @@ export default function OrderDetailPage({ params }) {
                 <div className="flex justify-between font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white text-[15px]">
                   <span>Subtotal</span><span>{formatPrice(subtotal)} BDT</span>
                 </div>
-                <div className="flex justify-between text-[14px] font-semibold text-[#1d1d1f] dark:text-white">
-                  <span>Paid Amount</span><span>- 0 BDT</span>
-                </div>
                 
                 <div className="border-t border-solid border-[#e5e5ea] dark:border-[#2c2c2e] my-3"></div>
                 
                 <div className="flex justify-between mt-4 pt-4 border-t border-[#e5e5ea] dark:border-gray-700">
-                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[13px]">Due Amount</span>
-                  <span className="font-bold text-[#1d1d1f] dark:text-white tracking-[-0.015em] text-[28px]">{formatPrice(subtotal)} BDT</span>
+                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[13px]">{isDelivered || order.payment_status === 'Paid' ? 'Total Paid' : 'Due Amount'}</span>
+                  <span className="font-bold text-[#1d1d1f] dark:text-white tracking-[-0.015em] text-[28px]">{formatPrice(totalAmount)} BDT</span>
                 </div>
               </div>
             </div>

@@ -39,6 +39,8 @@ export default function ShopPage() {
   const [selectedChildCategory, setSelectedChildCategory] = useState(searchParams.get('childCategory_id') || '');
   const [isFeatured, setIsFeatured] = useState(sectionQuery === 'featured');
   const [isPopular, setIsPopular] = useState(sectionQuery === 'popular');
+  const [isLatest, setIsLatest] = useState(sectionQuery === 'latest');
+  const [productIds, setProductIds] = useState(searchParams.get('ids') || '');
   const [sortOrder, setSortOrder] = useState('latest');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
@@ -62,20 +64,66 @@ export default function ShopPage() {
       .catch(err => console.error(err));
   }, []);
 
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('');
+    setSelectedSubCategory('');
+    setSelectedChildCategory('');
+    setIsFeatured(false);
+    setIsPopular(false);
+    setIsLatest(false);
+    setProductIds('');
+    setMinPrice('');
+    setMaxPrice('');
+    setTempMinPrice('');
+    setTempMaxPrice('');
+    setSortOrder('latest');
+    setPage(1);
+    router.push('/shop');
+  };
+
   // Compute breadcrumb label from URL params + category data
   const activeBreadcrumb = React.useMemo(() => {
+    if (productIds) {
+      return [
+        { label: 'Shop', onClick: resetFilters },
+        { label: "Today's Offer", onClick: null },
+      ];
+    }
+    
+    if (sectionQuery === 'popular') {
+      return [
+        { label: 'Shop', onClick: resetFilters },
+        { label: 'Popular Products', onClick: null },
+      ];
+    }
+    
+    if (sectionQuery === 'featured') {
+      return [
+        { label: 'Shop', onClick: resetFilters },
+        { label: 'Featured Products', onClick: null },
+      ];
+    }
+
+    if (searchParams.get('section') === 'latest' || searchParams.get('sort') === 'latest') {
+      return [
+        { label: 'Shop', onClick: resetFilters },
+        { label: 'Latest Products', onClick: null },
+      ];
+    }
+
     if (!categories.length) return null;
     for (const cat of categories) {
       if (cat._id === selectedCategory || cat.id === selectedCategory) {
         return [
-          { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+          { label: 'Shop', onClick: resetFilters },
           { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
         ];
       }
       for (const sub of (cat.subcategories || [])) {
         if (sub._id === selectedSubCategory || sub.id === selectedSubCategory) {
           return [
-            { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+            { label: 'Shop', onClick: resetFilters },
             { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
             { label: sub.name, onClick: () => router.push(`/shop?subCategory_id=${sub._id}`) },
           ];
@@ -83,7 +131,7 @@ export default function ShopPage() {
         for (const child of (sub.subcategories || [])) {
           if (child._id === selectedChildCategory || child.id === selectedChildCategory) {
             return [
-              { label: 'Shop', onClick: () => { setSelectedCategory(''); setSelectedSubCategory(''); setSelectedChildCategory(''); router.push('/shop'); } },
+              { label: 'Shop', onClick: resetFilters },
               { label: cat.name, onClick: () => router.push(`/shop?category_id=${cat._id}`) },
               { label: sub.name, onClick: () => router.push(`/shop?subCategory_id=${sub._id}`) },
               { label: child.name, onClick: null },
@@ -93,14 +141,15 @@ export default function ShopPage() {
       }
     }
     return null;
-  }, [categories, selectedCategory, selectedSubCategory, selectedChildCategory]);
+  }, [categories, selectedCategory, selectedSubCategory, selectedChildCategory, productIds, sectionQuery, searchParams]);
 
   const fetchProducts = async (pageNum = 1) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({
         page: pageNum,
-        limit: 30
+        limit: 30,
+        status: 'Live'
       });
       if (searchQuery) params.append('search', searchQuery);
       if (selectedCategory) params.append('category_id', selectedCategory);
@@ -108,6 +157,8 @@ export default function ShopPage() {
       if (selectedChildCategory) params.append('childCategory_id', selectedChildCategory);
       if (isFeatured) params.append('isFeatured', 'true');
       if (isPopular) params.append('isPopular', 'true');
+      if (isLatest) params.append('isLatest', 'true');
+      if (productIds) params.append('ids', productIds);
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
@@ -139,6 +190,7 @@ export default function ShopPage() {
     setSelectedCategory(searchParams.get('category_id') || '');
     setSelectedSubCategory(searchParams.get('subCategory_id') || '');
     setSelectedChildCategory(searchParams.get('childCategory_id') || '');
+    setProductIds(searchParams.get('ids') || '');
     const section = searchParams.get('section') || '';
     setIsFeatured(section === 'featured');
     setIsPopular(section === 'popular');
@@ -147,7 +199,7 @@ export default function ShopPage() {
   useEffect(() => {
     setPage(1);
     fetchProducts(1);
-  }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, sortOrder, minPrice, maxPrice]);
+  }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, productIds, sortOrder, minPrice, maxPrice]);
 
   // Signal global loader that we are fetching data
   if (typeof window !== 'undefined') {

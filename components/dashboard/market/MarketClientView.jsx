@@ -169,11 +169,11 @@ export default function MarketClientView({ initialData = [], initialPagination =
     }
     if (initialFeatured.length === 0) {
       setLoadingFeatured(true);
-      api.get('/market/products?isFeatured=true&limit=10').then(res => setFeaturedProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingFeatured(false));
+      api.get('/market/products?isFeatured=true&limit=10&status=Live').then(res => setFeaturedProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingFeatured(false));
     }
     if (initialPopular.length === 0) {
       setLoadingPopular(true);
-      api.get('/market/products?isPopular=true&limit=10').then(res => setPopularProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingPopular(false));
+      api.get('/market/products?isPopular=true&limit=10&status=Live').then(res => setPopularProducts((res.data || []).filter(p => p.status === 'Live'))).catch(console.error).finally(() => setLoadingPopular(false));
     }
   }, [initialData.length, initialFeatured.length, initialPopular.length]);
 
@@ -211,7 +211,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
   const fetchProducts = (pageNum, reset = false) => {
     setLoading(true);
-    api.get(`/market/products?page=${pageNum}&limit=12`)
+    api.get(`/market/products?isLatest=true&page=${pageNum}&limit=17&status=Live`)
       .then(res => {
         // Backend now returns { data, pagination }
         const data = res.data || [];
@@ -489,7 +489,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
           title="Latest Products"
           products={displayedProducts}
           renderProductCard={renderProductCard}
-          viewAllLink="/shop?sort=latest"
+          viewAllLink="/shop?section=latest"
           isLoading={loading}
         />
       )}

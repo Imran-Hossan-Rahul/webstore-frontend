@@ -130,7 +130,11 @@ export default function Checkout() {
         phone: form.phone,
         address,
         items: [{ product_id: product.id, quantity, price: finalPriceAfterDiscount, variants: variantSummary }],
-        source_channel: 'organic:direct'
+        source_channel: 'organic:direct',
+        delivery_charge: deliveryCharge,
+        discount_amount: discountAmount,
+        subtotal: subTotal,
+        total_amount: total
       };
 
       const response = await api.post('/market/orders', payload);

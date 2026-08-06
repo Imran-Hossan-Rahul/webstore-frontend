@@ -1,0 +1,184 @@
+"use client";
+import React, { useEffect, useState } from 'react';
+import { api } from '@/utils/api';
+import { Search, Image as ImageIcon } from "lucide-react";
+import AppleSpinner from "@/components/ui/AppleSpinner";
+
+const getOptimizedUrl = (url) => {
+  if (!url) return '';
+  if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
+    const parts = url.split('/upload/');
+    if (parts.length === 2) {
+      return `${parts[0]}/upload/f_auto,q_auto,w_100/${parts[1]}`;
+    }
+  }
+  return url;
+};
+
+export default function LatestProductsPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async (pageNum = 1) => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/market/products?page=${pageNum}&limit=50&search=${searchQuery}`);
+      if (pageNum === 1) {
+        setProducts(res.data || []);
+      } else {
+        setProducts(prev => [...prev, ...(res.data || [])]);
+      }
+      setHasMore(res.pagination?.currentPage < res.pagination?.pages);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      setPage(1);
+      fetchProducts(1);
+    }
+  };
+
+  const toggleLatest = async (product) => {
+    const newStatus = !product.isLatest;
+    // Optimistic UI update
+    setProducts(products.map(p => p.id === product.id ? { ...p, isLatest: newStatus } : p));
+    
+    try {
+      await api.put(`/market/products/${product.id}`, { isLatest: newStatus });
+    } catch (err) {
+      console.error('Failed to update latest status:', err);
+      // Revert on failure
+      setProducts(products.map(p => p.id === product.id ? { ...p, isLatest: !newStatus } : p));
+    }
+  };
+
+  return (
+    <div className="p-4 md:p-8 max-w-7xl mx-auto text-white">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-1 text-purple-400">Latest Products</h1>
+        <p className="text-gray-400 text-sm">Toggle products to show them in the Latest section on the homepage.</p>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 mb-6 shadow-xl">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search by Title or SKU..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearch}
+            className="w-full bg-gray-950 border border-gray-800 rounded-lg pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+          />
+        </div>
+      </div>
+
+      {/* Products Grid — 2 columns */}
+      <div className="hidden md:grid grid-cols-2 gap-3">
+        {loading && page === 1 ? (
+          <div className="col-span-2 py-16 flex flex-col items-center text-gray-500">
+            <AppleSpinner className="animate-spin mb-3" />
+            <span className="text-sm">Loading products...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="col-span-2 py-16 text-center text-gray-500 text-sm">No products found.</div>
+        ) : products.map(p => {
+          let image = null;
+          try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
+          return (
+            <div key={p.id} className="bg-gray-900 border border-gray-800 rounded-xl flex items-center gap-3 px-4 py-3 hover:bg-gray-800/50 transition group shadow-xl">
+              <div className="shrink-0">
+                {image ? (
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-12 h-12 object-cover rounded-lg bg-gray-800" />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-gray-600"><ImageIcon size={16} /></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold text-gray-100 truncate leading-tight">{p.title}</p>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="text-[11px] text-gray-500">{p.sku || 'No SKU'}</span>
+                  <span className="text-gray-700 text-[11px]">·</span>
+                  <span className="text-[12px] font-bold text-green-400">BDT {p.selling_price}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={!!p.isLatest} onChange={() => toggleLatest(p)} />
+                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                </label>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden flex flex-col gap-3">
+        {loading && page === 1 ? (
+          <div className="py-12 flex flex-col items-center text-gray-500">
+            <AppleSpinner className="animate-spin mb-2" />
+            <span className="text-sm">Loading...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="py-12 text-center text-gray-500 text-sm">No products found.</div>
+        ) : products.map(p => {
+          let image = null;
+          try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
+          return (
+            <div key={p.id} className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-4 shadow-xl">
+              <div className="shrink-0">
+                {image ? (
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-14 h-14 object-cover rounded-lg bg-gray-800 p-1" />
+                ) : (
+                  <div className="w-14 h-14 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500"><ImageIcon size={20} /></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-100 text-sm truncate">{p.title}</p>
+                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <span className="text-xs text-gray-500">{p.sku || 'No SKU'}</span>
+                  <span className="text-gray-600 text-xs">·</span>
+                  <span className="text-sm font-bold text-green-400">BDT {p.selling_price}</span>
+                </div>
+              </div>
+              <div className="flex shrink-0">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={!!p.isLatest} onChange={() => toggleLatest(p)} />
+                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                </label>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
+      {hasMore && !loading && (
+        <div className="mt-6 flex justify-center">
+          <button 
+            onClick={() => {
+              const nextPage = page + 1;
+              setPage(nextPage);
+              fetchProducts(nextPage);
+            }}
+            className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-lg text-sm transition"
+          >
+            Load More
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -85,63 +85,84 @@ export default function PopularProductsPage() {
         </div>
       </div>
 
-      <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-gray-950/50 text-gray-400">
-              <tr>
-                <th className="p-4 font-medium rounded-tl-xl">Image</th>
-                <th className="p-4 font-medium">Product Name</th>
-                <th className="p-4 font-medium">Price</th>
-                <th className="p-4 font-medium text-right rounded-tr-xl">Popular</th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading && page === 1 ? (
-                <tr>
-                  <td colSpan="4" className="p-8 text-center text-gray-500">
-                    <AppleSpinner className="animate-spin mx-auto mb-2" />
-                    Loading...
-                  </td>
-                </tr>
-              ) : products.length === 0 ? (
-                <tr>
-                  <td colSpan="4" className="p-12 text-center text-gray-500">No products found.</td>
-                </tr>
-              ) : products.map(p => {
-                let image = null;
-                try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
-                return (
-                  <tr key={p.id} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition">
-                    <td className="p-4 w-16">
-                      {image ? (
-                        <img src={getOptimizedUrl(image)} alt="Product" className="w-10 h-10 object-cover rounded-md bg-gray-800" />
-                      ) : (
-                        <div className="w-10 h-10 bg-gray-800 rounded-md flex items-center justify-center text-gray-500"><ImageIcon size={16} /></div>
-                      )}
-                    </td>
-                    <td className="p-4 font-medium text-gray-200">
-                      <p className="truncate max-w-[200px] md:max-w-md">{p.title}</p>
-                      <p className="text-xs text-gray-500">{p.sku || 'No SKU'}</p>
-                    </td>
-                    <td className="p-4 font-bold text-green-400">BDT {p.selling_price}</td>
-                    <td className="p-4 text-right">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          className="sr-only peer" 
-                          checked={!!p.isPopular}
-                          onChange={() => togglePopular(p)}
-                        />
-                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
-                      </label>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+      {/* Products Grid — 2 columns */}
+      <div className="hidden md:grid grid-cols-2 gap-3">
+        {loading && page === 1 ? (
+          <div className="col-span-2 py-16 flex flex-col items-center text-gray-500">
+            <AppleSpinner className="animate-spin mb-3" />
+            <span className="text-sm">Loading products...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="col-span-2 py-16 text-center text-gray-500 text-sm">No products found.</div>
+        ) : products.map(p => {
+          let image = null;
+          try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
+          return (
+            <div key={p.id} className="bg-gray-900 border border-gray-800 rounded-xl flex items-center gap-3 px-4 py-3 hover:bg-gray-800/50 transition group shadow-xl">
+              <div className="shrink-0">
+                {image ? (
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-12 h-12 object-cover rounded-lg bg-gray-800" />
+                ) : (
+                  <div className="w-12 h-12 bg-gray-800 rounded-lg flex items-center justify-center text-gray-600"><ImageIcon size={16} /></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] font-semibold text-gray-100 truncate leading-tight">{p.title}</p>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className="text-[11px] text-gray-500">{p.sku || 'No SKU'}</span>
+                  <span className="text-gray-700 text-[11px]">·</span>
+                  <span className="text-[12px] font-bold text-green-400">BDT {p.selling_price}</span>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={!!p.isPopular} onChange={() => togglePopular(p)} />
+                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                </label>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile Card List */}
+      <div className="md:hidden flex flex-col gap-3">
+        {loading && page === 1 ? (
+          <div className="py-12 flex flex-col items-center text-gray-500">
+            <AppleSpinner className="animate-spin mb-2" />
+            <span className="text-sm">Loading...</span>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="py-12 text-center text-gray-500 text-sm">No products found.</div>
+        ) : products.map(p => {
+          let image = null;
+          try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
+          return (
+            <div key={p.id} className="bg-gray-900 border border-gray-800 rounded-xl p-4 flex items-center gap-4 shadow-xl">
+              <div className="shrink-0">
+                {image ? (
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-14 h-14 object-cover rounded-lg bg-gray-800 p-1" />
+                ) : (
+                  <div className="w-14 h-14 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500"><ImageIcon size={20} /></div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-gray-100 text-sm truncate">{p.title}</p>
+                <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <span className="text-xs text-gray-500">{p.sku || 'No SKU'}</span>
+                  <span className="text-gray-600 text-xs">·</span>
+                  <span className="text-sm font-bold text-green-400">BDT {p.selling_price}</span>
+                </div>
+              </div>
+              <div className="flex shrink-0">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={!!p.isPopular} onChange={() => togglePopular(p)} />
+                  <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                </label>
+              </div>
+            </div>
+          );
+        })}
       </div>
       
       {hasMore && !loading && (

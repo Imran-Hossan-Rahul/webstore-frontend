@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ArrowRight } from "lucide-react";
 import ThemeToggle from "../ThemeToggle";
-import BetaBanner from "../BetaBanner";
 import { useUser } from "@/context/UserContext";
 
 export default function LandingNavbar() {
@@ -33,7 +32,6 @@ export default function LandingNavbar() {
           : "bg-transparent h-20"
       }`}
     >
-      <BetaBanner />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">

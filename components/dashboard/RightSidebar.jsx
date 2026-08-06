@@ -47,6 +47,7 @@ export default function RightSidebar() {
   const [itemsLoading, setItemsLoading] = useState(false);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [marketConfig, setMarketConfig] = useState(null);
+  const [marketLoading, setMarketLoading] = useState(true);
   const [showCartSuccess, setShowCartSuccess] = useState(false);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
 
@@ -95,6 +96,8 @@ export default function RightSidebar() {
         setRecommendedProducts(shuffled.slice(0, 4));
       } catch (err) {
         console.error("Error fetching recommendations:", err);
+      } finally {
+        setMarketLoading(false);
       }
     };
     fetchRecommended();
@@ -804,6 +807,27 @@ export default function RightSidebar() {
 
   // --- MARKET CONTEXT SIDEBAR ---
   if (isMarket) {
+    if (marketLoading) {
+      return (
+        <aside className="h-full flex flex-col gap-8 pb-10">
+          <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-sm animate-pulse">
+             <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/3 mb-5"></div>
+             <div className="space-y-4">
+               {[1, 2].map((i) => (
+                 <div key={i} className="flex gap-4 items-center">
+                   <div className="w-14 h-14 rounded-[10px] bg-gray-200 dark:bg-gray-800 flex-shrink-0"></div>
+                   <div className="flex-1 space-y-2">
+                     <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-3/4"></div>
+                     <div className="h-3 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
+                   </div>
+                 </div>
+               ))}
+             </div>
+          </div>
+        </aside>
+      );
+    }
+
     return (
       <aside className="h-full flex flex-col gap-8 pb-10">
         {/* Flash Deals Widget */}
@@ -890,7 +914,14 @@ export default function RightSidebar() {
            <div className="font-mono bg-[#f5f5f7] dark:bg-[#2c2c2e] text-apple-ink dark:text-white px-4 py-1.5 rounded-full text-[12px] font-medium mb-5">
              Use code: {marketConfig?.todaysOffer?.code || "AUDIO20"}
            </div>
-           <Link href={marketConfig?.todaysOffer?.link || "#"} className="bg-[#0071e3] text-white text-[14px] font-medium px-4 py-2.5 rounded-full w-full hover:bg-[#0077ED] transition-colors inline-block">
+           <Link 
+             href={
+               marketConfig?.todaysOffer?.applicableProducts?.length > 0 
+                 ? `/shop?ids=${marketConfig.todaysOffer.applicableProducts.map(p => typeof p === 'object' ? p._id : p).join(',')}`
+                 : (marketConfig?.todaysOffer?.link || "#")
+             } 
+             className="bg-[#0071e3] text-white text-[14px] font-medium px-4 py-2.5 rounded-full w-full hover:bg-[#0077ED] transition-colors inline-block"
+           >
              Claim Offer
            </Link>
         </div>
@@ -898,13 +929,13 @@ export default function RightSidebar() {
 
         {/* Cart Success Toast */}
         {showCartSuccess && (
-          <div className="sticky bottom-10 mt-auto z-[100] w-full bg-emerald-500/95 backdrop-blur border border-emerald-400 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
+          <div className="sticky bottom-[120px] mt-auto z-[100] w-full bg-emerald-500/95 backdrop-blur border border-emerald-400 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
             <Check size={20} strokeWidth={3} className="text-white shrink-0" /> 
             <span className="truncate">Successfully added to cart</span>
           </div>
         )}
         {showOrderSuccess && (
-          <div className="sticky bottom-10 mt-auto z-[100] w-full bg-emerald-600/95 backdrop-blur border border-emerald-500 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
+          <div className="sticky bottom-[120px] mt-auto z-[100] w-full bg-emerald-600/95 backdrop-blur border border-emerald-500 text-white px-4 py-3.5 rounded-xl flex items-center gap-3 text-sm font-bold shadow-lg animate-in fade-in slide-in-from-bottom-6 duration-300">
             <Check size={20} strokeWidth={3} className="text-white shrink-0" /> 
             <span className="truncate">Order confirmed successfully</span>
           </div>

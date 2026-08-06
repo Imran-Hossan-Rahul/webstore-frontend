@@ -238,7 +238,8 @@ export default function AdminOrdersPage() {
               const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Order placed'];
               const Icon = cfg.icon;
               const itemsPrice = (order.items || []).reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
-              const total = itemsPrice + Math.round(itemsPrice * 0.01);
+              const deliveryCharge = typeof order.delivery_charge === 'number' ? order.delivery_charge : Math.round(itemsPrice * 0.01);
+              const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice + deliveryCharge;
               const isExpanded = expandedOrder === orderId;
 
               const isPaid = order.status === 'Delivered';
@@ -371,7 +372,7 @@ export default function AdminOrdersPage() {
                                 <span>Items Price</span><span>৳ {formatPrice(itemsPrice)}</span>
                               </div>
                               <div className="flex justify-between text-gray-400">
-                                <span>COD Charge (1%)</span><span>৳ {formatPrice(Math.round(itemsPrice * 0.01))}</span>
+                                <span>Delivery Charge</span><span>৳ {formatPrice(deliveryCharge)}</span>
                               </div>
                               <div className="flex justify-between font-bold text-white border-t border-gray-800 pt-2">
                                 <span>Total</span><span>৳ {formatPrice(total)}</span>
@@ -423,7 +424,8 @@ export default function AdminOrdersPage() {
           const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Order placed'];
           const Icon = cfg.icon;
           const itemsPrice = (order.items || []).reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
-          const total = itemsPrice + Math.round(itemsPrice * 0.01);
+          const deliveryCharge = typeof order.delivery_charge === 'number' ? order.delivery_charge : Math.round(itemsPrice * 0.01);
+          const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice + deliveryCharge;
           const isExpanded = expandedOrder === orderId;
           const dueAmount = order.status === 'Delivered' || order.status === 'Cancelled' ? 0 : total;
           let addrObj = {};
@@ -540,7 +542,7 @@ export default function AdminOrdersPage() {
                   {/* Summary */}
                   <div className="bg-gray-900 rounded-lg p-3 border border-gray-800 text-sm space-y-2">
                     <div className="flex justify-between text-gray-400"><span>Items Price</span><span>BDT {formatPrice(itemsPrice)}</span></div>
-                    <div className="flex justify-between text-gray-400"><span>COD Charge (1%)</span><span>BDT {formatPrice(Math.round(itemsPrice * 0.01))}</span></div>
+                    <div className="flex justify-between text-gray-400"><span>Delivery Charge</span><span>BDT {formatPrice(deliveryCharge)}</span></div>
                     <div className="flex justify-between font-bold text-white border-t border-gray-800 pt-2"><span>Total</span><span>BDT {formatPrice(total)}</span></div>
                     <div className={`flex justify-between font-bold ${dueAmount > 0 ? 'text-orange-400' : 'text-emerald-400'}`}><span>Due Amount</span><span>BDT {formatPrice(dueAmount)}</span></div>
                   </div>

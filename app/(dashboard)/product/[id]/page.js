@@ -42,6 +42,7 @@ export default function ProductDetails({ params }) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [isZooming, setIsZooming] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({ transformOrigin: 'center center' });
+  const [categories, setCategories] = useState([]);
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -115,6 +116,11 @@ export default function ProductDetails({ params }) {
         .then(res => {
           const data = res.data || res;
           setProduct(data);
+          
+          api.get('/market/categories')
+            .then(catRes => setCategories(catRes.data || catRes))
+            .catch(console.error);
+            
           let parsedPhotos = [];
           try {
             parsedPhotos = JSON.parse(data.photos);
@@ -303,6 +309,30 @@ export default function ProductDetails({ params }) {
     });
   };
 
+  const breadcrumbNodes = React.useMemo(() => {
+    if (!product || !categories.length) return [];
+    const nodes = [];
+    
+    // Find category
+    const cat = categories.find(c => c._id === product.category_id || c.id === product.category_id);
+    if (cat) {
+      nodes.push({ label: cat.name, url: `/shop?category_id=${cat._id || cat.id}` });
+      
+      // Find subcategory
+      const sub = (cat.subcategories || []).find(s => s._id === product.subCategory_id || s.id === product.subCategory_id);
+      if (sub) {
+        nodes.push({ label: sub.name, url: `/shop?subCategory_id=${sub._id || sub.id}` });
+        
+        // Find childcategory
+        const child = (sub.subcategories || []).find(c => c._id === product.childCategory_id || c.id === product.childCategory_id);
+        if (child) {
+          nodes.push({ label: child.name, url: `/shop?childCategory_id=${child._id || child.id}` });
+        }
+      }
+    }
+    return nodes;
+  }, [product, categories]);
+
   return (
     <div className="min-h-screen pb-16 font-sans">
       <AuthGuardModal 
@@ -313,14 +343,26 @@ export default function ProductDetails({ params }) {
       {/* Breadcrumb */}
       <div className="pt-5 pb-2">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center text-[14px] font-medium ml-4">
-            <Link href="/" className="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition flex items-center">
-              <Home size={16} />
+          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11.5px] md:text-[13px] text-[#86868b] dark:text-gray-400 font-normal w-full pb-0.5 md:pb-0 ml-4">
+            <Link href="/" className="transition-colors hover:text-[#0071e3] shrink-0 flex items-center">
+              <Home size={14} className="mb-0.5" />
             </Link>
-            <span className="text-blue-600 mx-3">/</span>
-            <Link href="/" className="text-gray-900 dark:text-gray-300 hover:text-blue-600 transition">Codalina Market</Link>
-            <span className="text-blue-600 mx-3">/</span>
-            <span className="text-blue-600 truncate max-w-[200px] md:max-w-md">{product.title}</span>
+            <span className="opacity-40 shrink-0">›</span>
+            <Link href="/shop" className="transition-colors hover:text-[#0071e3] shrink-0">
+              Shop
+            </Link>
+            {breadcrumbNodes.map((node, i) => (
+              <React.Fragment key={i}>
+                <span className="opacity-40 shrink-0">›</span>
+                <Link href={node.url} className="transition-colors hover:text-[#0071e3] shrink-0">
+                  {node.label}
+                </Link>
+              </React.Fragment>
+            ))}
+            <span className="opacity-40 shrink-0">›</span>
+            <span className="text-[#1d1d1f] dark:text-white font-normal shrink-0 truncate max-w-[200px] md:max-w-md pointer-events-none">
+              {product.title}
+            </span>
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ export default function MarketAdminLayout({ children }) {
     { name: 'Products', href: '/admin/market/products', icon: ShoppingBag },
     { name: 'Featured', href: '/admin/market/featured', icon: Star },
     { name: 'Popular', href: '/admin/market/popular', icon: TrendingUp },
+    { name: 'Latest', href: '/admin/market/latest', icon: Star },
     { name: 'Promotions', href: '/admin/market/promotions', icon: Tags },
     { name: 'Wholesalers', href: '/admin/market/wholesaler', icon: Users },
     { name: 'Procurement', href: '/admin/market/procurement', icon: Truck },

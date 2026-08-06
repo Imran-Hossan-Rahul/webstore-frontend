@@ -18,9 +18,9 @@ export default async function Home() {
         
         // Fetch paginated, featured, and popular concurrently
         const [resAll, resFeatured, resPopular] = await Promise.all([
-            fetch(`${apiUrl}/market/products?page=1&limit=12`, { cache: 'no-store' }),
-            fetch(`${apiUrl}/market/products?isFeatured=true&limit=10`, { cache: 'no-store' }),
-            fetch(`${apiUrl}/market/products?isPopular=true&limit=10`, { cache: 'no-store' })
+            fetch(`${apiUrl}/market/products?isLatest=true&limit=17&status=Live`, { cache: 'no-store' }),
+            fetch(`${apiUrl}/market/products?isFeatured=true&limit=10&status=Live`, { cache: 'no-store' }),
+            fetch(`${apiUrl}/market/products?isPopular=true&limit=10&status=Live`, { cache: 'no-store' })
         ]);
         
         if (resAll.ok) {
