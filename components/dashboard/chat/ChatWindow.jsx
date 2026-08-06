@@ -263,7 +263,7 @@ export default function ChatWindow({
             <div key={msg._id || idx} className={`flex ${isOwn ? "justify-end" : "justify-start"} group mb-${isLastInGroup ? '3' : '1'}`}>
               <div className={`flex flex-col gap-1 max-w-[95%] md:max-w-[90%] ${isOwn ? "items-end" : "items-start"}`}>
                 
-                <div className={`relative flex items-end gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`relative flex items-center gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                   
                   {isLastInGroup ? (
                     <div className="w-7 h-7 rounded-full shrink-0 overflow-hidden bg-slate-200 dark:bg-slate-700 flex items-center justify-center shadow-sm">
@@ -332,6 +332,7 @@ export default function ChatWindow({
                       <MessageHoverAction
                         icon={<Smile size={14} />}
                         tooltip="React"
+                        align={isOwn ? "right" : "left"}
                         popover={
                           <div className="flex items-center gap-1 p-1.5">
                             {REACTION_EMOJIS.map(emoji => (
@@ -351,6 +352,7 @@ export default function ChatWindow({
                         <MessageHoverAction
                           icon={<Trash2 size={12} />}
                           tooltip="Delete Message"
+                          align="right"
                           popover={
                             <div className="flex flex-col p-1.5 min-w-[160px]">
                               <button
@@ -605,7 +607,7 @@ export default function ChatWindow({
 }
 
 // Sub-component: Hover action button with optional popover
-function MessageHoverAction({ icon, tooltip, popover }) {
+function MessageHoverAction({ icon, tooltip, popover, align = "center" }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -628,7 +630,7 @@ function MessageHoverAction({ icon, tooltip, popover }) {
         {icon}
       </button>
       {open && popover && (
-        <div className="absolute bottom-9 left-1/2 -translate-x-1/2 bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 whitespace-nowrap">
+        <div className={`absolute bottom-9 ${align === 'right' ? 'right-0' : align === 'left' ? 'left-0' : 'left-1/2 -translate-x-1/2'} bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 whitespace-nowrap`}>
           {popover}
         </div>
       )}
