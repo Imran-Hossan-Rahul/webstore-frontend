@@ -165,7 +165,7 @@ async function apiFetch(endpoint, options = {}) {
       let message = `HTTP ${response.status}: ${String(data).slice(0, 200)}`;
       if (isJson) {
         if (data?.errors && Array.isArray(data.errors)) {
-          message = data.errors.join(", ");
+          message = data.errors.map(e => typeof e === 'string' ? e : (e.message || JSON.stringify(e))).join(", ");
         } else if (data?.message) {
           message = data.message;
         } else {
