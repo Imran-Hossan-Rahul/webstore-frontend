@@ -5,6 +5,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock, ArrowUp, Plus } from "lucide-react";
 import { MessageCircle } from "lucide-react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const REACTION_EMOJIS = ["❤️", "😂", "👍", "😮", "😢"];
 
@@ -566,12 +567,12 @@ export default function ChatWindow({
         </div>
       </div>
 
-      {/* Full Screen Image Modal */}
+      {/* Fullscreen Image View */}
       {fullScreenImage && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-[999999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-200"
-          onClick={() => setFullScreenImage(null)}
+          className="fixed inset-0 z-[999999] bg-black/90 backdrop-blur-md flex items-center justify-center p-0 sm:p-8 animate-in fade-in duration-200"
         >
+          {/* Close button */}
           <button 
             className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors backdrop-blur-md z-50"
             onClick={(e) => { e.stopPropagation(); setFullScreenImage(null); }}
@@ -579,21 +580,65 @@ export default function ChatWindow({
             <X size={20} />
           </button>
           
-          <div 
-            className="w-full h-full flex items-center justify-center overflow-auto scrollbar-none"
-            onClick={(e) => setFullScreenImage(null)}
+          <TransformWrapper
+            initialScale={1}
+            minScale={0.5}
+            maxScale={5}
+            centerOnInit={true}
+            wheel={{ step: 0.1 }}
+            pinch={{ step: 5 }}
+            doubleClick={{ disabled: true }}
           >
-            <img
-              src={fullScreenImage}
-              alt="Fullscreen view"
-              style={{ transform: `scale(${zoom})`, transformOrigin: 'center' }}
-              className={`max-w-full max-h-full object-contain rounded-lg shadow-2xl transition-transform duration-300 ease-out ${zoom === 1 ? 'cursor-zoom-in' : 'cursor-zoom-out'}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setZoom(prev => prev === 1 ? 1.5 : (prev === 1.5 ? 2 : 1));
-              }}
-            />
-          </div>
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                {/* Zoom Controls */}
+                <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-[#1c1c1e]/80 backdrop-blur-xl px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/10 z-50 shadow-2xl">
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); zoomOut(); }} 
+                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    title="Zoom Out"
+                  >
+                    <Minus size={22} strokeWidth={1.5} />
+                  </button>
+                  <div className="w-[1px] h-5 bg-white/20 mx-1"></div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); resetTransform(); }} 
+                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    title="Reset Zoom"
+                  >
+                    <RotateCcw size={20} strokeWidth={1.5} />
+                  </button>
+                  <div className="w-[1px] h-5 bg-white/20 mx-1"></div>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); zoomIn(); }} 
+                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    title="Zoom In"
+                  >
+                    <Plus size={22} strokeWidth={1.5} />
+                  </button>
+                </div>
+
+                <div 
+                  className="w-full h-full flex items-center justify-center overflow-hidden"
+                  onClick={(e) => {
+                    // Close if clicked exactly on the background overlay
+                    if (e.target.tagName !== 'IMG' && !e.target.closest('button')) {
+                      setFullScreenImage(null);
+                    }
+                  }}
+                >
+                  <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }}>
+                    <img
+                      src={fullScreenImage}
+                      alt="Fullscreen view"
+                      className="max-w-full max-h-[100vh] sm:max-h-[90vh] object-contain cursor-grab active:cursor-grabbing pointer-events-auto"
+                      style={{ WebkitUserDrag: 'none' }} // Prevent default browser image drag
+                    />
+                  </TransformComponent>
+                </div>
+              </>
+            )}
+          </TransformWrapper>
         </div>,
         document.body
       )}
