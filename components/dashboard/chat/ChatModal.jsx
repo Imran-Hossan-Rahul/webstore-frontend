@@ -634,6 +634,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
 
   const adminAvatar = adminProfile?.profilePicture || null;
   const [showGreeting, setShowGreeting] = useState(true);
+  const [isChatButtonLoading, setIsChatButtonLoading] = useState(false);
 
   // Derive latest message for popup
   const supportChat = chats.find(c => c.isSupportChat) || chats.find(c => c.participants?.some(p => p.role === 'admin' || p.role === 'superadmin'));
@@ -681,11 +682,11 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
         {/* Floating Button */}
         <button 
           onClick={async () => { 
-            // OPEN MODAL IMMEDIATELY
-            setIsOpenInternal(true); 
+            if (isChatButtonLoading) return;
+            setIsChatButtonLoading(true);
             setShowGreeting(false); 
 
-            if (isGuest) {
+            if (isGuest || !currentUser) {
               try {
                 // Call guest login API
                 const res = await api.post("/auth/guest-login");
@@ -696,14 +697,34 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                 }
               } catch (e) {
                 console.error("Guest login failed", e);
-                if (requireAuth) requireAuth("chat");
+                if (window.requireAuth) window.requireAuth("chat");
+                setIsChatButtonLoading(false);
               }
               return;
             }
+
+            if (currentUser?.role !== 'admin' && !selectedChat) {
+               try {
+                  const res = await api.get("/chat/support");
+                  if (res.success && res.chat) {
+                    setSelectedChat(res.chat);
+                    setChats((prev) => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev);
+                  }
+               } catch(e) {
+                  console.error(e);
+               }
+            }
+
+            setIsChatButtonLoading(false);
+            setIsOpenInternal(true); 
           }}
           className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
         >
-          {adminAvatar ? (
+          {isChatButtonLoading ? (
+            <div className="w-full h-full bg-[#0071e3]/10 flex items-center justify-center">
+              <AppleSpinner size={24} className="text-[#0071e3]" />
+            </div>
+          ) : adminAvatar ? (
             <img 
               src={getOptimizedUrl(adminAvatar)} 
               alt="Chat with Imran" 
@@ -715,7 +736,6 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
               <MessageCircle className="w-5 h-5 md:w-7 md:h-7 text-[#0071e3]" />
             </div>
           )}
-          <MessageCircle size={28} className="text-[#0071e3] hidden" />
         </button>
       </div>
     );
@@ -792,22 +812,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                     activeCallChatId={(isCallOpen || showIncomingToast) ? callData?.chatId : null}
                     activeCallStatus={isIncomingCall ? "Ringing..." : "Calling..."}
                 />
-              ) : (
-                // Loading spinner for users/guests while support chat fetches
-                <div className="flex-1 flex flex-col items-center justify-center gap-4 relative">
-                  {/* Decorative background blur */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                    <div className="w-32 h-32 bg-indigo-500 rounded-full blur-[60px]"></div>
-                  </div>
-                  <AppleSpinner className="relative z-10" />
-                  <p className="text-sm font-medium text-slate-500 dark:text-slate-400 relative z-10">Connecting...</p>
-                  
-                  {/* Close button during loading just in case it hangs */}
-                  <button onClick={handleClose} className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-white/10 hover:bg-slate-200 text-slate-600 dark:text-white transition-colors z-10">
-                    <X size={16} />
-                  </button>
-                </div>
-              )
+              ) : null
            ) : (
               // Active Conversation Window
               <div className="flex-1 flex flex-col min-h-0 w-full relative">
