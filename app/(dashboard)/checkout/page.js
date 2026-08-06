@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CreditCard, Truck, FileText, Check, Plus, Minus } from "lucide-react";
+import { CreditCard, Truck, FileText, Check, Plus, Minus, MapPin, Search, ChevronRight, X } from "lucide-react";
 import Link from 'next/link';
 import { districts, upazilas } from '@/utils/bdData';
 import { useUser } from '@/context/UserContext';
@@ -34,6 +34,11 @@ export default function Checkout() {
     district: '', 
     thana: '' 
   });
+
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [modalStep, setModalStep] = useState(1);
+  const [tempLocation, setTempLocation] = useState({ district: '', thana: '', zip: '' });
+  const [searchQuery, setSearchQuery] = useState('');
   const [addressConfirmed, setAddressConfirmed] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [addressSaved, setAddressSaved] = useState(false);
@@ -409,58 +414,87 @@ export default function Checkout() {
                         <input required type="tel" value={form.phone} onChange={e => { setForm({...form, phone: e.target.value}); setFormErrors({...formErrors, phone: null}); }} className={`w-full border rounded py-2.5 px-3 sm:px-4 text-sm focus:outline-none focus:ring-1 ${formErrors.phone ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 focus:border-blue-600 focus:ring-blue-600'}`} placeholder="Phone Number" />
                         {formErrors.phone && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.phone}</p>}
                       </div>
-                      <input type="text" value={form.zip} onChange={e => setForm({...form, zip: e.target.value})} className="w-20 sm:w-32 shrink-0 border border-gray-200 rounded py-2.5 px-2 sm:px-4 text-sm focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 h-fit" placeholder="ZIP" />
                     </div>
                     
-                    <div>
-                      <textarea required value={form.address_line} onChange={e => { setForm({...form, address_line: e.target.value}); setFormErrors({...formErrors, address_line: null}); }} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none focus:ring-1 resize-y ${formErrors.address_line ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 focus:border-blue-600 focus:ring-blue-600'}`} rows="3" placeholder="Full address"></textarea>
-                      {formErrors.address_line && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.address_line}</p>}
-                    </div>
-                    
-                    <div>
-                      <select required value={form.district} onChange={e => { setForm({...form, district: e.target.value, thana: ''}); setFormErrors({...formErrors, district: null}); }} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none appearance-none ${formErrors.district ? 'border-red-500 focus:border-red-500 bg-red-50/30 text-red-600' : 'border-gray-200 focus:border-[#111827] bg-white'}`}>
-                        <option value="" disabled>Please select your parcel&apos;s district</option>
-                        {districts.sort((a, b) => a.name.localeCompare(b.name)).map(d => (
-                          <option key={d.id} value={d.name}>{d.name}</option>
-                        ))}
-                      </select>
-                      {formErrors.district && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.district}</p>}
+                    {/* Select Location Button */}
+                    <div className="mt-2">
+                      {!form.district || !form.thana ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setTempLocation({ district: '', thana: '', zip: '' });
+                            setModalStep(1);
+                            setSearchQuery('');
+                            setShowLocationModal(true);
+                          }}
+                          className={`w-full flex items-center justify-between bg-white dark:bg-black/20 border rounded-[12px] py-3.5 px-4 text-sm font-medium transition-all ${formErrors.district || formErrors.thana ? 'border-red-500 text-red-600 bg-red-50/30' : 'border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-black/40'}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <MapPin className={`w-5 h-5 ${formErrors.district ? 'text-red-500' : 'text-gray-400'}`} />
+                            <span>Select Delivery Location</span>
+                          </div>
+                          <ChevronRight className="w-5 h-5 text-gray-400" />
+                        </button>
+                      ) : (
+                        <div className="w-full bg-white dark:bg-black/20 border border-gray-200 dark:border-gray-800 rounded-[12px] overflow-hidden">
+                          <div className="flex items-start justify-between p-4 bg-gray-50/50 dark:bg-black/30">
+                            <div className="flex items-start gap-3">
+                              <MapPin className="w-5 h-5 text-[#0071e3] mt-0.5 shrink-0" />
+                              <div className="flex flex-col gap-1">
+                                <span className="text-[15px] font-semibold text-gray-900 dark:text-gray-100 leading-none">{form.thana}, {form.district}</span>
+                                {form.zip && <span className="text-[13px] font-medium text-gray-500 leading-none">ZIP: {form.zip}</span>}
+                              </div>
+                            </div>
+                            <button 
+                              type="button"
+                              onClick={() => {
+                                setTempLocation({ district: form.district, thana: form.thana, zip: form.zip });
+                                setModalStep(1);
+                                setSearchQuery('');
+                                setShowLocationModal(true);
+                              }}
+                              className="text-[13px] font-semibold text-[#0071e3] hover:underline px-2"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                      {(formErrors.district || formErrors.thana) && <p className="text-xs text-red-500 mt-2 ml-1">{formErrors.district || formErrors.thana}</p>}
                     </div>
 
-                    <div>
-                      <select required value={form.thana} onChange={e => { setForm({...form, thana: e.target.value}); setFormErrors({...formErrors, thana: null}); }} disabled={!form.district} className={`w-full border rounded py-2.5 px-4 text-sm focus:outline-none appearance-none ${!form.district ? 'opacity-50 cursor-not-allowed border-gray-200 bg-white' : formErrors.thana ? 'border-red-500 focus:border-red-500 bg-red-50/30 text-red-600' : 'border-gray-200 focus:border-[#111827] bg-white'}`}>
-                        <option value="" disabled>{!form.district ? 'Please select a district first' : "Please select your parcel&apos;s thana"}</option>
-                        {filteredThanas.sort((a, b) => a.name.localeCompare(b.name)).map(u => (
-                          <option key={u.id} value={u.name}>{u.name}</option>
-                        ))}
-                      </select>
-                      {formErrors.thana && <p className="text-xs text-red-500 mt-1.5 ml-1">{formErrors.thana}</p>}
-                    </div>
+                    {/* Detailed Address Textarea (only visible if location selected) */}
+                    {form.district && form.thana && (
+                      <div className="animate-in fade-in slide-in-from-top-4 duration-500 mt-4">
+                        <textarea required value={form.address_line} onChange={e => { setForm({...form, address_line: e.target.value}); setFormErrors({...formErrors, address_line: null}); }} className={`w-full border rounded-[12px] py-3.5 px-4 text-sm focus:outline-none focus:ring-1 resize-y ${formErrors.address_line ? 'border-red-500 focus:border-red-500 focus:ring-red-500 bg-red-50/30' : 'border-gray-200 dark:border-gray-800 focus:border-[#0071e3] focus:ring-[#0071e3] bg-transparent'}`} rows="3" placeholder="Full detailed address (e.g., House/Apt no, Road, Landmark)"></textarea>
+                        {formErrors.address_line && <p className="text-xs text-red-500 mt-1 ml-1">{formErrors.address_line}</p>}
+                      </div>
+                    )}
 
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mt-4 flex items-start gap-3 w-full">
-                      <div className="mt-0.5 shrink-0">
-                        <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    {form.district && form.thana && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-[12px] p-4 mt-4 flex items-start gap-3 w-full animate-in fade-in slide-in-from-top-4 duration-500">
+                        <div className="mt-0.5 shrink-0">
+                          <AlertCircle className="w-5 h-5 text-amber-500" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[13px] text-amber-900 font-semibold">Please double-check your location!</p>
+                          <p className="text-[12px] text-amber-700 mt-1 leading-relaxed break-words">
+                            Delivery failures often occur due to mismatched locations. Ensure your selected <strong>District</strong> and <strong>Thana</strong> match the detailed address written above.
+                          </p>
+                          <label className="flex items-start gap-2 mt-4 cursor-pointer p-2 -ml-2 rounded-lg hover:bg-amber-100/50 transition-colors">
+                            <input 
+                              type="checkbox" 
+                              checked={addressConfirmed}
+                              onChange={(e) => setAddressConfirmed(e.target.checked)}
+                              className="mt-0.5 shrink-0 w-4 h-4 text-amber-600 bg-white border-amber-300 rounded focus:ring-amber-500 focus:ring-2"
+                            />
+                            <span className="text-[12px] font-bold text-amber-900 leading-tight">
+                              I confirm that my District and Thana exactly match my address.
+                            </span>
+                          </label>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-amber-800 font-medium">Please double-check your location!</p>
-                        <p className="text-[11px] text-amber-700 mt-0.5 leading-relaxed break-words">
-                          Delivery failures often occur due to mismatched locations. Ensure your selected <strong>District</strong> and <strong>Thana</strong> match the detailed address written above.
-                        </p>
-                        <label className="flex items-start gap-2 mt-3 cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            checked={addressConfirmed}
-                            onChange={(e) => setAddressConfirmed(e.target.checked)}
-                            className="mt-0.5 shrink-0 accent-amber-600"
-                          />
-                          <span className="text-[11px] font-bold text-amber-900 leading-tight">
-                            I confirm that my District and Thana exactly match my address.
-                          </span>
-                        </label>
-                      </div>
-                    </div>
+                    )}
 
                     <button 
                       type="button" 
@@ -690,6 +724,123 @@ export default function Checkout() {
             >
               Try Again
             </button>
+          </div>
+        </div>
+      )}
+      {showLocationModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setShowLocationModal(false)} />
+          <div className="relative w-full max-w-md bg-white dark:bg-[#1c1c1e] rounded-[24px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 slide-in-from-bottom-10 duration-300">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-100 dark:border-[#2c2c2e]">
+              <h3 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-white">
+                {modalStep === 1 && "Select District"}
+                {modalStep === 2 && "Select Thana"}
+                {modalStep === 3 && "Enter ZIP Code"}
+              </h3>
+              <button onClick={() => setShowLocationModal(false)} className="p-2 -mr-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-[#2c2c2e] transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 overflow-y-auto p-2">
+              {modalStep < 3 && (
+                <div className="p-3 sticky top-0 bg-white dark:bg-[#1c1c1e] z-10">
+                  <div className="relative">
+                    <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input 
+                      type="text" 
+                      placeholder="Search..." 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-gray-100 dark:bg-black/50 border border-transparent focus:border-[#0071e3] rounded-[12px] pl-10 pr-4 py-2.5 text-[15px] focus:outline-none transition-colors text-black dark:text-white"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {modalStep === 1 && (
+                <div className="px-2 pb-4">
+                  {districts.filter(d => d.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name)).map(d => (
+                    <button 
+                      key={d.id}
+                      onClick={() => {
+                        setTempLocation(prev => ({ ...prev, district: d.name, thana: '', zip: '' }));
+                        setModalStep(2);
+                        setSearchQuery('');
+                      }}
+                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-[12px] hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
+                    >
+                      <span className="text-[15px] font-medium text-gray-900 dark:text-gray-100">{d.name}</span>
+                      <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {modalStep === 2 && (
+                <div className="px-2 pb-4">
+                  <button 
+                    onClick={() => { setModalStep(1); setSearchQuery(''); }}
+                    className="mb-2 px-4 py-2 text-[13px] font-semibold text-[#0071e3] hover:underline"
+                  >
+                    &larr; Back to Districts
+                  </button>
+                  {upazilas.filter(u => u.district_id === districts.find(d => d.name === tempLocation.district)?.id && u.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.name.localeCompare(b.name)).map(u => (
+                    <button 
+                      key={u.id}
+                      onClick={() => {
+                        setTempLocation(prev => ({ ...prev, thana: u.name }));
+                        setModalStep(3);
+                      }}
+                      className="w-full flex items-center justify-between px-4 py-3.5 rounded-[12px] hover:bg-gray-50 dark:hover:bg-white/5 transition-colors text-left"
+                    >
+                      <span className="text-[15px] font-medium text-gray-900 dark:text-gray-100">{u.name}</span>
+                      <ChevronRight className="w-4 h-4 text-gray-300 dark:text-gray-600" />
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {modalStep === 3 && (
+                <div className="p-5">
+                  <button 
+                    onClick={() => { setModalStep(2); setSearchQuery(''); }}
+                    className="mb-4 text-[13px] font-semibold text-[#0071e3] hover:underline block"
+                  >
+                    &larr; Back to Thanas
+                  </button>
+                  
+                  <div className="bg-gray-50 dark:bg-black/30 rounded-[16px] p-4 mb-6">
+                    <p className="text-[13px] font-medium text-gray-500 mb-1">Selected Location</p>
+                    <p className="text-[16px] font-semibold text-gray-900 dark:text-white">{tempLocation.thana}, {tempLocation.district}</p>
+                  </div>
+
+                  <label className="block text-[13px] font-medium text-gray-700 dark:text-gray-300 mb-2">ZIP Code (Optional)</label>
+                  <input 
+                    type="text" 
+                    value={tempLocation.zip}
+                    onChange={(e) => setTempLocation(prev => ({ ...prev, zip: e.target.value }))}
+                    className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[12px] px-4 py-3.5 text-[15px] focus:outline-none focus:ring-1 focus:ring-[#0071e3] transition-colors text-black dark:text-white mb-8"
+                    placeholder="e.g. 1212"
+                  />
+
+                  <button 
+                    onClick={() => {
+                      setForm(prev => ({ ...prev, district: tempLocation.district, thana: tempLocation.thana, zip: tempLocation.zip }));
+                      setFormErrors(prev => ({ ...prev, district: null, thana: null }));
+                      setShowLocationModal(false);
+                      // reset the address confirmed if they change location
+                      setAddressConfirmed(false); 
+                    }}
+                    className="w-full py-3.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-semibold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    Confirm Location
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
