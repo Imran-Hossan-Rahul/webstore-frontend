@@ -340,7 +340,7 @@ const GlassNavbar = ({
         </div>
 
         {/* Right Section */}
-        <div className={`flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 md:max-w-none md:opacity-100 md:gap-4 gap-0' : 'max-w-[50px] md:max-w-none opacity-100 sm:gap-4 gap-2'}`}>
+        <div className={`flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 md:max-w-none md:opacity-100 md:gap-4 gap-0' : 'max-w-none opacity-100 sm:gap-4 gap-2'}`}>
             {/* Cart and Orders Links */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
               <Link href="/cart" className="p-2 rounded-xl text-black hover:text-black dark:text-white transition-all relative group flex items-center justify-center">
@@ -368,9 +368,9 @@ const GlassNavbar = ({
                  <div className="w-9 h-9 rounded-full bg-slate-200 dark:bg-slate-800 animate-pulse shrink-0"></div>
               </div>
             ) : (isGuest || user?.role === 'guest') ? (
-              <div className="flex items-center gap-2 sm:gap-3 z-50 relative shrink-0">
-                <Link href="/auth/login" className="px-[15px] py-[8px] rounded-apple-sm text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity">Log in</Link>
-                <Link href="/auth/register" className="px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[13px] font-sans hover:opacity-80 transition-opacity whitespace-nowrap">Join</Link>
+              <div className="flex items-center gap-1.5 sm:gap-3 z-50 relative shrink-0">
+                <Link href="/auth/login" className="px-3 sm:px-[15px] py-[7px] rounded-apple-sm text-[13px] sm:text-[14px] font-sans text-apple-ink dark:text-apple-ink hover:opacity-80 transition-opacity whitespace-nowrap">Log in</Link>
+                <Link href="/auth/register" className="px-3 sm:px-[14px] py-[6px] rounded-apple-pill bg-[#0071E3] text-white text-[12px] sm:text-[13px] font-sans hover:opacity-80 transition-opacity whitespace-nowrap">Join</Link>
               </div>
             ) : (
               <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group shrink-0">
