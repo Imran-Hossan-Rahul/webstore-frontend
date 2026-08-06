@@ -344,96 +344,98 @@ export default function PublicProfile({ username }) {
   };
 
   return (
-    <div className="w-full font-sans antialiased pb-20 pt-4 md:-mt-4">
-      <div className="w-full px-2 md:px-3">
-        <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] p-8 shadow-sm border border-slate-100 dark:border-[#2c2c2e]">
-          <div className="flex flex-col md:flex-row gap-8 items-start md:items-center">
-            <div className="relative group cursor-pointer">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white dark:border-[#1c1c1e] shadow-sm bg-slate-100 relative">
-                {profile.profilePicture ? (
-                  <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl font-semibold text-[#86868b]">
-                    {profile.name?.charAt(0).toUpperCase()}
-                  </div>
-                )}
-                {isOwner && (
-                  <label className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Camera className="w-8 h-8 text-white" />
-                    <input type="file" className="hidden" accept="image/*" onChange={handleProfilePicChange} />
-                  </label>
-                )}
-              </div>
+    <div className="w-full min-h-screen bg-[#f5f5f7] dark:bg-black font-sans antialiased pb-24 pt-6 md:pt-10">
+      <div className="max-w-4xl mx-auto px-4 md:px-8">
+        
+        {/* Profile Header Card */}
+        <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl rounded-[32px] p-6 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] relative overflow-hidden">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start text-center md:text-left relative z-10">
+            {/* Avatar */}
+            <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-[4px] border-white/50 dark:border-[#2c2c2e]/50 shadow-xl bg-slate-100 flex-shrink-0 group relative cursor-pointer">
+              {profile.profilePicture ? (
+                <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-5xl font-semibold text-[#86868b]">
+                  {profile.name?.charAt(0).toUpperCase()}
+                </div>
+              )}
+              {isOwner && (
+                <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <Camera className="w-8 h-8 text-white" />
+                  <input type="file" className="hidden" accept="image/*" onChange={handleProfilePicChange} />
+                </label>
+              )}
             </div>
 
-            <div className="flex-1">
-              <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-[28px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white">
+            {/* User Info */}
+            <div className="flex-1 flex flex-col justify-center pt-2 md:pt-4">
+              <div className="flex items-center gap-2 justify-center md:justify-start flex-wrap mb-1">
+                <h1 className="text-[28px] md:text-[34px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white leading-tight">
                   {profile.name}
                 </h1>
                 {profile.isVerified && <CheckCircle2 className="w-6 h-6 text-[#0071e3]" />}
                 {profile.emailVerified && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full text-[11px] font-semibold">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full text-[11px] font-semibold ml-1">
                     <BadgeCheck className="w-3.5 h-3.5" />
                     Verified
                   </span>
                 )}
               </div>
-              <div className="flex flex-wrap items-center gap-4 mt-5">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-[14px] text-[#86868b] font-medium">
                 {profile.location && (
-                  <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#86868b]">
+                  <div className="flex items-center gap-1.5">
                     <MapPin className="w-4 h-4" />
                     {typeof profile.location === 'object' ? `${profile.location.city || ''}` : profile.location}
                   </div>
                 )}
-                <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#86868b]">
+                <div className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4" />
                   Joined {joinDate}
                 </div>
               </div>
             </div>
 
-            {isLoggingOut ? (
-              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0 justify-center items-center h-10">
-                <AppleSpinner className="w-5 h-5 text-slate-500" />
-              </div>
-            ) : isOwner ? (
-              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0">
+            {/* Action Buttons */}
+            <div className="w-full md:w-auto mt-4 md:mt-4 flex justify-center md:justify-end min-w-[140px]">
+              {isLoggingOut ? (
+                <div className="h-10 flex items-center justify-center">
+                  <AppleSpinner className="w-5 h-5 text-slate-500" />
+                </div>
+              ) : isOwner ? (
                 <button 
                   onClick={handleLogout} 
-                  className={`w-full py-2.5 px-4 rounded-full text-[14px] font-medium transition-all flex items-center justify-center gap-2 ${confirmLogout ? 'bg-red-500 text-white shadow-sm' : 'text-red-500 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20'}`}
+                  className={`w-full md:w-auto py-2.5 px-6 rounded-full text-[14px] font-medium transition-all flex items-center justify-center gap-2 ${confirmLogout ? 'bg-red-500 text-white shadow-md hover:bg-red-600' : 'text-red-500 bg-red-50 hover:bg-red-100 dark:bg-red-900/10 dark:hover:bg-red-900/20'}`}
                 >
                   <LogOut className="w-4 h-4" />
                   {confirmLogout ? 'Confirm?' : 'Logout'}
                 </button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-3 min-w-[140px] md:self-start mt-4 md:mt-0">
-                <button className="w-full py-2.5 px-4 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors">
+              ) : (
+                <button className="w-full md:w-auto py-2.5 px-8 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors shadow-sm">
                   Follow
                 </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 flex justify-center">
-          <div className="bg-[#e5e5ea] dark:bg-[#1c1c1e] p-1 rounded-full flex gap-1">
-            <button onClick={() => handleTabChange('about')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'about' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+        {/* Apple Style Segmented Control (Tabs) */}
+        <div className="mt-8 flex justify-start md:justify-center overflow-x-auto scrollbar-hide px-1 pb-4 -mx-2 md:mx-0">
+          <div className="bg-black/5 dark:bg-white/10 p-1.5 rounded-full flex gap-1 min-w-max mx-auto md:mx-0 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]">
+            <button onClick={() => handleTabChange('about')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'about' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
               About
             </button>
             {isOwner && (
               <>
-                <button onClick={() => handleTabChange('orders')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'orders' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                <button onClick={() => handleTabChange('orders')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'orders' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   Orders
                 </button>
-                <button onClick={() => handleTabChange('addresses')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'addresses' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                  Saved Addresses
+                <button onClick={() => handleTabChange('addresses')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'addresses' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                  Addresses
                 </button>
-                <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all ${activeTab === 'password' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'password' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   Password
                 </button>
-                <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] font-medium transition-all flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white shadow-sm' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                   {profile.emailVerified ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
                   Verify
                 </button>
@@ -442,82 +444,104 @@ export default function PublicProfile({ username }) {
           </div>
         </div>
 
-        <div className="mt-8">
+        {/* Tab Content Cards */}
+        <div className="mt-4">
+          
+          {/* About Tab */}
+          {activeTab === 'about' && (
+            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
+              <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6 px-2">Account Details</h3>
+              <div className="bg-[#f5f5f7] dark:bg-black/40 rounded-[20px] overflow-hidden border border-black/[0.02] dark:border-white/[0.05]">
+                <div className="flex justify-between items-center px-6 py-4 border-b border-black/[0.05] dark:border-white/[0.05]">
+                  <span className="text-[15px] text-[#86868b] font-medium">Member Since</span>
+                  <span className="text-[15px] font-medium text-[#1d1d1f] dark:text-white">{joinDate}</span>
+                </div>
+                <div className="flex justify-between items-center px-6 py-4">
+                  <span className="text-[15px] text-[#86868b] font-medium">Account Status</span>
+                  <span className="text-[15px] font-medium text-[#1d1d1f] dark:text-white">{profile.isVerified ? 'Verified' : 'Standard'}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Password Tab */}
           {activeTab === 'password' && isOwner && (
-            <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] p-8 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
+            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
               <form onSubmit={handleChangePassword} className="space-y-6">
-                <h3 className="text-[20px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6">Change Password</h3>
+                <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6">Change Password</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-[13px] font-medium text-[#86868b] mb-1">Current Password</label>
-                    <input type="password" value={passData.currentPassword} onChange={e => setPassData({...passData, currentPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-xl px-4 py-2.5 text-[15px] focus:outline-none transition-colors text-black dark:text-white" required />
+                    <label className="block text-[13px] font-medium text-[#86868b] mb-1.5 ml-1">Current Password</label>
+                    <input type="password" value={passData.currentPassword} onChange={e => setPassData({...passData, currentPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required />
                   </div>
                   <div>
-                    <label className="block text-[13px] font-medium text-[#86868b] mb-1">New Password</label>
-                    <input type="password" value={passData.newPassword} onChange={e => setPassData({...passData, newPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-xl px-4 py-2.5 text-[15px] focus:outline-none transition-colors text-black dark:text-white" required minLength="8" />
+                    <label className="block text-[13px] font-medium text-[#86868b] mb-1.5 ml-1">New Password</label>
+                    <input type="password" value={passData.newPassword} onChange={e => setPassData({...passData, newPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required minLength="8" />
                   </div>
                 </div>
-                <button type="submit" disabled={isSaving} className="mt-8 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2">
-                  {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Key className="w-4 h-4" />}
+                <button type="submit" disabled={isSaving} className="mt-8 w-full md:w-auto px-8 py-3 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-medium transition-colors flex items-center justify-center gap-2 shadow-sm">
+                  {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin text-white" /> : <Key className="w-4 h-4" />}
                   Update Password
                 </button>
               </form>
             </div>
           )}
 
+          {/* Addresses Tab */}
           {activeTab === 'addresses' && isOwner && (
-            <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] p-8 shadow-sm border border-slate-100 dark:border-[#2c2c2e]">
+            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
               <div className="space-y-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-[28px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">Delivery Addresses</h3>
-                  <button onClick={addNewAddress} className="px-4 py-2 bg-[#1d1d1f] text-white dark:bg-white dark:text-black rounded-full text-[13px] font-medium hover:opacity-80 flex items-center gap-1 transition-all">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white">Delivery Addresses</h3>
+                  <button onClick={addNewAddress} className="px-5 py-2.5 bg-[#1d1d1f] text-white dark:bg-white dark:text-black rounded-full text-[14px] font-medium hover:opacity-80 flex items-center gap-1.5 transition-all shadow-sm">
                     <Plus className="w-4 h-4" /> Add New
                   </button>
                 </div>
+                
                 {addresses.length === 0 ? (
-                  <div className="text-center py-10 border border-dashed border-slate-300 dark:border-[#2c2c2e] rounded-2xl bg-[#f5f5f7] dark:bg-black/50">
-                    <Map className="w-8 h-8 text-[#86868b] mx-auto mb-3 opacity-50" />
-                    <p className="text-[14px] text-[#86868b]">No addresses saved yet.</p>
-                    <button onClick={addNewAddress} className="mt-4 text-[#0071e3] hover:underline text-[14px] font-medium">Add your first address</button>
+                  <div className="text-center py-12 border border-dashed border-slate-300 dark:border-[#2c2c2e] rounded-[24px] bg-[#f5f5f7]/50 dark:bg-black/30">
+                    <Map className="w-10 h-10 text-[#86868b] mx-auto mb-4 opacity-50" />
+                    <p className="text-[15px] text-[#86868b]">No addresses saved yet.</p>
+                    <button onClick={addNewAddress} className="mt-4 text-[#0071e3] hover:underline text-[15px] font-medium">Add your first address</button>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {addresses.map((addr, i) => (
-                      <div key={i} className="p-6 bg-[#f5f5f7] dark:bg-[#151515] rounded-[18px] border border-slate-200 dark:border-[#2c2c2e] relative group shadow-sm transition-all hover:shadow-md">
-                        <button onClick={() => removeAddress(i)} className="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 transition-opacity p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full">
+                      <div key={i} className="p-6 md:p-8 bg-[#f5f5f7] dark:bg-[#151515] rounded-[24px] border border-black/[0.02] dark:border-white/[0.02] relative group shadow-sm transition-all hover:shadow-md">
+                        <button onClick={() => removeAddress(i)} className="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 transition-opacity p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full bg-white dark:bg-black shadow-sm">
                           <Trash2 className="w-4 h-4" />
                         </button>
-                        <div className="space-y-4 pr-8">
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="space-y-5 pr-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">Title (e.g. Home, Work)</label>
-                              <input type="text" value={addr.title} onChange={e => updateAddress(i, 'title', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white" placeholder="Home" />
+                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Title</label>
+                              <input type="text" value={addr.title} onChange={e => updateAddress(i, 'title', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="Home" />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">Address Line</label>
-                              <input type="text" value={addr.addressLine || ''} onChange={e => updateAddress(i, 'addressLine', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white" placeholder="123 Main St" />
+                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Address Line</label>
+                              <input type="text" value={addr.addressLine || ''} onChange={e => updateAddress(i, 'addressLine', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="123 Main St" />
                             </div>
                           </div>
                           
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">City</label>
-                              <input type="text" value={addr.city || ''} onChange={e => updateAddress(i, 'city', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white" placeholder="New York" />
+                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">City</label>
+                              <input type="text" value={addr.city || ''} onChange={e => updateAddress(i, 'city', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="New York" />
                             </div>
                             <div>
-                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">Zip / Postal Code</label>
-                              <input type="text" value={addr.zipCode || ''} onChange={e => updateAddress(i, 'zipCode', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white" placeholder="10001" />
+                              <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Zip Code</label>
+                              <input type="text" value={addr.zipCode || ''} onChange={e => updateAddress(i, 'zipCode', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="10001" />
                             </div>
                           </div>
 
                           <div>
-                            <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">Exact Location (Directions/Map Link)</label>
-                            <textarea rows="2" value={addr.exactLocation || ''} onChange={e => updateAddress(i, 'exactLocation', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white resize-none" placeholder="E.g. Next to the blue gate, 2nd floor..."></textarea>
+                            <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Exact Location / Map Link</label>
+                            <textarea rows="2" value={addr.exactLocation || ''} onChange={e => updateAddress(i, 'exactLocation', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white resize-none shadow-sm" placeholder="E.g. Next to the blue gate..."></textarea>
                           </div>
 
                           <div>
-                            <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider">Delivery Note (Optional)</label>
-                            <input type="text" value={addr.deliveryNote || ''} onChange={e => updateAddress(i, 'deliveryNote', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-lg px-3 py-2 text-[14px] focus:outline-none transition-colors text-black dark:text-white" placeholder="E.g. Call upon arrival" />
+                            <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Delivery Note</label>
+                            <input type="text" value={addr.deliveryNote || ''} onChange={e => updateAddress(i, 'deliveryNote', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="E.g. Call upon arrival" />
                           </div>
                         </div>
                       </div>
@@ -525,48 +549,34 @@ export default function PublicProfile({ username }) {
                   </div>
                 )}
                 {addresses.length > 0 && (
-                  <button onClick={handleUpdateAddresses} disabled={isSaving} className="mt-6 px-6 py-2.5 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[14px] font-medium transition-colors flex items-center gap-2 shadow-sm">
-                    {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                    Save All Addresses
-                  </button>
+                  <div className="pt-4">
+                    <button onClick={handleUpdateAddresses} disabled={isSaving} className="w-full md:w-auto px-8 py-3 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-medium transition-colors flex items-center justify-center gap-2 shadow-sm">
+                      {isSaving ? <AppleSpinner className="w-4 h-4 animate-spin text-white" /> : <Save className="w-4 h-4" />}
+                      Save All Addresses
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
           )}
 
+          {/* Orders Tab */}
           {activeTab === 'orders' && isOwner && (
-            <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] p-4 md:p-8 shadow-sm border border-slate-100 dark:border-[#2c2c2e]">
-              <h3 className="text-[28px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white mb-6">Order History</h3>
-              <div className="mt-[-16px]">
+            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-4 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
+              <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-4 px-2 md:px-0">Order History</h3>
+              <div className="mt-2">
                  <OrdersList isEmbedded={true} />
               </div>
             </div>
           )}
 
+          {/* Verify Tab */}
           {activeTab === 'verify' && isOwner && (
-            <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
-          )}
-
-          {activeTab === 'about' && (
-            <div className="bg-white dark:bg-[#1c1c1e] rounded-[24px] p-8 shadow-sm border border-slate-100 dark:border-[#2c2c2e]">
-              <h3 className="text-[20px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6">About {profile.name}</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h4 className="text-[13px] font-medium text-[#86868b] uppercase tracking-wider mb-2">Account Details</h4>
-                  <ul className="space-y-3">
-                    <li className="flex justify-between items-center text-[15px]">
-                      <span className="text-[#86868b]">Member Since</span>
-                      <span className="font-medium text-[#1d1d1f] dark:text-white">{joinDate}</span>
-                    </li>
-                    <li className="flex justify-between items-center text-[15px]">
-                      <span className="text-[#86868b]">Account Status</span>
-                      <span className="font-medium text-[#1d1d1f] dark:text-white">{profile.isVerified ? 'Verified' : 'Standard'}</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
+               <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
             </div>
           )}
+          
         </div>
       </div>
     </div>
