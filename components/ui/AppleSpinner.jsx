@@ -12,7 +12,7 @@ export default function AppleSpinner({ size = 48, className = '', ...props }) {
       {...props}
     >
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.15" strokeWidth="1.5" />
-      <path d="M22 12C22 6.47715 17.5228 2 12 2" stroke="#0071e3" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M22 12C22 6.47715 17.5228 2 12 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }

@@ -131,6 +131,23 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [isPending, startTransition] = React.useTransition();
   const [loadingBuyId, setLoadingBuyId] = useState(null);
   const [loadingCartId, setLoadingCartId] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const updateCart = () => {
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        if (cartStr) setCartItems(JSON.parse(cartStr));
+      } catch (e) {}
+    };
+    updateCart();
+    window.addEventListener('addedToCart', updateCart);
+    window.addEventListener('cartUpdated', updateCart);
+    return () => {
+      window.removeEventListener('addedToCart', updateCart);
+      window.removeEventListener('cartUpdated', updateCart);
+    };
+  }, []);
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
@@ -339,9 +356,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
       )
     : products;
 
-  const renderProductCard = (product) => (
-    <div key={product.id} className="bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-xl rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
-      <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
+  const renderProductCard = (product) => {
+    const isAdded = cartItems.includes((product.id || product._id)?.toString());
+    
+    return (
+      <div key={product.id} className="bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-xl rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
+        <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
       {product.photos && JSON.parse(product.photos)[0] ? (
         <div className="aspect-square w-full bg-transparent flex items-center justify-center p-2 md:p-4 overflow-hidden relative transition-colors duration-300">
           <img 
@@ -377,12 +397,24 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
         <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[2px] md:translate-x-0">
           <button 
-            onClick={(e) => handleAddToCart(e, product)}
+            onClick={(e) => {
+              if (isAdded) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push('/cart');
+              } else {
+                handleAddToCart(e, product);
+              }
+            }}
             disabled={loadingCartId === (product.id || product._id)}
-            className="flex-auto bg-[#0066CC] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
+            className={`flex-auto text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors flex items-center justify-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed z-20 ${
+              isAdded ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#0066CC] hover:bg-[#0055b3]'
+            }`}
           >
             {loadingCartId === (product.id || product._id) ? (
               <AppleSpinner size={16} className="text-white" />
+            ) : isAdded ? (
+              <><Check size={14} /> Added</>
             ) : (
               "Add to Cart"
             )}
@@ -404,7 +436,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen font-sans">

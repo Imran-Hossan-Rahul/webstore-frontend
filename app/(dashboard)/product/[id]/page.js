@@ -585,12 +585,24 @@ export default function ProductDetails({ params }) {
                   {/* Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <button 
-                      onClick={handleAddToCart}
+                      onClick={() => {
+                        if (addedToCart) {
+                          router.push('/cart');
+                        } else {
+                          handleAddToCart();
+                        }
+                      }}
                       disabled={isAddingToCart}
-                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors disabled:opacity-80 disabled:cursor-not-allowed"
+                      className={`flex-1 px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors disabled:opacity-80 disabled:cursor-not-allowed ${
+                        addedToCart 
+                          ? 'bg-emerald-500 hover:bg-emerald-600 text-white border border-transparent'
+                          : 'bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3]'
+                      }`}
                     >
                       {isAddingToCart ? (
-                        <AppleSpinner size={18} className="text-[#0071e3] group-hover:text-white" />
+                        <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-[#0071e3] group-hover:text-white"} />
+                      ) : addedToCart ? (
+                        <><Check size={18} /> Added</>
                       ) : (
                         <><ShoppingCart size={18} /> Add to Cart</>
                       )}
