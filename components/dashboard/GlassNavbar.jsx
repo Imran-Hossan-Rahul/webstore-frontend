@@ -268,7 +268,7 @@ const GlassNavbar = ({
                   setTimeout(() => document.getElementById('desktop-search-input')?.focus(), 100);
                 }
             }}
-            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-white dark:bg-slate-900 border-[#0071e3]/30 shadow-sm' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] border-black/20 dark:border-white/20'} border rounded-full px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-hidden`}
+            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-white dark:bg-slate-900 border-[#0071e3]/30 shadow-sm' : 'bg-[#f5f5f7] dark:bg-[#1d1d1f] border-black/20 dark:border-white/20'} border rounded-full px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-visible`}
           >
               
               {/* Left Flex Spacer */}
