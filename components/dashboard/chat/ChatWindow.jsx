@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock, ArrowUp, Plus } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const REACTION_EMOJIS = ["❤️", "😂", "👍", "😮", "😢"];
 
@@ -211,54 +212,11 @@ export default function ChatWindow({
           </p>
         </div>
 
-        {/* Loading Skeleton — only when no cached data exists */}
+        {/* Loading Spinner — only when no cached data exists */}
         {isLoadingMessages && messages.length === 0 && (
-          <div className="flex flex-col gap-5 opacity-100 transition-opacity duration-300">
-            {/* Shimmer top line */}
-            <div className="relative overflow-hidden mb-2">
-              <div className="h-0.5 w-full bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
-                <div className="h-full w-1/2 bg-gradient-to-r from-transparent via-indigo-400 to-transparent rounded-full animate-pulse" />
-              </div>
-            </div>
-
-            {/* Skeleton rows: incoming messages */}
-            {[1, 0.7, 0.9].map((w, i) => (
-              <div key={i} className="flex items-end gap-3 justify-start">
-                <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 shrink-0 animate-pulse" />
-                <div className="flex flex-col gap-1.5" style={{ width: `${w * 55}%` }}>
-                  <div className="h-10 rounded-2xl rounded-tl-sm bg-slate-200 dark:bg-white/10 animate-pulse" />
-                  <div className="h-3 w-12 rounded-full bg-slate-100 dark:bg-white/5 animate-pulse" />
-                </div>
-              </div>
-            ))}
-
-            {/* Skeleton rows: outgoing messages */}
-            {[0.8, 0.5].map((w, i) => (
-              <div key={`own-${i}`} className="flex items-end gap-3 justify-end">
-                <div className="flex flex-col gap-1.5 items-end" style={{ width: `${w * 55}%` }}>
-                  <div className="h-10 rounded-2xl rounded-tr-sm bg-slate-200 dark:bg-white/10 animate-pulse" />
-                  <div className="h-3 w-12 rounded-full bg-slate-100 dark:bg-white/5 animate-pulse" />
-                </div>
-              </div>
-            ))}
-
-            {/* One more incoming batch */}
-            {[0.85, 0.6].map((w, i) => (
-              <div key={`in2-${i}`} className="flex items-end gap-3 justify-start">
-                <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 shrink-0 animate-pulse" />
-                <div className="flex flex-col gap-1.5" style={{ width: `${w * 55}%` }}>
-                  <div className="h-10 rounded-2xl rounded-tl-sm bg-slate-200 dark:bg-white/10 animate-pulse" />
-                  <div className="h-3 w-12 rounded-full bg-slate-100 dark:bg-white/5 animate-pulse" />
-                </div>
-              </div>
-            ))}
-
-            {/* Small loading label */}
-            <div className="flex items-center justify-center gap-2 py-2">
-              <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '120ms' }} />
-              <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce" style={{ animationDelay: '240ms' }} />
-            </div>
+          <div className="flex flex-col items-center justify-center h-full gap-3 opacity-100 transition-opacity duration-300 mt-10">
+            <AppleSpinner size={28} className="text-[#0071e3]" />
+            <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Loading messages...</p>
           </div>
         )}
 
