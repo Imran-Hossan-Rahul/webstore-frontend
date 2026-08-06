@@ -24,7 +24,7 @@ export default function MobileBottomNav() {
   const [width, setWidth] = useState(400);
 
   const navItems = [
-    { icon: Store, label: "Market", href: "/shop" },
+    { icon: Home, label: "Home", href: "/" },
     { icon: ShoppingCart, label: "Cart", href: "/cart", hasBadge: true },
     { icon: Package, label: "Orders", href: user ? `/u/${user.username}?tab=orders` : "/auth/login" },
   ];
@@ -49,7 +49,7 @@ export default function MobileBottomNav() {
   // Active index tracking
   useEffect(() => {
     const index = navItems.findIndex((item) => {
-      if (item.href === "/shop") return pathname?.startsWith("/shop") || pathname?.startsWith("/market");
+      if (item.href === "/") return pathname === "/" || pathname === "/dashboard";
       if (item.href === "/cart") return pathname?.startsWith("/cart");
       if (item.label === "Orders") return pathname?.includes("tab=orders");
       return false;
