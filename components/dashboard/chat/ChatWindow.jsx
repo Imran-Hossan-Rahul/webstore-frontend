@@ -188,7 +188,7 @@ export default function ChatWindow({
       )}
 
       {/* Messages Area */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto py-6 px-[14px] scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
         
         {/* Profile Info Header in Chat Body (iOS iMessage style) */}
         <div className="flex flex-col items-center justify-center pt-0 pb-0 mb-6 select-none animate-in fade-in zoom-in-95 duration-500">
@@ -261,7 +261,7 @@ export default function ChatWindow({
 
           return (
             <div key={msg._id || idx} className={`flex ${isOwn ? "justify-end" : "justify-start"} group mb-${isLastInGroup ? '3' : '1'}`}>
-              <div className={`flex flex-col gap-1 max-w-[75%] ${isOwn ? "items-end" : "items-start"}`}>
+              <div className={`flex flex-col gap-1 max-w-[90%] md:max-w-[85%] ${isOwn ? "items-end" : "items-start"}`}>
                 
                 <div className={`relative flex items-end gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                   
