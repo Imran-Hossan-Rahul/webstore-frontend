@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut, ShieldCheck, Mail, Send, AlertCircle, BadgeCheck, ChevronRight } from "lucide-react";
+import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut, ShieldCheck, Mail, Send, AlertCircle, BadgeCheck, ChevronRight, ChevronLeft } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useUser } from '@/context/UserContext';
@@ -27,6 +27,16 @@ export default function PublicProfile({ username }) {
   
   const [activeTab, setActiveTab] = useState(initialTab);
   const [settingsSubTab, setSettingsSubTab] = useState("profile"); // profile, password, addresses
+
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const tabsScrollRef = React.useRef(null);
+
+  const handleTabScroll = (e) => {
+    const { scrollLeft, scrollWidth, clientWidth } = e.target;
+    setCanScrollLeft(scrollLeft > 0);
+    setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+  };
 
   const pathname = usePathname();
 
@@ -348,7 +358,7 @@ export default function PublicProfile({ username }) {
       <div className="max-w-4xl mx-auto px-4 md:px-8">
         
         {/* Profile Header Card */}
-        <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-3xl md:rounded-[32px] py-4 px-2 md:p-12 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] relative overflow-hidden">
+        <div className="py-4 px-2 md:py-10 md:px-4 border-transparent relative overflow-hidden">
           <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start text-center md:text-left relative z-10">
             {/* Avatar */}
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-[4px] border-white/50 dark:border-[#2c2c2e]/50 shadow-xl bg-slate-100 flex-shrink-0 group relative cursor-pointer">
@@ -360,8 +370,14 @@ export default function PublicProfile({ username }) {
                 </div>
               )}
               {isOwner && (
-                <label className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                  <Camera className="w-8 h-8 text-white" />
+                <label className="absolute inset-0 cursor-pointer group/label">
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 md:group-hover:opacity-100 transition-opacity z-10 rounded-full">
+                    <Camera className="w-8 h-8 text-white" />
+                  </div>
+                  {/* Mobile Camera Badge */}
+                  <div className="md:hidden absolute bottom-1 right-1 bg-[#0071e3] p-2 rounded-full shadow-lg z-20 border-2 border-white dark:border-[#1c1c1e]">
+                     <Camera className="w-4 h-4 text-white" />
+                  </div>
                   <input type="file" className="hidden" accept="image/*" onChange={handleProfilePicChange} />
                 </label>
               )}
@@ -420,7 +436,16 @@ export default function PublicProfile({ username }) {
 
         {/* Apple Style Segmented Control (Tabs) */}
         <div className="relative mt-4 md:mt-8">
-          <div className="flex justify-start md:justify-center overflow-x-auto scrollbar-hide px-4 pb-4 -mx-4 md:mx-0">
+          {canScrollLeft && (
+            <div className="absolute left-[-16px] top-0 bottom-4 w-12 bg-gradient-to-r from-[#f5f5f7] dark:from-black to-transparent pointer-events-none md:hidden flex items-center justify-start pl-1 z-10">
+               <ChevronLeft className="w-5 h-5 text-[#86868b] opacity-80" />
+            </div>
+          )}
+          <div 
+            ref={tabsScrollRef}
+            onScroll={handleTabScroll}
+            className="flex justify-start md:justify-center overflow-x-auto scrollbar-hide px-4 pb-4 -mx-4 md:mx-0 relative z-0"
+          >
             <div className="bg-black/5 dark:bg-white/10 p-1.5 rounded-full flex gap-1 min-w-max mx-auto md:mx-0 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]">
               <button onClick={() => handleTabChange('about')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'about' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                 About
@@ -444,10 +469,11 @@ export default function PublicProfile({ username }) {
               )}
             </div>
           </div>
-          {/* Scroll indicator for mobile */}
-          <div className="absolute right-[-16px] top-0 bottom-4 w-12 bg-gradient-to-l from-[#f5f5f7] dark:from-black to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1">
-             <ChevronRight className="w-5 h-5 text-[#86868b] opacity-80" />
-          </div>
+          {canScrollRight && (
+            <div className="absolute right-[-16px] top-0 bottom-4 w-12 bg-gradient-to-l from-[#f5f5f7] dark:from-black to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1 z-10">
+               <ChevronRight className="w-5 h-5 text-[#86868b] opacity-80" />
+            </div>
+          )}
         </div>
 
         {/* Tab Content Cards */}
@@ -455,7 +481,7 @@ export default function PublicProfile({ username }) {
           
           {/* About Tab */}
           {activeTab === 'about' && (
-            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent">
               <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6 px-2">Account Details</h3>
               <div className="bg-[#f5f5f7] dark:bg-black/40 rounded-[20px] overflow-hidden border border-black/[0.02] dark:border-white/[0.05]">
                 <div className="flex justify-between items-center px-6 py-4 border-b border-black/[0.05] dark:border-white/[0.05]">
@@ -472,17 +498,17 @@ export default function PublicProfile({ username }) {
 
           {/* Password Tab */}
           {activeTab === 'password' && isOwner && (
-            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
+            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent max-w-2xl mx-auto">
               <form onSubmit={handleChangePassword} className="space-y-6">
                 <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6">Change Password</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-[13px] font-medium text-[#86868b] mb-1.5 ml-1">Current Password</label>
-                    <input type="password" value={passData.currentPassword} onChange={e => setPassData({...passData, currentPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required />
+                    <input type="password" value={passData.currentPassword} onChange={e => setPassData({...passData, currentPassword: e.target.value})} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required />
                   </div>
                   <div>
                     <label className="block text-[13px] font-medium text-[#86868b] mb-1.5 ml-1">New Password</label>
-                    <input type="password" value={passData.newPassword} onChange={e => setPassData({...passData, newPassword: e.target.value})} className="w-full bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required minLength="8" />
+                    <input type="password" value={passData.newPassword} onChange={e => setPassData({...passData, newPassword: e.target.value})} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-4 py-3 text-[15px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" required minLength="8" />
                   </div>
                 </div>
                 <button type="submit" disabled={isSaving} className="mt-8 w-full md:w-auto px-8 py-3 bg-[#0071e3] hover:bg-[#0077ED] text-white rounded-full text-[15px] font-medium transition-colors flex items-center justify-center gap-2 shadow-sm">
@@ -495,7 +521,7 @@ export default function PublicProfile({ username }) {
 
           {/* Addresses Tab */}
           {activeTab === 'addresses' && isOwner && (
-            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent">
               <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                   <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white">Delivery Addresses</h3>
@@ -513,7 +539,7 @@ export default function PublicProfile({ username }) {
                 ) : (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {addresses.map((addr, i) => (
-                      <div key={i} className="p-6 md:p-8 bg-[#f5f5f7] dark:bg-[#151515] rounded-[24px] border border-black/[0.02] dark:border-white/[0.02] relative group shadow-sm transition-all hover:shadow-md">
+                      <div key={i} className="p-6 md:p-8 bg-[#f5f5f7] dark:bg-[#151515] rounded-[24px] border border-gray-200 dark:border-[#2c2c2e] relative group shadow-sm transition-all hover:shadow-md">
                         <button onClick={() => removeAddress(i)} className="absolute top-4 right-4 text-red-500 opacity-50 hover:opacity-100 transition-opacity p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full bg-white dark:bg-black shadow-sm">
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -521,33 +547,33 @@ export default function PublicProfile({ username }) {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                               <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Title</label>
-                              <input type="text" value={addr.title} onChange={e => updateAddress(i, 'title', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="Home" />
+                              <input type="text" value={addr.title} onChange={e => updateAddress(i, 'title', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="Home" />
                             </div>
                             <div>
                               <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Address Line</label>
-                              <input type="text" value={addr.addressLine || ''} onChange={e => updateAddress(i, 'addressLine', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="123 Main St" />
+                              <input type="text" value={addr.addressLine || ''} onChange={e => updateAddress(i, 'addressLine', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="123 Main St" />
                             </div>
                           </div>
                           
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">City</label>
-                              <input type="text" value={addr.city || ''} onChange={e => updateAddress(i, 'city', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="New York" />
+                              <input type="text" value={addr.city || ''} onChange={e => updateAddress(i, 'city', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="New York" />
                             </div>
                             <div>
                               <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Zip Code</label>
-                              <input type="text" value={addr.zipCode || ''} onChange={e => updateAddress(i, 'zipCode', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="10001" />
+                              <input type="text" value={addr.zipCode || ''} onChange={e => updateAddress(i, 'zipCode', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="10001" />
                             </div>
                           </div>
 
                           <div>
                             <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Exact Location / Map Link</label>
-                            <textarea rows="2" value={addr.exactLocation || ''} onChange={e => updateAddress(i, 'exactLocation', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white resize-none shadow-sm" placeholder="E.g. Next to the blue gate..."></textarea>
+                            <textarea rows="2" value={addr.exactLocation || ''} onChange={e => updateAddress(i, 'exactLocation', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white resize-none shadow-sm" placeholder="E.g. Next to the blue gate..."></textarea>
                           </div>
 
                           <div>
                             <label className="block text-[11px] font-medium text-[#86868b] mb-1.5 uppercase tracking-wider ml-1">Delivery Note</label>
-                            <input type="text" value={addr.deliveryNote || ''} onChange={e => updateAddress(i, 'deliveryNote', e.target.value)} className="w-full bg-white dark:bg-black border border-transparent focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="E.g. Call upon arrival" />
+                            <input type="text" value={addr.deliveryNote || ''} onChange={e => updateAddress(i, 'deliveryNote', e.target.value)} className="w-full bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-[#2c2c2e] focus:border-[#0071e3] rounded-[14px] px-3.5 py-2.5 text-[14px] focus:outline-none transition-colors text-black dark:text-white shadow-sm" placeholder="E.g. Call upon arrival" />
                           </div>
                         </div>
                       </div>
@@ -568,7 +594,7 @@ export default function PublicProfile({ username }) {
 
           {/* Orders Tab */}
           {activeTab === 'orders' && isOwner && (
-            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-8 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent">
               <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-4 px-2 md:px-0">Order History</h3>
               <div className="mt-2">
                  <OrdersList isEmbedded={true} />
@@ -578,7 +604,7 @@ export default function PublicProfile({ username }) {
 
           {/* Verify Tab */}
           {activeTab === 'verify' && isOwner && (
-            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
+            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent max-w-2xl mx-auto">
                <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
             </div>
           )}
