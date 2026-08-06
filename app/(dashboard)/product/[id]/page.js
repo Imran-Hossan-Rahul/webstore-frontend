@@ -198,6 +198,30 @@ export default function ProductDetails({ params }) {
     }
   }, [loading]);
 
+  const breadcrumbNodes = React.useMemo(() => {
+    if (!product || !categories.length) return [];
+    const nodes = [];
+    
+    // Find category
+    const cat = categories.find(c => c._id === product.category_id || c.id === product.category_id);
+    if (cat) {
+      nodes.push({ label: cat.name, url: `/shop?category_id=${cat._id || cat.id}` });
+      
+      // Find subcategory
+      const sub = (cat.subcategories || []).find(s => s._id === product.subCategory_id || s.id === product.subCategory_id);
+      if (sub) {
+        nodes.push({ label: sub.name, url: `/shop?subCategory_id=${sub._id || sub.id}` });
+        
+        // Find childcategory
+        const child = (sub.subcategories || []).find(c => c._id === product.childCategory_id || c.id === product.childCategory_id);
+        if (child) {
+          nodes.push({ label: child.name, url: `/shop?childCategory_id=${child._id || child.id}` });
+        }
+      }
+    }
+    return nodes;
+  }, [product, categories]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-apple-canvas"></div>
@@ -309,29 +333,7 @@ export default function ProductDetails({ params }) {
     });
   };
 
-  const breadcrumbNodes = React.useMemo(() => {
-    if (!product || !categories.length) return [];
-    const nodes = [];
-    
-    // Find category
-    const cat = categories.find(c => c._id === product.category_id || c.id === product.category_id);
-    if (cat) {
-      nodes.push({ label: cat.name, url: `/shop?category_id=${cat._id || cat.id}` });
-      
-      // Find subcategory
-      const sub = (cat.subcategories || []).find(s => s._id === product.subCategory_id || s.id === product.subCategory_id);
-      if (sub) {
-        nodes.push({ label: sub.name, url: `/shop?subCategory_id=${sub._id || sub.id}` });
-        
-        // Find childcategory
-        const child = (sub.subcategories || []).find(c => c._id === product.childCategory_id || c.id === product.childCategory_id);
-        if (child) {
-          nodes.push({ label: child.name, url: `/shop?childCategory_id=${child._id || child.id}` });
-        }
-      }
-    }
-    return nodes;
-  }, [product, categories]);
+
 
   return (
     <div className="min-h-screen pb-16 font-sans">

@@ -282,6 +282,34 @@ export default function MarketClientView({ initialData = [], initialPagination =
     }
   };
 
+  const handleAddToCart = (e, product) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    
+    try {
+      const prodId = product.id || product._id;
+      const cartStr = localStorage.getItem('cartIds');
+      let cartIds = [];
+      if (cartStr) cartIds = JSON.parse(cartStr);
+      if (!cartIds.includes(prodId.toString())) {
+        cartIds.push(prodId.toString());
+        localStorage.setItem('cartIds', JSON.stringify(cartIds));
+      }
+      
+      const detailsStr = localStorage.getItem('cartDetails');
+      let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
+      
+      cartDetails[prodId.toString()] = {
+        variants: '',
+        finalPrice: product.selling_price
+      };
+      localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+      
+    } catch(err) {}
+    
+    window.dispatchEvent(new CustomEvent('addedToCart'));
+  };
+
   const displayedProducts = query 
     ? products.filter(p => 
         p.title?.toLowerCase().includes(query) || 
@@ -329,7 +357,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
         <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[2px] md:translate-x-0">
           <button 
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            onClick={(e) => handleAddToCart(e, product)}
             className="flex-auto bg-[#0066CC] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center"
           >
             Add to Cart
