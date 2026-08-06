@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useTransition } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -43,6 +43,8 @@ export default function ProductDetails({ params }) {
   const [isZooming, setIsZooming] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({ transformOrigin: 'center center' });
   const [categories, setCategories] = useState([]);
+  const [isPending, startTransition] = useTransition();
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -277,33 +279,40 @@ export default function ProductDetails({ params }) {
       originalPrice: finalOriginalPrice
     }).toString();
     window.dispatchEvent(new Event('startNavigation'));
-    router.push(`/checkout?${query}`);
+    startTransition(() => {
+      router.push(`/checkout?${query}`);
+    });
   };
 
   const handleAddToCart = () => {
-    setAddedToCart(true);
+    setIsAddingToCart(true);
     
-    try {
-      const cartStr = localStorage.getItem('cartIds');
-      let cartIds = [];
-      if (cartStr) cartIds = JSON.parse(cartStr);
-      if (!cartIds.includes(product.id.toString())) {
-        cartIds.push(product.id.toString());
-        localStorage.setItem('cartIds', JSON.stringify(cartIds));
-      }
+    setTimeout(() => {
+      setAddedToCart(true);
       
-      const detailsStr = localStorage.getItem('cartDetails');
-      let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
-      cartDetails[product.id.toString()] = {
-        variants: selectedVariantsSummary,
-        finalPrice: finalPrice
-      };
-      localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        let cartIds = [];
+        if (cartStr) cartIds = JSON.parse(cartStr);
+        if (!cartIds.includes(product.id.toString())) {
+          cartIds.push(product.id.toString());
+          localStorage.setItem('cartIds', JSON.stringify(cartIds));
+        }
+        
+        const detailsStr = localStorage.getItem('cartDetails');
+        let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
+        cartDetails[product.id.toString()] = {
+          variants: selectedVariantsSummary,
+          finalPrice: finalPrice
+        };
+        localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+        
+      } catch(e) {}
       
-    } catch(e) {}
-    
-    // Dispatch event for RightSidebar to show the toast
-    window.dispatchEvent(new CustomEvent('addedToCart'));
+      // Dispatch event for RightSidebar to show the toast
+      window.dispatchEvent(new CustomEvent('addedToCart'));
+      setIsAddingToCart(false);
+    }, 400);
   };
 
   const handleLike = async () => {
@@ -577,15 +586,25 @@ export default function ProductDetails({ params }) {
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <button 
                       onClick={handleAddToCart}
-                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors"
+                      disabled={isAddingToCart}
+                      className="flex-1 bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3] px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors disabled:opacity-80 disabled:cursor-not-allowed"
                     >
-                      <ShoppingCart size={18} /> Add to Cart
+                      {isAddingToCart ? (
+                        <AppleSpinner size={18} className="text-[#0071e3] group-hover:text-white" />
+                      ) : (
+                        <><ShoppingCart size={18} /> Add to Cart</>
+                      )}
                     </button>
                     <button 
                       onClick={handleBuyNow}
-                      className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition"
+                      disabled={isPending}
+                      className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition disabled:opacity-80 disabled:cursor-not-allowed"
                     >
-                      <ShoppingBag size={18} /> Buy
+                      {isPending ? (
+                        <AppleSpinner size={18} className="text-white" />
+                      ) : (
+                        <><ShoppingBag size={18} /> Buy</>
+                      )}
                     </button>
                   </div>  
                 

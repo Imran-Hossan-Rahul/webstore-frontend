@@ -128,6 +128,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const query = searchParams.get('q')?.toLowerCase() || '';
+  const [isPending, startTransition] = React.useTransition();
+  const [loadingBuyId, setLoadingBuyId] = useState(null);
+  const [loadingCartId, setLoadingCartId] = useState(null);
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
@@ -286,28 +289,45 @@ export default function MarketClientView({ initialData = [], initialPagination =
     e.preventDefault(); 
     e.stopPropagation();
     
-    try {
-      const prodId = product.id || product._id;
-      const cartStr = localStorage.getItem('cartIds');
-      let cartIds = [];
-      if (cartStr) cartIds = JSON.parse(cartStr);
-      if (!cartIds.includes(prodId.toString())) {
-        cartIds.push(prodId.toString());
-        localStorage.setItem('cartIds', JSON.stringify(cartIds));
-      }
-      
-      const detailsStr = localStorage.getItem('cartDetails');
-      let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
-      
-      cartDetails[prodId.toString()] = {
-        variants: '',
-        finalPrice: product.selling_price
-      };
-      localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
-      
-    } catch(err) {}
+    const prodId = product.id || product._id;
+    setLoadingCartId(prodId);
     
-    window.dispatchEvent(new CustomEvent('addedToCart'));
+    setTimeout(() => {
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        let cartIds = [];
+        if (cartStr) cartIds = JSON.parse(cartStr);
+        if (!cartIds.includes(prodId.toString())) {
+          cartIds.push(prodId.toString());
+          localStorage.setItem('cartIds', JSON.stringify(cartIds));
+        }
+        
+        const detailsStr = localStorage.getItem('cartDetails');
+        let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
+        
+        cartDetails[prodId.toString()] = {
+          variants: '',
+          finalPrice: product.selling_price
+        };
+        localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+        
+      } catch(err) {}
+      
+      window.dispatchEvent(new CustomEvent('addedToCart'));
+      setLoadingCartId(null);
+    }, 400);
+  };
+
+  const handleBuyNow = (e, product) => {
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    const prodId = product.id || product._id;
+    if (prodId) {
+      setLoadingBuyId(prodId);
+      startTransition(() => {
+        router.push(`/product/${prodId}`);
+      });
+    }
   };
 
   const displayedProducts = query 
@@ -358,23 +378,28 @@ export default function MarketClientView({ initialData = [], initialPagination =
         <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[2px] md:translate-x-0">
           <button 
             onClick={(e) => handleAddToCart(e, product)}
-            className="flex-auto bg-[#0066CC] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center"
+            disabled={loadingCartId === (product.id || product._id)}
+            className="flex-auto bg-[#0066CC] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0055b3] flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
           >
-            Add to Cart
+            {loadingCartId === (product.id || product._id) ? (
+              <AppleSpinner size={16} className="text-white" />
+            ) : (
+              "Add to Cart"
+            )}
           </button>
           <button 
-            onClick={(e) => { 
-              e.preventDefault(); 
-              e.stopPropagation(); 
-              const prodId = product.id || product._id;
-              if (prodId) {
-                router.push(`/product/${prodId}`);
-              }
-            }}
-            className="flex-auto bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center"
+            onClick={(e) => handleBuyNow(e, product)}
+            disabled={isPending && loadingBuyId === (product.id || product._id)}
+            className="flex-auto bg-transparent border border-[#0066CC] text-[#0066CC] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-apple-pill transition-colors hover:bg-[#0066CC] hover:text-white flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed disabled:bg-[#0066CC] disabled:text-white"
           >
-            <span className="md:hidden">Buy</span>
-            <span className="hidden md:inline">Buy Now</span>
+            {isPending && loadingBuyId === (product.id || product._id) ? (
+              <AppleSpinner size={16} className="text-white" />
+            ) : (
+              <>
+                <span className="md:hidden">Buy</span>
+                <span className="hidden md:inline">Buy Now</span>
+              </>
+            )}
           </button>
         </div>
       </div>
