@@ -332,7 +332,7 @@ export default function ChatWindow({
                       <MessageHoverAction
                         icon={<Smile size={14} />}
                         tooltip="React"
-                        align={isOwn ? "right" : "left"}
+                        align={isOwn ? "left" : "right"}
                         popover={
                           <div className="flex items-center gap-1 p-1.5">
                             {REACTION_EMOJIS.map(emoji => (
@@ -352,7 +352,7 @@ export default function ChatWindow({
                         <MessageHoverAction
                           icon={<Trash2 size={12} />}
                           tooltip="Delete Message"
-                          align="right"
+                          align="left"
                           popover={
                             <div className="flex flex-col p-1.5 min-w-[160px]">
                               <button
