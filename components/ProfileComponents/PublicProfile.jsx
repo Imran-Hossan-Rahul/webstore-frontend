@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut, ShieldCheck, Mail, Send, AlertCircle, BadgeCheck } from "lucide-react";
+import { MapPin, Calendar, Link as LinkIcon, Bookmark, CheckCircle2, Settings as SettingsIcon, Camera, Key, Map, Save, X, Plus, Trash2, LogOut, ShieldCheck, Mail, Send, AlertCircle, BadgeCheck, ChevronRight } from "lucide-react";
 import { api } from '@/utils/api';
 import { DashboardContext } from '@/app/(dashboard)/layout';
 import { useUser } from '@/context/UserContext';
@@ -348,7 +348,7 @@ export default function PublicProfile({ username }) {
       <div className="max-w-4xl mx-auto px-4 md:px-8">
         
         {/* Profile Header Card */}
-        <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl rounded-[32px] p-6 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] relative overflow-hidden">
+        <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-3xl md:rounded-[32px] py-4 px-2 md:p-12 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] relative overflow-hidden">
           <div className="flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start text-center md:text-left relative z-10">
             {/* Avatar */}
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border-[4px] border-white/50 dark:border-[#2c2c2e]/50 shadow-xl bg-slate-100 flex-shrink-0 group relative cursor-pointer">
@@ -419,37 +419,43 @@ export default function PublicProfile({ username }) {
         </div>
 
         {/* Apple Style Segmented Control (Tabs) */}
-        <div className="mt-8 flex justify-start md:justify-center overflow-x-auto scrollbar-hide px-1 pb-4 -mx-2 md:mx-0">
-          <div className="bg-black/5 dark:bg-white/10 p-1.5 rounded-full flex gap-1 min-w-max mx-auto md:mx-0 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]">
-            <button onClick={() => handleTabChange('about')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'about' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-              About
-            </button>
-            {isOwner && (
-              <>
-                <button onClick={() => handleTabChange('orders')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'orders' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                  Orders
-                </button>
-                <button onClick={() => handleTabChange('addresses')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'addresses' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                  Addresses
-                </button>
-                <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'password' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                  Password
-                </button>
-                <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                  {profile.emailVerified ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
-                  Verify
-                </button>
-              </>
-            )}
+        <div className="relative mt-4 md:mt-8">
+          <div className="flex justify-start md:justify-center overflow-x-auto scrollbar-hide px-4 pb-4 -mx-4 md:mx-0">
+            <div className="bg-black/5 dark:bg-white/10 p-1.5 rounded-full flex gap-1 min-w-max mx-auto md:mx-0 shadow-[inset_0_1px_3px_rgba(0,0,0,0.05)]">
+              <button onClick={() => handleTabChange('about')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'about' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                About
+              </button>
+              {isOwner && (
+                <>
+                  <button onClick={() => handleTabChange('orders')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'orders' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                    Orders
+                  </button>
+                  <button onClick={() => handleTabChange('addresses')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'addresses' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                    Addresses
+                  </button>
+                  <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'password' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                    Password
+                  </button>
+                  <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
+                    {profile.emailVerified ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+                    Verify
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+          {/* Scroll indicator for mobile */}
+          <div className="absolute right-[-16px] top-0 bottom-4 w-12 bg-gradient-to-l from-[#f5f5f7] dark:from-black to-transparent pointer-events-none md:hidden flex items-center justify-end pr-1">
+             <ChevronRight className="w-5 h-5 text-[#86868b] opacity-80" />
           </div>
         </div>
 
         {/* Tab Content Cards */}
-        <div className="mt-4">
+        <div className="mt-2 md:mt-4">
           
           {/* About Tab */}
           {activeTab === 'about' && (
-            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
               <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6 px-2">Account Details</h3>
               <div className="bg-[#f5f5f7] dark:bg-black/40 rounded-[20px] overflow-hidden border border-black/[0.02] dark:border-white/[0.05]">
                 <div className="flex justify-between items-center px-6 py-4 border-b border-black/[0.05] dark:border-white/[0.05]">
@@ -466,7 +472,7 @@ export default function PublicProfile({ username }) {
 
           {/* Password Tab */}
           {activeTab === 'password' && isOwner && (
-            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
+            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
               <form onSubmit={handleChangePassword} className="space-y-6">
                 <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-6">Change Password</h3>
                 <div className="space-y-4">
@@ -489,7 +495,7 @@ export default function PublicProfile({ username }) {
 
           {/* Addresses Tab */}
           {activeTab === 'addresses' && isOwner && (
-            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
               <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                   <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white">Delivery Addresses</h3>
@@ -562,7 +568,7 @@ export default function PublicProfile({ username }) {
 
           {/* Orders Tab */}
           {activeTab === 'orders' && isOwner && (
-            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-4 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05]">
+            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-8 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05]">
               <h3 className="text-[22px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-4 px-2 md:px-0">Order History</h3>
               <div className="mt-2">
                  <OrdersList isEmbedded={true} />
@@ -572,7 +578,7 @@ export default function PublicProfile({ username }) {
 
           {/* Verify Tab */}
           {activeTab === 'verify' && isOwner && (
-            <div className="bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-2xl rounded-[32px] p-6 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
+            <div className="md:bg-white/80 md:dark:bg-[#1c1c1e]/80 md:backdrop-blur-2xl md:rounded-[32px] py-2 px-1 md:p-10 md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:border border-black/[0.04] dark:border-white/[0.05] max-w-2xl mx-auto">
                <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
             </div>
           )}
