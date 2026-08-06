@@ -328,25 +328,7 @@ export default function ChatWindow({
                   {/* Hover Action Menu */}
                   {!msg.isUnsent && (
                     <div className={`flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-150 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
-                      {/* React Button */}
-                      <MessageHoverAction
-                        icon={<Smile size={14} />}
-                        tooltip="React"
-                        align={isOwn ? "left" : "right"}
-                        popover={
-                          <div className="flex items-center gap-1 p-1.5">
-                            {REACTION_EMOJIS.map(emoji => (
-                              <button
-                                key={emoji}
-                                onClick={() => handleReactMessage(msg._id, emoji)}
-                                className="text-xl hover:opacity-80 transition-opacity p-0.5"
-                              >
-                                {emoji}
-                              </button>
-                            ))}
-                          </div>
-                        }
-                      />
+
                       {/* Delete Options Popover */}
                       {isOwn && (
                         <MessageHoverAction
@@ -377,21 +359,6 @@ export default function ChatWindow({
                   )}
                 </div>
 
-                {/* Reaction Badges */}
-                {hasReactions && (
-                  <div className={`flex flex-wrap gap-1 px-1 ${isOwn ? 'justify-end' : 'justify-start'}`}>
-                    {Object.entries(reactionGroups).map(([emoji, count]) => (
-                      <span 
-                        key={emoji}
-                        className="inline-flex items-center gap-0.5 bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-full px-2 py-0.5 text-[13px] shadow-sm cursor-pointer hover:-translate-y-0.5 transition-opacity"
-                        onClick={() => handleReactMessage(msg._id, emoji)}
-                        title="Click to react"
-                      >
-                        {emoji}{count > 1 && <span className="text-[11px] text-slate-500">{count}</span>}
-                      </span>
-                    ))}
-                  </div>
-                )}
 
                 {isLastInGroup && (
                   <div className={`flex items-center gap-1.5 px-1 text-[11px] font-medium text-slate-400 dark:text-slate-500`}>
