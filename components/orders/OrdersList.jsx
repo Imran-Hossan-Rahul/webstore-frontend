@@ -26,6 +26,56 @@ export default function OrdersList({ isEmbedded = false }) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [copiedId, setCopiedId] = useState(null);
+  
+  // Track Order States
+  const [trackQuery, setTrackQuery] = useState('');
+  const [trackLoading, setTrackLoading] = useState(false);
+  const [trackError, setTrackError] = useState('');
+
+  const handleTrackOrder = async (e) => {
+    e.preventDefault();
+    if (!trackQuery) return;
+    setTrackError('');
+    setTrackLoading(true);
+    try {
+      const res = await api.post('/market/orders/guest/track', { query: trackQuery });
+      const fetchedOrders = res.data || res;
+      if (Array.isArray(fetchedOrders) && fetchedOrders.length > 0) {
+        // Save to local storage
+        try {
+          const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+          let updated = false;
+          fetchedOrders.forEach(o => {
+            const id = o._id || o.id;
+            if (!storedIds.includes(id)) {
+              storedIds.push(id);
+              updated = true;
+            }
+          });
+          if (updated) {
+            localStorage.setItem('codalina_guest_orders', JSON.stringify(storedIds));
+          }
+        } catch (err) {}
+        
+        // Merge with existing orders
+        setOrders(prev => {
+          const newOrders = [...prev];
+          fetchedOrders.forEach(fo => {
+            const id = fo._id || fo.id;
+            if (!newOrders.find(o => (o._id || o.id) === id)) {
+              newOrders.push(fo);
+            }
+          });
+          return newOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        });
+        setTrackQuery('');
+      }
+    } catch (err) {
+      setTrackError(err?.data?.error || err?.response?.data?.error || 'No orders found matching this ID or Phone Number.');
+    } finally {
+      setTrackLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -102,6 +152,41 @@ export default function OrdersList({ isEmbedded = false }) {
             </div>
           </div>
         )}
+
+        {/* Guest Track Order UI */}
+        {!user && (
+          <div className="bg-white dark:bg-apple-surfaceDark border border-apple-hairline rounded-[16px] p-6 mb-6">
+            <h3 className="text-[15px] font-semibold text-[#1d1d1f] dark:text-white mb-2 flex items-center">
+              <Package className="w-5 h-5 mr-2 text-[#0071e3]" />
+              Track Your Order
+            </h3>
+            <p className="text-[13px] text-[#86868b] mb-4">
+              If you are not logged in and forgot or didn't see your order, enter your Phone Number or Order ID below to track it.
+            </p>
+            <form onSubmit={handleTrackOrder} className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input 
+                  type="text" 
+                  value={trackQuery}
+                  onChange={(e) => setTrackQuery(e.target.value)}
+                  placeholder="Enter Phone Number or Order ID..."
+                  className="w-full pl-9 pr-4 py-2.5 rounded-[10px] bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] focus:bg-white dark:focus:bg-[#1c1c1e] text-[13px] text-[#1d1d1f] dark:text-white outline-none transition-all"
+                  required
+                />
+              </div>
+              <button 
+                type="submit" 
+                disabled={trackLoading}
+                className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-2.5 rounded-[10px] text-[13px] font-medium transition-colors disabled:opacity-70 flex items-center justify-center shrink-0"
+              >
+                {trackLoading ? <AppleSpinner size={16} className="text-white" /> : 'Track Order'}
+              </button>
+            </form>
+            {trackError && <p className="text-red-500 text-xs mt-2">{trackError}</p>}
+          </div>
+        )}
+
 
         {/* Content */}
         {loading ? (

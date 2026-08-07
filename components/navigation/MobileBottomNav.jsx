@@ -26,7 +26,7 @@ export default function MobileBottomNav() {
   const navItems = [
     { icon: Home, label: "Home", href: "/" },
     { icon: ShoppingCart, label: "Cart", href: "/cart", hasBadge: true },
-    { icon: Package, label: "Orders", href: user ? `/u/${user.username}?tab=orders` : "/auth/login" },
+    { icon: Package, label: "Orders", href: user ? `/u/${user.username}?tab=orders` : "/orders" },
   ];
 
   // Cart count from localStorage
