@@ -13,7 +13,7 @@ export default function MarketPromotionsPage() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Marketplace Promotions</h1>
-          <p className="text-sm text-gray-400 mt-1">Manage Flash Deals, Trending Now, Today&apos;s Offer, and Brand Spotlight</p>
+          <p className="text-sm text-gray-400 mt-1">Manage Flash Deals, Trending Now, Grand Opening Offer, and Brand Spotlight</p>
         </div>
       </div>
 

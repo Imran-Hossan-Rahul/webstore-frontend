@@ -37,7 +37,7 @@ export default function MarketPromotionsForm() {
       setLoading(true);
       const [configRes, productsRes] = await Promise.all([
         api.get('/market/config'),
-        api.get('/market/products')
+        api.get('/market/products?limit=1000')
       ]);
       
       const actualConfig = configRes.data || (configRes.singletonKey ? configRes : null);
@@ -87,7 +87,7 @@ export default function MarketPromotionsForm() {
         }
       }
       
-      const list = prev[listName];
+      const list = prev[listName] || [];
       if (list.includes(productId)) {
         return { ...prev, [listName]: list.filter(id => id !== productId) };
       } else {
@@ -130,11 +130,16 @@ export default function MarketPromotionsForm() {
     return <div className="flex items-center justify-center p-12"><AppleSpinner className="animate-spin text-slate-400" /></div>;
   }
 
-  const ProductSelector = ({ listName, label }) => {
+  const renderProductSelector = (listName, label) => {
     const list = listName.includes('.') ? config[listName.split('.')[0]][listName.split('.')[1]] : config[listName];
     
     const displayProducts = searchQuery 
-      ? products.filter(p => (p.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || p.sku?.toLowerCase().includes(searchQuery.toLowerCase()))
+      ? products.filter(p => {
+          const searchTerms = searchQuery.toLowerCase().split(' ').filter(Boolean);
+          const title = (p.title || '').toLowerCase();
+          const sku = (p.sku || '').toLowerCase();
+          return searchTerms.every(term => title.includes(term) || sku.includes(term));
+        })
       : products.filter(p => list?.includes(p._id));
 
     return (
@@ -197,15 +202,15 @@ export default function MarketPromotionsForm() {
           >
             {tab === 'flash' && 'Flash Deals'}
             {tab === 'trending' && 'Trending Now'}
-            {tab === 'offer' && 'Today\'s Offer'}
+            {tab === 'offer' && 'Grand Opening Offer'}
             {tab === 'brand' && 'Brand Spotlight'}
           </button>
         ))}
       </div>
 
       <div className="p-6">
-        {activeTab === 'flash' && <ProductSelector listName="flashDeals" label="Select Flash Deal Products" />}
-        {activeTab === 'trending' && <ProductSelector listName="trendingNow" label="Select Trending Products" />}
+        {activeTab === 'flash' && renderProductSelector("flashDeals", "Select Flash Deal Products")}
+        {activeTab === 'trending' && renderProductSelector("trendingNow", "Select Trending Products")}
         
         {activeTab === 'offer' && (
           <div className="max-w-4xl space-y-8">
@@ -249,7 +254,7 @@ export default function MarketPromotionsForm() {
             </div>
 
             <div className="pt-4 border-t border-gray-800">
-              <ProductSelector listName="todaysOffer.applicableProducts" label="Select Applicable Products for Promo Code" />
+              {renderProductSelector("todaysOffer.applicableProducts", "Select Applicable Products for Promo Code")}
             </div>
           </div>
         )}

@@ -87,7 +87,7 @@ export default function ShopPage() {
     if (productIds) {
       return [
         { label: 'Shop', onClick: resetFilters },
-        { label: "Today's Offer", onClick: null },
+        { label: "Grand Opening Offer", onClick: null },
       ];
     }
     
