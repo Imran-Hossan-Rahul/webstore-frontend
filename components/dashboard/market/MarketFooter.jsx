@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Facebook, Youtube, Instagram, MessageCircle } from 'lucide-react';
+import { Facebook, Instagram, MessageCircle, Mail } from 'lucide-react';
 
 export default function MarketFooter() {
   const footerLinks = [
@@ -18,7 +18,7 @@ export default function MarketFooter() {
       links: [
         { label: "Manage Account", href: "/admin" },
         { label: "Track Order", href: "/admin/market/orders" },
-        { label: "Support", href: "/contact" }
+        { label: "Support", href: "mailto:info@codalina.com" }
       ]
     },
     {
@@ -32,10 +32,10 @@ export default function MarketFooter() {
     {
       title: "Connect With Us",
       links: [
-        { label: "Facebook", href: "#", icon: <Facebook size={14} className="mr-2" /> },
-        { label: "YouTube", href: "#", icon: <Youtube size={14} className="mr-2" /> },
-        { label: "Instagram", href: "#", icon: <Instagram size={14} className="mr-2" /> },
-        { label: "WhatsApp", href: "https://wa.me/8801951768360", icon: <MessageCircle size={14} className="mr-2" /> }
+        { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61591711877853", icon: <Facebook size={14} className="mr-2" /> },
+        { label: "Instagram", href: "https://www.instagram.com/codalinaglobal/", icon: <Instagram size={14} className="mr-2" /> },
+        { label: "WhatsApp", href: "https://wa.me/8801951768360", icon: <MessageCircle size={14} className="mr-2" /> },
+        { label: "Email", href: "mailto:info@codalina.com", icon: <Mail size={14} className="mr-2" /> }
       ]
     }
   ];
