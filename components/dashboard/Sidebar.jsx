@@ -26,8 +26,7 @@ import {
   Music,
   Gamepad,
   Camera,
-  Gift,
-  PackageSearch
+  Gift
 } from "lucide-react";
 import FeedbackModal from "./FeedbackModal";
 
@@ -289,17 +288,6 @@ export default function Sidebar({ isHovered, isCollapsed = false }) {
 
         {/* Help */}
         <div className="space-y-1 pb-4">
-          <SidebarItem
-            icon={PackageSearch}
-            label="Track Order"
-            href="/track-order"
-            onClick={() => {
-              if (isCollapsed) return;
-              window.dispatchEvent(new Event('startNavigation'));
-            }}
-            active={pathname === "/track-order"}
-            isCollapsed={isCollapsed}
-          />
           <SidebarItem
             icon={MessageCircle}
             label="Help & Feedback"
