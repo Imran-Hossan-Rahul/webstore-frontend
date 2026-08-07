@@ -475,7 +475,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden px-2 md:px-0">
           {/* Main Top Banner (Full Width, 16:9 Aspect Ratio) */}
-          <div className="w-full relative aspect-[16/9] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-black">
+          <div className="w-full relative aspect-[16/9] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-transparent">
             <div 
               ref={topScrollRef}
               className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
@@ -485,7 +485,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 return (
                   <div 
                     key={idx}
-                    className="flex-none w-full h-full snap-start relative bg-black flex items-center justify-center"
+                    className="flex-none w-full h-full snap-start relative bg-transparent flex items-center justify-center"
                   >
                   {slide.isAppleStyle ? (
                     <div className={`absolute inset-0 flex flex-col items-center justify-between w-full h-full ${slide.bgColor}`}>
