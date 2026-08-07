@@ -17,7 +17,6 @@ export default function MarketFooter() {
       title: "Account & Services",
       links: [
         { label: "Manage Account", href: "/admin" },
-        { label: "Track Order", href: "/admin/market/orders" },
         { label: "Support", href: "mailto:info@codalina.com" }
       ]
     },
