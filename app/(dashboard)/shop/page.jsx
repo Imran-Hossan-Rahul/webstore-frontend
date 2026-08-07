@@ -4,7 +4,7 @@ import { api } from '@/utils/api';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { DashboardContext } from "@/app/(dashboard)/layout";
-import { Search, Loader2, Edit, ChevronDown, Filter, X } from "lucide-react";
+import { Search, Loader2, Edit, ChevronDown, Filter, X, Check } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 const getOptimizedUrl = (url) => {
@@ -54,6 +54,74 @@ export default function ShopPage() {
   const [isSortOpen, setIsSortOpen] = useState(false);
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
+
+  const [loadingBuyId, setLoadingBuyId] = useState(null);
+  const [loadingCartId, setLoadingCartId] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [isPending, startTransition] = React.useTransition();
+
+  useEffect(() => {
+    const updateCart = () => {
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        if (cartStr) setCartItems(JSON.parse(cartStr));
+      } catch (e) {}
+    };
+    updateCart();
+    window.addEventListener('addedToCart', updateCart);
+    window.addEventListener('cartUpdated', updateCart);
+    return () => {
+      window.removeEventListener('addedToCart', updateCart);
+      window.removeEventListener('cartUpdated', updateCart);
+    };
+  }, []);
+
+  const handleAddToCart = (e, product) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    
+    const prodId = product.id || product._id;
+    setLoadingCartId(prodId);
+    
+    setTimeout(() => {
+      try {
+        const cartStr = localStorage.getItem('cartIds');
+        let cartIds = [];
+        if (cartStr) cartIds = JSON.parse(cartStr);
+        if (!cartIds.includes(prodId.toString())) {
+          cartIds.push(prodId.toString());
+          localStorage.setItem('cartIds', JSON.stringify(cartIds));
+        }
+        
+        const detailsStr = localStorage.getItem('cartDetails');
+        let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
+        
+        cartDetails[prodId.toString()] = {
+          variants: '',
+          quantity: 1,
+          price: product.selling_price
+        };
+        localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
+
+        window.dispatchEvent(new Event('addedToCart'));
+      } catch(e) {
+        console.error("Cart error", e);
+      } finally {
+        setLoadingCartId(null);
+      }
+    }, 400);
+  };
+
+  const handleBuyNow = (e, product) => {
+    e.preventDefault(); 
+    e.stopPropagation();
+    const prodId = product.id || product._id;
+    setLoadingBuyId(prodId);
+    startTransition(() => {
+      const url = `/checkout?productId=${prodId}&quantity=1&variantSummary=&finalPrice=${product.selling_price}&originalPrice=${product.original_price}`;
+      router.push(url);
+    });
+  };
 
   useEffect(() => {
     api.get('/market/categories')
@@ -338,22 +406,34 @@ export default function ShopPage() {
         </div>
         <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[5px] md:translate-x-0">
           <button 
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-            className="flex-auto bg-[#0071e3] text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0077ed] flex items-center justify-center"
+            onClick={(e) => {
+              if (cartItems.includes((product.id || product._id).toString())) {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push('/cart');
+              } else {
+                handleAddToCart(e, product);
+              }
+            }}
+            disabled={loadingCartId === (product.id || product._id)}
+            className={`flex-auto text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors flex items-center justify-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed ${
+              cartItems.includes((product.id || product._id).toString()) ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#0071e3] hover:bg-[#0077ed]'
+            }`}
           >
-            Add to Cart
+            {loadingCartId === (product.id || product._id) ? (
+              <AppleSpinner size={16} className="text-white" />
+            ) : cartItems.includes((product.id || product._id).toString()) ? (
+              <><Check size={14} /> Added</>
+            ) : (
+              "Add to Cart"
+            )}
           </button>
           <button 
-            onClick={(e) => { 
-              e.preventDefault(); 
-              e.stopPropagation(); 
-              window.dispatchEvent(new Event('startNavigation'));
-              router.push(`/checkout?productId=${product.id}&quantity=1&finalPrice=${product.selling_price}&originalPrice=${product.original_price || product.selling_price}`);
-            }}
-            className="flex-auto bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] px-4 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center"
+            onClick={(e) => handleBuyNow(e, product)}
+            disabled={isPending && loadingBuyId === (product.id || product._id)}
+            className="flex-auto bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed disabled:bg-[#0071e3] disabled:text-white"
           >
-            <span className="md:hidden">Buy</span>
-            <span className="hidden md:inline">Buy Now</span>
+            Buy Now
           </button>
         </div>
       </div>
