@@ -124,6 +124,15 @@ export default function Checkout() {
       setShowErrorModal(true);
       return;
     }
+    
+    // Validate BD Phone Number
+    const phoneRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
+    if (!phoneRegex.test(form.phone.trim())) {
+      setErrorMessage("Please enter a valid Bangladeshi phone number (e.g. 01712345678).");
+      setShowErrorModal(true);
+      return;
+    }
+
     try {
       const address = {
         name: form.name,
