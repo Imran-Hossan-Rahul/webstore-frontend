@@ -502,8 +502,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
                       </div>
                     </div>
                   ) : slide.isFullBanner ? (
-                    <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-black pointer-events-none">
-                      <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-cover z-10" />
+                    <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-[#f5f5f7] dark:bg-[#1c1c1e] pointer-events-none">
+                      <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-contain z-10" />
                     </Link>
                   ) : (
                     <>
