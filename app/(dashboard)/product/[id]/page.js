@@ -638,6 +638,29 @@ export default function ProductDetails({ params }) {
                     </div>
                   </div>
                 )}
+                
+                {/* Delivery & Weight Info */}
+                <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700 mt-2">
+                  <div className="flex items-start gap-4">
+                    <div className="shrink-0 mt-1"><Truck size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                    <div className="flex flex-col flex-1">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white">Delivery Details</span>
+                        {product.weightInGrams > 0 && (
+                          <span className="text-[12px] font-semibold bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 shadow-sm text-gray-700 dark:text-gray-300">
+                            Unit Weight: {product.weightInGrams >= 1000 ? `${(product.weightInGrams / 1000).toFixed(1)}kg` : `${product.weightInGrams}g`}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
+                        Delivery charges are calculated at checkout based on your location and the total weight of your order. Cash on Delivery is available!
+                      </span>
+                      <Link href="/delivery" className="text-[13px] font-medium text-[#0071e3] hover:underline flex items-center gap-1 group w-fit">
+                        View Delivery Policy <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

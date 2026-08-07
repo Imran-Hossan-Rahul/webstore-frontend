@@ -662,12 +662,15 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                 {hasHistory ? "Imran" : "Hi, I'm Imran! 👋"}<br/>
                 <span className={`font-normal text-[10px] md:text-[13px] line-clamp-2 mt-0.5 ${supportChat?.unreadCount > 0 ? 'text-apple-ink dark:text-white font-medium' : 'text-apple-muted'}`}>
                   {hasHistory ? (
-                    <>
-                      {supportChat.lastMessage.sender?._id === currentUser?._id && "You: "}
-                      {supportChat.lastMessage.type === 'image' ? 'Sent an image' : 
-                       supportChat.lastMessage.type === 'file' ? 'Sent a file' : 
-                       supportChat.lastMessage.content}
-                    </>
+                    supportChat.lastMessage.sender?._id === currentUser?._id ? (
+                      "Thanks for your message! I'll reply soon."
+                    ) : (
+                      <>
+                        {supportChat.lastMessage.type === 'image' ? 'Sent an image' : 
+                         supportChat.lastMessage.type === 'file' ? 'Sent a file' : 
+                         supportChat.lastMessage.content}
+                      </>
+                    )
                   ) : (
                     "How can I help you today?"
                   )}
