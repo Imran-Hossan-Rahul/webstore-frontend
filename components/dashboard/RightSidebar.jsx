@@ -37,6 +37,25 @@ import { features } from "@/constants/features";
 
 export default function RightSidebar() {
   const pathname = usePathname();
+  
+  const getFirstPhoto = (photos) => {
+    if (!photos) return null;
+    if (typeof photos === 'string') {
+      if (photos.startsWith('[')) {
+        try { return JSON.parse(photos)[0]; } catch(e) {}
+      }
+      return photos;
+    }
+    if (Array.isArray(photos)) {
+      if (photos.length === 0) return null;
+      const first = photos[0];
+      if (typeof first === 'string' && first.startsWith('[')) {
+        try { return JSON.parse(first)[0]; } catch(e) {}
+      }
+      return first;
+    }
+    return null;
+  };
 
 
   const [artifactCategories, setArtifactCategories] = useState([]);
@@ -843,8 +862,7 @@ export default function RightSidebar() {
              </div>
              <div className="space-y-4">
                {marketConfig.flashDeals.slice(0, 2).map((product) => {
-                 const photoArray = Array.isArray(product.photos) ? product.photos : (typeof product.photos === 'string' && product.photos.startsWith('[') ? JSON.parse(product.photos) : [product.photos]);
-                 const photo = photoArray ? photoArray[0] : null;
+                 const photo = getFirstPhoto(product.photos);
                  const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
                     ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
                     : photo;
@@ -879,8 +897,7 @@ export default function RightSidebar() {
              </h3>
              <div className="flex flex-col">
                {marketConfig.trendingNow.slice(0, 4).map((product, idx) => {
-                 const photoArray = Array.isArray(product.photos) ? product.photos : (typeof product.photos === 'string' && product.photos.startsWith('[') ? JSON.parse(product.photos) : [product.photos]);
-                 const photo = photoArray ? photoArray[0] : null;
+                 const photo = getFirstPhoto(product.photos);
                  const photoUrl = photo && photo.includes('cloudinary') && !photo.includes('f_auto') 
                     ? photo.replace('/upload/', '/upload/f_auto,q_auto,w_200/') 
                     : photo;
