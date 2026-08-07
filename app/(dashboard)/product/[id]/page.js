@@ -226,7 +226,9 @@ export default function ProductDetails({ params }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-apple-canvas"></div>
+      <div className="fixed inset-0 flex items-center justify-center bg-white/70 dark:bg-[#030303]/70 backdrop-blur-md z-[9999]">
+        <AppleSpinner size={50} className="text-[#0071e3]" />
+      </div>
     );
   }
 
