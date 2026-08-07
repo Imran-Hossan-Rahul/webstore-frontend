@@ -461,10 +461,6 @@ export default function PublicProfile({ username }) {
                   <button onClick={() => handleTabChange('password')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 ${activeTab === 'password' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
                     Password
                   </button>
-                  <button onClick={() => handleTabChange('verify')} className={`px-6 py-2 rounded-full text-[14px] md:text-[15px] font-medium transition-all duration-300 flex items-center gap-1.5 ${activeTab === 'verify' ? 'bg-white dark:bg-[#1c1c1e] text-[#1d1d1f] dark:text-white shadow-[0_2px_10px_rgba(0,0,0,0.06)]' : 'text-[#86868b] hover:text-[#1d1d1f] dark:hover:text-white'}`}>
-                    {profile.emailVerified ? <BadgeCheck className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
-                    Verify
-                  </button>
                 </>
               )}
             </div>
@@ -602,13 +598,8 @@ export default function PublicProfile({ username }) {
             </div>
           )}
 
-          {/* Verify Tab */}
-          {activeTab === 'verify' && isOwner && (
-            <div className="py-2 px-1 md:py-4 md:px-0 border-transparent max-w-2xl mx-auto">
-               <VerifyEmailTab profile={profile} onVerified={() => setProfile(p => ({...p, emailVerified: true}))} />
-            </div>
-          )}
           
+
         </div>
       </div>
     </div>

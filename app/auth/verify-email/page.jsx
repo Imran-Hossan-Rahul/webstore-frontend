@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, notFound } from 'next/navigation';
 import { api } from '@/utils/api';
 import { XCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion } from 'framer-motion';
@@ -10,6 +10,7 @@ import AppleSpinner from "@/components/ui/AppleSpinner";
 export const dynamic = 'force-dynamic';
 
 export default function VerifyEmailPage() {
+  notFound();
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get('token');
