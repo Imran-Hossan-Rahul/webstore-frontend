@@ -154,7 +154,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
   const heroSlides = [
-    { image: "/banners/banner1.png", isFullBanner: true, link: "#" },
+    { image: "/banners/banner7.png", isFullBanner: true, link: "#" },
     { image: "/banners/banner2.png", isFullBanner: true, link: "#" },
     { image: "/banners/banner3.png", isFullBanner: true, link: "#" },
     { image: "/banners/banner4.png?v=2", isFullBanner: true, link: "#" },
@@ -475,7 +475,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden px-2 md:px-0">
           {/* Main Top Banner (Full Width, 16:9 Aspect Ratio) */}
-          <div className="w-full relative aspect-[16/9] max-h-[600px] md:max-h-[700px] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-black">
+          <div className="w-full relative aspect-[16/9] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-black">
             <div 
               ref={topScrollRef}
               className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
