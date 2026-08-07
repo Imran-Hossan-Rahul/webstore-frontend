@@ -650,12 +650,12 @@ export default function ProductDetails({ params }) {
                         <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white">Delivery Details</span>
                         {product.weightInGrams > 0 && (
                           <span className="text-[12px] font-semibold bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 shadow-sm text-gray-700 dark:text-gray-300">
-                            Unit Weight: {product.weightInGrams >= 1000 ? `${(product.weightInGrams / 1000).toFixed(1)}kg` : `${product.weightInGrams}g`}
+                            Parcel Weight: {product.weightInGrams >= 1000 ? `${(product.weightInGrams / 1000).toFixed(1)}kg` : `${product.weightInGrams}g`}
                           </span>
                         )}
                       </div>
                       <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
-                        Delivery charges are calculated at checkout based on your location and the total weight of your order. Cash on Delivery is available!
+                        Delivery charges are calculated at checkout based on your location and the total weight of your order. Note: The parcel weight includes the product, packaging box, invoice, and poly. Cash on Delivery is available!
                       </span>
                       <Link href="/delivery" className="text-[13px] font-medium text-[#0071e3] hover:underline flex items-center gap-1 group w-fit">
                         View Delivery Policy <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
