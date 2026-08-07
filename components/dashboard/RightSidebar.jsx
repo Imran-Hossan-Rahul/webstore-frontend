@@ -849,6 +849,45 @@ export default function RightSidebar() {
 
     return (
       <aside className="h-full flex flex-col gap-8 pb-10">
+        {/* Today's Offer */}
+        {marketConfig?.todaysOffer?.isActive !== false && (
+        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 flex flex-col items-center text-center relative overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
+           <h3 className="text-[12px] font-semibold font-sans text-[#86868b] uppercase tracking-wide mb-3 flex items-center justify-center gap-1.5">
+             <Gift size={14} /> Grand Opening Offer
+           </h3>
+           {(() => {
+             const rawTitle = marketConfig?.todaysOffer?.title || "Get 20% OFF\non Audio Gear";
+             const parts = rawTitle.split('\n');
+             const isSingleLongLine = parts.length === 1 && rawTitle.length > 35;
+             return (
+               <div className="mb-4 mt-1 w-full">
+                 <h4 className={`${isSingleLongLine ? 'text-[16px] leading-relaxed' : 'text-[20px] leading-snug'} font-bold font-sans text-apple-ink dark:text-white tracking-tight`}>
+                   {parts[0]}
+                 </h4>
+                 {parts.length > 1 && (
+                   <p className="text-[13px] text-[#86868b] dark:text-gray-400 font-medium leading-relaxed mt-2 whitespace-pre-line">
+                     {parts.slice(1).join('\n')}
+                   </p>
+                 )}
+               </div>
+             );
+           })()}
+           <div className="font-mono bg-[#f5f5f7] dark:bg-[#2c2c2e] text-apple-ink dark:text-white px-4 py-1.5 rounded-full text-[12px] font-medium mb-5">
+             Use code: {marketConfig?.todaysOffer?.code || "AUDIO20"}
+           </div>
+           <Link 
+             href={
+               marketConfig?.todaysOffer?.applicableProducts?.length > 0 
+                 ? `/shop?ids=${marketConfig.todaysOffer.applicableProducts.map(p => typeof p === 'object' ? p._id : p).join(',')}`
+                 : (marketConfig?.todaysOffer?.link || "#")
+             } 
+             className="bg-[#0071e3] text-white text-[14px] font-medium px-4 py-2.5 rounded-full w-full hover:bg-[#0077ED] transition-colors inline-block"
+           >
+             Claim Offer
+           </Link>
+        </div>
+        )}
+
         {/* Flash Deals Widget */}
         {marketConfig?.flashDeals?.length > 0 && (
           <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
@@ -904,7 +943,6 @@ export default function RightSidebar() {
                     
                  return (
                    <Link href={`/product/${product._id}`} key={product._id} className="flex gap-4 group items-center py-4 border-b border-slate-100 dark:border-[#2c2c2e] last:border-0 last:pb-0 transition-all">
-                     <span className="text-[14px] font-bold font-sans text-slate-200 dark:text-slate-700 w-3">{idx + 1}</span>
                      <div className="w-12 h-12 rounded-[10px] bg-[#f5f5f7] dark:bg-black flex-shrink-0 overflow-hidden border border-slate-100 dark:border-[#2c2c2e] relative">
                        {photoUrl && <img src={photoUrl} alt={product.title} className="w-full h-full object-cover" />}
                      </div>
@@ -920,45 +958,6 @@ export default function RightSidebar() {
         )}
 
         {/* Brand Spotlight - Hidden by request */}
-
-        {/* Today's Offer */}
-        {marketConfig?.todaysOffer?.isActive !== false && (
-        <div className="shrink-0 bg-white dark:bg-[#1c1c1e] border border-slate-100 dark:border-[#2c2c2e] rounded-[16px] p-6 flex flex-col items-center text-center relative overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.02)]">
-           <h3 className="text-[12px] font-semibold font-sans text-[#86868b] uppercase tracking-wide mb-3 flex items-center justify-center gap-1.5">
-             <Gift size={14} /> Grand Opening Offer
-           </h3>
-           {(() => {
-             const rawTitle = marketConfig?.todaysOffer?.title || "Get 20% OFF\non Audio Gear";
-             const parts = rawTitle.split('\n');
-             const isSingleLongLine = parts.length === 1 && rawTitle.length > 35;
-             return (
-               <div className="mb-4 mt-1 w-full">
-                 <h4 className={`${isSingleLongLine ? 'text-[16px] leading-relaxed' : 'text-[20px] leading-snug'} font-bold font-sans text-apple-ink dark:text-white tracking-tight`}>
-                   {parts[0]}
-                 </h4>
-                 {parts.length > 1 && (
-                   <p className="text-[13px] text-[#86868b] dark:text-gray-400 font-medium leading-relaxed mt-2 whitespace-pre-line">
-                     {parts.slice(1).join('\n')}
-                   </p>
-                 )}
-               </div>
-             );
-           })()}
-           <div className="font-mono bg-[#f5f5f7] dark:bg-[#2c2c2e] text-apple-ink dark:text-white px-4 py-1.5 rounded-full text-[12px] font-medium mb-5">
-             Use code: {marketConfig?.todaysOffer?.code || "AUDIO20"}
-           </div>
-           <Link 
-             href={
-               marketConfig?.todaysOffer?.applicableProducts?.length > 0 
-                 ? `/shop?ids=${marketConfig.todaysOffer.applicableProducts.map(p => typeof p === 'object' ? p._id : p).join(',')}`
-                 : (marketConfig?.todaysOffer?.link || "#")
-             } 
-             className="bg-[#0071e3] text-white text-[14px] font-medium px-4 py-2.5 rounded-full w-full hover:bg-[#0077ED] transition-colors inline-block"
-           >
-             Claim Offer
-           </Link>
-        </div>
-        )}
 
         {/* Cart Success Toast */}
         {showCartSuccess && (
