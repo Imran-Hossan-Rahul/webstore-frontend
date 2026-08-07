@@ -127,11 +127,11 @@ export default function OrderDetailPage({ params }) {
           <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6 gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">Order #{((order.id || order._id?.toString())?.slice(-8))}</span>
+                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">Order #WA{((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}</span>
                 <button
-                  onClick={() => copyToClipboard(order.id || order._id?.toString())}
+                  onClick={() => copyToClipboard(`WA${((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}`)}
                   className="text-gray-400 hover:text-gray-700 transition"
-                  title="Copy full Order ID"
+                  title="Copy Order Number"
                 >
                   <Copy size={16} />
                 </button>

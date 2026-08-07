@@ -226,17 +226,17 @@ export default function OrdersList({ isEmbedded = false }) {
                     <div className="flex justify-between items-start md:block w-full md:w-auto mb-3 md:mb-0">
                       <div>
                         <div className="flex items-center gap-2 mb-1 w-full overflow-hidden">
-                          <span className="text-[16px] sm:text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white uppercase truncate" title={`Order #${oid}`}>
-                            Order #{oid}
+                          <span className="text-[16px] sm:text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white uppercase truncate" title={`Order #WA${shortId}`}>
+                            Order #WA{shortId}
                           </span>
                           <button
-                            onClick={e => copyId(e, oid)}
+                            onClick={e => copyId(e, `WA${shortId}`)}
                             className="text-gray-400 hover:text-gray-700 transition shrink-0"
-                            title="Copy Order ID"
+                            title="Copy Order Number"
                           >
                             <Copy size={14} />
                           </button>
-                          {copiedId === oid && (
+                          {copiedId === `WA${shortId}` && (
                             <span className="font-text text-[10px] text-green-600 font-semibold bg-green-50 px-1.5 py-0.5 rounded uppercase tracking-[0.06em]">Copied</span>
                           )}
                         </div>
