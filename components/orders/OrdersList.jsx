@@ -57,18 +57,8 @@ export default function OrdersList({ isEmbedded = false }) {
           }
         } catch (err) {}
         
-        // Merge with existing orders
-        setOrders(prev => {
-          const newOrders = [...prev];
-          fetchedOrders.forEach(fo => {
-            const id = fo._id || fo.id;
-            if (!newOrders.find(o => (o._id || o.id) === id)) {
-              newOrders.push(fo);
-            }
-          });
-          return newOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        });
-        setTrackQuery('');
+        // Show only the fetched orders
+        setOrders(fetchedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       }
     } catch (err) {
       setTrackError(err?.data?.error || err?.response?.data?.error || 'No orders found matching this ID or Phone Number.');
@@ -77,31 +67,33 @@ export default function OrdersList({ isEmbedded = false }) {
     }
   };
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        let data = [];
-        if (user) {
-          data = await api.get('/market/orders');
-        } else {
-          // Guest flow
-          const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
-          if (storedIds.length > 0) {
-            data = await api.post('/market/orders/guest/list', { ids: storedIds });
-          }
+  const fetchRecentOrders = async () => {
+    setLoading(true);
+    try {
+      let data = [];
+      if (user) {
+        data = await api.get('/market/orders');
+      } else {
+        // Guest flow
+        const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+        if (storedIds.length > 0) {
+          data = await api.post('/market/orders/guest/list', { ids: storedIds });
         }
-        
-        if (Array.isArray(data)) {
-          setOrders(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-        }
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
       }
-    };
-    fetch();
-  }, []);
+      
+      if (Array.isArray(data)) {
+        setOrders(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentOrders();
+  }, [user]);
 
   const formatPrice = (p) => new Intl.NumberFormat('en-IN').format(p || 0);
   const formatDate = (d) => {
@@ -169,7 +161,12 @@ export default function OrdersList({ isEmbedded = false }) {
                 <input 
                   type="text" 
                   value={trackQuery}
-                  onChange={(e) => setTrackQuery(e.target.value)}
+                  onChange={(e) => {
+                    setTrackQuery(e.target.value);
+                    if (e.target.value === '') {
+                      fetchRecentOrders();
+                    }
+                  }}
                   placeholder="Enter Phone Number or Order ID..."
                   className="w-full pl-9 pr-4 py-2.5 rounded-[10px] bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] focus:bg-white dark:focus:bg-[#1c1c1e] text-[13px] text-[#1d1d1f] dark:text-white outline-none transition-all"
                   required
