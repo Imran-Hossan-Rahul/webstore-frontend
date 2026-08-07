@@ -1003,12 +1003,12 @@ export default function RightSidebar() {
          </p>
          <div className="flex flex-wrap gap-2 relative z-10">
             <a 
-              href="mailto:imranhossanrahul.dev@gmail.com" 
+              href="mailto:info@codalina.com" 
               onClick={(e) => {
                   e.preventDefault();
-                  navigator.clipboard.writeText("imranhossanrahul.dev@gmail.com");
+                  navigator.clipboard.writeText("info@codalina.com");
                   showToast("Email address copied to clipboard!", "success");
-                  window.location.href = "mailto:imranhossanrahul.dev@gmail.com";
+                  window.location.href = "mailto:info@codalina.com";
               }}
               className="p-2 bg-white/10 rounded-full text-slate-300 hover:text-red-400 transition-colors cursor-pointer" 
               title="Email"

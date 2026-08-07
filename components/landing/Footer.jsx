@@ -44,12 +44,12 @@ export default function Footer() {
               </p>
               <div className="flex flex-wrap gap-3">
                   <a 
-                    href="mailto:imranhossanrahul.dev@gmail.com" 
+                    href="mailto:info@codalina.com" 
                     onClick={(e) => {
                         e.preventDefault();
-                        navigator.clipboard.writeText("imranhossanrahul.dev@gmail.com");
+                        navigator.clipboard.writeText("info@codalina.com");
                         showToast("Email address copied to clipboard!", "success");
-                        window.location.href = "mailto:imranhossanrahul.dev@gmail.com";
+                        window.location.href = "mailto:info@codalina.com";
                     }}
                     className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-red-500 transition-colors shadow-sm cursor-pointer" 
                     title="Email"

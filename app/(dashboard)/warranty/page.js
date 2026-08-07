@@ -172,7 +172,7 @@ export default function WarrantyPage() {
             <div className="flex flex-col sm:flex-row gap-6">
               <div>
                 <p className="text-[12px] font-[600] text-[#86868b] uppercase tracking-[.05em] mb-1">Email</p>
-                <a href="mailto:support@codalina.com" className="text-[16px] text-[#0071e3] hover:underline">support@codalina.com</a>
+                <a href="mailto:info@codalina.com" className="text-[16px] text-[#0071e3] hover:underline">info@codalina.com</a>
               </div>
               <div>
                 <p className="text-[12px] font-[600] text-[#86868b] uppercase tracking-[.05em] mb-1">Phone</p>
