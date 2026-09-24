@@ -40,6 +40,9 @@ export default function ProductDetails({ params }) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [variantGroups, setVariantGroups] = useState([]);
   const [selectedVariants, setSelectedVariants] = useState({});
+  const [selectedLicense, setSelectedLicense] = useState('Personal');
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState(5);
   const [addedToCart, setAddedToCart] = useState(false);
   const [isZooming, setIsZooming] = useState(false);
   const [zoomStyle, setZoomStyle] = useState({ transformOrigin: 'center center' });
@@ -222,8 +225,9 @@ export default function ProductDetails({ params }) {
     return sum;
   }, 0);
   
-  const finalPrice = product ? product.selling_price + additionalPrice : 0;
-  const finalOriginalPrice = product ? (product.original_price || product.selling_price) + additionalPrice : 0;
+  const basePriceMultiplier = selectedLicense === 'Extended' ? 5 : selectedLicense === 'Commercial' ? 2.5 : 1;
+  const finalPrice = product ? (product.selling_price * basePriceMultiplier) + additionalPrice : 0;
+  const finalOriginalPrice = product ? ((product.original_price || product.selling_price) * basePriceMultiplier) + additionalPrice : 0;
   
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
@@ -244,7 +248,7 @@ export default function ProductDetails({ params }) {
     const query = new URLSearchParams({
       productId: product.id,
       quantity,
-      variantSummary: selectedVariantsSummary,
+      variantSummary: isDigital ? `License: ${selectedLicense}` : selectedVariantsSummary,
       finalPrice,
       originalPrice: finalOriginalPrice
     }).toString();
@@ -272,7 +276,7 @@ export default function ProductDetails({ params }) {
         const detailsStr = localStorage.getItem('cartDetails');
         let cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
         cartDetails[product.id.toString()] = {
-          variants: selectedVariantsSummary,
+          variants: isDigital ? `License: ${selectedLicense}` : selectedVariantsSummary,
           finalPrice: finalPrice
         };
         localStorage.setItem('cartDetails', JSON.stringify(cartDetails));
@@ -350,17 +354,48 @@ export default function ProductDetails({ params }) {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-2 mx-4 flex flex-col lg:flex-row gap-6 items-start">
         
-        {/* Left: Image Gallery (Sticky on Desktop) */}
-        <div className="lg:w-5/12 lg:sticky lg:top-[120px] z-10">
-          <div 
-            className="aspect-square rounded-2xl overflow-hidden mb-4 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-zoom-in bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
-            onClick={() => {
-              if (activeImage) setIsLightboxOpen(true);
-            }}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsZooming(true)}
-            onMouseLeave={() => setIsZooming(false)}
-          >
+        {/* Left: Media Viewer (Sticky on Desktop) */}
+        <div className="lg:w-7/12 lg:sticky lg:top-[120px] z-10 flex flex-col gap-4">
+          {isDigital && product.demoUrl ? (
+            <div className="w-full aspect-video rounded-2xl overflow-hidden border border-[#e8e8ed] dark:border-gray-800 bg-[#f5f5f7] dark:bg-[#111827] shadow-sm relative group">
+              <iframe 
+                src={product.demoUrl} 
+                className="w-full h-full border-none"
+                title="Live Demo"
+              />
+              <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/90 backdrop-blur px-3 py-1.5 rounded-full text-[12px] font-semibold text-[#0071e3] shadow-sm">
+                Live Preview
+              </div>
+            </div>
+          ) : isDigital && screenshotGallery.length > 0 ? (
+            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#e8e8ed] dark:border-gray-800 bg-[#f5f5f7] dark:bg-[#111827] relative">
+              <img 
+                src={getOptimizedUrl(activeImage || screenshotGallery[0])} 
+                alt="Product Preview" 
+                className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500"
+                onClick={() => setIsLightboxOpen(true)}
+              />
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                {screenshotGallery.map((img, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setActiveImage(img)}
+                    className={`w-2 h-2 rounded-full transition-all ${activeImage === img ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              <div 
+                className="aspect-square rounded-2xl overflow-hidden mb-2 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-zoom-in bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
+                onClick={() => {
+                  if (activeImage) setIsLightboxOpen(true);
+                }}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={() => setIsZooming(true)}
+                onMouseLeave={() => setIsZooming(false)}
+              >
                 {activeImage ? (
                   <>
                     <img 
@@ -389,10 +424,12 @@ export default function ProductDetails({ params }) {
                   </button>
                 ))}
               </div>
-            </div>
+            </>
+          )}
+        </div>
 
         {/* Right: Scrolling Content */}
-        <div className="lg:w-7/12 flex flex-col gap-3">
+        <div className="lg:w-5/12 flex flex-col gap-3">
           
           {/* Top Row: Brand & Actions (Separated) */}
           <div className="flex items-center justify-between">
@@ -494,8 +531,43 @@ export default function ProductDetails({ params }) {
                 </div>
               )}
 
-              {/* Variants */}
-              {variantGroups.length > 0 && (
+              {isDigital ? (
+                <div className="mb-6 space-y-3 bg-[#efefef] dark:bg-slate-800/50 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-bold text-gray-900 dark:text-white capitalize text-[15px] tracking-wide">Select License:</span>
+                  </div>
+                  <div className="flex flex-col gap-3">
+                    {['Personal', 'Commercial', 'Extended'].map(lic => {
+                      const isSelected = selectedLicense === lic;
+                      let multiplier = 1;
+                      let desc = "For personal, non-commercial projects only.";
+                      if (lic === 'Commercial') { multiplier = 2.5; desc = "Use in client work & commercial products."; }
+                      if (lic === 'Extended') { multiplier = 5; desc = "Resell or bundle in products sold to end-users."; }
+                      
+                      return (
+                        <div 
+                          key={lic} 
+                          onClick={() => setSelectedLicense(lic)}
+                          className={`flex items-start gap-4 p-3 rounded-lg border-2 cursor-pointer transition-all ${isSelected ? 'border-[#0071e3] bg-blue-50/50 dark:bg-blue-900/10' : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-slate-900'}`}
+                        >
+                          <div className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${isSelected ? 'border-[#0071e3]' : 'border-gray-400'}`}>
+                            {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#0071e3]" />}
+                          </div>
+                          <div className="flex flex-col">
+                            <span className={`font-semibold text-[14px] ${isSelected ? 'text-[#0071e3]' : 'text-gray-900 dark:text-white'}`}>{lic}</span>
+                            <span className="text-[12px] text-gray-500 mt-0.5">{desc}</span>
+                          </div>
+                          <div className="ml-auto flex flex-col items-end">
+                            <span className="font-semibold text-gray-900 dark:text-white text-[14px]">
+                              BDT {formatPrice(product.selling_price * multiplier)}
+                            </span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ) : variantGroups.length > 0 && (
                 <div className="mb-6 space-y-5 bg-[#efefef] dark:bg-slate-800/50 p-5 rounded-lg">
                   {variantGroups.map((group, groupIdx) => {
                     const selectedOptIdx = selectedVariants[groupIdx] || 0;
@@ -771,6 +843,88 @@ export default function ProductDetails({ params }) {
           </div>
         </div>
       )}
+
+      {/* Customer Reviews Section */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16 border-t border-[#e8e8ed] dark:border-slate-800 pt-12">
+        <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em]">Customer Reviews</h2>
+        
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Summary & Form */}
+          <div className="lg:w-4/12 flex flex-col gap-6">
+            <div className="bg-[#f5f5f7] dark:bg-slate-800/50 p-6 rounded-2xl border border-[#e8e8ed] dark:border-gray-700">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="text-[48px] font-bold text-[#1d1d1f] dark:text-white leading-none">
+                  {product.averageRating?.toFixed(1) || '0.0'}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <div className="flex text-pink-500">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <Star key={star} size={20} className={star <= Math.round(product.averageRating || 0) ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                    ))}
+                  </div>
+                  <span className="text-[13px] text-[#86868b] font-medium">{product.reviewCount || 0} Ratings</span>
+                </div>
+              </div>
+              <p className="text-[14px] text-gray-600 dark:text-gray-400 mb-6">
+                Only verified buyers can leave a review. This ensures all feedback is genuine and helpful to our community.
+              </p>
+              <div className="flex flex-col gap-3 border-t border-[#e8e8ed] dark:border-gray-700 pt-6">
+                <h4 className="font-semibold text-[#1d1d1f] dark:text-white">Leave a Review</h4>
+                <div className="flex gap-1 text-pink-500 mb-2">
+                  {[1, 2, 3, 4, 5].map(star => (
+                    <button key={star} onClick={() => setReviewRating(star)} className="hover:scale-110 transition">
+                      <Star size={24} className={star <= reviewRating ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                    </button>
+                  ))}
+                </div>
+                <textarea 
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  placeholder="Share your experience..."
+                  className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-[14px] min-h-[100px] outline-none focus:border-[#0071e3] transition"
+                />
+                <button 
+                  onClick={() => alert('Review submitted for moderation.')}
+                  className="bg-[#1d1d1f] dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-lg text-[14px] hover:opacity-80 transition"
+                >
+                  Submit Review
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Review List */}
+          <div className="lg:w-8/12 flex flex-col gap-6">
+            {product.reviews && product.reviews.length > 0 ? (
+              product.reviews.map((rev, i) => (
+                <div key={i} className="border-b border-[#e8e8ed] dark:border-slate-800 pb-6">
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex flex-col gap-1">
+                      <span className="font-bold text-[#1d1d1f] dark:text-white text-[15px]">{rev.name}</span>
+                      <div className="flex items-center gap-2">
+                        <div className="flex text-pink-500">
+                          {[1, 2, 3, 4, 5].map(star => (
+                            <Star key={star} size={14} className={star <= rev.rating ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                          ))}
+                        </div>
+                        {rev.verified && <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded uppercase tracking-wide">Verified Buyer</span>}
+                      </div>
+                    </div>
+                    <span className="text-[12px] text-[#86868b]">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <p className="text-[14px] text-gray-700 dark:text-gray-300 leading-relaxed mt-2">{rev.comment}</p>
+                </div>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center py-12 text-center h-full border-2 border-dashed border-[#e8e8ed] dark:border-gray-800 rounded-2xl">
+                <Star size={48} className="text-gray-200 dark:text-gray-700 mb-4" />
+                <h3 className="text-[18px] font-bold text-[#1d1d1f] dark:text-white mb-2">No reviews yet</h3>
+                <p className="text-[#86868b] text-[14px]">Be the first to share your thoughts on this product.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {/* Lightbox Modal */}
       {isLightboxOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-[#000000]/95 backdrop-blur-xl animate-in fade-in duration-300">
