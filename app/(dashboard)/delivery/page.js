@@ -1,9 +1,9 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { Truck, Scale, Coins, AlertCircle, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Download, ShieldCheck, Tag, BookOpen, Globe, ChevronRight, CheckCircle2, Zap, Package } from 'lucide-react';
 
-export default function DeliveryPolicy() {
+export default function DigitalDeliveryPolicy() {
   return (
     <div className="min-h-screen pb-20 font-sans bg-transparent">
       {/* Hero Section */}
@@ -12,198 +12,107 @@ export default function DeliveryPolicy() {
           <div className="flex items-center gap-2 text-sm text-[#86868b] mb-6">
             <Link href="/" className="hover:text-[#1d1d1f] dark:hover:text-white transition">Home</Link>
             <ChevronRight size={14} />
-            <span className="text-[#1d1d1f] dark:text-white">Delivery Policy</span>
+            <span className="text-[#1d1d1f] dark:text-white">Digital Delivery</span>
           </div>
           <h1 className="text-[32px] sm:text-[40px] md:text-[48px] font-bold text-[#1d1d1f] dark:text-white tracking-tight leading-tight">
-            Fast and Transparent <br className="hidden sm:block" /> Delivery Nationwide.
+            Instant Digital Delivery.<br className="hidden sm:block" /> Always.
           </h1>
           <p className="mt-4 text-[17px] sm:text-[19px] text-[#424245] dark:text-gray-400 max-w-[600px] leading-relaxed">
-            We believe in complete transparency. Our delivery charges are calculated automatically based on your location and the total weight of your items. No hidden fees.
+            All products on Codalina are delivered digitally. No shipping, no waiting. Your download is available the moment your purchase is confirmed.
           </p>
         </div>
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
+
         {/* Core Principles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
           <div className="p-6 rounded-2xl">
-            <Truck size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
-            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Nationwide Coverage</h3>
+            <Zap size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
+            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Instant Access</h3>
             <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed">
-              We deliver to all 64 districts in Bangladesh safely and securely through our trusted logistics partners.
+              Download links are generated and attached to your order the moment payment is confirmed. No delays.
             </p>
           </div>
           <div className="p-6 rounded-2xl">
-            <Scale size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
-            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Weight Based</h3>
+            <Tag size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
+            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Clear Licensing</h3>
             <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed">
-              Charges are strictly based on the total weight of your cart. We group items to keep your delivery cost as low as possible.
+              Every product specifies a license type — Personal, Commercial, or Extended — before you purchase.
             </p>
           </div>
           <div className="p-6 rounded-2xl">
-            <Coins size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
-            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Cash on Delivery</h3>
+            <ShieldCheck size={32} className="text-[#0071e3] mb-4" strokeWidth={1.5} />
+            <h3 className="text-[19px] font-semibold text-[#1d1d1f] dark:text-white mb-2">Secure Downloads</h3>
             <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed">
-              Pay when you receive your product. A nominal 1% risk-handling fee is added for all Cash on Delivery orders.
+              Download links are authenticated and tied to your account. Files are never publicly accessible.
             </p>
           </div>
         </div>
 
-        {/* Zone Pricing */}
+        {/* How It Works */}
         <div className="mb-16">
-          <h2 className="text-[28px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-8">Delivery Zones & Base Rates</h2>
-          
-          <div className="space-y-6">
-            
-            {/* Inside Dhaka */}
-            <div className="border border-[#e8e8ed] dark:border-gray-800 rounded-2xl p-6 sm:p-8 hover:shadow-sm transition">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
+          <h2 className="text-[28px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-8">How It Works</h2>
+          <div className="space-y-4">
+            {[
+              { step: '1', icon: Package, title: 'Browse & Purchase', desc: 'Choose your product and complete the checkout. A confirmation may be made for digital orders.' },
+              { step: '2', icon: CheckCircle2, title: 'Order Confirmed', desc: 'Once your order is marked Confirmed by our team, the download link is attached to your order in the system.' },
+              { step: '3', icon: Download, title: 'Download from Your Orders', desc: 'Visit your Orders page and click the Download button next to the fulfilled order. The file is yours to keep.' },
+              { step: '4', icon: BookOpen, title: 'Read the Docs', desc: 'Every product includes documentation links. Use them to get started quickly and get the most from your purchase.' },
+            ].map(({ step, icon: Icon, title, desc }) => (
+              <div key={step} className="border border-[#e8e8ed] dark:border-gray-800 rounded-2xl p-6 sm:p-8 flex items-start gap-5">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-[#0071e3] text-white flex items-center justify-center font-bold text-[16px]">{step}</div>
                 <div>
-                  <h3 className="text-[22px] font-semibold text-[#1d1d1f] dark:text-white mb-1">Inside Dhaka City</h3>
-                  <p className="text-[15px] text-[#86868b] dark:text-gray-400">Standard delivery within Dhaka metropolitan area</p>
-                </div>
-                <div className="mt-4 sm:mt-0 text-left sm:text-right">
-                  <div className="text-[13px] font-semibold tracking-wider text-[#0071e3] uppercase bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full inline-block">Zone 1</div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Up to 150g</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 55</div>
-                </div>
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Up to 500g</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 65</div>
-                </div>
-                <div className="p-4 rounded-xl border border-blue-200 dark:border-blue-900/50">
-                  <div className="text-[13px] text-[#0071e3] font-medium mb-1">Up to 1 KG (Standard)</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 75</div>
-                </div>
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Over 1 KG</div>
-                  <div className="text-[16px] font-semibold text-[#1d1d1f] dark:text-white mt-1">+BDT 20 <span className="text-[13px] font-normal text-gray-500">per extra KG</span></div>
+                  <h3 className="text-[18px] font-semibold text-[#1d1d1f] dark:text-white mb-1 flex items-center gap-2">
+                    <Icon size={18} strokeWidth={1.5} className="text-[#0071e3]" /> {title}
+                  </h3>
+                  <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed">{desc}</p>
                 </div>
               </div>
-            </div>
-
-            {/* Sub-Urban */}
-            <div className="border border-[#e8e8ed] dark:border-gray-800 rounded-2xl p-6 sm:p-8 hover:shadow-sm transition">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-[22px] font-semibold text-[#1d1d1f] dark:text-white mb-1">Sub-Urban Dhaka</h3>
-                  <p className="text-[15px] text-[#86868b] dark:text-gray-400">Savar, Keraniganj, Dhamrai, Dohar, and Nawabganj</p>
-                </div>
-                <div className="mt-4 sm:mt-0 text-left sm:text-right">
-                  <div className="text-[13px] font-semibold tracking-wider text-purple-600 uppercase bg-purple-50 dark:bg-purple-900/20 px-3 py-1 rounded-full inline-block">Zone 2</div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl border border-purple-200 dark:border-purple-900/30">
-                  <div className="text-[13px] text-purple-600 dark:text-purple-400 font-medium mb-1">Up to 1 KG (Standard)</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 105</div>
-                </div>
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Over 1 KG</div>
-                  <div className="text-[16px] font-semibold text-[#1d1d1f] dark:text-white mt-1">+BDT 20 <span className="text-[13px] font-normal text-gray-500">per extra KG</span></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Outside Dhaka */}
-            <div className="border border-[#e8e8ed] dark:border-gray-800 rounded-2xl p-6 sm:p-8 hover:shadow-sm transition">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-[22px] font-semibold text-[#1d1d1f] dark:text-white mb-1">Outside Dhaka (Nationwide)</h3>
-                  <p className="text-[15px] text-[#86868b] dark:text-gray-400">All other districts and divisions across Bangladesh</p>
-                </div>
-                <div className="mt-4 sm:mt-0 text-left sm:text-right">
-                  <div className="text-[13px] font-semibold tracking-wider text-emerald-600 uppercase bg-emerald-50 dark:bg-emerald-900/20 px-3 py-1 rounded-full inline-block">Zone 3</div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Up to 500g</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 115</div>
-                </div>
-                <div className="p-4 rounded-xl border border-emerald-200 dark:border-emerald-900/30">
-                  <div className="text-[13px] text-emerald-600 dark:text-emerald-400 font-medium mb-1">Up to 1 KG (Standard)</div>
-                  <div className="text-[20px] font-semibold text-[#1d1d1f] dark:text-white">BDT 135</div>
-                </div>
-                <div className="p-4 rounded-xl border border-gray-100 dark:border-gray-800">
-                  <div className="text-[13px] text-[#86868b] dark:text-gray-400 mb-1">Over 1 KG</div>
-                  <div className="text-[16px] font-semibold text-[#1d1d1f] dark:text-white mt-1">+BDT 20 <span className="text-[13px] font-normal text-gray-500">per extra KG</span></div>
-                </div>
-              </div>
-            </div>
-
+            ))}
           </div>
         </div>
 
-        {/* How Weight Works */}
+        {/* License Types */}
         <div className="mb-16">
-          <h2 className="text-[28px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-6">How Weight is Calculated</h2>
-          <div className="prose prose-blue dark:prose-invert max-w-none">
-            <p className="text-[16px] text-[#424245] dark:text-gray-300 leading-relaxed">
-              Every product in our marketplace has a predefined maximum weight based on its category. When you add multiple items to your cart, our system calculates the <strong>total combined weight</strong> of all products.
-            </p>
-            <ul className="text-[16px] text-[#424245] dark:text-gray-300 space-y-3 mt-4">
-              <li className="flex gap-3 items-start">
-                <CheckCircle2 size={20} className="text-emerald-500 shrink-0 mt-0.5" />
-                <span>If you buy 3 items weighing 200g each, your total cart weight is <strong>600g</strong>.</span>
-              </li>
-              <li className="flex gap-3 items-start">
-                <CheckCircle2 size={20} className="text-emerald-500 shrink-0 mt-0.5" />
-                <span>The system then looks at your selected delivery zone and applies the correct charge for 600g.</span>
-              </li>
-              <li className="flex gap-3 items-start">
-                <CheckCircle2 size={20} className="text-emerald-500 shrink-0 mt-0.5" />
-                <span>If your total weight exceeds 1 KG, a flat rate of <strong>BDT 20</strong> is added for every additional KG (rounded up to the next full KG).</span>
-              </li>
-            </ul>
+          <h2 className="text-[28px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-tight mb-8">License Types Explained</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { type: 'Personal', color: 'border-gray-300 dark:border-gray-700', badge: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300', desc: 'Use the product in personal, non-commercial projects. You may not sell, redistribute, or use in client work.' },
+              { type: 'Commercial', color: 'border-blue-300 dark:border-blue-900', badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300', desc: 'Use in client projects and commercial products. Perfect for freelancers and agencies.' },
+              { type: 'Extended', color: 'border-amber-300 dark:border-amber-900', badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300', desc: 'You may resell or include this product in items sold to end-users (e.g., bundled in a SaaS product or theme marketplace).' },
+            ].map(({ type, color, badge, desc }) => (
+              <div key={type} className={`border-2 ${color} rounded-2xl p-6`}>
+                <span className={`inline-block px-3 py-1 rounded-full text-[13px] font-semibold mb-4 ${badge}`}>{type} License</span>
+                <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed">{desc}</p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Cash on Delivery Fee */}
-        <div className="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-6 sm:p-8">
-          <div className="flex items-start gap-4">
-            <div className="shrink-0 mt-1"><AlertCircle size={24} className="text-blue-600 dark:text-blue-400" /></div>
-            <div>
-              <h3 className="text-[20px] font-semibold text-blue-900 dark:text-blue-100 mb-3">Understanding the Cash on Delivery (COD) Fee</h3>
-              <p className="text-[15px] text-blue-800/80 dark:text-blue-200/80 leading-relaxed mb-4">
-                When you choose to pay via Cash on Delivery, a <strong>1% risk-handling fee</strong> is applied by our courier partners for collecting and processing the cash. This fee is calculated based on the <strong>total payable amount</strong> (Subtotal + Base Delivery Charge).
-              </p>
-              
-              <div className="bg-white/60 dark:bg-black/20 rounded-xl p-4 sm:p-5 border border-blue-100/50 dark:border-blue-900/50">
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-3 text-[14px] uppercase tracking-wider">Example Calculation</h4>
-                <div className="space-y-2 text-[14px]">
-                  <div className="flex justify-between text-blue-800 dark:text-blue-200">
-                    <span>Products Subtotal</span>
-                    <span>BDT 1,000</span>
-                  </div>
-                  <div className="flex justify-between text-blue-800 dark:text-blue-200">
-                    <span>Base Delivery Charge (Outside Dhaka, 1KG)</span>
-                    <span>BDT 135</span>
-                  </div>
-                  <div className="border-t border-blue-200/50 dark:border-blue-800/50 pt-2 flex justify-between font-medium text-blue-900 dark:text-blue-100">
-                    <span>Subtotal + Delivery</span>
-                    <span>BDT 1,135</span>
-                  </div>
-                  <div className="flex justify-between text-blue-600 dark:text-blue-400 font-semibold pt-2">
-                    <span>COD Fee (1% of BDT 1,135)</span>
-                    <span>BDT 11.35 (Rounded to BDT 11)</span>
-                  </div>
-                  <div className="border-t border-blue-200/50 dark:border-blue-800/50 mt-2 pt-3 flex justify-between text-[16px] font-bold text-blue-900 dark:text-blue-100">
-                    <span>Total Amount Payable to Courier</span>
-                    <span>BDT 1,146</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Refund Policy */}
+        <div className="border border-[#e8e8ed] dark:border-gray-800 rounded-2xl p-8 bg-[#f5f5f7] dark:bg-slate-900/50">
+          <h2 className="text-[24px] font-bold text-[#1d1d1f] dark:text-white mb-4">Refund Policy for Digital Products</h2>
+          <p className="text-[15px] text-[#424245] dark:text-gray-400 leading-relaxed mb-4">
+            Because digital products are delivered instantly and cannot be returned, all sales are final once the download has been served. However, we offer refunds in the following cases:
+          </p>
+          <ul className="space-y-2 mb-6">
+            {[
+              'The product files are corrupted or incomplete.',
+              'The product description was materially misleading.',
+              'A technical issue prevented you from accessing the download within 48 hours of confirmed order.',
+            ].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-[15px] text-[#1d1d1f] dark:text-gray-300">
+                <CheckCircle2 size={18} className="text-[#0071e3] mt-0.5 shrink-0" strokeWidth={1.5} />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="text-[14px] text-[#86868b]">
+            To request a refund, contact us at{' '}
+            <a href="mailto:info@codalina.com" className="text-[#0071e3] hover:underline">info@codalina.com</a>
+            {' '}with your order ID.
+          </p>
         </div>
 
       </div>

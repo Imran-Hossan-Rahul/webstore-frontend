@@ -7,16 +7,18 @@ export default function MarketFooter() {
     {
       title: "Shop and Learn",
       links: [
-        { label: "Marketplace", href: "/market" },
-        { label: "Smart Watches", href: "/market?category=Watches%20%26%20Wearables" },
-        { label: "Electronics", href: "/market?category=Electronics" },
-        { label: "Accessories", href: "/market?category=Accessories" }
+        { label: "Marketplace", href: "/" },
+        { label: "Source Code", href: "/shop?productType=Source+Code" },
+        { label: "Web Templates", href: "/shop?productType=Web+Template" },
+        { label: "UI Kits & Plugins", href: "/shop?productType=UI+Kit%2FPlugin" },
+        { label: "Scripts & Tools", href: "/shop?productType=Script%2FAutomation" },
       ]
     },
     {
       title: "Account & Services",
       links: [
-        { label: "Manage Account", href: "/admin" },
+        { label: "My Account", href: "/user/settings" },
+        { label: "My Orders", href: "/orders" },
         { label: "Support", href: "mailto:info@codalina.com" }
       ]
     },

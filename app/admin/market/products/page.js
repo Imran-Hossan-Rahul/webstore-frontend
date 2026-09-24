@@ -1,6 +1,7 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import React, { useEffect, useState } from 'react';
+import { PRODUCT_TYPES, LICENSE_TYPES, TECH_STACK_OPTIONS } from '@/utils/digitalProducts';
 import { api } from '@/utils/api';
 import { Plus, X, Image as ImageIcon, Upload, Film, Edit, Eye, Trash2 } from "lucide-react";
 import AppleSpinner from "@/components/ui/AppleSpinner";
@@ -24,7 +25,7 @@ export default function ProductsManager() {
   const [loadingMore, setLoadingMore] = useState(false);
   const limit = 30;
 
-  // Form State
+  // Form State — Core
   const [title, setTitle] = useState('');
   const [sku, setSku] = useState('');
   const [brand, setBrand] = useState('');
@@ -36,25 +37,29 @@ export default function ProductsManager() {
   const [costPrice, setCostPrice] = useState('');
   const [sellingPrice, setSellingPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
-  const [wholesalerId, setWholesalerId] = useState('');
   const [status, setStatus] = useState('Draft');
-  const [mediaFiles, setMediaFiles] = useState([]); // Multiple files
-  const [existingPhotos, setExistingPhotos] = useState([]); // Existing photos on edit
-  const [weight, setWeight] = useState('');
-  const [dimensions, setDimensions] = useState('');
+  const [mediaFiles, setMediaFiles] = useState([]);
+  const [existingPhotos, setExistingPhotos] = useState([]);
   const [tags, setTags] = useState('');
-  const [procurementThreshold, setProcurementThreshold] = useState(20);
-  const [estDeliveryDays, setEstDeliveryDays] = useState(3);
-  const [reportedStockQuantity, setReportedStockQuantity] = useState(0);
   const [isFeatured, setIsFeatured] = useState(false);
   const [isPopular, setIsPopular] = useState(false);
   const [groupId, setGroupId] = useState('');
   const [specifications, setSpecifications] = useState([{ key: '', value: '', isHighlight: false }]);
   const [variantGroups, setVariantGroups] = useState([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]);
-  const [warrantyInfo, setWarrantyInfo] = useState('');
-  const [returnPolicy, setReturnPolicy] = useState('');
-  const [wholesalerSearch, setWholesalerSearch] = useState('');
-  const [showWholesalerDropdown, setShowWholesalerDropdown] = useState(false);
+
+  // Form State — Digital Product Fields
+  const [productType, setProductType] = useState('');
+  const [licenseType, setLicenseType] = useState('Personal');
+  const [demoUrl, setDemoUrl] = useState('');
+  const [documentationUrl, setDocumentationUrl] = useState('');
+  const [techStack, setTechStack] = useState([]); // string[]
+  const [fileFormat, setFileFormat] = useState('');
+  const [fileSize, setFileSize] = useState('');
+  const [version, setVersion] = useState('');
+  const [changelog, setChangelog] = useState([{ version: '', date: '', notes: '' }]);
+  const [downloadUrl, setDownloadUrl] = useState('');
+  const [screenshotFiles, setScreenshotFiles] = useState([]);
+  const [existingScreenshots, setExistingScreenshots] = useState([]);
 
   useEffect(() => {
     fetchWholesalers();
@@ -146,6 +151,7 @@ export default function ProductsManager() {
     setErrorMsg(null);
     try {
       const formData = new FormData();
+      // ── Core fields ──────────────────────────────────────────────────────
       formData.append('title', title);
       formData.append('sku', sku);
       formData.append('brand', brand);
@@ -156,32 +162,44 @@ export default function ProductsManager() {
       formData.append('cost_price', parseFloat(costPrice) || 0);
       formData.append('selling_price', parseFloat(sellingPrice) || 0);
       formData.append('original_price', parseFloat(originalPrice) || 0);
-      formData.append('wholesaler_id', wholesalerId);
       formData.append('status', status);
-      formData.append('weight', parseFloat(weight) || 0);
-      formData.append('dimensions', dimensions);
       formData.append('tags', tags);
       formData.append('specifications', JSON.stringify(specifications.filter(s => s.key && s.value)));
       formData.append('variantGroups', JSON.stringify(variantGroups.filter(g => g.name && g.options.length > 0)));
-      formData.append('procurement_threshold', procurementThreshold);
-      formData.append('est_delivery_days', estDeliveryDays);
-      formData.append('reportedStockQuantity', reportedStockQuantity);
       formData.append('isFeatured', isFeatured);
       formData.append('isPopular', isPopular);
       formData.append('groupId', groupId);
-      formData.append('warranty_info', warrantyInfo);
-      formData.append('return_policy', returnPolicy);
 
-      // Append all selected files
+      // ── Digital product fields ───────────────────────────────────────────
+      formData.append('productType', productType);
+      formData.append('licenseType', licenseType);
+      formData.append('demoUrl', demoUrl);
+      formData.append('documentationUrl', documentationUrl);
+      formData.append('techStack', JSON.stringify(techStack));
+      formData.append('fileFormat', fileFormat);
+      formData.append('fileSize', fileSize);
+      formData.append('version', version);
+      formData.append('changelog', JSON.stringify(changelog.filter(c => c.version && c.notes)));
+      formData.append('downloadUrl', downloadUrl);
+
+      // ── Thumbnail photos ─────────────────────────────────────────────────
       if (mediaFiles && mediaFiles.length > 0) {
         Array.from(mediaFiles).forEach(file => {
           formData.append('media', file);
         });
       }
-
-      // If editing and we want to keep existing photos
       if (editingProductId) {
         formData.append('photos', JSON.stringify(existingPhotos));
+      }
+
+      // ── Screenshot gallery ───────────────────────────────────────────────
+      if (screenshotFiles && screenshotFiles.length > 0) {
+        Array.from(screenshotFiles).forEach(file => {
+          formData.append('screenshots', file);
+        });
+      }
+      if (editingProductId) {
+        formData.append('screenshotGallery', JSON.stringify(existingScreenshots));
       }
       
       let res;
@@ -195,7 +213,17 @@ export default function ProductsManager() {
         setShowModal(false);
         setEditingProductId(null);
         // Reset form
-        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setIsPopular(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setWarrantyInfo(''); setReturnPolicy('');
+        setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId('');
+        setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice('');
+        setMediaFiles([]); setExistingPhotos([]); setTags('');
+        setIsFeatured(false); setIsPopular(false); setGroupId('');
+        setSpecifications([{ key: '', value: '', isHighlight: false }]);
+        setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]);
+        // Reset digital fields
+        setProductType(''); setLicenseType('Personal'); setDemoUrl(''); setDocumentationUrl('');
+        setTechStack([]); setFileFormat(''); setFileSize(''); setVersion('');
+        setChangelog([{ version: '', date: '', notes: '' }]); setDownloadUrl('');
+        setScreenshotFiles([]); setExistingScreenshots([]);
         fetchProducts();
       }
     } catch (err) {
@@ -219,6 +247,7 @@ export default function ProductsManager() {
 
   const handleEditClick = (p) => {
     setEditingProductId(p.id);
+    // Core fields
     setTitle(p.title || '');
     setSku(p.sku || '');
     setBrand(p.brand || '');
@@ -229,42 +258,48 @@ export default function ProductsManager() {
     setCostPrice(p.cost_price || '');
     setSellingPrice(p.selling_price || '');
     setOriginalPrice(p.original_price || '');
-    setWholesalerId(p.wholesaler?.id || p.wholesaler_id || '');
     setStatus(p.status || 'Draft');
-    setWeight(p.weight || '');
-    setDimensions(p.dimensions || '');
     setTags(p.tags || '');
-    setProcurementThreshold(p.procurement_threshold !== undefined ? p.procurement_threshold : 20);
-    setEstDeliveryDays(p.est_delivery_days !== undefined ? p.est_delivery_days : 3);
-    setReportedStockQuantity(p.reportedStockQuantity !== undefined ? p.reportedStockQuantity : 0);
     setIsFeatured(p.isFeatured || false);
     setIsPopular(p.isPopular || false);
     setGroupId(p.groupId || '');
-    setWarrantyInfo(p.warranty_info || '');
-    setReturnPolicy(p.return_policy || '');
     try {
       const parsedSpecs = typeof p.specifications === 'string' ? JSON.parse(p.specifications) : p.specifications;
-      setSpecifications(parsedSpecs && parsedSpecs.length > 0 ? parsedSpecs : []);
-    } catch(e) {
-      setSpecifications([]);
-    }
+      setSpecifications(parsedSpecs && parsedSpecs.length > 0 ? parsedSpecs : [{ key: '', value: '', isHighlight: false }]);
+    } catch(e) { setSpecifications([{ key: '', value: '', isHighlight: false }]); }
     try {
       const parsedVars = typeof p.variantGroups === 'string' ? JSON.parse(p.variantGroups) : p.variantGroups;
       setVariantGroups(parsedVars && parsedVars.length > 0 ? parsedVars : []);
-    } catch(e) {
-      setVariantGroups([]);
-    }
-    
+    } catch(e) { setVariantGroups([]); }
     let initialPhotos = [];
     if (p.photos) {
-      try {
-        initialPhotos = typeof p.photos === 'string' ? JSON.parse(p.photos) : p.photos;
-      } catch (e) {
-        initialPhotos = [];
-      }
+      try { initialPhotos = typeof p.photos === 'string' ? JSON.parse(p.photos) : p.photos; } catch (e) {}
     }
     setExistingPhotos(initialPhotos);
     setMediaFiles([]);
+    // Digital product fields
+    setProductType(p.productType || '');
+    setLicenseType(p.licenseType || 'Personal');
+    setDemoUrl(p.demoUrl || '');
+    setDocumentationUrl(p.documentationUrl || '');
+    try {
+      const ts = typeof p.techStack === 'string' ? JSON.parse(p.techStack) : p.techStack;
+      setTechStack(Array.isArray(ts) ? ts : []);
+    } catch(e) { setTechStack([]); }
+    setFileFormat(p.fileFormat || '');
+    setFileSize(p.fileSize || '');
+    setVersion(p.version || '');
+    try {
+      const cl = typeof p.changelog === 'string' ? JSON.parse(p.changelog) : p.changelog;
+      setChangelog(Array.isArray(cl) && cl.length > 0 ? cl : [{ version: '', date: '', notes: '' }]);
+    } catch(e) { setChangelog([{ version: '', date: '', notes: '' }]); }
+    setDownloadUrl(p.downloadUrl || '');
+    let initialScreenshots = [];
+    if (p.screenshotGallery) {
+      try { initialScreenshots = typeof p.screenshotGallery === 'string' ? JSON.parse(p.screenshotGallery) : p.screenshotGallery; } catch(e) {}
+    }
+    setExistingScreenshots(initialScreenshots);
+    setScreenshotFiles([]);
     setShowModal(true);
   };
 
@@ -272,13 +307,22 @@ export default function ProductsManager() {
     <div className="p-4 md:p-6 w-full max-w-full text-white">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6 md:mb-8">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold mb-1 text-blue-400">Products Inventory</h1>
-          <p className="text-gray-400 text-sm">Manage all marketplace products and monitor stock levels.</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-1 text-blue-400">Digital Products</h1>
+          <p className="text-gray-400 text-sm">Manage all digital marketplace listings — templates, source code, tools, and UI kits.</p>
         </div>
         <button 
           onClick={() => {
             setEditingProductId(null);
-            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId(''); setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice(''); setMediaFiles([]); setExistingPhotos([]); setWeight(''); setDimensions(''); setTags(''); setReportedStockQuantity(0); setIsFeatured(false); setIsPopular(false); setGroupId(''); setSpecifications([{ key: '', value: '', isHighlight: false }]); setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]); setWarrantyInfo(''); setReturnPolicy('');
+            setTitle(''); setSku(''); setBrand(''); setCategoryId(''); setSubCategoryId(''); setChildCategoryId('');
+            setDescription(''); setCostPrice(''); setSellingPrice(''); setOriginalPrice('');
+            setMediaFiles([]); setExistingPhotos([]); setTags('');
+            setIsFeatured(false); setIsPopular(false); setGroupId('');
+            setSpecifications([{ key: '', value: '', isHighlight: false }]);
+            setVariantGroups([{ name: '', options: [{ label: '', priceDifference: 0, imageIndex: '' }] }]);
+            setProductType(''); setLicenseType('Personal'); setDemoUrl(''); setDocumentationUrl('');
+            setTechStack([]); setFileFormat(''); setFileSize(''); setVersion('');
+            setChangelog([{ version: '', date: '', notes: '' }]); setDownloadUrl('');
+            setScreenshotFiles([]); setExistingScreenshots([]);
             setShowModal(true);
           }}
           className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition shadow-lg shadow-blue-900/20 shrink-0"
@@ -381,9 +425,14 @@ export default function ProductsManager() {
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-gray-100 truncate leading-tight">{p.title}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-[11px] text-gray-500">{p.wholesaler?.name || 'Unknown'}</span>
+                  {p.productType && (
+                    <span className="text-[10px] font-bold text-violet-400 bg-violet-900/20 border border-violet-900/40 px-1.5 py-0.5 rounded">{p.productType}</span>
+                  )}
+                  {p.licenseType && (
+                    <span className="text-[10px] text-blue-400">{p.licenseType}</span>
+                  )}
                   <span className="text-gray-700 text-[11px]">·</span>
-                  <span className="text-[11px] text-gray-400">৳{p.cost_price}</span>
+                  <span className="text-[11px] text-gray-400">cost ৳{p.cost_price}</span>
                   <span className="text-gray-700 text-[11px]">→</span>
                   <span className="text-[12px] font-bold text-green-400">৳{p.selling_price}</span>
                 </div>
@@ -456,7 +505,7 @@ export default function ProductsManager() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-100 text-sm truncate">{p.title}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{p.wholesaler?.name || 'Unknown'}</p>
+                {p.productType && <p className="text-[10px] text-violet-400 mt-0.5">{p.productType} · {p.licenseType || 'Personal'}</p>}
                 <div className="flex items-center gap-2 mt-2 flex-wrap">
                   <span className="text-sm font-bold text-green-400">BDT {p.selling_price}</span>
                   <span className="text-xs text-gray-600">·</span>
@@ -615,65 +664,40 @@ export default function ProductsManager() {
                   </div>
                 </div>
 
-                {/* SECTION: Pricing & Inventory */}
+                {/* SECTION: Pricing */}
                 <div>
-                  <h4 className="text-lg font-semibold text-blue-400 mb-3 border-b border-gray-800 pb-2">Pricing & Inventory</h4>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3 border-b border-gray-800 pb-2">Pricing</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Cost Price (BDT) *</label>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Cost Price (internal) *</label>
                       <input 
                         required
                         type="number" 
                         value={costPrice} onChange={(e) => setCostPrice(e.target.value)}
                         className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Wholesaler price"
+                        placeholder="Your cost"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Selling Price (BDT) *</label>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Selling Price *</label>
                       <input 
                         required
                         type="number" 
                         value={sellingPrice} onChange={(e) => setSellingPrice(e.target.value)}
                         className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Retail price"
+                        placeholder="Customer-facing price"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Original Price (BDT)</label>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Original Price (crossed-out)</label>
                       <input 
                         type="number" 
                         value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)}
                         className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Crossed-out price"
-                        title="If set higher than selling price, this will show as a crossed-out old price"
+                        placeholder="e.g. pre-sale price"
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Reported Stock Quantity *</label>
-                      <input 
-                        required
-                        type="number" 
-                        value={reportedStockQuantity} onChange={(e) => setReportedStockQuantity(e.target.value)}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Wholesaler's available stock"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Procurement Threshold (Optional)</label>
-                      <input 
-                        type="number" 
-                        value={procurementThreshold} onChange={(e) => setProcurementThreshold(Math.min(e.target.value, reportedStockQuantity))}
-                        max={reportedStockQuantity}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Auto order below this count"
-                      />
-                      <p className="text-xs text-gray-500 mt-1">Cannot exceed reported stock.</p>
-                    </div>
-                  </div>
-                  
                   {costPrice && sellingPrice && (
                     <div className="mt-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700 flex justify-between items-center">
                       <span className="text-gray-300 text-sm">Estimated Margin:</span>
@@ -689,100 +713,151 @@ export default function ProductsManager() {
                   )}
                 </div>
 
-                {/* SECTION: Logistics & Supplier */}
+                {/* SECTION: Digital Product Details */}
                 <div>
-                  <h4 className="text-lg font-semibold text-blue-400 mb-3 border-b border-gray-800 pb-2">Logistics & Supplier</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Select Wholesaler *</label>
-                      <div className="relative">
-                        <input 
-                          type="text" 
-                          value={wholesalerSearch}
-                          onChange={(e) => {
-                            setWholesalerSearch(e.target.value);
-                            setShowWholesalerDropdown(true);
-                          }}
-                          onFocus={() => setShowWholesalerDropdown(true)}
-                          className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                          placeholder={wholesalerId ? wholesalers.find(w => w._id === wholesalerId)?.name || "-- Search Wholesaler --" : "-- Search Wholesaler --"}
-                        />
-                        {showWholesalerDropdown && (
-                          <div className="fixed inset-0 z-40" onClick={() => setShowWholesalerDropdown(false)}></div>
-                        )}
-                        {showWholesalerDropdown && (
-                          <div className="absolute z-50 w-full mt-1 bg-gray-900 border border-gray-700 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                            {wholesalers.filter(w => w.name.toLowerCase().includes(wholesalerSearch.toLowerCase())).map(w => (
-                              <div 
-                                key={w._id} 
-                                className="px-4 py-3 hover:bg-gray-800 cursor-pointer text-gray-200 border-b border-gray-800/50 last:border-0"
-                                onClick={() => {
-                                  setWholesalerId(w._id);
-                                  setWholesalerSearch(w.name);
-                                  setShowWholesalerDropdown(false);
-                                }}
-                              >
-                                {w.name}
-                              </div>
-                            ))}
-                            {wholesalers.filter(w => w.name.toLowerCase().includes(wholesalerSearch.toLowerCase())).length === 0 && (
-                              <div className="px-4 py-3 text-gray-500">No wholesalers found matching &quot;{wholesalerSearch}&quot;</div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Est. Delivery Days (Optional)</label>
-                      <input 
-                        type="number" 
-                        value={estDeliveryDays} onChange={(e) => setEstDeliveryDays(e.target.value)}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="Days to restock"
-                      />
-                    </div>
-                  </div>
+                  <h4 className="text-lg font-semibold text-blue-400 mb-3 border-b border-gray-800 pb-2">Digital Product Details</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Weight (kg) (Optional)</label>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Product Type *</label>
+                      <select 
+                        required
+                        value={productType} onChange={(e) => setProductType(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
+                      >
+                        <option value="" disabled>Select type...</option>
+                        {PRODUCT_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">License Type *</label>
+                      <select 
+                        required
+                        value={licenseType} onChange={(e) => setLicenseType(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition appearance-none"
+                      >
+                        {LICENSE_TYPES.map(l => <option key={l.value} value={l.value}>{l.label} — {l.description}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Demo / Live Preview URL</label>
                       <input 
-                        type="number" 
-                        step="0.01"
-                        value={weight} onChange={(e) => setWeight(e.target.value)}
+                        type="url"
+                        value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)}
                         className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="e.g. 1.5"
+                        placeholder="https://demo.example.com"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Dimensions (L x W x H) (Optional)</label>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Documentation URL</label>
                       <input 
-                        type="text" 
-                        value={dimensions} onChange={(e) => setDimensions(e.target.value)}
+                        type="url"
+                        value={documentationUrl} onChange={(e) => setDocumentationUrl(e.target.value)}
                         className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="e.g. 30x20x10 cm"
+                        placeholder="https://docs.example.com"
                       />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">File Format</label>
+                      <input 
+                        type="text"
+                        value={fileFormat} onChange={(e) => setFileFormat(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                        placeholder="e.g. ZIP, .fig, .sketch, .jsx"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">File Size</label>
+                      <input 
+                        type="text"
+                        value={fileSize} onChange={(e) => setFileSize(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                        placeholder="e.g. 24 MB"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Current Version</label>
+                      <input 
+                        type="text"
+                        value={version} onChange={(e) => setVersion(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                        placeholder="e.g. 2.1.0"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Secure Download URL <span className="text-red-400">🔒 Admin only</span></label>
+                      <input 
+                        type="url"
+                        value={downloadUrl} onChange={(e) => setDownloadUrl(e.target.value)}
+                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition font-mono text-sm"
+                        placeholder="https://cdn.codalina.com/files/product.zip"
+                        autoComplete="off"
+                      />
+                      <p className="text-xs text-gray-600 mt-1">Never exposed to the customer-facing UI. Only served after verified purchase.</p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Warranty Information (Optional)</label>
-                      <input 
-                        type="text" 
-                        value={warrantyInfo} onChange={(e) => setWarrantyInfo(e.target.value)}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="e.g. 1 Year Brand Warranty"
-                      />
+
+                  {/* Tech Stack Tags */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Tech Stack</label>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {techStack.map(tag => (
+                        <span key={tag} className="flex items-center gap-1 bg-blue-900/30 text-blue-300 border border-blue-800/50 text-xs px-2.5 py-1 rounded-full">
+                          {tag}
+                          <button type="button" onClick={() => setTechStack(techStack.filter(t => t !== tag))} className="text-blue-400 hover:text-white transition ml-1">
+                            <X size={12} />
+                          </button>
+                        </span>
+                      ))}
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-400 mb-1.5">Return Policy (Optional)</label>
-                      <input 
-                        type="text" 
-                        value={returnPolicy} onChange={(e) => setReturnPolicy(e.target.value)}
-                        className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                        placeholder="e.g. 14 Days Free Return"
-                      />
+                    <select
+                      value=""
+                      onChange={(e) => { if (e.target.value && !techStack.includes(e.target.value)) setTechStack([...techStack, e.target.value]); }}
+                      className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 transition appearance-none text-sm"
+                    >
+                      <option value="">+ Add a technology...</option>
+                      {TECH_STACK_OPTIONS.filter(t => !techStack.includes(t)).map(t => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Changelog */}
+                  <div className="mt-4">
+                    <h5 className="text-sm font-semibold text-gray-400 mb-2 border-b border-gray-800 pb-1">Version Changelog</h5>
+                    <div className="space-y-3">
+                      {changelog.map((entry, idx) => (
+                        <div key={idx} className="grid grid-cols-5 gap-2 items-start">
+                          <input type="text" value={entry.version} onChange={(e) => { const c=[...changelog]; c[idx].version=e.target.value; setChangelog(c); }}
+                            placeholder="v2.0.0" className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500 transition col-span-1" />
+                          <input type="date" value={entry.date} onChange={(e) => { const c=[...changelog]; c[idx].date=e.target.value; setChangelog(c); }}
+                            className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500 transition col-span-1" />
+                          <input type="text" value={entry.notes} onChange={(e) => { const c=[...changelog]; c[idx].notes=e.target.value; setChangelog(c); }}
+                            placeholder="What changed?" className="bg-gray-950 border border-gray-800 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-blue-500 transition col-span-2" />
+                          <button type="button" onClick={() => setChangelog(changelog.filter((_,i)=>i!==idx))} className="p-2 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition"><X size={14}/></button>
+                        </div>
+                      ))}
+                      <button type="button" onClick={() => setChangelog([...changelog, { version: '', date: '', notes: '' }])}
+                        className="text-xs text-blue-400 hover:text-blue-300 border border-blue-900/40 px-3 py-1.5 rounded-lg transition">+ Add Changelog Entry</button>
                     </div>
                   </div>
+
+                  {/* Screenshot Gallery Uploader */}
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-400 mb-2">Screenshot Gallery (separate from thumbnail)</label>
+                    {existingScreenshots.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {existingScreenshots.map((url, idx) => (
+                          <div key={idx} className="relative w-20 h-20">
+                            <img src={url} alt={`Screenshot ${idx+1}`} className="w-full h-full object-cover rounded-lg border border-gray-700" />
+                            <button type="button" onClick={() => setExistingScreenshots(existingScreenshots.filter((_,i)=>i!==idx))}
+                              className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 rounded-full text-white flex items-center justify-center"><X size={10}/></button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    <input type="file" multiple accept="image/*" onChange={(e) => setScreenshotFiles(e.target.files)}
+                      className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-gray-400 text-sm file:mr-3 file:py-1 file:px-3 file:rounded-full file:border-0 file:bg-blue-900/30 file:text-blue-300 hover:file:bg-blue-800/40 transition" />
+                    <p className="text-xs text-gray-600 mt-1">These appear in the product detail screenshot gallery section.</p>
+                  </div>
+                </div>
 
                   {/* SECTION: Specifications */}
                   <div className="mt-6">
@@ -978,7 +1053,6 @@ export default function ProductsManager() {
                       </button>
                     </div>
                   </div>
-                </div>
 
                 {/* SECTION: Content & Display */}
                 <div>

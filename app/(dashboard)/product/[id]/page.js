@@ -3,7 +3,8 @@ import React, { useEffect, useState, useContext, useTransition } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Star, Truck, ShieldCheck, Undo2, ShoppingCart, CreditCard, ChevronRight, ChevronLeft, X, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit, ZoomIn } from "lucide-react";
+import { Star, Download, Truck, ShieldCheck, Globe, FileCode2, BookOpen, ShoppingCart, CreditCard, ChevronRight, ChevronLeft, X, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit, ZoomIn, Zap, Tag } from "lucide-react";
+import { isDigitalProduct, PRODUCT_TYPE_COLORS, safeParseJSON } from "@/utils/digitalProducts";
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useShare } from "@/hooks/useShare";
 import { api } from "@/utils/api";
@@ -45,6 +46,11 @@ export default function ProductDetails({ params }) {
   const [categories, setCategories] = useState([]);
   const [isPending, startTransition] = useTransition();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  // Digital product parsed fields
+  const [techStackTags, setTechStackTags] = useState([]);
+  const [changelogEntries, setChangelogEntries] = useState([]);
+  const [screenshotGallery, setScreenshotGallery] = useState([]);
+  const [changelogOpen, setChangelogOpen] = useState(false);
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -67,50 +73,7 @@ export default function ProductDetails({ params }) {
     }
   }, [id]);
 
-  useEffect(() => {
-    // Determine base limits based on Bangladesh Time
-    const bdTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Dhaka" });
-    const bdHour = new Date(bdTime).getHours();
-    
-    let minLimit = 15;
-    let maxLimit = 35;
-
-    if (bdHour >= 0 && bdHour < 7) {
-      // Midnight to early morning (Low)
-      minLimit = 2;
-      maxLimit = 6;
-    } else if (bdHour >= 7 && bdHour < 12) {
-      // Morning (Medium)
-      minLimit = 6;
-      maxLimit = 12;
-    } else if (bdHour >= 12 && bdHour < 18) {
-      // Afternoon (High)
-      minLimit = 12;
-      maxLimit = 16;
-    } else {
-      // Evening/Night (Peak)
-      minLimit = 16;
-      maxLimit = 20;
-    }
-
-    // Set initial random within range
-    setViewerCount(Math.floor(Math.random() * (maxLimit - minLimit + 1)) + minLimit);
-    
-    const interval = setInterval(() => {
-      setViewerCount(prev => {
-        // Change between -3 and +3
-        const change = Math.floor(Math.random() * 7) - 3;
-        let nextCount = prev + change;
-        
-        if (nextCount < minLimit) nextCount = minLimit;
-        if (nextCount > maxLimit) nextCount = maxLimit;
-        
-        return nextCount;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  // No fake viewer count — removed (dark pattern)
 
   useEffect(() => {
     if (id) {
@@ -178,6 +141,9 @@ export default function ProductDetails({ params }) {
               setSelectedVariants(initialSelections);
             }
           } catch(e) {}
+          setTechStackTags(safeParseJSON(data.techStack, []));
+          setChangelogEntries(safeParseJSON(data.changelog, []));
+          setScreenshotGallery(safeParseJSON(data.screenshotGallery, []));
         })
         .catch(err => console.error(err))
         .finally(() => setLoading(false));
@@ -245,6 +211,8 @@ export default function ProductDetails({ params }) {
   try {
     specs = product.specifications ? JSON.parse(product.specifications) : [];
   } catch(e) {}
+  
+  const isDigital = isDigitalProduct(product);
 
   const additionalPrice = variantGroups.reduce((sum, group, idx) => {
     const selectedOptIdx = selectedVariants[idx];
@@ -437,14 +405,7 @@ export default function ProductDetails({ params }) {
             </div>
             
             <div className="flex items-center gap-2">
-              <div className="relative group flex items-center gap-1.5 text-[#1f2937] font-bold mr-2 cursor-help">
-                <Eye size={18} />
-                <span className="transition-all duration-300">{viewerCount}</span>
-                {/* Tooltip */}
-                <div className="absolute top-full right-0 mt-2 px-3 py-2 bg-gray-900 dark:bg-slate-800 text-white text-[12px] font-medium rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50 border border-gray-800 dark:border-white/10">
-                  {viewerCount} people viewing this product right now
-                </div>
-              </div>
+              {/* No fake viewer count */}
               <button 
                 onClick={handleLike}
                 className={`w-9 h-9 border border-[#111827] flex items-center justify-center rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition ${isLiked ? 'text-pink-500 border-pink-200 dark:border-pink-900' : 'text-gray-700 dark:text-gray-300'}`}
@@ -584,7 +545,7 @@ export default function ProductDetails({ params }) {
               )}
 
               <div className="flex flex-col gap-4 mt-6">
-                  {/* Buttons */}
+                  {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <button 
                       onClick={() => {
@@ -617,54 +578,135 @@ export default function ProductDetails({ params }) {
                       {isPending ? (
                         <AppleSpinner size={18} className="text-white" />
                       ) : (
-                        <><ShoppingBag size={18} /> Buy</>
+                        <><ShoppingBag size={18} /> {isDigital ? 'Get License' : 'Buy'}</>
                       )}
                     </button>
                   </div>  
                 
-                {/* Warranty */}
-                {product.warranty_info ? (
-                  <Link href="/warranty" className="bg-[#f5f5f7] hover:bg-[#e8e8ed] dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white transition group border border-transparent">
-                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#0071e3]" /></div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-[16px] leading-tight capitalize">{product.warranty_info}</span>
-                      <span className="text-[12.5px] text-[#86868b] mt-0.5 group-hover:text-[#1d1d1f] transition">View Policy →</span>
+                {/* Digital: License & Instant Delivery block */}
+                {isDigital ? (
+                  <>
+                    {/* License Block */}
+                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center gap-4 border border-[#e8e8ed] dark:border-gray-700">
+                      <div className="shrink-0"><Tag size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                      <div className="flex flex-col">
+                        <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white">{product.licenseType || 'Personal'} License</span>
+                        <span className="text-[12.5px] text-[#86868b] mt-0.5">
+                          {product.licenseType === 'Commercial' && 'Use in client work & commercial products.'}
+                          {product.licenseType === 'Extended' && 'Resell or bundle in products sold to end-users.'}
+                          {(!product.licenseType || product.licenseType === 'Personal') && 'For personal, non-commercial projects only.'}
+                        </span>
+                      </div>
                     </div>
-                  </Link>
-                ) : (
-                  <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#86868b] border border-[#e8e8ed] dark:border-gray-700">
-                    <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="opacity-40" /></div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-[16px] leading-tight">No Warranty</span>
-                      <span className="text-[12.5px] mt-0.5">Not applicable for this item</span>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Delivery & Weight Info */}
-                <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700 mt-2">
-                  <div className="flex items-start gap-4">
-                    <div className="shrink-0 mt-1"><Truck size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
-                    <div className="flex flex-col flex-1">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white">Delivery Details</span>
-                        {product.weightInGrams > 0 && (
-                          <span className="text-[12px] font-semibold bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 shadow-sm text-gray-700 dark:text-gray-300">
-                            Parcel Weight: {product.weightInGrams >= 1000 ? `${(product.weightInGrams / 1000).toFixed(1)}kg` : `${product.weightInGrams}g`}
+                    {/* Instant Download Block */}
+                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700">
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1"><Download size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                        <div className="flex flex-col flex-1">
+                          <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white mb-1">Instant Digital Delivery</span>
+                          <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
+                            After purchase, your download link will be available in your Orders page. No waiting, no shipping.
                           </span>
+                          <div className="flex flex-wrap gap-3 text-[12px] text-[#86868b]">
+                            {product.fileFormat && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">📦 {product.fileFormat}</span>}
+                            {product.fileSize && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">💾 {product.fileSize}</span>}
+                            {product.version && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">🔖 v{product.version}</span>}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Demo / Docs CTAs */}
+                    {(product.demoUrl || product.documentationUrl) && (
+                      <div className="flex gap-2">
+                        {product.demoUrl && (
+                          <a href={product.demoUrl} target="_blank" rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-[14px] border border-[#0071e3] text-[#0071e3] text-[14px] font-normal hover:bg-[#0071e3] hover:text-white transition">
+                            <Globe size={16} /> Live Preview
+                          </a>
+                        )}
+                        {product.documentationUrl && (
+                          <a href={product.documentationUrl} target="_blank" rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-[14px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-[14px] font-normal hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+                            <BookOpen size={16} /> Documentation
+                          </a>
                         )}
                       </div>
-                      <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
-                        Delivery charges are calculated at checkout based on your location and the total weight of your order. Note: The parcel weight includes the product, packaging box, invoice, and poly. Cash on Delivery is available!
-                      </span>
-                      <Link href="/delivery" className="text-[13px] font-medium text-[#0071e3] hover:underline flex items-center gap-1 group w-fit">
-                        View Delivery Policy <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                    )}
+                    {/* Tech Stack */}
+                    {techStackTags.length > 0 && (
+                      <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700">
+                        <span className="text-[12px] font-semibold uppercase tracking-wide text-[#86868b] block mb-2">Built With</span>
+                        <div className="flex flex-wrap gap-2">
+                          {techStackTags.map(tag => (
+                            <span key={tag} className="text-[12px] px-2.5 py-1 bg-white dark:bg-slate-700 rounded-full border border-gray-200 dark:border-gray-600 text-[#1d1d1f] dark:text-gray-200">{tag}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {/* Changelog Accordion */}
+                    {changelogEntries.length > 0 && (
+                      <div className="border border-[#e8e8ed] dark:border-gray-700 rounded-[14px] overflow-hidden">
+                        <button onClick={() => setChangelogOpen(o => !o)}
+                          className="w-full flex items-center justify-between px-4 py-3 bg-[#f5f5f7] dark:bg-slate-800/50 text-[14px] font-semibold text-[#1d1d1f] dark:text-white">
+                          <span>Version History</span>
+                          <ChevronRight size={16} className={`transition-transform ${changelogOpen ? 'rotate-90' : ''}`} />
+                        </button>
+                        {changelogOpen && (
+                          <div className="divide-y divide-[#e8e8ed] dark:divide-gray-700">
+                            {changelogEntries.map((entry, i) => (
+                              <div key={i} className="px-4 py-3">
+                                <div className="flex items-center gap-2 mb-0.5">
+                                  <span className="text-[12px] font-bold text-[#0071e3]">v{entry.version}</span>
+                                  {entry.date && <span className="text-[11px] text-[#86868b]">{new Date(entry.date).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })}</span>}
+                                </div>
+                                <p className="text-[13px] text-[#424245] dark:text-gray-400">{entry.notes}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/* Legacy Physical: Warranty */}
+                    {product.warranty_info ? (
+                      <Link href="/warranty" className="bg-[#f5f5f7] hover:bg-[#e8e8ed] dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white transition group border border-transparent">
+                        <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-[16px] leading-tight capitalize">{product.warranty_info}</span>
+                          <span className="text-[12.5px] text-[#86868b] mt-0.5 group-hover:text-[#1d1d1f] transition">View Policy →</span>
+                        </div>
                       </Link>
+                    ) : (
+                      <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#86868b] border border-[#e8e8ed] dark:border-gray-700">
+                        <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="opacity-40" /></div>
+                        <div className="flex flex-col">
+                          <span className="font-bold text-[16px] leading-tight">No Warranty</span>
+                          <span className="text-[12.5px] mt-0.5">Not applicable for this item</span>
+                        </div>
+                      </div>
+                    )}
+                    {/* Legacy Physical: Delivery */}
+                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700 mt-2">
+                      <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-1"><Truck size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                        <div className="flex flex-col flex-1">
+                          <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white mb-1">Delivery Details</span>
+                          <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
+                            Cash on Delivery available. Charges calculated at checkout based on location.
+                          </span>
+                          <Link href="/delivery" className="text-[13px] font-medium text-[#0071e3] hover:underline flex items-center gap-1 group w-fit">
+                            View Delivery Policy <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                          </Link>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  </>
+                )}
             </div>
+          </div>
+
           </div>
 
           {/* Specifications (Conditional) */}
@@ -691,7 +733,24 @@ export default function ProductDetails({ params }) {
           )}
 
         </div>
+
       </div>
+
+      {/* Screenshot Gallery — Digital Products Only */}
+      {isDigital && screenshotGallery.length > 0 && (
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+          <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-6 tracking-[-0.01em]">Screenshots</h2>
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+            {screenshotGallery.map((img, idx) => (
+              <div key={idx} className="shrink-0 snap-start rounded-xl overflow-hidden border border-[#e8e8ed] dark:border-gray-700 cursor-pointer hover:opacity-90 transition"
+                style={{ minWidth: '60%', maxWidth: '60%' }}
+                onClick={() => { setActiveImage(img); setIsLightboxOpen(true); }}>
+                <img src={getOptimizedUrl(img)} alt={`Screenshot ${idx + 1}`} className="w-full h-auto object-cover" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Description (Conditional) - Appears after the sticky image container ends */}
       {product.description && (

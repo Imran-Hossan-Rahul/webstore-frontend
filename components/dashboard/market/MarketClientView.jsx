@@ -11,6 +11,7 @@ import MarketSEOContent from "./MarketSEOContent";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import { getCategoryIcon } from "@/components/dashboard/Sidebar";
 import RightSidebar from "@/components/dashboard/RightSidebar";
+import { PRODUCT_TYPE_COLORS } from "@/utils/digitalProducts";
 
 // Cloudinary optimization for free extreme performance
 const getOptimizedUrl = (url) => {
@@ -412,6 +413,11 @@ export default function MarketClientView({ initialData = [], initialPagination =
         </div>
       )}
       <div className="px-2 py-3 md:p-4 flex flex-col flex-1 items-center bg-transparent text-center">
+        {product.productType && (
+          <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-1.5 ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-gray-100 text-gray-600'}`}>
+            {product.productType}
+          </span>
+        )}
         <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2 px-1" style={{ minHeight: 'calc(1.47 * 17px * 2)' }}>{product.title}</h3>
         <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
           <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
@@ -452,8 +458,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <AppleSpinner size={16} className="text-white" />
             ) : (
               <>
-                <span className="md:hidden">Buy</span>
-                <span className="hidden md:inline">Buy Now</span>
+                <span className="md:hidden">{product.productType ? 'Get' : 'Buy'}</span>
+                <span className="hidden md:inline">{product.productType ? 'Get Now' : 'Buy Now'}</span>
               </>
             )}
           </button>

@@ -7,6 +7,7 @@ import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Search, Loader2, Edit, ChevronDown, Filter, X, Check } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { PRODUCT_TYPES, PRODUCT_TYPE_COLORS } from "@/utils/digitalProducts";
 const getOptimizedUrl = (url) => {
   if (!url) return '';
   if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
@@ -44,6 +45,7 @@ export default function ShopPage() {
   const [sortOrder, setSortOrder] = useState('latest');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [selectedProductType, setSelectedProductType] = useState(searchParams.get('productType') || '');
   
   const [tempMinPrice, setTempMinPrice] = useState('');
   const [tempMaxPrice, setTempMaxPrice] = useState('');
@@ -145,6 +147,7 @@ export default function ShopPage() {
     setMaxPrice('');
     setTempMinPrice('');
     setTempMaxPrice('');
+    setSelectedProductType('');
     setSortOrder('latest');
     setPage(1);
     router.push('/shop');
@@ -229,6 +232,7 @@ export default function ShopPage() {
       if (productIds) params.append('ids', productIds);
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
+      if (selectedProductType) params.append('productType', selectedProductType);
 
       const res = await api.get(`/market/products?${params.toString()}`);
       let data = res.data || [];
@@ -267,7 +271,7 @@ export default function ShopPage() {
   useEffect(() => {
     setPage(1);
     fetchProducts(1);
-  }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, productIds, sortOrder, minPrice, maxPrice]);
+  }, [searchQuery, selectedCategory, selectedSubCategory, selectedChildCategory, isFeatured, isPopular, productIds, sortOrder, minPrice, maxPrice, selectedProductType]);
 
   // Signal global loader that we are fetching data
   if (typeof window !== 'undefined') {
@@ -397,6 +401,11 @@ export default function ShopPage() {
         } catch(e) { return null; }
       })()}
       <div className="p-3 md:p-4 flex flex-col flex-1 items-center bg-transparent text-center">
+        {product.productType && (
+          <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-1.5 ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-gray-100 text-gray-600'}`}>
+            {product.productType}
+          </span>
+        )}
         <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2">{product.title}</h3>
         <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
           <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
@@ -433,7 +442,7 @@ export default function ShopPage() {
             disabled={isPending && loadingBuyId === (product.id || product._id)}
             className="flex-auto bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed disabled:bg-[#0071e3] disabled:text-white"
           >
-            Buy Now
+            {product.productType ? 'Get Now' : 'Buy Now'}
           </button>
         </div>
       </div>
@@ -464,6 +473,27 @@ export default function ShopPage() {
 
 
 
+
+            <div className="mb-8 mt-4">
+              <h3 className="text-[15px] font-medium text-apple-ink mb-3">Product Type</h3>
+              <div className="space-y-1.5">
+                <button
+                  onClick={() => setSelectedProductType('')}
+                  className={`w-full text-left text-[14px] px-3 py-2 rounded-lg transition-colors ${
+                    selectedProductType === '' ? 'bg-[#0071e3] text-white font-medium' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'
+                  }`}
+                >All Types</button>
+                {PRODUCT_TYPES.map(type => (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedProductType(type)}
+                    className={`w-full text-left text-[14px] px-3 py-2 rounded-lg transition-colors ${
+                      selectedProductType === type ? 'bg-[#0071e3] text-white font-medium' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'
+                    }`}
+                  >{type}</button>
+                ))}
+              </div>
+            </div>
 
             <div className="mb-8 mt-4">
               <h3 className="text-[15px] font-medium text-apple-ink mb-4">Price (BDT)</h3>
