@@ -37,7 +37,7 @@ export default function PrivacyPage() {
           <section className="py-[32px] border-b border-[#e8e8ed]">
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">1. Information We Collect</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
-              <li><strong>Personal Information:</strong> When you register or place an order, we collect your name, email address, phone number, and delivery address.</li>
+              <li><strong>Personal Information:</strong> When you register or place an order, we collect your name, email address, phone number, and billing/contact address.</li>
               <li><strong>Usage Data:</strong> We automatically collect information about how you use our website, including your IP address, browser type, device information, and pages visited.</li>
               <li><strong>Communication Data:</strong> We retain records of your communications with our customer support team for quality assurance and issue resolution.</li>
             </ul>
@@ -46,7 +46,7 @@ export default function PrivacyPage() {
           <section className="py-[32px] border-b border-[#e8e8ed]">
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">2. How We Use Your Data</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
-              <li>To process and fulfill your orders, including delivery and payment processing.</li>
+              <li>To process and fulfill your orders, including digital delivery and payment processing.</li>
               <li>To communicate with you regarding order updates and customer support.</li>
               <li>To improve our website, products, and services based on user behavior and feedback.</li>
               <li>To prevent fraud, abuse, and unauthorized access to our platform.</li>

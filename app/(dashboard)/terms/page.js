@@ -106,10 +106,10 @@ export default function TermsPage() {
               <li>Codalina collects personal information (name, email, phone, address) solely to process orders, provide support, and improve our services.</li>
               <li>We do not sell, rent, or share your personal data with third parties for marketing purposes.</li>
               <li>Your data is stored securely and protected using industry-standard encryption practices.</li>
-              <li>By placing an order, you consent to us sharing your delivery details (name, address, phone) with our courier partner for the sole purpose of fulfilling your order.</li>
+              <li>By placing an order, you consent to us processing your details to deliver digital products securely to your email address or account dashboard.</li>
               <li>You have the right to request deletion of your account and associated data at any time by contacting us.</li>
               <li>Codalina may use cookies to improve your browsing experience. You can disable cookies in your browser settings, though some features may not function correctly.</li>
-              <li>We may send you transactional messages (order confirmation, delivery updates) via email or SMS. These are not promotional and cannot be opted out of while an order is active.</li>
+              <li>We may send you transactional messages (order confirmation, digital delivery links) via email or SMS. These are not promotional and cannot be opted out of while an order is active.</li>
             </ul>
           </section>
 
@@ -127,10 +127,10 @@ export default function TermsPage() {
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">8. Limitation of Liability & Disclaimers</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
               <li>Codalina provides its services &quot;as is&quot; without any express or implied warranties regarding uninterrupted access or error-free operation.</li>
-              <li>To the fullest extent permitted by law, Codalina is not liable for any indirect, incidental, or consequential damages arising from the use of our platform.</li>
+              <li>To the fullest extent permitted by law, Codalina is not liable for any indirect, incidental, or consequential damages arising from the use of our platform or digital products.</li>
               <li>Codalina&apos;s maximum liability to any customer shall not exceed the total amount paid for the specific order in question.</li>
-              <li>We are not responsible for delays, losses, or damage caused by third-party courier services once the package has been handed over for delivery.</li>
-              <li>Codalina is not liable for data loss resulting from device repair or replacement. Customers must back up their data prior to submitting a device.</li>
+              <li>We are not responsible for delays in email delivery of license keys or download links caused by third-party email providers or spam filters.</li>
+              <li>Codalina is not liable for data loss or system issues resulting from the use of our software products. Customers must back up their systems prior to installing any purchased source code or script.</li>
             </ul>
           </section>
 
