@@ -278,13 +278,23 @@ export default function OrderDetailPage({ params }) {
                     </Link>
                     <div className="flex flex-wrap items-center gap-3 mt-2">
                       <span className="text-[12px] font-medium text-[#1d1d1f] dark:text-white bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-[6px]">
-                        License: {item.product?.licenseType || "Personal"}
+                        License Type: {item.product?.licenseType || "Personal"}
                       </span>
-                      {item.variants && (
-                        <span className="text-[13px] font-normal text-[#86868b] leading-relaxed truncate">
-                          ({item.variants})
-                        </span>
+                      {item.license_key && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-[12px] font-medium text-[#1d1d1f] dark:text-white bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-mono">
+                            Key: {item.license_key}
+                          </span>
+                          <button
+                            onClick={() => copyToClipboard(item.license_key)}
+                            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition"
+                            title="Copy License Key"
+                          >
+                            <Copy size={14} />
+                          </button>
+                        </div>
                       )}
+                      {item.variants && (
                     </div>
                   </div>
                 </div>
@@ -300,20 +310,38 @@ export default function OrderDetailPage({ params }) {
                   </div>
 
                   {!isCancelled && (
-                    <a
-                      href={item.product?.downloadUrl || "#"}
-                      onClick={(e) => {
-                        if (!item.product?.downloadUrl) {
-                          e.preventDefault();
-                          alert(
-                            "Download link will be available once the order is fully processed.",
-                          );
-                        }
-                      }}
-                      className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-5 py-2 rounded-full text-[13px] font-bold transition-all shadow-sm flex items-center gap-2 shrink-0"
-                    >
-                      Download Assets
-                    </a>
+                    <div className="flex flex-col items-end gap-1">
+                      {item.download_token ? (
+                        new Date(item.download_expires_at) < new Date() ? (
+                          <div className="flex flex-col items-end">
+                            <span className="text-red-500 text-[11px] font-medium mb-1">Link Expired</span>
+                            <button
+                              onClick={() => alert("Please contact support to request a new download link.")}
+                              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-1.5 rounded-full text-[12px] font-bold transition-all shadow-sm"
+                            >
+                              Request New Link
+                            </button>
+                          </div>
+                        ) : item.download_attempts >= (item.max_downloads || 5) ? (
+                          <span className="text-red-500 text-[12px] font-medium">Download Limit Reached</span>
+                        ) : (
+                          <div className="flex flex-col items-end">
+                            <a
+                              href={`https://webstore-backend-cfda.onrender.com/api/market/download/${item.download_token}`}
+                              target="_blank"
+                              className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-5 py-2 rounded-full text-[13px] font-bold transition-all shadow-sm flex items-center gap-2 shrink-0"
+                            >
+                              Download Asset
+                            </a>
+                            <span className="text-[#86868b] text-[10px] mt-1">
+                              Expires in {Math.ceil((new Date(item.download_expires_at) - new Date()) / (1000 * 60 * 60 * 24))} days
+                            </span>
+                          </div>
+                        )
+                      ) : (
+                        <span className="text-[#86868b] text-[12px]">Processing...</span>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
