@@ -154,25 +154,8 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
   const formatPrice = (price) => new Intl.NumberFormat('en-IN').format(price);
 
-  const heroSlides = [
-    { image: "/banners/banner7.png", isFullBanner: true, link: "#" },
-    { image: "/banners/banner2.png", isFullBanner: true, link: "#" },
-    { image: "/banners/banner3.png", isFullBanner: true, link: "#" },
-    { image: "/banners/banner4.png?v=2", isFullBanner: true, link: "#" },
-    { image: "/banners/banner5.png", isFullBanner: true, link: "#" },
-    { image: "/banners/banner6.png", isFullBanner: true, link: "#" },
-  ];
-  
-  const bottomBanners = [
-    { id: 1, image: "/banners/smbanner1.png", link: "#" },
-    { id: 2, image: "/banners/smbanner2.png", link: "#" },
-    { id: 3, image: "/banners/smbanner3.png", link: "#" },
-    { id: 4, image: "/banners/smbanner4.png", link: "#" },
-    { id: 5, image: "/banners/smbanner5.png", link: "#" },
-    { id: 6, image: "/banners/smbanner6.png", link: "#" },
-    { id: 7, image: "/banners/smbanner7.png", link: "#" },
-    { id: 8, image: "/banners/smbanner8.png", link: "#" },
-  ];
+  const heroSlides = [];
+  const bottomBanners = [];
 
   const bottomScrollRef = useRef(null);
   const topScrollRef = useRef(null);
@@ -476,107 +459,25 @@ export default function MarketClientView({ initialData = [], initialPagination =
         reason="like" 
       />
 
-      {/* Hero Banners Section - Apple TV Style */}
+      {/* Minimal Digital Products Hero Section */}
       {!query && (
-        <div className="w-full flex flex-col pt-2 pb-4 md:pt-4 md:pb-8 overflow-hidden px-2 md:px-0">
-          {/* Main Top Banner (Full Width, 16:9 Aspect Ratio) */}
-          <div className="w-full relative aspect-[16/9] group flex items-center justify-center overflow-hidden rounded-apple-lg bg-transparent">
-            <div 
-              ref={topScrollRef}
-              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              {heroSlides.map((slide, idx) => {
-                return (
-                  <div 
-                    key={idx}
-                    className="flex-none w-full h-full snap-start relative bg-transparent flex items-center justify-center"
-                  >
-                  {slide.isAppleStyle ? (
-                    <div className={`absolute inset-0 flex flex-col items-center justify-between w-full h-full ${slide.bgColor}`}>
-                      <div className="pt-8 md:pt-16 px-4 text-center z-20 flex flex-col items-center">
-                        <h1 className="text-2xl md:text-5xl font-semibold text-gray-900 tracking-tight mb-1 md:mb-2 font-sans">{slide.title}</h1>
-                        <p className="text-base md:text-2xl font-normal text-gray-800 tracking-tight mb-3 md:mb-5">{slide.subtitle}</p>
-                        <div className="flex gap-3 md:gap-4 items-center justify-center">
-                          <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-4 md:px-5 py-1.5 md:py-2 rounded-full font-sans text-[13px] md:text-[15px] font-normal hover:bg-[#0055b3] transition-colors">Learn more</Link>
-                          <Link href={slide.link || '#'} className="bg-transparent border border-[#0066CC] text-[#0066CC] px-4 md:px-5 py-1.5 md:py-2 rounded-full font-sans text-[13px] md:text-[15px] font-normal hover:bg-[#0066CC] hover:text-white transition-colors">Buy</Link>
-                        </div>
-                      </div>
-                      <div className="flex-1 w-full relative overflow-hidden flex items-end justify-center pb-0">
-                        <img src={slide.image} alt={slide.title} className="w-[80%] md:w-[70%] lg:w-[60%] h-auto object-contain max-h-[85%] z-10 drop-shadow-2xl translate-y-6 md:translate-y-10" />
-                      </div>
-                    </div>
-                  ) : slide.isFullBanner ? (
-                    <Link href={slide.link || '#'} className="absolute inset-0 flex items-center justify-center w-full h-full bg-transparent pointer-events-none">
-                      <img src={slide.image} alt={slide.titleBottom} className="w-full h-full object-contain z-10" />
-                    </Link>
-                  ) : (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-black z-0 pointer-events-none"></div>
-                      <img src={slide.image?.startsWith('http') ? slide.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${slide.image}`} alt={slide.titleBottom} className="absolute right-0 bottom-0 h-full w-full object-cover md:object-contain md:h-[90%] md:w-auto opacity-50 md:opacity-80 z-10 mix-blend-lighten pointer-events-none" />
-                      
-                      <div className="relative z-20 h-full flex flex-col justify-center px-6 md:px-12 w-full md:w-[70%] pointer-events-none">
-                        <h3 className="text-white text-base md:text-[32px] font-semibold tracking-[-0.015em] mb-1 md:mb-2">{slide.titleTop}</h3>
-                        <h1 className="text-[#fbbf24] text-xl md:text-[56px] font-semibold tracking-[-0.015em] leading-[1.08] mb-3 md:mb-6 uppercase">{slide.titleBottom}</h1>
-                        <div className="flex gap-4 items-center pointer-events-auto">
-                          <Link href={slide.link || '#'} className="bg-[#0066CC] text-white px-[18px] md:px-[22px] py-[8px] md:py-[11px] rounded-apple-pill font-sans text-[14px] md:text-[17px] font-normal hover:opacity-80 transition-opacity flex items-center">Buy Now <span className="ml-1 text-sm md:text-lg">↗</span></Link>
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              );
-            })}
-            </div>
-          </div>
-
-          {/* Bottom 4-Pic Slider */}
-          <div className="w-full relative mt-[7px] md:mt-[9px]">
-            <div className="relative group/bottom">
-              
-              <div 
-                ref={bottomScrollRef}
-                className="flex overflow-x-auto gap-[6px] md:gap-[10px] snap-x snap-mandatory scrollbar-hide pb-4"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {bottomBanners.map((banner, idx) => (
-                  <Link 
-                    href={banner.link} 
-                    key={banner.id || idx} 
-                    className="flex-none w-[42%] sm:w-[calc(33.333%-4px)] md:w-[calc(33.333%-6.66px)] aspect-[16/9] snap-start overflow-hidden relative group bg-gray-900 shadow-sm block rounded-apple-lg"
-                  >
-                    <img 
-                      src={banner.image} 
-                      alt={`Banner ${idx + 1}`}
-                      className="w-full h-full object-cover transition-all duration-700 ease-out" 
-                    />
-                  </Link>
-                ))}
-              </div>
-            </div>
-            
-            {/* Apple-style Pagination Dots */}
-            <div className="flex justify-center items-center gap-[6px] md:gap-[8px] mt-2 md:mt-4 mb-2">
-              {heroSlides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`relative h-[6px] rounded-full transition-all duration-300 ease-in-out overflow-hidden ${
-                    currentSlide === idx 
-                      ? 'w-[20px] md:w-[24px] bg-[#e5e5ea] dark:bg-[#333336]' 
-                      : 'w-[6px] bg-[#86868b] hover:bg-[#1d1d1f] dark:hover:bg-white opacity-60'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                >
-                  {currentSlide === idx && (
-                    <div 
-                      className="absolute top-0 left-0 h-full bg-[#1d1d1f] dark:bg-white progress-fill" 
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-            
+        <div className="w-full flex flex-col pt-8 pb-12 md:pt-16 md:pb-20 overflow-hidden px-4 text-center items-center justify-center">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-4 max-w-4xl">
+            Build faster with premium <span className="text-[#0066CC]">digital assets</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mb-8">
+            Production-ready SaaS templates, UI kits, and automation scripts built by an engineer, for engineers. Stop reinventing the wheel and launch your next idea this weekend.
+          </p>
+          <div className="flex gap-4">
+            <button onClick={() => {
+              const el = document.getElementById('shop-categories');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }} className="bg-[#0066CC] hover:bg-[#0055b3] text-white px-6 py-3 rounded-full font-medium transition-colors">
+              Browse Categories
+            </button>
+            <Link href="/shop" className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-6 py-3 rounded-full font-medium transition-colors">
+              View All Assets
+            </Link>
           </div>
         </div>
       )}
@@ -590,7 +491,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
       {/* Shop by Categories */}
       {!query && leafCategories.length > 0 && (
-        <div className="p-2 pt-2 md:py-8 md:px-3 w-full -mt-4 md:mt-2 relative group">
+        <div id="shop-categories" className="p-2 pt-2 md:py-8 md:px-3 w-full -mt-4 md:mt-2 relative group">
           <div className="flex justify-between items-center mb-4 md:mb-8 mt-6 md:mt-0">
             <h2 className="text-lg md:text-[32px] font-semibold tracking-[-0.015em] text-apple-ink">Shop by Categories</h2>
           </div>
