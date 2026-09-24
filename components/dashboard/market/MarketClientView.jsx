@@ -458,8 +458,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <AppleSpinner size={16} className="text-white" />
             ) : (
               <>
-                <span className="md:hidden">{product.productType ? 'Get' : 'Buy'}</span>
-                <span className="hidden md:inline">{product.productType ? 'Get Now' : 'Buy Now'}</span>
+                <span>{product.productType ? 'Get Now' : 'Buy Now'}</span>
               </>
             )}
           </button>

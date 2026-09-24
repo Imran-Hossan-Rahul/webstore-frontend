@@ -47,7 +47,7 @@ export default function PrivacyPage() {
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">2. How We Use Your Data</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
               <li>To process and fulfill your orders, including delivery and payment processing.</li>
-              <li>To communicate with you regarding order updates, shipping status, and customer support.</li>
+              <li>To communicate with you regarding order updates and customer support.</li>
               <li>To improve our website, products, and services based on user behavior and feedback.</li>
               <li>To prevent fraud, abuse, and unauthorized access to our platform.</li>
             </ul>
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
           <section className="py-[32px] border-b border-[#e8e8ed]">
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">3. Data Sharing & Disclosure</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
-              <li><strong>Service Providers:</strong> We share necessary details (like your name, phone, and address) with our trusted courier partners (e.g., Pathao, Steadfast) solely for delivering your order.</li>
+              <li><strong>Service Providers:</strong> We may share necessary details with our trusted payment partners for processing transactions securely.</li>
               <li><strong>Legal Requirements:</strong> We may disclose your information if required by law, court order, or government regulation.</li>
               <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, user data may be transferred to the new owning entity.</li>
             </ul>

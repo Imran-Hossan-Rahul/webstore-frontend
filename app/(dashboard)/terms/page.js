@@ -61,93 +61,13 @@ export default function TermsPage() {
             <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[16px] text-[#1d1d1f]">3. Purchases, Payments & Orders</h2>
             <ul className="list-disc pl-5 space-y-3 text-[16px] text-[#1d1d1f] leading-[1.5]">
               <li>All prices listed on Codalina are in Bangladeshi Taka (BDT) and are inclusive of applicable taxes unless stated otherwise.</li>
-              <li>Codalina currently operates on a <strong>Cash on Delivery (COD)</strong> basis. Payment is collected upon delivery of the product.</li>
-              <li>By placing an order, you confirm that all information provided (name, address, phone number) is accurate. Incorrect information may delay or cancel your delivery.</li>
-              <li>Orders can be cancelled before they are marked as &quot;Shipped.&quot; Once shipped, cancellation is subject to our return and warranty policy.</li>
-              <li>Codalina reserves the right to cancel or refuse any order at its discretion — for example, if a pricing error occurs or the product becomes unavailable. You will be notified promptly and not charged.</li>
-              <li>Delivery timelines are estimates only. Codalina is not liable for delays caused by courier services, weather, or other external factors beyond our control.</li>
+              <li>Codalina provides digital products. Payment is required in full before the download link or license is provided.</li>
+              <li>By placing an order, you confirm that all information provided (such as your email address) is accurate.</li>
+              <li>Orders for digital products are generally final and non-refundable once the file has been downloaded or license activated, unless stated otherwise.</li>
+              <li>Codalina reserves the right to cancel or refuse any order at its discretion — for example, if a pricing error occurs. You will be notified promptly and refunded if charged.</li>
             </ul>
             <p className="mt-4 text-[15px] text-[#86868b] leading-[1.5]">
-              <strong>Note on COD:</strong> Please ensure you are available to receive your order. If a delivery attempt fails twice, the order may be returned and redelivery charges will apply as per the standard rates below.
-            </p>
-          </section>
-
-          <section className="py-[32px] border-b border-[#e8e8ed]">
-            <h2 className="text-[24px] md:text-[28px] font-[700] tracking-[-0.01em] mb-[6px] text-[#1d1d1f]">3a. Delivery Charges</h2>
-            <p className="text-[15px] text-[#86868b] leading-[1.5] mb-[24px]">
-              Delivery charges are calculated automatically based on your delivery location and the total weight of your order. All charges are shown transparently on the checkout page before you confirm your order.
-            </p>
-
-            <div className="mb-6">
-              <h3 className="text-[17px] font-[600] text-[#1d1d1f] mb-3">📍 Inside Dhaka City</h3>
-              <div className="overflow-x-auto rounded-[12px] border border-[#e8e8ed]">
-                <table className="w-full text-[14px] text-[#1d1d1f]">
-                  <thead>
-                    <tr className="bg-[#f5f5f7] border-b border-[#e8e8ed]">
-                      <th className="text-left px-4 py-3 font-[600]">Order Weight</th>
-                      <th className="text-right px-4 py-3 font-[600]">Charge</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#e8e8ed]"><td className="px-4 py-3">Up to 150g</td><td className="px-4 py-3 text-right font-[500]">৳ 55</td></tr>
-                    <tr className="border-b border-[#e8e8ed] bg-[#fafafa]"><td className="px-4 py-3">151g – 500g</td><td className="px-4 py-3 text-right font-[500]">৳ 65</td></tr>
-                    <tr className="border-b border-[#e8e8ed]"><td className="px-4 py-3">501g – 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 75</td></tr>
-                    <tr><td className="px-4 py-3">Above 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 75 + ৳20 per additional KG</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-[17px] font-[600] text-[#1d1d1f] mb-1">🏘 Dhaka Sub-Urban Areas</h3>
-              <p className="text-[13px] text-[#86868b] mb-3">Includes: Savar, Keraniganj, Dhamrai, Dohar, Nawabganj</p>
-              <div className="overflow-x-auto rounded-[12px] border border-[#e8e8ed]">
-                <table className="w-full text-[14px] text-[#1d1d1f]">
-                  <thead>
-                    <tr className="bg-[#f5f5f7] border-b border-[#e8e8ed]">
-                      <th className="text-left px-4 py-3 font-[600]">Order Weight</th>
-                      <th className="text-right px-4 py-3 font-[600]">Charge</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#e8e8ed]"><td className="px-4 py-3">Up to 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 105</td></tr>
-                    <tr><td className="px-4 py-3">Above 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 105 + ৳20 per additional KG</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <h3 className="text-[17px] font-[600] text-[#1d1d1f] mb-3">🚚 Outside Dhaka (All Other Districts)</h3>
-              <div className="overflow-x-auto rounded-[12px] border border-[#e8e8ed]">
-                <table className="w-full text-[14px] text-[#1d1d1f]">
-                  <thead>
-                    <tr className="bg-[#f5f5f7] border-b border-[#e8e8ed]">
-                      <th className="text-left px-4 py-3 font-[600]">Order Weight</th>
-                      <th className="text-right px-4 py-3 font-[600]">Charge</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-[#e8e8ed]"><td className="px-4 py-3">Up to 500g</td><td className="px-4 py-3 text-right font-[500]">৳ 115</td></tr>
-                    <tr className="border-b border-[#e8e8ed] bg-[#fafafa]"><td className="px-4 py-3">501g – 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 135</td></tr>
-                    <tr><td className="px-4 py-3">Above 1 KG</td><td className="px-4 py-3 text-right font-[500]">৳ 135 + ৳20 per additional KG</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="bg-[#f5f5f7] border border-[#e8e8ed] rounded-[12px] p-5 space-y-2">
-              <h3 className="text-[15px] font-[600] text-[#1d1d1f]">💳 Cash on Delivery (COD) Fee</h3>
-              <p className="text-[14px] text-[#1d1d1f] leading-[1.6]">
-                An additional <strong>1% COD fee</strong> is applied on the combined total of your subtotal and base delivery charge when you choose Cash on Delivery as your payment method.
-              </p>
-              <p className="text-[13px] text-[#86868b]">
-                Example: If your subtotal is ৳1,000 and delivery is ৳135, your COD fee = 1% of ৳1,135 = ৳12. Total payable = ৳1,147.
-              </p>
-            </div>
-
-            <p className="mt-5 text-[14px] text-[#86868b] leading-[1.6]">
-              Weight is determined automatically based on the product category and quantity. Weights are rounded up to the nearest KG when calculating additional charges. The final delivery charge is always displayed on the checkout page before you confirm your order — no hidden fees.
+              <strong>Note on Digital Delivery:</strong> All digital products will be accessible via your account immediately upon successful payment confirmation.
             </p>
           </section>
 
