@@ -34,12 +34,13 @@ export default function Checkout() {
 
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(initialQuantity);
-  const [paymentType, setPaymentType] = useState("Cash on Delivery");
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentType, setPaymentType] = useState("bkash_manual");
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
+    payment_number: "",
+    payment_trx_id: "",
   });
 
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -113,6 +114,9 @@ export default function Checkout() {
         discount_amount: discountAmount,
         subtotal: subTotal,
         total_amount: total,
+        payment_method: paymentType,
+        payment_number: paymentType === 'bkash_manual' ? form.payment_number : undefined,
+        payment_trx_id: paymentType === 'bkash_manual' ? form.payment_trx_id : undefined,
       };
 
       const endpoint = user ? "/market/orders" : "/market/orders/guest";
@@ -261,7 +265,8 @@ export default function Checkout() {
     form.name.trim() !== "" &&
     form.phone.trim().length >= 11 &&
     form.email.trim() !== "" &&
-    termsAccepted;
+    termsAccepted &&
+    (paymentType === 'bkash_manual' ? form.payment_number.trim().length >= 11 && form.payment_trx_id.trim() !== "" : true);
 
   const PaymentOption = ({ label, selected, onClick }) => (
     <button
@@ -327,12 +332,47 @@ export default function Checkout() {
                   <CreditCard size={18} />
                   <span className="font-semibold text-sm">Payment Type</span>
                 </div>
-                <div className="w-full sm:w-64">
+                <div className="flex flex-col gap-3 w-full">
                   <PaymentOption
-                    label="Cash on Delivery"
-                    selected={paymentType === "Cash on Delivery"}
-                    onClick={() => setPaymentType("Cash on Delivery")}
+                    label="bKash (Manual)"
+                    selected={paymentType === "bkash_manual"}
+                    onClick={() => setPaymentType("bkash_manual")}
                   />
+                  {paymentType === "bkash_manual" && (
+                    <div className="mt-1 p-4 bg-[#e2136e]/5 border border-[#e2136e]/20 rounded-lg animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="flex items-start gap-3 mb-4">
+                        <img src="https://scripts.pay.bka.sh/logo/bkash_logo.png" alt="bKash" className="h-8 object-contain bg-white rounded px-1.5 py-1 border border-[#e2136e]/20" />
+                        <div>
+                          <h4 className="font-bold text-[#e2136e] text-sm">Send Money to 017XXXXXXXX (Personal)</h4>
+                          <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                            Please send exactly <strong>৳ {formatPrice(total)}</strong> to our bKash personal number. Add the 1.85% cash-out charge if possible. After sending, enter your bKash number and Transaction ID below.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <div>
+                          <input
+                            required
+                            type="tel"
+                            value={form.payment_number}
+                            onChange={(e) => setForm({ ...form, payment_number: e.target.value })}
+                            className="w-full border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e] bg-white dark:bg-slate-900"
+                            placeholder="Your bKash Number (e.g. 018XXXXXXXX)"
+                          />
+                        </div>
+                        <div>
+                          <input
+                            required
+                            type="text"
+                            value={form.payment_trx_id}
+                            onChange={(e) => setForm({ ...form, payment_trx_id: e.target.value.toUpperCase() })}
+                            className="w-full border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e] bg-white dark:bg-slate-900 uppercase placeholder-normal"
+                            placeholder="Transaction ID (TrxID)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -590,12 +630,12 @@ export default function Checkout() {
                 <button
                   type={orderConfirmed ? "button" : "submit"}
                   disabled={
-                    (!isFormValid && !orderConfirmed) || isCalculatingDelivery
+                    !isFormValid || orderConfirmed
                   }
                   className={`font-sans font-normal text-[17px] py-[11px] px-[22px] rounded-apple-pill transition-opacity w-full flex items-center justify-center gap-2 ${
                     orderConfirmed
                       ? "bg-apple-accent/20 text-apple-accent cursor-default"
-                      : isFormValid && !isCalculatingDelivery
+                      : isFormValid
                         ? "bg-apple-accent hover:bg-apple-accent/90 text-white hover:opacity-80"
                         : "bg-apple-canvas border border-apple-hairline text-apple-muted cursor-not-allowed"
                   }`}

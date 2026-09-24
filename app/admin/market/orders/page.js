@@ -5,9 +5,10 @@ import { ChevronDown, Search, RefreshCw, Package, CheckCircle2, Truck, Home, XCi
 import { generateInvoice } from '@/utils/generateInvoice';
 import AppleSpinner from "@/components/ui/AppleSpinner";
 
-const STATUS_FLOW = ['Order placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
+const STATUS_FLOW = ['Pending Verification', 'Order placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
 
 const STATUS_CONFIG = {
+  'Pending Verification': { color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/30', icon: Clock },
   'Order placed': { color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/30', icon: Clock },
   'Confirmed':    { color: 'text-blue-400',   bg: 'bg-blue-500/10 border-blue-500/30',   icon: CheckCircle2 },
   'Processing':   { color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/30', icon: Package },
@@ -381,6 +382,23 @@ export default function AdminOrdersPage() {
                                 <span>Due Amount</span><span>৳ {formatPrice(dueAmount)}</span>
                               </div>
                             </div>
+
+                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-4 mb-2">Payment Info</h4>
+                            <div className="bg-gray-900 rounded-lg p-4 border border-gray-800 text-sm space-y-2 text-gray-300">
+                              <div className="flex justify-between">
+                                <span>Method:</span><span className="font-semibold text-white">{order.payment_method || 'Cash on Delivery'}</span>
+                              </div>
+                              {order.payment_method === 'bkash_manual' && (
+                                <>
+                                  <div className="flex justify-between">
+                                    <span>bKash Number:</span><span className="font-mono text-emerald-400">{order.payment_number}</span>
+                                  </div>
+                                  <div className="flex justify-between">
+                                    <span>TrxID:</span><span className="font-mono bg-gray-800 px-2 py-0.5 rounded">{order.payment_trx_id}</span>
+                                  </div>
+                                </>
+                              )}
+                            </div>
                             
                             <div className="mt-4 pt-4 border-t border-gray-800/50 space-y-1.5 text-[11px] text-gray-400 font-mono">
                               <p className="flex justify-between"><span>Time Elapsed:</span> <span className="text-gray-300">{timeSinceOrder === 0 ? 'Ordered today' : `${timeSinceOrder} days ago`}</span></p>
@@ -540,11 +558,29 @@ export default function AdminOrdersPage() {
                   </div>
 
                   {/* Summary */}
-                  <div className="bg-gray-900 rounded-lg p-3 border border-gray-800 text-sm space-y-2">
+                  <div className="bg-gray-900 rounded-lg p-3 border border-gray-800 text-sm space-y-2 mb-2">
                     <div className="flex justify-between text-gray-400"><span>Items Price</span><span>BDT {formatPrice(itemsPrice)}</span></div>
                     <div className="flex justify-between text-gray-400"><span>Delivery Charge</span><span>BDT {formatPrice(deliveryCharge)}</span></div>
                     <div className="flex justify-between font-bold text-white border-t border-gray-800 pt-2"><span>Total</span><span>BDT {formatPrice(total)}</span></div>
                     <div className={`flex justify-between font-bold ${dueAmount > 0 ? 'text-orange-400' : 'text-emerald-400'}`}><span>Due Amount</span><span>BDT {formatPrice(dueAmount)}</span></div>
+                  </div>
+
+                  {/* Payment Info Mobile */}
+                  <div className="bg-gray-900 rounded-lg p-3 border border-gray-800 text-sm space-y-2 text-gray-300">
+                    <div className="flex justify-between text-[11px] text-gray-400 font-bold uppercase"><span>Payment Info</span></div>
+                    <div className="flex justify-between">
+                      <span>Method:</span><span className="font-semibold text-white">{order.payment_method || 'Cash on Delivery'}</span>
+                    </div>
+                    {order.payment_method === 'bkash_manual' && (
+                      <>
+                        <div className="flex justify-between">
+                          <span>bKash:</span><span className="font-mono text-emerald-400">{order.payment_number}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>TrxID:</span><span className="font-mono bg-gray-800 px-1.5 rounded">{order.payment_trx_id}</span>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   {order.courier_name && <p className="text-xs text-gray-400">Courier: <span className="text-white font-mono">{order.courier_name}</span></p>}
