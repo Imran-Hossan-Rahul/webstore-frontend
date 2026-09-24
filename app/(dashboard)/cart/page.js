@@ -17,14 +17,20 @@ export default function CartPage() {
         if (cartStr) {
           const cartIds = JSON.parse(cartStr);
           if (cartIds.length > 0) {
-            // Fetch ONLY the specific products in the cart
-            const res = await api.get(`/market/products?ids=${cartIds.join(',')}`);
+            // Enforce single-item digital cart constraint
+            const singleCartId = [cartIds[cartIds.length - 1]]; // Keep the most recently added item
+            if (cartIds.length > 1) {
+              localStorage.setItem('cartIds', JSON.stringify(singleCartId));
+              window.dispatchEvent(new CustomEvent('cartUpdated'));
+            }
+            
+            const res = await api.get(`/market/products?ids=${singleCartId[0]}`);
             const filteredProducts = res.data || [];
             
             const detailsStr = localStorage.getItem('cartDetails');
             const cartDetails = detailsStr ? JSON.parse(detailsStr) : {};
 
-            // Map to cart item structure with default quantity 1
+            // Map to cart item structure with fixed quantity 1
             const itemsWithQuantity = filteredProducts.map(p => {
               const details = cartDetails[p.id.toString()] || {};
               return {
@@ -60,15 +66,7 @@ export default function CartPage() {
     return url;
   };
 
-  const handleUpdateQuantity = (productId, delta) => {
-    setCartItems(prev => prev.map(item => {
-      if (item.id === productId) {
-        const newQ = item.cartQuantity + delta;
-        return { ...item, cartQuantity: newQ > 0 ? newQ : 1 };
-      }
-      return item;
-    }));
-  };
+
 
   const handleRemoveItem = (productId) => {
     setCartItems(prev => prev.filter(item => item.id !== productId));
@@ -128,10 +126,8 @@ export default function CartPage() {
             {/* Table Header */}
             <div className="border-b border-apple-ink px-6 py-[10px] hidden md:flex items-center text-[11px] font-semibold text-apple-muted uppercase tracking-[0.04em]">
               <div className="w-[5%]">#</div>
-              <div className="w-[45%]">Product Name</div>
-              <div className="w-[15%] text-center">Quantity</div>
-              <div className="w-[15%] text-right">Unit Price</div>
-              <div className="w-[15%] text-right">Total</div>
+              <div className="w-[60%]">Product Name</div>
+              <div className="w-[30%] text-right">Price</div>
               <div className="w-[5%] text-right"></div>
             </div>
 
@@ -149,7 +145,7 @@ export default function CartPage() {
                     <div className="hidden md:block w-[5%] text-sm text-gray-500 font-medium">{index + 1}</div>
                     
                     {/* Image and Details Container */}
-                    <div className="w-full md:w-[45%] flex items-start md:items-center gap-4 pr-10 md:pr-0">
+                    <div className="w-full md:w-[60%] flex items-start md:items-center gap-4 pr-10 md:pr-0">
                       <div className="w-[85px] h-[85px] md:w-16 md:h-16 rounded-[10px] md:rounded-[8px] overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white shadow-sm">
                         {imageUrl ? (
                           <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />
@@ -172,57 +168,16 @@ export default function CartPage() {
                           </p>
                         )}
 
-                        {/* Mobile: Price and Quantity Inline below details */}
+                        {/* Mobile: Price Inline below details */}
                         <div className="md:hidden mt-3.5 flex items-center justify-between w-full">
                           <span className="text-[16px] font-semibold text-apple-ink tracking-tight">{formatPrice(item.selling_price)} BDT</span>
-                          <div className="flex items-center border border-black/10 dark:border-white/10 rounded-full shrink-0 h-[32px] overflow-hidden bg-[#fafafa] dark:bg-white/5">
-                            <button 
-                              onClick={() => handleUpdateQuantity(item.id, -1)}
-                              className="w-9 h-full flex items-center justify-center text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition active:scale-90"
-                            >
-                              <Minus size={14} strokeWidth={2} />
-                            </button>
-                            <div className="w-7 h-full flex items-center justify-center text-[14px] font-medium bg-transparent text-apple-ink">
-                              {item.cartQuantity}
-                            </div>
-                            <button 
-                              onClick={() => handleUpdateQuantity(item.id, 1)}
-                              className="w-9 h-full flex items-center justify-center text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition active:scale-90"
-                            >
-                              <Plus size={14} strokeWidth={2} />
-                            </button>
-                          </div>
                         </div>
                       </div>
                     </div>
                     
                     {/* Desktop Columns (Hidden on Mobile) */}
-                    <div className="hidden md:flex w-[15%] justify-center items-center">
-                      <div className="flex items-center border border-black/10 dark:border-white/10 rounded-full shrink-0 h-[34px] overflow-hidden bg-[#fafafa] dark:bg-white/5">
-                        <button 
-                          onClick={() => handleUpdateQuantity(item.id, -1)}
-                          className="w-9 h-full flex items-center justify-center text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition active:scale-90"
-                        >
-                          <Minus size={14} strokeWidth={2} />
-                        </button>
-                        <div className="w-8 h-full flex items-center justify-center text-[14px] font-medium bg-transparent text-apple-ink">
-                          {item.cartQuantity}
-                        </div>
-                        <button 
-                          onClick={() => handleUpdateQuantity(item.id, 1)}
-                          className="w-9 h-full flex items-center justify-center text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition active:scale-90"
-                        >
-                          <Plus size={14} strokeWidth={2} />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="hidden md:flex w-[15%] justify-end items-center">
-                      <span className="text-[17px] font-normal text-apple-ink tracking-tight">{formatPrice(item.selling_price)} BDT</span>
-                    </div>
-                    
-                    <div className="hidden md:flex w-[15%] justify-end items-center">
-                      <span className="text-[17px] font-semibold text-apple-ink tracking-tight">{formatPrice(item.selling_price * item.cartQuantity)} BDT</span>
+                    <div className="hidden md:flex w-[30%] justify-end items-center">
+                      <span className="text-[17px] font-semibold text-apple-ink tracking-tight">{formatPrice(item.selling_price)} BDT</span>
                     </div>
                     
                     {/* Delete Button - Floating on Mobile, inline on Desktop */}
