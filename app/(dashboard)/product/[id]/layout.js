@@ -27,8 +27,9 @@ export async function generateMetadata({ params }) {
       images = typeof product.photos === 'string' ? JSON.parse(product.photos) : (product.photos || []);
     } catch (e) {}
 
-    const title = `${product.title} | Codalina Market`;
-    const description = product.description ? product.description.slice(0, 160) : "Buy premium electronics and digital assets at Codalina Market.";
+    const isDigital = !!product.productType;
+    const title = `${product.title} | Codalina`;
+    const description = product.description ? product.description.slice(0, 160) : (isDigital ? "Buy premium source code and SaaS templates at Codalina." : "Buy premium products at Codalina Market.");
     const image = images.length > 0 ? getOptimizedUrl(images[0]) : `${BASE_URL}/og-image.jpg`;
 
     return {
@@ -61,7 +62,7 @@ export async function generateMetadata({ params }) {
     };
   } catch (error) {
     return {
-      title: 'Codalina Product | Codalina Market',
+      title: 'Codalina Product | Codalina',
     };
   }
 }
@@ -75,15 +76,16 @@ export default async function ProductLayout({ children, params }) {
     if (res.ok) {
       let raw = await res.json();
       const product = raw.data || raw;
+      const isDigital = !!product.productType;
 
       let images = [];
       try {
         images = typeof product.photos === 'string' ? JSON.parse(product.photos) : (product.photos || []);
       } catch (e) {}
       
-      jsonLd = {
+      const baseProductSchema = {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': isDigital ? 'SoftwareApplication' : 'Product',
         name: product.title,
         image: images.map(img => getOptimizedUrl(img)),
         description: product.description || "Premium product from Codalina Market",
@@ -102,8 +104,17 @@ export default async function ProductLayout({ children, params }) {
         }
       };
 
+      if (isDigital) {
+        baseProductSchema.applicationCategory = 'DeveloperApplication';
+        baseProductSchema.operatingSystem = 'All';
+        if (product.fileSize) baseProductSchema.fileSize = product.fileSize;
+        if (product.fileFormat) baseProductSchema.fileFormat = product.fileFormat;
+        if (product.version) baseProductSchema.softwareVersion = product.version;
+        // Optionally add aggregateRating if reviews are available (left out if no data yet)
+      }
+
       jsonLd = [
-        jsonLd,
+        baseProductSchema,
         {
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',

@@ -1,12 +1,12 @@
 const BASE_URL = 'https://codalina.com';
 
 export const metadata = {
-  title: 'Shop Electronics & Digital Assets | Codalina',
-  description: 'Explore a wide variety of premium electronics and digital products on Codalina Market. Find the best deals, browse through categories, and buy securely.',
-  keywords: ['shop', 'electronics', 'digital assets', 'Codalina market', 'buy electronics online', 'premium products'],
+  title: 'Browse Premium Digital Assets | Codalina',
+  description: 'Explore a wide variety of production-ready SaaS templates, UI kits, automation scripts, and source code on Codalina. Built by developers, for developers.',
+  keywords: ['shop', 'digital assets', 'SaaS templates', 'source code', 'Codalina market', 'buy code online', 'premium templates'],
   openGraph: {
-    title: 'Shop Electronics & Digital Assets | Codalina',
-    description: 'Explore a wide variety of premium electronics and digital products on Codalina Market.',
+    title: 'Browse Premium Digital Assets | Codalina',
+    description: 'Explore a wide variety of production-ready SaaS templates, UI kits, automation scripts, and source code on Codalina.',
     url: `${BASE_URL}/shop`,
     siteName: 'Codalina',
     type: 'website',

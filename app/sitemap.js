@@ -61,10 +61,24 @@ async function fetchAllProducts() {
     }
 }
 
+async function fetchAllCategories() {
+    try {
+        const res = await fetch(`${API_URL}/market/categories`, {
+            next: { revalidate: 3600 }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.data || data || [];
+    } catch {
+        return [];
+    }
+}
+
 export default async function sitemap() {
     // Static pages
     const staticPages = [
         { url: BASE_URL, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
+        { url: `${BASE_URL}/shop`, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
         { url: `${BASE_URL}/codex`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
         { url: `${BASE_URL}/devlogs`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
         { url: `${BASE_URL}/artifacts`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
@@ -72,11 +86,12 @@ export default async function sitemap() {
     ];
 
     // Fetch dynamic content in parallel
-    const [codexList, devlogList, artifactList, productList] = await Promise.all([
+    const [codexList, devlogList, artifactList, productList, categoryList] = await Promise.all([
         fetchAllCodex(),
         fetchAllDevlogs(),
         fetchAllArtifacts(),
         fetchAllProducts(),
+        fetchAllCategories(),
     ]);
 
     const codexUrls = codexList.map((item) => ({
@@ -107,5 +122,12 @@ export default async function sitemap() {
         priority: 0.9,
     }));
 
-    return [...staticPages, ...codexUrls, ...devlogUrls, ...artifactUrls, ...productUrls];
+    const categoryUrls = categoryList.map((item) => ({
+        url: `${BASE_URL}/shop?category_id=${item.id || item._id}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+    }));
+
+    return [...staticPages, ...categoryUrls, ...codexUrls, ...devlogUrls, ...artifactUrls, ...productUrls];
 }
