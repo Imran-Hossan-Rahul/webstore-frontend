@@ -76,16 +76,16 @@ export default function VerificationReviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#050505] flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-[#0D1117] flex items-center justify-center">
         <AppleSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#050505] text-slate-900 dark:text-white pb-32">
+    <div className="min-h-screen bg-white dark:bg-[#0D1117] text-slate-900 dark:text-white pb-32">
       {/* Ultra Minimal Header */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-[#050505]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/5">
+      <div className="sticky top-0 z-50 bg-white/80 dark:bg-[#0D1117]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/10">
         <div className="max-w-[1200px] mx-auto px-8 h-24 flex items-center justify-between">
            <div className="flex items-center gap-8">
               <button 
@@ -96,11 +96,11 @@ export default function VerificationReviewPage() {
                 Requests
               </button>
               <div className="h-4 w-[1px] bg-slate-200 dark:bg-white/10" />
-              <h1 className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Forensic Audit _<span className="text-slate-900 dark:text-white">Review</span></h1>
+              <h1 className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Forensic Audit _<span className="text-slate-900 dark:text-brand-navy dark:text-white">Review</span></h1>
            </div>
 
            <span className="text-[10px] font-medium uppercase tracking-widest text-slate-400">
-             Status: <span className="text-slate-900 dark:text-white">{request?.status}</span>
+             Status: <span className="text-slate-900 dark:text-brand-navy dark:text-white">{request?.status}</span>
            </span>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function VerificationReviewPage() {
 
         {/* Action Controls */}
         {request.status === 'pending' && (
-           <div className="flex items-center justify-center gap-12 py-16 border-y border-slate-100 dark:border-white/5">
+           <div className="flex items-center justify-center gap-12 py-16 border-y border-slate-100 dark:border-white/10">
               <button 
                 onClick={() => handleReview('rejected')}
                 className="text-[10px] font-medium uppercase tracking-widest text-rose-500 hover:opacity-70 transition-all"
@@ -134,7 +134,7 @@ export default function VerificationReviewPage() {
               </button>
               <button 
                 onClick={() => handleReview('approved')}
-                className="px-12 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full text-[10px] font-medium uppercase tracking-widest hover:opacity-90 transition-all"
+                className="px-12 py-4 bg-white dark:bg-[#161B22] dark:bg-white text-white dark:text-slate-900 rounded-full text-[10px] font-medium uppercase tracking-widest hover:opacity-90 transition-all"
               >
                  Authorize User
               </button>
@@ -162,7 +162,7 @@ export default function VerificationReviewPage() {
              <button className="absolute top-12 right-12 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
                <X size={32} strokeWidth={1} />
              </button>
-             <img src={getOptimizedUrl(previewImage)} className="max-w-full max-h-full object-contain shadow-2xl rounded-sm" alt="Artifact" />
+             <img src={getOptimizedUrl(previewImage)} className="max-w-full max-h-full object-contain rounded-sm" alt="Artifact" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -183,7 +183,7 @@ const AssetCard = ({ label, type, url, onClick }) => (
     </div>
     <div 
       onClick={onClick}
-      className="aspect-video rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 cursor-zoom-in"
+      className="aspect-video rounded-[4px] overflow-hidden bg-brand-cloud dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 cursor-zoom-in"
     >
       <img src={getOptimizedUrl(url)} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
     </div>

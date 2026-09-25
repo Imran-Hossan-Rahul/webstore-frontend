@@ -55,18 +55,18 @@ const UserIntelligenceHub = ({ dossier }) => {
       <div className="xl:w-80 flex-shrink-0 space-y-12">
          <div className="space-y-8">
             <div className="relative inline-block group">
-               <div className="w-32 h-32 rounded-2xl overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+               <div className="w-32 h-32 rounded-[4px] overflow-hidden bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
                   <img src={getOptimizedUrl(getFullUrl(profile.profilePicture) || 'https://ui-avatars.com/api/?name=User&background=random')} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" alt="" />
                </div>
                {profile.isVerified && (
-                  <div className="absolute -bottom-2 -right-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-1.5 rounded-xl shadow-sm">
+                  <div className="absolute -bottom-2 -right-2 bg-white dark:bg-[#161B22] dark:bg-white text-white dark:text-slate-900 p-1.5 rounded-[4px]">
                      <ShieldCheck size={16} />
                   </div>
                )}
             </div>
 
             <div>
-               <h2 className="text-xl font-medium tracking-tight text-slate-900 dark:text-white">{profile.name}</h2>
+               <h2 className="text-xl font-medium tracking-tight text-slate-900 dark:text-brand-navy dark:text-white">{profile.name}</h2>
                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-1">{profile.role} • ID_{profile._id.slice(-6).toUpperCase()}</p>
             </div>
 
@@ -77,18 +77,18 @@ const UserIntelligenceHub = ({ dossier }) => {
             </div>
          </div>
 
-         <div className="pt-8 border-t border-slate-100 dark:border-white/5">
+         <div className="pt-8 border-t border-slate-100 dark:border-white/10">
             <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mb-6">Status Integrity</h4>
             <div className="space-y-4">
                <div className="flex items-center justify-between">
                   <span className="text-[10px] text-slate-500 uppercase tracking-widest">Account Status</span>
-                  <span className={`text-[10px] font-medium uppercase tracking-widest ${profile.isActive !== false ? 'text-indigo-600' : 'text-rose-500'}`}>
+                  <span className={`text-[10px] font-medium uppercase tracking-widest ${profile.isActive !== false ? 'text-brand-blue' : 'text-rose-500'}`}>
                      {profile.isActive !== false ? 'Active' : 'Suspended'}
                   </span>
                </div>
                <div className="flex items-center justify-between">
                   <span className="text-[10px] text-slate-500 uppercase tracking-widest">Verification</span>
-                  <span className={`text-[10px] font-medium uppercase tracking-widest ${profile.isVerified ? 'text-emerald-500' : 'text-amber-500'}`}>
+                  <span className={`text-[10px] font-medium uppercase tracking-widest ${profile.isVerified ? 'text-brand-teal' : 'text-brand-amber'}`}>
                      {profile.isVerified ? 'Verified' : 'Pending'}
                   </span>
                </div>
@@ -100,7 +100,7 @@ const UserIntelligenceHub = ({ dossier }) => {
       <div className="flex-1 space-y-12">
          
          {/* Minimal Navigation */}
-         <div className="flex items-center gap-8 border-b border-slate-100 dark:border-white/5">
+         <div className="flex items-center gap-8 border-b border-slate-100 dark:border-white/10">
             {tabs.map(tab => (
                <button
                  key={tab.id}
@@ -108,12 +108,12 @@ const UserIntelligenceHub = ({ dossier }) => {
                  className={`pb-4 text-[11px] font-medium uppercase tracking-widest transition-all relative ${
                    activeTab === tab.id 
                      ? 'text-slate-900 dark:text-white' 
-                     : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
+                     : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-200'
                  }`}
                >
                  {tab.label}
                  {activeTab === tab.id && (
-                   <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-white" />
+                   <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-white dark:bg-[#161B22] dark:bg-white" />
                  )}
                </button>
             ))}
@@ -134,14 +134,14 @@ const UserIntelligenceHub = ({ dossier }) => {
                     </div>
 
                     {/* Bio Integrity Check */}
-                    <div className="p-10 bg-slate-50 dark:bg-white/[0.01] rounded-2xl border border-slate-100 dark:border-white/5 space-y-6">
+                    <div className="p-10 bg-brand-cloud dark:bg-white/[0.01] rounded-[4px] border border-slate-100 dark:border-white/10 space-y-6">
                        <div className="flex items-center justify-between">
                           <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Identity Bio Dossier</h4>
-                          <span className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full ${auditResults.bioQuality >= 50 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
+                          <span className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full ${auditResults.bioQuality >= 50 ? 'bg-brand-teal/10 text-brand-teal' : 'bg-rose-500/10 text-rose-500'}`}>
                              {auditResults.bioQuality} Chars • {auditResults.bioQuality >= 50 ? 'Optimal' : 'Low Quality'}
                           </span>
                        </div>
-                       <p className="text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl italic">
+                       <p className="text-sm font-medium text-brand-slate dark:text-slate-300 leading-relaxed max-w-3xl italic">
                           &quot;{profile.bio || 'No bio provided.'}&quot;
                        </p>
                     </div>
@@ -151,7 +151,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                        <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Recent Activity Logs</h4>
                        <div className="space-y-2">
                           {timeline.slice(0, 5).map((act, i) => (
-                             <div key={i} className="flex items-center justify-between py-4 group hover:px-4 hover:bg-slate-50 dark:hover:bg-white/[0.02] rounded-2xl transition-all duration-300 border-b border-slate-100 dark:border-white/5 last:border-0">
+                             <div key={i} className="flex items-center justify-between py-4 group hover:px-4 hover:bg-brand-cloud dark:hover:bg-white/[0.02] rounded-[4px] transition-all duration-300 border-b border-slate-100 dark:border-white/10 last:border-0">
                                 <div className="flex items-center gap-6">
                                    <div className="text-slate-400">{getIcon(act.icon)}</div>
                                    <div>
@@ -173,11 +173,11 @@ const UserIntelligenceHub = ({ dossier }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                        <div>
                           <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-2">Aggregate Outflow</p>
-                          <h3 className="text-4xl font-light tracking-tighter text-slate-900 dark:text-white">{stats.totalSpent.toLocaleString()} TKNS</h3>
+                          <h3 className="text-4xl font-light tracking-tighter text-slate-900 dark:text-brand-navy dark:text-white">{stats.totalSpent.toLocaleString()} TKNS</h3>
                        </div>
                        <div>
                           <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-2">Aggregate Inflow</p>
-                          <h3 className="text-4xl font-light tracking-tighter text-slate-900 dark:text-white">{stats.totalEarned.toLocaleString()} TKNS</h3>
+                          <h3 className="text-4xl font-light tracking-tighter text-slate-900 dark:text-brand-navy dark:text-white">{stats.totalEarned.toLocaleString()} TKNS</h3>
                        </div>
                     </div>
 
@@ -195,11 +195,11 @@ const UserIntelligenceHub = ({ dossier }) => {
                                         </p>
                                         <p className="text-[9px] text-slate-400 uppercase tracking-widest mt-0.5">{tx.paymentMethod}</p>
                                      </td>
-                                     <td className={`py-6 text-right text-[11px] font-medium tracking-tight ${tx.sender?._id === profile._id ? 'text-rose-500' : 'text-emerald-500'}`}>
+                                     <td className={`py-6 text-right text-[11px] font-medium tracking-tight ${tx.sender?._id === profile._id ? 'text-rose-500' : 'text-brand-teal'}`}>
                                         {tx.sender?._id === profile._id ? '-' : '+'}{tx.amount.toLocaleString()} {tx.currency}
                                      </td>
                                      <td className="py-6 text-right">
-                                        <span className={`text-[8px] font-medium uppercase tracking-widest px-3 py-1 rounded-full border ${tx.status === 'completed' ? 'border-emerald-500/10 text-emerald-500' : 'border-amber-500/10 text-amber-500'}`}>
+                                        <span className={`text-[8px] font-medium uppercase tracking-widest px-3 py-1 rounded-full border ${tx.status === 'completed' ? 'border-brand-teal/10 text-brand-teal' : 'border-amber-500/10 text-brand-amber'}`}>
                                            {tx.status}
                                         </span>
                                      </td>
@@ -215,14 +215,14 @@ const UserIntelligenceHub = ({ dossier }) => {
                {/* BEHAVIOR */}
                {activeTab === 'behavior' && (
                  <motion.div key="behavior" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-12">
-                    <div className="relative pl-8 border-l border-slate-100 dark:border-white/5 space-y-12">
+                    <div className="relative pl-8 border-l border-slate-100 dark:border-white/10 space-y-12">
                        {timeline.map((act, i) => (
                           <div key={i} className="relative group">
-                             <div className="absolute -left-[37px] top-0 w-4 h-4 rounded-full border-4 border-white dark:border-[#050505] bg-slate-200 dark:bg-white/10 group-hover:bg-indigo-600 transition-all duration-500" />
+                             <div className="absolute -left-[37px] top-0 w-4 h-4 rounded-full border-4 border-white dark:border-[#050505] bg-slate-200 dark:bg-white/10 group-hover:bg-brand-blue transition-all duration-500" />
                              <div className="space-y-2">
                                 <div className="flex items-center gap-4">
                                    <span className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">{new Date(act.timestamp).toLocaleDateString()}</span>
-                                   <span className={`text-[8px] font-medium uppercase tracking-widest px-2 py-0.5 rounded ${act.severity === 'major' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-slate-100 dark:bg-white/5 text-slate-400'}`}>
+                                   <span className={`text-[8px] font-medium uppercase tracking-widest px-2 py-0.5 rounded ${act.severity === 'major' ? 'bg-white dark:bg-[#161B22] dark:bg-white text-white dark:text-slate-900' : 'bg-slate-100 dark:bg-white/5 text-slate-400'}`}>
                                       {act.type}
                                    </span>
                                 </div>
@@ -243,10 +243,10 @@ const UserIntelligenceHub = ({ dossier }) => {
                        <SecuritySection 
                           title="Forensic Eligibility Audit" 
                           items={[
-                             { label: 'Profile Completion', value: auditResults.profileComplete ? 'OPTIMAL' : 'INCOMPLETE', color: auditResults.profileComplete ? 'text-emerald-500' : 'text-rose-500' },
-                             { label: 'Bio Integrity', value: `${auditResults.bioQuality} CHARS`, color: auditResults.bioQuality >= 50 ? 'text-emerald-500' : 'text-rose-500' },
-                             { label: 'Account Maturity', value: `${auditResults.accountAge} DAYS`, color: auditResults.accountAge >= 3 ? 'text-emerald-500' : 'text-rose-500' },
-                             { label: 'Communication Auth', value: auditResults.contactVerified ? 'VERIFIED' : 'PENDING', color: auditResults.contactVerified ? 'text-emerald-500' : 'text-rose-500' }
+                             { label: 'Profile Completion', value: auditResults.profileComplete ? 'OPTIMAL' : 'INCOMPLETE', color: auditResults.profileComplete ? 'text-brand-teal' : 'text-rose-500' },
+                             { label: 'Bio Integrity', value: `${auditResults.bioQuality} CHARS`, color: auditResults.bioQuality >= 50 ? 'text-brand-teal' : 'text-rose-500' },
+                             { label: 'Account Maturity', value: `${auditResults.accountAge} DAYS`, color: auditResults.accountAge >= 3 ? 'text-brand-teal' : 'text-rose-500' },
+                             { label: 'Communication Auth', value: auditResults.contactVerified ? 'VERIFIED' : 'PENDING', color: auditResults.contactVerified ? 'text-brand-teal' : 'text-rose-500' }
                           ]}
                        />
                        <SecuritySection 
@@ -254,9 +254,9 @@ const UserIntelligenceHub = ({ dossier }) => {
                           items={[
                              { label: 'Entry IP Node', value: security.lastLoginIp || 'N/A' },
                              { label: 'System Agent', value: security.deviceHistory?.[0] || 'Unknown' },
-                             { label: 'Login Attempts', value: security.loginAttempts || 0, color: security.loginAttempts >= 3 ? 'text-rose-500' : 'text-emerald-500' },
-                             { label: 'Account Status', value: security.isLocked ? '🔴 LOCKED' : '✓ OPEN', color: security.isLocked ? 'text-rose-500' : 'text-emerald-500' },
-                             { label: 'Risk Score', value: `${security.riskScore || 0}/100`, color: (security.riskScore || 0) > 50 ? 'text-rose-500' : 'text-emerald-500' },
+                             { label: 'Login Attempts', value: security.loginAttempts || 0, color: security.loginAttempts >= 3 ? 'text-rose-500' : 'text-brand-teal' },
+                             { label: 'Account Status', value: security.isLocked ? '🔴 LOCKED' : '✓ OPEN', color: security.isLocked ? 'text-rose-500' : 'text-brand-teal' },
+                             { label: 'Risk Score', value: `${security.riskScore || 0}/100`, color: (security.riskScore || 0) > 50 ? 'text-rose-500' : 'text-brand-teal' },
                           ]}
                        />
                     </div>
@@ -267,7 +267,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                         <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Risk Breakdown</h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                            {Object.entries(security.riskBreakdown).map(([key, val]) => (
-                             <div key={key} className="flex flex-col border-b border-slate-100 dark:border-white/5 pb-3">
+                             <div key={key} className="flex flex-col border-b border-slate-100 dark:border-white/10 pb-3">
                                <span className="text-[9px] text-slate-500 uppercase tracking-widest">{key.replace(/([A-Z])/g, ' $1')}</span>
                                <span className="text-[10px] font-bold uppercase tracking-tight text-slate-900 dark:text-white mt-1">{val}</span>
                              </div>
@@ -282,8 +282,8 @@ const UserIntelligenceHub = ({ dossier }) => {
                         <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Recent Audit Log</h4>
                         <div className="space-y-3 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
                           {security.auditLogs.slice(0, 10).map((log, i) => (
-                            <div key={i} className="flex items-center justify-between bg-slate-50 dark:bg-white/[0.02] rounded-xl p-4 border border-slate-100 dark:border-white/5">
-                              <span className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wide">{log.action || 'System Event'}</span>
+                            <div key={i} className="flex items-center justify-between bg-brand-cloud dark:bg-white/[0.02] rounded-[4px] p-4 border border-slate-100 dark:border-white/10">
+                              <span className="text-[10px] font-bold text-brand-slate dark:text-slate-400 uppercase tracking-wide">{log.action || 'System Event'}</span>
                               <span className="text-[9px] text-slate-400 uppercase tracking-widest">{log.timestamp ? new Date(log.timestamp).toLocaleString() : ''}</span>
                             </div>
                           ))}
@@ -292,10 +292,10 @@ const UserIntelligenceHub = ({ dossier }) => {
                     )}
 
                     {/* Identity Compliance */}
-                    <div className="p-10 bg-slate-900 dark:bg-white rounded-[40px] text-white dark:text-slate-900 flex items-center justify-between">
+                    <div className="p-10 bg-white dark:bg-[#161B22] dark:bg-white rounded-[40px] text-white dark:text-slate-900 flex items-center justify-between">
                        <div className="space-y-2">
                           <h4 className="text-[10px] font-bold uppercase tracking-widest opacity-60">Identity Compliance</h4>
-                          <h3 className="text-xl font-medium tracking-tight">PLATFORM RULES AGREEMENT: <span className="text-emerald-400 dark:text-emerald-600">SIGNED</span></h3>
+                          <h3 className="text-xl font-medium tracking-tight">PLATFORM RULES AGREEMENT: <span className="text-emerald-400 dark:text-brand-teal">SIGNED</span></h3>
                        </div>
                        <ShieldAlert size={40} strokeWidth={1} className="opacity-20" />
                     </div>
@@ -320,8 +320,8 @@ const UserIntelligenceHub = ({ dossier }) => {
                         { label: 'Timezone Offset', value: deviceFingerprint?.timezoneOffset != null ? `${deviceFingerprint.timezoneOffset} min` : 'Unknown' },
                         { label: 'Last Signal IP', value: deviceFingerprint?.ip || security?.lastLoginIp || 'N/A' },
                       ].map((item, i) => (
-                        <div key={i} className="bg-slate-50 dark:bg-white/[0.02] rounded-2xl p-6 border border-slate-100 dark:border-white/5 hover:border-indigo-600/30 transition-all group">
-                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2 group-hover:text-indigo-600">{item.label}</p>
+                        <div key={i} className="bg-brand-cloud dark:bg-white/[0.02] rounded-[4px] p-6 border border-slate-100 dark:border-white/10 hover:border-brand-blue/30 transition-all group">
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2 group-hover:text-brand-blue">{item.label}</p>
                           <p className="text-[11px] font-bold text-slate-900 dark:text-white uppercase truncate tracking-tight">{item.value}</p>
                         </div>
                       ))}
@@ -344,7 +344,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                          { label: 'Total Engagement', value: `${stats?.avgEngagementScore || 0}/100` },
                          { label: 'Page Views', value: behaviorSummary?.totalPageViews || 0 },
                        ].map((m, i) => (
-                         <div key={i} className="bg-slate-50 dark:bg-white/[0.02] rounded-2xl p-6 border border-slate-100 dark:border-white/5 text-center">
+                         <div key={i} className="bg-brand-cloud dark:bg-white/[0.02] rounded-[4px] p-6 border border-slate-100 dark:border-white/10 text-center">
                            <p className="text-xl font-bold text-slate-900 dark:text-white tracking-tighter">{m.value}</p>
                            <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">{m.label}</p>
                          </div>
@@ -353,7 +353,7 @@ const UserIntelligenceHub = ({ dossier }) => {
 
                     {/* Hourly Distribution */}
                     {activityHeatmap?.byHour && (
-                      <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/60 dark:border-white/5 rounded-3xl p-8">
+                      <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-3xl p-8">
                         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-8">Intensity by Hour (24h Cycle)</h4>
                         <div className="flex items-end gap-1.5 h-32">
                           {activityHeatmap.byHour.map((count, hour) => {
@@ -388,7 +388,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                             return (
                               <div key={day} className="text-center space-y-3">
                                 <div 
-                                  className="w-full aspect-square rounded-[20px] flex items-center justify-center text-[10px] font-bold text-indigo-600 border border-indigo-600/10 shadow-sm transition-all duration-700" 
+                                  className="w-full aspect-square rounded-[4px] flex items-center justify-center text-[10px] font-bold text-brand-blue border border-brand-blue/10 transition-all duration-700" 
                                   style={{ background: `rgba(99,102,241,${opacity})` }}
                                 >
                                   {count}
@@ -420,7 +420,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                         };
                         const maxCount = Math.max(...Object.values(featureUsage), 1);
                         return (
-                          <div key={feature} className="bg-white dark:bg-[#0A0A0A] rounded-[32px] p-8 border border-slate-200/60 dark:border-white/5 flex flex-col justify-between">
+                          <div key={feature} className="bg-white dark:bg-[#161B22] rounded-[32px] p-8 border border-slate-200 dark:border-white/10 flex flex-col justify-between">
                             <div className="flex items-center justify-between mb-6">
                               <div className="flex items-center gap-4">
                                 <div className="text-3xl filter grayscale group-hover:grayscale-0 transition-all">{icons[feature] || '⚡'}</div>
@@ -429,7 +429,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{count} recorded interactions</p>
                                 </div>
                               </div>
-                              <div className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${count > 0 ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-white/5 text-slate-400'}`}>
+                              <div className={`px-3 py-1 rounded-full text-[9px] font-bold uppercase tracking-widest ${count > 0 ? 'bg-brand-teal/10 text-brand-teal' : 'bg-slate-100 dark:bg-white/5 text-slate-400'}`}>
                                 {count > 0 ? 'Active Engine' : 'Dormant'}
                               </div>
                             </div>
@@ -439,7 +439,7 @@ const UserIntelligenceHub = ({ dossier }) => {
                                    initial={{ width: 0 }} 
                                    animate={{ width: `${(count / maxCount) * 100}%` }} 
                                    transition={{ delay: i * 0.1, duration: 1 }} 
-                                   className="h-full bg-slate-950 dark:bg-white rounded-full" 
+                                   className="h-full bg-white dark:bg-[#161B22] dark:bg-white rounded-full" 
                                  />
                                </div>
                                <div className="flex justify-between text-[8px] font-bold text-slate-400 uppercase tracking-widest">
@@ -477,7 +477,7 @@ const SidebarLink = ({ icon, label, value }) => (
 const MetricBox = ({ label, value }) => (
   <div className="space-y-1">
      <p className="text-[9px] font-medium text-slate-400 uppercase tracking-widest">{label}</p>
-     <p className="text-2xl font-light tracking-tighter text-slate-900 dark:text-white">{value}</p>
+     <p className="text-2xl font-light tracking-tighter text-slate-900 dark:text-brand-navy dark:text-white">{value}</p>
   </div>
 );
 
@@ -486,7 +486,7 @@ const SecuritySection = ({ title, items }) => (
      <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">{title}</h4>
      <div className="space-y-6">
         {items.map((item, i) => (
-           <div key={i} className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-4">
+           <div key={i} className="flex items-center justify-between border-b border-slate-100 dark:border-white/10 pb-4">
               <span className="text-[9px] text-slate-500 uppercase tracking-widest">{item.label}</span>
               <span className={`text-[10px] font-medium uppercase tracking-tight ${item.color || 'text-slate-900 dark:text-white'}`}>{item.value}</span>
            </div>

@@ -36,7 +36,7 @@ const ArtifactCard = ({
         {/* FREE or PAID Badge */}
         <div className="absolute top-2 right-2 z-30">
           {isFree ? (
-            <span className="bg-green-500 text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider uppercase">
+            <span className="bg-brand-teal text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider uppercase">
               FREE
             </span>
           ) : (

@@ -31,7 +31,7 @@ export default function MetadataSection({
 
 
         <div className="relative">
-          <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">Add Custom Tool</label>
+          <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">Add Custom Tool</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -46,7 +46,7 @@ export default function MetadataSection({
           {showSuggestions && (
             <div className="absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg shadow-sm z-50">
               {filteredSuggestions.map(s => (
-                <button key={s} onClick={() => addCustomTool(s)} className="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-[#171717] text-sm">
+                <button key={s} onClick={() => addCustomTool(s)} className="w-full text-left px-4 py-2 hover:bg-brand-cloud dark:hover:bg-[#171717] text-sm">
                   {s}
                 </button>
               ))}
@@ -71,7 +71,7 @@ export default function MetadataSection({
         </h3>
         
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition">
+          <label className="aspect-video flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl hover:bg-brand-cloud dark:hover:bg-slate-900/50 cursor-pointer transition">
             <Upload size={20} strokeWidth={1.5} className="text-slate-400 mb-2" />
             <span className="text-[10px] font-bold text-slate-500">Upload Media</span>
             <input type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
@@ -97,7 +97,7 @@ export default function MetadataSection({
         <div 
           onClick={handleResourceClick}
           className={`p-6 border-2 border-dashed rounded-2xl transition cursor-pointer flex flex-col items-center gap-3 ${
-            resource ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-slate-200 dark:border-[#262626] hover:bg-slate-50 dark:hover:bg-[#171717]'
+            resource ? 'border-green-500 bg-green-50 dark:bg-green-900/10' : 'border-slate-200 dark:border-[#262626] hover:bg-brand-cloud dark:hover:bg-[#171717]'
           }`}
         >
           <div className={`p-3 rounded-xl ${resource ? 'bg-green-100 text-green-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>

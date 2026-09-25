@@ -53,12 +53,12 @@ export default function Testimonials() {
           {[...testimonials, ...testimonials].map((t, i) => (
             <div 
               key={i} 
-              className="w-[350px] flex-shrink-0 p-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 whitespace-normal"
+              className="w-[350px] flex-shrink-0 p-6 rounded-2xl bg-brand-cloud dark:bg-slate-900 border border-slate-100 dark:border-slate-800 whitespace-normal"
             >
               <div className="flex items-center gap-1 mb-4 text-amber-400">
                 {[1,2,3,4,5].map(star => <Star key={star} className="w-4 h-4 fill-current" />)}
               </div>
-              <p className="text-slate-600 dark:text-gray-300 mb-6 text-sm leading-relaxed">
+              <p className="text-brand-slate dark:text-slate-300 mb-6 text-sm leading-relaxed">
                 &quot;{t.content}&quot;
               </p>
               <div className="flex items-center gap-3">

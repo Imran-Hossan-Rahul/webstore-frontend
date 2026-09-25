@@ -145,11 +145,11 @@ export default function NotificationModal({ isOpen, onClose }) {
 
   const getIcon = (type) => {
     switch (type) {
-      case "message": return <MessageCircle className="text-indigo-600" size={18} />;
+      case "message": return <MessageCircle className="text-brand-blue" size={18} />;
       case "like": return <Star className="text-red-500 fill-red-500" size={18} />;
       case "follow": return <UserPlus className="text-purple-500" size={18} />;
-      case "purchase": return <ShoppingBag className="text-emerald-500" size={18} />;
-      case "comment": return <MessageCircle className="text-amber-500" size={18} />;
+      case "purchase": return <ShoppingBag className="text-brand-teal" size={18} />;
+      case "comment": return <MessageCircle className="text-brand-amber" size={18} />;
       default: return <Info className="text-slate-500" size={18} />;
     }
   };
@@ -179,7 +179,7 @@ export default function NotificationModal({ isOpen, onClose }) {
           <div className="flex items-center gap-1">
             <button
               onClick={markAllRead}
-              className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-emerald-500"
+              className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-brand-teal"
               title="Mark all as read"
             >
               <Check size={20} />
@@ -217,7 +217,7 @@ export default function NotificationModal({ isOpen, onClose }) {
             </div>
           ) : notifications.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-50">
-              <Bell size={48} className="mb-4 text-gray-300" />
+              <Bell size={48} className="mb-4 text-slate-300" />
               <p className="text-sm font-bold text-slate-500">No notifications yet.</p>
             </div>
           ) : (
@@ -229,7 +229,7 @@ export default function NotificationModal({ isOpen, onClose }) {
               >
                 {/* Status Dot */}
                 {!notif.read && (
-                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-indigo-600 rounded-full shadow-lg shadow-blue-500/50" />
+                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brand-blue rounded-full shadow-lg shadow-blue-500/50" />
                 )}
 
                 {/* Sender Avatar / Icon */}
@@ -254,7 +254,7 @@ export default function NotificationModal({ isOpen, onClose }) {
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-1">
-                    <p className={`text-[13px] leading-tight dark:text-gray-200 ${notif.read ? "font-medium" : "font-bold"}`}>
+                    <p className={`text-[13px] leading-tight dark:text-slate-200 ${notif.read ? "font-medium" : "font-bold"}`}>
                       {notif.title}
                     </p>
                     <span className="text-[10px] text-slate-400 font-bold shrink-0 ml-2">
@@ -293,7 +293,7 @@ export default function NotificationModal({ isOpen, onClose }) {
         </div>
         
         {/* Footer */}
-        <div className="p-4 bg-slate-50/50 dark:bg-white/5 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-center">
+        <div className="p-4 bg-brand-cloud/50 dark:bg-white/5 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-center">
            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[2px]">End of activities</p>
         </div>
       </div>

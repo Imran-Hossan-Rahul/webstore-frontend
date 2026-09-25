@@ -9,7 +9,7 @@ import { useUser } from '@/context/UserContext';
 
 const STATUS_STYLE = {
   'Order placed': 'bg-yellow-50 text-[#1d1d1f] border-yellow-200',
-  'Confirmed':    'bg-blue-50 text-[#1d1d1f] border-blue-200',
+  'Confirmed':    'bg-brand-sky text-[#1d1d1f] border-blue-200',
   'Processing':   'bg-purple-50 text-[#1d1d1f] border-purple-200',
   'Shipped':      'bg-cyan-50 text-[#1d1d1f] border-cyan-200',
   'Delivered':    'bg-green-50 text-[#1d1d1f] border-green-200',
@@ -121,24 +121,24 @@ export default function OrdersList({ isEmbedded = false }) {
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
 
   return (
-    <div className={isEmbedded ? "w-full" : "min-h-screen pb-24 md:pb-0 bg-[#fafafa] dark:bg-slate-950"}>
-      <div className={isEmbedded ? "w-full" : "w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3"}>
+    <div className={isEmbedded ? "w-full font-sans" : "min-h-screen pb-24 md:pb-0 bg-transparent font-sans"}>
+      <div className={isEmbedded ? "w-full" : "w-full md:pb-2"}>
         
         {/* Header */}
         {!isEmbedded && (
-          <div className="bg-apple-parchment dark:bg-apple-surfaceDark rounded-apple-lg border border-apple-hairline p-4 md:p-6 mb-4 md:mb-6">
+          <div className="bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 p-4 md:p-6 mb-4 md:mb-6 shadow-sm dark:shadow-none">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                <Package size={24} className="text-[#111827]" /> My Orders
+              <h1 className="text-[18px] md:text-[20px] font-display font-medium text-brand-navy dark:text-white flex items-center gap-2">
+                <Package size={22} className="text-brand-navy dark:text-white" /> My Orders
               </h1>
               <div className="relative w-full sm:w-auto">
-                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={search}
                   onChange={e => { setSearch(e.target.value); setPage(1); }}
                   placeholder="Search orders..."
-                  className="pl-10 pr-4 py-2 text-sm border border-gray-200 dark:border-white/10 rounded-lg bg-gray-50 hover:bg-gray-100 focus:bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 w-full sm:w-64 transition-all"
+                  className="pl-9 pr-4 py-2 text-[14px] font-sans border border-slate-300 dark:border-white/20 rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] text-brand-navy dark:text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue/20 w-full sm:w-64 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -147,17 +147,17 @@ export default function OrdersList({ isEmbedded = false }) {
 
         {/* Guest Track Order UI */}
         {!user && (
-          <div className="bg-white dark:bg-apple-surfaceDark border border-apple-hairline rounded-[16px] p-6 mb-6">
-            <h3 className="text-[15px] font-semibold text-[#1d1d1f] dark:text-white mb-2 flex items-center">
-              <Package className="w-5 h-5 mr-2 text-[#0071e3]" />
+          <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 mb-6 shadow-sm dark:shadow-none">
+            <h3 className="text-[16px] font-display font-medium text-brand-navy dark:text-white mb-2 flex items-center">
+              <Package className="w-5 h-5 mr-2 text-brand-blue" />
               Track Your Order
             </h3>
-            <p className="text-[13px] text-[#86868b] mb-4">
+            <p className="text-[13px] font-sans text-slate-500 mb-4">
               If you are not logged in and forgot or didn't see your order, enter your Phone Number or Order ID below to track it.
             </p>
             <form onSubmit={handleTrackOrder} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
                   type="text" 
                   value={trackQuery}
@@ -168,16 +168,16 @@ export default function OrdersList({ isEmbedded = false }) {
                     }
                   }}
                   placeholder="Enter Phone Number or Order ID..."
-                  className="w-full pl-9 pr-4 py-2.5 rounded-[10px] bg-[#f5f5f7] dark:bg-black border border-transparent focus:border-[#0071e3] focus:bg-white dark:focus:bg-[#1c1c1e] text-[13px] text-[#1d1d1f] dark:text-white outline-none transition-all"
+                  className="w-full pl-9 pr-4 py-2.5 rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] border border-slate-300 dark:border-white/20 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue/20 text-[13px] font-sans text-brand-navy dark:text-white transition-all placeholder:text-slate-400"
                   required
                 />
               </div>
               <button 
                 type="submit" 
                 disabled={trackLoading}
-                className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-2.5 rounded-[10px] text-[13px] font-medium transition-colors disabled:opacity-70 flex items-center justify-center shrink-0"
+                className="bg-brand-navy dark:bg-white hover:opacity-90 text-white dark:text-brand-navy px-6 py-2.5 rounded-[4px] text-[13px] font-sans font-medium transition-opacity disabled:opacity-70 flex items-center justify-center shrink-0"
               >
-                {trackLoading ? <AppleSpinner size={16} className="text-white" /> : 'Track Order'}
+                {trackLoading ? <AppleSpinner size={16} className="text-white dark:text-brand-navy" /> : 'Track Order'}
               </button>
             </form>
             {trackError && <p className="text-red-500 text-xs mt-2">{trackError}</p>}
@@ -187,17 +187,17 @@ export default function OrdersList({ isEmbedded = false }) {
 
         {/* Content */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24 text-gray-400">
-            <AppleSpinner className="animate-spin mb-3" />
-            <p className="text-sm">Loading your orders...</p>
+          <div className="flex flex-col items-center justify-center py-24 text-slate-400">
+            <AppleSpinner className="animate-spin mb-3 text-brand-blue" />
+            <p className="text-[14px] font-sans">Loading your orders...</p>
           </div>
         ) : paginated.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-24 text-slate-400">
             <ShoppingBag size={40} className="mb-3 opacity-30" />
-            <p className="text-sm font-medium">No orders found</p>
+            <p className="text-[14px] font-sans font-medium">No orders found</p>
             <button
               onClick={() => router.push('/')}
-              className="mt-4 text-[#111827] text-sm hover:underline"
+              className="mt-4 text-brand-blue text-[14px] font-sans hover:underline"
             >
               Start shopping
             </button>
@@ -215,35 +215,35 @@ export default function OrdersList({ isEmbedded = false }) {
                 <div
                   key={oid}
                   onClick={() => router.push(`/orders/${oid}`)}
-                  className="bg-apple-parchment dark:bg-apple-surfaceDark border border-apple-hairline rounded-[16px] overflow-hidden cursor-pointer hover:border-gray-400 transition-all duration-300 group"
+                  className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] overflow-hidden cursor-pointer hover:border-slate-300 dark:hover:border-white/20 transition-all duration-300 group shadow-sm dark:shadow-none"
                 >
                   {/* Order Header */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-gray-100 dark:border-white/5">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-slate-100 dark:border-white/5">
                     {/* Left: ID + date */}
                     <div className="flex justify-between items-start md:block w-full md:w-auto mb-3 md:mb-0">
                       <div>
                         <div className="flex items-center gap-2 mb-1 w-full overflow-hidden">
-                          <span className="text-[16px] sm:text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white uppercase truncate" title={`Order #WA${shortId}`}>
+                          <span className="text-[15px] font-mono font-medium text-brand-navy dark:text-white uppercase truncate" title={`Order #WA${shortId}`}>
                             Order #WA{shortId}
                           </span>
                           <button
                             onClick={e => copyId(e, `WA${shortId}`)}
-                            className="text-gray-400 hover:text-gray-700 transition shrink-0"
+                            className="text-slate-400 hover:text-brand-blue transition-colors shrink-0"
                             title="Copy Order Number"
                           >
                             <Copy size={14} />
                           </button>
                           {copiedId === `WA${shortId}` && (
-                            <span className="font-text text-[10px] text-green-600 font-semibold bg-green-50 px-1.5 py-0.5 rounded uppercase tracking-[0.06em]">Copied</span>
+                            <span className="font-mono text-[10px] text-brand-teal font-medium bg-brand-teal/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
                           )}
                         </div>
-                        <p className="text-[12px] font-normal tracking-[-0.01em] text-[#86868b]">
+                        <p className="text-[12px] font-sans text-slate-500">
                           Placed on {formatDate(order.createdAt)}
                         </p>
                       </div>
                       
                       {/* Status Badge on Mobile (Top Right) */}
-                      <span className={`md:hidden font-text text-[10px] font-semibold px-2 py-1 rounded uppercase tracking-[0.06em] ${statusStyle}`}>
+                      <span className={`md:hidden font-mono text-[10px] font-medium px-2 py-1 rounded-[4px] uppercase tracking-widest ${statusStyle}`}>
                         {order.status || 'Order placed'}
                       </span>
                     </div>
@@ -251,27 +251,27 @@ export default function OrdersList({ isEmbedded = false }) {
                     {/* Right: total + actions (Desktop Status is here too) */}
                     <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto mt-2 md:mt-0">
                       <div className="flex flex-col md:flex-row md:items-center gap-0 md:gap-4">
-                        <span className="font-text text-[10px] text-[#86868b] md:hidden uppercase tracking-[0.06em] font-semibold">Total Amount</span>
-                        <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">
-                          {formatPrice(total)} BDT
+                        <span className="font-mono text-[10px] text-slate-500 md:hidden uppercase tracking-widest font-medium">Total Amount</span>
+                        <span className="text-[16px] font-mono font-semibold text-brand-navy dark:text-white">
+                          BDT {formatPrice(total)}
                         </span>
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <span className={`hidden md:block font-text text-[10px] font-semibold tracking-[0.06em] uppercase px-2.5 py-1.5 rounded-full ${statusStyle}`}>
+                        <span className={`hidden md:block font-mono text-[11px] font-medium tracking-widest uppercase px-2.5 py-1 rounded-[4px] ${statusStyle}`}>
                           {order.status || 'Order placed'}
                         </span>
 
                         <button
                           onClick={e => { e.stopPropagation(); router.push(`/orders/${oid}`); }}
-                          className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 hover:text-blue-600 transition"
+                          className="p-2 rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-200 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors"
                           title="View Details"
                         >
                           <Eye size={16} />
                         </button>
                         <button
                           onClick={e => { e.stopPropagation(); generateInvoice(order); }}
-                          className="p-2 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-600 hover:text-blue-600 transition"
+                          className="p-2 rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-200 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors"
                           title="Download Invoice"
                         >
                           <FileText size={16} />
@@ -281,32 +281,32 @@ export default function OrdersList({ isEmbedded = false }) {
                   </div>
 
                   {/* Items list */}
-                  <div className="p-2 md:p-4 bg-[#f8f9fa] dark:bg-slate-800/30">
+                  <div className="p-2 md:p-4 bg-brand-cloud dark:bg-[#0D1117]">
                     {(order.items || []).map((item, idx) => {
                       let photo = null;
                       try { photo = JSON.parse(item.product?.photos || '[]')[0]; } catch(e) {}
                       return (
                         <div
                           key={idx}
-                          className="flex items-center gap-4 px-2 py-2 md:px-4 md:py-3 border-b border-gray-200/50 dark:border-white/5 last:border-b-0"
+                          className="flex items-center gap-4 px-2 py-2 md:px-4 md:py-3 border-b border-slate-200 dark:border-white/5 last:border-b-0"
                         >
                           {/* Product image */}
-                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-[10px] bg-white border border-slate-100 dark:border-[#2c2c2e] overflow-hidden flex items-center justify-center shrink-0 p-1">
+                          <div className="w-12 h-12 md:w-14 md:h-14 rounded-[4px] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-1">
                             {photo
-                              ? <img src={photo} alt="" className="w-full h-full object-contain mix-blend-multiply" />
-                              : <ImageIcon size={20} className="text-gray-300" strokeWidth={1.5} />
+                              ? <img src={photo} alt="" className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+                              : <ImageIcon size={20} className="text-slate-300" strokeWidth={1.5} />
                             }
                           </div>
 
                           {/* Title + variants + qty */}
                           <div className="flex-1 min-w-0">
-                            <p className="text-[14px] md:text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white line-clamp-1 group-hover:text-[#0066cc] transition-colors">
+                            <p className="text-[14px] md:text-[15px] font-sans font-medium text-brand-navy dark:text-white line-clamp-1 group-hover:text-brand-blue transition-colors">
                               {item.product?.title || 'Unknown Product'}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-[12px] font-semibold tracking-[-0.01em] text-[#1d1d1f] dark:text-white bg-white border border-[#d2d2d7] px-1.5 py-0.5 rounded shadow-sm">Qty: {item.quantity}</span>
+                              <span className="text-[11px] font-mono font-medium text-brand-navy dark:text-white bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 px-1.5 py-0.5 rounded-[4px]">Qty: {item.quantity}</span>
                               {item.variants && (
-                                <span className="text-[12px] font-normal tracking-[-0.01em] text-[#86868b] truncate">({item.variants})</span>
+                                <span className="text-[12px] font-mono text-slate-500 truncate">({item.variants})</span>
                               )}
                             </div>
                           </div>
@@ -322,12 +322,12 @@ export default function OrdersList({ isEmbedded = false }) {
 
         {/* Pagination */}
         {!loading && filtered.length > 0 && (
-          <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10">
+          <div className="mt-6 pt-4 border-t border-slate-200 dark:border-white/10">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
-                className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="flex items-center gap-1 text-[13px] font-mono text-slate-500 hover:text-brand-navy dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 ‹ Previous
               </button>
@@ -337,10 +337,10 @@ export default function OrdersList({ isEmbedded = false }) {
                   <button
                     key={p}
                     onClick={() => setPage(p)}
-                    className={`w-8 h-8 text-sm rounded font-medium transition ${
+                    className={`w-8 h-8 text-[13px] font-mono rounded-[4px] font-medium transition-colors ${
                       p === page
-                        ? 'bg-[#111827] text-white'
-                        : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800'
+                        ? 'bg-brand-navy dark:bg-white text-white dark:text-brand-navy'
+                        : 'text-slate-500 hover:bg-slate-200 dark:hover:bg-white/10'
                     }`}
                   >
                     {p}
@@ -351,12 +351,12 @@ export default function OrdersList({ isEmbedded = false }) {
               <button
                 onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
-                className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition"
+                className="flex items-center gap-1 text-[13px] font-mono text-slate-500 hover:text-brand-navy dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Next ›
               </button>
             </div>
-            <p className="text-center text-[11px] text-gray-400 mt-2">
+            <p className="text-center text-[11px] font-mono text-slate-400 mt-4 tracking-widest uppercase">
               Total {filtered.length} order{filtered.length !== 1 ? 's' : ''} · Page {page} of {totalPages}
             </p>
           </div>

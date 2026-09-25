@@ -8,6 +8,7 @@ import { Search, Loader2, Edit, ChevronDown, Filter, X, Check } from "lucide-rea
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import { PRODUCT_TYPES, PRODUCT_TYPE_COLORS } from "@/utils/digitalProducts";
+import { LoadingState, EmptyState } from '@/components/ui/States';
 const getOptimizedUrl = (url) => {
   if (!url) return '';
   if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
@@ -317,7 +318,7 @@ export default function ShopPage() {
         <button
           onClick={() => handlePageChange(page - 1)}
           disabled={page === 1 || loading}
-          className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${page === 1 ? 'opacity-30 cursor-not-allowed text-apple-ink' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'}`}
+          className={`w-10 h-10 flex items-center justify-center rounded-[4px] transition-colors ${page === 1 ? 'opacity-30 cursor-not-allowed text-slate-400' : 'text-brand-navy dark:text-white hover:bg-brand-cloud dark:hover:bg-[#161B22]'}`}
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -328,11 +329,11 @@ export default function ShopPage() {
           <>
             <button
               onClick={() => handlePageChange(1)}
-              className="w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans font-medium text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-[4px] text-[14px] font-mono font-medium text-brand-navy dark:text-white hover:bg-brand-cloud dark:hover:bg-[#161B22] transition-colors"
             >
               1
             </button>
-            {startPage > 2 && <span className="text-apple-muted font-sans tracking-widest px-1">...</span>}
+            {startPage > 2 && <span className="text-slate-400 font-mono tracking-widest px-1">...</span>}
           </>
         )}
 
@@ -340,7 +341,7 @@ export default function ShopPage() {
           <button
             key={num}
             onClick={() => handlePageChange(num)}
-            className={`w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans transition-all ${num === page ? 'bg-[#0071e3] text-white shadow-sm font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+            className={`w-10 h-10 flex items-center justify-center rounded-[4px] text-[14px] font-mono transition-colors ${num === page ? 'bg-brand-blue text-white shadow-sm font-medium' : 'text-brand-navy dark:text-white hover:bg-brand-cloud dark:hover:bg-[#161B22] font-medium'}`}
           >
             {num}
           </button>
@@ -348,10 +349,10 @@ export default function ShopPage() {
 
         {endPage < totalPages && (
           <>
-            {endPage < totalPages - 1 && <span className="text-apple-muted font-sans tracking-widest px-1">...</span>}
+            {endPage < totalPages - 1 && <span className="text-slate-400 font-mono tracking-widest px-1">...</span>}
             <button
               onClick={() => handlePageChange(totalPages)}
-              className="w-10 h-10 flex items-center justify-center rounded-full text-[15px] font-sans font-medium text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 transition-all"
+              className="w-10 h-10 flex items-center justify-center rounded-[4px] text-[14px] font-mono font-medium text-brand-navy dark:text-white hover:bg-brand-cloud dark:hover:bg-[#161B22] transition-colors"
             >
               {totalPages}
             </button>
@@ -361,7 +362,7 @@ export default function ShopPage() {
         <button
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages || loading}
-          className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${page === totalPages ? 'opacity-30 cursor-not-allowed text-apple-ink' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'}`}
+          className={`w-10 h-10 flex items-center justify-center rounded-[4px] transition-colors ${page === totalPages ? 'opacity-30 cursor-not-allowed text-slate-400' : 'text-brand-navy dark:text-white hover:bg-brand-cloud dark:hover:bg-[#161B22]'}`}
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -382,41 +383,46 @@ export default function ShopPage() {
     setShowMobileFilters(false);
   };
 
-  const renderProductCard = (product) => (
-    <div key={product.id} className="bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-xl rounded-apple-lg transition-all duration-300 overflow-hidden border border-apple-hairline flex flex-col relative group">
-      <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
+  const renderProductCard = (product) => {
+    const isAdded = cartItems.includes((product.id || product._id)?.toString());
+    
+    return (
+      <div key={product.id} className="bg-white dark:bg-[#0D1117] rounded-[4px] transition-all duration-300 overflow-hidden border border-slate-200 dark:border-[#30363D] flex flex-col relative group hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] dark:hover:shadow-none dark:hover:border-[#8B949E]/50">
+        <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
       {product.photos && (() => {
         try {
             const parsed = JSON.parse(product.photos);
             return parsed[0] ? (
-              <div className="aspect-square w-full bg-transparent flex items-center justify-center p-2 md:p-4 overflow-hidden relative transition-colors duration-300">
+              <div className="aspect-square w-full bg-brand-cloud dark:bg-[#010409] flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-[#30363D]">
                 <img 
                   src={getOptimizedUrl(parsed[0])} 
                   alt={product.title} 
                   loading="lazy"
-                  className="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 ease-in-out"
+                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 />
               </div>
             ) : null;
         } catch(e) { return null; }
       })()}
-      <div className="p-3 md:p-4 flex flex-col flex-1 items-center bg-transparent text-center">
+      <div className="p-4 flex flex-col flex-1 bg-transparent text-left">
         {product.productType && (
-          <span className={`inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-1.5 ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-gray-100 text-gray-600'}`}>
+          <span className={`inline-block text-[11px] font-mono tracking-widest px-2 py-1 rounded-[4px] mb-2 self-start uppercase ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300'}`}>
             {product.productType}
           </span>
         )}
-        <h3 className="font-normal text-[17px] text-apple-ink leading-[1.47] tracking-[-0.022em] mb-1 md:mb-2 line-clamp-2">{product.title}</h3>
-        <div className="flex justify-center items-center gap-2 mb-3 md:mb-4 flex-1">
-          <span className="text-[17px] font-normal text-apple-ink">BDT {formatPrice(product.selling_price)}</span>
+        <h3 className="font-sans font-medium text-[15px] text-brand-navy dark:text-white leading-[1.4] mb-2 line-clamp-2 min-h-[42px]">{product.title}</h3>
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-[15px] font-mono font-medium text-brand-navy dark:text-white">BDT {formatPrice(product.selling_price)}</span>
           {Number(product.original_price) > Number(product.selling_price) && (
-            <span className="text-[14px] text-apple-muted line-through">BDT {formatPrice(product.original_price)}</span>
+            <span className="text-[13px] font-mono text-slate-400 line-through">BDT {formatPrice(product.original_price)}</span>
           )}
         </div>
-        <div className="w-full flex flex-row gap-1.5 md:gap-2 mt-auto relative z-20 px-1 -translate-x-[5px] md:translate-x-0">
-          <button 
+        <div className="w-full flex flex-row gap-2 mt-auto relative z-20">
+          <Button
+            variant={isAdded ? "primary" : "primary"}
+            className={`flex-auto ${isAdded ? 'bg-brand-teal hover:bg-brand-teal text-white border-brand-teal' : ''}`}
             onClick={(e) => {
-              if (cartItems.includes((product.id || product._id).toString())) {
+              if (isAdded) {
                 e.preventDefault();
                 e.stopPropagation();
                 router.push('/cart');
@@ -425,70 +431,69 @@ export default function ShopPage() {
               }
             }}
             disabled={loadingCartId === (product.id || product._id)}
-            className={`flex-auto text-white py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors flex items-center justify-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed ${
-              cartItems.includes((product.id || product._id).toString()) ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#0071e3] hover:bg-[#0077ed]'
-            }`}
           >
             {loadingCartId === (product.id || product._id) ? (
               <AppleSpinner size={16} className="text-white" />
-            ) : cartItems.includes((product.id || product._id).toString()) ? (
-              <><Check size={14} /> Added</>
+            ) : isAdded ? (
+              <><Check size={14} className="mr-1" /> Added</>
             ) : (
               "Add to Cart"
             )}
-          </button>
-          <button 
+          </Button>
+          <Button
+            variant="outline"
+            className="flex-auto"
             onClick={(e) => handleBuyNow(e, product)}
             disabled={isPending && loadingBuyId === (product.id || product._id)}
-            className="flex-auto bg-transparent border border-[#0071e3] text-[#0071e3] py-[6px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors hover:bg-[#0071e3] hover:text-white flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed disabled:bg-[#0071e3] disabled:text-white"
           >
-            {product.productType ? 'Get Now' : 'Buy Now'}
-          </button>
+            {isPending && loadingBuyId === (product.id || product._id) ? (
+              <AppleSpinner size={16} className="text-brand-navy dark:text-white" />
+            ) : (
+              product.productType ? 'Get Now' : 'Buy Now'
+            )}
+          </Button>
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   return (
-    <div className="min-h-screen font-sans selection:bg-[#0071e3]/30">
+    <div className="min-h-screen font-sans selection:bg-brand-blue/30">
       
 
       <div className="w-full flex flex-col md:flex-row min-h-screen">
         
         {/* Sidebar Filters — mobile: full-screen overlay, desktop: sticky column */}
         <div className={`
-          fixed inset-0 z-[45] bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl shadow-2xl md:bg-transparent md:backdrop-blur-none md:shadow-none
+          fixed inset-0 z-[45] bg-brand-cloud dark:bg-[#0D1117] backdrop-blur-xl shadow-2xl md:bg-transparent md:backdrop-blur-none md:shadow-none
           md:relative md:inset-auto md:z-auto
-          md:w-64 lg:w-72 flex-shrink-0 border-r border-white/60 dark:border-white/10 md:border-apple-hairline md:dark:border-apple-hairline
+          md:w-64 lg:w-72 flex-shrink-0 border-r border-slate-200 dark:border-white/10
           transform ${showMobileFilters ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300
         `}>
           <div className="h-full md:sticky md:top-20 md:max-h-[calc(100vh-80px)] overflow-y-auto p-6 pt-20 md:pt-6 scrollbar-hide">
             <div className="flex items-center justify-between mb-8 md:hidden">
-              <h2 className="text-2xl font-bold text-apple-ink">Filters</h2>
-              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-apple-muted hover:text-apple-ink">
+              <h2 className="text-[20px] font-display font-medium text-brand-navy dark:text-white">Filters</h2>
+              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
 
-
-
-
-
             <div className="mb-8 mt-4">
-              <h3 className="text-[15px] font-medium text-apple-ink mb-3">Product Type</h3>
+              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 mb-3">Product Type</h3>
               <div className="space-y-1.5">
                 <button
                   onClick={() => setSelectedProductType('')}
-                  className={`w-full text-left text-[14px] px-3 py-2 rounded-lg transition-colors ${
-                    selectedProductType === '' ? 'bg-[#0071e3] text-white font-medium' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'
+                  className={`w-full text-left text-[14px] px-3 py-2 rounded-[4px] transition-colors ${
+                    selectedProductType === '' ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'
                   }`}
                 >All Types</button>
                 {PRODUCT_TYPES.map(type => (
                   <button
                     key={type}
                     onClick={() => setSelectedProductType(type)}
-                    className={`w-full text-left text-[14px] px-3 py-2 rounded-lg transition-colors ${
-                      selectedProductType === type ? 'bg-[#0071e3] text-white font-medium' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10'
+                    className={`w-full text-left text-[14px] px-3 py-2 rounded-[4px] transition-colors ${
+                      selectedProductType === type ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'
                     }`}
                   >{type}</button>
                 ))}
@@ -496,27 +501,27 @@ export default function ShopPage() {
             </div>
 
             <div className="mb-8 mt-4">
-              <h3 className="text-[15px] font-medium text-apple-ink mb-4">Price (BDT)</h3>
+              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 mb-4">Price (BDT)</h3>
               <div className="flex items-center gap-2 mb-3">
                 <input 
                   type="number" 
                   value={tempMinPrice}
                   onChange={e => setTempMinPrice(e.target.value)}
                   placeholder="Min" 
-                  className="w-full bg-white dark:bg-[#1d1d1f] border border-apple-hairline rounded-lg px-3 py-2 text-[14px] focus:outline-none focus:border-[#0071e3] transition-colors text-apple-ink placeholder:text-apple-muted"
+                  className="w-full bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
                 />
-                <span className="text-apple-muted">-</span>
+                <span className="text-slate-400">-</span>
                 <input 
                   type="number" 
                   value={tempMaxPrice}
                   onChange={e => setTempMaxPrice(e.target.value)}
                   placeholder="Max" 
-                  className="w-full bg-white dark:bg-[#1d1d1f] border border-apple-hairline rounded-lg px-3 py-2 text-[14px] focus:outline-none focus:border-[#0071e3] transition-colors text-apple-ink placeholder:text-apple-muted"
+                  className="w-full bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
                 />
               </div>
               <button 
                 onClick={applyPriceFilter}
-                className="w-full bg-[#f5f5f7] dark:bg-white/5 text-apple-ink font-semibold py-2 rounded-lg text-[14px] border border-apple-hairline hover:bg-[#e5e5ea] dark:hover:bg-white/10 transition-colors"
+                className="w-full bg-brand-cloud dark:bg-[#161B22] text-brand-navy dark:text-white font-medium py-2 rounded-[4px] text-[14px] border border-slate-200 dark:border-white/10 hover:border-brand-blue transition-colors"
               >
                 Apply Price
               </button>
@@ -529,95 +534,89 @@ export default function ShopPage() {
         <div className="flex-1 flex flex-col min-h-screen">
           
           {/* Top Bar Container */}
-          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b md:border-apple-hairline/50">
+          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b border-slate-200 dark:border-white/10">
             
             {/* Breadcrumbs (Scrolls away on mobile) */}
-            <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] md:bg-transparent md:backdrop-blur-none md:backdrop-saturate-100 relative z-30">
+            <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 relative z-30 bg-transparent">
               {searchQuery ? (
-                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] text-apple-ink font-semibold w-full pb-0.5 md:pb-0">
-                  Search Results for &quot;{searchQuery}&quot;
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] font-sans font-medium text-brand-navy dark:text-white w-full pb-0.5 md:pb-0">
+                  Search Results for "{searchQuery}"
                 </div>
               ) : activeBreadcrumb ? (
-                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11.5px] md:text-[13px] text-apple-muted font-normal w-full pb-0.5 md:pb-0">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-mono tracking-widest uppercase text-slate-400 w-full pb-0.5 md:pb-0">
                   {activeBreadcrumb.map((crumb, i) => (
                     <React.Fragment key={i}>
-                      {i > 0 && <span className="opacity-40 shrink-0">›</span>}
+                      {i > 0 && <span className="opacity-40 shrink-0">/</span>}
                       {crumb.onClick ? (
                         <button
                           onClick={crumb.onClick}
-                          className={`transition-colors hover:text-[#0071e3] shrink-0 ${
-                            i === activeBreadcrumb.length - 1 ? 'text-apple-ink font-normal pointer-events-none' : ''
+                          className={`transition-colors hover:text-brand-blue shrink-0 ${
+                            i === activeBreadcrumb.length - 1 ? 'text-brand-navy dark:text-white pointer-events-none' : ''
                           }`}
                         >
                           {crumb.label}
                         </button>
                       ) : (
-                        <span className="text-apple-ink font-normal shrink-0">{crumb.label}</span>
+                        <span className="text-brand-navy dark:text-white shrink-0">{crumb.label}</span>
                       )}
                     </React.Fragment>
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5 text-[14px] md:text-[14px] text-apple-ink font-semibold md:font-normal">
+                <div className="flex items-center gap-1.5 text-[14px] md:text-[14px] text-brand-navy dark:text-white font-medium md:font-normal">
                   Shop
                 </div>
               )}
             </div>
             
             {/* Filter + Sort By (Sticky on mobile globally) */}
-            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-apple-hairline/50 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] backdrop-saturate-[180%] md:bg-transparent md:backdrop-blur-none md:backdrop-saturate-100 flex items-center justify-between md:justify-end gap-2 mt-0">
-              <span className="text-[13px] md:text-[14px] font-normal text-apple-muted whitespace-nowrap hidden md:block">Sort by:</span>
+            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-slate-200 dark:border-white/10 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] md:bg-transparent md:backdrop-blur-none flex items-center justify-between md:justify-end gap-2 mt-0">
+              <span className="text-[13px] md:text-[14px] font-sans text-slate-500 whitespace-nowrap hidden md:block">Sort by:</span>
               
               <div className="flex items-center gap-2 w-full md:w-auto">
-                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-white dark:bg-black/20 border border-apple-hairline text-[12.5px] text-apple-ink font-medium py-1.5 px-3 rounded-full transition-colors flex-1 shadow-sm hover:bg-gray-50 dark:hover:bg-white/10">
-                  <Filter size={14} className="text-apple-ink" />
+                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 text-[13px] text-brand-navy dark:text-white py-1.5 px-3 rounded-[4px] transition-colors flex-1 hover:bg-brand-cloud dark:hover:bg-white/5">
+                  <Filter size={14} className="text-brand-navy dark:text-white" />
                   Filter
                 </button>
 
                 <div className="relative flex-1 md:flex-none">
                   <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className="w-full md:w-auto bg-white dark:bg-black/20 border border-apple-hairline md:border-none md:bg-transparent text-[12.5px] md:text-[15px] text-apple-ink font-medium md:font-normal py-1.5 px-3 focus:ring-0 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/10 md:hover:bg-black/5 md:dark:hover:bg-white/10 rounded-full md:rounded-lg transition-colors shadow-sm md:shadow-none"
+                    className="w-full md:w-auto bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 md:bg-transparent md:border-transparent md:hover:bg-slate-100 text-[13px] md:text-[14px] text-brand-navy dark:text-white font-medium md:font-normal py-1.5 px-3 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer rounded-[4px] transition-colors shadow-sm md:shadow-none"
                   >
                     {sortOrder === 'latest' ? 'Latest Arrivals' : sortOrder === 'price_asc' ? 'Price: Low to High' : 'Price: High to Low'}
-                    <ChevronDown className={`w-[14px] h-[14px] md:w-[18px] md:h-[18px] text-apple-muted transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] text-slate-500 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                 {isSortOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsSortOpen(false)}></div>
-                    <div className="absolute right-0 top-[calc(100%+8px)] w-[220px] bg-white/90 dark:bg-[#2c2c2e]/90 backdrop-blur-2xl border border-apple-hairline rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden z-50 p-1.5">
+                    <div className="absolute right-0 top-[calc(100%+4px)] w-[200px] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-lg overflow-hidden z-50 p-1">
                       <button
                         onClick={() => { setSortOrder('latest'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'latest' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'latest' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
                       >
                         Latest Arrivals
                         {sortOrder === 'latest' && (
-                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
+                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
                         )}
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_asc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
                       >
                         Price: Low to High
                         {sortOrder === 'price_asc' && (
-                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
+                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
                         )}
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_desc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[14px] transition-colors rounded-xl flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-[#0071e3]/10 text-[#0071e3] font-semibold' : 'text-apple-ink hover:bg-black/5 dark:hover:bg-white/10 font-medium'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
                       >
                         Price: High to Low
                         {sortOrder === 'price_desc' && (
-                          <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                          </svg>
+                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
                         )}
                       </button>
                     </div>
@@ -631,16 +630,14 @@ export default function ShopPage() {
           {/* Product Grid */}
           <div className="flex-1 p-4 md:p-8">
             {loading ? (
-              <div className="flex flex-col items-center justify-center h-[50vh] opacity-80">
-                <AppleSpinner className="w-8 h-8 text-apple-muted animate-spin" />
-              </div>
+              <LoadingState message="Loading products..." className="min-h-[50vh] border-none bg-transparent" />
             ) : products.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-32 px-4">
-                <Search strokeWidth={1.5} className="w-[60px] h-[60px] text-[#86868b] opacity-40 mb-6" />
-                <h3 className="text-[24px] font-sans font-semibold text-slate-900 dark:text-white tracking-tight mb-2">No Results</h3>
-                <p className="text-[16px] font-sans font-normal text-[#86868b] text-center max-w-[300px] leading-relaxed">
-                  Try adjusting your filters or search query to find what you&apos;re looking for.
-                </p>
+              <div className="py-20">
+                <EmptyState
+                  type="search"
+                  title="No Results"
+                  description="Try adjusting your filters or search query to find what you're looking for."
+                />
               </div>
             ) : (
               <>

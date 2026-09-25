@@ -82,6 +82,15 @@ export default async function sitemap() {
         { url: `${BASE_URL}/codex`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
         { url: `${BASE_URL}/devlogs`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
         { url: `${BASE_URL}/artifacts`, lastModified: new Date(), changeFrequency: 'hourly', priority: 0.9 },
+        { url: `${BASE_URL}/solutions`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/warranty`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+        { url: `${BASE_URL}/support`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/docs`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/blog`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/faq`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+        { url: `${BASE_URL}/eula`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+        { url: `${BASE_URL}/legal`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
         { url: `${BASE_URL}/explore`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
     ];
 

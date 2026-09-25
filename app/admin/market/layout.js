@@ -21,12 +21,12 @@ export default function MarketAdminLayout({ children }) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white font-sans selection:bg-blue-600/30">
+    <div className="min-h-screen bg-white dark:bg-[#0D1117] text-white font-sans selection:bg-brand-blue/30">
       {/* Header */}
-      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-10">
+      <header className="bg-white dark:bg-[#161B22] border-b border-slate-200 dark:border-white/10 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
           <div className="flex items-center shrink-0">
-            <Link href="/admin" className="p-1.5 hover:bg-gray-800 rounded-lg text-gray-400 hover:text-white transition">
+            <Link href="/admin" className="p-1.5 hover:bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] text-slate-500 hover:text-white transition">
               <ArrowLeft size={18} />
             </Link>
           </div>
@@ -38,10 +38,10 @@ export default function MarketAdminLayout({ children }) {
                 <Link
                   key={tab.name}
                   href={tab.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition whitespace-nowrap shrink-0 ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] text-xs font-medium transition whitespace-nowrap shrink-0 ${
                     isActive 
-                      ? 'bg-blue-600/10 text-blue-400' 
-                      : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800'
+                      ? 'bg-brand-blue/10 text-blue-400' 
+                      : 'text-slate-500 hover:text-slate-200 hover:bg-brand-cloud dark:bg-[#0D1117]'
                   }`}
                 >
                   <tab.icon size={14} />

@@ -2,13 +2,13 @@ import React from 'react';
 
 const SocialAuth = ({ onGoogle }) => {
   return (
-    <div className="mb-10">
+    <div className="mb-6">
       <button
         type="button"
         onClick={onGoogle}
-        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white dark:bg-[#1c1c1e] border border-gray-200 dark:border-gray-800 rounded-[12px] text-[15px] font-medium text-black dark:text-white hover:bg-gray-50 dark:hover:bg-zinc-800 transition-all duration-300 active:scale-95 shadow-sm"
+        className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-brand-cloud dark:bg-transparent border border-slate-200 dark:border-white/20 rounded-[4px] text-[14px] font-sans font-medium text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300 active:scale-[0.98]"
       >
-        <img src="/google-svgrepo-com.svg" alt="Google" className="w-5 h-5" />
+        <img src="/google-svgrepo-com.svg" alt="Google" className="w-4 h-4 opacity-80" />
         <span>Continue with Google</span>
       </button>
     </div>

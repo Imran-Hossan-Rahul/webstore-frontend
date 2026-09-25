@@ -119,13 +119,13 @@ export default function PlatformDashboard() {
           </div>
 
           <div className="relative w-full md:w-96 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors" size={18} />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-blue transition-colors" size={18} />
               <input
                 type="text"
                 placeholder="Search resources..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all shadow-sm hover:shadow-md"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all shadow-sm hover:shadow-md"
               />
           </div>
       </div>
@@ -360,13 +360,13 @@ function ContentCard({ item, router }) {
         <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           {item.type === 'devlog' ? (
               <span className={`text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider backdrop-blur ${
-                  item.devlogStats?.status === 'Completed' ? 'bg-emerald-500/90' : 'bg-amber-500/90'
+                  item.devlogStats?.status === 'Completed' ? 'bg-brand-teal/90' : 'bg-brand-amber/90'
               }`}>
                   {item.devlogStats?.status?.toUpperCase() || 'DEVLOG'}
               </span>
           ) : isArtifact ? (
             isFree ? (
-              <span className="bg-emerald-500/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
+              <span className="bg-brand-teal/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
                 FREE
               </span>
             ) : (
@@ -375,7 +375,7 @@ function ContentCard({ item, router }) {
               </div>
             )
           ) : (
-            <span className="bg-indigo-500/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
+            <span className="bg-brand-blue/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm tracking-wider">
               CODEX
             </span>
           )}
@@ -451,7 +451,7 @@ function ContentCard({ item, router }) {
                               </div>
                               {/* Description Layer */}
                               <div className="col-start-1 row-start-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                                   <p className="text-gray-200 text-xs line-clamp-2 leading-relaxed">
+                                   <p className="text-slate-200 text-xs line-clamp-2 leading-relaxed">
                                        {description || "No description available."}
                                    </p>
                               </div>
@@ -506,12 +506,12 @@ function ContentCard({ item, router }) {
                       )}
                   </div>
                   {/* Status Indicator (Optional) */}
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-slate-900 rounded-full"></div>
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-brand-teal border-2 border-white dark:border-slate-900 rounded-full"></div>
               </div>
               
               {/* Name & Actions */}
               <div className="flex flex-col flex-1 min-w-0 justify-center">
-                  <span className="text-sm font-bold text-slate-900 dark:text-gray-100 truncate hover:text-purple-600 transition-colors cursor-pointer leading-tight mb-0.5">
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate hover:text-purple-600 transition-colors cursor-pointer leading-tight mb-0.5">
                       {author?.name || 'Craftsman'}
                   </span>
                   
@@ -520,7 +520,7 @@ function ContentCard({ item, router }) {
                       <button 
                         onClick={handleFollow}
                         disabled={loadingFollow}
-                        className={`text-[11px] font-semibold tracking-wide text-left transition-colors w-fit flex items-center gap-1 ${following ? 'text-slate-400' : 'text-blue-600 dark:text-blue-400 hover:text-indigo-600'}`}
+                        className={`text-[11px] font-semibold tracking-wide text-left transition-colors w-fit flex items-center gap-1 ${following ? 'text-slate-400' : 'text-brand-blue dark:text-blue-400 hover:text-brand-blue'}`}
                       >
                           {following ? 'Following' : 'Follow'}
                       </button>

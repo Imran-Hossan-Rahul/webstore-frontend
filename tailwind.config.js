@@ -16,10 +16,19 @@ module.exports = {
           border: '#262626',
         },
         brand: {
-          primary: '#4F46E5', // Professional Indigo
-          secondary: '#6366F1',
-          surface: '#F8FAFC',
-          dark: '#0F172A',
+          navy: '#0B2545', // Midnight Navy (Primary)
+          blue: '#1D5FD1', // Trust Blue (Primary Action)
+          cyan: '#22C7E8', // Circuit Cyan (Tech Accent)
+          amber: '#F5A623', // Signal Amber (Commercial CTA)
+          teal: '#0B7A68', // Verified Teal (Success)
+          sky: '#DCE9FB', // Sky Tint (Soft surface)
+          cloud: '#F4F7FB', // Cloud (Background)
+          slate: '#34435A', // Slate (Body text)
+          // Keep these for backwards compatibility with existing components
+          primary: '#0B2545',
+          secondary: '#1D5FD1',
+          surface: '#F4F7FB',
+          dark: '#0B2545',
           "glass": 'rgba(255, 255, 255, 0.02)',
         },
         apple: {
@@ -35,9 +44,11 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'var(--font-inter)', '"Inter"', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
-        text: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', 'var(--font-inter)', '"Inter"', '"Segoe UI"', 'sans-serif'],
-        mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'liberation mono', 'courier new', 'monospace'],
+        sans: ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        display: ['var(--font-ibm-plex-sans)', '"IBM Plex Sans"', 'sans-serif'],
+        mono: ['var(--font-ibm-plex-mono)', '"IBM Plex Mono"', 'monospace'],
+        bengali: ['var(--font-noto-sans-bengali)', '"Noto Sans Bengali"', 'sans-serif'],
+        text: ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
       borderRadius: {
         'none': '0',

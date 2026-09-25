@@ -57,7 +57,7 @@ export default function BecomePatronModal({ isOpen, onClose, onUpdate }) {
               onClick={onClose}
               className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-colors group"
             >
-              <X size={18} className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-white" />
+              <X size={18} className="text-slate-400 group-hover:text-brand-slate dark:group-hover:text-white" />
             </button>
         </div>
 
@@ -75,7 +75,7 @@ export default function BecomePatronModal({ isOpen, onClose, onUpdate }) {
                     value={formData.companyName}
                     onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
                     placeholder="e.g. Your Full Name or Studio Name"
-                    className="w-full px-4 py-3.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl outline-none text-sm font-semibold text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all placeholder:text-slate-400/50"
+                    className="w-full px-4 py-3.5 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl outline-none text-sm font-semibold text-slate-900 dark:text-white focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all placeholder:text-slate-400/50"
                 />
                 <p className="text-[10px] text-slate-400 dark:text-slate-500 leading-relaxed px-1">
                     If you&apos;re hiring for yourself, simply enter your name. This will be shown on your job postings.
@@ -90,7 +90,7 @@ export default function BecomePatronModal({ isOpen, onClose, onUpdate }) {
                     value={formData.website}
                     onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                     placeholder="https://yourwork.com"
-                    className="w-full px-4 py-3.5 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl outline-none text-sm font-semibold text-slate-900 dark:text-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all placeholder:text-slate-400/50"
+                    className="w-full px-4 py-3.5 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl outline-none text-sm font-semibold text-slate-900 dark:text-white focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/5 transition-all placeholder:text-slate-400/50"
                 />
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function BecomePatronModal({ isOpen, onClose, onUpdate }) {
             <button
               type="submit"
               disabled={loading || !formData.companyName}
-              className="flex-[2] py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/30 transition-all disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-2"
+              className="flex-[2] py-3 bg-brand-blue hover:bg-brand-blue text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-600/20 hover:shadow-indigo-600/30 transition-all disabled:opacity-30 disabled:shadow-none flex items-center justify-center gap-2"
             >
               {loading ? "Processing..." : "Upgrade Account"}
               {!loading && <ArrowRight size={16} />}

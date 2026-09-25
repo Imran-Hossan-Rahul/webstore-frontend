@@ -54,7 +54,7 @@ export default function SettingsModal({ isOpen, onClose }) {
       <div className="bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl w-full max-w-4xl h-[85vh] shadow-2xl shadow-black/20 flex overflow-hidden animate-in zoom-in-95 duration-300">
         
         {/* Sidebar */}
-        <div className="w-64 bg-slate-50/50 dark:bg-white/5 p-6 flex flex-col border-r border-slate-200/50 dark:border-white/10">
+        <div className="w-64 bg-brand-cloud/50 dark:bg-white/5 p-6 flex flex-col border-r border-slate-200/50 dark:border-white/10">
           <h2 className="text-2xl font-bold mb-8 pl-2 text-slate-900 dark:text-white">
             {isCraftsmanRoute ? "Craftsman Settings" : "Settings"}
           </h2>
@@ -208,7 +208,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
             <div className="space-y-5">
                 {!isCraftsmanMode && (
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Avatar URL</label>
+                        <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Avatar URL</label>
                         <input 
                             type="text" 
                             value={form.profilePicture}
@@ -221,7 +221,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                 )}
                 
                 <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">
                         {isCraftsmanMode ? "Display Name" : "Full Name"}
                    </label>
                    <input 
@@ -232,7 +232,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                    />
                 </div>
                  <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Bio</label>
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Bio</label>
                    <textarea 
                       value={form.bio}
                       onChange={e => setForm({...form, bio: e.target.value})}
@@ -241,7 +241,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                    />
                 </div>
                 <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Skills (comma separated)</label>
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Skills (comma separated)</label>
                    <input 
                       type="text" 
                       value={form.skills}
@@ -251,7 +251,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                    />
                 </div>
                  <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Work Type</label>
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Work Type</label>
                    <div className="flex gap-4">
                         <label className={`flex-1 border p-4 rounded-xl cursor-pointer transition-all shadow-sm ${form.workType === 'solo' ? 'border-pink-500 bg-pink-50/50 dark:bg-pink-500/10 ring-1 ring-pink-500' : 'border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}>
                             <input type="radio" name="workType" value="solo" checked={form.workType === 'solo'} onChange={() => setForm({...form, workType: 'solo'})} className="hidden" />
@@ -271,7 +271,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                 <button 
                     onClick={handleSave} 
                     disabled={saving}
-                    className="px-8 py-3.5 bg-gradient-to-r from-gray-900 to-black dark:from-white dark:to-gray-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
+                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
                 >
                     {saving ? "Saving..." : "Save Changes"}
                 </button>
@@ -301,17 +301,17 @@ function PayoutSettings({ user, refreshUser, showToast }) {
          <div className="max-w-xl space-y-8">
             <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white tracking-tight">Payout Preferences</h3>
             
-            <div className="p-6 bg-blue-50 dark:bg-indigo-600/10 border border-blue-100 dark:border-indigo-600/20 rounded-2xl space-y-4">
-                <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400">
+            <div className="p-6 bg-brand-sky dark:bg-brand-blue/10 border border-blue-100 dark:border-brand-blue/20 rounded-2xl space-y-4">
+                <div className="flex items-center gap-3 text-brand-blue dark:text-blue-400">
                     <CheckCircle size={20} />
                     <h4 className="font-bold uppercase tracking-widest text-xs">Token-Native Architecture Active</h4>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-sm text-brand-slate dark:text-slate-400 leading-relaxed">
                     All earnings on the platform are processed exclusively in <span className="font-bold text-slate-900 dark:text-white">TKNS</span> tokens. 
                     Payouts are automatically routed to your <span className="font-bold text-slate-900 dark:text-white">Internal Wallet</span> for maximum security and zero-fee transactions.
                 </p>
                 <div className="pt-2">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-white/10 rounded-lg border border-blue-200 dark:border-indigo-600/30 text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-tighter">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-white/10 rounded-lg border border-blue-200 dark:border-brand-blue/30 text-[10px] font-bold text-brand-blue dark:text-blue-400 uppercase tracking-tighter">
                         Active Payout Method: Internal Wallet
                     </div>
                 </div>
@@ -321,7 +321,7 @@ function PayoutSettings({ user, refreshUser, showToast }) {
                 <button 
                     onClick={handleSave} 
                     disabled={saving}
-                    className="px-8 py-3.5 bg-gradient-to-r from-gray-900 to-black dark:from-white dark:to-gray-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
+                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
                 >
                     {saving ? "Saving..." : "Confirm Settings"}
                 </button>
@@ -358,28 +358,28 @@ function SecuritySettings({ user, showToast }) {
             <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white tracking-tight">Security & Login</h3>
 
             {/* Password */}
-            <div className="space-y-4 p-6 bg-slate-50/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
+            <div className="space-y-4 p-6 bg-brand-cloud/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                 <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                    <Shield size={18} className="text-indigo-600" /> 
+                    <Shield size={18} className="text-brand-blue" /> 
                     Change Password
                 </h4>
                 <div className="space-y-3">
-                     <input type="password" placeholder="Current Password" value={passwords.current} onChange={e => setPasswords({...passwords, current: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 shadow-sm" />
-                     <input type="password" placeholder="New Password" value={passwords.new} onChange={e => setPasswords({...passwords, new: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 shadow-sm" />
-                     <input type="password" placeholder="Confirm New Password" value={passwords.confirm} onChange={e => setPasswords({...passwords, confirm: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 shadow-sm" />
+                     <input type="password" placeholder="Current Password" value={passwords.current} onChange={e => setPasswords({...passwords, current: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
+                     <input type="password" placeholder="New Password" value={passwords.new} onChange={e => setPasswords({...passwords, new: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
+                     <input type="password" placeholder="Confirm New Password" value={passwords.confirm} onChange={e => setPasswords({...passwords, confirm: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
                 </div>
-                <button onClick={handlePasswordChange} className="px-6 py-2.5 bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-slate-50 dark:hover:bg-white/20 transition-all shadow-sm"> Update Password </button>
+                <button onClick={handlePasswordChange} className="px-6 py-2.5 bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-brand-cloud dark:hover:bg-white/20 transition-all shadow-sm"> Update Password </button>
             </div>
 
             {/* 2FA */}
-            <div className="flex items-center justify-between p-6 bg-slate-50/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
+            <div className="flex items-center justify-between p-6 bg-brand-cloud/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
                 <div>
                      <h4 className="font-bold text-slate-900 dark:text-white">Two-Factor Authentication</h4>
                      <p className="text-sm text-slate-500 mt-1">Add an extra layer of security to your account</p>
                 </div>
                 <div 
                     onClick={() => { setTwoFactor(!twoFactor); /* Call API */ }}
-                    className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors flex items-center ${twoFactor ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600'}`}
+                    className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors flex items-center ${twoFactor ? 'bg-brand-blue' : 'bg-slate-300 dark:bg-slate-600'}`}
                 >
                     <div className={`w-5 h-5 bg-white rounded-full shadow-md transition-opacity ${twoFactor ? 'translate-x-7' : 'translate-x-0'}`} />
                 </div>
@@ -417,17 +417,17 @@ function AccountSettings({ user, refreshUser, showToast }) {
 
              <div className="space-y-4">
                 <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Email Address</label>
-                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm">
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Email Address</label>
+                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm">
                         {user.email}
-                        {user.emailVerified && <CheckCircle size={16} className="text-green-500" />}
+                        {user.emailVerified && <CheckCircle size={16} className="text-brand-teal" />}
                    </div>
                    <p className="text-xs text-slate-500 mt-1.5">Email cannot be changed directly.</p>
                 </div>
 
                 <div>
-                   <label className="block text-sm font-semibold text-slate-700 dark:text-gray-300 mb-1.5">Current Role</label>
-                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm uppercase font-bold text-xs">
+                   <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Current Role</label>
+                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm uppercase font-bold text-xs">
                         {user.role}
                    </div>
                 </div>
@@ -435,12 +435,12 @@ function AccountSettings({ user, refreshUser, showToast }) {
 
             {user.role === "user" && (
                 <div className="pt-6 border-t border-slate-200 dark:border-white/10 mt-6">
-                    <h4 className="text-indigo-600 font-bold mb-2">Want to hire talent?</h4>
+                    <h4 className="text-brand-blue font-bold mb-2">Want to hire talent?</h4>
                     <p className="text-sm text-slate-500 mb-4">Upgrade your account to a patron Account to post jobs and manage hires.</p>
                     <button 
                         onClick={handleUpgradeToPatron}
                         disabled={upgrading}
-                        className="px-6 py-3 border border-blue-200 dark:border-indigo-600/30 bg-blue-50 dark:bg-indigo-600/10 text-blue-600 dark:text-blue-400 rounded-xl text-sm font-bold hover:bg-blue-100 dark:hover:bg-indigo-600/20 transition-colors"
+                        className="px-6 py-3 border border-blue-200 dark:border-brand-blue/30 bg-brand-sky dark:bg-brand-blue/10 text-brand-blue dark:text-blue-400 rounded-xl text-sm font-bold hover:bg-blue-100 dark:hover:bg-brand-blue/20 transition-colors"
                     >
                         {upgrading ? "Upgrading..." : "Upgrade to patron"}
                     </button>

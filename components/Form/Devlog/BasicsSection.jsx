@@ -29,7 +29,7 @@ export default function BasicsSection({
 
       {/* Devlog Title */}
       <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">
+        <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">
           Devlog Title
         </label>
         <input
@@ -43,7 +43,7 @@ export default function BasicsSection({
 
       {/* Description Area */}
       <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">
+        <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">
           Description
         </label>
         <textarea
@@ -67,7 +67,7 @@ export default function BasicsSection({
           />
         </div>
         <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">Tags</label>
+          <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">Tags</label>
           <div className="flex gap-2">
             <input
               type="text"
@@ -92,7 +92,7 @@ export default function BasicsSection({
 
       {/* Collaborators */}
       <div className="relative">
-        <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">Collaborators</label>
+        <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">Collaborators</label>
         <div className="relative">
           <Search size={16} strokeWidth={1.5} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
@@ -108,7 +108,7 @@ export default function BasicsSection({
         {userSearchResults.length > 0 && (
           <div className="absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg shadow-sm z-50 max-h-48 overflow-y-auto">
             {userSearchResults.map(u => (
-              <button key={u._id} onClick={() => handleSelectCollaborator(u)} className="w-full text-left px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm flex items-center gap-2">
+              <button key={u._id} onClick={() => handleSelectCollaborator(u)} className="w-full text-left px-4 py-2 hover:bg-brand-cloud dark:hover:bg-slate-900 text-sm flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700" />
                 <span>{u.name} (@{u.username})</span>
               </button>
@@ -118,7 +118,7 @@ export default function BasicsSection({
 
         <div className="flex flex-wrap gap-2 mt-2">
           {devlogData.collaborators.map(c => (
-            <span key={c} className="px-2 py-1 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] font-medium flex items-center gap-1">
+            <span key={c} className="px-2 py-1 bg-brand-sky dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 text-brand-blue dark:text-blue-400 rounded-lg text-[10px] font-medium flex items-center gap-1">
               {c}
               <button onClick={() => removeCollaborator(c)}><X size={14} strokeWidth={1.5} /></button>
             </span>

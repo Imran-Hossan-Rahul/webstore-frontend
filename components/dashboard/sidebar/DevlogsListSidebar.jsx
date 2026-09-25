@@ -65,9 +65,9 @@ export default function DevlogsListSidebar() {
       <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <Star className="text-amber-500" size={18} /> Top Devloggers
+            <Star className="text-brand-amber" size={18} /> Top Devloggers
           </h3>
-          <Link href="/search?view=craftsmen" className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest hover:underline">View All</Link>
+          <Link href="/search?view=craftsmen" className="text-[10px] font-bold text-brand-blue uppercase tracking-widest hover:underline">View All</Link>
         </div>
         
         <div className="space-y-4">
@@ -153,7 +153,7 @@ export default function DevlogsListSidebar() {
                 const textContent = devlog.content ? devlog.content.replace(/<[^>]*>?/gm, '') : 'Untitled Devlog';
                 return (
                   <Link href={`/post/${devlog._id}`} key={devlog._id} className="block group border-b border-slate-100 dark:border-white/5 pb-4 last:border-0 last:pb-0">
-                    <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 line-clamp-2 leading-relaxed transition-colors">
+                    <p className="text-xs font-semibold text-brand-slate dark:text-slate-300 group-hover:text-brand-blue dark:group-hover:text-indigo-400 line-clamp-2 leading-relaxed transition-colors">
                         {textContent.length > 80 ? textContent.slice(0, 80) + '...' : textContent || 'No Content'}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
@@ -179,7 +179,7 @@ export default function DevlogsListSidebar() {
       {/* Trending Devlog Tags */}
       <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
         <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="text-indigo-500" size={18} /> Trending Tags
+          <TrendingUp className="text-brand-blue" size={18} /> Trending Tags
         </h3>
         
         <div className="flex flex-wrap gap-2">
@@ -194,7 +194,7 @@ export default function DevlogsListSidebar() {
                 <Link 
                   key={tagName + idx} 
                   href={`/shop?q=${tagName}`}
-                  className="px-3 py-1.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-indigo-600 hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
+                  className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-brand-blue hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
                 >
                   #{tagName}
                 </Link>

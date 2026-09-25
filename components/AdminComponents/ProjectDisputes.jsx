@@ -64,8 +64,8 @@ export default function DevlogDisputes() {
   return (
     <div className="space-y-10 animate-in fade-in duration-500">
       <section className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-slate-200/60 dark:border-white/5 pb-4">
-          <div className="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center">
+        <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
+          <div className="w-8 h-8 rounded-[4px] bg-red-500/10 text-red-500 flex items-center justify-center">
             <AlertTriangle size={16} />
           </div>
           <div>
@@ -75,9 +75,9 @@ export default function DevlogDisputes() {
         </div>
 
         {contracts.length === 0 ? (
-          <div className="bg-white dark:bg-[#0A0A0A] border border-slate-200/60 dark:border-white/5 rounded-2xl p-10 text-center">
-            <CheckCircle size={32} className="mx-auto text-emerald-500 mb-4" />
-            <p className="font-bold text-slate-700 dark:text-slate-300">Peaceful Waters</p>
+          <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-10 text-center">
+            <CheckCircle size={32} className="mx-auto text-brand-teal mb-4" />
+            <p className="font-bold text-brand-slate dark:text-slate-300">Peaceful Waters</p>
             <p className="text-xs text-slate-500 mt-1">No active disputes requiring arbitration.</p>
           </div>
         ) : (
@@ -102,7 +102,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
   const [resolveMessage, setResolveMessage] = useState("");
 
   return (
-    <div className="bg-white dark:bg-[#0A0A0A] border border-red-500/20 dark:border-red-500/10 rounded-2xl p-6 overflow-hidden relative">
+    <div className="bg-white dark:bg-[#161B22] border border-red-500/20 dark:border-red-500/10 rounded-[4px] p-6 overflow-hidden relative">
       <div className="absolute top-0 right-0 p-4">
         <span className="px-2.5 py-1 bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-widest rounded-md">
           Action Required
@@ -114,45 +114,45 @@ function DisputeCard({ contract, onResolve, isResolving }) {
         <div className="flex-1 space-y-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">{contract.title}</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-brand-navy dark:text-white">{contract.title}</h3>
               <Link href={`/dashboard/devlogs/${contract._id}`} target="_blank">
-                <ExternalLink size={14} className="text-slate-400 hover:text-indigo-500 transition-colors" />
+                <ExternalLink size={14} className="text-slate-400 hover:text-brand-blue transition-colors" />
               </Link>
             </div>
             <p className="text-xs text-slate-500 line-clamp-2">{contract.description}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-xl border border-slate-100 dark:border-white/5">
+            <div className="bg-brand-cloud dark:bg-white/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
               <p className="text-[10px] font-bold uppercase text-slate-400 mb-2 flex items-center gap-1.5">
                 <User size={10} /> patron
               </p>
               <div className="flex items-center gap-2">
                 <img src={getOptimizedUrl(contract.patron?.profilePicture)} className="w-5 h-5 rounded-full object-cover" alt="" />
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{contract.patron?.name}</span>
+                <span className="text-xs font-bold text-brand-slate dark:text-slate-200 truncate">{contract.patron?.name}</span>
               </div>
             </div>
-            <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-xl border border-slate-100 dark:border-white/5">
+            <div className="bg-brand-cloud dark:bg-white/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
               <p className="text-[10px] font-bold uppercase text-slate-400 mb-2 flex items-center gap-1.5">
                 <User size={10} /> Craftsman
               </p>
               <div className="flex items-center gap-2">
                 <img src={getOptimizedUrl(contract.craftsman?.profilePicture)} className="w-5 h-5 rounded-full object-cover" alt="" />
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">{contract.craftsman?.name}</span>
+                <span className="text-xs font-bold text-brand-slate dark:text-slate-200 truncate">{contract.craftsman?.name}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Dispute Details & Action */}
-        <div className="lg:w-96 space-y-4 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-white/5 pt-6 lg:pt-0 lg:pl-8">
+        <div className="lg:w-96 space-y-4 border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-white/10 pt-6 lg:pt-0 lg:pl-8">
           {disputedMilestones.map(milestone => (
             <div key={milestone._id} className="space-y-4">
-              <div className="p-4 bg-red-500/5 rounded-xl border border-red-500/10">
+              <div className="p-4 bg-red-500/5 rounded-[4px] border border-red-500/10">
                 <p className="text-[10px] font-bold uppercase text-red-500 mb-1">Disputed Milestone</p>
                 <p className="text-sm font-bold text-slate-900 dark:text-white mb-2">{milestone.title}</p>
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400">
-                  <DollarSign size={14} className="text-emerald-500" />
+                <div className="flex items-center gap-1.5 text-xs font-bold text-brand-slate dark:text-slate-400">
+                  <DollarSign size={14} className="text-brand-teal" />
                   {milestone.amount} Tokens
                 </div>
               </div>
@@ -165,7 +165,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                   value={resolveMessage}
                   onChange={(e) => setResolveMessage(e.target.value)}
                   placeholder="Explain the reason for this resolution..."
-                  className="w-full h-24 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-xl p-3 text-xs focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all outline-none resize-none"
+                  className="w-full h-24 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-[4px] p-3 text-xs focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none resize-none"
                 />
               </div>
 
@@ -173,14 +173,14 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                 <button
                   onClick={() => onResolve(contract._id, milestone._id, 'release', resolveMessage)}
                   disabled={isResolving === `${contract._id}-${milestone._id}`}
-                  className="flex-1 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-emerald-600/20 disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 bg-brand-teal hover:bg-emerald-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-[4px] transition-all disabled:opacity-50"
                 >
                   {isResolving === `${contract._id}-${milestone._id}` ? <AppleSpinner size={14} className="animate-spin mx-auto" /> : 'Release to Craftsman'}
                 </button>
                 <button
                   onClick={() => onResolve(contract._id, milestone._id, 'refund', resolveMessage)}
                   disabled={isResolving === `${contract._id}-${milestone._id}`}
-                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-red-600/20 disabled:opacity-50"
+                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-[4px] transition-all disabled:opacity-50"
                 >
                    {isResolving === `${contract._id}-${milestone._id}` ? <AppleSpinner size={14} className="animate-spin mx-auto" /> : 'Refund to patron'}
                 </button>

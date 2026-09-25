@@ -16,9 +16,9 @@ const TaskCard = ({ task, onTaskClick }) => {
       case "solved":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "closed":
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-gray-200";
+        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
       default:
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-gray-200";
+        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
     }
   };
 
@@ -29,9 +29,9 @@ const TaskCard = ({ task, onTaskClick }) => {
       case "high":
         return "text-orange-500";
       case "medium":
-        return "text-yellow-500";
+        return "text-brand-amber";
       case "low":
-        return "text-green-500";
+        return "text-brand-teal";
       default:
         return "text-slate-500";
     }
@@ -47,7 +47,7 @@ const TaskCard = ({ task, onTaskClick }) => {
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
             {task.title}
           </h3>
-          <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+          <p className="text-brand-slate dark:text-slate-400 text-sm line-clamp-2">
             {task.description}
           </p>
         </div>
@@ -94,7 +94,7 @@ const TaskCard = ({ task, onTaskClick }) => {
             </span>
           ))}
           {task.tags.length > 3 && (
-            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded-full">
+            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-brand-slate dark:text-slate-400 text-xs rounded-full">
               +{task.tags.length - 3}
             </span>
           )}
@@ -152,14 +152,14 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Share Your Problem
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-brand-slate dark:text-slate-400 mt-1">
             Get help from the community
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Title
             </label>
             <input
@@ -173,7 +173,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Description
             </label>
             <textarea
@@ -188,7 +188,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
                 Category
               </label>
               <select
@@ -210,7 +210,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
                 Priority
               </label>
               <select
@@ -227,7 +227,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Tags (comma separated)
             </label>
             <input
@@ -243,7 +243,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
@@ -322,7 +322,7 @@ export default function TaskBoard() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
               Task Board
             </h2>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-brand-slate dark:text-slate-400">
               Share problems and get solutions from the community
             </p>
           </div>
@@ -387,7 +387,7 @@ export default function TaskBoard() {
         {loading ? (
           <div className="text-center py-12">
             <AppleSpinner className="mx-auto mb-4" />
-            <p className="text-slate-600 dark:text-slate-400">Loading tasks...</p>
+            <p className="text-brand-slate dark:text-slate-400">Loading tasks...</p>
           </div>
         ) : error ? (
           <div className="text-center py-12">
@@ -407,11 +407,11 @@ export default function TaskBoard() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <AlertCircle className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+            <AlertCircle className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No tasks found
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-brand-slate dark:text-slate-400 mb-6">
               {searchTerm || selectedCategory !== "all" || selectedStatus !== "open"
                 ? "Try adjusting your filters"
                 : "Be the first to share a problem!"}

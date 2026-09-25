@@ -31,13 +31,13 @@ export default function CraftsmanAnalytics() {
     const countries = publicStats?.countries || [];
 
     const StatCard = ({ title, value, icon: Icon, colorClass, trend }) => (
-        <div className="bg-white dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-xl p-5 shadow-sm flex flex-col relative overflow-hidden transition-all hover:border-slate-200 dark:hover:border-white/10">
+        <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-5 shadow-sm dark:shadow-none flex flex-col relative overflow-hidden transition-all hover:border-brand-blue dark:hover:border-brand-blue/50">
             <div className="flex justify-between items-start mb-4 relative z-10">
-                <div className={`p-2.5 rounded-xl ${colorClass.replace('bg-', 'bg-opacity-5 text-')}`}>
+                <div className={`p-2.5 rounded-[4px] ${colorClass.replace('bg-', 'bg-opacity-10 text-')}`}>
                     <Icon className="w-5 h-5" />
                 </div>
                 {trend && (
-                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-1 rounded-lg uppercase tracking-wider">
+                    <span className="flex items-center gap-1 text-[10px] font-mono font-medium text-brand-teal bg-brand-teal/10 px-2 py-1 rounded-[4px] uppercase tracking-widest">
                         <TrendingUp size={10} /> {trend}
                     </span>
                 )}
@@ -54,11 +54,11 @@ export default function CraftsmanAnalytics() {
     if (historyLoading || publicLoading) {
         return (
             <div className="w-full max-w-6xl animate-pulse p-6">
-                <div className="h-10 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg mb-8" />
+                <div className="h-10 w-48 bg-slate-200 dark:bg-white/10 rounded-[4px] mb-8" />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    {[1, 2, 3, 4].map(i => <div key={i} className="h-32 bg-slate-200 dark:bg-slate-800 rounded-2xl" />)}
+                    {[1, 2, 3, 4].map(i => <div key={i} className="h-32 bg-slate-200 dark:bg-white/10 rounded-[4px]" />)}
                 </div>
-                <div className="h-[400px] bg-slate-200 dark:bg-slate-800 rounded-2xl mb-8" />
+                <div className="h-[400px] bg-slate-200 dark:bg-white/10 rounded-[4px] mb-8" />
             </div>
         );
     }
@@ -81,15 +81,15 @@ export default function CraftsmanAnalytics() {
                 </div>
                 
                 {/* Time Range Selector */}
-                <div className="flex items-center p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                <div className="flex items-center p-1 bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px]">
                     {['7d', '30d', '6m'].map(range => (
                         <button
                             key={range}
                             onClick={() => setTimeRange(range)}
-                            className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                            className={`px-4 py-2 rounded-[4px] text-sm font-bold transition-all ${
                                 timeRange === range 
-                                    ? 'bg-white dark:bg-black text-slate-900 dark:text-white shadow-sm' 
-                                    : 'text-slate-500 hover:text-slate-700 dark:hover:text-gray-300'
+                                    ? 'bg-white dark:bg-white/10 text-slate-900 dark:text-white shadow-sm' 
+                                    : 'text-slate-500 hover:text-brand-slate dark:hover:text-slate-300'
                             }`}
                         >
                             {range === '7d' ? 'Last 7 Days' : range === '30d' ? 'Last 30 Days' : 'Last 6 Months'}
@@ -104,7 +104,7 @@ export default function CraftsmanAnalytics() {
                     title="Total Views" 
                     value={totalViews.toLocaleString()} 
                     icon={Eye} 
-                    colorClass="bg-indigo-600" 
+                    colorClass="bg-brand-blue" 
                     trend="+12%"
                 />
                 <StatCard 
@@ -118,7 +118,7 @@ export default function CraftsmanAnalytics() {
                     title="New Visitors" 
                     value={(publicStats?.newVisitors || 0).toLocaleString()} 
                     icon={TrendingUp} 
-                    colorClass="bg-emerald-500" 
+                    colorClass="bg-brand-teal" 
                 />
                 <StatCard 
                     title="Returning" 
@@ -131,7 +131,7 @@ export default function CraftsmanAnalytics() {
             {/* Main Charts Area */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 {/* Views Trend Chart */}
-                <div className="lg:col-span-2 bg-white dark:bg-black/20 border border-slate-100 dark:border-white/5 rounded-xl p-6 shadow-sm">
+                <div className="lg:col-span-2 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm dark:shadow-none">
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Engagement Trend</h2>
                     </div>
@@ -160,7 +160,7 @@ export default function CraftsmanAnalytics() {
                                         tick={{ fontSize: 12, fill: '#6B7280' }}
                                     />
                                     <RechartsTooltip 
-                                        contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)', background: '#111827', color: '#fff' }}
+                                        contentStyle={{ borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: 'none', background: '#161B22', color: '#fff' }}
                                         itemStyle={{ color: '#fff', fontWeight: 'bold' }}
                                     />
                                     <Area type="monotone" dataKey="views" stroke="#EC4899" strokeWidth={3} fillOpacity={1} fill="url(#colorViews)" />
@@ -175,8 +175,8 @@ export default function CraftsmanAnalytics() {
                 </div>
 
                 {/* Device Breakdown */}
-                <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-slate-100 dark:border-white/10 rounded-2xl p-6 shadow-sm flex flex-col">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Device Breakdown</h2>
+                <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm dark:shadow-none flex flex-col">
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest mb-6">Device Breakdown</h2>
                     <div className="flex-1 min-h-[250px]">
                         {devices.length > 0 ? (
                             <ResponsiveContainer width="100%" height="100%">
@@ -196,7 +196,7 @@ export default function CraftsmanAnalytics() {
                                         ))}
                                     </Pie>
                                     <RechartsTooltip 
-                                        contentStyle={{ borderRadius: '12px', border: 'none', background: '#111827', color: '#fff' }}
+                                        contentStyle={{ borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', background: '#161B22', color: '#fff' }}
                                     />
                                 </PieChart>
                             </ResponsiveContainer>
@@ -211,7 +211,7 @@ export default function CraftsmanAnalytics() {
                         {devices.map((device, index) => (
                             <div key={device._id} className="flex items-center gap-2">
                                 <span className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }}></span>
-                                <span className="text-sm text-slate-600 dark:text-gray-300 truncate">{device._id}</span>
+                                <span className="text-sm text-brand-slate dark:text-slate-300 truncate">{device._id}</span>
                             </div>
                         ))}
                     </div>
@@ -221,9 +221,9 @@ export default function CraftsmanAnalytics() {
             {/* Audience Demographics List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  {/* Top Countries */}
-                 <div className="bg-white/60 dark:bg-black/40 backdrop-blur-xl border border-slate-100 dark:border-white/10 rounded-2xl p-6 shadow-sm">
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                        <Globe className="w-5 h-5 text-indigo-600" />
+                 <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm dark:shadow-none">
+                    <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <Globe className="w-5 h-5 text-brand-blue" />
                         Top Countries
                     </h2>
                     <div className="space-y-4">
@@ -233,11 +233,11 @@ export default function CraftsmanAnalytics() {
                             return (
                                 <div key={idx} className="relative">
                                     <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-slate-700 dark:text-gray-300">{country._id}</span>
+                                        <span className="font-medium text-brand-slate dark:text-slate-300">{country._id}</span>
                                         <span className="text-slate-500">{country.count} visitors</span>
                                     </div>
                                     <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2">
-                                        <div className="bg-indigo-600 h-2 rounded-full" style={{ width: `${percent}%` }}></div>
+                                        <div className="bg-brand-blue h-2 rounded-full" style={{ width: `${percent}%` }}></div>
                                     </div>
                                 </div>
                             );

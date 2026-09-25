@@ -62,7 +62,7 @@ export default function FeaturedProfiles({ type, title }) {
 
         <button
           onClick={goToAllUsersPage}
-          className="flex items-center text-slate-700 hover:text-slate-900 font-medium"
+          className="flex items-center text-brand-slate hover:text-slate-900 font-medium"
         >
           <span className="mt-1">{totalCount}</span>
           <svg

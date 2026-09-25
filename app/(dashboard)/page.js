@@ -2,12 +2,12 @@ import MarketClientView from "@/components/dashboard/market/MarketClientView";
 
 export async function generateMetadata() {
     return {
-        title: "Codalina | Premium Digital Assets & SaaS Templates",
-        description: "Explore Codalina's digital marketplace for production-ready SaaS templates, UI kits, and automation scripts built by engineers for creators.",
-        keywords: ["SaaS templates", "React boilerplate", "Next.js template", "Python scripts", "UI Kits", "digital marketplace", "Codalina"],
+        title: "Codalina | Digital Technology Partner",
+        description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
+        keywords: ["technology partner", "digital products", "custom solutions", "software development", "web development", "Codalina"],
         openGraph: {
-            title: "Codalina | Premium Digital Assets & SaaS Templates",
-            description: "Explore Codalina's digital marketplace for production-ready SaaS templates, UI kits, and automation scripts built by engineers for creators.",
+            title: "Codalina | Digital Technology Partner",
+            description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
             type: "website"
         }
     };

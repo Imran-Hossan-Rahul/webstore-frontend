@@ -68,20 +68,20 @@ export default function InboxMain() {
           {/* Conversations List */}
           <div className="w-1/3 border-r border-slate-200 overflow-y-auto">
             {loading ? (
-              <div className="p-4 text-center text-slate-600">Loading...</div>
+              <div className="p-4 text-center text-brand-slate">Loading...</div>
             ) : conversations.length === 0 ? (
-              <div className="p-4 text-center text-slate-600">No conversations yet</div>
+              <div className="p-4 text-center text-brand-slate">No conversations yet</div>
             ) : (
               conversations.map((conv) => (
                 <div
                   key={conv.id}
                   onClick={() => setSelectedConversation(conv)}
-                  className={`p-4 border-b border-slate-100 cursor-pointer hover:bg-slate-50 ${
+                  className={`p-4 border-b border-slate-100 cursor-pointer hover:bg-brand-cloud ${
                     selectedConversation?.id === conv.id ? "bg-slate-100" : ""
                   }`}
                 >
                   <div className="font-semibold text-black">{conv.name}</div>
-                  <div className="text-sm text-slate-600 truncate">{conv.lastMessage}</div>
+                  <div className="text-sm text-brand-slate truncate">{conv.lastMessage}</div>
                 </div>
               ))
             )}
@@ -124,7 +124,7 @@ export default function InboxMain() {
                     />
                     <button
                       onClick={sendMessage}
-                      className="px-6 py-2 bg-black text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
+                      className="px-6 py-2 bg-black text-white rounded-full font-medium hover:bg-slate-900 transition-colors"
                     >
                       Send
                     </button>
@@ -132,7 +132,7 @@ export default function InboxMain() {
                 </div>
               </>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-slate-600">
+              <div className="flex-1 flex items-center justify-center text-brand-slate">
                 Select a conversation to start messaging
               </div>
             )}

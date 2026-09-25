@@ -16,9 +16,9 @@ const RoomCard = ({ room, onRoomClick }) => {
       case "development":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "general":
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-gray-200";
+        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
       default:
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-gray-200";
+        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
     }
   };
 
@@ -31,7 +31,7 @@ const RoomCard = ({ room, onRoomClick }) => {
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
             {room.isPublic ? (
-              <Globe className="w-4 h-4 text-green-500" />
+              <Globe className="w-4 h-4 text-brand-teal" />
             ) : (
               <Lock className="w-4 h-4 text-orange-500" />
             )}
@@ -39,7 +39,7 @@ const RoomCard = ({ room, onRoomClick }) => {
               {room.name}
             </h3>
           </div>
-          <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2">
+          <p className="text-brand-slate dark:text-slate-400 text-sm line-clamp-2">
             {room.description}
           </p>
         </div>
@@ -72,7 +72,7 @@ const RoomCard = ({ room, onRoomClick }) => {
       </div>
 
       {room.relatedTask && (
-        <div className="mt-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+        <div className="mt-3 p-2 bg-brand-sky dark:bg-blue-900/20 rounded-lg">
           <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
             <Target className="w-4 h-4" />
             <span>Task: {room.relatedTask.title}</span>
@@ -91,7 +91,7 @@ const RoomCard = ({ room, onRoomClick }) => {
             </span>
           ))}
           {room.tags.length > 3 && (
-            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded-full">
+            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-brand-slate dark:text-slate-400 text-xs rounded-full">
               +{room.tags.length - 3}
             </span>
           )}
@@ -151,14 +151,14 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Create Collaboration Room
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-brand-slate dark:text-slate-400 mt-1">
             Start a new collaboration space
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Room Name
             </label>
             <input
@@ -172,7 +172,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Description
             </label>
             <textarea
@@ -187,7 +187,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
                 Type
               </label>
               <select
@@ -203,7 +203,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
                 Max Participants
               </label>
               <input
@@ -218,7 +218,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Tags (comma separated)
             </label>
             <input
@@ -238,7 +238,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
               onChange={(e) => setFormData({ ...formData, isPublic: e.target.checked })}
               className="w-4 h-4 text-purple-600 bg-slate-100 border-slate-300 rounded focus:ring-purple-500 dark:focus:ring-purple-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-slate-700 dark:border-slate-600"
             />
-            <label htmlFor="isPublic" className="text-sm font-medium text-slate-700 dark:text-gray-300">
+            <label htmlFor="isPublic" className="text-sm font-medium text-brand-slate dark:text-slate-300">
               Public Room (anyone can join)
             </label>
           </div>
@@ -247,7 +247,7 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
@@ -313,7 +313,7 @@ export default function CollaborationRooms() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
               Collaboration Rooms
             </h2>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-brand-slate dark:text-slate-400">
               Join or create spaces for focused collaboration
             </p>
           </div>
@@ -347,7 +347,7 @@ export default function CollaborationRooms() {
         {loading ? (
           <div className="text-center py-12">
             <AppleSpinner className="mx-auto mb-4" />
-            <p className="text-slate-600 dark:text-slate-400">Loading rooms...</p>
+            <p className="text-brand-slate dark:text-slate-400">Loading rooms...</p>
           </div>
         ) : error ? (
           <div className="text-center py-12">
@@ -367,11 +367,11 @@ export default function CollaborationRooms() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <Users className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+            <Users className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No rooms yet
             </h3>
-            <p className="text-slate-600 dark:text-slate-400 mb-6">
+            <p className="text-brand-slate dark:text-slate-400 mb-6">
               Be the first to create a collaboration space!
             </p>
             <button

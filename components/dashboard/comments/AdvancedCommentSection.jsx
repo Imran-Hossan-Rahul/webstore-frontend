@@ -12,11 +12,11 @@ import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const FEEDBACK_TYPES = [
     { id: 'comment', label: 'Discussion', icon: MessageCircle, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-white/10' },
-    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-50 dark:bg-blue-950/30 border border-blue-100/50 dark:border-blue-900/30' },
-    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100/50 dark:border-emerald-900/30' },
+    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-brand-blue dark:text-blue-400', bg: 'bg-brand-sky dark:bg-blue-950/30 border border-blue-100/50 dark:border-blue-900/30' },
+    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-brand-teal dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100/50 dark:border-emerald-900/30' },
     { id: 'issue', label: 'Issue', icon: AlertCircle, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/30 border border-rose-100/50 dark:border-rose-900/30' },
     { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/30 border border-amber-100/50 dark:border-amber-900/30' },
-    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-100/50 dark:border-indigo-900/30' },
+    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-brand-blue dark:text-indigo-400', bg: 'bg-brand-sky dark:bg-indigo-950/30 border border-indigo-100/50 dark:border-indigo-900/30' },
     { id: 'kudos', label: 'Kudos', icon: Flame, color: 'text-pink-600 dark:text-pink-400', bg: 'bg-pink-50 dark:bg-pink-950/30 border border-pink-100/50 dark:border-pink-900/30' },
 ];
 
@@ -54,7 +54,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
             const parts = str.split(new RegExp(`(${searchQuery})`, 'gi'));
             return parts.map((part, i) => 
                 part.toLowerCase() === searchQuery.toLowerCase() 
-                ? <mark key={i} className="bg-yellow-200 dark:bg-yellow-500/30 text-slate-900 dark:text-white rounded-sm px-0.5">{part}</mark> 
+                ? <mark key={i} className="bg-yellow-200 dark:bg-brand-amber/30 text-slate-900 dark:text-white rounded-sm px-0.5">{part}</mark> 
                 : part
             );
         };
@@ -100,20 +100,20 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
             <div className={`group relative transition-all ${
                 isRoot 
                 ? `bg-white dark:bg-[#111] p-4 rounded-2xl border ${
-                    comment.isHelpful ? 'border-amber-400/40 bg-amber-50/20 dark:bg-amber-500/5 ring-1 ring-amber-400/20' :
+                    comment.isHelpful ? 'border-amber-400/40 bg-amber-50/20 dark:bg-brand-amber/5 ring-1 ring-amber-400/20' :
                     comment.feedbackType === 'issue' ? 'border-rose-500/20 dark:border-rose-500/10 bg-rose-50/5 dark:bg-rose-950/5' : 
                     comment.feedbackType === 'suggestion' ? 'border-amber-500/20 dark:border-amber-500/10 bg-amber-50/5 dark:bg-amber-950/5' : 
-                    comment.feedbackType === 'answer' ? 'border-emerald-500/20 dark:border-emerald-500/10 bg-emerald-50/5 dark:bg-emerald-950/5' :
-                    comment.feedbackType === 'critique' ? 'border-indigo-500/20 dark:border-indigo-500/10 bg-indigo-50/5 dark:bg-indigo-950/5' :
+                    comment.feedbackType === 'answer' ? 'border-brand-teal/20 dark:border-brand-teal/10 bg-emerald-50/5 dark:bg-emerald-950/5' :
+                    comment.feedbackType === 'critique' ? 'border-brand-blue/20 dark:border-brand-blue/10 bg-brand-sky/5 dark:bg-indigo-950/5' :
                     comment.feedbackType === 'kudos' ? 'border-pink-500/20 dark:border-pink-500/10 bg-pink-50/5 dark:bg-pink-950/5' :
                     'border-slate-200 dark:border-white/5'
                   } z-10`
-                : `pl-0 py-2 hover:bg-slate-50/50 dark:hover:bg-white/5 rounded-xl ml-0` 
+                : `pl-0 py-2 hover:bg-brand-cloud/50 dark:hover:bg-white/5 rounded-xl ml-0` 
             }`}>
                 <div className="flex justify-between items-start gap-3">
                     {/* Author Avatar */}
                     <div className="flex-shrink-0 relative z-10">
-                        <div className={`${isRoot ? 'w-8 h-8' : 'w-6 h-6'} rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 overflow-hidden border border-slate-200 dark:border-white/10 shadow-sm mx-auto`}>
+                        <div className={`${isRoot ? 'w-8 h-8' : 'w-6 h-6'} rounded-full bg-gradient-to-tr from-slate-200 to-slate-300 overflow-hidden border border-slate-200 dark:border-white/10 shadow-sm mx-auto`}>
                             {userAvatar ? (
                                 <Image src={userAvatar} width={32} height={32} className="object-cover w-full h-full" alt="av" />
                             ) : (
@@ -138,7 +138,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                             </span>
                             
                             {comment.isHelpful && (
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 bg-amber-100 dark:bg-brand-amber/10 text-amber-600 dark:text-amber-400">
                                     <Star size={10} className="fill-current" /> Helpful
                                 </span>
                             )}
@@ -146,7 +146,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                             <span suppressHydrationWarning className="text-slate-400 text-[10px] font-mono font-medium uppercase tracking-tight">{timeAgo(comment.createdAt)}</span>
                         </div>
                         
-                        <div className={`${isRoot ? 'text-sm' : 'text-xs text-slate-600 dark:text-gray-300'} leading-relaxed whitespace-pre-wrap break-words`}>
+                        <div className={`${isRoot ? 'text-sm' : 'text-xs text-brand-slate dark:text-slate-300'} leading-relaxed whitespace-pre-wrap break-words`}>
                             {renderRichText(comment.content)}
                         </div>
 
@@ -165,8 +165,8 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                                     onClick={() => onToggleHelpful && onToggleHelpful(comment._id, !comment.isHelpful)}
                                     className={`text-[10px] font-bold flex items-center gap-1 transition-colors ${
                                         comment.isHelpful 
-                                        ? 'text-amber-500 hover:text-amber-600' 
-                                        : 'text-slate-400 hover:text-amber-500'
+                                        ? 'text-brand-amber hover:text-amber-600' 
+                                        : 'text-slate-400 hover:text-brand-amber'
                                     }`}
                                 >
                                     <Star size={10} className={comment.isHelpful ? 'fill-current' : ''} />
@@ -269,7 +269,7 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
                     <button 
                         onClick={handleSubmit}
                         disabled={!text.trim()}
-                        className="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        className="px-4 py-2 bg-brand-blue text-white text-xs font-bold rounded-xl hover:bg-brand-blue disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                     >
                         <Send size={12} /> Post
                     </button>
@@ -603,7 +603,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                                 className={`whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1 border ${
                                     isActive 
                                     ? `${type.bg} ${type.color} border-current ring-1 ring-current` 
-                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
+                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-brand-cloud dark:hover:bg-white/10'
                                 }`}
                             >
                                 <type.icon size={11} />
@@ -622,8 +622,8 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                                 onClick={() => setActiveFilter(isActive ? null : 'helpful')}
                                 className={`whitespace-nowrap px-2.5 py-1 rounded-full text-xs font-bold transition-all flex items-center gap-1 border ${
                                     isActive 
-                                    ? 'bg-amber-100 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500 ring-1 ring-amber-500' 
-                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10'
+                                    ? 'bg-amber-100 dark:bg-brand-amber/10 text-amber-600 dark:text-amber-400 border-amber-500 ring-1 ring-amber-500' 
+                                    : 'bg-white dark:bg-white/5 text-slate-500 border-slate-200 dark:border-white/10 hover:bg-brand-cloud dark:hover:bg-white/10'
                                 }`}
                             >
                                 <Star size={11} className="fill-current" />
@@ -645,18 +645,18 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                  ) : filteredTree.length > 0 ? (
                      renderTree(filteredTree)
                  ) : (
-                     <div className="py-20 text-center flex flex-col items-center justify-center gap-4 text-slate-400 bg-slate-50/50 dark:bg-white/[0.02] rounded-3xl border border-dashed border-slate-200 dark:border-white/5">
+                     <div className="py-20 text-center flex flex-col items-center justify-center gap-4 text-slate-400 bg-brand-cloud/50 dark:bg-white/[0.02] rounded-3xl border border-dashed border-slate-200 dark:border-white/5">
                         <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
                             <Search size={24} className="opacity-40" />
                         </div>
                         <div>
-                            <p className="font-semibold text-slate-600 dark:text-slate-300">No matches found</p>
+                            <p className="font-semibold text-brand-slate dark:text-slate-300">No matches found</p>
                             <p className="text-xs">Try adjusting your search or filters to find what you&apos;re looking for.</p>
                         </div>
                         { (searchQuery || activeFilter) && (
                             <button 
                                 onClick={() => { setSearchQuery(""); setActiveFilter(null); }}
-                                className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline"
+                                className="text-xs font-bold text-brand-blue dark:text-indigo-400 hover:underline"
                             >
                                 Clear all filters
                             </button>

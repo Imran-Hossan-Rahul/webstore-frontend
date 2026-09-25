@@ -41,8 +41,8 @@ export default function MarketNavbar() {
               <button 
                 className={`flex items-center gap-2 px-4 py-4 text-sm font-medium transition-colors ${
                   hoveredCategory === category._id 
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ? 'text-brand-blue dark:text-blue-400' 
+                    : 'text-brand-slate dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <Box size={16} />
@@ -57,14 +57,14 @@ export default function MarketNavbar() {
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
-                    className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-slate-950 rounded-xl shadow-xl border border-slate-100 dark:border-white/10 overflow-hidden"
+                    className="absolute top-full left-0 mt-1 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-white/10 overflow-hidden"
                   >
                     <div className="p-2">
                       {categories.filter(sub => sub.isSubcategory && String(sub.parentCategory?._id) === String(category._id)).map((sub) => (
                         <Link 
                           key={sub._id}
                           href={`/market?q=${encodeURIComponent(sub.name.toLowerCase())}`}
-                          className="block px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-blue-600 dark:hover:text-blue-400 rounded-lg transition-colors"
+                          className="block px-4 py-2.5 text-sm text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-white/5 hover:text-brand-blue dark:hover:text-blue-400 rounded-lg transition-colors"
                         >
                           {sub.name}
                         </Link>

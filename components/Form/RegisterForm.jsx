@@ -167,7 +167,7 @@ export default function RegisterForm({
         <p className="text-red-500 text-xs mt-1 ml-5">{errors.general}</p>
       )}
       {success && (
-        <p className="text-green-500 text-sm mt-2 ml-5 animate-pulse">
+        <p className="text-brand-teal text-sm mt-2 ml-5 animate-pulse">
           Registration successful! Redirecting...
         </p>
       )}

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { LoadingState } from "@/components/ui/States";
 ;
 
 export default function AdminPage() {
@@ -43,8 +44,8 @@ export default function AdminPage() {
 
   if (loading || !isAuthorized) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-950">
-        <AppleSpinner className="animate-spin text-indigo-600 mb-4" />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-[#161B22]">
+        <AppleSpinner className="animate-spin text-brand-blue mb-4" />
         <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Verifying Admin Privileges</p>
       </div>
     );

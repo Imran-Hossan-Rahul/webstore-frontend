@@ -49,7 +49,7 @@ export default function ProposalDetailSidebar() {
     <aside className="h-full flex flex-col gap-6 pb-10">
       
       {/* Role Card */}
-      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[20px] p-6 shadow-sm">
+      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm">
         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">
           {isPatronView ? "The Applicant" : "The patron"}
         </h3>
@@ -61,7 +61,7 @@ export default function ProposalDetailSidebar() {
             avatarUrl={person?.avatar || person?.profilePicture}
             displayName={person?.name}
           >
-            <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-white/10 shadow-sm bg-slate-50 dark:bg-white/5 cursor-pointer">
+            <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-white/10 shadow-sm bg-brand-cloud dark:bg-white/5 cursor-pointer">
               <Image 
                 src={getOptimizedUrl(person?.avatar || person?.profilePicture) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${person?.username || person?.name || 'User'}`}
                 alt={person?.name}
@@ -81,11 +81,11 @@ export default function ProposalDetailSidebar() {
                 displayName={person?.name}
                 wrapperDisplay="inline"
               >
-                <h4 className="text-[15px] font-bold text-slate-900 dark:text-white leading-tight capitalize hover:text-indigo-600 transition-colors cursor-pointer">
+                <h4 className="text-[15px] font-bold text-slate-900 dark:text-white leading-tight capitalize hover:text-brand-blue transition-colors cursor-pointer">
                   {person?.name}
                 </h4>
               </CraftsmanHoverCard>
-              <ShieldCheck size={14} className="text-indigo-500" />
+              <ShieldCheck size={14} className="text-brand-blue" />
             </div>
             {person?.username && (
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.1em]">
@@ -98,11 +98,11 @@ export default function ProposalDetailSidebar() {
         <div className="space-y-3 pt-4 border-t border-slate-100 dark:border-white/5">
            <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Availability</span>
-              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200">{proposal.availability}</span>
+              <span className="text-[11px] font-bold text-brand-slate dark:text-slate-200">{proposal.availability}</span>
            </div>
            <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Member Since</span>
-              <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200">
+              <span className="text-[11px] font-bold text-brand-slate dark:text-slate-200">
                 {new Date(person?.createdAt).toLocaleDateString()}
               </span>
            </div>
@@ -117,7 +117,7 @@ export default function ProposalDetailSidebar() {
       </div>
 
       {/* Financials Card */}
-      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[20px] p-6 shadow-sm relative overflow-hidden group">
+      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm relative overflow-hidden group">
         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Financial Proposal</h3>
         
         <div className="space-y-5 relative z-10">
@@ -137,11 +137,11 @@ export default function ProposalDetailSidebar() {
           <div className="grid grid-cols-2 gap-4">
             <div>
                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Timeline</span>
-               <span className="text-[13px] font-bold text-slate-700 dark:text-slate-200">{proposal.estimatedDays} Days</span>
+               <span className="text-[13px] font-bold text-brand-slate dark:text-slate-200">{proposal.estimatedDays} Days</span>
             </div>
             <div className="text-right">
                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Applied</span>
-               <span className="text-[13px] font-bold text-slate-700 dark:text-slate-200">{new Date(applicant.appliedAt).toLocaleDateString()}</span>
+               <span className="text-[13px] font-bold text-brand-slate dark:text-slate-200">{new Date(applicant.appliedAt).toLocaleDateString()}</span>
             </div>
           </div>
         </div>
@@ -149,16 +149,16 @@ export default function ProposalDetailSidebar() {
 
       {/* Actions Card (Only for patron if they want to move stage) */}
       {isPatronView && (
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[20px] p-6 shadow-sm">
+        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Manage Workflow</h3>
             <div className="grid grid-cols-1 gap-2.5">
-              <button className="flex items-center gap-3 p-3.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 rounded-xl font-bold text-[11px] hover:bg-emerald-100 transition-all border border-emerald-100 dark:border-emerald-500/20">
+              <button className="flex items-center gap-3 p-3.5 bg-emerald-50 dark:bg-brand-teal/10 text-brand-teal rounded-xl font-bold text-[11px] hover:bg-emerald-100 transition-all border border-emerald-100 dark:border-brand-teal/20">
                   <CheckCircle2 size={16} /> Shortlist Candidate
               </button>
-              <button className="flex items-center gap-3 p-3.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 rounded-xl font-bold text-[11px] hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-indigo-500/20">
+              <button className="flex items-center gap-3 p-3.5 bg-brand-sky dark:bg-brand-blue/10 text-brand-blue rounded-xl font-bold text-[11px] hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-brand-blue/20">
                   <MessageSquare size={16} /> Start Interview
               </button>
-              <button className="flex items-center gap-3 p-3.5 bg-slate-50 dark:bg-white/5 text-slate-400 rounded-xl font-bold text-[11px] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all border border-slate-100 dark:border-white/10">
+              <button className="flex items-center gap-3 p-3.5 bg-brand-cloud dark:bg-white/5 text-slate-400 rounded-xl font-bold text-[11px] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all border border-slate-100 dark:border-white/10">
                   <XCircle size={16} /> Reject Proposal
               </button>
             </div>
@@ -166,7 +166,7 @@ export default function ProposalDetailSidebar() {
       )}
 
       {/* Safety Message */}
-      <div className="p-6 border border-dashed border-slate-200 dark:border-white/10 rounded-[20px]">
+      <div className="p-6 border border-dashed border-slate-200 dark:border-white/10 rounded-[4px]">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Safety First</h4>
          <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
            Never share personal contact information before a formal contract is started.

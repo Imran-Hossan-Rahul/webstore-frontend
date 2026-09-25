@@ -5,9 +5,9 @@ import { X, MessageCircle } from "lucide-react";
 
 const CATEGORIES = [
   { id: "general", label: "General", color: "bg-slate-500" },
-  { id: "technical", label: "Technical", color: "bg-indigo-600" },
+  { id: "technical", label: "Technical", color: "bg-brand-blue" },
   { id: "design", label: "Design", color: "bg-purple-500" },
-  { id: "business", label: "Business", color: "bg-green-500" },
+  { id: "business", label: "Business", color: "bg-brand-teal" },
   { id: "feedback", label: "Feedback", color: "bg-orange-500" },
   { id: "announcement", label: "Announcement", color: "bg-red-500" }
 ];
@@ -62,7 +62,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-3">
               Category
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -74,7 +74,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
                   className={`p-3 rounded-xl border-2 transition-all ${
                     formData.category === cat.id
                       ? `${cat.color} text-white border-transparent`
-                      : "border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-slate-300"
+                      : "border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:border-slate-300"
                   }`}
                 >
                   <span className="text-sm font-bold">{cat.label}</span>
@@ -84,7 +84,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Discussion Topic
             </label>
             <input
@@ -92,13 +92,13 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.topic}
               onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
               placeholder="What would you like to discuss?"
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Description
             </label>
             <textarea
@@ -106,13 +106,13 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
               placeholder="Provide context for the discussion..."
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent resize-none"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Tags (comma separated)
             </label>
             <input
@@ -120,7 +120,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               placeholder="react, design, api, etc."
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             />
           </div>
 
@@ -128,7 +128,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>

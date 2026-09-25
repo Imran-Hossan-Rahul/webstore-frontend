@@ -6,10 +6,10 @@ import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 const ToastContext = createContext(null);
 
 const icons = {
-  success: <CheckCircle strokeWidth={1.5} className="w-[18px] h-[18px] text-emerald-500 shrink-0" />,
+  success: <CheckCircle strokeWidth={1.5} className="w-[18px] h-[18px] text-brand-teal shrink-0" />,
   error: <AlertCircle strokeWidth={1.5} className="w-[18px] h-[18px] text-red-500 shrink-0" />,
-  warning: <AlertTriangle strokeWidth={1.5} className="w-[18px] h-[18px] text-amber-500 shrink-0" />,
-  info: <Info strokeWidth={1.5} className="w-[18px] h-[18px] text-blue-500 shrink-0" />,
+  warning: <AlertTriangle strokeWidth={1.5} className="w-[18px] h-[18px] text-brand-amber shrink-0" />,
+  info: <Info strokeWidth={1.5} className="w-[18px] h-[18px] text-brand-blue shrink-0" />,
 };
 
 export function ToastProvider({ children }) {

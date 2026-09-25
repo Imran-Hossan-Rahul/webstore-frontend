@@ -36,7 +36,7 @@ export default function VisitorDevicePieChart() {
   const COLORS = ["#4ca404", "#af09dc", "#f59e0b", "#3b82f6", "#ec4899"];
 
   return (
-    <div className="card-artifact p-3 rounded-2xl shadow-md text-black h-[187px] flex flex-col justify-center">
+    <div className="card-artifact p-3 rounded-[4px] text-black h-[187px] flex flex-col justify-center">
       <h2 className="text-lg font-bold mb-1 text-center">
         Visitor Devices Ratio (%)
       </h2>

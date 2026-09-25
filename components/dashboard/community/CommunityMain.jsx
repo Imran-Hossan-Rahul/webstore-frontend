@@ -114,7 +114,7 @@ export default function CommunityMain() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Community Hub
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-brand-slate dark:text-slate-400 mt-1">
             Connect, collaborate, and grow together
           </p>
         </div>
@@ -268,7 +268,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
       <div className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
         {value}
       </div>
-      <div className="text-sm text-slate-600 dark:text-slate-400">{label}</div>
+      <div className="text-sm text-brand-slate dark:text-slate-400">{label}</div>
     </div>
   );
 };
@@ -279,7 +279,7 @@ const TabButton = ({ active, onClick, icon: Icon, label }) => (
     className={`flex items-center gap-2 px-4 py-3 font-medium transition-all border-b-2 ${
       active
         ? "border-purple-600 text-purple-600"
-        : "border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+        : "border-transparent text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
     }`}
   >
     <Icon className="w-4 h-4" />
@@ -306,15 +306,15 @@ const ActivityCard = ({ activity }) => {
 
   const getActivityIcon = () => {
     if (activity.feedType === "task") return <MessageSquare className="w-5 h-5 text-purple-500" />;
-    if (activity.feedType === "resource") return <Zap className="w-5 h-5 text-indigo-600" />;
+    if (activity.feedType === "resource") return <Zap className="w-5 h-5 text-brand-blue" />;
     
     switch (activity.type) {
       case "working_on_devlog":
-        return <Zap className="w-5 h-5 text-indigo-600" />;
+        return <Zap className="w-5 h-5 text-brand-blue" />;
       case "sharing_task":
         return <MessageSquare className="w-5 h-5 text-purple-500" />;
       case "completed_task":
-        return <CheckCircle2 className="w-5 h-5 text-green-500" />;
+        return <CheckCircle2 className="w-5 h-5 text-brand-teal" />;
       case "created_post":
         return <TrendingUp className="w-5 h-5 text-orange-500" />;
       default:
@@ -365,12 +365,12 @@ const ActivityCard = ({ activity }) => {
     }
     if (activity.metadata?.postType) {
       const typeColors = {
-        comment: "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-gray-300",
-        question: "bg-indigo-600/10 text-indigo-600",
-        answer: "bg-green-500/10 text-green-500",
+        comment: "bg-slate-100 dark:bg-white/10 text-brand-slate dark:text-slate-300",
+        question: "bg-brand-blue/10 text-brand-blue",
+        answer: "bg-brand-teal/10 text-brand-teal",
         issue: "bg-red-500/10 text-red-500",
-        suggestion: "bg-amber-500/10 text-amber-500",
-        critique: "bg-indigo-500/10 text-indigo-500",
+        suggestion: "bg-brand-amber/10 text-brand-amber",
+        critique: "bg-brand-blue/10 text-brand-blue",
         kudos: "bg-pink-500/10 text-pink-500"
       };
       const typeLabels = {
@@ -411,7 +411,7 @@ const ActivityCard = ({ activity }) => {
               <span className="font-bold text-slate-900 dark:text-white">
                 {activity.user?.name || "Unknown"}
               </span>
-              <span className="text-slate-600 dark:text-slate-400 text-sm">
+              <span className="text-brand-slate dark:text-slate-400 text-sm">
                 {getActivityText()}
               </span>
             </div>
@@ -421,7 +421,7 @@ const ActivityCard = ({ activity }) => {
             {activity.title}
           </h3>
           {activity.description && (
-            <p className="text-slate-700 dark:text-gray-300 mb-3 line-clamp-2">
+            <p className="text-brand-slate dark:text-slate-300 mb-3 line-clamp-2">
               {activity.description}
             </p>
           )}
@@ -437,11 +437,11 @@ const ActivityCard = ({ activity }) => {
                 <Star className="w-4 h-4" />
                 <span className="text-sm">{likes}</span>
               </button>
-              <button className="flex items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 hover:text-brand-blue transition-colors">
                 <MessageSquare className="w-4 h-4" />
                 <span className="text-sm">{comments}</span>
               </button>
-              <button className="flex items-center gap-1 text-slate-500 hover:text-green-500 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 hover:text-brand-teal transition-colors">
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
@@ -486,7 +486,7 @@ const TaskCard = ({ task }) => {
           {task.status.replace("_", " ")}
         </span>
       </div>
-      <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">
+      <p className="text-brand-slate dark:text-slate-400 mb-4 line-clamp-2">
         {task.description}
       </p>
       <div className="flex items-center justify-between">
@@ -560,7 +560,7 @@ const OnlineUsers = () => {
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold">
                   {user.name?.[0] || "U"}
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white dark:border-black rounded-full" />
+                <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-teal border-2 border-white dark:border-black rounded-full" />
               </div>
               <div className="flex-1">
                 <div className="text-sm font-medium text-slate-900 dark:text-white">
@@ -645,23 +645,23 @@ const ActiveRooms = () => {
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
       <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-        <Users className="w-5 h-5 text-blue-600" />
+        <Users className="w-5 h-5 text-brand-blue" />
         Active Rooms
       </h3>
       <div className="space-y-3">
         {rooms.length > 0 ? (
           rooms.map((room) => (
-            <div key={room._id} className="p-3 bg-slate-50 dark:bg-white/5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all cursor-pointer">
+            <div key={room._id} className="p-3 bg-brand-cloud dark:bg-white/5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all cursor-pointer">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
                   {room.name}
                 </span>
-                <span className="text-xs text-green-500 flex items-center gap-1">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
+                <span className="text-xs text-brand-teal flex items-center gap-1">
+                  <div className="w-2 h-2 bg-brand-teal rounded-full" />
                   {room.participants?.length || 0}
                 </span>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-1">
+              <p className="text-xs text-brand-slate dark:text-slate-400 line-clamp-1">
                 {room.description}
               </p>
             </div>
@@ -677,7 +677,7 @@ const ActiveRooms = () => {
 const ActionButton = ({ icon: Icon, label, onClick }) => (
   <button 
     onClick={onClick}
-    className="w-full flex items-center gap-3 px-4 py-3 text-left text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-white/5 rounded-xl transition-all"
+    className="w-full flex items-center gap-3 px-4 py-3 text-left text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-white/5 rounded-xl transition-all"
   >
     <Icon className="w-4 h-4" />
     <span className="text-sm font-medium">{label}</span>
@@ -769,7 +769,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-slate-600 dark:text-slate-400"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400"
             >
               Cancel
             </button>
@@ -809,11 +809,11 @@ const EmptyState = ({ message }) => {
 
   return (
     <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-12 text-center">
-      <Zap className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+      <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
       <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
         No activities yet
       </h3>
-      <p className="text-slate-600 dark:text-slate-400 mb-6">{message}</p>
+      <p className="text-brand-slate dark:text-slate-400 mb-6">{message}</p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
           onClick={createSampleActivity}

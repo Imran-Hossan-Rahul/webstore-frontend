@@ -397,7 +397,7 @@ const PublicProfile = ({ username }) => {
   if (error || !profile) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-        <div className="w-20 h-20 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mb-6">
+        <div className="w-20 h-20 bg-brand-cloud dark:bg-white/5 rounded-full flex items-center justify-center mb-6">
           <User size={32} className="text-slate-300" />
         </div>
         <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Profile Not Found</h2>
@@ -416,12 +416,12 @@ const PublicProfile = ({ username }) => {
     return (
       <div className="w-full pr-[30px] left-[15px] pt-9 pb-20 relative">
         <div className="relative h-48 md:h-72 w-full bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden mb-12">
-            <div className="w-full h-full bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+            <div className="w-full h-full bg-brand-cloud dark:bg-white/5 flex items-center justify-center">
                <Lock size={48} className="text-slate-200 dark:text-white/10" />
             </div>
         </div>
         <div className="flex flex-col items-center justify-center text-center -mt-24 relative z-10">
-          <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm mb-6">
+          <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-brand-cloud dark:bg-slate-900 overflow-hidden shadow-sm mb-6">
             {profile.profilePicture ? (
               <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover grayscale opacity-50" />
             ) : (
@@ -457,7 +457,7 @@ const PublicProfile = ({ username }) => {
   return (
     <div className="w-full pr-[30px] left-[15px] pt-9 pb-20 relative">
       {/* Header Navigation (Mobile) */}
-      <div className="flex items-center gap-4 px-4 py-3 sticky top-0 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-40 lg:hidden border-b border-slate-100 dark:border-white/5">
+      <div className="flex items-center gap-4 px-4 py-3 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-40 lg:hidden border-b border-slate-100 dark:border-white/5">
          <button onClick={() => router.back()} className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-colors">
             <ArrowLeft size={20} />
          </button>
@@ -474,7 +474,7 @@ const PublicProfile = ({ username }) => {
           {profile.coverPicture ? (
             <img src={getOptimizedUrl(profile.coverPicture)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-slate-50 dark:bg-white/5" />
+            <div className="w-full h-full bg-brand-cloud dark:bg-white/5" />
           )}
           
           {isOwner && (
@@ -496,7 +496,7 @@ const PublicProfile = ({ username }) => {
           <div className="flex justify-between items-end -mt-12 md:-mt-16 mb-4">
             {/* Avatar */}
             <div className="relative group/avatar">
-              <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-slate-50 dark:bg-slate-900 overflow-hidden shadow-sm relative">
+              <div className="w-24 h-24 md:w-36 md:h-36 rounded-2xl border-4 border-slate-50 dark:border-slate-950 bg-brand-cloud dark:bg-slate-900 overflow-hidden shadow-sm relative">
                 {profile.profilePicture ? (
                   <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover" />
                 ) : (
@@ -531,7 +531,7 @@ const PublicProfile = ({ username }) => {
                   )}
                   <button 
                     onClick={() => router.push('/dashboard')}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-brand-slate dark:text-slate-300 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
                   >
                     <LayoutGrid size={14} />
                     Platform Dashboard
@@ -555,7 +555,7 @@ const PublicProfile = ({ username }) => {
                     disabled={followLoading}
                     className={`px-8 py-2.5 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.2em] transition-all ${
                       isFollowing
-                        ? 'border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-slate-50'
+                        ? 'border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-brand-cloud'
                         : 'bg-slate-900 text-white dark:bg-white dark:text-black'
                     }`}
                   >
@@ -568,7 +568,7 @@ const PublicProfile = ({ username }) => {
                       if (!currentUser) return showToast('Please login to message', 'info');
                       openChatWithUser?.(profile._id);
                     }}
-                    className="p-2.5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-slate-50 dark:hover:bg-white/5 transition-all"
+                    className="p-2.5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-brand-cloud dark:hover:bg-white/5 transition-all"
                   >
                     <MessageSquare size={20} />
                   </button>
@@ -588,7 +588,7 @@ const PublicProfile = ({ username }) => {
               <p className="text-slate-500 text-[10px] font-mono font-medium uppercase tracking-[0.2em]">@{profile.username}</p>
             </div>
 
-            <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed max-w-2xl whitespace-pre-wrap break-words font-normal font-sans">
+            <p className="text-brand-slate dark:text-slate-300 text-base leading-relaxed max-w-2xl whitespace-pre-wrap break-words font-normal font-sans">
               {profile.bio || "Crafting digital experiences and building the future."}
             </p>
 
@@ -637,7 +637,7 @@ const PublicProfile = ({ username }) => {
       </div>
 
       {/* Profile Navigation Tabs */}
-      <div className="mt-8 px-0 border border-slate-100 dark:border-white/5 rounded-2xl sticky top-14 lg:top-16 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-30 overflow-hidden shadow-sm">
+      <div className="mt-8 px-0 border border-slate-100 dark:border-white/5 rounded-2xl sticky top-14 lg:top-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-30 overflow-hidden shadow-sm">
          <div className="flex justify-center gap-8 overflow-x-auto no-scrollbar">
             {[
               { id: 'creations', label: 'Creations', icon: <LayoutGrid size={16} /> },
@@ -650,7 +650,7 @@ const PublicProfile = ({ username }) => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 py-4 text-[10px] font-mono font-medium uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${
-                  activeTab === tab.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
+                  activeTab === tab.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
@@ -758,13 +758,13 @@ const PublicProfile = ({ username }) => {
                 {publicFavorites.folders.length > 0 && (
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                      <Layers className="text-indigo-500" size={20} /> Public Folders
+                      <Layers className="text-brand-blue" size={20} /> Public Folders
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {publicFavorites.folders.map(folder => (
-                        <div key={folder._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-indigo-500/50 transition-colors">
+                        <div key={folder._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-brand-blue/50 transition-colors">
                            <div className="flex items-center gap-3 mb-4">
-                             <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center" style={{ color: folder.color || '#4f46e5' }}>
+                             <div className="w-10 h-10 rounded-xl bg-brand-cloud dark:bg-slate-800 flex items-center justify-center" style={{ color: folder.color || '#4f46e5' }}>
                                <Bookmark size={20} />
                              </div>
                              <div>
@@ -782,7 +782,7 @@ const PublicProfile = ({ username }) => {
                 {publicFavorites.notes.length > 0 && (
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                      <FileText className="text-amber-500" size={20} /> Standalone Highlights
+                      <FileText className="text-brand-amber" size={20} /> Standalone Highlights
                     </h3>
                     <div className="space-y-4">
                       {publicFavorites.notes.map(note => (
@@ -793,13 +793,13 @@ const PublicProfile = ({ username }) => {
                               router.push(`/codex/${note.codex.slug}?noteId=${note._id}`);
                             }
                           }}
-                          className="p-6 bg-amber-50 dark:bg-amber-500/5 border-l-4 border-amber-400 rounded-r-2xl cursor-pointer hover:bg-amber-100 dark:hover:bg-amber-500/10 transition-colors"
+                          className="p-6 bg-amber-50 dark:bg-brand-amber/5 border-l-4 border-amber-400 rounded-r-2xl cursor-pointer hover:bg-amber-100 dark:hover:bg-brand-amber/10 transition-colors"
                         >
-                           <p className="text-sm font-medium italic text-slate-700 dark:text-slate-300 mb-4">
+                           <p className="text-sm font-medium italic text-brand-slate dark:text-slate-300 mb-4">
                              &quot;{note.highlightedText}&quot;
                            </p>
                            {note.noteContent && (
-                             <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                             <p className="text-sm text-brand-slate dark:text-slate-400 mb-4">
                                <span className="font-bold text-slate-800 dark:text-slate-200">Note: </span>
                                {note.noteContent}
                              </p>
@@ -841,7 +841,7 @@ const PublicProfile = ({ username }) => {
             {githubLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-32 bg-slate-50 dark:bg-white/[0.02] rounded-2xl animate-pulse border border-slate-100 dark:border-white/5" />
+                  <div key={i} className="h-32 bg-brand-cloud dark:bg-white/[0.02] rounded-2xl animate-pulse border border-slate-100 dark:border-white/5" />
                 ))}
               </div>
             ) : githubRepos.length > 0 ? (
@@ -855,7 +855,7 @@ const PublicProfile = ({ username }) => {
                     className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl hover:border-slate-300 dark:hover:border-white/20 transition-all group"
                   >
                     <div className="flex justify-between items-start mb-3">
-                       <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-slate-700 dark:group-hover:text-white transition-colors">{repo.name}</h4>
+                       <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-brand-slate dark:group-hover:text-white transition-colors">{repo.name}</h4>
                        {repo.language && (
                          <span className="px-2 py-0.5 bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-[9px] font-black uppercase rounded-md">
                            {repo.language}
@@ -865,7 +865,7 @@ const PublicProfile = ({ username }) => {
                     <p className="text-[13px] text-slate-500 line-clamp-2 mb-4 h-10">{repo.description || "No description provided."}</p>
                     <div className="flex items-center gap-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-tighter">
                        <div className="flex items-center gap-1">
-                          <Trophy size={12} className="text-yellow-500" />
+                          <Trophy size={12} className="text-brand-amber" />
                           {repo.stargazers_count}
                        </div>
                        <div className="flex items-center gap-1">
@@ -934,13 +934,13 @@ const PublicProfile = ({ username }) => {
                         {item.isTags ? (
                           item.tags?.length > 0 ? (
                             item.tags.map((tag, i) => (
-                              <span key={i} className="px-3 py-1 rounded-full text-[10px] font-bold border border-slate-100 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-300 uppercase tracking-tight">
+                              <span key={i} className="px-3 py-1 rounded-full text-[10px] font-bold border border-slate-100 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-brand-slate dark:text-slate-300 uppercase tracking-tight">
                                 {tag}
                               </span>
                             ))
                           ) : <span className="text-[11px] font-bold text-slate-300 italic">Not specified</span>
                         ) : (
-                          <span className={`text-[13px] font-bold ${item.isTextArea ? 'text-slate-600 dark:text-slate-400 leading-relaxed' : 'text-slate-900 dark:text-white'}`}>
+                          <span className={`text-[13px] font-bold ${item.isTextArea ? 'text-brand-slate dark:text-slate-400 leading-relaxed' : 'text-slate-900 dark:text-white'}`}>
                             {item.prefix}{item.value || 'Not set'}
                           </span>
                         )}
@@ -954,7 +954,7 @@ const PublicProfile = ({ username }) => {
             <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-8 shadow-sm h-fit">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-indigo-500/10 text-indigo-500 rounded-xl flex items-center justify-center">
+                  <div className="w-10 h-10 bg-brand-blue/10 text-brand-blue rounded-xl flex items-center justify-center">
                     <Globe size={18} />
                   </div>
                   <div>
@@ -979,7 +979,7 @@ const PublicProfile = ({ username }) => {
                       <div className="flex items-center gap-2 flex-1">
                          {item.icon && <span className="text-slate-400">{item.icon}</span>}
                          {['portfolio', 'github', 'linkedin', 'twitter'].includes(item.field) && item.value ? (
-                           <a href={item.value.startsWith('http') ? item.value : `https://${item.value}`} target="_blank" rel="noreferrer" className="text-[13px] font-bold text-indigo-600 hover:underline flex items-center gap-1">
+                           <a href={item.value.startsWith('http') ? item.value : `https://${item.value}`} target="_blank" rel="noreferrer" className="text-[13px] font-bold text-brand-blue hover:underline flex items-center gap-1">
                              {item.value.replace(/^https?:\/\/(www\.)?/, '')}
                              <ExternalLink size={10} />
                            </a>
@@ -1011,7 +1011,7 @@ const PublicProfile = ({ username }) => {
                   <div key={activity._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm hover:shadow-md transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 mt-1">
-                        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:opacity-80 transition-opacity">
+                        <div className="w-12 h-12 rounded-2xl bg-brand-cloud dark:bg-white/5 flex items-center justify-center group-hover:opacity-80 transition-opacity">
                           <ActivityIcon type={activity.type} />
                         </div>
                       </div>
@@ -1031,13 +1031,13 @@ const PublicProfile = ({ username }) => {
                         )}
                         <div className="flex items-center gap-3">
                            {activity.devlogId && (
-                             <span className="px-2.5 py-1 bg-indigo-500/10 text-indigo-500 rounded-lg text-[9px] font-bold uppercase tracking-widest">Devlog</span>
+                             <span className="px-2.5 py-1 bg-brand-blue/10 text-brand-blue rounded-lg text-[9px] font-bold uppercase tracking-widest">Devlog</span>
                            )}
                            {activity.taskId && (
-                             <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-[9px] font-bold uppercase tracking-widest">Task</span>
+                             <span className="px-2.5 py-1 bg-brand-teal/10 text-brand-teal rounded-lg text-[9px] font-bold uppercase tracking-widest">Task</span>
                            )}
                            {activity.roomId && (
-                             <span className="px-2.5 py-1 bg-amber-500/10 text-amber-500 rounded-lg text-[9px] font-bold uppercase tracking-widest">Collab</span>
+                             <span className="px-2.5 py-1 bg-brand-amber/10 text-brand-amber rounded-lg text-[9px] font-bold uppercase tracking-widest">Collab</span>
                            )}
                         </div>
                       </div>
@@ -1077,7 +1077,7 @@ const PublicProfile = ({ username }) => {
 };
 
 const EmptyCreations = ({ title, desc }) => (
-  <div className="col-span-full flex flex-col items-center justify-center py-16 text-center opacity-40 bg-slate-50/50 dark:bg-white/[0.01] border border-dashed border-slate-200 dark:border-white/10 rounded-3xl">
+  <div className="col-span-full flex flex-col items-center justify-center py-16 text-center opacity-40 bg-brand-cloud/50 dark:bg-white/[0.01] border border-dashed border-slate-200 dark:border-white/10 rounded-3xl">
     <LayoutGrid size={32} className="mb-4 stroke-[1px]" />
     <h4 className="text-sm font-bold uppercase tracking-widest mb-1">{title}</h4>
     <p className="text-[10px] font-medium max-w-[200px]">{desc}</p>

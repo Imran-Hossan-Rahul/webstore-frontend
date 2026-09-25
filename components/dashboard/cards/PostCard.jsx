@@ -168,7 +168,7 @@ const PostCard = ({
   return (
     <>
     <div 
-        className="sm:border-b border-slate-100 dark:border-white/5 hover:bg-slate-50/50 dark:hover:bg-white/5 transition-colors group cursor-pointer flex gap-2 sm:gap-3 p-4" 
+        className="sm:border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud/50 dark:hover:bg-white/5 transition-colors group cursor-pointer flex gap-2 sm:gap-3 p-4" 
         onClick={handleNavigate}
     >
        <div className="flex-shrink-0">
@@ -183,7 +183,7 @@ const PostCard = ({
                             alt={user.name} 
                         />
                    ) : (
-                       <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 font-bold text-lg">
+                       <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 font-bold text-lg">
                            {user?.name?.[0] || "U"}
                        </div>
                    )}
@@ -198,12 +198,12 @@ const PostCard = ({
                         {user?.name}
                    </Link>
                    {user?.isVerified && (
-                        <span className="text-indigo-600">
+                        <span className="text-brand-blue">
                              <CheckCircle2 size={16} className="fill-current" />
                         </span>
                    )}
                    <span className="text-slate-400 text-xs font-semibold">@{user?.username || "user"}</span>
-                   <span className="text-gray-300 dark:text-slate-600 text-xs">•</span>
+                   <span className="text-slate-300 dark:text-brand-slate text-xs">•</span>
                    <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
                </div>
            </div>
@@ -211,7 +211,7 @@ const PostCard = ({
            {user?.title && <p className="text-xs text-slate-400 -mt-1 mb-2">{user.title}</p>}
 
            <div>
-                <div className="text-slate-800 dark:text-gray-200 text-base leading-relaxed whitespace-pre-wrap break-words mb-4 font-normal font-sans">
+                <div className="text-slate-800 dark:text-slate-200 text-base leading-relaxed whitespace-pre-wrap break-words mb-4 font-normal font-sans">
                     {displayContent}
                     {isLongContent && (
                         <button 
@@ -269,7 +269,7 @@ const PostCard = ({
                     <button 
                          onClick={toggleComments}
                          className={`flex items-center gap-2 group transition-all ${
-                             showComments ? 'text-indigo-600' : 'text-slate-500 dark:text-slate-400 hover:text-indigo-600'
+                             showComments ? 'text-brand-blue' : 'text-slate-500 dark:text-slate-400 hover:text-brand-blue'
                          }`}
                      >
                         <div>
@@ -279,7 +279,7 @@ const PostCard = ({
                     </button>
 
                      <button 
-                         className="flex items-center gap-2 group transition-all text-slate-500 dark:text-slate-400 hover:text-green-500"
+                         className="flex items-center gap-2 group transition-all text-slate-500 dark:text-slate-400 hover:text-brand-teal"
                          onClick={onShareClick}
                      >
                          <div>
@@ -314,7 +314,7 @@ const PostCard = ({
                                                  alt={comment.user.name} 
                                              />
                                         ) : (
-                                            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-gray-300 to-gray-400 flex items-center justify-center text-white text-[10px] font-bold">
+                                            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-slate-300 to-slate-400 flex items-center justify-center text-white text-[10px] font-bold">
                                                 {comment.user?.name?.[0] || "U"}
                                             </div>
                                         )}
@@ -324,7 +324,7 @@ const PostCard = ({
                                              <span className="font-medium text-xs text-slate-900 dark:text-white hover:underline cursor-pointer font-sans">{comment.user?.name}</span>
                                              <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold">{timeAgo(comment.createdAt)}</span>
                                          </div>
-                                         <p className="text-slate-800 dark:text-gray-300 text-sm">{comment.content}</p>
+                                         <p className="text-slate-800 dark:text-slate-300 text-sm">{comment.content}</p>
                                     </div>
                                 </div>
                             ))}

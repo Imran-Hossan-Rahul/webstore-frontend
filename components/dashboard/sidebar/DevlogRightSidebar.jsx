@@ -155,12 +155,12 @@ const DevlogRightSidebar = ({ currentPostId }) => {
       <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Project Timeline</h3>
-              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full">
+              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full">
                   <div className={`w-2 h-2 rounded-full animate-pulse ${
-                      phase === 'Completed' ? 'bg-green-500' :
-                      phase === 'Live' ? 'bg-blue-500' :
+                      phase === 'Completed' ? 'bg-brand-teal' :
+                      phase === 'Live' ? 'bg-brand-blue' :
                       phase === 'Maintenance' ? 'bg-orange-500' :
-                      'bg-indigo-500'
+                      'bg-brand-blue'
                   }`} />
                   <span className="text-[9px] font-black uppercase tracking-tight text-slate-900 dark:text-white">
                       {phase}
@@ -178,8 +178,8 @@ const DevlogRightSidebar = ({ currentPostId }) => {
                   <div 
                       style={{ width: `${progress}%` }} 
                       className={`h-full relative transition-all duration-1000 ease-out ${
-                          phase === 'Completed' ? 'bg-green-500' :
-                          phase === 'Live' ? 'bg-blue-500' :
+                          phase === 'Completed' ? 'bg-brand-teal' :
+                          phase === 'Live' ? 'bg-brand-blue' :
                           phase === 'Maintenance' ? 'bg-orange-500' :
                           'bg-gradient-to-r from-indigo-500 to-purple-600'
                       }`}
@@ -216,10 +216,10 @@ const DevlogRightSidebar = ({ currentPostId }) => {
               <div className="flex items-center justify-between">
                   <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Difficulty</span>
                   <span className={`text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-widest ${
-                      difficulty === 'Beginner' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400' :
+                      difficulty === 'Beginner' ? 'bg-emerald-50 text-brand-teal dark:bg-brand-teal/10 dark:text-emerald-400' :
                       difficulty === 'Advanced' ? 'bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400' :
                       difficulty === 'Expert' ? 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' :
-                      'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400'
+                      'bg-brand-sky text-brand-blue dark:bg-brand-blue/10 dark:text-blue-400'
                   }`}>
                       {difficulty}
                   </span>
@@ -250,11 +250,11 @@ const DevlogRightSidebar = ({ currentPostId }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-3 pt-2">
-              <button onClick={handleLike} className={`py-3.5 rounded-lg border-2 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-colors ${isLiked ? 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20 text-red-500' : 'bg-white dark:bg-black border-slate-100 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
+              <button onClick={handleLike} className={`py-3.5 rounded-lg border-2 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-colors ${isLiked ? 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20 text-red-500' : 'bg-white dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-white/5'}`}>
                   <Star size={14} className={isLiked ? 'fill-current text-red-500' : ''} />
                   {isLiked ? 'Starred' : 'Star'}
               </button>
-              <button onClick={handleShare} className="py-3.5 rounded-xl border-2 bg-white dark:bg-black border-slate-100 dark:border-white/10 text-slate-600 dark:text-slate-400 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+              <button onClick={handleShare} className="py-3.5 rounded-xl border-2 bg-white dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-brand-cloud dark:hover:bg-white/5 transition-colors">
                   <Share2 size={14} /> Share
               </button>
           </div>
@@ -266,7 +266,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Technology Stack</h3>
               <div className="flex flex-wrap gap-2">
                   {tools.length > 0 ? tools.map(tool => (
-                      <span key={tool} className="px-3 py-1.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-700 dark:text-slate-300">
+                      <span key={tool} className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-brand-slate dark:text-slate-300">
                           {tool}
                       </span>
                   )) : <span className="text-xs text-slate-400 font-medium italic">No technologies listed</span>}
@@ -278,7 +278,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Devlog Tags</h3>
                   <div className="flex flex-wrap gap-2">
                       {tags.map((tag, i) => (
-                          <span key={i} className="px-2.5 py-1 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-lg border border-indigo-100 dark:border-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 cursor-pointer transition-colors">
+                          <span key={i} className="px-2.5 py-1 bg-brand-sky dark:bg-brand-blue/10 text-brand-blue dark:text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-lg border border-indigo-100 dark:border-brand-blue/20 hover:bg-indigo-100 dark:hover:bg-brand-blue/20 cursor-pointer transition-colors">
                               #{tag}
                           </span>
                       ))}
@@ -293,7 +293,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
           <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                      <Flag size={12} className="text-indigo-500" />
+                      <Flag size={12} className="text-brand-blue" />
                       Milestones
                   </h3>
                   <span className="text-[9px] font-black text-slate-400">
@@ -302,14 +302,14 @@ const DevlogRightSidebar = ({ currentPostId }) => {
               </div>
               <div className="space-y-2">
                   {milestones.map((milestone, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+                      <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/5">
                           <div className="mt-0.5 shrink-0">
                               {milestone.status === 'Completed' ? (
-                                  <CheckCircle2 size={13} className="text-emerald-500" />
+                                  <CheckCircle2 size={13} className="text-brand-teal" />
                               ) : milestone.status === 'In Progress' ? (
-                                  <Clock size={13} className="text-blue-500 animate-pulse" />
+                                  <Clock size={13} className="text-brand-blue animate-pulse" />
                               ) : (
-                                  <Circle size={13} className="text-slate-300 dark:text-slate-700" />
+                                  <Circle size={13} className="text-slate-300 dark:text-brand-slate" />
                               )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -364,10 +364,10 @@ const DevlogRightSidebar = ({ currentPostId }) => {
                   {moreFromAuthor.map(p => (
                       <div key={p._id || p.slug} onClick={() => router.push(`/post/${p._id}`)} className="group flex items-center justify-between cursor-pointer">
                           <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded bg-slate-50 dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all">
+                              <div className="w-8 h-8 rounded bg-brand-cloud dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all">
                                   <ArrowRight size={12} className="text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
                               </div>
-                              <span className="text-xs font-bold text-slate-700 dark:text-gray-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors line-clamp-2 leading-relaxed">
+                              <span className="text-xs font-bold text-brand-slate dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors line-clamp-2 leading-relaxed">
                                   {p.title}
                               </span>
                           </div>

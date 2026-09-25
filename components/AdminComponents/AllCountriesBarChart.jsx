@@ -40,9 +40,9 @@ export default function AllCountriesPage() {
   }, []);
 
   return (
-    <div className="p-5 min-h-screen bg-slate-50">
-      <h1 className="text-2xl font-bold mb-5">Visitor Country Stats</h1>
-      <div className="bg-white p-5 rounded-2xl shadow-md">
+    <div className="p-5 min-h-screen bg-brand-cloud">
+      <h1 className="text-[24px] font-display font-medium mb-5">Visitor Country Stats</h1>
+      <div className="bg-white p-5 rounded-[4px]">
         <ResponsiveContainer width="100%" height={600}>
           <BarChart
             data={data}

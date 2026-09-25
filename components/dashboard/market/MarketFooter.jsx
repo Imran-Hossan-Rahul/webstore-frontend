@@ -1,106 +1,100 @@
 import React from 'react';
 import Link from 'next/link';
-import { Facebook, Instagram, MessageCircle, Mail } from 'lucide-react';
 
 export default function MarketFooter() {
   const footerLinks = [
     {
-      title: "Shop and Learn",
+      title: "Navigation",
       links: [
-        { label: "Marketplace", href: "/" },
-        { label: "Source Code", href: "/shop?productType=Source+Code" },
-        { label: "Web Templates", href: "/shop?productType=Web+Template" },
-        { label: "UI Kits & Plugins", href: "/shop?productType=UI+Kit%2FPlugin" },
-        { label: "Scripts & Tools", href: "/shop?productType=Script%2FAutomation" },
+        { label: "Products", href: "/shop" },
+        { label: "Software", href: "/shop?type=software" },
+        { label: "Services", href: "/shop?type=service" },
+        { label: "Solutions", href: "/solutions" },
+        { label: "Support", href: "/support" }
       ]
     },
     {
-      title: "Account & Services",
+      title: "Company",
       links: [
-        { label: "My Account", href: "/user/settings" },
-        { label: "My Orders", href: "/orders" },
-        { label: "Support", href: "mailto:info@codalina.com" }
+        { label: "About", href: "/about" },
+        { label: "Work", href: "/work" },
+        { label: "Contact", href: "/contact" }
       ]
     },
     {
-      title: "About Codalina",
+      title: "Resources",
       links: [
-        { label: "Who We Are", href: "/about" },
-        { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/terms" }
+        { label: "Documentation", href: "/docs" },
+        { label: "Blog", href: "/blog" },
+        { label: "Updates", href: "/updates" }
       ]
     },
     {
-      title: "Connect With Us",
+      title: "Legal",
       links: [
-        { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61591711877853", icon: <Facebook size={14} className="mr-2" /> },
-        { label: "Instagram", href: "https://www.instagram.com/codalinaglobal/", icon: <Instagram size={14} className="mr-2" /> },
-        { label: "WhatsApp", href: "https://wa.me/8801951768360", icon: <MessageCircle size={14} className="mr-2" /> },
-        { label: "Email", href: "mailto:info@codalina.com", icon: <Mail size={14} className="mr-2" /> }
+        { label: "Privacy", href: "/privacy" },
+        { label: "Terms", href: "/terms" }
       ]
     }
   ];
 
   return (
-    <footer className="w-full bg-transparent border-t border-[#e8e8ed] font-sans pt-12 pb-16 px-6 md:px-12 text-[#86868b] text-[12px] leading-relaxed">
-      <div className="max-w-[980px] mx-auto">
+    <footer className="w-full bg-brand-navy border-t border-white/5 font-sans pt-24 pb-28 md:pb-12 px-6 md:px-12 text-slate-400">
+      <div className="max-w-[1400px] mx-auto">
         
-        {/* Top Disclaimer / Fine Print */}
-        <div className="border-b border-[#e8e8ed] pb-4 mb-8">
-          <p className="mb-2">
-            1. Fast delivery applies to digital products and eligible physical items. Delivery times may vary based on location.
-          </p>
-          <p className="mb-2">
-            2. Codalina securely processes your payments using state-of-the-art encryption.
-          </p>
-          <p>
-            Prices are subject to change. Codalina reserves the right to cancel any orders in the event of pricing errors.
-          </p>
-        </div>
+        {/* Main Footer Content */}
+        <div className="flex flex-col lg:flex-row justify-between gap-16 lg:gap-8 mb-24">
+          
+          {/* Brand Column */}
+          <div className="lg:w-1/3 flex flex-col">
+            <Link href="/" className="inline-flex items-center gap-2 mb-6 group">
+              {/* Premium Logo Mark */}
+              <div className="w-7 h-7 bg-transparent border border-white/20 group-hover:border-white/40 transition-colors flex items-center justify-center relative">
+                <div className="w-1.5 h-1.5 bg-brand-cyan absolute top-1 right-1 rounded-full shadow-[0_0_8px_#22C7E8]"></div>
+                <span className="font-display font-semibold text-[14px] text-white">C</span>
+              </div>
+              <span className="font-display font-medium text-[20px] text-white tracking-wide">CODALINA</span>
+            </Link>
+            
+            <p className="text-[15px] text-white/50 max-w-[240px] leading-relaxed">
+              Digital technology partner.
+            </p>
+          </div>
 
-        {/* Directory Links Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {footerLinks.map((column, idx) => (
-            <div key={idx}>
-              <h3 className="font-semibold text-[#1d1d1f] mb-2">{column.title}</h3>
-              <ul className="flex flex-col gap-2">
-                {column.links.map((link, linkIdx) => (
-                  <li key={linkIdx}>
-                    {link.href.startsWith('http') ? (
-                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center hover:text-[#1d1d1f] hover:underline transition-colors">
-                        {link.icon && link.icon}
+          {/* Links Grid */}
+          <div className="lg:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-8">
+            {footerLinks.map((column, idx) => (
+              <div key={idx} className="flex flex-col">
+                <h3 className="font-mono text-[11px] font-medium tracking-[0.1em] text-brand-cyan uppercase mb-6">{column.title}</h3>
+                <ul className="flex flex-col gap-4">
+                  {column.links.map((link, linkIdx) => (
+                    <li key={linkIdx}>
+                      <Link 
+                        href={link.href} 
+                        className="text-[14px] text-white/60 hover:text-white transition-colors duration-300 relative inline-block group"
+                      >
                         {link.label}
-                      </a>
-                    ) : (
-                      <Link href={link.href} className="flex items-center hover:text-[#1d1d1f] hover:underline transition-colors">
-                        {link.icon && link.icon}
-                        {link.label}
+                        <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-brand-cyan transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
                       </Link>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Bottom Copyright & Legal Row */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between pt-4 border-t border-[#e8e8ed]">
-          <div className="mb-4 md:mb-0">
-            <p>Copyright © {new Date().getFullYear()} Codalina Inc. All rights reserved.</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-            <Link href="/privacy" className="hover:text-[#1d1d1f] hover:underline">Privacy Policy</Link>
-            <span className="hidden md:inline text-[#e8e8ed]">|</span>
-            <Link href="/terms" className="hover:text-[#1d1d1f] hover:underline">Terms of Use</Link>
-            <span className="hidden md:inline text-[#e8e8ed]">|</span>
-            <Link href="/warranty" className="hover:text-[#1d1d1f] hover:underline">Sales and Refunds</Link>
-            <span className="hidden md:inline text-[#e8e8ed]">|</span>
-            <Link href="/legal" className="hover:text-[#1d1d1f] hover:underline">Legal</Link>
-            <span className="hidden md:inline text-[#e8e8ed]">|</span>
-            <Link href="/sitemap" className="hover:text-[#1d1d1f] hover:underline">Site Map</Link>
+        {/* Bottom Copyright Row */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between pt-8 border-t border-white/5 text-[13px] text-white/40">
+          <p>© {new Date().getFullYear()} Codalina. All rights reserved.</p>
+          <div className="flex items-center gap-6 mt-4 md:mt-0">
+             <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-white/30">
+               <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan/50"></span>
+               Engineered in Dhaka
+             </span>
           </div>
         </div>
+        
       </div>
     </footer>
   );

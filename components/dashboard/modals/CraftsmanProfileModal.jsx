@@ -134,7 +134,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                 /* Error */
                 ) : error || !profile ? (
                     <div className="p-12 flex flex-col items-center text-center min-h-[420px] justify-center">
-                        <User size={48} className="text-gray-300 mb-4" />
+                        <User size={48} className="text-slate-300 mb-4" />
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Profile Unavailable</h3>
                         <p className="text-slate-500 max-w-sm mb-6">{error.message || error}</p>
                         <button onClick={onClose} className="px-6 py-2 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-900 dark:text-white rounded-full font-medium transition-colors">
@@ -163,7 +163,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                         </span>
                                     )}
                                     {profile.workType && (
-                                        <span className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 text-gray-200 text-xs font-bold uppercase tracking-wider rounded-full">
+                                        <span className="px-3 py-1 bg-black/40 backdrop-blur-md border border-white/10 text-slate-200 text-xs font-bold uppercase tracking-wider rounded-full">
                                             {profile.workType}
                                         </span>
                                     )}
@@ -199,8 +199,8 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                         disabled={followLoading}
                                         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all active:opacity-60 shadow-sm ${
                                             isFollowing
-                                                ? 'bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-700 dark:text-gray-200'
-                                                : 'bg-emerald-500 hover:bg-emerald-600 text-white shadow-emerald-500/25'
+                                                ? 'bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-brand-slate dark:text-slate-200'
+                                                : 'bg-brand-teal hover:bg-brand-teal text-white shadow-emerald-500/25'
                                         } ${followLoading ? 'opacity-70 cursor-wait' : ''}`}
                                     >
                                         {isFollowing ? <UserCheck size={16} /> : <Users size={16} />}
@@ -211,7 +211,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     {profile.totalCodex > 0 && (
                                         <button
                                             onClick={handleViewCodex}
-                                            className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-700 dark:text-gray-200 rounded-xl font-bold text-sm transition-colors"
+                                            className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-brand-slate dark:text-slate-200 rounded-xl font-bold text-sm transition-colors"
                                             title="View all codex by this craftsman"
                                         >
                                             <BookOpen size={16} />
@@ -228,7 +228,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                         {profile.displayName}
                                     </h2>
                                     {profile.isVerified && (
-                                        <span className="text-indigo-600 bg-indigo-600/10 p-0.5 rounded-full" title="Verified">
+                                        <span className="text-brand-blue bg-brand-blue/10 p-0.5 rounded-full" title="Verified">
                                             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                                         </span>
                                     )}
@@ -238,10 +238,10 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                 </p>
                                 <div className="flex items-center gap-4 mt-1">
                                     <p className="text-slate-500 dark:text-slate-400 text-sm">
-                                        <span className="font-bold text-slate-800 dark:text-gray-100">{followerCount}</span> follower{followerCount !== 1 ? 's' : ''}
+                                        <span className="font-bold text-slate-800 dark:text-slate-100">{followerCount}</span> follower{followerCount !== 1 ? 's' : ''}
                                     </p>
                                     {profile.rating?.count > 0 && (
-                                        <div className="flex items-center gap-1 text-amber-500 text-sm font-bold">
+                                        <div className="flex items-center gap-1 text-brand-amber text-sm font-bold">
                                             <Zap size={14} fill="currentColor" />
                                             <span>{profile.rating.average.toFixed(1)}</span>
                                             <span className="text-slate-400 font-medium">({profile.rating.count})</span>
@@ -249,7 +249,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     )}
                                 </div>
                                 {profile.bio && (
-                                    <p className="mt-3 text-slate-700 dark:text-gray-300 leading-relaxed text-sm md:text-base max-w-xl">
+                                    <p className="mt-3 text-brand-slate dark:text-slate-300 leading-relaxed text-sm md:text-base max-w-xl">
                                         {profile.bio}
                                     </p>
                                 )}
@@ -257,22 +257,22 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
 
                             {/* Stats — fetched from real DB aggregation */}
                             <div className="grid grid-cols-4 gap-3 mb-6">
-                                <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
-                                    <Eye size={18} className="text-emerald-500 mb-1.5" />
+                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                    <Eye size={18} className="text-brand-teal mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalViews || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Views</span>
                                 </div>
-                                <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Star size={18} className="text-pink-500 mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalLikes || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Stars</span>
                                 </div>
-                                <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
-                                    <BookOpen size={18} className="text-indigo-600 mb-1.5" />
+                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                    <BookOpen size={18} className="text-brand-blue mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalCodex || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Codex</span>
                                 </div>
-                                <div className="bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Layers size={18} className="text-purple-500 mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalArtifacts || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Artifacts</span>
@@ -288,7 +288,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Core Skills</h3>
                                             <div className="flex flex-wrap gap-2">
                                                 {profile.skills.map((skill, i) => (
-                                                    <span key={i} className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-300 text-xs font-medium rounded-lg border border-slate-200 dark:border-white/5">
+                                                    <span key={i} className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-300 text-xs font-medium rounded-lg border border-slate-200 dark:border-white/5">
                                                         {skill}
                                                     </span>
                                                 ))}
@@ -302,7 +302,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">On The Web</h3>
                                             <div className="flex flex-col gap-2">
                                                 {profile.socialLinks?.github && (
-                                                    <a href={`https://github.com/${profile.socialLinks.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors group">
+                                                    <a href={`https://github.com/${profile.socialLinks.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors group">
                                                         <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-white/10 transition-colors">
                                                             <Github size={14} />
                                                         </div>
@@ -310,9 +310,9 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                     </a>
                                                 )}
                                                 {profile.socialLinks?.website && (
-                                                    <a href={profile.socialLinks.website} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-emerald-500 transition-colors group">
-                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-emerald-500/10 transition-colors">
-                                                            <LinkIcon size={14} className="group-hover:text-emerald-500" />
+                                                    <a href={profile.socialLinks.website} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-brand-slate dark:text-slate-400 hover:text-brand-teal transition-colors group">
+                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-brand-teal/10 transition-colors">
+                                                            <LinkIcon size={14} className="group-hover:text-brand-teal" />
                                                         </div>
                                                         <span className="text-sm font-medium truncate">{profile.socialLinks.website.replace(/^https?:\/\//, '')}</span>
                                                     </a>
@@ -327,11 +327,11 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                             {profile.latestReviews?.length > 0 && (
                                 <div className="mt-10 pt-8 border-t border-slate-100 dark:border-white/5">
                                     <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-                                        Recent Feedback <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                        Recent Feedback <span className="w-1.5 h-1.5 rounded-full bg-brand-amber" />
                                     </h3>
                                     <div className="space-y-4">
                                         {profile.latestReviews.map((review, i) => (
-                                            <div key={i} className="p-5 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-2xl">
+                                            <div key={i} className="p-5 bg-brand-cloud dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-2xl">
                                                 <div className="flex justify-between items-start mb-3">
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
@@ -348,7 +348,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                             <p className="text-[9px] text-slate-400 font-medium uppercase tracking-widest">patron</p>
                                                         </div>
                                                     </div>
-                                                    <div className="flex gap-0.5 text-amber-500">
+                                                    <div className="flex gap-0.5 text-brand-amber">
                                                         {[...Array(5)].map((_, idx) => (
                                                             <Zap 
                                                                 key={idx} 
@@ -359,7 +359,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed italic">
+                                                <p className="text-sm text-brand-slate dark:text-slate-400 leading-relaxed italic">
                                                     &quot;{review.comment}&quot;
                                                 </p>
                                                 <p className="text-[9px] text-slate-300 dark:text-slate-500 font-bold uppercase tracking-tighter mt-3">

@@ -7,6 +7,9 @@ export default function InteractiveCharts() {
   const [activeCard, setActiveCard] = useState(null);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
     const container = document.getElementById("interactive-charts-container");
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 20;
@@ -85,7 +88,7 @@ export default function InteractiveCharts() {
     >
       {/* Chart 1 - Users */}
       <div
-        className="absolute top-0 left-0 w-full bg-white rounded-[20px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
+        className="absolute top-0 left-0 w-full bg-white rounded-[4px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
         style={{ 
           transform: getTransform(0),
           transformStyle: "preserve-3d",
@@ -118,7 +121,7 @@ export default function InteractiveCharts() {
 
       {/* Chart 2 - Artifacts */}
       <div
-        className="absolute top-0 left-0 w-full bg-white rounded-[20px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
+        className="absolute top-0 left-0 w-full bg-white rounded-[4px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
         style={{ 
           transform: getTransform(1),
           transformStyle: "preserve-3d",
@@ -151,7 +154,7 @@ export default function InteractiveCharts() {
 
       {/* Chart 3 - Codex */}
       <div
-        className="absolute top-0 left-0 w-full bg-white rounded-[20px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
+        className="absolute top-0 left-0 w-full bg-white rounded-[4px] p-5 shadow-xl transition-all duration-300 ease-out cursor-pointer"
         style={{ 
           transform: getTransform(2),
           transformStyle: "preserve-3d",

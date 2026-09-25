@@ -159,7 +159,7 @@ export default function CallInterface({
             </button>
             <button
               onClick={onAccept}
-              className="w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center text-white transition-all shadow-lg hover:-translate-y-0.5"
+              className="w-14 h-14 bg-brand-teal hover:bg-green-600 rounded-full flex items-center justify-center text-white transition-all shadow-lg hover:-translate-y-0.5"
             >
               <Phone size={24} />
             </button>

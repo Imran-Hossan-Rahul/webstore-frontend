@@ -83,7 +83,7 @@ export default function ChatSidebar({
             {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <button
                 onClick={onStartNewChat}
-                className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-600 dark:text-gray-300"
+                className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-brand-slate dark:text-slate-300"
                 title="New Chat"
               >
                 <Plus size={20} />
@@ -138,7 +138,7 @@ export default function ChatSidebar({
             {[...Array(6)].map((_, idx) => (
               <div 
                 key={idx} 
-                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-slate-50/30 dark:bg-white/[0.02] border border-slate-100/50 dark:border-white/[0.03]"
+                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-brand-cloud/30 dark:bg-white/[0.02] border border-slate-100/50 dark:border-white/[0.03]"
               >
                 {/* Avatar skeleton */}
                 <div className="relative shrink-0">
@@ -177,12 +177,12 @@ export default function ChatSidebar({
                   className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5 dark:hover:bg-white/5"
                 >
                   <div className="relative shrink-0">
-                    <div className="w-11 h-11 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center overflow-hidden border border-indigo-200 dark:border-indigo-500/30">
-                      <MessageCircle size={20} className="text-indigo-600 dark:text-indigo-400" />
+                    <div className="w-11 h-11 rounded-full bg-indigo-100 dark:bg-brand-blue/20 flex items-center justify-center overflow-hidden border border-indigo-200 dark:border-brand-blue/30">
+                      <MessageCircle size={20} className="text-brand-blue dark:text-indigo-400" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0 text-left">
-                    <h3 className="text-[14px] font-bold text-slate-900 dark:text-gray-100 truncate">
+                    <h3 className="text-[14px] font-bold text-slate-900 dark:text-slate-100 truncate">
                       Contact Customer Support
                     </h3>
                     <p className="text-[12px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
@@ -223,7 +223,7 @@ export default function ChatSidebar({
                         )}
                       </div>
                       {isOnline && (
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white dark:border-[#0a0a0a] rounded-full"></div>
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-brand-teal border-2 border-white dark:border-[#0a0a0a] rounded-full"></div>
                       )}
                     </div>
 
@@ -231,11 +231,11 @@ export default function ChatSidebar({
                     <div className="flex-1 min-w-0 text-left">
                       {/* Row 1: Name & Time */}
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className={`text-[14px] truncate ${item.unreadCount > 0 ? "font-bold text-black dark:text-white" : "font-bold text-slate-900 dark:text-gray-100"}`}>
+                        <h3 className={`text-[14px] truncate ${item.unreadCount > 0 ? "font-bold text-black dark:text-white" : "font-bold text-slate-900 dark:text-slate-100"}`}>
                           {targetUser.name || targetUser.username || "Unknown"}
                         </h3>
                         {isChat && item.lastMessage && (
-                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-indigo-600 font-bold" : "text-slate-400 dark:text-slate-500"}`}>
+                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-400 dark:text-slate-500"}`}>
                             {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         )}
@@ -244,7 +244,7 @@ export default function ChatSidebar({
                       {/* Row 2: Message & Badge */}
                       <div className="flex items-center justify-between gap-2 mt-0.5">
                         {isChat ? (
-                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-green-500 font-bold" : item.unreadCount > 0 ? "text-slate-900 dark:text-gray-100 font-bold" : "text-slate-500 dark:text-slate-400"}`}>
+                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-brand-teal font-bold" : item.unreadCount > 0 ? "text-slate-900 dark:text-slate-100 font-bold" : "text-slate-500 dark:text-slate-400"}`}>
                              {item._id === activeCallChatId ? `📞 ${activeCallStatus || "In call"}` : (item.lastMessage?.content || "No messages yet")}
                            </p>
                         ) : (
@@ -254,7 +254,7 @@ export default function ChatSidebar({
                         )}
                         
                         {isChat && item.unreadCount > 0 && (
-                          <div className="shrink-0 w-5 h-5 bg-indigo-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20 animate-in zoom-in duration-300">
+                          <div className="shrink-0 w-5 h-5 bg-brand-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20 animate-in zoom-in duration-300">
                             {item.unreadCount}
                           </div>
                         )}

@@ -87,14 +87,14 @@ const CameraCapture = ({ onCapture, onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-slate-950/40 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8"
     >
-      <div className="relative w-full max-w-lg bg-white dark:bg-[#0A0A0A] rounded-2xl overflow-hidden shadow-xl border border-slate-200 dark:border-white/5 flex flex-col">
+      <div className="relative w-full max-w-lg bg-white dark:bg-[#0A0A0A] rounded-[4px] overflow-hidden shadow-xl border border-slate-200 dark:border-white/5 flex flex-col">
         
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-[4px] bg-brand-blue flex items-center justify-center text-white">
               <ShieldCheck size={20} strokeWidth={1.5} />
             </div>
             <div>
@@ -130,12 +130,12 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 
                 {/* Simple Overlay UI */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-64 h-64 md:w-80 md:h-80 border border-white/20 rounded-2xl" />
+                  <div className="w-64 h-64 md:w-80 md:h-80 border border-white/20 rounded-[4px]" />
                 </div>
 
                 {!isReady && !error && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 backdrop-blur-sm">
-                    <AppleSpinner strokeWidth={1.5} className="animate-spin text-indigo-600 mb-4" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+                    <AppleSpinner strokeWidth={1.5} className="animate-spin text-brand-blue mb-4" />
                     <p className="text-white text-sm font-bold uppercase tracking-widest">Waking up lens...</p>
                   </div>
                 )}
@@ -148,17 +148,17 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 className="w-full h-full"
               >
                 <img src={getOptimizedUrl(capturedImage)} className="w-full h-full object-cover" alt="Captured" />
-                <div className="absolute top-4 right-4 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 px-3 py-1.5 rounded-full flex items-center gap-2">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                  <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Image Quality OK</span>
+                <div className="absolute top-4 right-4 bg-brand-teal/20 backdrop-blur-md border border-brand-teal/30 px-3 py-1.5 rounded-full flex items-center gap-2">
+                  <div className="w-2 h-2 bg-brand-teal rounded-full animate-pulse" />
+                  <span className="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Image Quality OK</span>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
           {error && (
-            <div className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center p-8 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-500 mb-6">
+            <div className="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center p-8 text-center">
+              <div className="w-16 h-16 rounded-[4px] bg-rose-500/10 flex items-center justify-center text-rose-500 mb-6">
                 <AlertCircle size={32} strokeWidth={1.5} />
               </div>
               <h4 className="text-white font-bold mb-2">Camera Error</h4>
@@ -167,7 +167,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
               </p>
               <button 
                 onClick={onClose} 
-                className="px-8 py-3 bg-white text-slate-950 rounded-2xl font-bold transition-all hover:-translate-y-0.5"
+                className="px-8 py-3 bg-white text-slate-950 rounded-[4px] font-bold transition-all hover:-translate-y-0.5"
               >
                 Return to Security Center
               </button>
@@ -176,7 +176,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
         </div>
 
         {/* Footer Controls */}
-        <div className="px-8 py-8 bg-slate-50 dark:bg-black/20 flex flex-col items-center gap-6">
+        <div className="px-8 py-8 bg-brand-cloud dark:bg-black/20 flex flex-col items-center gap-6">
           {!capturedImage ? (
             <>
               <p className="text-slate-500 dark:text-slate-400 text-xs font-medium text-center">
@@ -192,7 +192,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 <button 
                   onClick={capture}
                   disabled={!isReady}
-                  className="group relative w-16 h-16 rounded-full bg-indigo-600 flex items-center justify-center shadow-lg transition-all hover:bg-indigo-700 active:opacity-60 disabled:opacity-50"
+                  className="group relative w-16 h-16 rounded-full bg-brand-blue flex items-center justify-center shadow-lg transition-all hover:bg-brand-blue active:opacity-60 disabled:opacity-50"
                 >
                   <Camera strokeWidth={1.5} className="text-white" size={24} />
                 </button>
@@ -204,14 +204,14 @@ const CameraCapture = ({ onCapture, onClose }) => {
               <div className="flex items-center gap-4 w-full">
                 <button 
                   onClick={retake}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 font-bold transition-all hover:bg-white dark:hover:bg-white/5"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] border border-slate-200 dark:border-white/5 text-brand-slate dark:text-slate-400 font-bold transition-all hover:bg-white dark:hover:bg-white/5"
                 >
                   <RefreshCw size={16} strokeWidth={1.5} /> Retake
                 </button>
                 <button 
                   onClick={confirm}
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-xl shadow-slate-900/10"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-xl shadow-slate-900/10"
                 >
                   {loading ? (
                     <AppleSpinner strokeWidth={1.5} className="animate-spin" size={16} />
@@ -221,7 +221,7 @@ const CameraCapture = ({ onCapture, onClose }) => {
                 </button>
               </div>
               <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                <Zap size={14} strokeWidth={1.5} className="text-indigo-600" /> Processed via Secure Pipeline
+                <Zap size={14} strokeWidth={1.5} className="text-brand-blue" /> Processed via Secure Pipeline
               </div>
             </>
           )}

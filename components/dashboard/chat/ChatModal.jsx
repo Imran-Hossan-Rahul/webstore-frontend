@@ -724,8 +724,8 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
           className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
         >
           {isChatButtonLoading ? (
-            <div className="w-full h-full bg-[#0071e3]/10 flex items-center justify-center">
-              <AppleSpinner size={24} className="text-[#0071e3]" />
+            <div className="w-full h-full bg-brand-blue/10 flex items-center justify-center">
+              <AppleSpinner size={24} className="text-brand-blue" />
             </div>
           ) : adminAvatar ? (
             <img 
@@ -735,8 +735,8 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
               onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
             />
           ) : (
-            <div className="w-full h-full bg-[#0071e3]/10 flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 md:w-7 md:h-7 text-[#0071e3]" />
+            <div className="w-full h-full bg-brand-blue/10 flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 md:w-7 md:h-7 text-brand-blue" />
             </div>
           )}
         </button>
@@ -771,7 +771,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                </button>
                <button 
                  onClick={handleAcceptFromToast} 
-                 className="flex-1 bg-green-500 text-white hover:bg-green-600 rounded-xl py-2.5 flex justify-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
+                 className="flex-1 bg-brand-teal text-white hover:bg-green-600 rounded-xl py-2.5 flex justify-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
                >
                  <Phone size={20}/>
                </button>
@@ -781,7 +781,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
 
       {/* FIXED CHAT WIDGET */}
       {isModalOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-2xl rounded-[24px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-2xl rounded-[4px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
            
            {!selectedChat ? (
               currentUser?.role === 'admin' ? (
@@ -914,7 +914,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
             <div className="flex gap-3 justify-end">
               <button 
                 onClick={() => setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null })}
-                className="px-5 py-2.5 rounded-xl font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                className="px-5 py-2.5 rounded-xl font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
               >
                 Cancel
               </button>

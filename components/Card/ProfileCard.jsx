@@ -19,7 +19,7 @@ export default function ProfileCard({
         {/* Status Circle */}
         <span
           className={`absolute bottom-1 right-3 w-4 h-4 rounded-full border-2 border-white ${
-            status === "online" ? "bg-green-500" : "bg-yellow-400"
+            status === "online" ? "bg-brand-teal" : "bg-yellow-400"
           }`}
         ></span>
       </div>

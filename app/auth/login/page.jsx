@@ -12,6 +12,7 @@ import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { Button } from "@/components/ui/Button";
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
@@ -40,39 +41,39 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
   return (
-    <div className="space-y-2 mb-6">
+    <div className="space-y-2 mb-5">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[13px] font-semibold text-apple-secondary">
+        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase">
           {label}
         </label>
         {forgotLink && (
           <Link
             href="/auth/forgot-password"
-            className="text-[13px] text-apple-accent hover:underline"
+            className="text-[11px] font-mono text-brand-blue hover:text-brand-navy dark:hover:text-white transition-colors"
           >
             Forgot?
           </Link>
         )}
       </div>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-apple-muted transition-colors duration-300">
-          <Icon size={18} strokeWidth={2} />
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 transition-colors duration-300">
+          <Icon size={16} strokeWidth={1.5} />
         </div>
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-6"} py-3 bg-white dark:bg-[#1c1c1e] border ${
-            error ? "border-red-500" : "border-gray-200 dark:border-gray-800"
-          } rounded-[12px] text-[15px] text-black dark:text-white placeholder-gray-400 focus:border-[#0071e3] focus:ring-0 focus:outline-none transition-colors duration-200 shadow-sm truncate`}
+          className={`w-full h-10 pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-white dark:bg-[#0D1117] border ${
+            error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+          } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-colors truncate`}
         />
         {isPassword && (
           <button
             type="button"
             tabIndex={-1}
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors"
           >
-            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            {showPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
           </button>
         )}
       </div>
@@ -210,11 +211,11 @@ export default function LoginPage() {
       }
       footer={
         !requires2FA && (
-          <p className="text-center text-[15px] text-apple-secondary font-normal">
+          <p className="text-center text-[15px] text-slate-500 font-sans">
             New here?{" "}
             <Link
               href="/auth/register"
-              className="text-apple-accent hover:underline transition-all"
+              className="text-brand-blue hover:underline transition-all"
             >
               Create an account
             </Link>
@@ -236,7 +237,7 @@ export default function LoginPage() {
             className="space-y-8"
           >
             <div className="flex justify-center">
-              <div className="w-20 h-20 rounded-[2rem] bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+              <div className="w-20 h-20 rounded-[2rem] bg-brand-sky dark:bg-brand-blue/10 flex items-center justify-center text-brand-blue dark:text-indigo-400">
                 <Shield size={40} />
               </div>
             </div>
@@ -251,7 +252,7 @@ export default function LoginPage() {
                 placeholder="000000"
                 value={twoFaCode}
                 onChange={(e) => setTwoFaCode(e.target.value.replace(/\D/g, ""))}
-                className="w-full text-center tracking-[0.5em] font-mono text-[32px] py-4 bg-apple-canvas dark:bg-apple-surface-dark border border-apple-hairline rounded-apple-lg text-apple-ink focus:border-apple-focus focus:ring-[2px] focus:ring-apple-focus focus:outline-none transition-all duration-300"
+                className="w-full text-center tracking-[0.5em] font-mono text-[28px] py-3 bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] text-brand-navy dark:text-white focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-all duration-300"
               />
               <AnimatePresence>
                 {twoFaError && (
@@ -268,22 +269,20 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-4">
-              <button
+              <Button
                 type="submit"
                 disabled={loading || twoFaCode.length !== 6}
-                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                variant="primary"
+                className="w-full"
+                leftIcon={loading ? <AppleSpinner size={20} className="text-white" /> : null}
               >
-                {loading ? (
-                  <AppleSpinner size={24} />
-                ) : (
-                  <span>Verify Account</span>
-                )}
-              </button>
+                {loading ? null : <span>Verify Account</span>}
+              </Button>
 
               <button
                 type="button"
                 onClick={() => { setRequires2FA(false); setTwoFaCode(""); setTwoFaError(""); }}
-                className="w-full py-2 text-[14px] font-medium text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors"
+                className="w-full py-2 text-[14px] font-medium text-slate-400 hover:text-brand-slate dark:hover:text-zinc-300 transition-colors"
               >
                 Cancel
               </button>
@@ -294,17 +293,17 @@ export default function LoginPage() {
         ) : loginSuccess ? (
           <motion.div
             key="success"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center py-10"
           >
-            <div className="w-24 h-24 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-6">
-              <CheckCircle2 size={56} strokeWidth={2.5} />
+            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
+              <CheckCircle2 size={32} strokeWidth={2} />
             </div>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+            <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white">
               Authentication Successful
             </h3>
-            <p className="text-slate-500 dark:text-zinc-400 mt-2">
+            <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 mt-2">
               Preparing your dashboard…
             </p>
           </motion.div>
@@ -322,12 +321,12 @@ export default function LoginPage() {
             />
 
             {/* Divider */}
-            <div className="relative mb-10">
+            <div className="relative mb-8 mt-4">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-apple-hairline" />
+                <div className="w-full border-t border-slate-200 dark:border-white/10" />
               </div>
-              <div className="relative flex justify-center text-[12px] text-apple-muted">
-                <span className="px-4 bg-apple-parchment dark:bg-apple-parchment">
+              <div className="relative flex justify-center text-[10px] font-mono tracking-widest text-slate-400 uppercase">
+                <span className="px-3 bg-white dark:bg-[#0D1117]">
                   or
                 </span>
               </div>
@@ -364,10 +363,10 @@ export default function LoginPage() {
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
+                    className="bg-red-50 dark:bg-[#201010] border border-red-200 dark:border-red-900/50 rounded-[4px] p-4 flex gap-3 items-center"
                   >
                     <div className="flex items-center gap-2">
-                      <p className="text-red-600 dark:text-red-400 text-[12px] font-medium">
+                      <p className="text-red-600 dark:text-red-400 text-[13px] font-sans font-medium">
                         {generalError}
                       </p>
                     </div>
@@ -375,10 +374,11 @@ export default function LoginPage() {
                 )}
               </AnimatePresence>
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="relative w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[14px] rounded-apple-pill transition-all duration-300 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center overflow-hidden mt-8"
+                variant="primary"
+                className="w-full mt-8"
               >
                 <AnimatePresence mode="wait" initial={false}>
                   {loading ? (
@@ -390,17 +390,7 @@ export default function LoginPage() {
                       transition={{ duration: 0.15 }}
                       className="flex items-center justify-center"
                     >
-                      <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="animate-spin"
-                      >
-                        <circle cx="12" cy="12" r="10" stroke="white" strokeOpacity="0.3" strokeWidth="2" />
-                        <path d="M22 12C22 6.47715 17.5228 2 12 2" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                      </svg>
+                      <AppleSpinner size={22} className="text-white" />
                     </motion.span>
                   ) : (
                     <motion.span
@@ -411,12 +401,12 @@ export default function LoginPage() {
                       transition={{ duration: 0.15 }}
                       className="flex items-center justify-center gap-2"
                     >
-                      <span className="text-[17px] tracking-tight font-medium">Sign In</span>
-                      <ArrowRight size={18} />
+                      <span>Sign In</span>
+                      <ArrowRight size={16} strokeWidth={1.5} />
                     </motion.span>
                   )}
                 </AnimatePresence>
-              </button>
+              </Button>
             </form>
           </motion.div>
         )}

@@ -72,7 +72,7 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
         </div>
 
         {/* Benefits */}
-        <div className="p-6 bg-slate-50 dark:bg-white/[0.02]">
+        <div className="p-6 bg-brand-cloud dark:bg-white/[0.02]">
           <h3 className="font-semibold text-slate-900 mb-4">What you&apos;ll get:</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-white p-4 rounded-xl shadow-sm">
@@ -80,21 +80,21 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
                 <Zap className="w-5 h-5 text-purple-600" />
               </div>
               <h4 className="font-semibold text-slate-900 mb-1">Earn Tokens</h4>
-              <p className="text-sm text-slate-600">Sell artifacts, codex, and services</p>
+              <p className="text-sm text-brand-slate">Sell artifacts, codex, and services</p>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
+                <TrendingUp className="w-5 h-5 text-brand-blue" />
               </div>
               <h4 className="font-semibold text-slate-900 mb-1">Grow Your Brand</h4>
-              <p className="text-sm text-slate-600">Build your portfolio and audience</p>
+              <p className="text-sm text-brand-slate">Build your portfolio and audience</p>
             </div>
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
                 <Users className="w-5 h-5 text-purple-600" />
               </div>
               <h4 className="font-semibold text-slate-900 mb-1">Join Community</h4>
-              <p className="text-sm text-slate-600">Connect with other craftsmen</p>
+              <p className="text-sm text-brand-slate">Connect with other craftsmen</p>
             </div>
           </div>
         </div>
@@ -126,14 +126,14 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border-2 border-slate-300 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 transition"
+              className="flex-1 px-6 py-3 border-2 border-slate-300 text-brand-slate font-semibold rounded-xl hover:bg-brand-cloud transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 bg-brand-blue text-white font-semibold rounded-xl hover:bg-brand-blue transition shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? "Creating..." : "Create Account"}
               {!loading && <ArrowRight className="w-5 h-5" />}

@@ -7,9 +7,9 @@ export default function MarketSEOContent() {
       <div className="max-w-[980px] mx-auto space-y-8">
         
         {/* Section 1: Creator Credibility */}
-        <section className="bg-[#f5f5f7] p-8 rounded-[24px] mb-12">
+        <section className="bg-[#f5f5f7] p-8 rounded-[4px] mb-12">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shrink-0 bg-gray-200 border-2 border-white shadow-md">
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden shrink-0 bg-slate-200 border-2 border-white shadow-md">
               {/* Optional: Add actual avatar image here if available */}
               <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Creator Avatar" className="w-full h-full object-cover" />
             </div>
@@ -19,10 +19,10 @@ export default function MarketSEOContent() {
                 Hi, I'm the creator behind Codalina. I build production-ready SaaS templates, reliable automation scripts, and clean UI kits that actually work. With over 5+ years of full-stack engineering experience, I don't just sell code—I use these exact same tools to ship my own products faster. Every template here is architected for scalability, clean code, and developer happiness.
               </p>
               <div className="flex gap-4">
-                <a href="https://github.com/imranhossan" target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-[#0071e3] hover:underline flex items-center gap-1">
+                <a href="https://github.com/imranhossan" target="_blank" rel="noopener noreferrer" className="text-[14px] font-semibold text-brand-blue hover:underline flex items-center gap-1">
                   GitHub Profile <span className="text-[12px]">↗</span>
                 </a>
-                <Link href="/portfolio" className="text-[14px] font-semibold text-[#0071e3] hover:underline flex items-center gap-1">
+                <Link href="/portfolio" className="text-[14px] font-semibold text-brand-blue hover:underline flex items-center gap-1">
                   View Past Work <span className="text-[12px]">↗</span>
                 </Link>
               </div>

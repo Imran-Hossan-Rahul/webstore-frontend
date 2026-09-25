@@ -35,8 +35,8 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
         TypeIcon = Layout;
         typeLabel = "Artifact";
         href = `/artifacts/${item._id}`;
-        iconColor = "text-indigo-600";
-        bgColor = "bg-blue-50 dark:bg-indigo-600/10";
+        iconColor = "text-brand-blue";
+        bgColor = "bg-brand-sky dark:bg-brand-blue/10";
     }
 
     const authorName = item.user?.name || item.author?.name || "Craftsman";
@@ -166,7 +166,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                             {finalAvatar ? (
                                 <img src={getOptimizedUrl(finalAvatar)} className="w-full h-full object-cover" />
                             ) : (
-                                <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-white font-bold">{authorName[0]}</div>
+                                <div className="w-full h-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center text-white font-bold">{authorName[0]}</div>
                             )}
                        </div>
                    </CraftsmanHoverCard>
@@ -177,12 +177,12 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                   {/* Name and Follow */}
                   <div className="flex items-center gap-2 mb-1">
                        <CraftsmanHoverCard userId={authorId} username={item.user?.username || item.author?.username} avatarUrl={finalAvatar} displayName={authorName} wrapperDisplay="inline">
-                           <span className="font-bold text-[15px] hover:text-emerald-600 dark:hover:text-green-500 transition-colors text-slate-900 dark:text-gray-100">
+                           <span className="font-bold text-[15px] hover:text-brand-teal dark:hover:text-brand-teal transition-colors text-slate-900 dark:text-slate-100">
                                 {authorName}
                            </span>
                        </CraftsmanHoverCard>
                        <span className="text-slate-400 text-sm">·</span>
-                       <button className="text-[13px] text-indigo-600 hover:text-blue-600 dark:hover:text-blue-400 font-bold transition-colors">Follow</button>
+                       <button className="text-[13px] text-brand-blue hover:text-brand-blue dark:hover:text-blue-400 font-bold transition-colors">Follow</button>
                   </div>
 
                   {/* Title */}
@@ -216,12 +216,12 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                             {displayImage ? (
                                 <img src={getOptimizedUrl(displayImage)} className="object-cover w-full h-full" />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-300"><Layout size={32}/></div>
+                                <div className="w-full h-full flex items-center justify-center text-slate-300"><Layout size={32}/></div>
                             )}
                        </Link>
                         {isOwner && type === 'devlog' && (
                              <button 
-                                 className="absolute top-2 right-2 z-40 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                                 className="absolute top-2 right-2 z-40 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                                  title="Edit Devlog"
                                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/upload-devlog?edit=${item._id || item.id}`); }}
                              >
@@ -230,7 +230,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                          )}
                          {isOwner && type === 'codex' && (
                              <button 
-                                 className="absolute top-2 right-2 z-40 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                                 className="absolute top-2 right-2 z-40 p-1.5 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                                  title="Edit Codex"
                                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/codex-editor?slug=${item.slug}`); }}
                              >
@@ -261,7 +261,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                         </button>
                         <button 
                             onClick={handleShare}
-                            className="flex items-center gap-1.5 hover:text-emerald-500 transition-colors"
+                            className="flex items-center gap-1.5 hover:text-brand-teal transition-colors"
                             title="Share"
                         >
                             <Share2 size={16}/>
@@ -276,8 +276,8 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
     return (
         <>
         <Link href={href} className="group block w-full h-full">
-            <div className="flex flex-col h-full bg-white dark:bg-slate-900/20 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-900/40 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 shadow-sm relative overflow-hidden">
-                <div className="relative w-full aspect-[3/2] bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-white/5 transition-all duration-300 overflow-hidden">
+            <div className="flex flex-col h-full bg-white dark:bg-slate-900/20 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl hover:bg-brand-cloud dark:hover:bg-slate-900/40 transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 shadow-sm relative overflow-hidden">
+                <div className="relative w-full aspect-[3/2] bg-brand-cloud dark:bg-slate-900 border-b border-slate-100 dark:border-white/5 transition-all duration-300 overflow-hidden">
                     {displayImage ? (
                         <img 
                             src={displayImage} 
@@ -285,14 +285,14 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                             className="w-full h-full object-cover transform group-hover:-translate-y-0.5 transition-opacity duration-700 ease-in-out"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-slate-700">
+                        <div className="w-full h-full flex items-center justify-center text-slate-300 dark:text-brand-slate">
                            <Layout size={40} />
                         </div>
                     )}
 
                     {isOwner && type === 'devlog' && (
                         <button 
-                            className="absolute top-4 right-4 z-40 p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                            className="absolute top-4 right-4 z-40 p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                             title="Edit Devlog"
                             onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/upload-devlog?edit=${item._id || item.id}`); }}
                         >
@@ -301,7 +301,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                     )}
                     {isOwner && type === 'codex' && (
                         <button 
-                            className="absolute top-4 right-4 z-40 p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                            className="absolute top-4 right-4 z-40 p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-lg border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                             title="Edit Codex"
                             onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/codex-editor?slug=${item.slug}`); }}
                         >
@@ -326,16 +326,16 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                 <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-4 px-4 py-3 h-[52px] overflow-hidden">
                     <div className="flex items-center gap-2.5 min-w-0 shrink-0 z-40 relative">
                          <CraftsmanHoverCard userId={authorId} username={item.user?.username || item.author?.username} avatarUrl={finalAvatar} displayName={authorName}>
-                             <div className="w-7 h-7 rounded-full bg-slate-200 overflow-hidden ring-1 ring-gray-100 dark:ring-white/10 shrink-0 border border-transparent">
+                             <div className="w-7 h-7 rounded-full bg-slate-200 overflow-hidden ring-1 ring-slate-100 dark:ring-white/10 shrink-0 border border-transparent">
                                 {finalAvatar ? (
                                     <img src={getOptimizedUrl(finalAvatar)} className="w-full h-full object-cover" />
                                 ) : (
-                                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center text-[10px] font-bold text-white">{authorName[0]}</div>
+                                    <div className="w-full h-full bg-gradient-to-br from-slate-300 to-slate-400 flex items-center justify-center text-[10px] font-bold text-white">{authorName[0]}</div>
                                 )}
                              </div>
                          </CraftsmanHoverCard>
                          <CraftsmanHoverCard userId={authorId} username={item.user?.username || item.author?.username} avatarUrl={finalAvatar} displayName={authorName} wrapperDisplay="inline">
-                             <span className="text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 hover:underline transition-colors truncate max-w-[100px] sm:max-w-[120px]">
+                             <span className="text-sm font-bold text-brand-slate dark:text-slate-200 hover:text-brand-blue hover:underline transition-colors truncate max-w-[100px] sm:max-w-[120px]">
                                 {authorName}
                              </span>
                          </CraftsmanHoverCard>

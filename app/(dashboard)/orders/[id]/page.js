@@ -14,6 +14,10 @@ import { api } from "@/utils/api";
 import { generateInvoice } from "@/utils/generateInvoice";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import { useUser } from "@/context/UserContext";
+import { PageContainer } from "@/components/ui/PageContainer";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { LoadingState, ErrorState } from '@/components/ui/States';
 
 export default function OrderDetailPage({ params }) {
   const { user } = useUser();
@@ -80,23 +84,22 @@ export default function OrderDetailPage({ params }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#fafafa] dark:bg-slate-950">
-        <AppleSpinner />
-      </div>
+      <PageContainer maxWidth="max-w-[1000px]" className="flex items-center justify-center min-h-[60vh]">
+        <LoadingState message="Loading order details..." />
+      </PageContainer>
     );
   }
 
   if (!order) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-slate-950 text-gray-500">
-        <h2 className="text-xl font-bold mb-2">Order Not Found</h2>
-        <button
-          onClick={() => router.back()}
-          className="mt-4 text-[#111827] hover:underline"
-        >
-          Back to My Orders
-        </button>
-      </div>
+      <PageContainer maxWidth="max-w-[800px]" className="flex items-center justify-center min-h-[60vh]">
+        <ErrorState 
+          title="Order Not Found"
+          message="We couldn't find the order you're looking for. It may have been deleted or the URL is incorrect."
+          actionLabel="Back to My Orders"
+          onRetry={() => router.back()}
+        />
+      </PageContainer>
     );
   }
 
@@ -132,35 +135,38 @@ export default function OrderDetailPage({ params }) {
   const isCancelled = order.status === "Cancelled";
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0 bg-[#fafafa] dark:bg-slate-950">
-      <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
-        <div className="p-4 md:p-8 mb-4 md:mb-8">
+    <PageContainer maxWidth="max-w-[1000px]">
+      <Card className="bg-white dark:bg-[#161B22] shadow-sm dark:shadow-none border-slate-200 dark:border-white/10 mb-8">
+        <CardContent className="p-4 md:p-8">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-gray-100 dark:border-white/10 pb-4 md:pb-6 mb-4 md:mb-6">
-            <h1 className="text-[28px] md:text-[32px] font-semibold tracking-[-0.003em] text-[#1d1d1f] dark:text-white">
+          <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-4 md:pb-6 mb-4 md:mb-6">
+            <h1 className="text-[24px] md:text-[28px] font-display font-medium text-brand-navy dark:text-white">
               Order Details
             </h1>
             <div className="flex items-center gap-3">
-              <button
+              <Button
+                variant="outline"
+                leftIcon={<FileText size={16} />}
                 onClick={() => generateInvoice(order)}
-                className="text-[13px] font-medium text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
+                className="text-brand-blue border-brand-blue hover:bg-brand-blue/5 hidden sm:flex"
               >
-                <FileText size={16} /> View Invoice
-              </button>
-              <button
+                View Invoice
+              </Button>
+              <Button
+                variant="secondary"
+                leftIcon={<ArrowLeft size={16} />}
                 onClick={() => router.back()}
-                className="text-[13px] font-medium text-[#86868b] hover:text-[#1d1d1f] bg-[#f5f5f7] hover:bg-[#e8e8ed] px-3.5 py-1.5 rounded-full flex items-center gap-1.5 transition-colors"
               >
-                <ArrowLeft size={16} /> Go Back
-              </button>
+                Go Back
+              </Button>
             </div>
           </div>
 
           {/* Order Info Row */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-gray-100 dark:border-white/10 pb-6 mb-6 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-slate-100 dark:border-white/5 pb-6 mb-6 gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-[17px] font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">
+                <span className="text-[16px] font-mono font-medium text-brand-navy dark:text-white">
                   Order #WA
                   {((order.id || order._id?.toString())?.slice(
                     -8,
@@ -172,27 +178,27 @@ export default function OrderDetailPage({ params }) {
                       `WA${((order.id || order._id?.toString())?.slice(-8)).toUpperCase()}`,
                     )
                   }
-                  className="text-gray-400 hover:text-gray-700 transition"
+                  className="text-slate-400 hover:text-brand-blue transition-colors"
                   title="Copy Order Number"
                 >
                   <Copy size={16} />
                 </button>
                 {copied && (
-                  <span className="font-text text-[10px] bg-green-50 text-green-600 font-semibold px-1.5 py-0.5 rounded tracking-[0.06em]">
+                  <span className="font-mono text-[10px] bg-brand-teal/10 text-brand-teal font-medium px-1.5 py-0.5 rounded-[4px] tracking-widest uppercase">
                     Copied
                   </span>
                 )}
               </div>
-              <p className="text-[12px] font-normal tracking-[-0.01em] text-[#86868b]">
+              <p className="text-[13px] font-sans text-slate-500">
                 Placed on {placedDate}
               </p>
             </div>
             <div className="flex flex-col md:items-end">
-              <span className="font-text text-[11px] font-semibold tracking-[0.06em] text-[#86868b] mb-1">
+              <span className="font-mono text-[11px] font-medium tracking-widest uppercase text-slate-500 mb-1">
                 Total Amount
               </span>
-              <div className="text-[28px] md:text-[32px] font-semibold tracking-[-0.01em] text-[#1d1d1f] dark:text-white leading-none">
-                {formatPrice(totalAmount)} BDT
+              <div className="text-[24px] md:text-[28px] font-mono font-bold text-brand-navy dark:text-white leading-none">
+                BDT {formatPrice(totalAmount)}
               </div>
             </div>
           </div>
@@ -200,27 +206,27 @@ export default function OrderDetailPage({ params }) {
           {/* Digital Delivery Banner */}
           {isCancelled ? (
             <div className="mb-8">
-              <div className="flex items-center justify-center gap-3 py-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-xl">
-                <XCircle size={22} className="text-red-500" strokeWidth={1.5} />
-                <span className="font-text font-semibold text-red-600 dark:text-red-400 text-sm tracking-[0.06em]">
+              <div className="flex items-center justify-center gap-3 py-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/50 rounded-[4px]">
+                <XCircle size={20} className="text-red-500" strokeWidth={2} />
+                <span className="font-sans font-medium text-red-600 dark:text-red-400 text-[14px]">
                   Order Cancelled
                 </span>
               </div>
             </div>
           ) : (
             <div className="mb-8">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-5 px-6 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 rounded-xl">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-6 bg-brand-teal/10 border border-brand-teal/20 rounded-[4px]">
                 <div className="flex items-center gap-3">
                   <CheckCircle2
-                    size={24}
-                    className="text-emerald-600 dark:text-emerald-400"
-                    strokeWidth={1.5}
+                    size={22}
+                    className="text-brand-teal"
+                    strokeWidth={2}
                   />
                   <div>
-                    <span className="block font-text font-semibold text-emerald-800 dark:text-emerald-300 text-[15px]">
+                    <span className="block font-sans font-medium text-brand-teal text-[14px]">
                       Digital Goods Ready
                     </span>
-                    <span className="block text-[13px] text-emerald-600 dark:text-emerald-400 mt-0.5">
+                    <span className="block text-[13px] font-sans text-brand-teal mt-0.5 opacity-90">
                       Your license keys and download links are available below.
                     </span>
                   </div>
@@ -229,10 +235,10 @@ export default function OrderDetailPage({ params }) {
             </div>
           )}
 
-          <div className="text-center text-[13px] text-[#86868b] mb-12 flex flex-col items-center gap-1.5">
+          <div className="text-center text-[13px] font-sans text-slate-500 mb-12 flex flex-col items-center gap-1.5">
             <p>
               Status:{" "}
-              <span className="font-text font-semibold tracking-[0.06em] text-[13px] text-[#1d1d1f] dark:text-gray-300">
+              <span className="font-mono font-medium tracking-widest uppercase text-[11px] text-brand-navy dark:text-white">
                 {order.status || "Order Placed"}
               </span>{" "}
               &mdash; {formatDate(order.createdAt)}
@@ -248,20 +254,20 @@ export default function OrderDetailPage({ params }) {
             return (
               <div
                 key={idx}
-                className="bg-white dark:bg-[#1c1c1e] rounded-[12px] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-sm gap-4"
+                className="bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 border border-slate-200 dark:border-white/10 gap-4"
               >
                 <div className="flex items-center gap-4 flex-1 w-full">
-                  <div className="w-16 h-16 bg-white dark:bg-black rounded-[8px] border border-[#e5e5ea] dark:border-[#2c2c2e] overflow-hidden flex items-center justify-center shrink-0 p-1.5">
+                  <div className="w-16 h-16 bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-1.5">
                     {photo ? (
                       <img
                         src={photo}
                         alt=""
-                        className="w-full h-full object-contain mix-blend-multiply"
+                        className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
                       />
                     ) : (
                       <ImageIcon
                         size={20}
-                        className="text-gray-300"
+                        className="text-slate-300"
                         strokeWidth={1.5}
                       />
                     )}
@@ -272,40 +278,39 @@ export default function OrderDetailPage({ params }) {
                         item.product?.id ? `/product/${item.product.id}` : "#"
                       }
                     >
-                      <h3 className="text-[17px] font-medium tracking-[-0.022em] text-[#1d1d1f] dark:text-white mb-1 hover:text-[#0066cc] transition cursor-pointer line-clamp-1 leading-tight">
+                      <h3 className="text-[16px] font-sans font-medium text-brand-navy dark:text-white mb-1 hover:text-brand-blue transition-colors cursor-pointer line-clamp-1 leading-tight">
                         {item.product?.title || "Unknown Product"}
                       </h3>
                     </Link>
                     <div className="flex flex-wrap items-center gap-3 mt-2">
-                      <span className="text-[12px] font-medium text-[#1d1d1f] dark:text-white bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-[6px]">
-                        License Type: {item.product?.licenseType || "Personal"}
+                      <span className="text-[11px] font-mono font-medium text-brand-navy dark:text-white bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 px-2 py-0.5 rounded-[4px]">
+                        License: {item.product?.licenseType || "Personal"}
                       </span>
                       {item.license_key && (
                         <div className="flex items-center gap-2">
-                          <span className="text-[12px] font-medium text-[#1d1d1f] dark:text-white bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800 px-2 py-0.5 rounded-[6px] flex items-center gap-1 font-mono">
+                          <span className="text-[11px] font-mono font-medium text-brand-navy dark:text-white bg-brand-teal/10 border border-brand-teal/20 px-2 py-0.5 rounded-[4px] flex items-center gap-1">
                             Key: {item.license_key}
                           </span>
                           <button
                             onClick={() => copyToClipboard(item.license_key)}
-                            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition"
+                            className="text-slate-400 hover:text-brand-blue transition-colors"
                             title="Copy License Key"
                           >
                             <Copy size={14} />
                           </button>
                         </div>
                       )}
-                      {item.variants && (
                     </div>
                   </div>
                 </div>
 
-                <div className="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between border-t border-gray-100 dark:border-white/10 sm:border-t-0 pt-4 sm:pt-0">
+                <div className="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between border-t border-slate-200 dark:border-white/10 sm:border-t-0 pt-4 sm:pt-0">
                   <div className="flex flex-col items-start sm:items-end mb-0 sm:mb-3">
-                    <span className="font-text text-[11px] font-semibold tracking-[0.06em] text-[#86868b] mb-1">
+                    <span className="font-mono text-[10px] font-medium tracking-widest uppercase text-slate-500 mb-1">
                       Total Paid
                     </span>
-                    <div className="text-[17px] font-bold tracking-[-0.022em] text-[#1d1d1f] dark:text-white">
-                      {formatPrice(item.price_at_purchase * item.quantity)} BDT
+                    <div className="text-[16px] font-mono font-bold text-brand-navy dark:text-white">
+                      BDT {formatPrice(item.price_at_purchase * item.quantity)}
                     </div>
                   </div>
 
@@ -314,32 +319,32 @@ export default function OrderDetailPage({ params }) {
                       {item.download_token ? (
                         new Date(item.download_expires_at) < new Date() ? (
                           <div className="flex flex-col items-end">
-                            <span className="text-red-500 text-[11px] font-medium mb-1">Link Expired</span>
+                            <span className="text-red-500 font-sans text-[11px] font-medium mb-1">Link Expired</span>
                             <button
                               onClick={() => alert("Please contact support to request a new download link.")}
-                              className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-1.5 rounded-full text-[12px] font-bold transition-all shadow-sm"
+                              className="bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-200 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-brand-navy dark:text-white px-4 py-1.5 rounded-[4px] text-[12px] font-sans font-medium transition-colors"
                             >
                               Request New Link
                             </button>
                           </div>
                         ) : item.download_attempts >= (item.max_downloads || 5) ? (
-                          <span className="text-red-500 text-[12px] font-medium">Download Limit Reached</span>
+                          <span className="text-red-500 font-sans text-[12px] font-medium">Download Limit Reached</span>
                         ) : (
                           <div className="flex flex-col items-end">
                             <a
                               href={`https://webstore-backend-cfda.onrender.com/api/market/download/${item.download_token}`}
                               target="_blank"
-                              className="bg-[#0071e3] hover:bg-[#0077ED] text-white px-5 py-2 rounded-full text-[13px] font-bold transition-all shadow-sm flex items-center gap-2 shrink-0"
+                              className="bg-brand-blue hover:bg-brand-blue/90 text-white px-5 py-2 rounded-[4px] text-[13px] font-sans font-medium transition-colors flex items-center gap-2 shrink-0 shadow-sm"
                             >
                               Download Asset
                             </a>
-                            <span className="text-[#86868b] text-[10px] mt-1">
+                            <span className="text-slate-500 font-mono text-[10px] mt-1.5 tracking-widest uppercase">
                               Expires in {Math.ceil((new Date(item.download_expires_at) - new Date()) / (1000 * 60 * 60 * 24))} days
                             </span>
                           </div>
                         )
                       ) : (
-                        <span className="text-[#86868b] text-[12px]">Processing...</span>
+                        <span className="text-slate-500 font-sans text-[12px]">Processing...</span>
                       )}
                     </div>
                   )}
@@ -352,71 +357,71 @@ export default function OrderDetailPage({ params }) {
 
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8">
-            <div className="flex-1 bg-white dark:bg-[#1c1c1e] rounded-[16px] p-5 md:p-6 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+            <div className="flex-1 bg-white dark:bg-[#161B22] rounded-[4px] p-5 md:p-6 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[13px]">
+                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 text-[12px]">
                   Customer Details
                 </h3>
-                <span className="font-text text-[11px] font-semibold tracking-[0.06em] bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 px-2.5 py-1 rounded-[4px]">
+                <span className="font-mono text-[10px] font-medium tracking-widest uppercase bg-brand-sky text-brand-blue px-2 py-0.5 rounded-[4px]">
                   Digital Delivery
                 </span>
               </div>
-              <div className="text-[14px] tracking-[-0.016em] text-[#1d1d1f] dark:text-[#86868b] space-y-2 leading-relaxed">
-                <p className="font-semibold text-[#1d1d1f] dark:text-white">
+              <div className="text-[14px] font-sans text-brand-navy dark:text-slate-400 space-y-2 leading-relaxed">
+                <p className="font-medium text-brand-navy dark:text-white">
                   {addressObj.name || order.customer_name || "Customer"}{" "}
-                  <span className="text-[#86868b] font-normal ml-2">
+                  <span className="text-slate-400 font-normal ml-2">
                     | {order.phone || ""}
                   </span>
                 </p>
                 <p>{order.email || addressObj.email || "No email provided"}</p>
-                <p className="text-[12px] text-emerald-600 dark:text-emerald-400 mt-3 pt-3 border-t border-gray-100 dark:border-white/5">
+                <p className="text-[12px] text-brand-teal mt-3 pt-3 border-t border-slate-100 dark:border-white/5">
                   Licenses and download instructions have been emailed to this
                   address.
                 </p>
               </div>
             </div>
 
-            <div className="w-full md:w-[380px] bg-white dark:bg-[#1c1c1e] rounded-[16px] p-5 md:p-6 border border-[#e5e5ea] dark:border-[#2c2c2e] shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-text font-semibold tracking-[0.06em] text-[#86868b] text-[13px]">
+            <div className="w-full md:w-[380px] bg-white dark:bg-[#161B22] rounded-[4px] p-5 md:p-6 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
+              <div className="flex justify-between items-center mb-6 border-b border-slate-100 dark:border-white/5 pb-4">
+                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 text-[12px]">
                   Order Summary
                 </h3>
-                <span className="font-text text-[11px] font-semibold tracking-[0.06em] bg-white dark:bg-[#2c2c2e] border border-[#e5e5ea] dark:border-transparent px-2.5 py-1 rounded-[4px] text-[#1d1d1f] dark:text-white">
+                <span className="font-mono text-[10px] font-medium tracking-widest uppercase bg-slate-100 dark:bg-white/5 text-slate-500 px-2 py-0.5 rounded-[4px]">
                   Online Payment
                 </span>
               </div>
 
               <div className="space-y-3.5 mt-2">
-                <div className="flex justify-between text-[14px] font-normal tracking-[-0.016em] text-[#4b4b4b] dark:text-gray-300">
+                <div className="flex justify-between text-[14px] font-sans text-slate-500">
                   <span>Items Total</span>
-                  <span>{formatPrice(itemsPrice)} BDT</span>
+                  <span className="font-mono font-medium text-brand-navy dark:text-white">BDT {formatPrice(itemsPrice)}</span>
                 </div>
 
-                <div className="border-t border-dashed border-[#d2d2d7] dark:border-gray-700 my-2"></div>
+                <div className="border-t border-dashed border-slate-200 dark:border-white/10 my-2"></div>
 
-                <div className="flex justify-between font-semibold tracking-[-0.022em] text-[#1d1d1f] dark:text-white text-[15px]">
+                <div className="flex justify-between font-sans text-[14px] text-slate-500">
                   <span>Subtotal</span>
-                  <span>{formatPrice(subtotal)} BDT</span>
+                  <span className="font-mono font-medium text-brand-navy dark:text-white">BDT {formatPrice(subtotal)}</span>
                 </div>
 
-                <div className="border-t border-solid border-[#e5e5ea] dark:border-[#2c2c2e] my-3"></div>
+                <div className="border-t border-solid border-slate-200 dark:border-white/10 my-3"></div>
 
-                <div className="flex justify-between mt-4 pt-4 border-t border-[#e5e5ea] dark:border-gray-700">
-                  <span className="font-text font-semibold tracking-[0.06em] text-[#1d1d1f] dark:text-[#f5f5f7] text-[13px]">
+                <div className="flex justify-between items-center mt-4 pt-4">
+                  <span className="font-sans font-medium text-brand-navy dark:text-white text-[16px]">
                     {order.status === "Delivered" ||
                     order.payment_status === "Paid"
                       ? "Total Paid"
                       : "Due Amount"}
                   </span>
-                  <span className="font-bold text-[#1d1d1f] dark:text-white tracking-[-0.015em] text-[28px]">
-                    {formatPrice(totalAmount)} BDT
+                  <span className="font-bold font-mono text-brand-navy dark:text-white text-[24px]">
+                    BDT {formatPrice(totalAmount)}
                   </span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </CardContent>
+      </Card>
+    </PageContainer>
   );
 }

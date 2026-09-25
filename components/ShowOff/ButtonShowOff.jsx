@@ -61,7 +61,7 @@ export default function ButtonShowOff({ refresh }) {
                 {t.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="bg-slate-200 text-slate-700 px-2 py-1 rounded-md text-xs"
+                    className="bg-slate-200 text-brand-slate px-2 py-1 rounded-md text-xs"
                   >
                     {tag}
                   </span>
@@ -77,7 +77,7 @@ export default function ButtonShowOff({ refresh }) {
               <a
                 href={t.liveLink || "#"}
                 target="_blank"
-                className="text-blue-600 underline text-sm"
+                className="text-brand-blue underline text-sm"
               >
                 Live
               </a>

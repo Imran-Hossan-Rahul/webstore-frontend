@@ -18,7 +18,7 @@ export default function ChallengeCreateSidebar() {
             { title: "Brand Assets", desc: "Use a high-resolution cover image to make your challenge stand out." }
           ].map((tip, i) => (
             <div key={i} className="flex gap-4">
-              <div className="w-6 h-6 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-white/5">
+              <div className="w-6 h-6 rounded-lg bg-brand-cloud dark:bg-white/5 flex items-center justify-center shrink-0 border border-slate-100 dark:border-white/5">
                 <CheckCircle2 size={12} strokeWidth={1.5} className="text-slate-400" />
               </div>
               <div>
@@ -36,14 +36,14 @@ export default function ChallengeCreateSidebar() {
           <div className="w-1 h-4 bg-slate-900 dark:bg-white rounded-full" />
           Reward Strategy
         </h3>
-        <div className="p-4 bg-slate-50/50 dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5">
+        <div className="p-4 bg-brand-cloud/50 dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-indigo-500/10 rounded-lg">
-              <Trophy size={16} strokeWidth={1.5} className="text-indigo-500" />
+            <div className="p-2 bg-brand-blue/10 rounded-lg">
+              <Trophy size={16} strokeWidth={1.5} className="text-brand-blue" />
             </div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Pro Recommendation</span>
           </div>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-[11px] text-brand-slate dark:text-slate-400 leading-relaxed">
             A distributed prize pool (e.g., Top 3 winners) often yields 40% more high-quality submissions than a single winner-takes-all approach.
           </p>
         </div>

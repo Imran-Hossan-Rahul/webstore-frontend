@@ -14,7 +14,7 @@ export default function Skeleton({
   style = {},
 }) {
   // Static professional solid backgrounds with a gentle animate-pulse opacity shift
-  const baseClasses = "animate-pulse bg-slate-200/50 dark:bg-zinc-800/45 rounded";
+  const baseClasses = "animate-pulse bg-slate-200/50 dark:bg-white/10 rounded-[4px]";
 
   // Compute inline styles if width or height is explicitly passed
   const customStyle = {
@@ -55,7 +55,7 @@ export default function Skeleton({
   // 3. Card Variant (Composite skeleton for typical template/artifact grid items)
   if (variant === "card") {
     return (
-      <div className={`p-4 border border-slate-200/40 dark:border-zinc-800/50 rounded-[8px] bg-slate-50/10 dark:bg-zinc-900/10 w-full flex flex-col gap-4 ${className}`}>
+      <div className={`p-4 border border-slate-200/40 dark:border-zinc-800/50 rounded-[8px] bg-brand-cloud/10 dark:bg-zinc-900/10 w-full flex flex-col gap-4 ${className}`}>
         {/* Media Block / Image Container */}
         <div className={`${baseClasses} w-full h-40 rounded-[6px]`} />
         
@@ -90,7 +90,7 @@ export default function Skeleton({
         {Array.from({ length: count }).map((_, index) => (
           <div
             key={index}
-            className={`p-3 border border-slate-100/50 dark:border-zinc-800/30 rounded-[8px] bg-slate-50/5 dark:bg-zinc-900/5 flex items-center gap-4 w-full ${className}`}
+            className={`p-3 border border-slate-100/50 dark:border-zinc-800/30 rounded-[8px] bg-brand-cloud/5 dark:bg-zinc-900/5 flex items-center gap-4 w-full ${className}`}
           >
             {/* Left circular node */}
             <div className={`${baseClasses} w-10 h-10 rounded-full shrink-0`} />

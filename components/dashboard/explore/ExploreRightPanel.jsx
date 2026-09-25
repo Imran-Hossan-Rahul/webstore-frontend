@@ -11,7 +11,7 @@ const TopCodexItem = ({ codex }) => (
             <PenTool size={18} />
         </div>
         <div className="flex-1 min-w-0">
-            <div className="font-bold text-sm text-slate-900 dark:text-gray-100 group-hover:text-orange-500 transition-colors truncate">{codex.title}</div>
+            <div className="font-bold text-sm text-slate-900 dark:text-slate-100 group-hover:text-orange-500 transition-colors truncate">{codex.title}</div>
             <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-1">
                 <span className="flex items-center gap-1"><Star size={10} /> {codex.likes || codex.likesCount || 0}</span>
                 <span className="flex items-center gap-1"><Eye size={10} /> {codex.views || codex.viewsCount || 0}</span>
@@ -98,7 +98,7 @@ export default function ExploreRightPanel() {
                         {featuredDevlog.previewFile || featuredDevlog.coverImage ? (
                             <img src={getOptimizedUrl(featuredDevlog.previewFile || featuredDevlog.coverImage)} className="w-full h-full object-cover transform scale-100 group-hover:opacity-80 transition-opacity duration-[1.5s] ease-out" alt="Featured" />
                         ) : (
-                            <div className="w-full h-full bg-slate-800 flex items-center justify-center text-slate-600"><Code size={30} /></div>
+                            <div className="w-full h-full bg-slate-800 flex items-center justify-center text-brand-slate"><Code size={30} /></div>
                         )}
                    </div>
                    

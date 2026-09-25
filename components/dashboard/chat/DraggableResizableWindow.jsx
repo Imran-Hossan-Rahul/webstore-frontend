@@ -220,16 +220,16 @@ export default function DraggableResizableWindow({
       </div>
 
       {/* Resize handles */}
-      <div className="resize-handle absolute top-0 bottom-0 right-0 w-2 cursor-ew-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'e')} />
-      <div className="resize-handle absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'w')} />
-      <div className="resize-handle absolute left-0 right-0 bottom-0 h-2 cursor-ns-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 's')} />
-      <div className="resize-handle absolute left-0 right-0 top-0 h-2 cursor-ns-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'n')} />
+      <div className="resize-handle absolute top-0 bottom-0 right-0 w-2 cursor-ew-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'e')} />
+      <div className="resize-handle absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'w')} />
+      <div className="resize-handle absolute left-0 right-0 bottom-0 h-2 cursor-ns-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 's')} />
+      <div className="resize-handle absolute left-0 right-0 top-0 h-2 cursor-ns-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'n')} />
       
       {/* Corners */}
-      <div className="resize-handle absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'se')} />
-      <div className="resize-handle absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'sw')} />
-      <div className="resize-handle absolute top-0 right-0 w-4 h-4 cursor-nesw-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'ne')} />
-      <div className="resize-handle absolute top-0 left-0 w-4 h-4 cursor-nwse-resize hover:bg-blue-600 transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'nw')} />
+      <div className="resize-handle absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'se')} />
+      <div className="resize-handle absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'sw')} />
+      <div className="resize-handle absolute top-0 right-0 w-4 h-4 cursor-nesw-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'ne')} />
+      <div className="resize-handle absolute top-0 left-0 w-4 h-4 cursor-nwse-resize hover:bg-brand-blue transition-colors z-[10000]" onMouseDown={(e) => handleResizeStart(e, 'nw')} />
     </div>
   );
 

@@ -28,7 +28,7 @@ export default function FolderSelector({ onFolderSelect }) {
       <button
         onClick={handleSelectFolder}
         disabled={loading}
-        className="bg-blue-600 px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50"
+        className="bg-brand-blue px-6 py-3 rounded hover:bg-blue-700 disabled:opacity-50"
       >
         {loading ? "Setting up..." : "Choose Folder"}
       </button>

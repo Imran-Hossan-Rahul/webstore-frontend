@@ -9,9 +9,9 @@ import { DashboardContext } from "@/app/(dashboard)/layout";
 import { useShare } from "@/hooks/useShare";
 import { api } from "@/utils/api";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
-
 import AppleSpinner from "@/components/ui/AppleSpinner";
-
+import { Button } from "@/components/ui/Button";
+import { LoadingState, ErrorState } from '@/components/ui/States';
 const getOptimizedUrl = (url) => {
   if (!url) return '';
   if (url.includes('cloudinary.com') && !url.includes('f_auto')) {
@@ -195,17 +195,21 @@ export default function ProductDetails({ params }) {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white/70 dark:bg-[#030303]/70 backdrop-blur-md z-[9999]">
-        <AppleSpinner size={50} className="text-[#0071e3]" />
+      <div className="min-h-screen flex items-center justify-center bg-brand-cloud dark:bg-[#0D1117] font-sans">
+        <LoadingState message="Loading product details..." className="border-none bg-transparent" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-apple-canvas flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold text-gray-800">Product Not Found</h2>
-        <Link href="/" className="mt-4 text-blue-600 hover:underline">Return to Market</Link>
+      <div className="min-h-screen bg-brand-cloud dark:bg-[#0D1117] flex items-center justify-center font-sans">
+        <ErrorState 
+          title="Product Not Found"
+          message="The product you are looking for does not exist or has been removed."
+          actionLabel="Return to Market"
+          onRetry={() => router.push('/shop')}
+        />
       </div>
     );
   }
@@ -319,7 +323,7 @@ export default function ProductDetails({ params }) {
 
 
   return (
-    <div className="min-h-screen pb-16 font-sans">
+    <div className="min-h-screen pb-16 bg-brand-cloud dark:bg-[#0D1117] font-sans">
       <AuthGuardModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
@@ -328,59 +332,59 @@ export default function ProductDetails({ params }) {
       {/* Breadcrumb */}
       <div className="pt-5 pb-2">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11.5px] md:text-[13px] text-[#86868b] dark:text-gray-400 font-normal w-full pb-0.5 md:pb-0 ml-4">
-            <Link href="/" className="transition-colors hover:text-[#0071e3] shrink-0 flex items-center">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-mono tracking-widest uppercase text-slate-400 dark:text-slate-500 w-full ml-4">
+            <Link href="/" className="transition-colors hover:text-brand-blue shrink-0 flex items-center">
               <Home size={14} className="mb-0.5" />
             </Link>
-            <span className="opacity-40 shrink-0">›</span>
-            <Link href="/shop" className="transition-colors hover:text-[#0071e3] shrink-0">
+            <span className="opacity-40 shrink-0">/</span>
+            <Link href="/shop" className="transition-colors hover:text-brand-blue shrink-0">
               Shop
             </Link>
             {breadcrumbNodes.map((node, i) => (
               <React.Fragment key={i}>
-                <span className="opacity-40 shrink-0">›</span>
-                <Link href={node.url} className="transition-colors hover:text-[#0071e3] shrink-0">
+                <span className="opacity-40 shrink-0">/</span>
+                <Link href={node.url} className="transition-colors hover:text-brand-blue shrink-0">
                   {node.label}
                 </Link>
               </React.Fragment>
             ))}
-            <span className="opacity-40 shrink-0">›</span>
-            <span className="text-[#1d1d1f] dark:text-white font-normal shrink-0 truncate max-w-[200px] md:max-w-md pointer-events-none">
+            <span className="opacity-40 shrink-0">/</span>
+            <span className="text-brand-navy dark:text-white shrink-0 truncate max-w-[200px] md:max-w-md pointer-events-none">
               {product.title}
             </span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-2 mx-4 flex flex-col lg:flex-row gap-6 items-start">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-2 flex flex-col lg:flex-row gap-6 items-start">
         
         {/* Left: Media Viewer (Sticky on Desktop) */}
         <div className="lg:w-7/12 lg:sticky lg:top-[120px] z-10 flex flex-col gap-4">
           {isDigital && product.demoUrl ? (
-            <div className="w-full aspect-video rounded-2xl overflow-hidden border border-[#e8e8ed] dark:border-gray-800 bg-[#f5f5f7] dark:bg-[#111827] shadow-sm relative group">
+            <div className="w-full aspect-video rounded-[4px] overflow-hidden border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] relative group">
               <iframe 
                 src={product.demoUrl} 
                 className="w-full h-full border-none"
                 title="Live Demo"
               />
-              <div className="absolute top-4 right-4 bg-white/90 dark:bg-black/90 backdrop-blur px-3 py-1.5 rounded-full text-[12px] font-semibold text-[#0071e3] shadow-sm">
+              <div className="absolute top-4 right-4 bg-white/90 dark:bg-[#0D1117]/90 backdrop-blur px-3 py-1.5 rounded-[4px] text-[11px] font-mono tracking-widest uppercase text-brand-blue border border-slate-200 dark:border-white/10">
                 Live Preview
               </div>
             </div>
           ) : isDigital && screenshotGallery.length > 0 ? (
-            <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#e8e8ed] dark:border-gray-800 bg-[#f5f5f7] dark:bg-[#111827] relative">
+            <div className="w-full aspect-[4/3] rounded-[4px] overflow-hidden border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] relative">
               <img 
                 src={getOptimizedUrl(activeImage || screenshotGallery[0])} 
                 alt="Product Preview" 
-                className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover cursor-pointer hover:scale-[1.02] transition-transform duration-500"
                 onClick={() => setIsLightboxOpen(true)}
               />
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
                 {screenshotGallery.map((img, idx) => (
                   <button 
                     key={idx}
                     onClick={() => setActiveImage(img)}
-                    className={`w-2 h-2 rounded-full transition-all ${activeImage === img ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}`}
+                    className={`w-6 h-1.5 rounded-none transition-all ${activeImage === img ? 'bg-brand-blue' : 'bg-white/50 hover:bg-white'}`}
                   />
                 ))}
               </div>
@@ -388,7 +392,7 @@ export default function ProductDetails({ params }) {
           ) : (
             <>
               <div 
-                className="aspect-square rounded-2xl overflow-hidden mb-2 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-zoom-in bg-white dark:bg-black/20 border border-transparent hover:border-gray-200 dark:hover:border-gray-800 transition-all duration-300"
+                className="aspect-square rounded-[4px] overflow-hidden mb-2 relative group flex items-center justify-center w-full p-8 md:p-12 cursor-zoom-in bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 hover:border-brand-blue/30 transition-all duration-300"
                 onClick={() => {
                   if (activeImage) setIsLightboxOpen(true);
                 }}
@@ -404,12 +408,12 @@ export default function ProductDetails({ params }) {
                       className={`w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal drop-shadow-sm transition-transform duration-200 ease-out pointer-events-none ${isZooming ? 'scale-[2.5]' : 'scale-100 group-hover:scale-105'}`}
                       style={isZooming ? zoomStyle : {}}
                     />
-                    <div className={`absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full transition-opacity duration-300 shadow-sm text-gray-700 dark:text-gray-300 ${isZooming ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'}`}>
+                    <div className={`absolute top-4 right-4 bg-white/80 dark:bg-black/60 backdrop-blur-md p-2 rounded-full transition-opacity duration-300 shadow-sm text-brand-slate dark:text-slate-300 ${isZooming ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'}`}>
                       <ZoomIn size={18} />
                     </div>
                   </>
                 ) : (
-                  <div className="text-gray-400">No Image Available</div>
+                  <div className="text-[11px] font-mono tracking-widest uppercase text-slate-400">No Image Available</div>
                 )}
               </div>
               
@@ -418,9 +422,9 @@ export default function ProductDetails({ params }) {
                   <button 
                     key={idx} 
                     onClick={() => setActiveImage(img)}
-                    className={`shrink-0 w-20 h-20 bg-transparent rounded-xl flex items-center justify-center p-2 overflow-hidden border-2 transition-all ${activeImage === img ? 'border-gray-800 shadow-md' : 'border-transparent hover:border-gray-300'}`}
+                    className={`shrink-0 w-20 h-20 bg-white dark:bg-[#161B22] rounded-[4px] flex items-center justify-center p-2 overflow-hidden border transition-all ${activeImage === img ? 'border-brand-blue ring-1 ring-brand-blue/30' : 'border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}
                   >
-                    <img src={getOptimizedUrl(img)} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-contain mix-blend-multiply" />
+                    <img src={getOptimizedUrl(img)} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
                   </button>
                 ))}
               </div>
@@ -435,23 +439,22 @@ export default function ProductDetails({ params }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               {product.brand && (
-                <span className="border border-[#111827] text-gray-900 dark:text-gray-100 text-[13px] font-semibold px-3 py-1.5 rounded">
-                  Brand : {product.brand}
+                <span className="border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] text-brand-navy dark:text-white text-[11px] font-mono tracking-widest uppercase px-3 py-1.5 rounded-[4px]">
+                  Brand: {product.brand}
                 </span>
               )}
             </div>
             
             <div className="flex items-center gap-2">
-              {/* No fake viewer count */}
               <button 
                 onClick={handleLike}
-                className={`w-9 h-9 border border-[#111827] flex items-center justify-center rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition ${isLiked ? 'text-pink-500 border-pink-200 dark:border-pink-900' : 'text-gray-700 dark:text-gray-300'}`}
+                className={`w-9 h-9 border flex items-center justify-center rounded-[4px] bg-white dark:bg-[#161B22] transition-colors ${isLiked ? 'text-pink-500 border-pink-200 dark:border-pink-900/50 bg-pink-50 dark:bg-pink-500/10' : 'text-slate-400 border-slate-200 dark:border-white/10 hover:border-brand-blue hover:text-brand-blue'}`}
               >
                 <Star size={16} className={isLiked ? 'fill-current' : ''} />
               </button>
               <button 
                 onClick={handleShare}
-                className="w-9 h-9 border border-[#111827] text-gray-700 dark:text-gray-300 flex items-center justify-center rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition"
+                className="w-9 h-9 border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] text-slate-400 flex items-center justify-center rounded-[4px] hover:border-brand-blue hover:text-brand-blue transition-colors"
               >
                 <Share2 size={16} />
               </button>
@@ -465,18 +468,18 @@ export default function ProductDetails({ params }) {
             <div className="flex flex-col">
               
               {/* Gray Info Block */}
-              <div className={`bg-[#efefef] dark:bg-slate-800/50 px-5 pt-5 pb-3 flex justify-between items-start ${specs.filter(s => s.isHighlight).length > 0 ? 'rounded-t-lg' : 'rounded-lg mb-5'}`}>
+              <div className={`bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 px-5 pt-5 pb-5 flex justify-between items-start ${specs.filter(s => s.isHighlight).length > 0 ? 'border-b-0 rounded-t-[4px]' : 'rounded-[4px] mb-5'}`}>
                 <div className="flex-1 pr-4">
-                  <h1 className="text-[24px] sm:text-[32px] font-bold text-[#1d1d1f] dark:text-white tracking-[-0.02em] leading-tight mb-2">
+                  <h1 className="text-[24px] sm:text-[28px] font-display font-medium text-brand-navy dark:text-white leading-tight mb-2">
                   {product.title}
                 </h1>
                   {/* SKU (Admin Only) */}
                   {(user?.role === 'admin' || user?.role === 'superadmin') && product.sku && (
-                    <div className="mt-2 flex items-center gap-3">
-                      <span className="text-sm text-gray-500">SKU: {product.sku}</span>
+                    <div className="mt-3 flex items-center gap-3">
+                      <span className="text-[11px] font-mono tracking-widest text-slate-500 uppercase">SKU: {product.sku}</span>
                       <Link 
                         href={`/admin/market/products?edit=${product.id}`}
-                        className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded flex items-center gap-1 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition"
+                        className="text-[11px] font-mono uppercase bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-2 py-1 rounded-[4px] flex items-center gap-1 hover:bg-brand-cyan/20 transition-colors"
                       >
                         <Edit size={12} /> Edit Product
                       </Link>
@@ -486,7 +489,7 @@ export default function ProductDetails({ params }) {
                     <div className="mt-2">
                       <Link 
                         href={`/admin/market/products?edit=${product.id}`}
-                        className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition"
+                        className="text-xs bg-blue-100 dark:bg-blue-900/30 text-brand-blue dark:text-blue-400 px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-blue-200 dark:hover:bg-blue-900/50 transition"
                       >
                         <Edit size={12} /> Edit Product
                       </Link>
@@ -494,7 +497,7 @@ export default function ProductDetails({ params }) {
                   )}
                   {selectedVariantsSummary && (
                     <div className="mt-2">
-                      <span className="inline-block px-3 py-1 bg-[#111827]/10 border border-[#111827]/30 text-gray-800 dark:text-gray-200 text-[13px] rounded">
+                      <span className="inline-block px-3 py-1 bg-[#111827]/10 border border-[#111827]/30 text-slate-800 dark:text-slate-200 text-[13px] rounded">
                         {selectedVariantsSummary}
                       </span>
                     </div>
@@ -502,11 +505,11 @@ export default function ProductDetails({ params }) {
                 </div>
                 
                 <div className="text-right shrink-0 mt-1">
-                  <div className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-1 tracking-[-0.01em]">
-                    BDT {product.selling_price}
+                  <div className="text-[28px] font-mono font-medium text-brand-navy dark:text-white mb-1">
+                    BDT {formatPrice(product.selling_price)}
                   </div>
                   {finalOriginalPrice > finalPrice && (
-                    <div className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                    <div className="text-[14px] font-mono text-slate-500 dark:text-slate-400 line-through">
                       BDT {formatPrice(finalOriginalPrice)}
                     </div>
                   )}
@@ -515,26 +518,26 @@ export default function ProductDetails({ params }) {
 
               {/* Highlighted Specs */}
               {specs.filter(s => s.isHighlight).length > 0 && (
-                <div className="mb-6 bg-[#f2f2f2] dark:bg-slate-800/50 px-5 pb-5 pt-1 rounded-b-lg">
+                <div className="mb-6 bg-brand-cloud dark:bg-[#161B22] border border-t-0 border-slate-200 dark:border-white/10 px-5 pb-5 pt-3 rounded-b-[4px]">
                   <ul className="space-y-3 mb-4">
                       {specs.filter(s => s.isHighlight).slice(0, 5).map((spec, idx) => (
                         <li key={idx}>
-                          <span className="text-sm text-gray-800 dark:text-gray-300 leading-relaxed">
-                            <strong className="text-gray-900 dark:text-white font-bold">{spec.key}:</strong> {spec.value}
+                          <span className="text-[13px] font-sans text-slate-600 dark:text-slate-300 leading-relaxed">
+                            <strong className="text-brand-navy dark:text-white font-medium">{spec.key}:</strong> {spec.value}
                           </span>
                         </li>
                       ))}
                     </ul>
-                    <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed">
-                      &quot;Our purpose is to provide accurate information from trusted sources. If you find any errors or inaccuracies, please let us know.&quot;
+                    <p className="text-[11px] font-sans text-slate-400 leading-relaxed">
+                      "Our purpose is to provide accurate information from trusted sources. If you find any errors or inaccuracies, please let us know."
                     </p>
                 </div>
               )}
 
               {isDigital ? (
-                <div className="mb-6 space-y-3 bg-[#efefef] dark:bg-slate-800/50 p-5 rounded-lg border border-gray-200 dark:border-gray-700">
+                <div className="mb-6 space-y-3 bg-brand-cloud dark:bg-[#161B22] p-5 rounded-[4px] border border-slate-200 dark:border-white/10">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="font-bold text-gray-900 dark:text-white capitalize text-[15px] tracking-wide">Select License:</span>
+                    <span className="font-mono text-[11px] tracking-widest text-brand-navy dark:text-white uppercase">Select License:</span>
                   </div>
                   <div className="flex flex-col gap-3">
                     {['Personal', 'Commercial', 'Extended'].map(lic => {
@@ -548,17 +551,17 @@ export default function ProductDetails({ params }) {
                         <div 
                           key={lic} 
                           onClick={() => setSelectedLicense(lic)}
-                          className={`flex items-start gap-4 p-3 rounded-lg border-2 cursor-pointer transition-all ${isSelected ? 'border-[#0071e3] bg-blue-50/50 dark:bg-blue-900/10' : 'border-transparent hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-slate-900'}`}
+                          className={`flex items-start gap-4 p-3 rounded-[4px] border cursor-pointer transition-all ${isSelected ? 'border-brand-blue bg-brand-blue/5' : 'border-transparent hover:border-slate-300 dark:hover:border-white/20 bg-white dark:bg-[#0D1117]'}`}
                         >
-                          <div className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${isSelected ? 'border-[#0071e3]' : 'border-gray-400'}`}>
-                            {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-[#0071e3]" />}
+                          <div className={`mt-1 w-[14px] h-[14px] rounded-sm border flex items-center justify-center shrink-0 ${isSelected ? 'border-brand-blue bg-brand-blue' : 'border-slate-300 dark:border-slate-600'}`}>
+                            {isSelected && <Check size={10} strokeWidth={3} className="text-white" />}
                           </div>
                           <div className="flex flex-col">
-                            <span className={`font-semibold text-[14px] ${isSelected ? 'text-[#0071e3]' : 'text-gray-900 dark:text-white'}`}>{lic}</span>
-                            <span className="text-[12px] text-gray-500 mt-0.5">{desc}</span>
+                            <span className={`font-sans font-medium text-[14px] ${isSelected ? 'text-brand-blue' : 'text-brand-navy dark:text-white'}`}>{lic}</span>
+                            <span className="text-[13px] font-sans text-slate-500 mt-0.5">{desc}</span>
                           </div>
                           <div className="ml-auto flex flex-col items-end">
-                            <span className="font-semibold text-gray-900 dark:text-white text-[14px]">
+                            <span className="font-mono font-medium text-brand-navy dark:text-white text-[14px]">
                               BDT {formatPrice(product.selling_price * multiplier)}
                             </span>
                           </div>
@@ -568,7 +571,7 @@ export default function ProductDetails({ params }) {
                   </div>
                 </div>
               ) : variantGroups.length > 0 && (
-                <div className="mb-6 space-y-5 bg-[#efefef] dark:bg-slate-800/50 p-5 rounded-lg">
+                <div className="mb-6 space-y-5 bg-brand-cloud dark:bg-[#161B22] p-5 rounded-[4px] border border-slate-200 dark:border-white/10">
                   {variantGroups.map((group, groupIdx) => {
                     const selectedOptIdx = selectedVariants[groupIdx] || 0;
                     const selectedLabel = group.options[selectedOptIdx]?.label || '';
@@ -576,8 +579,8 @@ export default function ProductDetails({ params }) {
                     return (
                       <div key={groupIdx}>
                         <div className="flex items-center gap-2 mb-3">
-                          <span className="font-bold text-gray-900 dark:text-white capitalize text-[14px] tracking-wide">{group.name}:</span>
-                          <span className="text-gray-700 dark:text-gray-300 text-[14px]">{selectedLabel}</span>
+                          <span className="font-mono text-[11px] tracking-widest text-brand-navy dark:text-white uppercase">{group.name}:</span>
+                          <span className="text-slate-500 text-[13px]">{selectedLabel}</span>
                         </div>
                         
                         <div className="flex flex-wrap gap-2.5">
@@ -590,10 +593,10 @@ export default function ProductDetails({ params }) {
                                 <button
                                   key={optIdx}
                                   onClick={() => handleSelectVariant(groupIdx, optIdx)}
-                                  className={`aspect-square w-14 h-14 bg-[#f5f5f7] rounded-lg border-2 p-1 flex items-center justify-center overflow-hidden transition-all duration-300 ${isSelected ? 'border-gray-800 shadow-sm' : 'border-transparent hover:border-gray-300'}`}
+                                  className={`aspect-square w-14 h-14 bg-white dark:bg-[#0D1117] rounded-[4px] border p-1 flex items-center justify-center overflow-hidden transition-all duration-300 ${isSelected ? 'border-brand-blue ring-1 ring-brand-blue/30' : 'border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}
                                   title={option.label}
                                 >
-                                  <img src={imgUrl} alt={option.label} className="w-full h-full object-contain mix-blend-multiply" />
+                                  <img src={imgUrl} alt={option.label} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
                                 </button>
                               );
                             }
@@ -603,7 +606,7 @@ export default function ProductDetails({ params }) {
                                 <button
                                   key={optIdx}
                                   onClick={() => handleSelectVariant(groupIdx, optIdx)}
-                                  className={`px-4 py-2 rounded-lg border text-[14px] transition ${isSelected ? 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white border-gray-900 dark:border-white shadow-sm font-medium' : 'bg-white dark:bg-slate-900 text-gray-800 dark:text-gray-300 border-gray-300 dark:border-gray-700 hover:border-gray-900 dark:hover:border-white hover:text-gray-900 dark:hover:text-white'}`}
+                                  className={`px-4 py-2 rounded-[4px] border text-[13px] font-sans transition-colors ${isSelected ? 'bg-brand-blue text-white border-brand-blue' : 'bg-white dark:bg-[#0D1117] text-brand-navy dark:text-slate-300 border-slate-200 dark:border-white/10 hover:border-brand-blue hover:text-brand-blue'}`}
                                 >
                                 {option.label}
                               </button>
@@ -619,7 +622,9 @@ export default function ProductDetails({ params }) {
               <div className="flex flex-col gap-4 mt-6">
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
-                    <button 
+                    <Button 
+                      variant={addedToCart ? "primary" : "outline"}
+                      className={`flex-1 ${addedToCart ? 'bg-brand-teal text-white border-brand-teal hover:bg-brand-teal/90' : 'border-brand-blue text-brand-blue hover:bg-brand-blue/5'}`}
                       onClick={() => {
                         if (addedToCart) {
                           router.push('/cart');
@@ -628,42 +633,38 @@ export default function ProductDetails({ params }) {
                         }
                       }}
                       disabled={isAddingToCart}
-                      className={`flex-1 px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition-colors disabled:opacity-80 disabled:cursor-not-allowed ${
-                        addedToCart 
-                          ? 'bg-emerald-500 hover:bg-emerald-600 text-white border border-transparent'
-                          : 'bg-transparent border border-[#0071e3] hover:bg-[#0071e3] hover:text-white text-[#0071e3]'
-                      }`}
                     >
                       {isAddingToCart ? (
-                        <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-[#0071e3] group-hover:text-white"} />
+                        <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-brand-blue"} />
                       ) : addedToCart ? (
-                        <><Check size={18} /> Added</>
+                        <><Check size={18} strokeWidth={1.5} className="mr-2" /> Added</>
                       ) : (
-                        <><ShoppingCart size={18} /> Add to Cart</>
+                        <><ShoppingCart size={18} strokeWidth={1.5} className="mr-2" /> Add to Cart</>
                       )}
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
+                      variant="primary"
+                      className="flex-1"
                       onClick={handleBuyNow}
                       disabled={isPending}
-                      className="flex-1 bg-[#0071e3] hover:bg-[#0077ED] text-white px-6 py-[11px] rounded-[980px] font-normal flex items-center justify-center gap-2 transition disabled:opacity-80 disabled:cursor-not-allowed"
                     >
                       {isPending ? (
                         <AppleSpinner size={18} className="text-white" />
                       ) : (
-                        <><ShoppingBag size={18} /> {isDigital ? 'Get License' : 'Buy'}</>
+                        <><ShoppingBag size={18} strokeWidth={1.5} className="mr-2" /> {isDigital ? 'Get License' : 'Buy Now'}</>
                       )}
-                    </button>
+                    </Button>
                   </div>  
                 
                 {/* Digital: License & Instant Delivery block */}
                 {isDigital ? (
                   <>
                     {/* License Block */}
-                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center gap-4 border border-[#e8e8ed] dark:border-gray-700">
-                      <div className="shrink-0"><Tag size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                    <div className="bg-brand-cloud dark:bg-[#161B22] rounded-[4px] p-4 flex items-center gap-4 border border-slate-200 dark:border-white/10 mt-2">
+                      <div className="shrink-0"><Tag size={20} strokeWidth={1.5} className="text-brand-blue" /></div>
                       <div className="flex flex-col">
-                        <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white">{product.licenseType || 'Personal'} License</span>
-                        <span className="text-[12.5px] text-[#86868b] mt-0.5">
+                        <span className="font-sans font-medium text-[14px] text-brand-navy dark:text-white">{product.licenseType || 'Personal'} License</span>
+                        <span className="text-[13px] text-slate-500 mt-0.5">
                           {product.licenseType === 'Commercial' && 'Use in client work & commercial products.'}
                           {product.licenseType === 'Extended' && 'Resell or bundle in products sold to end-users.'}
                           {(!product.licenseType || product.licenseType === 'Personal') && 'For personal, non-commercial projects only.'}
@@ -671,67 +672,67 @@ export default function ProductDetails({ params }) {
                       </div>
                     </div>
                     {/* Instant Download Block */}
-                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700">
+                    <div className="bg-brand-cloud dark:bg-[#161B22] rounded-[4px] p-4 border border-slate-200 dark:border-white/10">
                       <div className="flex items-start gap-4">
-                        <div className="shrink-0 mt-1"><Download size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                        <div className="shrink-0 mt-1"><Download size={20} strokeWidth={1.5} className="text-brand-blue" /></div>
                         <div className="flex flex-col flex-1">
-                          <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white mb-1">Instant Digital Delivery</span>
-                          <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
+                          <span className="font-sans font-medium text-[14px] text-brand-navy dark:text-white mb-1">Instant Digital Delivery</span>
+                          <span className="text-[13px] text-slate-500 leading-snug mb-3">
                             After purchase, your download link will be available in your Orders page. No waiting, no shipping.
                           </span>
-                          <div className="flex flex-wrap gap-3 text-[12px] text-[#86868b]">
-                            {product.fileFormat && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">📦 {product.fileFormat}</span>}
-                            {product.fileSize && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">💾 {product.fileSize}</span>}
-                            {product.version && <span className="bg-white dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600">🔖 v{product.version}</span>}
+                          <div className="flex flex-wrap gap-2 text-[11px] font-mono tracking-widest uppercase text-slate-500">
+                            {product.fileFormat && <span className="bg-white dark:bg-[#0D1117] px-2 py-1 rounded-[4px] border border-slate-200 dark:border-white/10 flex items-center gap-1.5"><FileCode2 size={12}/> {product.fileFormat}</span>}
+                            {product.fileSize && <span className="bg-white dark:bg-[#0D1117] px-2 py-1 rounded-[4px] border border-slate-200 dark:border-white/10 flex items-center gap-1.5"><Award size={12}/> {product.fileSize}</span>}
+                            {product.version && <span className="bg-white dark:bg-[#0D1117] px-2 py-1 rounded-[4px] border border-slate-200 dark:border-white/10 flex items-center gap-1.5"><ZoomIn size={12}/> v{product.version}</span>}
                           </div>
                         </div>
                       </div>
                     </div>
                     {/* Demo / Docs CTAs */}
                     {(product.demoUrl || product.documentationUrl) && (
-                      <div className="flex gap-2">
+                      <div className="flex gap-3">
                         {product.demoUrl && (
                           <a href={product.demoUrl} target="_blank" rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-[14px] border border-[#0071e3] text-[#0071e3] text-[14px] font-normal hover:bg-[#0071e3] hover:text-white transition">
-                            <Globe size={16} /> Live Preview
+                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[4px] border border-brand-blue text-brand-blue text-[14px] font-sans font-medium hover:bg-brand-blue/5 transition-colors">
+                            <Globe size={16} strokeWidth={1.5} /> Live Preview
                           </a>
                         )}
                         {product.documentationUrl && (
                           <a href={product.documentationUrl} target="_blank" rel="noopener noreferrer"
-                            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-[14px] border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-[14px] font-normal hover:bg-gray-50 dark:hover:bg-slate-800 transition">
-                            <BookOpen size={16} /> Documentation
+                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[4px] border border-slate-300 dark:border-white/20 text-slate-600 dark:text-slate-300 text-[14px] font-sans font-medium hover:bg-brand-cloud dark:hover:bg-[#161B22] transition-colors">
+                            <BookOpen size={16} strokeWidth={1.5} /> Documentation
                           </a>
                         )}
                       </div>
                     )}
                     {/* Tech Stack */}
                     {techStackTags.length > 0 && (
-                      <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700">
-                        <span className="text-[12px] font-semibold uppercase tracking-wide text-[#86868b] block mb-2">Built With</span>
+                      <div className="bg-brand-cloud dark:bg-[#161B22] rounded-[4px] p-4 border border-slate-200 dark:border-white/10 mt-3">
+                        <span className="text-[11px] font-mono font-medium uppercase tracking-widest text-slate-500 block mb-3">Built With</span>
                         <div className="flex flex-wrap gap-2">
                           {techStackTags.map(tag => (
-                            <span key={tag} className="text-[12px] px-2.5 py-1 bg-white dark:bg-slate-700 rounded-full border border-gray-200 dark:border-gray-600 text-[#1d1d1f] dark:text-gray-200">{tag}</span>
+                            <span key={tag} className="text-[12px] font-mono px-2 py-1 bg-white dark:bg-[#0D1117] rounded-[4px] border border-slate-200 dark:border-white/10 text-brand-navy dark:text-slate-300">{tag}</span>
                           ))}
                         </div>
                       </div>
                     )}
                     {/* Changelog Accordion */}
                     {changelogEntries.length > 0 && (
-                      <div className="border border-[#e8e8ed] dark:border-gray-700 rounded-[14px] overflow-hidden">
+                      <div className="border border-slate-200 dark:border-white/10 rounded-[4px] overflow-hidden mt-3 bg-white dark:bg-[#0D1117]">
                         <button onClick={() => setChangelogOpen(o => !o)}
-                          className="w-full flex items-center justify-between px-4 py-3 bg-[#f5f5f7] dark:bg-slate-800/50 text-[14px] font-semibold text-[#1d1d1f] dark:text-white">
+                          className="w-full flex items-center justify-between px-4 py-3 bg-brand-cloud dark:bg-[#161B22] text-[14px] font-sans font-medium text-brand-navy dark:text-white border-b border-transparent hover:border-slate-200 dark:hover:border-white/10 transition-colors">
                           <span>Version History</span>
-                          <ChevronRight size={16} className={`transition-transform ${changelogOpen ? 'rotate-90' : ''}`} />
+                          <ChevronRight size={16} className={`transition-transform text-slate-400 ${changelogOpen ? 'rotate-90' : ''}`} />
                         </button>
                         {changelogOpen && (
-                          <div className="divide-y divide-[#e8e8ed] dark:divide-gray-700">
+                          <div className="divide-y divide-slate-100 dark:divide-white/5">
                             {changelogEntries.map((entry, i) => (
                               <div key={i} className="px-4 py-3">
-                                <div className="flex items-center gap-2 mb-0.5">
-                                  <span className="text-[12px] font-bold text-[#0071e3]">v{entry.version}</span>
-                                  {entry.date && <span className="text-[11px] text-[#86868b]">{new Date(entry.date).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })}</span>}
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-[12px] font-mono font-medium text-brand-blue">v{entry.version}</span>
+                                  {entry.date && <span className="text-[11px] font-mono text-slate-400">{new Date(entry.date).toLocaleDateString('en-US', { month:'short', day:'2-digit', year:'numeric' })}</span>}
                                 </div>
-                                <p className="text-[13px] text-[#424245] dark:text-gray-400">{entry.notes}</p>
+                                <p className="text-[13px] font-sans text-slate-600 dark:text-slate-400">{entry.notes}</p>
                               </div>
                             ))}
                           </div>
@@ -743,32 +744,32 @@ export default function ProductDetails({ params }) {
                   <>
                     {/* Legacy Physical: Warranty */}
                     {product.warranty_info ? (
-                      <Link href="/warranty" className="bg-[#f5f5f7] hover:bg-[#e8e8ed] dark:bg-slate-800/50 dark:hover:bg-slate-800 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#1d1d1f] dark:text-white transition group border border-transparent">
-                        <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                      <Link href="/warranty" className="bg-brand-cloud hover:bg-slate-100 dark:bg-[#161B22] dark:hover:bg-[#1c222b] rounded-[4px] p-4 flex items-center justify-center gap-4 text-brand-navy dark:text-white transition-colors group border border-slate-200 dark:border-white/10 mt-3">
+                        <div className="shrink-0"><ShieldCheck size={24} strokeWidth={1.5} className="text-brand-blue" /></div>
                         <div className="flex flex-col">
-                          <span className="font-bold text-[16px] leading-tight capitalize">{product.warranty_info}</span>
-                          <span className="text-[12.5px] text-[#86868b] mt-0.5 group-hover:text-[#1d1d1f] transition">View Policy →</span>
+                          <span className="font-sans font-medium text-[15px] leading-tight capitalize">{product.warranty_info}</span>
+                          <span className="text-[12px] font-mono uppercase tracking-widest text-brand-blue opacity-80 mt-1 group-hover:opacity-100 transition-opacity">View Policy →</span>
                         </div>
                       </Link>
                     ) : (
-                      <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 flex items-center justify-center gap-4 text-[#86868b] border border-[#e8e8ed] dark:border-gray-700">
-                        <div className="shrink-0"><ShieldCheck size={28} strokeWidth={1.5} className="opacity-40" /></div>
+                      <div className="bg-brand-cloud dark:bg-[#161B22] rounded-[4px] p-4 flex items-center justify-center gap-4 text-slate-500 border border-slate-200 dark:border-white/10 mt-3">
+                        <div className="shrink-0"><ShieldCheck size={24} strokeWidth={1.5} className="opacity-40" /></div>
                         <div className="flex flex-col">
-                          <span className="font-bold text-[16px] leading-tight">No Warranty</span>
-                          <span className="text-[12.5px] mt-0.5">Not applicable for this item</span>
+                          <span className="font-sans font-medium text-[15px] leading-tight text-brand-navy dark:text-slate-300">No Warranty</span>
+                          <span className="text-[13px] mt-0.5">Not applicable for this item</span>
                         </div>
                       </div>
                     )}
                     {/* Legacy Physical: Delivery */}
-                    <div className="bg-[#f5f5f7] dark:bg-slate-800/50 rounded-[14px] p-4 border border-[#e8e8ed] dark:border-gray-700 mt-2">
+                    <div className="bg-brand-cloud dark:bg-[#161B22] rounded-[4px] p-4 border border-slate-200 dark:border-white/10 mt-3">
                       <div className="flex items-start gap-4">
-                        <div className="shrink-0 mt-1"><Truck size={24} strokeWidth={1.5} className="text-[#0071e3]" /></div>
+                        <div className="shrink-0 mt-1"><Truck size={20} strokeWidth={1.5} className="text-brand-blue" /></div>
                         <div className="flex flex-col flex-1">
-                          <span className="font-bold text-[15px] text-[#1d1d1f] dark:text-white mb-1">Delivery Details</span>
-                          <span className="text-[13px] text-[#424245] dark:text-gray-400 leading-snug mb-2">
+                          <span className="font-sans font-medium text-[14px] text-brand-navy dark:text-white mb-1">Delivery Details</span>
+                          <span className="text-[13px] text-slate-500 leading-snug mb-2">
                             Cash on Delivery available. Charges calculated at checkout based on location.
                           </span>
-                          <Link href="/delivery" className="text-[13px] font-medium text-[#0071e3] hover:underline flex items-center gap-1 group w-fit">
+                          <Link href="/delivery" className="text-[12px] font-mono uppercase tracking-widest text-brand-blue hover:text-brand-blue/80 flex items-center gap-1 group w-fit mt-1">
                             View Delivery Policy <ChevronRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                           </Link>
                         </div>
@@ -784,17 +785,17 @@ export default function ProductDetails({ params }) {
           {/* Specifications (Conditional) */}
           {specs.length > 0 && (
             <div className="mt-16 mb-8 max-w-[980px]">
-              <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em]">Product Information</h2>
+              <h2 className="text-[24px] font-display font-medium text-brand-navy dark:text-white mb-8 border-b border-slate-200 dark:border-white/10 pb-4">Product Information</h2>
               <ul className="flex flex-col">
                 {specs.map((s, idx) => (
-                  <li key={idx} className="flex flex-col sm:flex-row border-t border-[#e8e8ed] dark:border-slate-800 py-6 sm:py-8">
-                    <div className="w-full sm:w-[25%] mb-3 sm:mb-0 pr-4 shrink-0">
-                      <span className="text-[17px] font-semibold text-[#1d1d1f] dark:text-white capitalize">
+                  <li key={idx} className="flex flex-col sm:flex-row border-b border-slate-100 dark:border-white/5 py-5">
+                    <div className="w-full sm:w-[30%] mb-2 sm:mb-0 pr-4 shrink-0 flex items-center">
+                      <span className="text-[13px] font-mono text-slate-500 uppercase tracking-wide">
                         {s.key}
                       </span>
                     </div>
                     <div className="flex-1">
-                      <span className="text-[15px] text-[#1d1d1f] dark:text-gray-300 leading-[1.6]">
+                      <span className="text-[14px] font-sans text-brand-navy dark:text-slate-300 leading-relaxed">
                         {s.value}
                       </span>
                     </div>
@@ -811,10 +812,10 @@ export default function ProductDetails({ params }) {
       {/* Screenshot Gallery — Digital Products Only */}
       {isDigital && screenshotGallery.length > 0 && (
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-          <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-6 tracking-[-0.01em]">Screenshots</h2>
+          <h2 className="text-[24px] font-display font-medium text-brand-navy dark:text-white mb-6 border-b border-slate-200 dark:border-white/10 pb-4">Screenshots</h2>
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
             {screenshotGallery.map((img, idx) => (
-              <div key={idx} className="shrink-0 snap-start rounded-xl overflow-hidden border border-[#e8e8ed] dark:border-gray-700 cursor-pointer hover:opacity-90 transition"
+              <div key={idx} className="shrink-0 snap-start rounded-[4px] overflow-hidden border border-slate-200 dark:border-white/10 cursor-pointer hover:opacity-90 transition-opacity bg-brand-cloud dark:bg-[#161B22]"
                 style={{ minWidth: '60%', maxWidth: '60%' }}
                 onClick={() => { setActiveImage(img); setIsLightboxOpen(true); }}>
                 <img src={getOptimizedUrl(img)} alt={`Screenshot ${idx + 1}`} className="w-full h-auto object-cover" />
@@ -828,15 +829,15 @@ export default function ProductDetails({ params }) {
       {product.description && (
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16">
           <div className="w-full max-w-[980px] lg:ml-auto">
-            <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em] border-t border-[#e8e8ed] dark:border-slate-800 pt-8">Description</h2>
-            <div className="whitespace-pre-line prose prose-blue dark:prose-invert max-w-none text-[#1d1d1f] dark:text-gray-300 text-[15px] leading-[1.6]">
+            <h2 className="text-[24px] font-display font-medium text-brand-navy dark:text-white mb-6 border-b border-slate-200 dark:border-white/10 pb-4 pt-8">Description</h2>
+            <div className="whitespace-pre-line prose prose-blue dark:prose-invert max-w-none text-brand-navy dark:text-slate-300 text-[15px] font-sans leading-relaxed">
               {product.description}
             </div>
             
             {images.length > 1 && (
               <div className="mt-8 space-y-4">
                 {images.slice(1).map((img, idx) => (
-                  <img key={idx} src={getOptimizedUrl(img)} alt="Product Description" className="w-full rounded-xl hover:opacity-95 transition-opacity cursor-pointer" onClick={() => { setActiveImage(img); setIsLightboxOpen(true); }} />
+                  <img key={idx} src={getOptimizedUrl(img)} alt="Product Description" className="w-full rounded-[4px] border border-slate-200 dark:border-white/10 hover:opacity-95 transition-opacity cursor-pointer" onClick={() => { setActiveImage(img); setIsLightboxOpen(true); }} />
                 ))}
               </div>
             )}
@@ -845,35 +846,35 @@ export default function ProductDetails({ params }) {
       )}
 
       {/* Customer Reviews Section */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16 border-t border-[#e8e8ed] dark:border-slate-800 pt-12">
-        <h2 className="text-[28px] font-bold text-[#1d1d1f] dark:text-white mb-8 tracking-[-0.01em]">Customer Reviews</h2>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-16 pt-12">
+        <h2 className="text-[24px] font-display font-medium text-brand-navy dark:text-white mb-8 border-b border-slate-200 dark:border-white/10 pb-4">Customer Reviews</h2>
         
         <div className="flex flex-col lg:flex-row gap-12">
           {/* Summary & Form */}
           <div className="lg:w-4/12 flex flex-col gap-6">
-            <div className="bg-[#f5f5f7] dark:bg-slate-800/50 p-6 rounded-2xl border border-[#e8e8ed] dark:border-gray-700">
+            <div className="bg-brand-cloud dark:bg-[#161B22] p-6 rounded-[4px] border border-slate-200 dark:border-white/10">
               <div className="flex items-center gap-4 mb-4">
-                <div className="text-[48px] font-bold text-[#1d1d1f] dark:text-white leading-none">
+                <div className="text-[48px] font-display font-medium text-brand-navy dark:text-white leading-none">
                   {product.averageRating?.toFixed(1) || '0.0'}
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="flex text-pink-500">
                     {[1, 2, 3, 4, 5].map(star => (
-                      <Star key={star} size={20} className={star <= Math.round(product.averageRating || 0) ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                      <Star key={star} size={20} className={star <= Math.round(product.averageRating || 0) ? "fill-current" : "text-slate-300 dark:text-slate-600"} />
                     ))}
                   </div>
-                  <span className="text-[13px] text-[#86868b] font-medium">{product.reviewCount || 0} Ratings</span>
+                  <span className="text-[11px] font-mono tracking-widest uppercase text-slate-500 mt-1">{product.reviewCount || 0} Ratings</span>
                 </div>
               </div>
-              <p className="text-[14px] text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-[13px] font-sans text-slate-500 mb-6 leading-relaxed">
                 Only verified buyers can leave a review. This ensures all feedback is genuine and helpful to our community.
               </p>
-              <div className="flex flex-col gap-3 border-t border-[#e8e8ed] dark:border-gray-700 pt-6">
-                <h4 className="font-semibold text-[#1d1d1f] dark:text-white">Leave a Review</h4>
+              <div className="flex flex-col gap-3 border-t border-slate-200 dark:border-white/10 pt-6">
+                <h4 className="font-sans font-medium text-[15px] text-brand-navy dark:text-white">Leave a Review</h4>
                 <div className="flex gap-1 text-pink-500 mb-2">
                   {[1, 2, 3, 4, 5].map(star => (
-                    <button key={star} onClick={() => setReviewRating(star)} className="hover:scale-110 transition">
-                      <Star size={24} className={star <= reviewRating ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                    <button key={star} onClick={() => setReviewRating(star)} className="hover:scale-110 transition-transform">
+                      <Star size={24} className={star <= reviewRating ? "fill-current" : "text-slate-300 dark:text-slate-600"} />
                     </button>
                   ))}
                 </div>
@@ -881,11 +882,11 @@ export default function ProductDetails({ params }) {
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
                   placeholder="Share your experience..."
-                  className="w-full bg-white dark:bg-slate-900 border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-[14px] min-h-[100px] outline-none focus:border-[#0071e3] transition"
+                  className="w-full bg-white dark:bg-[#0D1117] border border-slate-300 dark:border-white/20 rounded-[4px] p-3 text-[14px] font-sans min-h-[100px] outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue/30 transition-all text-brand-navy dark:text-white placeholder:text-slate-400"
                 />
                 <button 
                   onClick={() => alert('Review submitted for moderation.')}
-                  className="bg-[#1d1d1f] dark:bg-white text-white dark:text-black font-semibold py-2.5 rounded-lg text-[14px] hover:opacity-80 transition"
+                  className="bg-brand-navy dark:bg-white text-white dark:text-brand-navy font-sans font-medium py-2.5 rounded-[4px] text-[14px] hover:opacity-90 transition-opacity"
                 >
                   Submit Review
                 </button>
@@ -897,29 +898,29 @@ export default function ProductDetails({ params }) {
           <div className="lg:w-8/12 flex flex-col gap-6">
             {product.reviews && product.reviews.length > 0 ? (
               product.reviews.map((rev, i) => (
-                <div key={i} className="border-b border-[#e8e8ed] dark:border-slate-800 pb-6">
+                <div key={i} className="border-b border-slate-200 dark:border-white/10 pb-6">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex flex-col gap-1">
-                      <span className="font-bold text-[#1d1d1f] dark:text-white text-[15px]">{rev.name}</span>
+                      <span className="font-sans font-medium text-brand-navy dark:text-white text-[15px]">{rev.name}</span>
                       <div className="flex items-center gap-2">
                         <div className="flex text-pink-500">
                           {[1, 2, 3, 4, 5].map(star => (
-                            <Star key={star} size={14} className={star <= rev.rating ? "fill-current" : "text-gray-300 dark:text-gray-600"} />
+                            <Star key={star} size={14} className={star <= rev.rating ? "fill-current" : "text-slate-300 dark:text-slate-600"} />
                           ))}
                         </div>
-                        {rev.verified && <span className="text-[11px] font-semibold text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded uppercase tracking-wide">Verified Buyer</span>}
+                        {rev.verified && <span className="text-[10px] font-mono font-medium text-brand-teal bg-brand-teal/10 border border-brand-teal/20 px-1.5 py-0.5 rounded-[4px] uppercase tracking-widest">Verified Buyer</span>}
                       </div>
                     </div>
-                    <span className="text-[12px] text-[#86868b]">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                    <span className="text-[12px] font-mono tracking-widest text-slate-500">{new Date(rev.createdAt).toLocaleDateString()}</span>
                   </div>
-                  <p className="text-[14px] text-gray-700 dark:text-gray-300 leading-relaxed mt-2">{rev.comment}</p>
+                  <p className="text-[14px] font-sans text-brand-navy dark:text-slate-300 leading-relaxed mt-3">{rev.comment}</p>
                 </div>
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-center h-full border-2 border-dashed border-[#e8e8ed] dark:border-gray-800 rounded-2xl">
-                <Star size={48} className="text-gray-200 dark:text-gray-700 mb-4" />
-                <h3 className="text-[18px] font-bold text-[#1d1d1f] dark:text-white mb-2">No reviews yet</h3>
-                <p className="text-[#86868b] text-[14px]">Be the first to share your thoughts on this product.</p>
+              <div className="flex flex-col items-center justify-center py-12 text-center h-full border border-slate-200 dark:border-white/10 rounded-[4px] bg-brand-cloud dark:bg-[#161B22]">
+                <Star size={40} strokeWidth={1} className="text-slate-300 dark:text-slate-600 mb-4" />
+                <h3 className="text-[16px] font-sans font-medium text-brand-navy dark:text-white mb-2">No reviews yet</h3>
+                <p className="text-slate-500 text-[13px] font-sans">Be the first to share your thoughts on this product.</p>
               </div>
             )}
           </div>
@@ -927,10 +928,10 @@ export default function ProductDetails({ params }) {
       </div>
       {/* Lightbox Modal */}
       {isLightboxOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-[#000000]/95 backdrop-blur-xl animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-cloud/95 dark:bg-[#0D1117]/95 backdrop-blur-xl animate-in fade-in duration-300">
           <button 
             onClick={() => setIsLightboxOpen(false)}
-            className="absolute top-6 right-6 p-3 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+            className="absolute top-6 right-6 p-3 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 hover:border-brand-blue dark:hover:border-brand-blue rounded-[4px] text-brand-navy dark:text-white transition-colors z-50"
           >
             <X size={24} />
           </button>
@@ -943,7 +944,7 @@ export default function ProductDetails({ params }) {
                 const prevIndex = currentIndex === 0 ? images.length - 1 : currentIndex - 1;
                 setActiveImage(images[prevIndex]);
               }}
-              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 hover:border-brand-blue dark:hover:border-brand-blue rounded-[4px] text-brand-navy dark:text-white transition-colors z-50"
             >
               <ChevronLeft size={32} />
             </button>
@@ -966,7 +967,7 @@ export default function ProductDetails({ params }) {
                 const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
                 setActiveImage(images[nextIndex]);
               }}
-              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-gray-100 dark:bg-zinc-800 hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full text-gray-800 dark:text-white transition-colors z-50"
+              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 hover:border-brand-blue dark:hover:border-brand-blue rounded-[4px] text-brand-navy dark:text-white transition-colors z-50"
             >
               <ChevronRight size={32} />
             </button>
@@ -974,12 +975,12 @@ export default function ProductDetails({ params }) {
           
           {/* Thumbnails in Lightbox */}
           {images.length > 1 && (
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 p-4 bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-2xl">
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 p-4 bg-brand-cloud/80 dark:bg-[#161B22]/80 border border-slate-200 dark:border-white/10 backdrop-blur-md rounded-[4px]">
               {images.map((img, idx) => (
                 <button 
                   key={idx} 
                   onClick={() => setActiveImage(img)}
-                  className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${activeImage === img ? 'border-gray-800 dark:border-white scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                  className={`w-16 h-16 rounded-[4px] overflow-hidden border transition-all ${activeImage === img ? 'border-brand-blue scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100 hover:border-slate-300 dark:hover:border-white/20'}`}
                 >
                   <img src={getOptimizedUrl(img)} alt={`Thumb ${idx}`} className="w-full h-full object-cover" />
                 </button>

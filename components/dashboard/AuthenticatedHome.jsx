@@ -54,7 +54,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-white overflow-x-hidden selection:bg-blue-600/20">
+    <div className="min-h-screen bg-brand-cloud dark:bg-slate-900 text-slate-900 dark:text-white overflow-x-hidden selection:bg-brand-blue/20">
 
       {/* Background Mesh Gradient (Removed as per request) */}
       {/* 

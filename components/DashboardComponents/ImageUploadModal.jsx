@@ -166,7 +166,7 @@ export default function ImageUploadModal({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full transition-colors"
           >
             <X size={20} className="text-slate-500 dark:text-slate-400" />
           </button>
@@ -184,7 +184,7 @@ export default function ImageUploadModal({
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
                 dragActive
-                  ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/10"
+                  ? "border-brand-blue bg-brand-sky dark:bg-indigo-900/10"
                   : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               }`}
             >
@@ -228,7 +228,7 @@ export default function ImageUploadModal({
                   setSelectedFile(null);
                   setPreview(null);
                 }}
-                className="w-full py-2 px-4 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 border border-slate-300 dark:border-slate-700 rounded-lg text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
               >
                 <Camera size={18} />
                 Change Image
@@ -248,14 +248,14 @@ export default function ImageUploadModal({
         <div className="flex gap-3 p-6 border-t border-slate-200 dark:border-slate-800">
           <button
             onClick={handleClose}
-            className="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-gray-300 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium"
+            className="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-brand-slate dark:text-slate-300 rounded-lg hover:bg-brand-cloud dark:hover:bg-slate-900 transition-colors font-medium"
           >
             Cancel
           </button>
           <button
             onClick={handleUpload}
             disabled={!selectedFile || uploading}
-            className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
+            className="flex-1 px-4 py-2.5 bg-brand-blue text-white rounded-lg hover:bg-brand-blue transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
           >
             {uploading ? (
               <>

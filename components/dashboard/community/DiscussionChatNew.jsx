@@ -131,7 +131,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
               </span>
               <button
                 onClick={() => setReplyingTo(msg)}
-                className="opacity-0 group-hover:opacity-100 text-xs text-indigo-600 hover:text-blue-600 flex items-center gap-1"
+                className="opacity-0 group-hover:opacity-100 text-xs text-brand-blue hover:text-brand-blue flex items-center gap-1"
               >
                 <Reply className="w-3 h-3" />
                 Reply
@@ -139,7 +139,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
             </div>
             
             {msg.content && (
-              <p className="text-slate-700 dark:text-gray-300 text-sm bg-slate-50 dark:bg-white/5 rounded-xl p-3 mb-2">
+              <p className="text-brand-slate dark:text-slate-300 text-sm bg-brand-cloud dark:bg-white/5 rounded-xl p-3 mb-2">
                 {msg.content}
               </p>
             )}
@@ -181,7 +181,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
             {replies.length > 0 && (
               <button
                 onClick={() => toggleThread(msg._id)}
-                className="flex items-center gap-2 mt-2 text-xs text-indigo-600 hover:text-blue-600"
+                className="flex items-center gap-2 mt-2 text-xs text-brand-blue hover:text-brand-blue"
               >
                 {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                 {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
@@ -237,11 +237,11 @@ export default function DiscussionChat({ discussionId, onClose }) {
 
         <form onSubmit={handleSendMessage} className="p-6 border-t border-slate-200 dark:border-white/10">
           {replyingTo && (
-            <div className="mb-3 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-between">
-              <span className="text-sm text-blue-600 dark:text-blue-400">
+            <div className="mb-3 p-2 bg-brand-sky dark:bg-blue-900/20 rounded-lg flex items-center justify-between">
+              <span className="text-sm text-brand-blue dark:text-blue-400">
                 Replying to {replyingTo.author?.name}
               </span>
-              <button onClick={() => setReplyingTo(null)} className="text-blue-600">
+              <button onClick={() => setReplyingTo(null)} className="text-brand-blue">
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -262,7 +262,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
           
           <div className="flex gap-3">
             <input type="file" ref={fileInputRef} onChange={(e) => setSelectedFiles([...selectedFiles, ...Array.from(e.target.files)])} multiple accept="image/*,video/*,.pdf,.zip,.doc,.docx,.txt" className="hidden" />
-            <button type="button" onClick={() => fileInputRef.current?.click()} className="p-3 border border-slate-200 dark:border-white/10 rounded-xl hover:bg-slate-50 dark:hover:bg-white/5">
+            <button type="button" onClick={() => fileInputRef.current?.click()} className="p-3 border border-slate-200 dark:border-white/10 rounded-xl hover:bg-brand-cloud dark:hover:bg-white/5">
               <Paperclip className="w-5 h-5 text-slate-500" />
             </button>
             <input

@@ -188,7 +188,7 @@ export default function TechIcon({ tech, className = "", size = 16 }) {
     return (
         <div 
             title={tech}
-            className={`flex items-center justify-center font-bold font-mono border border-slate-200 dark:border-white/10 rounded bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-slate-400 ${className}`}
+            className={`flex items-center justify-center font-bold font-mono border border-slate-200 dark:border-white/10 rounded bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 ${className}`}
             style={{ width: size, height: size, fontSize: size * 0.6 }}
         >
             {tech ? String(tech).charAt(0).toUpperCase() : <Code2 size={size * 0.7} />}

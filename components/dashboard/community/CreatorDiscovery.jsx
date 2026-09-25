@@ -68,7 +68,7 @@ export default function CraftsmanDiscovery({ isOpen, onClose }) {
               <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 Discover Craftsmen
               </h2>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-brand-slate dark:text-slate-400">
                 Find talented craftsmen to collaborate with
               </p>
             </div>
@@ -116,7 +116,7 @@ export default function CraftsmanDiscovery({ isOpen, onClose }) {
             
             {/* Results Count & Quick Filters */}
             <div className="flex items-center justify-between">
-              <span className="text-sm text-slate-600 dark:text-slate-400">
+              <span className="text-sm text-brand-slate dark:text-slate-400">
                 {filteredCraftsmen.length} craftsman{filteredCraftsmen.length !== 1 ? 's' : ''} found
               </span>
               <div className="flex items-center gap-2">
@@ -233,7 +233,7 @@ const CraftsmanCard = ({ craftsman }) => {
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
             {craftsman.name}
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-3">
+          <p className="text-sm text-brand-slate dark:text-slate-400 line-clamp-2 mb-3">
             {craftsman.bio || "Creative professional"}
           </p>
           
@@ -257,7 +257,7 @@ const CraftsmanCard = ({ craftsman }) => {
               {craftsman.skills.slice(0, 3).map((skill, i) => (
                 <span
                   key={i}
-                  className="px-2 py-1 bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-300 text-xs rounded-lg font-medium"
+                  className="px-2 py-1 bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-300 text-xs rounded-lg font-medium"
                 >
                   {skill}
                 </span>
@@ -278,7 +278,7 @@ const CraftsmanCard = ({ craftsman }) => {
             disabled={loading}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
               isFollowing
-                ? "bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-gray-300"
+                ? "bg-slate-100 dark:bg-white/10 text-brand-slate dark:text-slate-300"
                 : "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/30"
             }`}
           >
@@ -290,7 +290,7 @@ const CraftsmanCard = ({ craftsman }) => {
             className="p-2.5 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 rounded-xl transition-all"
             title="Send message"
           >
-            <MessageCircle className="w-4 h-4 text-slate-700 dark:text-gray-300" />
+            <MessageCircle className="w-4 h-4 text-brand-slate dark:text-slate-300" />
           </button>
         </div>
       </div>
@@ -331,7 +331,7 @@ const EmptyState = ({ searchTerm, onClearSearch }) => (
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
       No craftsmen found
     </h3>
-    <p className="text-slate-600 dark:text-slate-400 mb-6">
+    <p className="text-brand-slate dark:text-slate-400 mb-6">
       {searchTerm
         ? `No results for "${searchTerm}". Try different keywords.`
         : "No craftsmen available at the moment."}

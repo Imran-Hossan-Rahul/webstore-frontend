@@ -87,7 +87,7 @@ export default function DevlogUploadForm() {
       />
       <button
         type="submit"
-        className="bg-indigo-600 text-white px-4 py-2 rounded"
+        className="bg-brand-blue text-white px-4 py-2 rounded"
       >
         Upload Devlog
       </button>

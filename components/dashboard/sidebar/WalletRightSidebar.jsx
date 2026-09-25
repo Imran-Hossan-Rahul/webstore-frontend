@@ -6,7 +6,7 @@ const WalletRightSidebar = () => {
   const earningRules = [
     {
       title: "Token Rewards (TKNS)",
-      icon: <Coins className="text-amber-500" size={18} />,
+      icon: <Coins className="text-brand-amber" size={18} />,
       items: [
         { label: "Identity Verification", reward: "100 TKNS", icon: <ShieldCheck size={14} /> },
         { label: "Complete Profile", reward: "50 TKNS", icon: <UserPlus size={14} /> },
@@ -28,7 +28,7 @@ const WalletRightSidebar = () => {
       {earningRules.map((section, idx) => (
         <div key={idx} className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-100 dark:border-white/10 rounded-3xl p-6 shadow-sm shrink-0">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-brand-cloud dark:bg-white/5 flex items-center justify-center">
               {section.icon}
             </div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">{section.title}</h3>
@@ -36,16 +36,16 @@ const WalletRightSidebar = () => {
 
           <div className="space-y-1">
             {section.items.map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 dark:hover:bg-white/5 transition-all group">
+              <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-brand-cloud dark:hover:bg-white/5 transition-all group">
                 <div className="flex items-center gap-3">
-                  <div className="text-slate-400 group-hover:text-indigo-600 transition-colors">
+                  <div className="text-slate-400 group-hover:text-brand-blue transition-colors">
                     {item.icon}
                   </div>
-                  <span className="text-[12px] font-bold text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                  <span className="text-[12px] font-bold text-brand-slate dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                     {item.label}
                   </span>
                 </div>
-                <span className="text-[10px] font-black tabular-nums bg-slate-50 dark:bg-white/5 px-2 py-1 rounded-lg text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                <span className="text-[10px] font-black tabular-nums bg-brand-cloud dark:bg-white/5 px-2 py-1 rounded-lg text-slate-400 group-hover:text-brand-blue dark:group-hover:text-indigo-400 transition-colors">
                   +{item.reward}
                 </span>
               </div>
@@ -63,7 +63,7 @@ const WalletRightSidebar = () => {
             </div>
             <h3 className="text-xs font-bold uppercase tracking-widest">Authority Bonus</h3>
          </div>
-         <p className="text-[11px] text-slate-300 dark:text-slate-600 leading-relaxed font-medium relative z-10 mb-4">
+         <p className="text-[11px] text-slate-300 dark:text-brand-slate leading-relaxed font-medium relative z-10 mb-4">
             Higher authority levels unlock exclusive features, lower commission rates, and priority support.
          </p>
          <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">

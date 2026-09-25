@@ -42,7 +42,7 @@ export function ViewsTable({ artifacts }) {
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-slate-50 sticky top-0 z-10">
+        <thead className="bg-brand-cloud sticky top-0 z-10">
           <tr>
             <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Artifact Name</th>
             <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Total Views</th>
@@ -51,14 +51,14 @@ export function ViewsTable({ artifacts }) {
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((t, i) => (
-                <tr key={t._id} className="hover:bg-slate-50 transition-colors">
+                <tr key={t._id} className="hover:bg-brand-cloud transition-colors">
                     <td className="p-4 font-medium text-slate-900 flex items-center gap-3">
                         <span className="text-slate-400 text-xs font-mono w-6">#{i+1}</span>
                         {t.title}
                     </td>
-                    <td className="p-4 font-mono text-slate-600">{t.viewsCount || 0}</td>
+                    <td className="p-4 font-mono text-brand-slate">{t.viewsCount || 0}</td>
                     <td className="p-4 text-right">
-                         <a href={`/artifacts/${t._id}`} target="_blank" className="text-indigo-600 hover:text-blue-700 inline-flex items-center gap-1 text-sm">
+                         <a href={`/artifacts/${t._id}`} target="_blank" className="text-brand-blue hover:text-blue-700 inline-flex items-center gap-1 text-sm">
                             View <ExternalLink size={12}/>
                          </a>
                     </td>
@@ -77,7 +77,7 @@ export function DownloadsTable({ artifacts }) {
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-slate-50 sticky top-0 z-10">
+        <thead className="bg-brand-cloud sticky top-0 z-10">
           <tr>
             <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Artifact Name</th>
             <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Downloads</th>
@@ -87,14 +87,14 @@ export function DownloadsTable({ artifacts }) {
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((t, i) => (
-                <tr key={t._id} className="hover:bg-slate-50 transition-colors">
+                <tr key={t._id} className="hover:bg-brand-cloud transition-colors">
                     <td className="p-4 font-medium text-slate-900 flex items-center gap-3">
                         <span className="text-slate-400 text-xs font-mono w-6">#{i+1}</span>
                         {t.title}
                     </td>
-                    <td className="p-4 text-slate-600 font-mono">{(t.downloadsCount || 0).toLocaleString()}</td>
+                    <td className="p-4 text-brand-slate font-mono">{(t.downloadsCount || 0).toLocaleString()}</td>
                      <td className="p-4">
-                        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-mono font-medium uppercase tracking-widest ${t.priceType === 'paid' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}>
+                        <span className={`px-2 py-0.5 rounded-sm text-[10px] font-mono font-medium uppercase tracking-widest ${t.priceType === 'paid' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-brand-slate'}`}>
                             {t.priceType === 'paid' ? 'Paid' : 'Free'}
                         </span>
                     </td>
@@ -117,7 +117,7 @@ export function DetailedCountryTable({ data }) {
   return (
     <div className="w-full">
       <table className="w-full text-left border-collapse">
-        <thead className="bg-slate-50 sticky top-0 z-10">
+        <thead className="bg-brand-cloud sticky top-0 z-10">
           <tr>
             <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Country</th>
             <th className="p-4 rounded-tr-xl font-mono text-[11px] uppercase tracking-wider text-slate-500 text-right">Visitor Count</th>
@@ -125,9 +125,9 @@ export function DetailedCountryTable({ data }) {
         </thead>
         <tbody className="divide-y divide-gray-100">
             {sorted.map((c, i) => (
-                <tr key={i} className="hover:bg-slate-50 transition-colors">
+                <tr key={i} className="hover:bg-brand-cloud transition-colors">
                     <td className="p-4 font-medium text-slate-900 font-sans">{c.country}</td>
-                    <td className="p-4 text-right text-slate-600 font-mono">{c.visitors.toLocaleString()}</td>
+                    <td className="p-4 text-right text-brand-slate font-mono">{c.visitors.toLocaleString()}</td>
                 </tr>
             ))}
             {sorted.length === 0 && (
@@ -167,7 +167,7 @@ export function detailedEarningsTable({ earnings }) {
 
       <h3 className="text-base font-medium mb-4 font-sans text-slate-900">Payout History</h3>
       <table className="w-full text-left border-collapse">
-        <thead className="bg-slate-50 sticky top-0 z-10">
+        <thead className="bg-brand-cloud sticky top-0 z-10">
           <tr>
             <th className="p-4 rounded-tl-xl font-mono text-[11px] uppercase tracking-wider text-slate-500">Date</th>
             <th className="p-4 font-mono text-[11px] uppercase tracking-wider text-slate-500">Description</th>
@@ -177,7 +177,7 @@ export function detailedEarningsTable({ earnings }) {
         </thead>
         <tbody className="divide-y divide-gray-100">
             {rows.map((row) => (
-                <tr key={row.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={row.id} className="hover:bg-brand-cloud transition-colors">
                     <td className="p-4 text-slate-500 font-mono text-sm">{row.date}</td>
                     <td className="p-4 font-medium text-slate-900 font-sans">{row.description}</td>
                     <td className="p-4">

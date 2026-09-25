@@ -30,7 +30,7 @@ export default function WhyChooseUs() {
     <section className="w-full bg-[#f5f5f7] py-24 px-6 md:px-12 border-t border-[#e8e8ed] font-sans">
       <div className="max-w-[980px] mx-auto text-center">
         {/* Apple Style Header */}
-        <p className="uppercase text-[12px] tracking-[0.12em] font-semibold text-[#0071e3] mb-4">
+        <p className="uppercase text-[12px] tracking-[0.12em] font-semibold text-brand-blue mb-4">
           Who We Are
         </p>
         <h2 className="text-[40px] md:text-[56px] font-bold text-[#1d1d1f] tracking-[-0.02em] leading-tight mb-6">
@@ -59,13 +59,13 @@ export default function WhyChooseUs() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link 
             href="/auth/register"
-            className="inline-flex items-center justify-center bg-[#0071e3] text-white text-[17px] font-normal px-[22px] py-[11px] rounded-[980px] hover:bg-[#005bb5] transition-colors"
+            className="inline-flex items-center justify-center bg-brand-blue text-white text-[17px] font-normal px-[22px] py-[11px] rounded-[980px] hover:bg-[#005bb5] transition-colors"
           >
             Join Codalina
           </Link>
           <Link 
             href="/about"
-            className="inline-flex items-center justify-center bg-transparent border border-[#0071e3] text-[#0071e3] text-[17px] font-normal px-[22px] py-[11px] rounded-[980px] hover:bg-[#0071e3] hover:text-white transition-colors"
+            className="inline-flex items-center justify-center bg-transparent border border-brand-blue text-brand-blue text-[17px] font-normal px-[22px] py-[11px] rounded-[980px] hover:bg-brand-blue hover:text-white transition-colors"
           >
             Learn more
           </Link>

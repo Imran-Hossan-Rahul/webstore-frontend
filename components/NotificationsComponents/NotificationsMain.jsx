@@ -76,7 +76,7 @@ export default function NotificationsMain() {
       {loading ? (
         <div className="text-center py-20">Loading...</div>
       ) : notifications.length === 0 ? (
-        <div className="text-center py-20 text-slate-600">
+        <div className="text-center py-20 text-brand-slate">
           No notifications yet
         </div>
       ) : (
@@ -89,7 +89,7 @@ export default function NotificationsMain() {
                 if (notif.link) window.location.href = notif.link;
               }}
               className={`bg-white dark:bg-slate-900 rounded-[26px] p-6 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer ${
-                !notif.read ? "border-l-4 border-indigo-600" : ""
+                !notif.read ? "border-l-4 border-brand-blue" : ""
               }`}
             >
               <div className="flex items-start gap-4">
@@ -100,11 +100,11 @@ export default function NotificationsMain() {
                   <h3 className="text-lg font-semibold text-black dark:text-white mb-1">
                     {notif.title}
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400">{notif.message}</p>
+                  <p className="text-brand-slate dark:text-slate-400">{notif.message}</p>
                   <p className="text-sm text-slate-500 mt-2">{getTimeAgo(notif.createdAt)}</p>
                 </div>
                 {!notif.read && (
-                  <div className="w-3 h-3 bg-indigo-600 rounded-full flex-shrink-0 mt-2"></div>
+                  <div className="w-3 h-3 bg-brand-blue rounded-full flex-shrink-0 mt-2"></div>
                 )}
               </div>
             </div>

@@ -128,7 +128,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
         const parts = text.toString().split(new RegExp(`(${query})`, 'gi'));
         return parts.map((part, i) => 
             part.toLowerCase() === query.toLowerCase() 
-                ? <mark key={i} className="bg-yellow-200 dark:bg-yellow-500/30 text-inherit rounded-sm px-0.5">{part}</mark> 
+                ? <mark key={i} className="bg-yellow-200 dark:bg-brand-amber/30 text-inherit rounded-sm px-0.5">{part}</mark> 
                 : part
         );
     };
@@ -164,14 +164,14 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
 
             {/* Preview Image / Placeholder */}
             {type === 'note' ? (
-                <div className="relative h-48 bg-amber-50 dark:bg-amber-500/10 p-6 flex flex-col justify-center">
+                <div className="relative h-48 bg-amber-50 dark:bg-brand-amber/10 p-6 flex flex-col justify-center">
                     <Quote className="text-amber-200 dark:text-amber-900/50 absolute top-4 left-4 w-12 h-12 -rotate-6" />
-                    <p className="relative z-10 text-sm font-medium italic text-slate-700 dark:text-slate-300 line-clamp-4 leading-relaxed">
+                    <p className="relative z-10 text-sm font-medium italic text-brand-slate dark:text-slate-300 line-clamp-4 leading-relaxed">
                         &quot;{item.highlightedText}&quot;
                     </p>
                 </div>
             ) : (
-                <div className="relative h-48 bg-slate-50 dark:bg-slate-800/50 block overflow-hidden">
+                <div className="relative h-48 bg-brand-cloud dark:bg-slate-800/50 block overflow-hidden">
                     {imageUrl ? (
                         <img 
                             src={imageUrl} 
@@ -179,7 +179,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                             className="w-full h-full object-cover transition-opacity duration-500"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-200 dark:text-slate-700">
+                        <div className="w-full h-full flex items-center justify-center text-slate-200 dark:text-brand-slate">
                             {TypeIcon && <TypeIcon size={48} strokeWidth={1} />}
                         </div>
                     )}
@@ -208,7 +208,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                             </span>
                         </div>
                     </CraftsmanHoverCard>
-                    <span className="text-slate-300 dark:text-slate-700">·</span>
+                    <span className="text-slate-300 dark:text-brand-slate">·</span>
                     <span className="text-[10px] font-medium text-slate-400">
                         {item.createdAt ? formatDistanceToNow(new Date(item.createdAt)) : "recently"}
                     </span>
@@ -226,13 +226,13 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                 {/* Type-Specific Meta */}
                 <div className="mb-0">
                     {type === 'job' && (
-                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-slate-50 dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
+                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
                             <Zap size={12} strokeWidth={1.5} className="text-slate-400" />
                             <span>{item.budget?.min}-{item.budget?.max} TKNS</span>
                         </div>
                     )}
                     {type === 'challenge' && (
-                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-slate-50 dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
+                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
                             <Trophy size={12} strokeWidth={1.5} className="text-slate-400" />
                             <span>{item.prize} Prize Pool</span>
                         </div>
@@ -282,10 +282,10 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                                                     }
                                                 }}
                                                 disabled={movingFolderId === folder._id}
-                                                className="w-full text-left px-4 py-2 text-[12px] font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50"
+                                                className="w-full text-left px-4 py-2 text-[12px] font-bold text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50"
                                             >
                                                 {movingFolderId === folder._id ? (
-                                                    <AppleSpinner className="w-3 h-3 animate-spin text-indigo-500" />
+                                                    <AppleSpinner className="w-3 h-3 animate-spin text-brand-blue" />
                                                 ) : (
                                                     <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: folder.color || '#64748b' }} />
                                                 )}
@@ -301,7 +301,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                     <div className="flex items-center gap-1">
                         <button 
                             onClick={handleLike} 
-                            className={`p-1.5 transition-colors flex items-center gap-1 rounded-md ${isLiked ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10' : 'text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-slate-50 dark:hover:bg-white/5'}`} 
+                            className={`p-1.5 transition-colors flex items-center gap-1 rounded-md ${isLiked ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10' : 'text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-brand-cloud dark:hover:bg-white/5'}`} 
                             title={isLiked ? "Unlike" : "Star"}
                         >
                             <Star size={14} strokeWidth={1.5} className={isLiked ? 'fill-current' : ''} />
@@ -310,7 +310,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         <div className="flex items-center gap-1 px-1.5">
                             <span className="text-[10px] font-bold text-slate-400"><Eye size={12} className="inline mr-0.5" />{item.views || item.viewCount || 0}</span>
                         </div>
-                        <button onClick={handleShare} className="p-1.5 text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-md transition-colors ml-auto" title="Share">
+                        <button onClick={handleShare} className="p-1.5 text-slate-300 hover:text-brand-blue dark:hover:text-indigo-400 hover:bg-brand-sky dark:hover:bg-brand-blue/10 rounded-md transition-colors ml-auto" title="Share">
                             <Share2 size={14} strokeWidth={1.5} />
                         </button>
                     </div>

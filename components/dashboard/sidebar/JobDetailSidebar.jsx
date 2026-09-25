@@ -70,7 +70,7 @@ export default function JobDetailSidebar({ jobId }) {
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Required Skills</p>
             <div className="flex flex-wrap gap-2">
               {job.skills.map((skill, i) => (
-                <span key={i} className="px-3 py-1.5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:border-indigo-500 transition-colors">
+                <span key={i} className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-bold text-brand-slate dark:text-slate-400 hover:border-brand-blue transition-colors">
                   {skill}
                 </span>
               ))}
@@ -81,7 +81,7 @@ export default function JobDetailSidebar({ jobId }) {
 
       {/* Pro Tip Card */}
       <div className="bg-[#0f172a] rounded-[32px] p-8 text-white shadow-xl shadow-slate-900/10 relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-indigo-500/20 transition-all duration-700" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-blue/20 transition-all duration-700" />
         <div className="relative z-10">
           <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
             <Award size={14} /> Pro Tip

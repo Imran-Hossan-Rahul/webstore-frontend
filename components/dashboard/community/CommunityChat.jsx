@@ -50,7 +50,7 @@ const MessageBubble = ({ message, isOwn }) => {
 
 const OnlineUser = ({ user, isOnline }) => {
   return (
-    <div className="flex items-center gap-3 p-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg cursor-pointer">
+    <div className="flex items-center gap-3 p-2 hover:bg-brand-cloud dark:hover:bg-white/5 rounded-lg cursor-pointer">
       <div className="relative">
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {user.avatar ? (
@@ -64,7 +64,7 @@ const OnlineUser = ({ user, isOnline }) => {
           )}
         </div>
         {isOnline && (
-          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 border-2 border-white dark:border-black rounded-full" />
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-brand-teal border-2 border-white dark:border-black rounded-full" />
         )}
       </div>
       <div className="flex-1 min-w-0">
@@ -188,11 +188,11 @@ export default function CommunityChat() {
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <MessageCircle className="w-12 h-12 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+                  <MessageCircle className="w-12 h-12 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     No messages yet
                   </h3>
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-brand-slate dark:text-slate-400">
                     Start the conversation!
                   </p>
                 </div>
@@ -231,7 +231,7 @@ export default function CommunityChat() {
         </div>
 
         {/* Online Users Sidebar */}
-        <div className="w-64 border-l border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-black/20">
+        <div className="w-64 border-l border-slate-100 dark:border-white/5 bg-brand-cloud dark:bg-black/20">
           <div className="p-4 border-b border-slate-100 dark:border-white/5">
             <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
               Online ({onlineUsers.filter(u => u.isOnline).length})

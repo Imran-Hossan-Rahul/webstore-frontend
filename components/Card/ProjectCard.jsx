@@ -13,7 +13,7 @@ export default function DevlogCard({ devlog }) {
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-2">
           {tags.map((tag, i) => (
-            <span key={i} className="text-[10px] font-mono text-indigo-500 bg-indigo-50 px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
+            <span key={i} className="text-[10px] font-mono text-brand-blue bg-brand-sky px-1.5 py-0.5 rounded-sm uppercase tracking-wider">
               #{tag}
             </span>
           ))}
@@ -26,7 +26,7 @@ export default function DevlogCard({ devlog }) {
           {devlog.options.map((opt) => (
             <span
               key={opt}
-              className="bg-slate-100 text-slate-600 px-2 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest border border-slate-200"
+              className="bg-slate-100 text-brand-slate px-2 py-1 rounded-sm text-[10px] font-mono uppercase tracking-widest border border-slate-200"
             >
               {opt}
             </span>

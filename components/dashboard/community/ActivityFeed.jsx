@@ -11,21 +11,21 @@ const ActivityIcon = ({ type }) => {
 
   switch (type) {
     case "working_on_devlog":
-      return <Palette {...iconProps} className="text-indigo-600" />;
+      return <Palette {...iconProps} className="text-brand-blue" />;
     case "sharing_task":
-      return <CheckCircle {...iconProps} className="text-green-500" />;
+      return <CheckCircle {...iconProps} className="text-brand-teal" />;
     case "solving_problem":
       return <Code {...iconProps} className="text-purple-500" />;
     case "joined_collaboration":
       return <User {...iconProps} className="text-orange-500" />;
     case "completed_task":
-      return <CheckCircle {...iconProps} className="text-emerald-500" />;
+      return <CheckCircle {...iconProps} className="text-brand-teal" />;
     case "started_chatting":
       return <MessageCircle {...iconProps} className="text-pink-500" />;
     case "created_post":
-      return <FileText {...iconProps} className="text-indigo-500" />;
+      return <FileText {...iconProps} className="text-brand-blue" />;
     case "updated_profile":
-      return <User {...iconProps} className="text-cyan-500" />;
+      return <User {...iconProps} className="text-brand-cyan" />;
     default:
       return <Zap {...iconProps} className="text-slate-500" />;
   }
@@ -56,7 +56,7 @@ const ActivityItem = ({ activity }) => {
   };
 
   return (
-    <div className="flex items-start gap-4 p-4 border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+    <div className="flex items-start gap-4 p-4 border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud dark:hover:bg-white/5 transition-colors">
       <div className="flex-shrink-0">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {activity.user?.avatar ? (
@@ -77,13 +77,13 @@ const ActivityItem = ({ activity }) => {
           <span className="font-semibold text-slate-900 dark:text-white">
             {activity.user?.name || "Unknown User"}
           </span>
-          <span className="text-slate-600 dark:text-slate-400">
+          <span className="text-brand-slate dark:text-slate-400">
             {getActivityText()}
           </span>
         </div>
 
         {activity.description && (
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
+          <p className="text-sm text-brand-slate dark:text-slate-400 mb-2">
             {activity.description}
           </p>
         )}
@@ -142,7 +142,7 @@ export default function ActivityFeed() {
     return (
       <div className="p-8 text-center">
         <AppleSpinner className="mx-auto mb-4" />
-        <p className="text-slate-600 dark:text-slate-400">Loading community activities...</p>
+        <p className="text-brand-slate dark:text-slate-400">Loading community activities...</p>
       </div>
     );
   }
@@ -167,7 +167,7 @@ export default function ActivityFeed() {
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
           Live Activity Feed
         </h2>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-brand-slate dark:text-slate-400">
           See what the community is working on right now
         </p>
       </div>
@@ -179,11 +179,11 @@ export default function ActivityFeed() {
           ))
         ) : (
           <div className="p-12 text-center">
-            <Zap className="w-16 h-16 text-gray-300 dark:text-slate-600 mx-auto mb-4" />
+            <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No activities yet
             </h3>
-            <p className="text-slate-600 dark:text-slate-400">
+            <p className="text-brand-slate dark:text-slate-400">
               Be the first to share what you&apos;re working on!
             </p>
           </div>

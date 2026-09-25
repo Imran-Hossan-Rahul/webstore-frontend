@@ -5,11 +5,11 @@ import { X, Send, MessageCircle, HelpCircle, CheckCircle, AlertCircle, Lightbulb
 
 const POST_TYPES = [
   { id: 'comment', label: 'General', icon: MessageCircle, color: 'text-slate-500', bg: 'bg-slate-100 dark:bg-white/10' },
-  { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-indigo-600', bg: 'bg-indigo-600/10' },
-  { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
+  { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-brand-blue', bg: 'bg-brand-blue/10' },
+  { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-brand-teal', bg: 'bg-brand-teal/10' },
   { id: 'issue', label: 'Problem', icon: AlertCircle, color: 'text-red-500', bg: 'bg-red-500/10' },
-  { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-  { id: 'critique', label: 'Feedback', icon: Eye, color: 'text-indigo-500', bg: 'bg-indigo-500/10' },
+  { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-brand-amber', bg: 'bg-brand-amber/10' },
+  { id: 'critique', label: 'Feedback', icon: Eye, color: 'text-brand-blue', bg: 'bg-brand-blue/10' },
   { id: 'kudos', label: 'Kudos', icon: Flame, color: 'text-pink-500', bg: 'bg-pink-500/10' },
 ];
 
@@ -65,7 +65,7 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Post Type Selector */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-3">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-3">
               Post Type
             </label>
             <div className="grid grid-cols-4 gap-2">
@@ -77,7 +77,7 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
                   className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
                     formData.type === type.id
                       ? `${type.bg} ${type.color} border-current`
-                      : "border-slate-200 dark:border-white/10 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-white/20"
+                      : "border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:border-slate-300 dark:hover:border-white/20"
                   }`}
                 >
                   <type.icon className="w-6 h-6" />
@@ -89,7 +89,7 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Title
             </label>
             <input
@@ -104,7 +104,7 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
 
           {/* Content */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-brand-slate dark:text-slate-300 mb-2">
               Content
             </label>
             <textarea
@@ -118,15 +118,15 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
           </div>
 
           {/* Preview Badge */}
-          <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10">
+          <div className="p-4 bg-brand-cloud dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Preview:</span>
+              <span className="text-xs font-medium text-brand-slate dark:text-slate-400">Preview:</span>
               <span className={`px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 ${selectedType.bg} ${selectedType.color}`}>
                 <selectedType.icon size={12} />
                 {selectedType.label}
               </span>
             </div>
-            <p className="text-sm text-slate-700 dark:text-gray-300 line-clamp-2">
+            <p className="text-sm text-brand-slate dark:text-slate-300 line-clamp-2">
               {formData.title || "Your title will appear here"}
             </p>
           </div>
@@ -136,14 +136,14 @@ export default function CreatePostModal({ isOpen, onClose, onSuccess }) {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all font-medium flex items-center gap-2 shadow-sm"
+              className="px-6 py-3 bg-brand-blue text-white rounded-xl hover:bg-brand-blue transition-all font-medium flex items-center gap-2 shadow-sm"
             >
               <Send className="w-4 h-4" />
               {loading ? "Posting..." : "Post to Community"}

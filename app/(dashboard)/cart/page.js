@@ -4,6 +4,10 @@ import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
+import { PageContainer } from '@/components/ui/PageContainer';
+import { Card, CardContent } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { EmptyState, LoadingState } from '@/components/ui/States';
 
 export default function CartPage() {
   const router = useRouter();
@@ -103,28 +107,37 @@ export default function CartPage() {
   };
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading cart...</div>;
+    return (
+      <PageContainer maxWidth="max-w-[1000px]" className="flex items-center justify-center min-h-[60vh]">
+        <LoadingState message="Loading cart..." />
+      </PageContainer>
+    );
   }
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0">
-      <div className="w-full pt-4 md:-mt-4 md:pb-2 px-2 md:px-3">
-        <h1 className="text-xl md:text-2xl font-semibold text-apple-ink mb-4 md:mb-8 flex items-center gap-2 md:gap-3">
-          <ShoppingCart size={24} className="text-[#111827] md:w-7 md:h-7" /> Shopping Cart
+    <PageContainer maxWidth="max-w-[1000px]">
+      <div className="flex items-center gap-3 mb-8">
+        <ShoppingCart size={24} className="text-brand-navy dark:text-white" />
+        <h1 className="text-[24px] font-display font-medium text-brand-navy dark:text-white">
+          Shopping Cart
         </h1>
-        
-        {cartItems.length === 0 ? (
-          <div className="text-center py-20 bg-apple-parchment rounded-apple-lg">
-            <ShoppingCart size={48} className="mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-500 mb-6">Your cart is currently empty.</p>
-            <Link href="/" className="bg-[#111] text-white px-6 py-3 rounded hover:bg-black transition text-sm font-semibold">
-              CONTINUE SHOPPING
-            </Link>
-          </div>
-        ) : (
-          <div className="w-full">
+      </div>
+      
+      {cartItems.length === 0 ? (
+        <EmptyState 
+          icon={ShoppingCart}
+          title="Your cart is empty"
+          description="Looks like you haven't added any products to your cart yet."
+          action={{
+            label: "Continue Shopping",
+            onClick: () => router.push('/')
+          }}
+        />
+      ) : (
+        <div className="flex flex-col gap-8">
+          <Card className="bg-white dark:bg-[#161B22] shadow-sm dark:shadow-none overflow-hidden">
             {/* Table Header */}
-            <div className="border-b border-apple-ink px-6 py-[10px] hidden md:flex items-center text-[11px] font-semibold text-apple-muted uppercase tracking-[0.04em]">
+            <div className="border-b border-slate-200 dark:border-white/10 px-6 py-3 hidden md:flex items-center text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest bg-brand-cloud dark:bg-[#0D1117]">
               <div className="w-[5%]">#</div>
               <div className="w-[60%]">Product Name</div>
               <div className="w-[30%] text-right">Price</div>
@@ -132,7 +145,7 @@ export default function CartPage() {
             </div>
 
             {/* Table Body */}
-            <div className="mt-4 flex flex-col gap-4">
+            <div className="flex flex-col">
               {cartItems.map((item, index) => {
                 let photos = [];
                 try {
@@ -141,50 +154,50 @@ export default function CartPage() {
                 const imageUrl = photos[0] ? getOptimizedUrl(photos[0]) : '';
                 
                 return (
-                  <div key={item.id} className="relative flex flex-col md:flex-row md:items-center py-5 md:py-[12px] border-b border-apple-hairline/60 px-1 md:px-6 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors rounded-xl md:rounded-none">
-                    <div className="hidden md:block w-[5%] text-sm text-gray-500 font-medium">{index + 1}</div>
+                  <div key={item.id} className="relative flex flex-col md:flex-row md:items-center py-5 md:py-4 border-b border-slate-200 dark:border-white/10 px-4 md:px-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors last:border-b-0">
+                    <div className="hidden md:block w-[5%] text-sm text-slate-500 font-medium">{index + 1}</div>
                     
                     {/* Image and Details Container */}
                     <div className="w-full md:w-[60%] flex items-start md:items-center gap-4 pr-10 md:pr-0">
-                      <div className="w-[85px] h-[85px] md:w-16 md:h-16 rounded-[10px] md:rounded-[8px] overflow-hidden shrink-0 border border-black/5 dark:border-white/10 bg-white shadow-sm">
+                      <div className="w-[85px] h-[85px] md:w-16 md:h-16 rounded-[4px] overflow-hidden shrink-0 border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] p-1">
                         {imageUrl ? (
-                          <img src={imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                          <img src={imageUrl} alt={item.title} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
                         ) : (
-                          <div className="w-full h-full bg-gray-50 flex items-center justify-center text-xs text-gray-400">No Img</div>
+                          <div className="w-full h-full bg-brand-cloud dark:bg-[#161B22] flex items-center justify-center text-[11px] font-mono text-slate-400">No Img</div>
                         )}
                       </div>
                       <div className="flex-1 pt-1 md:pt-0">
                         <Link href={`/product/${item.id}`}>
-                          <h3 className="text-[16px] md:text-[17px] font-semibold text-apple-ink hover:underline transition line-clamp-2 leading-snug tracking-tight">{item.title}</h3>
+                          <h3 className="text-[15px] font-sans font-medium text-brand-navy dark:text-white hover:text-brand-blue transition-colors line-clamp-2 leading-snug">{item.title}</h3>
                         </Link>
                         {item.selectedVariants && (
-                          <p className="text-[13px] md:text-[14px] font-normal text-[#86868b] mt-1 line-clamp-1">
+                          <p className="text-[13px] font-sans text-slate-500 dark:text-slate-400 mt-1 line-clamp-1">
                             {item.selectedVariants}
                           </p>
                         )}
                         {(item.category || item.shop_name) && (
-                          <p className="text-[11px] text-[#86868b]/70 mt-0.5 line-clamp-1 tracking-wide uppercase">
+                          <p className="text-[11px] font-mono text-slate-400 dark:text-slate-500 mt-1 line-clamp-1 tracking-widest uppercase">
                             {[item.category, item.shop_name].filter(Boolean).join(' • ')}
                           </p>
                         )}
 
                         {/* Mobile: Price Inline below details */}
                         <div className="md:hidden mt-3.5 flex items-center justify-between w-full">
-                          <span className="text-[16px] font-semibold text-apple-ink tracking-tight">{formatPrice(item.selling_price)} BDT</span>
+                          <span className="text-[15px] font-mono font-medium text-brand-navy dark:text-white">{formatPrice(item.selling_price)} BDT</span>
                         </div>
                       </div>
                     </div>
                     
                     {/* Desktop Columns (Hidden on Mobile) */}
                     <div className="hidden md:flex w-[30%] justify-end items-center">
-                      <span className="text-[17px] font-semibold text-apple-ink tracking-tight">{formatPrice(item.selling_price)} BDT</span>
+                      <span className="text-[14px] font-mono font-medium text-brand-navy dark:text-white">{formatPrice(item.selling_price)} BDT</span>
                     </div>
                     
-                    {/* Delete Button - Floating on Mobile, inline on Desktop */}
-                    <div className="absolute top-5 right-1 md:relative md:top-0 md:w-[5%] flex justify-end">
+                    {/* Delete Button */}
+                    <div className="absolute top-5 right-4 md:relative md:top-0 md:w-[5%] flex justify-end">
                       <button 
                         onClick={() => handleRemoveItem(item.id)}
-                        className="text-[#86868b] hover:text-red-500 transition-colors p-2 md:p-2.5 bg-transparent hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full active:scale-90"
+                        className="text-slate-400 hover:text-red-500 transition-colors p-2 bg-transparent hover:bg-red-50 dark:hover:bg-red-500/10 rounded-[4px] active:scale-[0.98]"
                         title="Remove Item"
                       >
                         <Trash2 size={18} strokeWidth={1.75} />
@@ -194,43 +207,47 @@ export default function CartPage() {
                 );
               })}
             </div>
+          </Card>
 
-            {/* Bottom Section */}
-            <div className="mt-12 flex flex-col lg:flex-row justify-end gap-12">
-
-              {/* Order Summary */}
-              <div className="w-full lg:w-5/12">
+          {/* Bottom Section */}
+          <div className="flex flex-col lg:flex-row justify-end">
+            {/* Order Summary */}
+            <Card className="w-full lg:w-5/12 bg-brand-cloud dark:bg-[#161B22]">
+              <CardContent className="p-6">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-[14px] font-normal text-apple-muted">Sub-Total:</span>
-                    <span className="text-[17px] font-semibold text-apple-ink">{formatPrice(subTotal)} BDT</span>
+                    <span className="text-[14px] font-sans text-slate-500 dark:text-slate-400">Sub-Total:</span>
+                    <span className="text-[14px] font-mono font-medium text-brand-navy dark:text-white">{formatPrice(subTotal)} BDT</span>
                   </div>
                   
-                  <div className="border-t border-dotted border-gray-300 my-2"></div>
+                  <div className="border-t border-slate-200 dark:border-white/10 my-2"></div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-[14px] font-semibold text-apple-ink">Total</span>
-                    <span className="text-[24px] font-semibold text-apple-ink">{formatPrice(total)} BDT</span>
+                    <span className="text-[14px] font-sans font-medium text-brand-navy dark:text-white">Total</span>
+                    <span className="text-[18px] font-mono font-bold text-brand-navy dark:text-white">{formatPrice(total)} BDT</span>
                   </div>
 
                   <div className="flex flex-col sm:flex-row items-center justify-end gap-3 mt-6">
-                    <Link href="/" className="w-full sm:w-auto text-center bg-apple-parchment hover:bg-gray-200 text-apple-ink px-[22px] py-[11px] rounded-apple-pill text-[17px] font-sans font-normal transition-opacity hover:opacity-80">
+                    <Button 
+                      variant="outline"
+                      onClick={() => router.push('/')}
+                      className="w-full sm:w-auto"
+                    >
                       Continue Shopping
-                    </Link>
-                    <button 
+                    </Button>
+                    <Button 
                       onClick={handleCheckout}
-                      className="w-full sm:w-auto bg-apple-accent hover:bg-apple-accent/90 text-white px-[22px] py-[11px] rounded-apple-pill text-[17px] font-sans font-normal transition-opacity hover:opacity-80"
+                      className="w-full sm:w-auto"
                     >
                       Check Out
-                    </button>
+                    </Button>
                   </div>
                 </div>
-              </div>
-
-            </div>
+              </CardContent>
+            </Card>
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </PageContainer>
   );
 }

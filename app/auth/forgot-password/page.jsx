@@ -10,6 +10,7 @@ import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { Button } from "@/components/ui/Button";
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 
@@ -59,7 +60,7 @@ export default function ForgotPasswordPage() {
         <div className="text-center">
           <Link
             href="/auth/login"
-            className="inline-flex items-center gap-2 text-[15px] text-slate-500 dark:text-zinc-500 font-medium hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            className="inline-flex items-center gap-2 text-[15px] text-slate-500 dark:text-zinc-500 font-medium hover:text-brand-blue dark:hover:text-indigo-400 transition-colors"
           >
             <ArrowLeft size={16} />
             Back to Login
@@ -78,26 +79,26 @@ export default function ForgotPasswordPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center py-6 text-center"
           >
-            <div className="w-24 h-24 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-6">
-              <CheckCircle2 size={56} strokeWidth={2.5} />
+            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
+              <CheckCircle2 size={32} strokeWidth={2} />
             </div>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">
+            <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-2">
               Check your inbox
             </h3>
-            <p className="text-slate-500 dark:text-zinc-400 leading-relaxed max-w-sm">
+            <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed max-w-sm">
               If an account with{" "}
-              <span className="font-semibold text-slate-700 dark:text-zinc-300">
+              <span className="font-semibold text-brand-navy dark:text-white">
                 {email}
               </span>{" "}
               exists, you&apos;ll receive a reset link shortly.
             </p>
 
-            <p className="mt-6 text-xs text-slate-400 dark:text-zinc-600 uppercase tracking-widest font-bold">
+            <p className="mt-8 text-[11px] font-mono text-slate-400 dark:text-slate-500 uppercase tracking-widest">
               Didn&apos;t get it?
             </p>
             <button
               onClick={() => { setSuccess(false); setEmail(""); }}
-              className="mt-2 text-indigo-600 dark:text-indigo-400 text-sm font-bold hover:underline"
+              className="mt-2 text-brand-blue text-sm font-medium hover:underline transition-colors"
             >
               Try a different email
             </button>
@@ -115,13 +116,13 @@ export default function ForgotPasswordPage() {
             noValidate
           >
             {/* Email input */}
-            <div className="space-y-2">
-              <label className="text-[13px] font-bold text-slate-700 dark:text-zinc-400 tracking-wide uppercase px-1 block">
+            <div className="space-y-2 mb-5">
+              <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase px-1 block">
                 Email Address
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors duration-300">
-                  <Mail size={18} strokeWidth={2.5} />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 transition-colors duration-300">
+                  <Mail size={16} strokeWidth={1.5} />
                 </div>
                 <input
                   type="email"
@@ -130,11 +131,11 @@ export default function ForgotPasswordPage() {
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => { setEmail(e.target.value); setError(""); }}
-                  className={`w-full pl-12 pr-4 py-4 bg-slate-50 dark:bg-zinc-950/50 border-2 ${
+                className={`w-full h-10 pl-10 pr-4 bg-white dark:bg-[#0D1117] border ${
                     error
-                      ? "border-red-500/50"
-                      : "border-slate-100 dark:border-zinc-800"
-                  } rounded-2xl text-slate-900 dark:text-white placeholder-slate-400 focus:border-indigo-500/50 focus:bg-white dark:focus:bg-zinc-950 focus:outline-none transition-all duration-300`}
+                      ? "border-red-500"
+                      : "border-slate-200 dark:border-white/10"
+                  } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-colors`}
                 />
               </div>
 
@@ -144,10 +145,9 @@ export default function ForgotPasswordPage() {
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
+                    className="bg-red-50 dark:bg-[#201010] border border-red-200 dark:border-red-900/50 rounded-[4px] p-4 flex gap-3 items-center"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)] flex-shrink-0" />
-                    <p className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-tighter">
+                    <p className="text-red-600 dark:text-red-400 text-[13px] font-sans font-medium">
                       {error}
                     </p>
                   </motion.div>
@@ -156,23 +156,21 @@ export default function ForgotPasswordPage() {
             </div>
 
             {/* Submit */}
-            <button
+            <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-5 rounded-[1.25rem] transition-all duration-300 shadow-xl shadow-indigo-500/25 active:opacity-60 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
+              variant="primary"
+              className="w-full mt-4"
             >
               {loading ? (
-                <AppleSpinner size={24} />
+                <AppleSpinner size={20} className="text-white" />
               ) : (
                 <>
-                  <span className="text-[17px] tracking-tight">Send Reset Link</span>
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-1 transition-opacity duration-300"
-                  />
+                  <span>Send Reset Link</span>
+                  <ArrowRight size={16} strokeWidth={1.5} />
                 </>
               )}
-            </button>
+            </Button>
           </motion.form>
         )}
       </AnimatePresence>

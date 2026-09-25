@@ -50,7 +50,7 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
         {loading ? (
             <AppleSpinner className="w-5 h-5 animate-spin text-purple-600" />
         ) : (
-            <Zap className={`w-5 h-5 ${text ? 'text-purple-600' : 'text-gray-300'}`} />
+            <Zap className={`w-5 h-5 ${text ? 'text-purple-600' : 'text-slate-300'}`} />
         )}
       </button>
 
@@ -62,14 +62,14 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
                 <div className="p-1">
                     <button
                         onClick={() => handleGenerate('enhance')}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-brand-slate dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
                     >
                         <Wand2 className="w-4 h-4" />
                         <span>Enhance Writing</span>
                     </button>
                     <button
                         onClick={() => handleGenerate('grammar')}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-700 dark:text-gray-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-brand-slate dark:text-slate-200 hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 rounded-lg transition-colors text-left"
                     >
                         <Check className="w-4 h-4" />
                         <span>Fix Grammar</span>

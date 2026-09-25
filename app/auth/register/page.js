@@ -11,6 +11,7 @@ import TrackerPatron from "@/components/TrackerPatron";
 import { api } from "@/utils/api";
 
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import { Button } from "@/components/ui/Button";
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
@@ -27,8 +28,8 @@ function getPasswordStrength(password) {
 }
 
 const STRENGTH_LABELS = ["", "Weak", "Good", "Strong"];
-const STRENGTH_COLORS = ["", "bg-red-500", "bg-yellow-400", "bg-emerald-500"];
-const STRENGTH_TEXT   = ["", "text-red-500", "text-yellow-500", "text-emerald-500"];
+const STRENGTH_COLORS = ["", "bg-red-500", "bg-yellow-400", "bg-brand-teal"];
+const STRENGTH_TEXT   = ["", "text-red-500", "text-brand-amber", "text-brand-teal"];
 
 function validateRegister({ name, email, password, confirmPassword }) {
   const errors = {};
@@ -67,31 +68,31 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
   return (
-    <div className="space-y-2 mb-6">
+    <div className="space-y-2 mb-5">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[13px] font-semibold text-apple-secondary">
+        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase">
           {label}
         </label>
       </div>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-apple-muted transition-colors duration-300">
-          <Icon size={18} strokeWidth={2} />
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 transition-colors duration-300">
+          <Icon size={16} strokeWidth={1.5} />
         </div>
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-11 ${isPassword ? "pr-11" : "pr-6"} py-3 bg-white dark:bg-[#1c1c1e] border ${
-            error ? "border-red-500" : "border-gray-200 dark:border-gray-800"
-          } rounded-[12px] text-[15px] text-black dark:text-white placeholder-gray-400 focus:border-[#0071e3] focus:ring-0 focus:outline-none transition-colors duration-200 shadow-sm truncate`}
+          className={`w-full pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-brand-cloud dark:bg-[#161B22] border ${
+            error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+          } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue/40 focus:ring-1 focus:ring-brand-blue/40 focus:outline-none transition-all duration-200 truncate`}
         />
         {isPassword && (
           <button
             type="button"
             tabIndex={-1}
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-zinc-300 transition-colors"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors"
           >
-            {showPassword ? <EyeOff size={20} strokeWidth={1.5} /> : <Eye size={20} strokeWidth={1.5} />}
+            {showPassword ? <EyeOff size={16} strokeWidth={1.5} /> : <Eye size={16} strokeWidth={1.5} />}
           </button>
         )}
       </div>
@@ -120,19 +121,19 @@ function PasswordStrengthBar({ password }) {
 
   return (
     <div className="px-1 -mt-4 mb-5 space-y-1.5">
-      <div className="flex gap-1.5">
+      <div className="flex gap-1">
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className={`flex-1 h-1 rounded-full transition-all duration-300 ${
-              i <= score ? STRENGTH_COLORS[score] : "bg-slate-200 dark:bg-zinc-800"
+            className={`flex-1 h-1 rounded-none transition-all duration-300 ${
+              i <= score ? STRENGTH_COLORS[score] : "bg-slate-200 dark:bg-white/10"
             }`}
           />
         ))}
       </div>
       <div className="mt-3 space-y-2">
         <div className="flex justify-between items-center px-1">
-          <p className={`text-[12px] font-medium ${STRENGTH_TEXT[score]}`}>
+          <p className={`text-[11px] font-mono tracking-widest uppercase ${STRENGTH_TEXT[score]}`}>
             {STRENGTH_LABELS[score]} password
           </p>
         </div>
@@ -206,11 +207,11 @@ export default function RegisterPage() {
       title="Create account"
       subtitle="Join the marketplace today"
       footer={
-        <p className="text-center text-[15px] text-apple-secondary font-normal">
+        <p className="text-center text-[15px] text-slate-500 font-sans">
           Already a member?{" "}
           <Link
             href="/auth/login"
-            className="text-apple-accent hover:underline transition-all"
+            className="text-brand-blue hover:underline transition-all"
           >
             Sign in here
           </Link>
@@ -228,7 +229,7 @@ export default function RegisterPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center py-10"
           >
-            <div className="w-24 h-24 rounded-full bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-6">
+            <div className="w-24 h-24 rounded-full bg-emerald-50 dark:bg-brand-teal/10 flex items-center justify-center text-brand-teal mb-6">
               <CheckCircle2 size={56} strokeWidth={1.5} />
             </div>
             <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -252,12 +253,12 @@ export default function RegisterPage() {
             />
 
             {/* Divider */}
-            <div className="relative mb-10">
+            <div className="relative mb-8 mt-4">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-apple-hairline" />
+                <div className="w-full border-t border-slate-200 dark:border-white/10" />
               </div>
-              <div className="relative flex justify-center text-[12px] text-apple-muted">
-                <span className="px-4 bg-apple-parchment dark:bg-apple-parchment">
+              <div className="relative flex justify-center text-[10px] font-mono tracking-widest text-slate-400 uppercase">
+                <span className="px-3 bg-white dark:bg-[#0D1117]">
                   or
                 </span>
               </div>
@@ -322,11 +323,10 @@ export default function RegisterPage() {
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="bg-red-50 dark:bg-red-500/5 border border-red-100 dark:border-red-900/30 rounded-2xl p-4 flex gap-3 items-center"
+                    className="bg-red-50 dark:bg-[#201010] border border-red-200 dark:border-red-900/50 rounded-[4px] p-4 flex gap-3 items-center"
                   >
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
                     <div className="flex items-center gap-2">
-                      <p className="text-red-600 dark:text-red-400 text-[12px] font-medium">
+                      <p className="text-red-600 dark:text-red-400 text-[13px] font-sans font-medium">
                         {generalError}
                       </p>
                     </div>
@@ -341,47 +341,48 @@ export default function RegisterPage() {
                     <input
                       type="checkbox"
                       required
-                      className="peer h-5 w-5 cursor-pointer appearance-none rounded-sm border border-apple-hairline transition-all checked:bg-apple-accent checked:border-apple-accent"
+                      className="peer h-[18px] w-[18px] cursor-pointer appearance-none rounded-[4px] border border-slate-300 dark:border-white/20 bg-brand-cloud dark:bg-[#161B22] transition-all checked:bg-brand-blue checked:border-brand-blue"
                     />
                     <svg
-                      className="absolute h-3.5 w-3.5 pointer-events-none hidden peer-checked:block text-white left-0.5 top-0.5"
+                      className="absolute h-3 w-3 pointer-events-none hidden peer-checked:block text-white left-1 top-[3px]"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth="4"
+                      strokeWidth="3"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
-                  <span className="text-[14px] text-apple-secondary transition-colors">
+                  <span className="text-[13px] font-sans text-slate-600 dark:text-slate-400 transition-colors">
                     I agree to the{" "}
-                    <span className="font-semibold underline text-apple-ink hover:text-apple-accent transition-colors">
+                    <span className="font-semibold underline text-brand-navy dark:text-white hover:text-brand-blue transition-colors">
                       Community Guidelines
                     </span>
                   </span>
                 </label>
               </div>
 
-              <button
+              <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-apple-accent hover:opacity-90 text-white text-[17px] py-[11px] rounded-apple-pill transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
+                variant="primary"
+                className="w-full mt-4"
               >
                 {loading ? (
-                  <AppleSpinner size={24} />
+                  <AppleSpinner size={20} className="text-white" />
                 ) : (
                   <>
-                    <span className="text-[17px] tracking-tight">Create Account</span>
+                    <span>Create Account</span>
                     <ArrowRight
-                      size={20} strokeWidth={1.5}
-                      className="group-hover:translate-x-1 transition-opacity duration-300"
+                      size={16} strokeWidth={1.5}
+                      className="group-hover:translate-x-1 transition-transform duration-300"
                     />
                   </>
                 )}
-              </button>
+              </Button>
             </form>
           </motion.div>
         )}

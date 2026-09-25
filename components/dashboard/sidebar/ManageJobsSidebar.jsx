@@ -16,7 +16,7 @@ export default function ManageJobsSidebar() {
         </p>
         <Link 
           href="/post-job"
-          className="w-full py-2.5 bg-white dark:bg-black text-slate-900 dark:text-white hover:bg-slate-50 rounded-xl font-bold text-xs shadow-lg transition-all relative z-10 flex items-center justify-center gap-2"
+          className="w-full py-2.5 bg-white dark:bg-black text-slate-900 dark:text-white hover:bg-brand-cloud rounded-xl font-bold text-xs shadow-lg transition-all relative z-10 flex items-center justify-center gap-2"
         >
           <Plus size={14} /> Post a New Job
         </Link>
@@ -25,24 +25,24 @@ export default function ManageJobsSidebar() {
       {/* Hiring Tips */}
       <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-          <Target size={14} className="text-indigo-600" /> Hiring Success
+          <Target size={14} className="text-brand-blue" /> Hiring Success
         </h3>
         <div className="space-y-6">
           <div className="flex gap-4 group">
-            <div className="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex-shrink-0 flex items-center justify-center text-indigo-600 font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-brand-sky dark:bg-brand-blue/10 flex-shrink-0 flex items-center justify-center text-brand-blue font-bold text-xs">
               <Users size={14} />
             </div>
             <div>
-              <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-indigo-600 transition-colors">Review Candidates</h4>
+              <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-blue transition-colors">Review Candidates</h4>
               <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Check portfolios and verify previous work to ensure a good match.</p>
             </div>
           </div>
           <div className="flex gap-4 group">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 flex-shrink-0 flex items-center justify-center text-emerald-600 font-bold text-xs">
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-brand-teal/10 flex-shrink-0 flex items-center justify-center text-brand-teal font-bold text-xs">
               <ShieldCheck size={14} />
             </div>
             <div>
-              <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-emerald-600 transition-colors">Secure Contracts</h4>
+              <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-teal transition-colors">Secure Contracts</h4>
               <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Use the platform&apos;s milestone system to manage deliverables safely.</p>
             </div>
           </div>

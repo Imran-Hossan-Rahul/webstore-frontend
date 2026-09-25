@@ -91,7 +91,7 @@ export default function HeroSection() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
                   active
                     ? "bg-black text-white dark:bg-white dark:text-black border-black/80 dark:border-white/80"
-                    : "bg-white dark:bg-slate-900 border-black/10 dark:border-white/10 text-slate-700 dark:text-gray-300 hover:border-black/30 dark:hover:border-white/30"
+                    : "bg-white dark:bg-slate-900 border-black/10 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-black/30 dark:hover:border-white/30"
                 }`}
               >
                 {cat.label}
@@ -122,7 +122,7 @@ export default function HeroSection() {
         </div>
 
         {!compact && (
-          <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+          <div className="flex flex-wrap items-center gap-2 text-sm text-brand-slate dark:text-slate-400">
             <span className="font-semibold">Popular:</span>
             {(SUGGESTIONS[activeCategory] || []).map((tag) => (
               <button
@@ -141,7 +141,7 @@ export default function HeroSection() {
       {(loading || results.length > 0 || query.trim()) && (
         <div className="absolute z-20 mt-3 w-full rounded-2xl border border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-2xl overflow-hidden">
           {loading ? (
-            <div className="px-5 py-4 text-sm text-slate-600 dark:text-gray-300">
+            <div className="px-5 py-4 text-sm text-brand-slate dark:text-slate-300">
               Searching...
             </div>
           ) : results.length > 0 ? (
@@ -150,7 +150,7 @@ export default function HeroSection() {
                 <li
                   key={item._id || item.id}
                   onClick={() => handleResultClick(item._id || item.id)}
-                  className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors"
+                  className="flex items-center justify-between gap-3 px-5 py-4 cursor-pointer hover:bg-brand-cloud/80 dark:hover:bg-slate-900/60 transition-colors"
                 >
                   <div>
                     <p className="font-semibold text-sm md:text-base text-black dark:text-white line-clamp-1">
@@ -178,7 +178,7 @@ export default function HeroSection() {
               </li>
             </ul>
           ) : (
-            <div className="px-5 py-4 text-sm text-slate-600 dark:text-gray-300">
+            <div className="px-5 py-4 text-sm text-brand-slate dark:text-slate-300">
               No matches found. Try another keyword.
             </div>
           )}
@@ -196,11 +196,11 @@ export default function HeroSection() {
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-left text-black dark:text-white leading-tight">
             Discover the best{" "}
-            <span className="text-indigo-600 dark:text-indigo-400">
+            <span className="text-brand-blue dark:text-indigo-400">
               creative work
             </span>
           </h1>
-          <p className="text-base md:text-lg text-left text-slate-600 dark:text-slate-400 max-w-2xl">
+          <p className="text-base md:text-lg text-left text-brand-slate dark:text-slate-400 max-w-2xl">
             Explore artifacts, codex, and connect with talented craftsmen — all in one place.
           </p>
 

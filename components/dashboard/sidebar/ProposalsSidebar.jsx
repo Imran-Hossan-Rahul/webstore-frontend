@@ -26,7 +26,7 @@ export default function ProposalsSidebar() {
         
         <Link 
           href={isPatron ? "/post-job" : "/jobs"}
-          className="w-full py-2.5 bg-white dark:bg-black text-slate-900 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl font-bold text-xs shadow-lg transition-all relative z-10 flex items-center justify-center gap-2"
+          className="w-full py-2.5 bg-white dark:bg-black text-slate-900 dark:text-white hover:bg-brand-cloud dark:hover:bg-slate-900 rounded-xl font-bold text-xs shadow-lg transition-all relative z-10 flex items-center justify-center gap-2"
         >
           {isPatron ? <Plus size={14} /> : <Search size={14} />}
           {isPatron ? "Post a New Job" : "Browse New Jobs"}
@@ -47,7 +47,7 @@ export default function ProposalsSidebar() {
                   <UserCheck size={14} />
                 </div>
                 <div>
-                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-600 transition-colors">Compare Proposals</h4>
+                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-slate transition-colors">Compare Proposals</h4>
                   <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Check portfolios and past reviews to ensure the best fit for your job.</p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ export default function ProposalsSidebar() {
                   <ShieldCheck size={14} />
                 </div>
                 <div>
-                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-600 transition-colors">Secure Escrow</h4>
+                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-slate transition-colors">Secure Escrow</h4>
                   <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Always fund milestones before work begins to ensure transparency.</p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export default function ProposalsSidebar() {
                   <Zap size={14} />
                 </div>
                 <div>
-                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-600 transition-colors">Tailored Pitch</h4>
+                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-slate transition-colors">Tailored Pitch</h4>
                   <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Avoid copy-pasting. Address the patron&apos;s specific problems directly.</p>
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function ProposalsSidebar() {
                   <Trophy size={14} />
                 </div>
                 <div>
-                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-slate-600 transition-colors">Portfolio Links</h4>
+                  <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-slate transition-colors">Portfolio Links</h4>
                   <p className="text-[11px] text-slate-500 leading-relaxed font-medium">Showcase similar work to build trust and prove your expertise quickly.</p>
                 </div>
               </div>
@@ -91,12 +91,12 @@ export default function ProposalsSidebar() {
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Resources</h4>
          <ul className="space-y-3">
            <li>
-             <Link href="#" className="text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
+             <Link href="#" className="text-[12px] font-bold text-brand-slate dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
                Help Center <ArrowUpRight size={14} />
              </Link>
            </li>
            <li>
-             <Link href="/community" className="text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
+             <Link href="/community" className="text-[12px] font-bold text-brand-slate dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-between">
                Community Tips <ArrowUpRight size={14} />
              </Link>
            </li>

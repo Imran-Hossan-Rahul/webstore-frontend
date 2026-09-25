@@ -146,7 +146,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
           {/* Close Button */}
           <button 
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-gray-300 z-20 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-brand-slate dark:text-slate-300 z-20 transition-colors"
           >
               <X size={20} />
           </button>
@@ -219,8 +219,8 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                             </button>
                           </div>
                         ) : (
-                          <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
-                            <p className="text-sm text-slate-600 dark:text-slate-400 text-center mb-3">
+                          <div className="mt-4 p-4 bg-brand-cloud dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                            <p className="text-sm text-brand-slate dark:text-slate-400 text-center mb-3">
                               Ready to share your work?
                             </p>
                             <button 
@@ -241,7 +241,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="font-semibold text-slate-900 dark:text-white">About</h3>
                                 {!isEditing && user?.hasCraftsmanAccount && (
-                                    <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
+                                    <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
                                         <Edit2 size={14} />
                                     </button>
                                 )}
@@ -250,7 +250,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                             {isEditing ? (
                                 <div className="animate-in fade-in space-y-3">
                                     <div>
-                                      <label className="text-xs font-medium text-slate-700 dark:text-gray-300 mb-1 block">Bio</label>
+                                      <label className="text-xs font-medium text-brand-slate dark:text-slate-300 mb-1 block">Bio</label>
                                       <textarea 
                                           value={editBio} 
                                           onChange={(e) => setEditBio(e.target.value)} 
@@ -259,7 +259,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                       />
                                     </div>
                                     <div>
-                                      <label className="text-xs font-medium text-slate-700 dark:text-gray-300 mb-1 block">Skills (comma separated)</label>
+                                      <label className="text-xs font-medium text-brand-slate dark:text-slate-300 mb-1 block">Skills (comma separated)</label>
                                       <input 
                                           type="text"
                                           value={editSkills} 
@@ -274,7 +274,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                     </div>
                                 </div>
                             ) : (
-                                <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap break-words">
+                                <p className="text-brand-slate dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap break-words">
                                     {displayProfile?.bio || "No bio yet."}
                                 </p>
                             )}

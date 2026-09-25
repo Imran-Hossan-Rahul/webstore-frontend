@@ -321,7 +321,7 @@ export default function CraftsmanHoverCard({
               <div className="h-[2px] w-full" />
               <div className="p-5">
                 <div className="flex items-start justify-between gap-3 mb-4">
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden border border-slate-100 dark:border-white/10 shadow-sm shrink-0 bg-slate-50 dark:bg-white/5">
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden border border-slate-100 dark:border-white/10 shadow-sm shrink-0 bg-brand-cloud dark:bg-white/5">
                     {finalAvatar ? (
                       <Image
                         src={finalAvatar}
@@ -331,7 +331,7 @@ export default function CraftsmanHoverCard({
                         unoptimized
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-emerald-500 text-white font-bold text-xl">
+                      <div className="w-full h-full flex items-center justify-center bg-brand-teal text-white font-bold text-xl">
                         {(profile.displayName || displayName || "C")[0].toUpperCase()}
                       </div>
                     )}
@@ -343,14 +343,14 @@ export default function CraftsmanHoverCard({
                         {profile.displayName || displayName}
                       </span>
                       {profile.isVerified && (
-                        <CheckCircle2 size={14} className="text-indigo-600 shrink-0" strokeWidth={1.5} />
+                        <CheckCircle2 size={14} className="text-brand-blue shrink-0" strokeWidth={1.5} />
                       )}
                     </div>
                     <p className="text-slate-400 text-xs font-medium mt-0.5">
                       @{username}
                     </p>
                     <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">
-                      <span className="font-bold text-slate-800 dark:text-gray-100">
+                      <span className="font-bold text-slate-800 dark:text-slate-100">
                         {followerCount.toLocaleString()}
                       </span>{" "}
                       follower{followerCount !== 1 ? "s" : ""}
@@ -362,8 +362,8 @@ export default function CraftsmanHoverCard({
                     disabled={followLoading}
                     className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all active:opacity-60 ${
                       isFollowing
-                        ? "bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-200 hover:bg-slate-200 dark:hover:bg-white/10"
-                        : "bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20"
+                        ? "bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-white/10"
+                        : "bg-brand-teal hover:bg-brand-teal text-white shadow-lg shadow-emerald-500/20"
                     } ${followLoading ? "opacity-60 cursor-wait" : ""}`}
                   >
                     {isFollowing
@@ -375,7 +375,7 @@ export default function CraftsmanHoverCard({
                 </div>
 
                 {profile.bio && (
-                  <p className="text-slate-600 dark:text-gray-300 text-[13px] leading-relaxed mb-4 line-clamp-2">
+                  <p className="text-brand-slate dark:text-slate-300 text-[13px] leading-relaxed mb-4 line-clamp-2">
                     {profile.bio}
                   </p>
                 )}
@@ -393,7 +393,7 @@ export default function CraftsmanHoverCard({
                         href={`https://github.com/${profile.socialLinks.github}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-emerald-500 font-medium transition-colors"
+                        className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-brand-teal font-medium transition-colors"
                       >
                         <Github size={12} strokeWidth={1.5} className="text-slate-400" />
                         {profile.socialLinks.github}
@@ -404,7 +404,7 @@ export default function CraftsmanHoverCard({
                         href={profile.socialLinks.website}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-emerald-500 font-medium transition-colors truncate max-w-[140px]"
+                        className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-brand-teal font-medium transition-colors truncate max-w-[140px]"
                       >
                         <Globe size={12} strokeWidth={1.5} className="text-slate-400" />
                         {profile.socialLinks.website.replace(/^https?:\/\//, "")}
@@ -415,14 +415,14 @@ export default function CraftsmanHoverCard({
 
                 <div className="grid grid-cols-4 gap-2">
                   {[
-                    { icon: <Eye size={14} strokeWidth={1.5} className="text-emerald-500" />, val: profile.totalViews || 0, label: "Views" },
+                    { icon: <Eye size={14} strokeWidth={1.5} className="text-brand-teal" />, val: profile.totalViews || 0, label: "Views" },
                     { icon: <Star size={14} strokeWidth={1.5} className="text-pink-500" />, val: profile.totalLikes || 0, label: "Stars" },
-                    { icon: <BookOpen size={14} strokeWidth={1.5} className="text-indigo-600" />, val: profile.totalCodex || 0, label: "Codex" },
+                    { icon: <BookOpen size={14} strokeWidth={1.5} className="text-brand-blue" />, val: profile.totalCodex || 0, label: "Codex" },
                     { icon: <Layers size={14} strokeWidth={1.5} className="text-purple-500" />, val: profile.totalArtifacts || 0, label: "Assets" },
                   ].map(({ icon, val, label }) => (
                     <div
                       key={label}
-                      className="flex flex-col items-center justify-center bg-slate-50/50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 rounded-2xl py-3 px-1"
+                      className="flex flex-col items-center justify-center bg-brand-cloud/50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 rounded-2xl py-3 px-1"
                     >
                       {icon}
                       <span className="text-[13px] font-bold text-slate-900 dark:text-white mt-1.5 tabular-nums">
@@ -440,7 +440,7 @@ export default function CraftsmanHoverCard({
                     {profile.skills.slice(0, 4).map((skill, i) => (
                       <span
                         key={i}
-                        className="px-2.5 py-1 bg-slate-50 dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded-lg border border-slate-100 dark:border-white/5"
+                        className="px-2.5 py-1 bg-brand-cloud dark:bg-white/[0.04] text-slate-500 dark:text-slate-400 text-[10px] font-bold rounded-lg border border-slate-100 dark:border-white/5"
                       >
                         {skill}
                       </span>

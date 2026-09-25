@@ -76,7 +76,7 @@ export default function MilestonesSection({
               <div className="flex items-start gap-3">
                 <div className={`mt-1 p-1.5 rounded-lg ${
                   m.status === 'completed' ? 'bg-green-100 text-green-600' : 
-                  m.status === 'in-progress' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'
+                  m.status === 'in-progress' ? 'bg-blue-100 text-brand-blue' : 'bg-slate-100 text-slate-500'
                 }`}>
                   <CheckCircle size={16} strokeWidth={1.5} />
                 </div>
@@ -89,7 +89,7 @@ export default function MilestonesSection({
                     </span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                       m.status === 'completed' ? 'bg-green-100 text-green-700' : 
-                      m.status === 'in-progress' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'
+                      m.status === 'in-progress' ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-brand-slate'
                     }`}>
                       {m.status}
                     </span>

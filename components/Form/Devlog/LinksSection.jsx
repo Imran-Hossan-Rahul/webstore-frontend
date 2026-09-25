@@ -17,7 +17,7 @@ export default function LinksSection({
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">GitHub URL</label>
+            <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">GitHub URL</label>
             <input
               type="text"
               value={devlogData.githubUrl}
@@ -27,7 +27,7 @@ export default function LinksSection({
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">Live Preview</label>
+            <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">Live Preview</label>
             <input
               type="text"
               value={devlogData.liveUrl}
@@ -37,7 +37,7 @@ export default function LinksSection({
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">Documentation</label>
+            <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">Documentation</label>
             <input
               type="text"
               value={devlogData.documentationUrl}
@@ -56,7 +56,7 @@ export default function LinksSection({
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-3">
-             <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300">Project Status</label>
+             <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300">Project Status</label>
              <div className="flex gap-2">
                {["Planning", "In Progress", "Paused", "Completed"].map(status => (
                  <button
@@ -74,7 +74,7 @@ export default function LinksSection({
              </div>
           </div>
           <div className="space-y-3">
-            <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300">
+            <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300">
               Difficulty: {difficultyLevels[devlogData.difficulty]}
             </label>
             <input
@@ -91,7 +91,7 @@ export default function LinksSection({
 
       {/* License */}
       <div>
-        <label className="block text-xs font-semibold text-slate-700 dark:text-gray-300 mb-2">License</label>
+        <label className="block text-xs font-semibold text-brand-slate dark:text-slate-300 mb-2">License</label>
         <select
           value={devlogData.license}
           onChange={(e) => setDevlogData(prev => ({ ...prev, license: e.target.value }))}
@@ -103,8 +103,8 @@ export default function LinksSection({
         </select>
       </div>
 
-      <div className="p-4 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-xl flex items-start gap-3">
-        <AlertCircle size={16} className="text-blue-600 dark:text-blue-400 mt-0.5" />
+      <div className="p-4 bg-brand-sky dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-xl flex items-start gap-3">
+        <AlertCircle size={16} className="text-brand-blue dark:text-blue-400 mt-0.5" />
         <p className="text-[10px] text-blue-700 dark:text-blue-300 font-medium leading-relaxed">
           Your devlog will be public and shared with the community. Ensure you have the rights to share all uploaded content and media.
         </p>

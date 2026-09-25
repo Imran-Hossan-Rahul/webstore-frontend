@@ -22,7 +22,7 @@ export default function BetaBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-brand-cloud dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       {/* Background decoration */}
       <div
         className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"
@@ -39,7 +39,7 @@ export default function BetaBanner() {
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm leading-6 text-slate-900 dark:text-white flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
+          <Sparkles className="h-4 w-4 text-brand-blue dark:text-indigo-400" />
           <strong className="font-semibold">Codalina Beta 1.0</strong>
           <svg viewBox="0 0 2 2" className="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
             <circle cx="1" cy="1" r="1" />
@@ -52,7 +52,7 @@ export default function BetaBanner() {
         <button
           type="button"
           onClick={handleDismiss}
-          className="-m-3 p-3 focus-visible:outline-offset-[-4px] text-slate-900 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          className="-m-3 p-3 focus-visible:outline-offset-[-4px] text-slate-900 dark:text-slate-300 hover:text-brand-blue dark:hover:text-indigo-400 transition-colors"
         >
           <span className="sr-only">Dismiss</span>
           <X className="h-5 w-5" aria-hidden="true" />

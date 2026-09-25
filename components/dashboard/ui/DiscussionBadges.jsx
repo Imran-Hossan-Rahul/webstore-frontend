@@ -55,18 +55,18 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                 const hasCount = count > 0;
 
                 const hoverColorMap = {
-                    comment: 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200',
-                    question: 'group-hover/btn:text-indigo-500 dark:group-hover/btn:text-indigo-400',
-                    answer: 'group-hover/btn:text-emerald-500 dark:group-hover/btn:text-emerald-400',
+                    comment: 'group-hover/btn:text-brand-slate dark:group-hover/btn:text-slate-200',
+                    question: 'group-hover/btn:text-brand-blue dark:group-hover/btn:text-indigo-400',
+                    answer: 'group-hover/btn:text-brand-teal dark:group-hover/btn:text-emerald-400',
                     issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
-                    suggestion: 'group-hover/btn:text-amber-500 dark:group-hover/btn:text-amber-400',
+                    suggestion: 'group-hover/btn:text-brand-amber dark:group-hover/btn:text-amber-400',
                     critique: 'group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400',
                     kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                 };
 
-                const baseColor = 'text-slate-700 dark:text-slate-300';
+                const baseColor = 'text-brand-slate dark:text-slate-300';
                 
-                const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200';
+                const hoverColor = hoverColorMap[stat.id] || 'group-hover/btn:text-brand-slate dark:group-hover/btn:text-slate-200';
 
                 const isMainComment = stat.id === 'comment';
 
@@ -89,7 +89,7 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
                             className={`${baseColor} ${hoverColor} group-hover/btn:opacity-100 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]`} 
                         />
                         {hasCount && (
-                            <span className="text-[11px] mt-[2px] font-normal text-slate-700 dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
+                            <span className="text-[11px] mt-[2px] font-normal text-brand-slate dark:text-slate-300 group-hover/btn:text-slate-800 dark:group-hover/btn:text-slate-200 transition-colors duration-200 tabular-nums">
                                 {count}
                             </span>
                         )}

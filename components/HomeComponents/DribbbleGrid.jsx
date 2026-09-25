@@ -183,7 +183,7 @@ function ArtifactCard({ artifact, onClick }) {
             </div>
           )}
           {artifact.priceType === "free" && (
-            <div className="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-3 right-3 bg-brand-teal text-white px-3 py-1 rounded-full text-sm font-semibold">
               Free
             </div>
           )}

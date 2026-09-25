@@ -63,7 +63,7 @@ export default function FeaturedRow({ type, title }) {
         {/* Gap দেয়ার জন্য margin বা space-x-4 ব্যবহার করেছি */}
         <button
           onClick={goToAllArtifactsPage}
-          className="flex items-center text-slate-700 hover:text-slate-900 font-medium"
+          className="flex items-center text-brand-slate hover:text-slate-900 font-medium"
         >
           <span className="mt-1">{totalCount}</span>
           <svg

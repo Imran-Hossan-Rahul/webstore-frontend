@@ -102,7 +102,7 @@ export default function NotificationDropdown() {
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] bg-indigo-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
+          <span className="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] bg-brand-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -122,7 +122,7 @@ export default function NotificationDropdown() {
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg font-medium transition-colors"
+                  className="text-sm text-brand-blue hover:bg-brand-sky dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg font-medium transition-colors"
                 >
                   Mark all as read
                 </button>
@@ -135,15 +135,15 @@ export default function NotificationDropdown() {
                   <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Bell className="w-8 h-8 text-slate-400" />
                   </div>
-                  <p className="font-medium text-slate-600 dark:text-slate-400">No notifications yet</p>
+                  <p className="font-medium text-brand-slate dark:text-slate-400">No notifications yet</p>
                   <p className="text-sm text-slate-400 dark:text-slate-500 mt-1">When you get notifications, they&apos;ll show up here</p>
                 </div>
               ) : (
                 notifications.map((notif) => (
                   <div
                     key={notif._id}
-                    className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all cursor-pointer relative ${
-                      !notif.read ? "bg-blue-50 dark:bg-blue-900/20 border-l-4 border-l-blue-500" : ""
+                    className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-900/50 transition-all cursor-pointer relative ${
+                      !notif.read ? "bg-brand-sky dark:bg-blue-900/20 border-l-4 border-l-blue-500" : ""
                     }`}
                     onClick={async () => {
                       if (!notif.read) await markAsRead(notif._id);
@@ -166,12 +166,12 @@ export default function NotificationDropdown() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-slate-900 dark:text-white leading-snug">
                           <span className="font-semibold">{notif.sender?.name || "Someone"}</span>{" "}
-                          <span className="text-slate-600 dark:text-slate-400">{notif.message.replace(notif.sender?.name || "", "").trim()}</span>
+                          <span className="text-brand-slate dark:text-slate-400">{notif.message.replace(notif.sender?.name || "", "").trim()}</span>
                         </p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <p className="text-xs text-blue-600 dark:text-blue-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
+                          <p className="text-xs text-brand-blue dark:text-blue-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
                           {!notif.read && (
-                            <div className="w-2 h-2 bg-indigo-600 rounded-full" />
+                            <div className="w-2 h-2 bg-brand-blue rounded-full" />
                           )}
                         </div>
                       </div>
@@ -183,7 +183,7 @@ export default function NotificationDropdown() {
 
             {notifications.length > 0 && (
               <Link href="/notifications">
-                <div className="p-4 text-center text-sm text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-semibold cursor-pointer border-t border-slate-200 dark:border-slate-800 transition-colors">
+                <div className="p-4 text-center text-sm text-brand-blue hover:bg-brand-sky dark:hover:bg-blue-900/20 font-semibold cursor-pointer border-t border-slate-200 dark:border-slate-800 transition-colors">
                   See all notifications
                 </div>
               </Link>

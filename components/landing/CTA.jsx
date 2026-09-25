@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 export default function CTA() {
   return (
     <section className="py-24 bg-white dark:bg-black relative overflow-hidden">
-      <div className="absolute inset-0 bg-blue-600/5 dark:bg-blue-900/10" />
+      <div className="absolute inset-0 bg-brand-blue/5 dark:bg-blue-900/10" />
       
       {/* Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-[100px] pointer-events-none" />
@@ -14,9 +14,9 @@ export default function CTA() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
           Ready to start your <br/>
-          <span className="text-blue-600">creative journey?</span>
+          <span className="text-brand-blue">creative journey?</span>
         </h2>
-        <p className="text-xl text-slate-600 dark:text-gray-300 mb-10 leading-relaxed">
+        <p className="text-xl text-brand-slate dark:text-slate-300 mb-10 leading-relaxed">
           Join thousands of designers, developers, and craftsmen improving their workflow today.
         </p>
         
@@ -28,7 +28,7 @@ export default function CTA() {
             </button>
           </Link>
           <Link href="/contact">
-            <button className="px-8 py-4 bg-transparent border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-full font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors">
+            <button className="px-8 py-4 bg-transparent border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-full font-bold text-lg hover:bg-brand-cloud dark:hover:bg-slate-900 transition-colors">
               Contact Sales
             </button>
           </Link>

@@ -70,14 +70,14 @@ export default function WorkspaceSidebar() {
       {/* 1. Escrow Overview */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
-          <Briefcase size={12} className="text-indigo-500" /> Escrow Overview
+          <Briefcase size={12} className="text-brand-blue" /> Escrow Overview
         </h4>
         
         <div className="space-y-4">
           <div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Total in Escrow</p>
             <p className="text-2xl font-black text-slate-900 dark:text-white truncate">
-              {totalInEscrow.toLocaleString()} <span className="text-sm font-bold text-indigo-500 ml-1">TKNS</span>
+              {totalInEscrow.toLocaleString()} <span className="text-sm font-bold text-brand-blue ml-1">TKNS</span>
             </p>
           </div>
           
@@ -96,14 +96,14 @@ export default function WorkspaceSidebar() {
       {upcomingMilestones.length > 0 && (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
-             <Clock size={12} className="text-emerald-500" /> Upcoming Milestones
+             <Clock size={12} className="text-brand-teal" /> Upcoming Milestones
            </h4>
            
            <div className="divide-y divide-slate-100 dark:divide-white/5">
               {upcomingMilestones.map((m, idx) => (
                 <div key={idx} onClick={() => router.push(`/workspace`)} className="py-3.5 group cursor-pointer">
                    <div className="flex justify-between items-start mb-1">
-                      <span className="text-slate-900 dark:text-white text-[13px] font-bold group-hover:text-indigo-600 transition-colors line-clamp-1">
+                      <span className="text-slate-900 dark:text-white text-[13px] font-bold group-hover:text-brand-blue transition-colors line-clamp-1">
                          {m.title}
                       </span>
                    </div>
@@ -111,7 +111,7 @@ export default function WorkspaceSidebar() {
                       <span className={`text-[10px] font-bold uppercase tracking-widest ${new Date(m.dueDate) < new Date() ? 'text-rose-500' : 'text-slate-400'}`}>
                         {new Date(m.dueDate) < new Date() ? 'Overdue' : 'Upcoming'}
                       </span>
-                      <span className="text-[11px] font-bold text-indigo-500">{m.amount} TKNS</span>
+                      <span className="text-[11px] font-bold text-brand-blue">{m.amount} TKNS</span>
                    </div>
                 </div>
               ))}
@@ -130,7 +130,7 @@ export default function WorkspaceSidebar() {
                <span className="text-[11px] font-bold uppercase tracking-wider">Sign Agreements ({pendingSignatures})</span>
                <ArrowRight size={14} />
             </button>
-            <button onClick={() => router.push('/workspace')} className="w-full flex justify-between items-center p-3 bg-slate-50 dark:bg-white/5 text-slate-600 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-colors border border-slate-100 dark:border-white/10">
+            <button onClick={() => router.push('/workspace')} className="w-full flex justify-between items-center p-3 bg-brand-cloud dark:bg-white/5 text-brand-slate dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-colors border border-slate-100 dark:border-white/10">
                <span className="text-[11px] font-bold uppercase tracking-wider">Fund Milestones ({pendingFunding})</span>
                <ArrowRight size={14} />
             </button>

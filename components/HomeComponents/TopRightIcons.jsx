@@ -55,7 +55,7 @@ export default function TopRightIcons() {
           <Search
             strokeWidth={1.5}
             className={`w-5 h-5 transition-colors duration-200 ${
-              searchOpen ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
+              searchOpen ? "text-brand-blue dark:text-blue-400" : "text-brand-slate dark:text-slate-300"
             }`}
           />
         </div>
@@ -85,12 +85,12 @@ export default function TopRightIcons() {
             handleIconClick("mail");
             window.dispatchEvent(new CustomEvent("toggle-chat"));
           }}
-          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
           <Mail
             strokeWidth={1.5}
             className={`w-5 h-5 transition-colors duration-200 ${
-              activeIcon === "mail" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
+              activeIcon === "mail" ? "text-brand-blue dark:text-blue-400" : "text-brand-slate dark:text-slate-300"
             }`}
           />
         </button>
@@ -101,21 +101,21 @@ export default function TopRightIcons() {
             handleIconClick("bell");
             window.dispatchEvent(new CustomEvent("toggle-notification"));
           }}
-          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
         >
           <Bell
             strokeWidth={1.5}
             className={`w-5 h-5 transition-colors duration-200 ${
-              activeIcon === "bell" ? "text-blue-600 dark:text-blue-400" : "text-slate-700 dark:text-slate-300"
+              activeIcon === "bell" ? "text-brand-blue dark:text-blue-400" : "text-brand-slate dark:text-slate-300"
             }`}
           />
         </button>
 
         <div
           onClick={() => handleIconClick("profile")}
-          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border ${
+          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border ${
             activeIcon === "profile"
-              ? "border-blue-600 dark:border-blue-400"
+              ? "border-brand-blue dark:border-blue-400"
               : "border-slate-200 dark:border-slate-700"
           }`}
         >

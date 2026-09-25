@@ -169,7 +169,7 @@ export default function ChatWindow({
             {onBack && (
               <button 
                 onClick={onBack}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-white/10 backdrop-blur-md text-[#0071e3] transition-colors shadow-sm border border-black/5 dark:border-white/10"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-white/10 backdrop-blur-md text-brand-blue transition-colors shadow-sm border border-black/5 dark:border-white/10"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
@@ -201,7 +201,7 @@ export default function ChatWindow({
               )}
             </div>
             {isOnline && (
-              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-emerald-500 border-[2.5px] border-[#fafafa] dark:border-black rounded-full shadow-sm"></div>
+              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-brand-teal border-[2.5px] border-[#fafafa] dark:border-black rounded-full shadow-sm"></div>
             )}
           </div>
           <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white tracking-tight">
@@ -215,7 +215,7 @@ export default function ChatWindow({
         {/* Loading Spinner — only when no cached data exists */}
         {isLoadingMessages && messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 opacity-100 transition-opacity duration-300 mt-10">
-            <AppleSpinner size={28} className="text-[#0071e3]" />
+            <AppleSpinner size={28} className="text-brand-blue" />
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Loading messages...</p>
           </div>
         )}
@@ -285,7 +285,7 @@ export default function ChatWindow({
                             msg.isUnsent
                               ? "bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500 italic border border-dashed border-slate-200 dark:border-white/10 rounded-2xl"
                               : isOwn 
-                                ? `bg-[#0071e3] text-white rounded-[20px] ${isLastInGroup ? 'rounded-br-[4px]' : ''} shadow-sm` 
+                                ? `bg-brand-blue text-white rounded-[20px] ${isLastInGroup ? 'rounded-br-[4px]' : ''} shadow-sm` 
                                 : `bg-[#e5e5ea] dark:bg-[#2c2c2e] text-black dark:text-white rounded-[20px] ${isLastInGroup ? 'rounded-bl-[4px]' : ''} shadow-sm`
                           }`
                     }`}
@@ -306,10 +306,10 @@ export default function ChatWindow({
                         href={msg.fileUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-3 pr-2 rounded-xl group/file ${isOwn ? 'hover:opacity-80' : 'hover:bg-slate-50 dark:hover:bg-white/5'}`}
+                        className={`flex items-center gap-3 pr-2 rounded-xl group/file ${isOwn ? 'hover:opacity-80' : 'hover:bg-brand-cloud dark:hover:bg-white/5'}`}
                       >
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isOwn ? 'bg-white/20' : 'bg-slate-100 dark:bg-white/10'}`}>
-                          <FileText size={18} className={isOwn ? 'text-white' : 'text-slate-600 dark:text-gray-300'} />
+                          <FileText size={18} className={isOwn ? 'text-white' : 'text-brand-slate dark:text-slate-300'} />
                         </div>
                         <div className="min-w-0">
                           <p className={`text-sm font-semibold truncate max-w-[150px] ${isOwn ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{msg.fileName || msg.content}</p>
@@ -376,7 +376,7 @@ export default function ChatWindow({
                         // ✓✓ Blue — Seen
                         return (
                           <span className="flex items-center">
-                            <CheckCheck size={15} className="text-indigo-500" />
+                            <CheckCheck size={15} className="text-brand-blue" />
                           </span>
                         );
                       } else if (isDelivered) {
@@ -421,7 +421,7 @@ export default function ChatWindow({
         
         {/* File Preview */}
         {selectedFile && (
-          <div className="mb-3 p-3 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl flex items-center gap-3">
+          <div className="mb-3 p-3 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl flex items-center gap-3">
             {filePreview ? (
               <img src={getOptimizedUrl(filePreview)} alt="Preview" className="w-12 h-12 object-cover rounded-xl border border-black/5 dark:border-white/10" />
             ) : (
@@ -474,7 +474,7 @@ export default function ChatWindow({
               disabled={!newMessage.trim() && !selectedFile}
               className={`shrink-0 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full transition-all ml-2 ${
                 (newMessage.trim() || selectedFile)
-                  ? "bg-[#0071e3] text-white hover:scale-105 shadow-sm"
+                  ? "bg-brand-blue text-white hover:scale-105 shadow-sm"
                   : "bg-slate-100 dark:bg-[#2c2c2e] text-slate-300 dark:text-[#48484a]"
               }`}
             >
@@ -604,7 +604,7 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
       <div className="flex flex-col p-2 min-w-[160px] gap-2">
         <p className="text-[12px] text-slate-500 font-medium text-center">Delete for you?</p>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-slate-700 dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
           <button onClick={(e) => { e.stopPropagation(); onDeleteForMe?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
         </div>
       </div>
@@ -616,7 +616,7 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
       <div className="flex flex-col p-2 min-w-[160px] gap-2">
         <p className="text-[12px] text-slate-500 font-medium text-center">Delete for everyone?</p>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-slate-700 dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
           <button onClick={(e) => { e.stopPropagation(); onDeleteForEveryone?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
         </div>
       </div>
@@ -627,7 +627,7 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
     <div className="flex flex-col p-1.5 min-w-[160px]">
       <button
         onClick={(e) => { e.stopPropagation(); setConfirming('me'); }}
-        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-slate-700 dark:text-slate-300 flex items-center gap-2"
+        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-brand-slate dark:text-slate-300 flex items-center gap-2"
       >
         <Trash2 size={14} className="text-slate-400" />
         Delete for me

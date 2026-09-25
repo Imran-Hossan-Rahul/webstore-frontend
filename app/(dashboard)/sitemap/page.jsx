@@ -29,18 +29,30 @@ export default function SitemapPage() {
       ]
     },
     {
-      title: "Services & Support",
+      title: "Services & Solutions",
       links: [
+        { label: "Solutions Overview", href: "/solutions" },
         { label: "Product Warranty Check", href: "/warranty" },
         { label: "Checkout", href: "/checkout" }
       ]
     },
     {
+      title: "Resources & Support",
+      links: [
+        { label: "Help & Support", href: "/support" },
+        { label: "Documentation", href: "/docs" },
+        { label: "Blog & Updates", href: "/blog" },
+        { label: "FAQ", href: "/faq" }
+      ]
+    },
+    {
       title: "About Codalina",
       links: [
-        { label: "Who We Are", href: "/about" },
+        { label: "About", href: "/about" },
         { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms of Service", href: "/terms" }
+        { label: "Terms of Service", href: "/terms" },
+        { label: "End User License", href: "/eula" },
+        { label: "Legal Hub", href: "/legal" }
       ]
     }
   ];

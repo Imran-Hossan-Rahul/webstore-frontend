@@ -22,7 +22,7 @@ export default function AchievementsSidebar() {
       <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-            <Zap size={14} className="text-amber-500" /> Next Level
+            <Zap size={14} className="text-brand-amber" /> Next Level
           </h3>
           <span className="text-[10px] font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-full">
             LVL {(achievements?.level || 1) + 1}
@@ -49,7 +49,7 @@ export default function AchievementsSidebar() {
       {/* Leaderboard Preview */}
       <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-          <Trophy size={14} className="text-indigo-600" /> Top Performers
+          <Trophy size={14} className="text-brand-blue" /> Top Performers
         </h3>
         
         <div className="space-y-4">
@@ -72,12 +72,12 @@ export default function AchievementsSidebar() {
               <div className="flex-1 min-w-0">
                 <h4 className="text-[13px] font-bold text-slate-900 dark:text-white truncate">{user.name}</h4>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-tight">{user.gamification?.xp || 0} XP</span>
+                  <span className="text-[10px] font-bold text-brand-blue uppercase tracking-tight">{user.gamification?.xp || 0} XP</span>
                   <span className="w-1 h-1 bg-slate-300 dark:bg-slate-700 rounded-full" />
                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">LVL {user.gamification?.level || 1}</span>
                 </div>
               </div>
-              <div className={`text-xs font-bold ${i === 0 ? "text-amber-500" : "text-slate-400"}`}>
+              <div className={`text-xs font-bold ${i === 0 ? "text-brand-amber" : "text-slate-400"}`}>
                 #{i + 1}
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function AchievementsSidebar() {
         </h3>
         <ul className="space-y-3 relative z-10">
           <li className="flex items-start gap-3">
-            <div className="p-2 bg-blue-500/20 text-blue-400 rounded-lg shrink-0 mt-0.5">
+            <div className="p-2 bg-brand-blue/20 text-blue-400 rounded-lg shrink-0 mt-0.5">
               <Zap size={10} />
             </div>
             <div>
@@ -107,7 +107,7 @@ export default function AchievementsSidebar() {
             </div>
           </li>
           <li className="flex items-start gap-3">
-            <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg shrink-0 mt-0.5">
+            <div className="p-2 bg-brand-blue/20 text-indigo-400 rounded-lg shrink-0 mt-0.5">
               <Star size={10} />
             </div>
             <div>
@@ -134,7 +134,7 @@ export default function AchievementsSidebar() {
             </div>
           </li>
           <li className="flex items-start gap-3">
-            <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg shrink-0 mt-0.5">
+            <div className="p-2 bg-brand-teal/20 text-emerald-400 rounded-lg shrink-0 mt-0.5">
               <UserIcon size={10} />
             </div>
             <div>

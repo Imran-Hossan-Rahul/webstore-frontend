@@ -98,9 +98,9 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
                         onClose();
                         onOpenChat();
                       }}
-                      className="w-full flex items-center gap-4 p-4 rounded-[20px] bg-[#f5f5f7] dark:bg-[#2c2c2e] hover:bg-[#e5e5ea] dark:hover:bg-[#3a3a3c] transition-colors text-left group"
+                      className="w-full flex items-center gap-4 p-4 rounded-[4px] bg-[#f5f5f7] dark:bg-[#2c2c2e] hover:bg-[#e5e5ea] dark:hover:bg-[#3a3a3c] transition-colors text-left group"
                     >
-                      <div className="w-[46px] h-[46px] rounded-full bg-[#0071e3] flex items-center justify-center text-white shrink-0">
+                      <div className="w-[46px] h-[46px] rounded-full bg-brand-blue flex items-center justify-center text-white shrink-0">
                         <MessageCircle size={22} strokeWidth={2} />
                       </div>
                       <div>
@@ -141,14 +141,14 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                           placeholder={feedbackType === "suggestion" ? "How can we improve your experience?" : "What went wrong?"}
-                          className="w-full h-[120px] resize-none rounded-[16px] bg-[#f5f5f7] dark:bg-[#2c2c2e] border-0 px-4 py-3.5 text-[15px] text-black dark:text-white placeholder:text-[#8a8a8e] focus:outline-none focus:ring-2 focus:ring-[#0071e3] transition-all font-normal"
+                          className="w-full h-[120px] resize-none rounded-[4px] bg-[#f5f5f7] dark:bg-[#2c2c2e] border-0 px-4 py-3.5 text-[15px] text-black dark:text-white placeholder:text-[#8a8a8e] focus:outline-none focus:ring-2 focus:ring-[#0071e3] transition-all font-normal"
                         ></textarea>
                       </div>
 
                       <button
                         type="submit"
                         disabled={!message.trim() || isSubmitting}
-                        className="w-full flex justify-center items-center gap-2 py-3.5 bg-[#0071e3] text-white rounded-full font-semibold text-[17px] tracking-tight disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#0077ed] transition-colors mt-2"
+                        className="w-full flex justify-center items-center gap-2 py-3.5 bg-brand-blue text-white rounded-full font-semibold text-[17px] tracking-tight disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#0077ed] transition-colors mt-2"
                       >
                         {isSubmitting ? (
                           <AppleSpinner size={20} />

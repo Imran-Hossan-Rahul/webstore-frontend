@@ -22,7 +22,7 @@ export default function RegisterRevenueCard() {
     <div className="bg-white dark:bg-[#1a1a1a] p-8 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-slate-100 dark:border-slate-800">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-gray-100">Revenue</h3>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Revenue</h3>
           <p className="text-sm text-slate-500 font-medium mt-1">Monthly earnings</p>
         </div>
         <div className="w-2 h-2 rounded-full bg-green-400"></div>
@@ -59,7 +59,7 @@ export default function RegisterRevenueCard() {
         </div>
         <div className="text-right">
              <p className="text-xs text-slate-400 font-medium mb-1">Growth</p>
-             <p className="text-green-500 font-bold text-sm">+18%</p>
+             <p className="text-brand-teal font-bold text-sm">+18%</p>
         </div>
       </div>
       

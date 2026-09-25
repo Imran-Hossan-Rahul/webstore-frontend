@@ -2,78 +2,93 @@
 import React from 'react';
 import Link from 'next/link';
 
+import { PageContainer } from '@/components/ui/PageContainer';
+import { Card, CardContent } from '@/components/ui/Card';
+import { ChevronRight, Shield, FileText, CheckCircle, RefreshCcw } from 'lucide-react';
+
 export default function LegalPage() {
   const legalSections = [
     {
-      title: "Sales & Refunds",
-      description: "Details about the policies, terms, and conditions for the purchase, support, and returning of products bought on the Codalina marketplace.",
+      title: "Terms & Conditions",
+      description: "Before using the Codalina platform, review the terms governing our marketplace usage and community.",
+      icon: FileText,
       links: [
-        { label: "Explore Sales & Refunds >", href: "/warranty" }
+        { label: "Find your terms of service", href: "/terms" }
       ]
     },
     {
       title: "Privacy Policy",
-      description: "Codalina is committed to your privacy. Read our customer Privacy Policy for a clear explanation of how we collect, use, disclose, transfer, and store your information.",
+      description: "Codalina is committed to your privacy. Read our policy for a clear explanation of how we protect your data.",
+      icon: Shield,
       links: [
-        { label: "Read Codalina's Privacy Policy >", href: "/privacy" }
+        { label: "Read Codalina's Privacy Policy", href: "/privacy" }
       ]
     },
     {
-      title: "Terms of Service",
-      description: "Before using the Codalina platform, you may review the terms and conditions of our end user software license agreements and marketplace usage.",
+      title: "End User License Agreement",
+      description: "Standard licensing terms for digital products on Codalina, including personal and commercial limits.",
+      icon: CheckCircle,
       links: [
-        { label: "Find your terms of service >", href: "/terms" }
+        { label: "Review the EULA", href: "/eula" }
+      ]
+    },
+    {
+      title: "Warranty & Refunds",
+      description: "Details about the policies, terms, and conditions for the support and refunding of digital products.",
+      icon: RefreshCcw,
+      links: [
+        { label: "Explore Warranty & Refunds", href: "/warranty" }
       ]
     }
   ];
 
   return (
-    <div className="w-full min-h-screen bg-transparent" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif' }}>
+    <PageContainer maxWidth="max-w-[1200px]" className="py-16 md:py-24">
       
-
-
       {/* Hero Section */}
-      <section className="text-center pt-[100px] pb-[64px] px-6">
-        <p className="uppercase tracking-[.12em] text-[12px] font-[600] text-[#0071e3] mb-[18px]">
+      <div className="pb-12 border-b border-slate-200 dark:border-white/8 mb-16 text-center md:text-left">
+        <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-medium text-brand-blue mb-4">
           Legal Resources
         </p>
-        <h1 className="text-[40px] md:text-[56px] font-[700] text-[#1d1d1f] tracking-[-0.02em] leading-[1.1] mb-[20px]">
-          Codalina Legal
+        <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
+          Codalina Legal & Information
         </h1>
-        <p className="text-[17px] md:text-[21px] font-[400] text-[#86868b] max-w-[640px] mx-auto mb-[24px]">
-          Find legal information and resources for Codalina products and services.
+        <p className="text-[17px] font-sans text-slate-500 max-w-[640px] leading-relaxed mx-auto md:mx-0">
+          Find legal information, data protection policies, and licensing resources for Codalina products and platforms.
         </p>
-      </section>
+      </div>
 
       {/* Content Grid */}
-      <section className="w-full py-[60px] px-6 border-t border-[#e8e8ed] bg-transparent">
-        <div className="max-w-[980px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-[60px] gap-y-[60px]">
-            {legalSections.map((section, idx) => (
-              <div key={idx} className="flex flex-col text-left">
-                <h3 className="text-[24px] font-[600] text-[#1d1d1f] tracking-[-0.01em] mb-3">
-                  {section.title}
-                </h3>
-                <p className="text-[16px] font-[400] text-[#86868b] leading-[1.5] mb-5 max-w-[400px]">
-                  {section.description}
-                </p>
-                <div className="flex flex-col items-start space-y-2">
-                  {section.links.map((link, linkIdx) => (
-                    <Link 
-                      key={linkIdx} 
-                      href={link.href}
-                      className="text-[16px] font-[400] text-[#0071e3] hover:underline"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {legalSections.map((section, idx) => (
+          <Card key={idx} className="bg-white dark:bg-[#161B22] border-slate-200 dark:border-white/10 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors shadow-sm dark:shadow-none h-full">
+            <CardContent className="p-8 flex flex-col h-full">
+              <div className="w-10 h-10 rounded-[4px] bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-6">
+                <section.icon size={20} />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-3 leading-tight">
+                {section.title}
+              </h3>
+              <p className="text-[14px] font-sans text-slate-500 leading-relaxed mb-8 flex-1">
+                {section.description}
+              </p>
+              <div className="flex flex-col items-start space-y-2 mt-auto">
+                {section.links.map((link, linkIdx) => (
+                  <Link 
+                    key={linkIdx} 
+                    href={link.href}
+                    className="group flex items-center gap-2 text-[14px] font-sans font-medium text-brand-blue hover:text-blue-700 transition-colors"
+                  >
+                    {link.label}
+                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-    </div>
+    </PageContainer>
   );
 }

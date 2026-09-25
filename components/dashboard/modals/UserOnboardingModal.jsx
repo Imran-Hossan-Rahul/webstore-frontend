@@ -173,8 +173,8 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                     onClick={() => toggleInterest(interest)}
                                     className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${
                                         selectedInterests.includes(interest)
-                                        ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30"
-                                        : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-600 dark:text-gray-300 hover:border-blue-400"
+                                        ? "bg-brand-blue border-brand-blue text-white shadow-lg shadow-blue-500/30"
+                                        : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-blue-400"
                                     }`}
                                 >
                                     {interest}

@@ -149,7 +149,7 @@ export default function SearchMain() {
             </div>
 
             {/* Tabs */}
-            <div className="flex flex-wrap items-center gap-2 bg-slate-100/50 dark:bg-white/5 p-1 rounded-2xl w-fit">
+            <div className="flex flex-wrap items-center gap-2 bg-slate-100/50 dark:bg-white/5 p-1 rounded-[4px] w-fit">
                 {[
                     { id: "all", label: "All", icon: Layout },
                     { id: "marketplace", label: "Marketplace", icon: Layout, count: results.marketplace?.length },
@@ -157,10 +157,10 @@ export default function SearchMain() {
                     <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`flex items-center gap-2 px-4 py-1.5 rounded-xl font-medium text-[13px] transition-all whitespace-nowrap ${
+                        className={`flex items-center gap-2 px-4 py-1.5 rounded-[4px] font-medium text-[13px] transition-all whitespace-nowrap ${
                             activeTab === tab.id
                             ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm"
-                            : "bg-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                            : "bg-transparent text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:hover:text-slate-300"
                         }`}
                     >
                         {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
@@ -181,12 +181,12 @@ export default function SearchMain() {
         {loading ? (
              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-pulse">
                 {[1,2,3,4].map(i => (
-                    <div key={i} className="h-32 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/5" />
+                    <div key={i} className="h-32 bg-slate-100 dark:bg-white/5 rounded-[4px] border border-slate-200/50 dark:border-white/5" />
                 ))}
              </div>
         ) : totalResults === 0 ? (
-            <div className="text-center py-16 bg-white dark:bg-white/5 rounded-3xl border border-dashed border-slate-200 dark:border-white/10 shadow-sm">
-                <div className="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center py-16 bg-white dark:bg-white/5 rounded-[4px] border border-dashed border-slate-200 dark:border-white/10 shadow-sm">
+                <div className="w-16 h-16 bg-brand-cloud dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Search className="w-8 h-8 text-slate-300" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">No matches found</h3>
@@ -207,7 +207,7 @@ export default function SearchMain() {
                              {results.marketplace.map((product) => (
                                  <Link href={`/market/product/${product._id}`} key={product._id} className="group">
                                      <div className="bg-white dark:bg-[#1d1d1f] rounded-[18px] p-5 shadow-sm border border-slate-100 dark:border-white/5 hover:shadow-lg transition-all duration-300">
-                                        <div className="w-full h-36 mb-4 bg-slate-50 dark:bg-white/5 rounded-xl overflow-hidden relative border border-slate-100 dark:border-transparent flex items-center justify-center">
+                                        <div className="w-full h-36 mb-4 bg-brand-cloud dark:bg-white/5 rounded-[4px] overflow-hidden relative border border-slate-100 dark:border-transparent flex items-center justify-center">
                                             {product.photos && (() => {
                                                 try {
                                                     const parsedPhotos = JSON.parse(product.photos);
@@ -215,7 +215,7 @@ export default function SearchMain() {
                                                 } catch(e) { return null; }
                                             })()}
                                         </div>
-                                        <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white group-hover:text-[#0066CC] transition-colors line-clamp-1">
+                                        <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white group-hover:text-brand-blue transition-colors line-clamp-1">
                                             <HighlightMatch text={product.title} />
                                         </h3>
                                         <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-1.5 line-clamp-2 leading-relaxed">
@@ -223,7 +223,7 @@ export default function SearchMain() {
                                         </p>
                                         <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
                                             <span className="text-[15px] font-semibold text-slate-900 dark:text-white">BDT {product.selling_price}</span>
-                                            <span className="text-[11px] font-medium px-2.5 py-1 bg-slate-50 dark:bg-white/5 rounded-full text-slate-500 dark:text-slate-400">
+                                            <span className="text-[11px] font-medium px-2.5 py-1 bg-brand-cloud dark:bg-white/5 rounded-full text-slate-500 dark:text-slate-400">
                                                 {product.category || 'Product'}
                                             </span>
                                         </div>

@@ -252,7 +252,7 @@ export default function AdminMessagesPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-100px)] w-full bg-white dark:bg-black rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.04)] mt-4">
+    <div className="flex h-[calc(100vh-100px)] w-full bg-white dark:bg-black rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 mt-4">
       {/* Sidebar */}
       <div className="w-[320px] border-r border-black/5 dark:border-white/10 flex-shrink-0 bg-[#f5f5f7] dark:bg-[#1c1c1e] relative z-10">
         <ChatSidebar

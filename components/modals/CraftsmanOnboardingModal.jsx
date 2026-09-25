@@ -94,7 +94,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
           {step === 1 && (
             <div className="space-y-6 animate-in slide-in-from-right-8 duration-300">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
                   Display Name <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
@@ -119,7 +119,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
           {step === 2 && (
             <div className="space-y-6 animate-in slide-in-from-right-8 duration-300">
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
                   Bio
                 </label>
                 <textarea
@@ -130,7 +130,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
+                <label className="block text-sm font-semibold text-slate-300 mb-2">
                   Skills (Comma separated)
                 </label>
                 <input

@@ -54,7 +54,7 @@ export default function ResourceLibrary({ isOpen, onClose }) {
               <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
                 Resource Library
               </h2>
-              <p className="text-slate-600 dark:text-slate-400">
+              <p className="text-brand-slate dark:text-slate-400">
                 Discover and share valuable resources
               </p>
             </div>
@@ -81,8 +81,8 @@ export default function ResourceLibrary({ isOpen, onClose }) {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                     selectedCategory === cat.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-slate-100 dark:bg-white/5 text-slate-700 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-white/10"
+                      ? "bg-brand-blue text-white"
+                      : "bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10"
                   }`}
                 >
                   <cat.icon className="w-4 h-4" />
@@ -169,12 +169,12 @@ const ResourceCard = ({ resource, onUpdate }) => {
           <img src={getOptimizedUrl(resource.previewImage)} alt={resource.title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="w-16 h-16 text-gray-300 dark:text-slate-600" />
+            <Package className="w-16 h-16 text-slate-300 dark:text-brand-slate" />
           </div>
         )}
         <div className="absolute top-3 right-3 flex gap-2">
           {resource.isPaid && (
-            <span className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">
+            <span className="px-3 py-1 bg-brand-teal text-white text-xs font-bold rounded-full">
               {resource.price} TKNS
             </span>
           )}
@@ -189,7 +189,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
         <h3 className="font-bold text-slate-900 dark:text-white mb-2 line-clamp-1">
           {resource.title}
         </h3>
-        <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">
+        <p className="text-sm text-brand-slate dark:text-slate-400 mb-3 line-clamp-2">
           {resource.description}
         </p>
 
@@ -198,7 +198,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
           <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-xs font-bold">
             {resource.craftsman?.name?.[0]}
           </div>
-          <span className="text-sm text-slate-600 dark:text-slate-400">
+          <span className="text-sm text-brand-slate dark:text-slate-400">
             {resource.craftsman?.name}
           </span>
         </div>
@@ -221,14 +221,14 @@ const ResourceCard = ({ resource, onUpdate }) => {
               className={`p-2 rounded-lg transition-all ${
                 isLiked
                   ? "bg-red-100 dark:bg-red-900/30 text-red-600"
-                  : "bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                  : "bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
               }`}
             >
               <Star className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
             </button>
             <button
               onClick={handleDownload}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-medium text-sm"
+              className="px-4 py-2 bg-brand-blue text-white rounded-lg hover:bg-blue-700 transition-all font-medium text-sm"
             >
               {resource.type === "link" ? "Visit" : "Download"}
             </button>
@@ -323,19 +323,19 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             />
           ) : (
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-slate-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-brand-slate dark:text-slate-300">
                 Upload File
               </label>
               <div className="relative">
                 <input
                   type="file"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
-                  className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:cursor-pointer"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-blue file:text-white hover:file:bg-blue-700 file:cursor-pointer"
                   required
                 />
               </div>
               {selectedFile && (
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-brand-slate dark:text-slate-400">
                   Selected: {selectedFile.name}
                 </p>
               )}
@@ -356,13 +356,13 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
           />
           <div className="flex justify-end gap-4 pt-4">
-            <button type="button" onClick={onClose} className="px-6 py-2 text-slate-600 dark:text-slate-400">
+            <button type="button" onClick={onClose} className="px-6 py-2 text-brand-slate dark:text-slate-400">
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 disabled:opacity-50"
+              className="px-6 py-2 bg-brand-blue text-white rounded-xl hover:bg-blue-700 disabled:opacity-50"
             >
               {loading ? "Sharing..." : "Share Resource"}
             </button>
@@ -389,11 +389,11 @@ const LoadingGrid = () => (
 
 const EmptyState = ({ category }) => (
   <div className="text-center py-20">
-    <Package className="w-20 h-20 text-gray-300 dark:text-slate-600 mx-auto mb-6" />
+    <Package className="w-20 h-20 text-slate-300 dark:text-brand-slate mx-auto mb-6" />
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
       No resources found
     </h3>
-    <p className="text-slate-600 dark:text-slate-400">
+    <p className="text-brand-slate dark:text-slate-400">
       {category === "all" ? "Be the first to share a resource!" : `No ${category} resources yet.`}
     </p>
   </div>

@@ -90,7 +90,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
           {/* Close Button */}
           <button 
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/50 dark:bg-black/50 backdrop-blur-md hover:bg-white/80 dark:hover:bg-white/10 text-slate-700 dark:text-gray-300 z-20 transition-all border border-slate-200 dark:border-white/10"
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/50 dark:bg-black/50 backdrop-blur-md hover:bg-white/80 dark:hover:bg-white/10 text-brand-slate dark:text-slate-300 z-20 transition-all border border-slate-200 dark:border-white/10"
           >
             <X size={20} />
           </button>
@@ -137,7 +137,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                   
                   {/* Verified Badge */}
                   {craftsmanProfile?.isVerified && (
-                    <div className="absolute bottom-2 right-2 bg-indigo-600 rounded-full p-1.5">
+                    <div className="absolute bottom-2 right-2 bg-brand-blue rounded-full p-1.5">
                       <CheckCircle size={16} className="text-white" />
                     </div>
                   )}
@@ -153,7 +153,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                       craftsmanProfile?.level === 'pro' ? 'bg-slate-900 dark:bg-white text-white dark:text-black ring-1 ring-slate-900 dark:ring-white' :
                       craftsmanProfile?.level === 'expert' ? 'bg-slate-800 dark:bg-slate-100 text-white dark:text-black ring-1 ring-slate-800 dark:ring-slate-100' :
                       craftsmanProfile?.level === 'intermediate' ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white ring-1 ring-slate-200' :
-                      'bg-slate-50 dark:bg-white/5 text-slate-500 dark:text-gray-400 ring-1 ring-slate-100'
+                      'bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 ring-1 ring-slate-100'
                     }`}>
                       {craftsmanProfile?.level?.toUpperCase()}
                     </span>
@@ -161,7 +161,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                   <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Craftsman Account</p>
                   <Link
                     href="/user/craftsman"
-                    className="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-gradient-to-r from-gray-900 to-black dark:from-white dark:to-gray-200 text-white dark:text-black rounded-xl text-sm font-bold hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-2.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl text-sm font-bold hover:shadow-lg transition-all"
                   >
                     <LayoutDashboard size={15} />
                     Craftsman Dashboard
@@ -175,7 +175,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                     className={`px-4 py-2 font-medium text-sm transition-colors relative ${
                       activeTab === "profile"
                         ? "text-black dark:text-white"
-                        : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-gray-300"
+                        : "text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:hover:text-slate-300"
                     }`}
                   >
                     Profile
@@ -188,7 +188,7 @@ export default function CraftsmanProfileModal({ isOpen, onClose }) {
                     className={`px-4 py-2 font-medium text-sm transition-colors relative ${
                       activeTab === "overview"
                         ? "text-black dark:text-white"
-                        : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-gray-300"
+                        : "text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:hover:text-slate-300"
                     }`}
                   >
                     Overview
@@ -240,7 +240,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
     <div className="space-y-8">
       {/* Contact Info */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex items-center gap-3 p-4 bg-slate-50/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-3 p-4 bg-brand-cloud/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
           <div className="p-2 bg-white dark:bg-black/50 rounded-lg shadow-sm">
             <Mail size={18} className="text-slate-500 dark:text-slate-400" />
           </div>
@@ -250,7 +250,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 bg-slate-50/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-3 p-4 bg-brand-cloud/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
           <div className="p-2 bg-white dark:bg-black/50 rounded-lg shadow-sm">
             {/* Icon removed */}
           </div>
@@ -260,7 +260,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 bg-slate-50/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-3 p-4 bg-brand-cloud/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
           <div className="p-2 bg-white dark:bg-black/50 rounded-lg shadow-sm">
             <MapPin size={18} className="text-slate-500 dark:text-slate-400" />
           </div>
@@ -270,7 +270,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 bg-slate-50/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
+        <div className="flex items-center gap-3 p-4 bg-brand-cloud/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/10 rounded-2xl shadow-sm">
           <div className="p-2 bg-white dark:bg-black/50 rounded-lg shadow-sm">
             <Calendar size={18} className="text-slate-500 dark:text-slate-400" />
           </div>
@@ -284,10 +284,10 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
       </div>
 
       {/* Verified Status */}
-      <div className="flex items-center justify-between p-5 bg-blue-50/50 dark:bg-indigo-600/10 border border-blue-100 dark:border-indigo-600/20 rounded-2xl shadow-sm">
+      <div className="flex items-center justify-between p-5 bg-brand-sky/50 dark:bg-brand-blue/10 border border-blue-100 dark:border-brand-blue/20 rounded-2xl shadow-sm">
         <div className="flex items-center gap-4">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm ${
-            craftsmanProfile?.isVerified ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-800'
+            craftsmanProfile?.isVerified ? 'bg-brand-blue' : 'bg-slate-200 dark:bg-slate-800'
           }`}>
             <CheckCircle size={24} className={craftsmanProfile?.isVerified ? 'text-white' : 'text-slate-400'} />
           </div>
@@ -299,7 +299,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
           </div>
         </div>
         {craftsmanProfile?.isVerified && (
-          <span className="text-xs text-blue-600 dark:text-blue-400 font-bold bg-blue-100 dark:bg-blue-900/30 px-3 py-1.5 rounded-lg">
+          <span className="text-xs text-brand-blue dark:text-blue-400 font-bold bg-blue-100 dark:bg-blue-900/30 px-3 py-1.5 rounded-lg">
             Verified on {new Date(craftsmanProfile?.verifiedAt).toLocaleDateString()}
           </span>
         )}
@@ -310,7 +310,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
         <div className="flex items-center justify-between mb-2">
           <h3 className="font-semibold text-slate-900 dark:text-white">About</h3>
           {!isEditing && (
-            <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
+            <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
               <Edit2 size={14} />
             </button>
           )}
@@ -319,7 +319,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
         {isEditing ? (
           <div className="animate-in fade-in space-y-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5 block">Bio</label>
+              <label className="text-xs font-bold text-brand-slate dark:text-slate-300 mb-1.5 block">Bio</label>
               <textarea 
                 value={editBio} 
                 onChange={(e) => setEditBio(e.target.value)} 
@@ -328,7 +328,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-700 dark:text-gray-300 mb-1.5 block">Skills (comma separated)</label>
+              <label className="text-xs font-bold text-brand-slate dark:text-slate-300 mb-1.5 block">Skills (comma separated)</label>
               <input 
                 type="text"
                 value={editSkills} 
@@ -343,7 +343,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
             </div>
           </div>
         ) : (
-          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap break-words">
+          <p className="text-brand-slate dark:text-slate-400 text-sm leading-relaxed whitespace-pre-wrap break-words">
             {craftsmanProfile?.bio || "No bio yet."}
           </p>
         )}
@@ -355,7 +355,7 @@ function ProfileTab({ craftsmanProfile, user, isEditing, setIsEditing, editBio, 
         <div className="flex flex-wrap gap-2.5">
           {craftsmanProfile?.skills && craftsmanProfile.skills.length > 0 ? (
             craftsmanProfile.skills.map((skill, index) => (
-              <span key={`${skill}-${index}`} className="px-4 py-2 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-gray-200 rounded-xl text-xs font-bold shadow-sm">
+              <span key={`${skill}-${index}`} className="px-4 py-2 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-slate-200 rounded-xl text-xs font-bold shadow-sm">
                 {skill}
               </span>
             ))
@@ -373,7 +373,7 @@ function OverviewTab({ craftsmanProfile }) {
     <div className="space-y-6">
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
+        <div className="p-4 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 dark:bg-white rounded-lg flex items-center justify-center">
               <Eye size={20} className="text-white dark:text-black" />
@@ -385,7 +385,7 @@ function OverviewTab({ craftsmanProfile }) {
           </div>
         </div>
 
-        <div className="p-4 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
+        <div className="p-4 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 dark:bg-white rounded-lg flex items-center justify-center">
               <FileText size={20} className="text-white dark:text-black" />
@@ -397,7 +397,7 @@ function OverviewTab({ craftsmanProfile }) {
           </div>
         </div>
 
-        <div className="p-4 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
+        <div className="p-4 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 dark:bg-white rounded-lg flex items-center justify-center">
               <Layout size={20} className="text-white dark:text-black" />
@@ -409,7 +409,7 @@ function OverviewTab({ craftsmanProfile }) {
           </div>
         </div>
 
-        <div className="p-4 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
+        <div className="p-4 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-slate-900 dark:bg-white rounded-lg flex items-center justify-center">
               <Star size={20} className="text-white dark:text-black" />
@@ -424,12 +424,12 @@ function OverviewTab({ craftsmanProfile }) {
 
       {/* Rating */}
       {craftsmanProfile?.rating?.count > 0 && (
-        <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+        <div className="p-4 bg-brand-cloud dark:bg-slate-800 rounded-xl">
           <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Rating</h3>
           <div className="flex items-center gap-2">
             <div className="flex">
               {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star} className={star <= Math.round(craftsmanProfile.rating.average) ? 'text-yellow-400' : 'text-gray-300'}>
+                <span key={star} className={star <= Math.round(craftsmanProfile.rating.average) ? 'text-yellow-400' : 'text-slate-300'}>
                   ★
                 </span>
               ))}
@@ -445,21 +445,21 @@ function OverviewTab({ craftsmanProfile }) {
       )}
 
       {/* Quick Info */}
-      <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+      <div className="p-4 bg-brand-cloud dark:bg-slate-800 rounded-xl">
         <h3 className="font-semibold text-slate-900 dark:text-white mb-3">Quick Stats</h3>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-slate-600 dark:text-slate-400">Account Status</span>
+            <span className="text-brand-slate dark:text-slate-400">Account Status</span>
             <span className="font-medium text-slate-900 dark:text-white">
               {craftsmanProfile?.isActive ? '🟢 Active' : '🔴 Inactive'}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-600 dark:text-slate-400">Craftsman Level</span>
+            <span className="text-brand-slate dark:text-slate-400">Craftsman Level</span>
             <span className="font-medium text-slate-900 dark:text-white capitalize">{craftsmanProfile?.level}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-600 dark:text-slate-400">Work Type</span>
+            <span className="text-brand-slate dark:text-slate-400">Work Type</span>
             <span className="font-medium text-slate-900 dark:text-white capitalize">{craftsmanProfile?.workType}</span>
           </div>
         </div>

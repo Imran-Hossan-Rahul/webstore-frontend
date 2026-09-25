@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-brand-navy dark:text-white;
+  }
+}
+
 /* =========================================
    UNIVERSAL MACOS STYLE SMOOTH SCROLLBAR
    Applies to all browsers (Chrome, Firefox, Safari)
@@ -81,8 +87,8 @@ body {
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #1d1d1f;
+  --background: #F4F7FB;
+  --foreground: #34435A;
   --clr: rgba(228, 228, 228, 0.5);
   --font-inter: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -100,8 +106,8 @@ body {
 }
 
 [data-theme="dark"] {
-  --background: #000000;
-  --foreground: #f5f5f7;
+  --background: #0B2545;
+  --foreground: #F4F7FB;
 
   /* Apple Design Tokens (Dark Mode) */
   --apple-ink: #ffffff;
@@ -121,8 +127,8 @@ body {
 }
 
 body {
-  background: var(--apple-canvas);
-  color: var(--apple-ink);
+  background: var(--background);
+  color: var(--foreground);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", var(--font-inter), 'Segoe UI', Helvetica, sans-serif;
   font-size: 17px;
   font-weight: 400;
@@ -1376,4 +1382,14 @@ mark {
 
 .progress-fill {
   animation: progressFill 4000ms linear forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

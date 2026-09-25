@@ -205,7 +205,7 @@ export default function CraftsmanDashboard() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10">
           <div>
             <h1 className="text-5xl font-bold text-black tracking-tight mb-2">Dashboard</h1>
-            <div className="flex items-center text-slate-500 font-medium cursor-pointer hover:text-slate-700">
+            <div className="flex items-center text-slate-500 font-medium cursor-pointer hover:text-brand-slate">
               <span>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               <ChevronDown size={16} className="ml-1" />
             </div>
@@ -270,7 +270,7 @@ function NavItem({ icon, active, onClick }) {
     return (
         <div 
             onClick={onClick}
-            className={`p-3 rounded-full cursor-pointer transition-all duration-200 ${active ? 'bg-black text-white shadow-lg' : 'text-slate-400 hover:bg-white hover:text-slate-600'}`}
+            className={`p-3 rounded-full cursor-pointer transition-all duration-200 ${active ? 'bg-black text-white shadow-lg' : 'text-slate-400 hover:bg-white hover:text-brand-slate'}`}
         >
             {icon}
         </div>

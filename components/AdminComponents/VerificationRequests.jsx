@@ -42,28 +42,28 @@ const VerificationRequests = () => {
   return (
     <div className="relative min-h-[600px] space-y-6">
       {/* Filter Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-[#0A0A0A] p-5 rounded-2xl border border-slate-200/60 dark:border-white/5 shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-[#161B22] p-5 rounded-[4px] border border-slate-200 dark:border-white/10">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-sm">
+          <div className="w-12 h-12 bg-brand-blue rounded-[4px] flex items-center justify-center">
             <ShieldCheck className="text-white" size={24} />
           </div>
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-widest leading-none">Identity Hub</h2>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> System Compliance Engine
+              <span className="w-1.5 h-1.5 bg-brand-teal rounded-full animate-pulse" /> System Compliance Engine
             </p>
           </div>
         </div>
         
-        <div className="flex bg-slate-50 dark:bg-white/5 p-1.5 rounded-2xl border border-slate-200/50 dark:border-white/5">
+        <div className="flex bg-brand-cloud dark:bg-white/5 p-1.5 rounded-[4px] border border-slate-200/50 dark:border-white/10">
           {['pending', 'approved', 'rejected'].map((s) => (
             <button
               key={s}
               onClick={() => setFilter(s)}
-              className={`px-8 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-500 ${
+              className={`px-8 py-2.5 rounded-[4px] text-[10px] font-bold uppercase tracking-widest transition-all duration-500 ${
                 filter === s 
-                  ? 'bg-white dark:bg-[#111] text-blue-600 shadow-2xl shadow-blue-500/10 border border-slate-200/50 dark:border-white/10' 
-                  : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
+                  ? 'bg-white dark:bg-[#111] text-brand-blue border border-slate-200/50 dark:border-white/10' 
+                  : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-300'
               }`}
             >
               {s}
@@ -73,11 +73,11 @@ const VerificationRequests = () => {
       </div>
 
       {/* Main Content Layout */}
-      <div className="bg-white dark:bg-[#0A0A0A] rounded-2xl border border-slate-200/60 dark:border-white/5 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-white/5 bg-slate-50/10 dark:bg-white/[0.01]">
+              <tr className="border-b border-slate-100 dark:border-white/10 bg-brand-cloud/10 dark:bg-white/[0.01]">
                 <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Applicant Profile</th>
                 <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Type / Level</th>
                 <th className="px-6 py-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Status</th>
@@ -105,24 +105,24 @@ const VerificationRequests = () => {
                 <tr 
                   key={request._id}
                   onClick={() => handleRowClick(request._id)}
-                  className="group cursor-pointer hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all duration-300"
+                  className="group cursor-pointer hover:bg-brand-cloud dark:hover:bg-white/[0.02] transition-all duration-300"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="relative">
-                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm transition-opacity duration-300">
+                        <div className="w-12 h-12 rounded-[4px] overflow-hidden border border-slate-100 dark:border-white/10 transition-opacity duration-300">
                           <img 
                             src={request.user?.profilePicture || 'https://ui-avatars.com/api/?name=User&background=random'} 
                             alt="" 
                             className="w-full h-full object-cover"
                           />
                         </div>
-                        <div className={`absolute -bottom-1 -right-1 w-5 h-5 ${request.user?.isVerified ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-white/10'} rounded-lg flex items-center justify-center border-2 border-white dark:border-[#0A0A0A] shadow-sm`}>
+                        <div className={`absolute -bottom-1 -right-1 w-5 h-5 ${request.user?.isVerified ? 'bg-brand-teal' : 'bg-slate-300 dark:bg-white/10'} rounded-[4px] flex items-center justify-center border-2 border-white dark:border-[#0A0A0A]`}>
                           {request.user?.isVerified ? <Check size={10} className="text-white" /> : <Clock size={10} className="text-white" />}
                         </div>
                       </div>
                       <div className="min-w-0">
-                        <p className="text-base font-bold text-slate-900 dark:text-white truncate group-hover:text-indigo-600 transition-colors tracking-tight">
+                        <p className="text-base font-bold text-slate-900 dark:text-white truncate group-hover:text-brand-blue transition-colors tracking-tight">
                           {request.legalName || request.user?.name}
                         </p>
                         <p className="text-[10px] text-slate-400 font-bold truncate uppercase tracking-[0.1em] mt-1 opacity-70">
@@ -133,10 +133,10 @@ const VerificationRequests = () => {
                   </td>
                   <td className="px-8 py-6">
                     <div className="space-y-1.5">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-[9px] font-bold uppercase tracking-widest ${
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-[4px] text-[9px] font-bold uppercase tracking-widest ${
                         request.category === 'company' 
                           ? 'bg-purple-500/10 text-purple-600 border border-purple-500/20' 
-                          : 'bg-indigo-600/10 text-blue-600 border border-indigo-600/20'
+                          : 'bg-brand-blue/10 text-brand-blue border border-brand-blue/20'
                       }`}>
                         {request.category}
                       </span>
@@ -145,9 +145,9 @@ const VerificationRequests = () => {
                   </td>
                   <td className="px-8 py-6 text-center">
                     <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${
-                      request.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600' :
+                      request.status === 'approved' ? 'bg-brand-teal/10 text-brand-teal' :
                       request.status === 'rejected' ? 'bg-rose-500/10 text-rose-600' :
-                      'bg-amber-500/10 text-amber-600'
+                      'bg-brand-amber/10 text-amber-600'
                     }`}>
                       {request.status === 'approved' && <CheckCircle2 size={12} />}
                       {request.status === 'rejected' && <XCircle size={12} />}
@@ -157,7 +157,7 @@ const VerificationRequests = () => {
                   </td>
                   <td className="px-8 py-6">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-tight">
+                      <div className="flex items-center gap-2 text-[11px] font-bold text-brand-slate dark:text-slate-400 uppercase tracking-tight">
                         <Globe size={12} className="opacity-40" />
                         {request.user?.location?.country || 'Unknown'}
                       </div>
@@ -166,7 +166,7 @@ const VerificationRequests = () => {
                   </td>
                   <td className="px-8 py-6 text-right">
                     <div className="flex items-center justify-end">
-                      <div className="w-12 h-12 rounded-[20px] bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-lg group-hover:shadow-blue-500/20 transition-all duration-500">
+                      <div className="w-12 h-12 rounded-[4px] bg-brand-cloud dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-brand-blue group-hover:text-white group-hover: group-hover: transition-all duration-500">
                         <ArrowUpRight size={22} />
                       </div>
                     </div>
@@ -186,14 +186,14 @@ const VerificationRequests = () => {
             <button 
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400 disabled:opacity-20 hover:border-slate-300 dark:hover:border-white/20 transition-all shadow-sm"
+              className="w-12 h-12 flex items-center justify-center rounded-[4px] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-400 disabled:opacity-20 hover:border-slate-300 dark:hover:border-white/20 transition-all"
             >
               <ChevronRight size={20} className="rotate-180" />
             </button>
             <button 
               disabled={page === pagination.pages}
               onClick={() => setPage(p => p + 1)}
-              className="px-8 h-12 rounded-2xl bg-slate-900 dark:bg-white text-[10px] font-bold uppercase tracking-widest text-white dark:text-slate-900 disabled:opacity-20 hover:opacity-90 transition-all shadow-lg"
+              className="px-8 h-12 rounded-[4px] bg-white dark:bg-[#161B22] dark:bg-white text-[10px] font-bold uppercase tracking-widest text-white dark:text-slate-900 disabled:opacity-20 hover:opacity-90 transition-all"
             >
               Next Audit
             </button>

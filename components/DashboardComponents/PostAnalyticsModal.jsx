@@ -72,7 +72,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
                               className={`px-3 py-1.5 rounded-md text-xs font-medium uppercase transition-all ${
                                   timeRange === range 
                                   ? 'bg-[#3ea6ff] text-[#0f0f0f] shadow-md' 
-                                  : 'text-slate-400 hover:text-gray-200 hover:bg-[#333]'
+                                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#333]'
                               }`}
                           >
                               {range}

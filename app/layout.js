@@ -1,35 +1,49 @@
 import "./globals.css";
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Inter, IBM_Plex_Sans, IBM_Plex_Mono, Noto_Sans_Bengali } from 'next/font/google';
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { UserProvider } from "@/context/UserContext";
 import { ToastProvider } from "@/components/ui/ToastProvider";
 import GlobalTracker from "@/components/GlobalTracker";
 
-
-
 const inter = Inter({ 
   subsets: ['latin'], 
+  weight: ['400', '500', '600'],
   variable: '--font-inter',
   display: 'swap' 
 });
 
-const jetbrainsMono = JetBrains_Mono({ 
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-ibm-plex-sans',
+  display: 'swap'
+});
+
+const ibmPlexMono = IBM_Plex_Mono({ 
   subsets: ['latin'], 
-  variable: '--font-mono',
+  weight: ['400', '500', '600'],
+  variable: '--font-ibm-plex-mono',
   display: 'swap' 
+});
+
+const notoSansBengali = Noto_Sans_Bengali({
+  subsets: ['bengali'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-noto-sans-bengali',
+  display: 'swap'
 });
 
 export const metadata = {
   metadataBase: new URL('https://codalina.com'),
   title: {
-    default: "Codalina — Digital Marketplace",
+    default: "Codalina | Digital Technology Partner",
     template: "%s | Codalina"
   },
-  description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
+  description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
   keywords: [
-    "marketplace", "digital products", "electronics", "earphones", "earbuds", "source code", "UI components", "gadgets",
-    "software", "React templates", "Next.js", "frontend development", "Codalina"
+    "technology partner", "digital products", "custom solutions", "software development", "web development", 
+    "maintenance", "SaaS", "Codalina"
   ],
   authors: [{ name: "Codalina" }],
   creator: "Codalina",
@@ -50,22 +64,22 @@ export const metadata = {
     locale: "en_US",
     url: "https://codalina.com",
     siteName: "Codalina",
-    title: "Codalina — Digital Marketplace",
-    description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
+    title: "Codalina | Digital Technology Partner",
+    description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Codalina — Digital Marketplace",
+        alt: "Codalina | Digital Technology Partner",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     site: "@codalina",
-    title: "Codalina — Digital Marketplace",
-    description: "Codalina is a premium digital marketplace offering carefully selected digital products, source codes, UI components, and high-quality original electronics.",
+    title: "Codalina | Digital Technology Partner",
+    description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
     images: ["/og-image.jpg"],
   },
 };
@@ -76,7 +90,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${notoSansBengali.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             <UserProvider>

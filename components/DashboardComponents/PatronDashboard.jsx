@@ -53,9 +53,9 @@ export default function PatronDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        <StatCard title="Posted Opportunities" value={stats.postedOpportunities} icon={<Zap className="text-indigo-600" size={32} />} />
-        <StatCard title="Active Devlogs" value={stats.activeDevlogs} icon={<Rocket className="text-blue-600" size={32} />} />
-        <StatCard title="Hired Craftsmen" value={stats.hiredEngineers} icon={<Users className="text-emerald-600" size={32} />} />
+        <StatCard title="Posted Opportunities" value={stats.postedOpportunities} icon={<Zap className="text-brand-blue" size={32} />} />
+        <StatCard title="Active Devlogs" value={stats.activeDevlogs} icon={<Rocket className="text-brand-blue" size={32} />} />
+        <StatCard title="Hired Craftsmen" value={stats.hiredEngineers} icon={<Users className="text-brand-teal" size={32} />} />
       </div>
 
       {/* Quick Actions */}
@@ -64,13 +64,13 @@ export default function PatronDashboard() {
         <div className="flex flex-wrap gap-4">
           <button
             onClick={() => router.push("/opportunities?action=create")}
-            className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-full font-medium hover:bg-slate-900 transition-colors"
           >
             + Post Opportunity
           </button>
           <button
             onClick={() => router.push("/opportunities")}
-            className="px-6 py-3 bg-white text-black rounded-full font-medium border-2 border-black hover:bg-slate-50 transition-colors"
+            className="px-6 py-3 bg-white text-black rounded-full font-medium border-2 border-black hover:bg-brand-cloud transition-colors"
           >
             Browse Craftsmen
           </button>
@@ -83,13 +83,13 @@ export default function PatronDashboard() {
           <h2 className="text-2xl font-semibold text-black">Your Opportunities</h2>
           <button
             onClick={() => router.push("/opportunities")}
-            className="text-slate-600 hover:text-black transition-colors"
+            className="text-brand-slate hover:text-black transition-colors"
           >
             View All →
           </button>
         </div>
         {recentOpportunities.length === 0 ? (
-          <p className="text-slate-600">No opportunities posted yet. Create your first one!</p>
+          <p className="text-brand-slate">No opportunities posted yet. Create your first one!</p>
         ) : (
           <div className="space-y-4">
             {recentOpportunities.map((opp) => (
@@ -98,7 +98,7 @@ export default function PatronDashboard() {
                 className="bg-white rounded-[26px] p-6 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 <h3 className="text-xl font-semibold text-black mb-2">{opp.title}</h3>
-                <p className="text-slate-600 mb-4">{opp.description}</p>
+                <p className="text-brand-slate mb-4">{opp.description}</p>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-black">{opp.budget}</span>
                   <span className="text-sm text-slate-500">{opp.status}</span>
@@ -117,7 +117,7 @@ function StatCard({ title, value, icon }) {
     <div className="bg-white rounded-[26px] p-6 shadow-lg">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-slate-600 text-sm mb-1">{title}</p>
+          <p className="text-brand-slate text-sm mb-1">{title}</p>
           <p className="text-3xl font-bold text-black">{value}</p>
         </div>
         <div className="text-4xl">{icon}</div>

@@ -72,16 +72,16 @@ export default function DashboardMain() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-blue-50 dark:from-gray-900 dark:via-gray-950 dark:to-black text-slate-900 dark:text-gray-100 px-4 py-6 md:px-8 lg:px-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50 dark:from-slate-900 dark:via-slate-950 dark:to-black text-slate-900 dark:text-slate-100 px-4 py-6 md:px-8 lg:px-12">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-2">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold">Dashboard</h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-brand-slate dark:text-slate-400">
             Jun 1 – Aug 31, {new Date().getFullYear()}
           </p>
         </div>
-        <div className="flex gap-2 text-xs md:text-sm text-slate-600 dark:text-slate-400">
+        <div className="flex gap-2 text-xs md:text-sm text-brand-slate dark:text-slate-400">
           <span>EOI Sent</span>
           <span className="font-semibold text-black dark:text-white">
             {userStats.artifacts}
@@ -102,7 +102,7 @@ export default function DashboardMain() {
           </p>
           <button
             onClick={() => setShowCraftsmanForm(true)}
-            className="px-6 py-3 bg-white text-blue-600 rounded-full font-medium hover:bg-slate-100 transition-colors"
+            className="px-6 py-3 bg-white text-brand-blue rounded-full font-medium hover:bg-slate-100 transition-colors"
           >
             Create Craftsman Account
           </button>
@@ -167,7 +167,7 @@ export default function DashboardMain() {
               <h2 className="text-lg font-semibold">Your Artifacts</h2>
               <button
                 onClick={() => router.push("/artifacts")}
-                className="text-sm text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
+                className="text-sm text-brand-slate dark:text-slate-400 hover:text-black dark:hover:text-white"
               >
                 View All →
               </button>
@@ -182,13 +182,13 @@ export default function DashboardMain() {
                 <h2 className="text-lg font-semibold">Your Codex</h2>
                 <button
                   onClick={() => router.push("/codex-editor")}
-                  className="text-xs text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white"
+                  className="text-xs text-brand-slate dark:text-slate-400 hover:text-black dark:hover:text-white"
                 >
                   Write →
                 </button>
               </div>
               {myCodex.length === 0 ? (
-                <div className="text-xs text-slate-600 dark:text-slate-400">
+                <div className="text-xs text-brand-slate dark:text-slate-400">
                   No codex yet. Share what you learn and earn.{" "}
                   <button
                     onClick={() => router.push("/codex-editor")}
@@ -218,7 +218,7 @@ export default function DashboardMain() {
 
             <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
               <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
-              <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+              <div className="space-y-3 text-xs text-brand-slate dark:text-slate-400">
                 <div className="rounded-2xl bg-gradient-to-r from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-800/30 border border-black/5 dark:border-white/10 p-3">
                   Downloads history placeholder. Wire API to list recent
                   downloads.
@@ -269,12 +269,12 @@ function StatCard({ title, value, icon, onClick }) {
     <div
       onClick={onClick}
       className={`bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 ${
-        onClick ? "cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700" : ""
+        onClick ? "cursor-pointer hover:bg-brand-cloud dark:hover:bg-slate-700" : ""
       }`}
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-slate-600 dark:text-slate-400 text-xs mb-1">
+          <p className="text-brand-slate dark:text-slate-400 text-xs mb-1">
             {title}
           </p>
           <p className="text-2xl font-bold text-black dark:text-white">
@@ -291,7 +291,7 @@ function ActionButton({ label, icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium hover:bg-slate-800 dark:hover:bg-slate-200 transition-all duration-300"
+      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium hover:bg-slate-900 dark:hover:bg-slate-200 transition-all duration-300"
     >
       <span>{icon}</span>
       <span>{label}</span>
@@ -302,7 +302,7 @@ function ActionButton({ label, icon, onClick }) {
 function MiniStat({ title, value, accent }) {
   return (
     <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 p-3 shadow-sm">
-      <p className="text-xs text-slate-600 dark:text-slate-400">{title}</p>
+      <p className="text-xs text-brand-slate dark:text-slate-400">{title}</p>
       <p className="text-xl font-bold text-black dark:text-white">{value}</p>
       <div className={`mt-2 h-1.5 rounded-full bg-gradient-to-r ${accent}`} />
     </div>

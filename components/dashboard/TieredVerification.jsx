@@ -114,24 +114,24 @@ const TieredVerification = () => {
               key={tier.id}
               onClick={() => tier.eligible && tier.status === 'available' && setActiveTier(tier.id)}
               className={`relative bg-white dark:bg-slate-900 border rounded-3xl p-8 transition-all flex flex-col justify-between overflow-hidden group ${
-                tier.status === 'completed' ? 'border-emerald-500/30 shadow-emerald-500/5 shadow-xl' : 'border-slate-200 dark:border-white/10 hover:border-indigo-600/30 shadow-sm'
+                tier.status === 'completed' ? 'border-brand-teal/30 shadow-emerald-500/5 shadow-xl' : 'border-slate-200 dark:border-white/10 hover:border-brand-blue/30 shadow-sm'
               } ${tier.eligible && tier.status === 'available' ? 'cursor-pointer hover:opacity-80 active:opacity-60' : 'opacity-60 cursor-not-allowed grayscale-[0.2]'}`}
             >
                {tier.status === 'completed' && (
-                 <div className="absolute top-6 right-6 text-emerald-500">
+                 <div className="absolute top-6 right-6 text-brand-teal">
                     <CheckCircle2 size={24} />
                  </div>
                )}
 
                {!tier.eligible && (
-                 <div className="absolute top-6 right-6 text-gray-300">
+                 <div className="absolute top-6 right-6 text-slate-300">
                     <Lock size={20} />
                  </div>
                )}
 
                <div className="space-y-6">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-                    tier.status === 'completed' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-50 dark:bg-white/5 text-slate-400'
+                    tier.status === 'completed' ? 'bg-brand-teal/10 text-brand-teal' : 'bg-brand-cloud dark:bg-white/5 text-slate-400'
                   }`}>
                     {tier.icon}
                   </div>
@@ -141,7 +141,7 @@ const TieredVerification = () => {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {tier.features.map((f, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-slate-50 dark:bg-white/5 rounded-lg text-[9px] font-bold uppercase tracking-widest text-slate-400">
+                      <span key={idx} className="px-3 py-1 bg-brand-cloud dark:bg-white/5 rounded-lg text-[9px] font-bold uppercase tracking-widest text-slate-400">
                         {f}
                       </span>
                     ))}
@@ -151,13 +151,13 @@ const TieredVerification = () => {
                <div className="mt-8 pt-8 border-t border-slate-50 dark:border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                      <span className="text-2xl font-bold text-slate-900 dark:text-white">+{tier.reward}</span>
-                     <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-1">TKNS</span>
+                     <span className="text-[10px] font-bold text-brand-blue uppercase tracking-widest mt-1">TKNS</span>
                   </div>
                   
                   {tier.status === 'completed' ? (
-                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Completed</span>
+                    <span className="text-[10px] font-bold text-brand-teal uppercase tracking-widest">Completed</span>
                   ) : tier.status === 'pending' ? (
-                    <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest animate-pulse">In Review</span>
+                    <span className="text-[10px] font-bold text-brand-amber uppercase tracking-widest animate-pulse">In Review</span>
                   ) : !tier.eligible ? (
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Locked</span>
                   ) : (
@@ -171,7 +171,7 @@ const TieredVerification = () => {
                </div>
                
                <div className={`absolute -bottom-12 -right-12 w-32 h-32 blur-[80px] rounded-full transition-all group-hover:w-48 group-hover:h-48 ${
-                 tier.status === 'completed' ? 'bg-emerald-500/10' : 'bg-indigo-600/5'
+                 tier.status === 'completed' ? 'bg-brand-teal/10' : 'bg-brand-blue/5'
                }`} />
             </div>
          ))}
@@ -188,7 +188,7 @@ const TieredVerification = () => {
             >
                <button 
                  onClick={() => setActiveTier(null)}
-                 className="absolute top-8 right-8 w-10 h-10 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all z-10"
+                 className="absolute top-8 right-8 w-10 h-10 rounded-full bg-brand-cloud dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 transition-all z-10"
                >
                   <LucideX size={20} />
                </button>
@@ -217,7 +217,7 @@ const TieredVerification = () => {
                            key={p.id}
                            onClick={() => setSelectedPlatform(p.id)}
                            className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${
-                             selectedPlatform === p.id ? 'border-indigo-600 bg-indigo-600/5 text-indigo-600' : 'border-slate-50 dark:border-white/5 text-slate-400 hover:border-slate-200'
+                             selectedPlatform === p.id ? 'border-brand-blue bg-brand-blue/5 text-brand-blue' : 'border-slate-50 dark:border-white/5 text-slate-400 hover:border-slate-200'
                            }`}
                          >
                             {p.icon}
@@ -234,7 +234,7 @@ const TieredVerification = () => {
                             value={linkUrl}
                             onChange={(e) => setLinkUrl(e.target.value)}
                             placeholder="https://linkedin.com/in/username"
-                            className="w-full py-5 bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-2xl outline-none px-8 text-sm font-bold tracking-tight focus:ring-4 ring-indigo-600/10 transition-all"
+                            className="w-full py-5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-2xl outline-none px-8 text-sm font-bold tracking-tight focus:ring-4 ring-brand-blue/10 transition-all"
                           />
                           <div className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400">
                              <ExternalLink size={18} />
@@ -254,7 +254,7 @@ const TieredVerification = () => {
 
                {activeTier === 3 && (
                  <div className="max-w-2xl mx-auto space-y-10 py-6 text-center">
-                    <div className="w-20 h-20 bg-indigo-600/10 text-indigo-600 rounded-[30px] flex items-center justify-center mx-auto mb-4 animate-bounce">
+                    <div className="w-20 h-20 bg-brand-blue/10 text-brand-blue rounded-[30px] flex items-center justify-center mx-auto mb-4 animate-bounce">
                        <UserCheck size={40} />
                     </div>
                     <div className="space-y-2">
@@ -264,7 +264,7 @@ const TieredVerification = () => {
                        </p>
                     </div>
                     
-                    <div className="p-8 bg-slate-50 dark:bg-white/5 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-8 text-left border border-slate-100 dark:border-white/10">
+                    <div className="p-8 bg-brand-cloud dark:bg-white/5 rounded-2xl grid grid-cols-1 md:grid-cols-2 gap-8 text-left border border-slate-100 dark:border-white/10">
                        {[
                          { label: "Bio Quality", status: (user?.bio?.length || 0) >= 50, hint: "Min 50 characters" },
                          { label: "Identity Visuals", status: !!user?.profilePicture, hint: "Avatar uploaded" },
@@ -276,7 +276,7 @@ const TieredVerification = () => {
                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.label}</span>
                                <span className="text-[9px] text-slate-500 font-medium italic">{item.hint}</span>
                             </div>
-                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${item.status ? 'bg-emerald-500/10 text-emerald-500' : 'bg-slate-100 dark:bg-white/5 text-gray-300'}`}>
+                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${item.status ? 'bg-brand-teal/10 text-brand-teal' : 'bg-slate-100 dark:bg-white/5 text-slate-300'}`}>
                                {item.status ? <LucideCheck size={14} strokeWidth={4} /> : <LucideX size={14} strokeWidth={4} />}
                             </div>
                          </div>
@@ -301,7 +301,7 @@ const TieredVerification = () => {
                       {!isTier3RequirementsMet && (
                         <p 
                           onClick={() => window.location.href = '/dashboard/dashboard?view=settings'} 
-                          className="text-[9px] font-bold text-indigo-600 uppercase tracking-widest cursor-pointer hover:underline animate-pulse"
+                          className="text-[9px] font-bold text-brand-blue uppercase tracking-widest cursor-pointer hover:underline animate-pulse"
                         >
                           Return to Command Center to Update Profile
                         </p>
@@ -314,7 +314,7 @@ const TieredVerification = () => {
         )}
       </AnimatePresence>
 
-      <div className="mt-8 p-8 bg-slate-50 dark:bg-slate-800/30 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+      <div className="mt-8 p-8 bg-brand-cloud dark:bg-slate-800/30 rounded-3xl border border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
          <div className="w-16 h-16 bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-white/10 flex items-center justify-center text-slate-500 shrink-0">
             <Lock size={24} />
          </div>

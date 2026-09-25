@@ -138,7 +138,7 @@ const ArtifactCard = ({
         {/* Badge */}
         <div className="absolute top-2 right-2 z-30">
           {isFree ? (
-            <span className="bg-green-500 text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider">
+            <span className="bg-brand-teal text-white text-[11px] font-mono font-medium px-3 py-1 rounded-full shadow tracking-wider">
               FREE
             </span>
           ) : (
@@ -212,7 +212,7 @@ const ArtifactCard = ({
               <Star
                 size={18}
                 className={`transition-colors duration-300 ${
-                  liked ? "text-pink-600 fill-pink-600" : "text-slate-600"
+                  liked ? "text-pink-600 fill-pink-600" : "text-brand-slate"
                 }`}
               />
               <span className="text-xs font-mono font-medium">{likeCount}</span>
@@ -265,7 +265,7 @@ const ArtifactCard = ({
 
             <p className="mb-4 text-slate-500 text-xs font-sans">
               Price:{" "}
-              <b className="font-mono text-indigo-600 text-lg">
+              <b className="font-mono text-brand-blue text-lg">
                 {paymentInfo.price} {paymentInfo.currency}
               </b>
             </p>
@@ -283,7 +283,7 @@ const ArtifactCard = ({
 
             <button
               onClick={() => setShowPurchaseModal(false)}
-              className="mt-2 w-full text-slate-600"
+              className="mt-2 w-full text-brand-slate"
             >
               Cancel
             </button>

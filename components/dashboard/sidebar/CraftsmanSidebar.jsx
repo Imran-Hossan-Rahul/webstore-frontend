@@ -38,10 +38,10 @@ export default function CraftsmanSidebar() {
       
       {/* 0. Identity Trust Panel */}
       {(profile.connectedAccounts?.github?.connected || profile.connectedAccounts?.google?.connected || profile.isVerified) && (
-        <div className="bg-indigo-50/50 dark:bg-slate-900 border border-indigo-100 dark:border-white/5 rounded-2xl p-6 shadow-sm">
+        <div className="bg-brand-sky/50 dark:bg-slate-900 border border-indigo-100 dark:border-white/5 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-3">
-                 <div className="w-10 h-10 bg-indigo-600/10 text-indigo-600 rounded-xl flex items-center justify-center shadow-inner">
+                 <div className="w-10 h-10 bg-brand-blue/10 text-brand-blue rounded-xl flex items-center justify-center shadow-inner">
                     <ShieldCheck size={20} />
                  </div>
                  <div>
@@ -60,9 +60,9 @@ export default function CraftsmanSidebar() {
                           <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                        </svg>
-                       <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300">Verified by Google</span>
+                       <span className="text-[10px] font-bold text-brand-slate dark:text-slate-300">Verified by Google</span>
                     </div>
-                    <CheckCircle size={12} className="text-emerald-500" />
+                    <CheckCircle size={12} className="text-brand-teal" />
                   </div>
                 )}
                 {profile.connectedAccounts?.github?.connected && (
@@ -84,7 +84,7 @@ export default function CraftsmanSidebar() {
                   </div>
                 )}
                 {profile.isVerified && (
-                   <div className="flex items-center justify-between p-3 bg-indigo-600 text-white rounded-xl shadow-lg shadow-indigo-600/20">
+                   <div className="flex items-center justify-between p-3 bg-brand-blue text-white rounded-xl shadow-lg shadow-indigo-600/20">
                      <div className="flex items-center gap-2">
                         <CheckCircle size={14} />
                         <span className="text-[10px] font-bold uppercase tracking-widest">Platform Certified</span>
@@ -131,23 +131,23 @@ export default function CraftsmanSidebar() {
         <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-7 shadow-sm">
           <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Metrics</h3>
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01]">
+            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-brand-cloud/30 dark:bg-white/[0.01]">
               <p className="text-xl font-bold text-slate-900 dark:text-white mb-1">{(profile.followersCount || 0).toLocaleString()}</p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Followers</p>
             </div>
-            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01]">
+            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-brand-cloud/30 dark:bg-white/[0.01]">
               <p className="text-xl font-bold text-slate-900 dark:text-white mb-1">{(profile.followingCount || 0).toLocaleString()}</p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Following</p>
             </div>
-            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01]">
+            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-brand-cloud/30 dark:bg-white/[0.01]">
               <p className="text-xl font-bold text-slate-900 dark:text-white mb-1">{(profile.completedDevlogs || 0).toLocaleString()}</p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Devlogs</p>
             </div>
-            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01]">
+            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-brand-cloud/30 dark:bg-white/[0.01]">
               <p className="text-xl font-bold text-slate-900 dark:text-white mb-1">{((profile.totalViews || 0) + (profile.totalLikes || 0)).toLocaleString()}</p>
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Reach</p>
             </div>
-            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-slate-50/30 dark:bg-white/[0.01] col-span-2">
+            <div className="p-5 rounded-2xl border border-slate-100 dark:border-white/5 bg-brand-cloud/30 dark:bg-white/[0.01] col-span-2">
               <div className="flex items-center justify-between mb-4">
                  <div>
                     <p className="text-xl font-bold text-slate-900 dark:text-white mb-1">{profile.gamification?.level || 1}</p>
@@ -182,7 +182,7 @@ export default function CraftsmanSidebar() {
                       </div>
                       <div className="flex justify-between items-center">
                          <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tight">Next Level at</p>
-                         <p className="text-[8px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-tight">
+                         <p className="text-[8px] font-bold text-brand-slate dark:text-slate-300 uppercase tracking-tight">
                            {xpForNextLevel.toLocaleString()} XP
                          </p>
                       </div>
@@ -217,7 +217,7 @@ export default function CraftsmanSidebar() {
           <div className="flex justify-between items-center">
             <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Professional</h3>
             {profile.openToWork && (
-              <span className="px-2 py-0.5 bg-indigo-500 text-white text-[8px] font-black uppercase tracking-widest rounded-full">Open to Work</span>
+              <span className="px-2 py-0.5 bg-brand-blue text-white text-[8px] font-black uppercase tracking-widest rounded-full">Open to Work</span>
             )}
           </div>
           
@@ -226,9 +226,9 @@ export default function CraftsmanSidebar() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${
-                    profile.availabilityStatus === 'available' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' :
-                    profile.availabilityStatus === 'busy' ? 'bg-amber-500' :
-                    profile.availabilityStatus === 'vacation' ? 'bg-blue-500' : 'bg-red-500'
+                    profile.availabilityStatus === 'available' ? 'bg-brand-teal shadow-[0_0_8px_rgba(16,185,129,0.5)]' :
+                    profile.availabilityStatus === 'busy' ? 'bg-brand-amber' :
+                    profile.availabilityStatus === 'vacation' ? 'bg-brand-blue' : 'bg-red-500'
                   }`} />
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Availability</p>
                 </div>
@@ -278,7 +278,7 @@ export default function CraftsmanSidebar() {
               </p>
               <button 
                 onClick={() => isGuest ? requireAuth("engage") : setShowMentorshipModal(true)}
-                className="w-full py-3 bg-white text-indigo-600 hover:bg-slate-50 font-black text-[10px] uppercase tracking-widest rounded-xl transition-all shadow-md"
+                className="w-full py-3 bg-white text-brand-blue hover:bg-brand-cloud font-black text-[10px] uppercase tracking-widest rounded-xl transition-all shadow-md"
               >
                 Book Session ({profile.mentorshipRate || 50} TKNS)
               </button>
@@ -305,7 +305,7 @@ export default function CraftsmanSidebar() {
             {user?.role !== 'patron' && (
               <button 
                 onClick={() => isGuest ? requireAuth("engage") : setShowPatronModal(true)}
-                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 p-5 rounded-2xl transition-all hover:bg-slate-50 dark:hover:bg-white/5 text-slate-900 dark:text-white"
+                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 p-5 rounded-2xl transition-all hover:bg-brand-cloud dark:hover:bg-white/5 text-slate-900 dark:text-white"
               >
                 <div className="flex items-center justify-between">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em]">become a patron</p>

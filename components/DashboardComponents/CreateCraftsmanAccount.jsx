@@ -94,21 +94,21 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
       <h2 className="text-2xl font-bold mb-6 text-slate-800">
         Create Your Craftsman Account
       </h2>
-      <p className="text-slate-600 mb-6">
+      <p className="text-brand-slate mb-6">
         Unlock craftsman features: publish codex, share artifacts, and showcase your work!
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Display Name */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-brand-slate mb-2">
             Display Name *
           </label>
           <input
             type="text"
             value={formData.displayName}
             onChange={(e) => handleChange("displayName", e.target.value)}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             placeholder="Your craftsman name"
             required
           />
@@ -116,13 +116,13 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
 
         {/* Bio */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-brand-slate mb-2">
             Bio
           </label>
           <textarea
             value={formData.bio}
             onChange={(e) => handleChange("bio", e.target.value)}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             placeholder="Tell us about yourself..."
             rows={4}
             maxLength={500}
@@ -134,7 +134,7 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
 
         {/* Skills */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-brand-slate mb-2">
             Skills (Max 20)
           </label>
           <div className="flex gap-2 mb-2">
@@ -143,13 +143,13 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
               value={skillInput}
               onChange={(e) => setSkillInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addSkill())}
-              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+              className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
               placeholder="Add a skill"
             />
             <button
               type="button"
               onClick={addSkill}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-blue-600"
+              className="px-4 py-2 bg-brand-blue text-white rounded-lg hover:bg-brand-blue"
               disabled={formData.skills.length >= 20}
             >
               Add
@@ -176,7 +176,7 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
 
         {/* Work Type */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-brand-slate mb-2">
             Work Type
           </label>
           <div className="flex gap-4">
@@ -205,13 +205,13 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
 
         {/* Social Links */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-brand-slate mb-2">
             Social & Professional Links <span className="text-slate-400 font-normal">(Optional)</span>
           </label>
           <div className="space-y-3">
             {["github", "linkedin", "twitter", "website"].map((platform) => (
               <div key={platform}>
-                <label className="block text-xs text-slate-600 mb-1 capitalize">
+                <label className="block text-xs text-brand-slate mb-1 capitalize">
                   {platform}
                 </label>
                 <input
@@ -220,7 +220,7 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
                   onChange={(e) =>
                     handleSocialLinkChange(platform, e.target.value)
                   }
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
                   placeholder={`https://${platform}.com/yourprofile`}
                 />
               </div>
@@ -239,7 +239,7 @@ export default function CreateCraftsmanAccount({ onSuccess }) {
         <button
           type="submit"
           disabled={loading || !formData.displayName}
-          className="w-full py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-blue-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
+          className="w-full py-3 bg-brand-blue text-white rounded-lg font-medium hover:bg-brand-blue disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
         >
           {loading ? "Creating..." : "Create Craftsman Account"}
         </button>

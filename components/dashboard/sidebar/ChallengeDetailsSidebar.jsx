@@ -106,7 +106,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
     <aside className="space-y-6 pb-10">
       {/* Action Card */}
       <div className="bg-black dark:bg-white text-white dark:text-black rounded-3xl p-8 shadow-xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-indigo-500/30 transition-all duration-700" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-blue/30 transition-all duration-700" />
         
         <div className="relative z-10 space-y-6">
           {isOwner ? (
@@ -126,13 +126,13 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
             <div className="space-y-6">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Mission Bounty</p>
-                <p className="text-3xl font-black">{challenge.prize} <span className="text-xs font-bold text-indigo-400 dark:text-indigo-600">TKNS</span></p>
+                <p className="text-3xl font-black">{challenge.prize} <span className="text-xs font-bold text-indigo-400 dark:text-brand-blue">TKNS</span></p>
               </div>
               {canJoin ? (
                 <button 
                   onClick={handleJoin}
                   disabled={isJoining}
-                  className="w-full py-4 bg-indigo-600 text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-600/20 active:opacity-60"
+                  className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-blue transition-all shadow-lg shadow-indigo-600/20 active:opacity-60"
                 >
                   {isJoining ? <AppleSpinner size={18} className="animate-spin" /> : <>Accept Mission <ArrowRight size={18} /></>}
                 </button>
@@ -146,7 +146,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
           ) : !hasSubmitted ? (
             <div className="space-y-6">
               <div className="flex items-center gap-3 p-4 bg-white/5 dark:bg-black/5 rounded-2xl border border-white/10 dark:border-black/10">
-                <CheckCircle2 size={20} className="text-emerald-500" />
+                <CheckCircle2 size={20} className="text-brand-teal" />
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white dark:text-black">Mission Accepted</p>
               </div>
               {canSubmit ? (
@@ -165,7 +165,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="w-full py-4 bg-emerald-500 text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20">
+              <div className="w-full py-4 bg-brand-teal text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20">
                 <Trophy size={16} /> Artifact Deployed
               </div>
               <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">
@@ -184,7 +184,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
       {/* Challenge Dossier Card */}
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
-          <Zap size={14} className="text-amber-500" /> Challenge Dossier
+          <Zap size={14} className="text-brand-amber" /> Challenge Dossier
         </h3>
         
         <div className="space-y-6">
@@ -221,11 +221,11 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
            >
               <div className="flex items-center gap-3 cursor-pointer">
                  <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-white/10 shrink-0">
-                    {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-indigo-500" />}
+                    {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-brand-blue" />}
                  </div>
                  <div className="min-w-0">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Host</p>
-                    <p className="text-xs font-bold text-slate-900 dark:text-white tracking-tight hover:text-slate-600 transition-colors truncate">{challenge.craftsman?.name}</p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white tracking-tight hover:text-brand-slate transition-colors truncate">{challenge.craftsman?.name}</p>
                  </div>
               </div>
            </CraftsmanHoverCard>
@@ -262,7 +262,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
 
              return directives.map((tip, i) => (
                <li key={i} className="flex gap-4 group/tip">
-                  <p className="text-[11px] font-bold text-slate-600 dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
+                  <p className="text-[11px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
                      {tip}
                   </p>
                </li>

@@ -87,7 +87,7 @@ export default function ExploreFeed() {
                           className={`pb-3 text-sm font-medium transition-all duration-200 relative ${
                               isActive 
                               ? "text-slate-900 dark:text-white" 
-                              : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-gray-300 disabled:opacity-50"
+                              : "text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:hover:text-slate-300 disabled:opacity-50"
                           }`}
                         >
                           {tab.label}
@@ -116,7 +116,7 @@ export default function ExploreFeed() {
             </div>
             
             {filteredItems.length === 0 && (
-                 <div className="text-center py-20 text-slate-400 dark:text-slate-600">
+                 <div className="text-center py-20 text-slate-400 dark:text-brand-slate">
                      No items found.
                  </div>
             )}

@@ -36,7 +36,7 @@ export default function VisitorAccountPieChart() {
   const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#8b5cf6"];
 
   return (
-    <div className="card-artifact p-3 rounded-2xl shadow-md text-black h-[187px] flex flex-col justify-center w-[48%]">
+    <div className="card-artifact p-3 rounded-[4px] text-black h-[187px] flex flex-col justify-center w-[48%]">
       <h2 className="text-lg font-bold mb-1 text-center">
         Visitor Account Ratio
       </h2>

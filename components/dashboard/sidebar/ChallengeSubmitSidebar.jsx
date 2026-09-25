@@ -37,14 +37,14 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
     <aside className="space-y-6 pb-10">
       {/* Context Card */}
       <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm overflow-hidden relative group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/[0.03] rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-indigo-500/[0.06] transition-all duration-1000" />
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/[0.03] rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-blue/[0.06] transition-all duration-1000" />
         
         <div className="space-y-8 relative">
            <div className="flex items-center justify-between">
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] flex items-center gap-3">
-                 <Zap size={14} className="text-amber-500" /> Challenge Dossier
+                 <Zap size={14} className="text-brand-amber" /> Challenge Dossier
               </span>
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
+              <div className="w-2 h-2 rounded-full bg-brand-teal animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.6)]" />
            </div>
            
            <div className="space-y-6">
@@ -52,7 +52,7 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
                  <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-2">{challenge.title}</h2>
                  <div className="flex items-center gap-2">
                     <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-white/10">
-                       {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-indigo-500" />}
+                       {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-brand-blue" />}
                     </div>
                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">By {challenge.craftsman?.name}</p>
                  </div>
@@ -77,13 +77,13 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
               <p className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em]">Strategic Directives</p>
               <ul className="space-y-4">
                  {[
-                   { tip: "Verify repository visibility is set to 'Public'", color: "bg-emerald-500" },
-                   { tip: "Detailed README accelerates review cycles", color: "bg-indigo-500" },
+                   { tip: "Verify repository visibility is set to 'Public'", color: "bg-brand-teal" },
+                   { tip: "Detailed README accelerates review cycles", color: "bg-brand-blue" },
                    { tip: "Functional sanity check before deployment", color: "bg-rose-500" }
                  ].map((item, i) => (
                    <li key={i} className="flex gap-3 group/tip">
                       <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${item.color}`} />
-                      <p className="text-[10px] font-bold text-slate-600 dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
+                      <p className="text-[10px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
                          {item.tip}
                       </p>
                    </li>
@@ -93,12 +93,12 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
         </div>
         
         <div className="mt-8 pt-4">
-           <div className="p-4 bg-slate-50 dark:bg-white/[0.03] rounded-3xl border border-slate-100 dark:border-white/10 flex items-center justify-between">
+           <div className="p-4 bg-brand-cloud dark:bg-white/[0.03] rounded-3xl border border-slate-100 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                  <ShieldCheck size={18} className="text-slate-400" />
                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Secure Protocol</span>
               </div>
-              <ArrowRight size={14} className="text-emerald-500" />
+              <ArrowRight size={14} className="text-brand-teal" />
            </div>
         </div>
       </div>

@@ -81,7 +81,7 @@ export default function JobTalentRightSidebar({ jobId }) {
               {myProposalStage ? (
                 <div className="space-y-4">
                   <div className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold uppercase border transition-all ${
-                     myProposalStage === "hired" ? "bg-green-500 text-white border-transparent shadow-lg shadow-green-500/20" :
+                     myProposalStage === "hired" ? "bg-brand-teal text-white border-transparent shadow-lg shadow-green-500/20" :
                      myProposalStage === "rejected" ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400" :
                      "bg-white/10 text-white border-white/20 backdrop-blur-sm"
                   }`}>
@@ -187,9 +187,9 @@ export default function JobTalentRightSidebar({ jobId }) {
                  displayName={job.patron?.name}
                  wrapperDisplay="inline"
                >
-                 <p className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-colors">
+                 <p className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5 cursor-pointer hover:text-brand-blue transition-colors">
                    {job.patron?.name || "Unknown Patron"}
-                   {job.patron?.isVerified && <ShieldCheck size={14} className="text-indigo-600" />}
+                   {job.patron?.isVerified && <ShieldCheck size={14} className="text-brand-blue" />}
                  </p>
                </CraftsmanHoverCard>
                {job.patron?.username && (
@@ -200,14 +200,14 @@ export default function JobTalentRightSidebar({ jobId }) {
 
          {/* Patron Stats */}
          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 dark:border-white/5">
-            <div className="text-center p-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20">
-               <span className="block text-[13px] font-black text-indigo-600 dark:text-indigo-400">
+            <div className="text-center p-2 rounded-xl bg-brand-sky dark:bg-brand-blue/10 border border-indigo-100 dark:border-brand-blue/20">
+               <span className="block text-[13px] font-black text-brand-blue dark:text-indigo-400">
                   {job.patronStats?.active || 0}
                </span>
                <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Active</span>
             </div>
-            <div className="text-center p-2 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20">
-               <span className="block text-[13px] font-black text-emerald-600 dark:text-emerald-400">
+            <div className="text-center p-2 rounded-xl bg-emerald-50 dark:bg-brand-teal/10 border border-emerald-100 dark:border-brand-teal/20">
+               <span className="block text-[13px] font-black text-brand-teal dark:text-emerald-400">
                   {job.patronStats?.completed || 0}
                </span>
                <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Completed</span>

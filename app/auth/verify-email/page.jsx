@@ -6,6 +6,8 @@ import { api } from '@/utils/api';
 import { XCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion } from 'framer-motion';
 import AppleSpinner from "@/components/ui/AppleSpinner";
+import AuthContainer from "@/components/Auth/AuthContainer";
+import { Button } from "@/components/ui/Button";
 
 export const dynamic = 'force-dynamic';
 
@@ -45,51 +47,55 @@ export default function VerifyEmailPage() {
     }
   };
 
+  const titles = {
+    verifying: 'Verifying email…',
+    success: 'Email verified',
+    error: 'Verification failed',
+  };
+  const subtitles = {
+    verifying: 'We are confirming your email address. This will only take a moment.',
+    success: 'Your email has been successfully verified. You now have full access to your account.',
+    error: message || 'The verification link is invalid or has expired.',
+  };
+
   return (
-    <div className="min-h-screen bg-[#f5f5f7] dark:bg-[#050505] flex items-center justify-center p-6">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="max-w-md w-full bg-white dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 rounded-[40px] p-12 text-center shadow-xl shadow-black/5"
-      >
-        <div className="flex justify-center mb-8">
-          {status === 'verifying' && (
-            <div className="w-24 h-24 bg-blue-50 dark:bg-blue-500/10 rounded-full flex items-center justify-center">
-              <AppleSpinner className="text-blue-500 animate-spin w-10 h-10" />
-            </div>
-          )}
-          {status === 'success' && (
-            <div className="w-24 h-24 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center">
-              <CheckCircle2 className="text-emerald-500" size={48} strokeWidth={1.5} />
-            </div>
-          )}
-          {status === 'error' && (
-            <div className="w-24 h-24 bg-rose-50 dark:bg-rose-500/10 rounded-full flex items-center justify-center">
-              <XCircle className="text-rose-500" size={48} strokeWidth={1.5} />
-            </div>
-          )}
+    <AuthContainer
+      title={titles[status]}
+      subtitle={subtitles[status]}
+    >
+      <div className="flex flex-col items-center py-4">
+        {/* Status Icon */}
+        <div className={`w-16 h-16 rounded-[4px] border flex items-center justify-center mb-8 ${
+          status === 'verifying' ? 'bg-brand-cloud dark:bg-[#161B22] border-slate-200 dark:border-white/10 text-brand-blue' :
+          status === 'success'   ? 'bg-brand-teal/10 border-brand-teal/20 text-brand-teal' :
+                                   'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-500'
+        }`}>
+          {status === 'verifying' && <AppleSpinner className="text-brand-blue animate-spin w-8 h-8" />}
+          {status === 'success'   && <CheckCircle2 size={32} strokeWidth={1.5} />}
+          {status === 'error'     && <XCircle size={32} strokeWidth={1.5} />}
         </div>
 
-        <h1 className="text-[28px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-3">
-          {status === 'verifying' && 'Verifying…'}
-          {status === 'success' && 'Email Verified!'}
-          {status === 'error' && 'Verification Failed'}
-        </h1>
-        
-        <p className="text-[15px] text-[#86868b] leading-relaxed mb-10">
-          {status === 'verifying' && 'We are verifying your email address. This will only take a moment.'}
-          {status === 'success' && 'Your email has been successfully verified. You now have full access to your account.'}
-          {status === 'error' && (message || 'The verification link is invalid or has expired. Please request a new one from your profile page.')}
-        </p>
+        {/* Progress bar for success */}
+        {status === 'success' && (
+          <div className="w-full h-[3px] bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden mb-8">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 2.8, ease: 'easeInOut' }}
+              className="h-full bg-brand-teal"
+            />
+          </div>
+        )}
 
-        <button 
+        <Button
+          variant="primary"
+          className="w-full"
           onClick={() => router.push('/')}
-          className="w-full py-4 bg-[#1d1d1f] dark:bg-white text-white dark:text-[#1d1d1f] rounded-full text-[15px] font-medium flex items-center justify-center gap-2 group hover:opacity-80 transition-all"
+          rightIcon={<ArrowRight size={16} />}
         >
           {status === 'success' ? 'Go to Homepage' : 'Back to Home'}
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </button>
-      </motion.div>
-    </div>
+        </Button>
+      </div>
+    </AuthContainer>
   );
 }
