@@ -711,16 +711,15 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {/* Digital Technology Partner Hero Section */}
       {!query && (
         <div 
-          className="w-full relative overflow-hidden bg-brand-navy border-b border-brand-navy/10 mt-0 mb-12"
+          className="w-full relative overflow-hidden bg-brand-cloud dark:bg-brand-navy border-b border-slate-200 dark:border-brand-navy/10 mt-0 mb-12 rounded-[4px]"
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setMousePos({ x: 0, y: 0 })}
         >
-          {/* Solid Midnight Navy Foundation */}
-          <div className="absolute inset-0 bg-brand-navy z-0"></div>
+          {/* Solid Foundation */}
+          <div className="absolute inset-0 bg-white dark:bg-brand-navy z-0"></div>
           
           {/* Subtle Grid Pattern for tech feel */}
-          <div 
-            className="absolute inset-0 bg-[url('/icons/grid-pattern.svg')] opacity-[0.03] z-0 pointer-events-none transition-transform duration-500 ease-out" 
+          <div className="absolute inset-0 bg-[url('/icons/grid-pattern.svg')] opacity-[0.03] dark:opacity-[0.03] z-0 pointer-events-none transition-transform duration-500 ease-out invert dark:invert-0" 
             style={{ 
               backgroundSize: '40px 40px',
               transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)`
@@ -742,12 +741,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 DIGITAL TECHNOLOGY PARTNER
               </div>
 
-              <h1 className="text-[40px] md:text-[56px] lg:text-[64px] font-display font-semibold tracking-tight text-white mb-6 leading-[1.1]">
+              <h1 className="text-[40px] md:text-[56px] lg:text-[64px] font-display font-semibold tracking-tight text-brand-navy dark:text-white mb-6 leading-[1.1]">
                 Build. Launch.<br/>
-                <span className="text-white/90">Maintain. Improve.</span>
+                <span className="text-brand-blue dark:text-white/90">Maintain. Improve.</span>
               </h1>
               
-              <p className="text-[16px] md:text-[18px] text-brand-cloud/80 max-w-lg mb-10 font-sans leading-[1.6]">
+              <p className="text-[16px] md:text-[18px] text-slate-500 dark:text-brand-cloud/80 max-w-lg mb-10 font-sans leading-[1.6]">
                 Websites, software, tools and custom solutions — built to last and cared for after launch.
               </p>
               
@@ -764,25 +763,25 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 
                 <Link 
                   href="/shop" 
-                  className="group inline-flex items-center justify-center gap-2 bg-transparent text-white border border-white/20 px-8 py-3.5 rounded-[4px] font-sans font-medium text-[14px] hover:bg-white/5 transition-all duration-200 w-full sm:w-auto"
+                  className="group inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-transparent text-brand-navy dark:text-white border border-transparent dark:border-white/20 px-8 py-3.5 rounded-[4px] font-sans font-medium text-[14px] hover:bg-slate-200 dark:hover:bg-white/5 transition-all duration-200 w-full sm:w-auto"
                 >
                   Explore Products
                 </Link>
               </div>
 
               {/* Technical Metadata */}
-              <div className="flex items-center gap-6 text-[11px] font-mono text-brand-cyan/60 uppercase tracking-widest border-t border-white/10 pt-6 w-full max-w-sm">
+              <div className="flex items-center gap-6 text-[11px] font-mono text-brand-cyan uppercase tracking-widest border-t border-slate-200 dark:border-white/10 pt-6 w-full max-w-sm">
                 <div className="flex flex-col gap-1">
-                  <span className="text-white/40">Latency</span>
-                  <span className="text-brand-cyan">{"< 50ms"}</span>
+                  <span className="text-slate-400 dark:text-white/40">Latency</span>
+                  <span className="text-brand-blue dark:text-brand-cyan">{"< 50ms"}</span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-white/40">Uptime</span>
-                  <span className="text-brand-cyan">99.99%</span>
+                  <span className="text-slate-400 dark:text-white/40">Uptime</span>
+                  <span className="text-brand-blue dark:text-brand-cyan">99.99%</span>
                 </div>
                 <div className="flex flex-col gap-1">
-                  <span className="text-white/40">Global Edge</span>
-                  <span className="text-brand-cyan">Active</span>
+                  <span className="text-slate-400 dark:text-white/40">Global Edge</span>
+                  <span className="text-brand-blue dark:text-brand-cyan">Active</span>
                 </div>
               </div>
             </div>
