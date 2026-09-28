@@ -32,7 +32,7 @@ export default function TimelineSection({
               disabled={isEdit}
               value={devlogData.startDate}
               onChange={(e) => handleDateChange("startDate", e.target.value)}
-              className={`w-full pl-9 pr-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm transition-opacity ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
+              className={`w-full pl-9 pr-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm transition-opacity ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
             />
           </div>
         </div>
@@ -45,13 +45,13 @@ export default function TimelineSection({
               disabled={isEdit}
               value={devlogData.endDate}
               onChange={(e) => handleDateChange("endDate", e.target.value)}
-              className={`w-full pl-9 pr-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm transition-opacity ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
+              className={`w-full pl-9 pr-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm transition-opacity ${isEdit ? 'opacity-60 cursor-not-allowed' : ''}`}
             />
           </div>
         </div>
       </div>
 
-      <div className="p-4 bg-brand-cloud dark:bg-[#171717] rounded-xl border border-slate-200 dark:border-[#262626] flex items-center justify-between">
+      <div className="p-4 bg-brand-cloud dark:bg-[#171717] rounded-xl border border-brand-navy/[0.08] dark:border-[#262626] flex items-center justify-between">
         <div>
           <div className="text-xs font-bold text-slate-900 dark:text-white">Estimated Duration</div>
           <div className="text-lg font-black text-slate-900 dark:text-white mt-1">
@@ -61,7 +61,7 @@ export default function TimelineSection({
         {devlogData.endDate && (
            <button 
              onClick={() => setShowExtensionModal(true)}
-             className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-[10px] font-bold hover:bg-brand-cloud dark:hover:bg-[#171717] transition-all"
+             className="flex items-center gap-2 px-3 py-1.5 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-[10px] font-bold hover:bg-brand-cloud dark:hover:bg-[#171717] transition-all"
            >
              <Plus size={14} strokeWidth={1.5} />
              Extend Timeline

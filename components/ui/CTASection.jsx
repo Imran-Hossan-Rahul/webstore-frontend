@@ -8,7 +8,7 @@ export const CTASection = ({
   secondaryAction, 
   className = '' 
 }) => (
-  <div className={`w-full bg-brand-navy dark:bg-[#161B22] border-y border-brand-navy dark:border-white/10 py-24 ${className}`}>
+  <div className={`w-full bg-brand-navy dark:bg-brand-surface border-y border-brand-navy dark:border-white/10 py-24 ${className}`}>
     <div className="max-w-4xl mx-auto px-4 text-center">
       <h2 className="text-[32px] md:text-[40px] font-display font-medium text-white mb-6 leading-tight">
         {title}
@@ -28,7 +28,7 @@ export const CTASection = ({
           <Button 
             size="lg" 
             variant="outline" 
-            className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10 dark:border-white/10 dark:text-white dark:hover:bg-white/5" 
+            className="w-full sm:w-auto border-white/20 text-white hover:bg-brand-surface/10 dark:border-white/10 dark:text-white dark:hover:bg-brand-surface/5" 
             onClick={secondaryAction.onClick}
           >
             {secondaryAction.label}

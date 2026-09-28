@@ -188,9 +188,9 @@ export default function DiscussionChat({ discussionId, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl max-w-4xl w-full h-[80vh] shadow-2xl border border-white/10 flex flex-col">
+      <div className="bg-brand-surface dark:bg-brand-dark rounded-2xl max-w-4xl w-full h-[80vh] shadow-sm border border-white/10 flex flex-col">
         {/* Header */}
-        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+        <div className="p-6 border-b border-brand-navy/[0.08] dark:border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -211,8 +211,8 @@ export default function DiscussionChat({ discussionId, onClose }) {
                 </p>
               )}
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
-              <X className="w-5 h-5 text-slate-500" />
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 rounded-xl">
+              <X className="w-5 h-5 text-slate-500 dark:text-slate-400" />
             </button>
           </div>
         </div>
@@ -246,7 +246,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                       </span>
                     </div>
                     {msg.content && (
-                      <p className="text-brand-slate dark:text-slate-300 text-sm bg-brand-cloud dark:bg-white/5 rounded-xl p-3 mb-2">
+                      <p className="text-brand-slate dark:text-slate-300 text-sm bg-brand-cloud dark:bg-brand-surface/5 rounded-xl p-3 mb-2">
                         {msg.content}
                       </p>
                     )}
@@ -289,7 +289,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                             </div>
                           )}
                           {att.type === "file" && (
-                            <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-white/5 rounded-xl hover:bg-slate-200 dark:hover:bg-white/10 transition-colors max-w-sm">
+                            <div className="flex items-center gap-3 p-3 bg-slate-100 dark:bg-brand-surface/5 rounded-xl hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 transition-colors max-w-sm">
                               <FileText className="w-5 h-5 text-brand-blue" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-slate-900 dark:text-white truncate">{att.name}</p>
@@ -298,7 +298,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                               <a
                                 href={att.url}
                                 download={att.name}
-                                className="p-2 hover:bg-slate-300 dark:hover:bg-white/20 rounded-lg transition-colors flex-shrink-0"
+                                className="p-2 hover:bg-slate-300 dark:hover:bg-brand-surface/20 rounded-lg transition-colors flex-shrink-0"
                               >
                                 <Download className="w-4 h-4 text-brand-slate dark:text-slate-400" />
                               </a>
@@ -320,7 +320,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                       {replies.length > 0 && (
                         <button
                           onClick={() => toggleReplies(msg._id)}
-                          className="text-xs text-slate-500 hover:text-brand-slate dark:text-slate-400 dark:hover:text-slate-300 font-medium flex items-center gap-1"
+                          className="text-xs text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:text-slate-400 dark:hover:text-slate-300 font-medium flex items-center gap-1"
                         >
                           <MessageCircle className="w-3 h-3" />
                           {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
@@ -335,7 +335,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
 
                     {/* Replies Section */}
                     {expandedReplies[msg._id] && sortedReplies.length > 0 && (
-                      <div className="mt-3 ml-4 pl-4 border-l-2 border-slate-200 dark:border-white/10 space-y-3">
+                      <div className="mt-3 ml-4 pl-4 border-l-2 border-brand-navy/[0.08] dark:border-white/10 space-y-3">
                         {sortedReplies.map((reply, ridx) => (
                           <div key={reply._id || ridx} className="flex gap-2">
                             <div className="w-6 h-6 rounded-full bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
@@ -351,7 +351,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                                 </span>
                               </div>
                               {reply.content && (
-                                <p className="text-brand-slate dark:text-slate-300 text-xs bg-brand-cloud dark:bg-white/5 rounded-lg p-2">
+                                <p className="text-brand-slate dark:text-slate-300 text-xs bg-brand-cloud dark:bg-brand-surface/5 rounded-lg p-2">
                                   {reply.content}
                                 </p>
                               )}
@@ -375,7 +375,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                                         />
                                       )}
                                       {att.type === "file" && (
-                                        <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-white/5 rounded-lg text-xs">
+                                        <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-brand-surface/5 rounded-lg text-xs">
                                           <FileText className="w-4 h-4 text-brand-blue" />
                                           <span className="text-slate-900 dark:text-white">{att.name}</span>
                                         </div>
@@ -403,7 +403,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
         </div>
 
         {/* Input */}
-        <form onSubmit={handleSendMessage} className="p-6 border-t border-slate-200 dark:border-white/10">
+        <form onSubmit={handleSendMessage} className="p-6 border-t border-brand-navy/[0.08] dark:border-white/10">
           {replyingTo && (
             <div className="mb-3 p-2 bg-brand-sky dark:bg-blue-900/20 rounded-lg flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -415,7 +415,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
               <button
                 type="button"
                 onClick={() => setReplyingTo(null)}
-                className="text-slate-500 hover:text-red-500"
+                className="text-slate-500 dark:text-slate-400 hover:text-red-500"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -424,12 +424,12 @@ export default function DiscussionChat({ discussionId, onClose }) {
           {selectedFiles.length > 0 && (
             <div className="flex gap-2 mb-3 flex-wrap">
               {selectedFiles.map((file, i) => (
-                <div key={i} className="relative bg-slate-100 dark:bg-white/5 rounded-lg p-2 pr-8">
+                <div key={i} className="relative bg-slate-100 dark:bg-brand-surface/5 rounded-lg p-2 pr-8">
                   <span className="text-xs text-brand-slate dark:text-slate-300">{file.name}</span>
                   <button
                     type="button"
                     onClick={() => removeFile(i)}
-                    className="absolute top-1 right-1 text-slate-500 hover:text-red-500"
+                    className="absolute top-1 right-1 text-slate-500 dark:text-slate-400 hover:text-red-500"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -449,21 +449,21 @@ export default function DiscussionChat({ discussionId, onClose }) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-3 border border-slate-200 dark:border-white/10 rounded-xl hover:bg-brand-cloud dark:hover:bg-white/5 transition-colors"
+              className="p-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl hover:bg-brand-cloud dark:hover:bg-brand-surface/5 transition-colors"
             >
-              <Paperclip className="w-5 h-5 text-slate-500" />
+              <Paperclip className="w-5 h-5 text-slate-500 dark:text-slate-400" />
             </button>
             <input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type your message..."
-              className="flex-1 px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             />
             <button
               type="submit"
               disabled={!newMessage.trim() && selectedFiles.length === 0}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all font-medium flex items-center gap-2"
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-sm disabled:opacity-50 transition-all font-medium flex items-center gap-2"
             >
               <Send className="w-4 h-4" />
               Send

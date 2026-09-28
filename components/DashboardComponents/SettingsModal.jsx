@@ -51,10 +51,10 @@ export default function SettingsModal({ isOpen, onClose }) {
 
   const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300" style={{ position: 'fixed' }}>
-      <div className="bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl w-full max-w-4xl h-[85vh] shadow-2xl shadow-black/20 flex overflow-hidden animate-in zoom-in-95 duration-300">
+      <div className="bg-brand-surface/90 dark:bg-brand-dark/90 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl w-full max-w-4xl h-[85vh] shadow-sm shadow-black/20 flex overflow-hidden animate-in zoom-in-95 duration-300">
         
         {/* Sidebar */}
-        <div className="w-64 bg-brand-cloud/50 dark:bg-white/5 p-6 flex flex-col border-r border-slate-200/50 dark:border-white/10">
+        <div className="w-64 bg-brand-surface/50 dark:bg-brand-surface/5 p-6 flex flex-col border-r border-brand-navy/[0.10]/50 dark:border-white/10">
           <h2 className="text-2xl font-bold mb-8 pl-2 text-slate-900 dark:text-white">
             {isCraftsmanRoute ? "Craftsman Settings" : "Settings"}
           </h2>
@@ -72,7 +72,7 @@ export default function SettingsModal({ isOpen, onClose }) {
         <div className="flex-1 flex flex-col h-full bg-transparent relative">
             <button 
                 onClick={onClose}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 dark:hover:bg-white/10 transition-colors z-10"
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 transition-colors z-10"
             >
                 <X size={20} className="text-slate-500 dark:text-slate-400" />
             </button>
@@ -124,8 +124,8 @@ function TabButton({ id, label, icon, active, onClick }) {
             onClick={() => onClick(id)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-medium text-sm ${
                 isActive 
-                    ? "bg-slate-900 text-white dark:bg-white dark:text-black shadow-md shadow-black/10 dark:shadow-white/10" 
-                    : "text-slate-500 dark:text-slate-400 hover:bg-white dark:hover:bg-white/10 hover:text-black dark:hover:text-white"
+                    ? "bg-slate-900 text-white dark:bg-brand-surface dark:text-black shadow-sm shadow-black/10 dark:shadow-white/10" 
+                    : "text-slate-500 dark:text-slate-400 hover:bg-brand-surface dark:hover:bg-brand-surface/10 hover:text-black dark:hover:text-white"
             }`}
         >
             {icon}
@@ -213,10 +213,10 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                             type="text" 
                             value={form.profilePicture}
                             onChange={e => setForm({...form, profilePicture: e.target.value})}
-                            className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
+                            className="w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
                             placeholder="https://..."
                         />
-                         <p className="text-xs text-slate-500 mt-1.5">Or use the upload feature in the Profile.</p>
+                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">Or use the upload feature in the Profile.</p>
                     </div>
                 )}
                 
@@ -228,7 +228,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                       type="text" 
                       value={form.name}
                       onChange={e => setForm({...form, name: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
+                      className="w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
                    />
                 </div>
                  <div>
@@ -236,7 +236,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                    <textarea 
                       value={form.bio}
                       onChange={e => setForm({...form, bio: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all resize-none h-32 shadow-sm"
+                      className="w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all resize-none h-32 shadow-sm"
                       placeholder="Tell us about yourself..."
                    />
                 </div>
@@ -246,22 +246,22 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                       type="text" 
                       value={form.skills}
                       onChange={e => setForm({...form, skills: e.target.value})}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
+                      className="w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white focus:border-pink-500 focus:ring-1 focus:ring-pink-500 outline-none transition-all shadow-sm"
                       placeholder="React, Node.js, Design..."
                    />
                 </div>
                  <div>
                    <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Work Type</label>
                    <div className="flex gap-4">
-                        <label className={`flex-1 border p-4 rounded-xl cursor-pointer transition-all shadow-sm ${form.workType === 'solo' ? 'border-pink-500 bg-pink-50/50 dark:bg-pink-500/10 ring-1 ring-pink-500' : 'border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}>
+                        <label className={`flex-1 border p-4 rounded-xl cursor-pointer transition-all shadow-sm ${form.workType === 'solo' ? 'border-pink-500 bg-pink-50/50 dark:bg-pink-500/10 ring-1 ring-pink-500' : 'border-brand-navy/[0.10] dark:border-white/10 hover:border-brand-navy/[0.10] dark:hover:border-white/20'}`}>
                             <input type="radio" name="workType" value="solo" checked={form.workType === 'solo'} onChange={() => setForm({...form, workType: 'solo'})} className="hidden" />
                             <div className="font-bold text-sm text-slate-900 dark:text-white">Solo Craftsman</div>
-                            <div className="text-xs text-slate-500 mt-1">I work by myself</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">I work by myself</div>
                         </label>
-                        <label className={`flex-1 border p-4 rounded-xl cursor-pointer transition-all shadow-sm ${form.workType === 'team' ? 'border-pink-500 bg-pink-50/50 dark:bg-pink-500/10 ring-1 ring-pink-500' : 'border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20'}`}>
+                        <label className={`flex-1 border p-4 rounded-xl cursor-pointer transition-all shadow-sm ${form.workType === 'team' ? 'border-pink-500 bg-pink-50/50 dark:bg-pink-500/10 ring-1 ring-pink-500' : 'border-brand-navy/[0.10] dark:border-white/10 hover:border-brand-navy/[0.10] dark:hover:border-white/20'}`}>
                             <input type="radio" name="workType" value="team" checked={form.workType === 'team'} onChange={() => setForm({...form, workType: 'team'})} className="hidden" />
                             <div className="font-bold text-sm text-slate-900 dark:text-white">Agency / Team</div>
-                            <div className="text-xs text-slate-500 mt-1">I manage a team</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">I manage a team</div>
                         </label>
                    </div>
                 </div>
@@ -271,7 +271,7 @@ function GeneralSettings({ user, craftsmanProfile, isCraftsmanMode, refreshData,
                 <button 
                     onClick={handleSave} 
                     disabled={saving}
-                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
+                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-sm transition-all disabled:opacity-50 w-full sm:w-auto"
                 >
                     {saving ? "Saving..." : "Save Changes"}
                 </button>
@@ -311,7 +311,7 @@ function PayoutSettings({ user, refreshUser, showToast }) {
                     Payouts are automatically routed to your <span className="font-bold text-slate-900 dark:text-white">Internal Wallet</span> for maximum security and zero-fee transactions.
                 </p>
                 <div className="pt-2">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-white dark:bg-white/10 rounded-lg border border-blue-200 dark:border-brand-blue/30 text-[10px] font-bold text-brand-blue dark:text-blue-400 uppercase tracking-tighter">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-brand-surface dark:bg-brand-surface/10 rounded-lg border border-blue-200 dark:border-brand-blue/30 text-[10px] font-bold text-brand-blue dark:text-blue-400 uppercase tracking-tighter">
                         Active Payout Method: Internal Wallet
                     </div>
                 </div>
@@ -321,7 +321,7 @@ function PayoutSettings({ user, refreshUser, showToast }) {
                 <button 
                     onClick={handleSave} 
                     disabled={saving}
-                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-lg transition-all disabled:opacity-50 w-full sm:w-auto"
+                    className="px-8 py-3.5 bg-gradient-to-r from-slate-900 to-black dark:from-white dark:to-slate-200 text-white dark:text-black rounded-xl font-bold hover:shadow-sm transition-all disabled:opacity-50 w-full sm:w-auto"
                 >
                     {saving ? "Saving..." : "Confirm Settings"}
                 </button>
@@ -358,30 +358,30 @@ function SecuritySettings({ user, showToast }) {
             <h3 className="text-2xl font-bold mb-6 text-slate-900 dark:text-white tracking-tight">Security & Login</h3>
 
             {/* Password */}
-            <div className="space-y-4 p-6 bg-brand-cloud/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
+            <div className="space-y-4 p-6 bg-brand-surface/50 dark:bg-brand-surface/5 rounded-2xl border border-brand-navy/[0.10]/50 dark:border-white/10">
                 <h4 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
                     <Shield size={18} className="text-brand-blue" /> 
                     Change Password
                 </h4>
                 <div className="space-y-3">
-                     <input type="password" placeholder="Current Password" value={passwords.current} onChange={e => setPasswords({...passwords, current: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
-                     <input type="password" placeholder="New Password" value={passwords.new} onChange={e => setPasswords({...passwords, new: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
-                     <input type="password" placeholder="Confirm New Password" value={passwords.confirm} onChange={e => setPasswords({...passwords, confirm: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
+                     <input type="password" placeholder="Current Password" value={passwords.current} onChange={e => setPasswords({...passwords, current: e.target.value})} className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
+                     <input type="password" placeholder="New Password" value={passwords.new} onChange={e => setPasswords({...passwords, new: e.target.value})} className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
+                     <input type="password" placeholder="Confirm New Password" value={passwords.confirm} onChange={e => setPasswords({...passwords, confirm: e.target.value})} className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-black/50 text-slate-900 dark:text-white outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue shadow-sm" />
                 </div>
-                <button onClick={handlePasswordChange} className="px-6 py-2.5 bg-white dark:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-brand-cloud dark:hover:bg-white/20 transition-all shadow-sm"> Update Password </button>
+                <button onClick={handlePasswordChange} className="px-6 py-2.5 bg-brand-surface dark:bg-brand-surface/10 border border-brand-navy/[0.10] dark:border-white/10 text-slate-900 dark:text-white rounded-xl text-sm font-bold hover:bg-brand-surface dark:hover:bg-brand-surface/20 transition-all shadow-sm"> Update Password </button>
             </div>
 
             {/* 2FA */}
-            <div className="flex items-center justify-between p-6 bg-brand-cloud/50 dark:bg-white/5 rounded-2xl border border-slate-200/50 dark:border-white/10">
+            <div className="flex items-center justify-between p-6 bg-brand-surface/50 dark:bg-brand-surface/5 rounded-2xl border border-brand-navy/[0.10]/50 dark:border-white/10">
                 <div>
                      <h4 className="font-bold text-slate-900 dark:text-white">Two-Factor Authentication</h4>
-                     <p className="text-sm text-slate-500 mt-1">Add an extra layer of security to your account</p>
+                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Add an extra layer of security to your account</p>
                 </div>
                 <div 
                     onClick={() => { setTwoFactor(!twoFactor); /* Call API */ }}
                     className={`w-14 h-7 rounded-full p-1 cursor-pointer transition-colors flex items-center ${twoFactor ? 'bg-brand-blue' : 'bg-slate-300 dark:bg-slate-600'}`}
                 >
-                    <div className={`w-5 h-5 bg-white rounded-full shadow-md transition-opacity ${twoFactor ? 'translate-x-7' : 'translate-x-0'}`} />
+                    <div className={`w-5 h-5 bg-brand-surface rounded-full shadow-sm transition-opacity ${twoFactor ? 'translate-x-7' : 'translate-x-0'}`} />
                 </div>
             </div>
         </div>
@@ -418,25 +418,25 @@ function AccountSettings({ user, refreshUser, showToast }) {
              <div className="space-y-4">
                 <div>
                    <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Email Address</label>
-                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm">
+                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-brand-surface/5 text-slate-500 dark:text-slate-400 shadow-sm">
                         {user.email}
                         {user.emailVerified && <CheckCircle size={16} className="text-brand-teal" />}
                    </div>
-                   <p className="text-xs text-slate-500 mt-1.5">Email cannot be changed directly.</p>
+                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-1.5">Email cannot be changed directly.</p>
                 </div>
 
                 <div>
                    <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-1.5">Current Role</label>
-                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-slate-500 dark:text-slate-400 shadow-sm uppercase font-bold text-xs">
+                   <div className="flex items-center gap-3 w-full px-4 py-3 rounded-xl border border-brand-navy/[0.10] dark:border-white/10 bg-brand-surface dark:bg-brand-surface/5 text-slate-500 dark:text-slate-400 shadow-sm uppercase font-bold text-xs">
                         {user.role}
                    </div>
                 </div>
             </div>
 
             {user.role === "user" && (
-                <div className="pt-6 border-t border-slate-200 dark:border-white/10 mt-6">
+                <div className="pt-6 border-t border-brand-navy/[0.10] dark:border-white/10 mt-6">
                     <h4 className="text-brand-blue font-bold mb-2">Want to hire talent?</h4>
-                    <p className="text-sm text-slate-500 mb-4">Upgrade your account to a patron Account to post jobs and manage hires.</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Upgrade your account to a patron Account to post jobs and manage hires.</p>
                     <button 
                         onClick={handleUpgradeToPatron}
                         disabled={upgrading}
@@ -447,9 +447,9 @@ function AccountSettings({ user, refreshUser, showToast }) {
                 </div>
             )}
 
-            <div className="pt-8 border-t border-slate-200 dark:border-white/10 mt-8">
+            <div className="pt-8 border-t border-brand-navy/[0.10] dark:border-white/10 mt-8">
                 <h4 className="text-red-500 font-bold mb-2">Danger Zone</h4>
-                <p className="text-sm text-slate-500 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
                 <button className="px-6 py-3 border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl text-sm font-bold hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors">
                     Delete Account
                 </button>

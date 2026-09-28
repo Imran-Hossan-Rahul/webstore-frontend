@@ -59,7 +59,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
           initial={{ y: 20, opacity: 0, scale: 0.95 }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 20, opacity: 0, scale: 0.95 }}
-          className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 dark:border-slate-800"
+          className="bg-brand-surface dark:bg-slate-900 rounded-3xl shadow-sm w-full max-w-lg overflow-hidden border border-brand-navy/[0.10] dark:border-slate-800"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
@@ -74,9 +74,9 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full transition-colors"
+              className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-slate-900 rounded-full transition-colors"
             >
-              <X size={20} className="text-slate-500" />
+              <X size={20} className="text-slate-500 dark:text-slate-400" />
             </button>
           </div>
 
@@ -100,7 +100,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="E.g., Great definition of React"
-                  className="w-full px-4 py-3 rounded-xl bg-brand-cloud dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm"
+                  className="w-full px-4 py-3 rounded-xl bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.10] dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm"
                 />
               </div>
 
@@ -113,7 +113,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
                   onChange={(e) => setNoteContent(e.target.value)}
                   placeholder="Why is this important to you?"
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl bg-brand-cloud dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.10] dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm resize-none"
                 />
               </div>
 
@@ -126,7 +126,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
                   <select
                     value={selectedFolder}
                     onChange={(e) => setSelectedFolder(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-brand-cloud dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm appearance-none"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.10] dark:border-slate-700 focus:ring-2 focus:ring-brand-blue outline-none text-slate-900 dark:text-white transition-all text-sm appearance-none"
                   >
                     <option value="">No Folder (All Items)</option>
                     {folders?.map((folder) => (
@@ -139,7 +139,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
               </div>
 
               {/* Public Toggle */}
-              <div className="flex items-center justify-between p-4 rounded-xl bg-brand-cloud dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center justify-between p-4 rounded-xl bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.10] dark:border-slate-700">
                 <div>
                   <h4 className="text-sm font-bold text-slate-900 dark:text-white">Make Public</h4>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Allow others to see this highlight</p>
@@ -151,7 +151,7 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
                   }`}
                 >
                   <div
-                    className={`absolute top-1 bg-white w-4 h-4 rounded-full transition-opacity ${
+                    className={`absolute top-1 bg-brand-surface w-4 h-4 rounded-full transition-opacity ${
                       isPublic ? "left-7" : "left-1"
                     }`}
                   />
@@ -161,10 +161,10 @@ export default function SaveNoteModal({ isOpen, onClose, selectedText, codexId, 
           </div>
 
           {/* Footer */}
-          <div className="p-6 bg-brand-cloud dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+          <div className="p-6 bg-brand-surface dark:bg-brand-surface/50 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
             <button
               onClick={onClose}
-              className="px-6 py-2.5 rounded-xl font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              className="px-6 py-2.5 rounded-xl font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-slate-700 transition-colors"
             >
               Cancel
             </button>

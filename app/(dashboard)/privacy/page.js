@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       lastUpdated="July 2026"
       sidebarLinks={sidebarLinks}
     >
-      <div className="bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
+      <div className="bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
         <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white mt-0 mb-3">Our Privacy Promise</h3>
         <p className="m-0">
           Codalina respects your personal data. We only collect what we need to serve you better, and we <strong>never</strong> sell your information to third parties.
@@ -97,13 +97,13 @@ export default function PrivacyPage() {
         If you have any questions or concerns about this Privacy Policy or our data practices, please contact our Data Protection Officer:
       </p>
       
-      <div className="flex flex-col sm:flex-row gap-8 not-prose mt-8 p-6 rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22]">
+      <div className="flex flex-col sm:flex-row gap-8 not-prose mt-8 p-6 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface">
         <div>
-          <p className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest mb-1.5">Email</p>
+          <p className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Email</p>
           <a href="mailto:info@codalina.com" className="text-[14px] font-sans text-brand-blue hover:underline">info@codalina.com</a>
         </div>
         <div>
-          <p className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest mb-1.5">Support</p>
+          <p className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Support</p>
           <a href="tel:+8801951768360" className="text-[14px] font-sans text-brand-blue hover:underline">01951768360</a>
         </div>
       </div>

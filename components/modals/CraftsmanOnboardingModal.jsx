@@ -62,7 +62,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-in fade-in duration-300">
-      <div className="bg-[#15121e] border border-purple-500/20 rounded-2xl w-full max-w-2xl shadow-2xl relative overflow-hidden">
+      <div className="bg-[#15121e] border border-purple-500/20 rounded-2xl w-full max-w-2xl shadow-sm relative overflow-hidden">
         
         {/* Progress Bar */}
         <div className="h-1 w-full bg-[#2a2438]">
@@ -98,7 +98,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                   Display Name <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 dark:text-slate-400" />
                   <input
                     type="text"
                     value={formData.displayName}
@@ -108,7 +108,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                     autoFocus
                   />
                 </div>
-                <p className="text-xs text-slate-500 mt-2">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                   This is how you will appear to other users publicly.
                 </p>
               </div>
@@ -155,7 +155,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                 </div>
                 <h3 className="text-xl font-bold text-white mb-1">{formData.displayName}</h3>
                 <p className="text-sm text-slate-400 mb-3">{formData.skills || "Artist"}</p>
-                <p className="text-sm text-slate-500 italic max-w-sm mx-auto">
+                <p className="text-sm text-slate-500 dark:text-slate-400 italic max-w-sm mx-auto">
                     &quot;{formData.bio || "Ready to create!"}&quot;
                 </p>
               </div>
@@ -180,7 +180,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                 <button
                     onClick={handleNext}
                     disabled={step === 1 && !formData.displayName.trim()}
-                    className="flex items-center gap-2 px-8 py-3 bg-white text-black rounded-xl font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-8 py-3 bg-brand-surface text-black rounded-xl font-bold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Next Step <ChevronRight size={18} />
                 </button>
@@ -188,7 +188,7 @@ export default function CraftsmanOnboardingModal({ isOpen, onClose, onSuccess })
                 <button
                     onClick={handleSubmit}
                     disabled={loading}
-                    className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold hover:shadow-lg hover:shadow-purple-500/25 transition disabled:opacity-70"
+                    className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold hover:shadow-sm hover:shadow-purple-500/25 transition disabled:opacity-70"
                 >
                     {loading ? "Creating..." : "Finish Setup"} <CheckCircle size={18} />
                 </button>

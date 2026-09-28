@@ -13,7 +13,7 @@ export default function RoadMap() {
       {steps.map((text, index) => (
         <div
           key={index}
-          className="relative flex-1 rounded-[26px] bg-white text-black p-6 shadow-lg hover:bg-black hover:text-white transition-colors duration-300 min-h-[130px] flex flex-col justify-center"
+          className="relative flex-1 rounded-[26px] bg-brand-surface text-black p-6 shadow-sm hover:bg-black hover:text-white transition-colors duration-300 min-h-[130px] flex flex-col justify-center"
         >
           {/* Circle */}
           <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-black text-white rounded-full flex items-center justify-center font-bold text-lg">

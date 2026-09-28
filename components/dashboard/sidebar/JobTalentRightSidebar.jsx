@@ -65,11 +65,11 @@ export default function JobTalentRightSidebar({ jobId }) {
       
       {/* Action Card */}
       {isOwner ? (
-        <div className="w-full py-4 border border-slate-200 dark:border-white/10 rounded-xl flex items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">
+        <div className="w-full py-4 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl flex items-center justify-center gap-2 text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-[0.2em]">
            <ShieldCheck size={16} /> Your Posting
         </div>
       ) : (
-        <div className="bg-black dark:bg-white text-white dark:text-black rounded-2xl p-8 shadow-lg">
+        <div className="bg-black dark:bg-brand-surface text-white dark:text-black rounded-2xl p-8 shadow-sm">
             <div className="space-y-6">
               {(!myProposalStage) && (
                 <div>
@@ -81,9 +81,9 @@ export default function JobTalentRightSidebar({ jobId }) {
               {myProposalStage ? (
                 <div className="space-y-4">
                   <div className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 text-xs font-semibold uppercase border transition-all ${
-                     myProposalStage === "hired" ? "bg-brand-teal text-white border-transparent shadow-lg shadow-green-500/20" :
+                     myProposalStage === "hired" ? "bg-brand-teal text-white border-transparent shadow-sm shadow-green-500/20" :
                      myProposalStage === "rejected" ? "bg-red-50 dark:bg-red-900/10 border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400" :
-                     "bg-white/10 text-white border-white/20 backdrop-blur-sm"
+                     "bg-brand-surface/10 text-white border-white/20 backdrop-blur-sm"
                   }`}>
                      {myProposalStage === "hired" && <CheckCircle size={16} />}
                      {myProposalStage === "rejected" && <X size={16} />}
@@ -94,7 +94,7 @@ export default function JobTalentRightSidebar({ jobId }) {
                       STAGES.find(s => s.key === (myProposalStage || "proposal_sent"))?.label || "Proposal Sent"}
                   </div>
                   
-                  <p className="text-xs text-slate-400 dark:text-slate-500 font-medium text-center leading-relaxed px-2">
+                  <p className="text-xs text-slate-400 dark:text-slate-500 dark:text-slate-400 font-medium text-center leading-relaxed px-2">
                      {myProposalStage === "hired" ? "Congratulations! You've been selected for this devlog." :
                       myProposalStage === "rejected" ? "Thank you for applying. The patron has moved forward with other candidates." :
                       myProposalStage === "offer_sent" ? "You have an active offer waiting! Please review and sign the agreement." :
@@ -114,10 +114,10 @@ export default function JobTalentRightSidebar({ jobId }) {
                    disabled={job.status === "closed"}
                    className={`w-full py-4 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
                      job.status === "closed"
-                       ? "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-400 dark:text-slate-500 cursor-not-allowed"
+                       ? "bg-slate-100 dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 text-slate-400 dark:text-slate-500 dark:text-slate-400 cursor-not-allowed"
                        : !canApply && jobView === "details"
-                       ? "bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10 text-slate-500 cursor-not-allowed"
-                       : "bg-purple-600 text-white hover:bg-purple-700 shadow-xl shadow-purple-600/20"
+                       ? "bg-slate-200 dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                       : "bg-purple-600 text-white hover:bg-purple-700 shadow-sm shadow-purple-600/20"
                    }`}
                 >
                    {jobView === "details" ? (!canApply ? "Insufficient Tokens" : "Apply Now") : "Cancel & Return"} <ArrowRight size={16} />
@@ -125,7 +125,7 @@ export default function JobTalentRightSidebar({ jobId }) {
               )}
               
               {!myProposalStage && (
-                <p className="text-[10px] text-center text-slate-500 font-medium uppercase tracking-wider">
+                <p className="text-[10px] text-center text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">
                    Secured by Antigravity Escrow
                 </p>
               )}
@@ -134,7 +134,7 @@ export default function JobTalentRightSidebar({ jobId }) {
       )}
 
       {/* Job Details Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 space-y-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 space-y-6 shadow-sm">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3">Devlog Overview</h4>
          <div className="divide-y divide-slate-100 dark:divide-white/5">
             {[
@@ -148,7 +148,7 @@ export default function JobTalentRightSidebar({ jobId }) {
               { label: "Location",     value: job.location || "Remote" },
             ].map((item, i) => (
               <div key={i} className="py-3.5 flex justify-between items-center text-xs group">
-                 <span className="text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-tighter group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                 <span className="text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-tighter group-hover:text-slate-900 dark:text-white dark:group-hover:text-white transition-colors">
                     {item.label}
                  </span>
                  <span className="text-slate-900 dark:text-white font-bold text-right ml-4">
@@ -160,7 +160,7 @@ export default function JobTalentRightSidebar({ jobId }) {
       </div>
 
       {/* patron Info Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5">patron Verification</h4>
          
          <div className="flex items-center gap-4 mb-6">
@@ -170,7 +170,7 @@ export default function JobTalentRightSidebar({ jobId }) {
               avatarUrl={job.patron?.profilePicture}
               displayName={job.patron?.name}
             >
-              <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/10 cursor-pointer">
+              <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 cursor-pointer">
                  {job.patron?.profilePicture ? (
                    <img src={getOptimizedUrl(job.patron.profilePicture)} alt="" className="w-full h-full object-cover" />
                  ) : (
@@ -193,7 +193,7 @@ export default function JobTalentRightSidebar({ jobId }) {
                  </p>
                </CraftsmanHoverCard>
                {job.patron?.username && (
-                  <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">@{job.patron.username}</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-0.5">@{job.patron.username}</p>
                )}
             </div>
          </div>
@@ -204,19 +204,19 @@ export default function JobTalentRightSidebar({ jobId }) {
                <span className="block text-[13px] font-black text-brand-blue dark:text-indigo-400">
                   {job.patronStats?.active || 0}
                </span>
-               <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Active</span>
+               <span className="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Active</span>
             </div>
             <div className="text-center p-2 rounded-xl bg-emerald-50 dark:bg-brand-teal/10 border border-emerald-100 dark:border-brand-teal/20">
                <span className="block text-[13px] font-black text-brand-teal dark:text-emerald-400">
                   {job.patronStats?.completed || 0}
                </span>
-               <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Completed</span>
+               <span className="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Completed</span>
             </div>
             <div className="text-center p-2 rounded-xl bg-rose-50 dark:bg-rose-500/10 border border-rose-100 dark:border-rose-500/20">
                <span className="block text-[13px] font-black text-rose-600 dark:text-rose-400">
                   {job.patronStats?.cancelled || 0}
                </span>
-               <span className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Cancelled</span>
+               <span className="block text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Cancelled</span>
             </div>
          </div>
       </div>

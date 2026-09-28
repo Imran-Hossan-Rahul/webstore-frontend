@@ -16,6 +16,17 @@ module.exports = {
           border: '#262626',
         },
         brand: {
+          /* New Semantic Tokens */
+          main: 'var(--bg-main)',
+          surface: 'var(--bg-surface)',
+          dark: 'var(--bg-dark-section)',
+          interaction: 'var(--bg-primary-interaction)',
+          accent: 'var(--bg-tech-accent)',
+          cta: 'var(--bg-important-cta)',
+          success: 'var(--bg-success)',
+          text: 'var(--text-primary)',
+          muted: 'var(--text-secondary)',
+          
           navy: '#0B2545', // Midnight Navy (Primary)
           blue: '#1D5FD1', // Trust Blue (Primary Action)
           cyan: '#22C7E8', // Circuit Cyan (Tech Accent)
@@ -27,8 +38,8 @@ module.exports = {
           // Keep these for backwards compatibility with existing components
           primary: '#0B2545',
           secondary: '#1D5FD1',
-          surface: '#F4F7FB',
-          dark: '#0B2545',
+          
+          
           "glass": 'rgba(255, 255, 255, 0.02)',
         },
         apple: {

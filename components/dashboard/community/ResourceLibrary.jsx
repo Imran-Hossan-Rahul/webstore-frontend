@@ -45,9 +45,9 @@ export default function ResourceLibrary({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl max-w-7xl w-full max-h-[90vh] overflow-hidden shadow-2xl border border-white/10">
+      <div className="bg-brand-surface dark:bg-brand-dark rounded-2xl max-w-7xl w-full max-h-[90vh] overflow-hidden shadow-sm border border-white/10">
         {/* Header */}
-        <div className="relative p-8 border-b border-slate-200 dark:border-white/10">
+        <div className="relative p-8 border-b border-brand-navy/[0.08] dark:border-white/10">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10" />
           <div className="relative flex items-center justify-between">
             <div>
@@ -61,13 +61,13 @@ export default function ResourceLibrary({ isOpen, onClose }) {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowUpload(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg transition-all font-medium"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-sm transition-all font-medium"
               >
                 <Upload className="w-4 h-4" />
                 Share Resource
               </button>
-              <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
-                <X className="w-6 h-6 text-slate-500" />
+              <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 rounded-xl">
+                <X className="w-6 h-6 text-slate-500 dark:text-slate-400" />
               </button>
             </div>
           </div>
@@ -82,7 +82,7 @@ export default function ResourceLibrary({ isOpen, onClose }) {
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
                     selectedCategory === cat.id
                       ? "bg-brand-blue text-white"
-                      : "bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-white/10"
+                      : "bg-slate-100 dark:bg-brand-surface/5 text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10"
                   }`}
                 >
                   <cat.icon className="w-4 h-4" />
@@ -93,7 +93,7 @@ export default function ResourceLibrary({ isOpen, onClose }) {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 bg-white dark:bg-black/40 border border-slate-200 dark:border-white/10 rounded-xl text-slate-900 dark:text-white"
+              className="px-4 py-2 bg-brand-surface dark:bg-black/40 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl text-slate-900 dark:text-white"
             >
               <option value="recent">Recent</option>
               <option value="popular">Most Downloaded</option>
@@ -162,14 +162,14 @@ const ResourceCard = ({ resource, onUpdate }) => {
   };
 
   return (
-    <div className="group bg-white dark:bg-black/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden hover:shadow-2xl hover:opacity-80 transition-all duration-300">
+    <div className="group bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl overflow-hidden hover:shadow-sm hover:opacity-80 transition-all duration-300">
       {/* Preview */}
       <div className="relative aspect-video bg-gradient-to-br from-blue-500/10 to-purple-500/10 overflow-hidden">
         {resource.previewImage ? (
           <img src={getOptimizedUrl(resource.previewImage)} alt={resource.title} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <Package className="w-16 h-16 text-slate-300 dark:text-brand-slate" />
+            <Package className="w-16 h-16 text-slate-300 dark:text-brand-slate dark:text-slate-300" />
           </div>
         )}
         <div className="absolute top-3 right-3 flex gap-2">
@@ -221,7 +221,7 @@ const ResourceCard = ({ resource, onUpdate }) => {
               className={`p-2 rounded-lg transition-all ${
                 isLiked
                   ? "bg-red-100 dark:bg-red-900/30 text-red-600"
-                  : "bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-white/10"
+                  : "bg-slate-100 dark:bg-brand-surface/5 text-brand-slate dark:text-slate-400 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10"
               }`}
             >
               <Star className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
@@ -272,8 +272,8 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+      <div className="bg-brand-surface dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-brand-navy/[0.08] dark:border-white/10">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Share Resource</h2>
         </div>
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -282,7 +282,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             placeholder="Resource title"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <textarea
@@ -290,14 +290,14 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={3}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <div className="grid grid-cols-2 gap-4">
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             >
               {categories.filter(c => c.id !== "all").map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.label}</option>
@@ -306,7 +306,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             <select
               value={formData.type}
               onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             >
               <option value="link">External Link</option>
               <option value="file">File Upload</option>
@@ -318,7 +318,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
               placeholder="Resource URL (e.g., https://example.com/resource)"
               value={formData.externalLink}
               onChange={(e) => setFormData({ ...formData, externalLink: e.target.value })}
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
               required
             />
           ) : (
@@ -330,7 +330,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
                 <input
                   type="file"
                   onChange={(e) => setSelectedFile(e.target.files[0])}
-                  className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-blue file:text-white hover:file:bg-blue-700 file:cursor-pointer"
+                  className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-brand-blue file:text-white hover:file:bg-blue-700 file:cursor-pointer"
                   required
                 />
               </div>
@@ -344,7 +344,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
                 placeholder="Or paste file URL"
                 value={formData.fileUrl}
                 onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+                className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
               />
             </div>
           )}
@@ -353,7 +353,7 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
             placeholder="Tags (comma separated)"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
           />
           <div className="flex justify-end gap-4 pt-4">
             <button type="button" onClick={onClose} className="px-6 py-2 text-brand-slate dark:text-slate-400">
@@ -376,11 +376,11 @@ const UploadResourceModal = ({ onClose, onSuccess }) => {
 const LoadingGrid = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-      <div key={i} className="bg-white dark:bg-black/40 rounded-2xl overflow-hidden animate-pulse">
-        <div className="aspect-video bg-slate-200 dark:bg-slate-800" />
+      <div key={i} className="bg-brand-surface dark:bg-black/40 rounded-2xl overflow-hidden animate-pulse">
+        <div className="aspect-video bg-slate-200 dark:bg-brand-surface" />
         <div className="p-4 space-y-3">
-          <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded" />
-          <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-3/4" />
+          <div className="h-6 bg-slate-200 dark:bg-brand-surface rounded" />
+          <div className="h-4 bg-slate-200 dark:bg-brand-surface rounded w-3/4" />
         </div>
       </div>
     ))}
@@ -389,7 +389,7 @@ const LoadingGrid = () => (
 
 const EmptyState = ({ category }) => (
   <div className="text-center py-20">
-    <Package className="w-20 h-20 text-slate-300 dark:text-brand-slate mx-auto mb-6" />
+    <Package className="w-20 h-20 text-slate-300 dark:text-brand-slate dark:text-slate-300 mx-auto mb-6" />
     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
       No resources found
     </h3>

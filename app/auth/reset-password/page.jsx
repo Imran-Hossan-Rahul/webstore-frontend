@@ -111,7 +111,7 @@ export default function ResetPasswordPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center py-6 text-center"
           >
-            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
+            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
               <CheckCircle2 size={32} strokeWidth={2} />
             </div>
             <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-2">
@@ -141,7 +141,7 @@ export default function ResetPasswordPage() {
           >
             {/* New Password */}
             <div className="space-y-2 mb-5">
-              <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase px-1 block">
+              <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 dark:text-slate-400 uppercase px-1 block">
                 New Password
               </label>
               <div className="relative group">
@@ -153,8 +153,8 @@ export default function ResetPasswordPage() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => { setPassword(e.target.value); setError(""); }}
-                className={`w-full h-10 pl-10 pr-4 bg-white dark:bg-[#0D1117] border ${
-                    error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+                className={`w-full h-10 pl-10 pr-4 bg-brand-surface dark:bg-brand-surface border ${
+                    error ? "border-red-500" : "border-brand-navy/[0.08] dark:border-white/10"
                   } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-colors`}
                 />
               </div>
@@ -162,7 +162,7 @@ export default function ResetPasswordPage() {
 
             {/* Confirm Password */}
             <div className="space-y-2 mb-2">
-              <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase px-1 block">
+              <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 dark:text-slate-400 uppercase px-1 block">
                 Confirm Password
               </label>
               <div className="relative group">
@@ -174,8 +174,8 @@ export default function ResetPasswordPage() {
                   placeholder="••••••••"
                   value={confirmPassword}
                   onChange={(e) => { setConfirmPassword(e.target.value); setError(""); }}
-                className={`w-full h-10 pl-10 pr-4 bg-white dark:bg-[#0D1117] border ${
-                    error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+                className={`w-full h-10 pl-10 pr-4 bg-brand-surface dark:bg-brand-surface border ${
+                    error ? "border-red-500" : "border-brand-navy/[0.08] dark:border-white/10"
                   } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-colors`}
                 />
               </div>

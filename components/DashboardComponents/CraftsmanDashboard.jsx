@@ -110,7 +110,7 @@ export default function CraftsmanDashboard() {
   if (loading) {
       return (
           <div className="flex h-screen items-center justify-center bg-[#F3F6F8]">
-              <div className="text-xl font-semibold text-slate-500">Loading Dashboard...</div>
+              <div className="text-xl font-semibold text-slate-500 dark:text-slate-400">Loading Dashboard...</div>
           </div>
       )
   }
@@ -119,7 +119,7 @@ export default function CraftsmanDashboard() {
   const closeModal = () => setActiveModal(null);
 
   return (
-    <div className="flex min-h-screen bg-[#F3F6F8] font-sans antialiased text-slate-800">
+    <div className="flex min-h-screen ] font-sans antialiased text-slate-800 dark:text-slate-100 bg-brand-main">
       
       {/* --- MODALS --- */}
       
@@ -172,10 +172,10 @@ export default function CraftsmanDashboard() {
 
 
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-full w-20 flex flex-col items-center py-8 gap-8 bg-white/50 backdrop-blur-md z-40">
+      <aside className="fixed left-0 top-0 h-full w-20 flex flex-col items-center py-8 gap-8 bg-brand-surface/50 backdrop-blur-md z-40">
         <div className="mb-4">
              <div className="w-8 h-8 bg-black rounded-lg transform rotate-45 flex items-center justify-center cursor-pointer" onClick={() => router.push('/')}>
-                 <div className="w-3 h-3 bg-white rounded-full transform -rotate-45"></div>
+                 <div className="w-3 h-3 bg-brand-surface rounded-full transform -rotate-45"></div>
              </div>
         </div>
         <nav className="flex flex-col gap-6 w-full items-center">
@@ -205,7 +205,7 @@ export default function CraftsmanDashboard() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10">
           <div>
             <h1 className="text-5xl font-bold text-black tracking-tight mb-2">Dashboard</h1>
-            <div className="flex items-center text-slate-500 font-medium cursor-pointer hover:text-brand-slate">
+            <div className="flex items-center text-slate-500 dark:text-slate-400 font-medium cursor-pointer hover:text-brand-slate dark:text-slate-300">
               <span>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
               <ChevronDown size={16} className="ml-1" />
             </div>
@@ -270,7 +270,7 @@ function NavItem({ icon, active, onClick }) {
     return (
         <div 
             onClick={onClick}
-            className={`p-3 rounded-full cursor-pointer transition-all duration-200 ${active ? 'bg-black text-white shadow-lg' : 'text-slate-400 hover:bg-white hover:text-brand-slate'}`}
+            className={`p-3 rounded-full cursor-pointer transition-all duration-200 ${active ? 'bg-black text-white shadow-sm' : 'text-slate-400 hover:bg-brand-surface hover:text-brand-slate dark:text-slate-300'}`}
         >
             {icon}
         </div>
@@ -283,7 +283,7 @@ function HeadStat({ value, label }) {
              <div className="flex items-center justify-end gap-3 mb-1">
                  <span className="text-5xl font-bold text-black">{value}</span>
              </div>
-             <p className="text-slate-500 text-sm font-medium">{label}</p>
+             <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{label}</p>
         </div>
     )
 }

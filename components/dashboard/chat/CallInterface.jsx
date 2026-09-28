@@ -88,7 +88,7 @@ export default function CallInterface({
   };
 
   const containerClasses = isMinimized
-    ? "fixed bottom-6 right-6 z-[200] w-72 h-48 bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-white/20 transition-all duration-300"
+    ? "fixed bottom-6 right-6 z-[200] w-72 h-48 bg-slate-900 rounded-2xl shadow-sm overflow-hidden border border-white/20 transition-all duration-300"
     : "absolute inset-0 z-[200] bg-black/95 backdrop-blur-xl flex flex-col items-center justify-center animate-in fade-in duration-300 transition-all";
 
   return (
@@ -97,7 +97,7 @@ export default function CallInterface({
       <div className="absolute top-4 right-4 z-10 flex gap-2">
         <button 
           onClick={() => setIsMinimized(!isMinimized)}
-          className="p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+          className="p-2 bg-brand-surface/10 hover:bg-brand-surface/20 rounded-full text-white transition-colors"
         >
           {isMinimized ? <Maximize2 size={16} /> : <Minimize2 size={20} />}
         </button>
@@ -114,7 +114,7 @@ export default function CallInterface({
           />
         ) : (
           <div className="flex flex-col items-center gap-6">
-            <div className="w-32 h-32 rounded-full border-4 border-white/10 bg-white/5 flex items-center justify-center overflow-hidden animate-pulse">
+            <div className="w-32 h-32 rounded-full border-4 border-white/10 bg-brand-surface/5 flex items-center justify-center overflow-hidden animate-pulse">
               {callerAvatar ? (
                 <img src={getOptimizedUrl(callerAvatar)} alt="Caller" className="w-full h-full object-cover" />
               ) : (
@@ -135,7 +135,7 @@ export default function CallInterface({
 
         {/* Local Video Picture-in-Picture */}
         {isVideoCall && (
-          <div className={`absolute ${isMinimized ? 'bottom-2 right-2 w-20 h-28' : 'bottom-32 right-8 w-48 h-64'} bg-black border border-white/20 rounded-xl overflow-hidden shadow-2xl transition-all duration-300`}>
+          <div className={`absolute ${isMinimized ? 'bottom-2 right-2 w-20 h-28' : 'bottom-32 right-8 w-48 h-64'} bg-black border border-white/20 rounded-xl overflow-hidden shadow-sm transition-all duration-300`}>
             <video
               ref={localVideoRef}
               autoPlay
@@ -148,18 +148,18 @@ export default function CallInterface({
       </div>
 
       {/* Controls */}
-      <div className={`absolute ${isMinimized ? 'bottom-2 left-1/2 -translate-x-1/2 px-4 py-2 scale-75' : 'bottom-10 left-1/2 -translate-x-1/2 px-8 py-4'} flex items-center gap-4 sm:gap-6 bg-white/10 backdrop-blur-md rounded-full border border-white/10 shadow-2xl transition-all duration-300`}>
+      <div className={`absolute ${isMinimized ? 'bottom-2 left-1/2 -translate-x-1/2 px-4 py-2 scale-75' : 'bottom-10 left-1/2 -translate-x-1/2 px-8 py-4'} flex items-center gap-4 sm:gap-6 bg-brand-surface/10 backdrop-blur-md rounded-full border border-white/10 shadow-sm transition-all duration-300`}>
         {isIncoming && callStatus === "Ringing..." ? (
           <>
             <button
               onClick={onReject}
-              className="w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-all shadow-lg hover:-translate-y-0.5"
+              className="w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-all shadow-sm hover:-translate-y-0.5"
             >
               <PhoneOff size={24} />
             </button>
             <button
               onClick={onAccept}
-              className="w-14 h-14 bg-brand-teal hover:bg-green-600 rounded-full flex items-center justify-center text-white transition-all shadow-lg hover:-translate-y-0.5"
+              className="w-14 h-14 bg-brand-teal hover:bg-green-600 rounded-full flex items-center justify-center text-white transition-all shadow-sm hover:-translate-y-0.5"
             >
               <Phone size={24} />
             </button>
@@ -169,7 +169,7 @@ export default function CallInterface({
             <button
               onClick={toggleMute}
               className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                isMuted ? "bg-white/20 text-white" : "bg-white text-black"
+                isMuted ? "bg-brand-surface/20 text-white" : "bg-brand-surface text-black"
               }`}
             >
               {isMuted ? <MicOff size={20} /> : <Mic size={20} />}
@@ -179,7 +179,7 @@ export default function CallInterface({
               <button
                 onClick={toggleVideo}
                 className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                  !isVideoEnabled ? "bg-white/20 text-white" : "bg-white text-black"
+                  !isVideoEnabled ? "bg-brand-surface/20 text-white" : "bg-brand-surface text-black"
                 }`}
               >
                 {!isVideoEnabled ? <VideoOff size={20} /> : <Video size={20} />}
@@ -188,7 +188,7 @@ export default function CallInterface({
 
             <button
               onClick={onEnd}
-              className="w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-all shadow-lg hover:-translate-y-0.5 ml-4"
+              className="w-14 h-14 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center text-white transition-all shadow-sm hover:-translate-y-0.5 ml-4"
             >
               <PhoneOff size={24} />
             </button>

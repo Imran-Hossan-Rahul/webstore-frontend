@@ -10,7 +10,7 @@ export default function AuthRequired() {
     <div className="min-h-[80vh] flex items-center justify-center p-6 animate-in fade-in duration-500">
       <div className="max-w-md w-full text-center space-y-8">
         <div className="relative inline-flex items-center justify-center mb-4">
-          <div className="relative w-16 h-16 bg-brand-cloud dark:bg-[#161B22] rounded-[4px] flex items-center justify-center border border-slate-200 dark:border-white/10">
+          <div className="relative w-16 h-16 bg-brand-cloud dark:bg-brand-surface rounded-[4px] flex items-center justify-center border border-brand-navy/[0.08] dark:border-white/10">
             <Lock size={28} className="text-brand-navy dark:text-white" />
           </div>
         </div>
@@ -33,7 +33,7 @@ export default function AuthRequired() {
           </Link>
           <Link 
             href="/"
-            className="w-full py-3.5 bg-brand-cloud dark:bg-transparent border border-slate-200 dark:border-white/20 text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5 font-sans font-medium text-[15px] rounded-[4px] transition-all"
+            className="w-full py-3.5 bg-brand-cloud dark:bg-transparent border border-brand-navy/[0.08] dark:border-white/20 text-brand-navy dark:text-white hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 font-sans font-medium text-[15px] rounded-[4px] transition-all"
           >
             {t("back_to_home") || "Back to Home"}
           </Link>

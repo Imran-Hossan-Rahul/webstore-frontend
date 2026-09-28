@@ -49,7 +49,7 @@ export default function ProposalDetailSidebar() {
     <aside className="h-full flex flex-col gap-6 pb-10">
       
       {/* Role Card */}
-      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm">
+      <div className="bg-brand-surface/80 dark:bg-slate-900/40 backdrop-blur-md border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 shadow-sm">
         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-6">
           {isPatronView ? "The Applicant" : "The patron"}
         </h3>
@@ -61,7 +61,7 @@ export default function ProposalDetailSidebar() {
             avatarUrl={person?.avatar || person?.profilePicture}
             displayName={person?.name}
           >
-            <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-white/10 shadow-sm bg-brand-cloud dark:bg-white/5 cursor-pointer">
+            <div className="w-14 h-14 rounded-2xl overflow-hidden border-2 border-slate-100 dark:border-white/10 shadow-sm bg-brand-cloud dark:bg-brand-surface/5 cursor-pointer">
               <Image 
                 src={getOptimizedUrl(person?.avatar || person?.profilePicture) || `https://api.dicebear.com/7.x/avataaars/svg?seed=${person?.username || person?.name || 'User'}`}
                 alt={person?.name}
@@ -110,14 +110,14 @@ export default function ProposalDetailSidebar() {
 
         <button 
           onClick={() => router.push(`/u/${person?.username}`)}
-          className="w-full mt-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-[11px] hover:shadow-lg transition-all flex items-center justify-center gap-2"
+          className="w-full mt-6 py-3 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl font-bold text-[11px] hover:shadow-sm transition-all flex items-center justify-center gap-2"
         >
           View Full Profile <ArrowUpRight size={14} />
         </button>
       </div>
 
       {/* Financials Card */}
-      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm relative overflow-hidden group">
+      <div className="bg-brand-surface/80 dark:bg-slate-900/40 backdrop-blur-md border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 shadow-sm relative overflow-hidden group">
         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Financial Proposal</h3>
         
         <div className="space-y-5 relative z-10">
@@ -126,13 +126,13 @@ export default function ProposalDetailSidebar() {
             <div className="flex items-end gap-1.5">
               <span className="text-3xl font-black text-slate-900 dark:text-white">{proposal.expectedRate}</span>
               <span className="text-[10px] font-bold mb-1 text-slate-400">TKNS</span>
-              <span className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 rounded-md mb-1 ml-auto uppercase">
+              <span className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 dark:bg-brand-surface/10 text-slate-500 dark:text-slate-400 rounded-md mb-1 ml-auto uppercase">
                 {proposal.rateType}
               </span>
             </div>
           </div>
 
-          <div className="h-px bg-slate-100 dark:bg-white/5 w-full" />
+          <div className="h-px bg-slate-100 dark:bg-brand-surface/5 w-full" />
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -149,7 +149,7 @@ export default function ProposalDetailSidebar() {
 
       {/* Actions Card (Only for patron if they want to move stage) */}
       {isPatronView && (
-        <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm">
+        <div className="bg-brand-surface/80 dark:bg-slate-900/40 backdrop-blur-md border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 shadow-sm">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Manage Workflow</h3>
             <div className="grid grid-cols-1 gap-2.5">
               <button className="flex items-center gap-3 p-3.5 bg-emerald-50 dark:bg-brand-teal/10 text-brand-teal rounded-xl font-bold text-[11px] hover:bg-emerald-100 transition-all border border-emerald-100 dark:border-brand-teal/20">
@@ -158,7 +158,7 @@ export default function ProposalDetailSidebar() {
               <button className="flex items-center gap-3 p-3.5 bg-brand-sky dark:bg-brand-blue/10 text-brand-blue rounded-xl font-bold text-[11px] hover:bg-indigo-100 transition-all border border-indigo-100 dark:border-brand-blue/20">
                   <MessageSquare size={16} /> Start Interview
               </button>
-              <button className="flex items-center gap-3 p-3.5 bg-brand-cloud dark:bg-white/5 text-slate-400 rounded-xl font-bold text-[11px] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all border border-slate-100 dark:border-white/10">
+              <button className="flex items-center gap-3 p-3.5 bg-brand-cloud dark:bg-brand-surface/5 text-slate-400 rounded-xl font-bold text-[11px] hover:bg-rose-50 hover:text-rose-600 hover:border-rose-100 transition-all border border-slate-100 dark:border-white/10">
                   <XCircle size={16} /> Reject Proposal
               </button>
             </div>
@@ -166,9 +166,9 @@ export default function ProposalDetailSidebar() {
       )}
 
       {/* Safety Message */}
-      <div className="p-6 border border-dashed border-slate-200 dark:border-white/10 rounded-[4px]">
+      <div className="p-6 border border-dashed border-brand-navy/[0.08] dark:border-white/10 rounded-[4px]">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Safety First</h4>
-         <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
+         <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
            Never share personal contact information before a formal contract is started.
          </p>
       </div>

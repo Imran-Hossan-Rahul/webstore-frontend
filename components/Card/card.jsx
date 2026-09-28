@@ -132,7 +132,7 @@ const ArtifactCard = ({
   return (
     <>
       <div
-        className="relative rounded-xl overflow-hidden border border-slate-200 dark:border-[#262626] group cursor-pointer w-full h-64 bg-white dark:bg-[#0A0A0A] transition-all duration-150"
+        className="relative rounded-xl overflow-hidden border border-brand-navy/[0.08] dark:border-[#262626] group cursor-pointer w-full h-64 bg-brand-surface dark:bg-[#0A0A0A] transition-all duration-150"
         onClick={() => setEmbedModalOpen(true)}
       >
         {/* Badge */}
@@ -172,7 +172,7 @@ const ArtifactCard = ({
 
         {/* Overlay text */}
         <div className="absolute bottom-2 left-0 right-0 z-20 px-4 flex flex-col gap-1">
-          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-lg transition-all duration-300 font-sans">
+          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-sm transition-all duration-300 font-sans">
             {title.length > 30 ? title.substring(0, 30) + "..." : title}
           </h3>
 
@@ -207,12 +207,12 @@ const ArtifactCard = ({
           <div className="absolute bottom-3 left-3 group-hover:translate-x-2 transition-all duration-300">
             <button
               onClick={handleLike}
-              className="bg-white p-2 rounded-full shadow flex items-center gap-1"
+              className="bg-brand-surface p-2 rounded-full shadow flex items-center gap-1"
             >
               <Star
                 size={18}
                 className={`transition-colors duration-300 ${
-                  liked ? "text-pink-600 fill-pink-600" : "text-brand-slate"
+                  liked ? "text-pink-600 fill-pink-600" : "text-brand-slate dark:text-slate-300"
                 }`}
               />
               <span className="text-xs font-mono font-medium">{likeCount}</span>
@@ -236,7 +236,7 @@ const ArtifactCard = ({
       {/* EMBED MODAL */}
       {embedModalOpen && embedUrl && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-full max-w-4xl relative">
+          <div className="bg-brand-surface p-6 rounded-xl w-full max-w-4xl relative">
             <iframe
               src={embedUrl}
               className="w-full h-[500px] rounded"
@@ -245,7 +245,7 @@ const ArtifactCard = ({
             ></iframe>
             <button
               onClick={() => setEmbedModalOpen(false)}
-              className="absolute top-3 right-3 text-slate-500 hover:text-slate-800 font-bold text-xl"
+              className="absolute top-3 right-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-100 font-bold text-xl"
             >
               ✕
             </button>
@@ -256,14 +256,14 @@ const ArtifactCard = ({
       {/* PURCHASE MODAL */}
       {showPurchaseModal && paymentInfo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm">
-          <div className="bg-white dark:bg-[#0A0A0A] p-6 rounded-xl w-[380px] border border-slate-200 dark:border-[#262626]">
+          <div className="bg-brand-surface dark:bg-[#0A0A0A] p-6 rounded-xl w-[380px] border border-brand-navy/[0.08] dark:border-[#262626]">
             <h2 className="text-lg font-semibold mb-3 text-black dark:text-white">Purchase Artifact</h2>
 
-            <p className="mb-1 text-slate-500 text-xs font-sans">
-              Artifact ID: <b className="font-mono text-slate-900">{paymentInfo.artifactId}</b>
+            <p className="mb-1 text-slate-500 dark:text-slate-400 text-xs font-sans">
+              Artifact ID: <b className="font-mono text-slate-900 dark:text-white">{paymentInfo.artifactId}</b>
             </p>
 
-            <p className="mb-4 text-slate-500 text-xs font-sans">
+            <p className="mb-4 text-slate-500 dark:text-slate-400 text-xs font-sans">
               Price:{" "}
               <b className="font-mono text-brand-blue text-lg">
                 {paymentInfo.price} {paymentInfo.currency}
@@ -283,7 +283,7 @@ const ArtifactCard = ({
 
             <button
               onClick={() => setShowPurchaseModal(false)}
-              className="mt-2 w-full text-brand-slate"
+              className="mt-2 w-full text-brand-slate dark:text-slate-300"
             >
               Cancel
             </button>

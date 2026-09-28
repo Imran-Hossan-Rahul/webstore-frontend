@@ -252,9 +252,9 @@ export default function AdminMessagesPage() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-100px)] w-full bg-white dark:bg-black rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 mt-4">
+    <div className="flex h-[calc(100vh-100px)] w-full bg-brand-surface dark:bg-black rounded-3xl overflow-hidden border border-black/5 dark:border-white/10 mt-4">
       {/* Sidebar */}
-      <div className="w-[320px] border-r border-black/5 dark:border-white/10 flex-shrink-0 bg-[#f5f5f7] dark:bg-[#1c1c1e] relative z-10">
+      <div className="w-[320px] border-r border-black/5 dark:border-white/10 flex-shrink-0 bg-[#f5f5f7] dark:bg-brand-surface relative z-10">
         <ChatSidebar
           currentUser={currentUser}
           chats={chats}
@@ -267,7 +267,7 @@ export default function AdminMessagesPage() {
       </div>
 
       {/* Main Chat Window */}
-      <div className="flex-1 relative flex flex-col bg-white dark:bg-black z-0">
+      <div className="flex-1 relative flex flex-col bg-brand-surface dark:bg-black z-0">
         {selectedChat ? (
           <ChatWindow
             chat={selectedChat}

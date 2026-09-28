@@ -36,6 +36,7 @@ export default function DashboardLayout({ children }) {
 
   // Layout logic
   const isAuthPage = pathname?.startsWith("/auth");
+  const isHomePage = pathname === "/" || pathname === "";
   const isFullWidthPage = ["/messages"].some(path => pathname?.startsWith(path));
 
   // Close mobile sidebar on route change
@@ -85,7 +86,7 @@ export default function DashboardLayout({ children }) {
         openChatWithUser,
       }}
     >
-      <div className="min-h-screen bg-brand-cloud dark:bg-brand-navy text-brand-slate dark:text-brand-cloud font-sans">
+      <div className="min-h-screen text-brand-slate dark:text-brand-cloud font-sans bg-brand-main">
         <GlassNavbar 
           user={user} 
           sidebarOpen={sidebarOpen}
@@ -117,14 +118,14 @@ export default function DashboardLayout({ children }) {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}
                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                className="relative flex-1 flex flex-col max-w-[240px] w-full bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl h-full p-4 pt-4 z-[60] border-r border-white/60 dark:border-white/10 shadow-2xl"
+                className="relative flex-1 flex flex-col max-w-[280px] w-full bg-brand-surface dark:bg-brand-dark h-full p-4 pt-4 z-[60] border-r border-brand-navy/[0.08] dark:border-white/10 shadow-[4px_0_24px_rgba(11,37,69,0.05)]"
               >
                 <div className="flex justify-between items-center mb-6 pl-2">
                   <div className="flex items-center gap-2">
                      <img src="/logo.png" alt="Codalina" className="w-6 h-6 object-contain" />
                      <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">Codalina</span>
                   </div>
-                  <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-brand-slate hover:text-black dark:text-slate-400 dark:hover:text-white transition-all bg-white/50 dark:bg-white/5 border border-white/60 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10">
+                  <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-brand-slate dark:text-slate-300 hover:text-black dark:text-slate-400 dark:hover:text-white transition-all bg-brand-surface/50 dark:bg-brand-surface/5 border border-white/60 dark:border-white/10 hover:bg-brand-surface/80 dark:hover:bg-brand-surface/10">
                     <X strokeWidth={1.5} className="w-4 h-4" />
                   </button>
                 </div>
@@ -136,13 +137,12 @@ export default function DashboardLayout({ children }) {
           )}
         </AnimatePresence>
 
-        <div className="relative z-10 flex px-0 sm:px-4 lg:px-6 gap-[30px] min-h-screen max-w-[1800px] mx-auto" style={{ paddingTop: 'calc(44px + env(safe-area-inset-top))' }}>
+        <div className={`relative z-10 flex ${isHomePage ? 'px-0 max-w-full' : 'px-0 sm:px-4 lg:px-6 gap-[30px] max-w-[1800px]'} min-h-screen mx-auto bg-brand-main`} style={{ paddingTop: 'calc(44px + env(safe-area-inset-top))' }}>
           {/* Left Sidebar - hover expandable */}
-          {!isFullWidthPage && (
+          {!isFullWidthPage && !isHomePage && (
             <div className={`hidden lg:block flex-shrink-0 w-[80px] z-50`}>
               <div 
-                className={`group fixed top-16 bottom-6 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-slate-200 dark:border-white/10 transition-all duration-300 ease-in-out w-[80px] hover:w-[240px] hover:bg-brand-cloud hover:dark:bg-brand-navy hover:shadow-2xl`}
-                style={{ background: 'transparent' }}
+                className={`group fixed top-[48px] bottom-0 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-brand-navy/[0.08] shadow-[1px_0_10px_rgba(11,37,69,0.02)] dark:border-white/10 transition-all duration-300 ease-in-out w-[80px] hover:w-[240px] bg-brand-surface dark:bg-brand-dark hover:shadow-sm`}
               >
                 <Sidebar isHovered={true} isCollapsed={false} />
               </div>
@@ -150,7 +150,7 @@ export default function DashboardLayout({ children }) {
           )}
 
           {/* Main Content Area */}
-          <main className={`flex-1 min-w-0 transition-all duration-300 ${!isFullWidthPage ? 'w-full lg:w-[calc(100%-80px-30px)] xl:w-[calc(100%-280px-80px-60px)]' : 'w-full'} flex flex-col`}>
+          <main className={`flex-1 min-w-0 transition-all duration-300 ${(!isFullWidthPage && !isHomePage) ? 'w-full lg:w-[calc(100%-80px-30px)] xl:w-[calc(100%-280px-80px-60px)]' : 'w-full'} flex flex-col`}>
             <div className="flex-1">
               {children}
             </div>
@@ -158,9 +158,9 @@ export default function DashboardLayout({ children }) {
           </main>
 
           {/* Right Sidebar */}
-          {!isFullWidthPage && !hideRightSidebar && (
-            <div className="hidden xl:block w-[280px] flex-shrink-0">
-                 <div className="fixed top-16 bottom-6 w-[280px] overflow-y-auto custom-scrollbar border-l border-slate-200 dark:border-white/10 pl-6">
+          {!isFullWidthPage && !hideRightSidebar && !isHomePage && (
+            <div className="hidden xl:block w-[300px] flex-shrink-0">
+                 <div className="fixed top-[48px] bottom-0 w-[300px] overflow-y-auto custom-scrollbar border-l border-brand-navy/[0.08] shadow-[-1px_0_10px_rgba(11,37,69,0.02)] dark:border-white/10 bg-brand-surface dark:bg-brand-dark p-6">
                      <RightSidebar />
                  </div>
             </div>

@@ -387,13 +387,13 @@ export default function ShopPage() {
     const isAdded = cartItems.includes((product.id || product._id)?.toString());
     
     return (
-      <div key={product.id} className="bg-white dark:bg-[#0D1117] rounded-[4px] transition-all duration-300 overflow-hidden border border-slate-200 dark:border-[#30363D] flex flex-col relative group hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] dark:hover:shadow-none dark:hover:border-[#8B949E]/50">
+      <div key={product.id} className="bg-brand-surface dark:bg-brand-surface rounded-[4px] transition-all duration-300 overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 flex flex-col relative group shadow-[1px_1px_10px_rgba(11,37,69,0.02)] hover:border-brand-blue/30 dark:hover:border-brand-blue/30">
         <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
       {product.photos && (() => {
         try {
             const parsed = JSON.parse(product.photos);
             return parsed[0] ? (
-              <div className="aspect-square w-full bg-brand-cloud dark:bg-[#010409] flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-[#30363D]">
+              <div className="aspect-square w-full bg-brand-cloud dark:bg-brand-surface flex items-center justify-center p-4 overflow-hidden relative border-b border-brand-navy/[0.08] dark:border-white/10">
                 <img 
                   src={getOptimizedUrl(parsed[0])} 
                   alt={product.title} 
@@ -406,7 +406,7 @@ export default function ShopPage() {
       })()}
       <div className="p-4 flex flex-col flex-1 bg-transparent text-left">
         {product.productType && (
-          <span className={`inline-block text-[11px] font-mono tracking-widest px-2 py-1 rounded-[4px] mb-2 self-start uppercase ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300'}`}>
+          <span className={`inline-block text-[11px] font-mono tracking-widest px-2 py-1 rounded-[4px] mb-2 self-start uppercase ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-slate-100 dark:bg-brand-surface/[0.05] text-slate-600 dark:text-slate-300 dark:bg-brand-surface/10 dark:text-slate-300'}`}>
             {product.productType}
           </span>
         )}
@@ -459,33 +459,33 @@ export default function ShopPage() {
   };
 
   return (
-    <div className="min-h-screen font-sans selection:bg-brand-blue/30">
+    <div className="min-h-screen font-sans selection: bg-brand-main">
       
 
-      <div className="w-full flex flex-col md:flex-row min-h-screen">
+      <div className="w-full flex flex-col md:flex-row min-h-screen bg-brand-main">
         
         {/* Sidebar Filters — mobile: full-screen overlay, desktop: sticky column */}
         <div className={`
-          fixed inset-0 z-[45] bg-brand-cloud dark:bg-[#0D1117] backdrop-blur-xl shadow-2xl md:bg-transparent md:backdrop-blur-none md:shadow-none
+          fixed inset-0 z-[45] bg-brand-cloud dark:bg-brand-surface backdrop-blur-xl shadow-sm md:bg-transparent md:backdrop-blur-none md:shadow-none
           md:relative md:inset-auto md:z-auto
-          md:w-64 lg:w-72 flex-shrink-0 border-r border-slate-200 dark:border-white/10
+          md:w-64 lg:w-72 flex-shrink-0 border-r border-brand-navy/[0.08] dark:border-white/10
           transform ${showMobileFilters ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300
         `}>
           <div className="h-full md:sticky md:top-20 md:max-h-[calc(100vh-80px)] overflow-y-auto p-6 pt-20 md:pt-6 scrollbar-hide">
             <div className="flex items-center justify-between mb-8 md:hidden">
               <h2 className="text-[20px] font-display font-medium text-brand-navy dark:text-white">Filters</h2>
-              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors">
+              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-slate-500 dark:text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors">
                 <X size={24} />
               </button>
             </div>
 
             <div className="mb-8 mt-4">
-              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 mb-3">Product Type</h3>
+              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-3">Product Type</h3>
               <div className="space-y-1.5">
                 <button
                   onClick={() => setSelectedProductType('')}
                   className={`w-full text-left text-[14px] px-3 py-2 rounded-[4px] transition-colors ${
-                    selectedProductType === '' ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'
+                    selectedProductType === '' ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5'
                   }`}
                 >All Types</button>
                 {PRODUCT_TYPES.map(type => (
@@ -493,7 +493,7 @@ export default function ShopPage() {
                     key={type}
                     onClick={() => setSelectedProductType(type)}
                     className={`w-full text-left text-[14px] px-3 py-2 rounded-[4px] transition-colors ${
-                      selectedProductType === type ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5'
+                      selectedProductType === type ? 'bg-brand-blue text-white font-medium' : 'text-brand-navy dark:text-slate-300 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5'
                     }`}
                   >{type}</button>
                 ))}
@@ -501,14 +501,14 @@ export default function ShopPage() {
             </div>
 
             <div className="mb-8 mt-4">
-              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 mb-4">Price (BDT)</h3>
+              <h3 className="text-[11px] font-mono tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-4">Price (BDT)</h3>
               <div className="flex items-center gap-2 mb-3">
                 <input 
                   type="number" 
                   value={tempMinPrice}
                   onChange={e => setTempMinPrice(e.target.value)}
                   placeholder="Min" 
-                  className="w-full bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
+                  className="w-full bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
                 />
                 <span className="text-slate-400">-</span>
                 <input 
@@ -516,12 +516,12 @@ export default function ShopPage() {
                   value={tempMaxPrice}
                   onChange={e => setTempMaxPrice(e.target.value)}
                   placeholder="Max" 
-                  className="w-full bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
+                  className="w-full bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-[14px] focus:outline-none focus:border-brand-blue transition-colors text-brand-navy dark:text-white placeholder:text-slate-400"
                 />
               </div>
               <button 
                 onClick={applyPriceFilter}
-                className="w-full bg-brand-cloud dark:bg-[#161B22] text-brand-navy dark:text-white font-medium py-2 rounded-[4px] text-[14px] border border-slate-200 dark:border-white/10 hover:border-brand-blue transition-colors"
+                className="w-full bg-brand-cloud dark:bg-brand-surface text-brand-navy dark:text-white font-medium py-2 rounded-[4px] text-[14px] border border-brand-navy/[0.08] dark:border-white/10 hover:border-brand-blue transition-colors"
               >
                 Apply Price
               </button>
@@ -531,10 +531,10 @@ export default function ShopPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col min-h-screen">
+        <div className="flex-1 flex flex-col min-h-screen bg-brand-main">
           
           {/* Top Bar Container */}
-          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b border-slate-200 dark:border-white/10">
+          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-8 md:py-6 md:pb-6 md:border-b border-brand-navy/[0.08] dark:border-white/10">
             
             {/* Breadcrumbs (Scrolls away on mobile) */}
             <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 relative z-30 bg-transparent">
@@ -570,11 +570,11 @@ export default function ShopPage() {
             </div>
             
             {/* Filter + Sort By (Sticky on mobile globally) */}
-            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-slate-200 dark:border-white/10 md:border-none md:p-0 bg-white/80 dark:bg-black/80 backdrop-blur-[20px] md:bg-transparent md:backdrop-blur-none flex items-center justify-between md:justify-end gap-2 mt-0">
-              <span className="text-[13px] md:text-[14px] font-sans text-slate-500 whitespace-nowrap hidden md:block">Sort by:</span>
+            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-brand-navy/[0.08] dark:border-white/10 md:border-none md:p-0 bg-brand-surface/80 dark:bg-black/80 backdrop-blur-[20px] md:bg-transparent md:backdrop-blur-none flex items-center justify-between md:justify-end gap-2 mt-0">
+              <span className="text-[13px] md:text-[14px] font-sans text-slate-500 dark:text-slate-400 whitespace-nowrap hidden md:block">Sort by:</span>
               
               <div className="flex items-center gap-2 w-full md:w-auto">
-                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 text-[13px] text-brand-navy dark:text-white py-1.5 px-3 rounded-[4px] transition-colors flex-1 hover:bg-brand-cloud dark:hover:bg-white/5">
+                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 text-[13px] text-brand-navy dark:text-white py-1.5 px-3 rounded-[4px] transition-colors flex-1 hover:bg-brand-cloud dark:hover:bg-brand-surface/5">
                   <Filter size={14} className="text-brand-navy dark:text-white" />
                   Filter
                 </button>
@@ -582,19 +582,19 @@ export default function ShopPage() {
                 <div className="relative flex-1 md:flex-none">
                   <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className="w-full md:w-auto bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 md:bg-transparent md:border-transparent md:hover:bg-slate-100 text-[13px] md:text-[14px] text-brand-navy dark:text-white font-medium md:font-normal py-1.5 px-3 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer rounded-[4px] transition-colors shadow-sm md:shadow-none"
+                    className="w-full md:w-auto bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 md:bg-transparent md:border-transparent md:hover:bg-slate-100 dark:bg-brand-surface/[0.05] text-[13px] md:text-[14px] text-brand-navy dark:text-white font-medium md:font-normal py-1.5 px-3 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer rounded-[4px] transition-colors shadow-sm md:shadow-none"
                   >
                     {sortOrder === 'latest' ? 'Latest Arrivals' : sortOrder === 'price_asc' ? 'Price: Low to High' : 'Price: High to Low'}
-                    <ChevronDown className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] text-slate-500 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] text-slate-500 dark:text-slate-400 transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                 {isSortOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsSortOpen(false)}></div>
-                    <div className="absolute right-0 top-[calc(100%+4px)] w-[200px] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-lg overflow-hidden z-50 p-1">
+                    <div className="absolute right-0 top-[calc(100%+4px)] w-[200px] bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] shadow-sm overflow-hidden z-50 p-1">
                       <button
                         onClick={() => { setSortOrder('latest'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'latest' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'latest' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5'}`}
                       >
                         Latest Arrivals
                         {sortOrder === 'latest' && (
@@ -603,7 +603,7 @@ export default function ShopPage() {
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_asc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5'}`}
                       >
                         Price: Low to High
                         {sortOrder === 'price_asc' && (
@@ -612,7 +612,7 @@ export default function ShopPage() {
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_desc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy dark:text-white hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5'}`}
                       >
                         Price: High to Low
                         {sortOrder === 'price_desc' && (

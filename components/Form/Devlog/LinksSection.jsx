@@ -23,7 +23,7 @@ export default function LinksSection({
               value={devlogData.githubUrl}
               onChange={(e) => setDevlogData(prev => ({ ...prev, githubUrl: e.target.value }))}
               placeholder="https://github.com/..."
-              className="w-full px-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
+              className="w-full px-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
             />
           </div>
           <div>
@@ -33,7 +33,7 @@ export default function LinksSection({
               value={devlogData.liveUrl}
               onChange={(e) => setDevlogData(prev => ({ ...prev, liveUrl: e.target.value }))}
               placeholder="https://..."
-              className="w-full px-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
+              className="w-full px-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
             />
           </div>
           <div>
@@ -43,7 +43,7 @@ export default function LinksSection({
               value={devlogData.documentationUrl}
               onChange={(e) => setDevlogData(prev => ({ ...prev, documentationUrl: e.target.value }))}
               placeholder="https://docs..."
-              className="w-full px-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
+              className="w-full px-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-sm focus:border-black dark:focus:border-white focus:outline-none"
             />
           </div>
         </div>
@@ -64,8 +64,8 @@ export default function LinksSection({
                    onClick={() => setDevlogData(prev => ({ ...prev, status }))}
                    className={`px-3 py-1.5 rounded-lg text-[10px] font-bold border transition-all ${
                      devlogData.status === status 
-                       ? "bg-slate-900 dark:bg-white text-white dark:text-black border-slate-900 dark:border-white" 
-                       : "bg-white dark:bg-[#0A0A0A] border-slate-200 dark:border-[#262626] text-slate-500"
+                       ? "bg-slate-900 dark:bg-brand-surface text-white dark:text-black border-slate-900 dark:border-white" 
+                       : "bg-brand-surface dark:bg-[#0A0A0A] border-brand-navy/[0.08] dark:border-[#262626] text-slate-500 dark:text-slate-400"
                    }`}
                  >
                    {status}
@@ -95,7 +95,7 @@ export default function LinksSection({
         <select
           value={devlogData.license}
           onChange={(e) => setDevlogData(prev => ({ ...prev, license: e.target.value }))}
-          className="w-full px-4 py-2.5 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-sm text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none"
+          className="w-full px-4 py-2.5 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-sm text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none"
         >
           {["None", "MIT", "GPL-3.0", "Apache-2.0", "CC-BY-4.0", "Private"].map(l => (
             <option key={l} value={l}>{l}</option>

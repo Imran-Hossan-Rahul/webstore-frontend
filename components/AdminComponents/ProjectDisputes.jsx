@@ -64,21 +64,21 @@ export default function DevlogDisputes() {
   return (
     <div className="space-y-10 animate-in fade-in duration-500">
       <section className="space-y-6">
-        <div className="flex items-center gap-3 border-b border-slate-200 dark:border-white/10 pb-4">
+        <div className="flex items-center gap-3 border-b border-brand-navy/[0.08] dark:border-white/10 pb-4">
           <div className="w-8 h-8 rounded-[4px] bg-red-500/10 text-red-500 flex items-center justify-center">
             <AlertTriangle size={16} />
           </div>
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">Active Disputes</h2>
-            <p className="text-xs text-slate-500">Milestones flagged by patrons for review and resolution.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Milestones flagged by patrons for review and resolution.</p>
           </div>
         </div>
 
         {contracts.length === 0 ? (
-          <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-10 text-center">
+          <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-10 text-center">
             <CheckCircle size={32} className="mx-auto text-brand-teal mb-4" />
             <p className="font-bold text-brand-slate dark:text-slate-300">Peaceful Waters</p>
-            <p className="text-xs text-slate-500 mt-1">No active disputes requiring arbitration.</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">No active disputes requiring arbitration.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6">
@@ -102,7 +102,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
   const [resolveMessage, setResolveMessage] = useState("");
 
   return (
-    <div className="bg-white dark:bg-[#161B22] border border-red-500/20 dark:border-red-500/10 rounded-[4px] p-6 overflow-hidden relative">
+    <div className="bg-brand-surface dark:bg-brand-surface border border-red-500/20 dark:border-red-500/10 rounded-[4px] p-6 overflow-hidden relative">
       <div className="absolute top-0 right-0 p-4">
         <span className="px-2.5 py-1 bg-red-500/10 text-red-500 text-[10px] font-bold uppercase tracking-widest rounded-md">
           Action Required
@@ -119,11 +119,11 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                 <ExternalLink size={14} className="text-slate-400 hover:text-brand-blue transition-colors" />
               </Link>
             </div>
-            <p className="text-xs text-slate-500 line-clamp-2">{contract.description}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2">{contract.description}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-brand-cloud dark:bg-white/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
+            <div className="bg-brand-cloud dark:bg-brand-surface/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
               <p className="text-[10px] font-bold uppercase text-slate-400 mb-2 flex items-center gap-1.5">
                 <User size={10} /> patron
               </p>
@@ -132,7 +132,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                 <span className="text-xs font-bold text-brand-slate dark:text-slate-200 truncate">{contract.patron?.name}</span>
               </div>
             </div>
-            <div className="bg-brand-cloud dark:bg-white/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
+            <div className="bg-brand-cloud dark:bg-brand-surface/5 p-3 rounded-[4px] border border-slate-100 dark:border-white/10">
               <p className="text-[10px] font-bold uppercase text-slate-400 mb-2 flex items-center gap-1.5">
                 <User size={10} /> Craftsman
               </p>
@@ -165,7 +165,7 @@ function DisputeCard({ contract, onResolve, isResolving }) {
                   value={resolveMessage}
                   onChange={(e) => setResolveMessage(e.target.value)}
                   placeholder="Explain the reason for this resolution..."
-                  className="w-full h-24 bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-[4px] p-3 text-xs focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none resize-none"
+                  className="w-full h-24 bg-brand-surface dark:bg-black border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-3 text-xs focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none resize-none"
                 />
               </div>
 

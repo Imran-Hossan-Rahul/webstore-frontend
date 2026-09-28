@@ -44,7 +44,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-[#1f1f1f] w-full max-w-4xl max-h-[90vh] rounded-xl shadow-2xl border border-[#3e3e3e] overflow-hidden flex flex-col">
+      <div className="bg-[#1f1f1f] w-full max-w-4xl max-h-[90vh] rounded-xl shadow-sm border border-[#3e3e3e] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-[#3e3e3e]">
           <div>
@@ -71,7 +71,7 @@ export default function PostAnalyticsModal({ isOpen, onClose, post }) {
                               onClick={() => setTimeRange(range)}
                               className={`px-3 py-1.5 rounded-md text-xs font-medium uppercase transition-all ${
                                   timeRange === range 
-                                  ? 'bg-[#3ea6ff] text-[#0f0f0f] shadow-md' 
+                                  ? 'bg-[#3ea6ff] text-[#0f0f0f] shadow-sm' 
                                   : 'text-slate-400 hover:text-slate-200 hover:bg-[#333]'
                               }`}
                           >

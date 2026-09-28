@@ -62,7 +62,7 @@ export default function DevlogsListSidebar() {
   return (
     <aside className="flex flex-col gap-8 pb-32">
       {/* Featured Devloggers */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-lg p-6 shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
             <Star className="text-brand-amber" size={18} /> Top Devloggers
@@ -74,10 +74,10 @@ export default function DevlogsListSidebar() {
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="flex items-center gap-3 animate-pulse">
-                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/5" />
+                <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-brand-surface/5" />
                 <div className="space-y-1">
-                  <div className="w-24 h-3 bg-slate-100 dark:bg-white/5 rounded" />
-                  <div className="w-16 h-2 bg-slate-100 dark:bg-white/5 rounded" />
+                  <div className="w-24 h-3 bg-slate-100 dark:bg-brand-surface/5 rounded" />
+                  <div className="w-16 h-2 bg-slate-100 dark:bg-brand-surface/5 rounded" />
                 </div>
               </div>
             ))
@@ -112,7 +112,7 @@ export default function DevlogsListSidebar() {
                   </div>
                   <div>
                     <h4 className="text-[13px] font-bold text-slate-900 dark:text-white transition-colors leading-tight">{craftsman.name}</h4>
-                    <p className="text-[10px] text-slate-500 font-medium">Level {craftsman.gamification?.level || 1} Craftsman</p>
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Level {craftsman.gamification?.level || 1} Craftsman</p>
                     <div className="flex items-center gap-2 mt-1">
                       {craftsman.totalLikes > 0 && (
                         <span className="flex items-center gap-0.5 text-[10px] text-pink-500 font-semibold">
@@ -135,7 +135,7 @@ export default function DevlogsListSidebar() {
       </section>
 
       {/* Popular Devlogs */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-lg p-6 shadow-sm">
         <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
           <BookOpen className="text-pink-500" size={18} /> Popular Devlogs
         </h3>
@@ -144,8 +144,8 @@ export default function DevlogsListSidebar() {
           {devlogsLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="space-y-2 animate-pulse mb-4">
-                 <div className="h-3 w-full bg-slate-100 dark:bg-white/5 rounded"></div>
-                 <div className="h-3 w-2/3 bg-slate-100 dark:bg-white/5 rounded"></div>
+                 <div className="h-3 w-full bg-slate-100 dark:bg-brand-surface/5 rounded"></div>
+                 <div className="h-3 w-2/3 bg-slate-100 dark:bg-brand-surface/5 rounded"></div>
               </div>
             ))
           ) : topDevlogs.length > 0 ? (
@@ -161,7 +161,7 @@ export default function DevlogsListSidebar() {
                             {devlog.user?.avatar || devlog.author?.avatar ? (
                                 <Image src={devlog.user?.avatar || devlog.author?.avatar} width={14} height={14} className="rounded-full object-cover w-3.5 h-3.5" alt="" />
                             ) : (
-                                <div className="w-3.5 h-3.5 bg-slate-200 dark:bg-white/10 rounded-full" />
+                                <div className="w-3.5 h-3.5 bg-slate-200 dark:bg-brand-surface/10 rounded-full" />
                             )}
                             {devlog.user?.username || devlog.author?.username || 'user'}
                         </span>
@@ -177,7 +177,7 @@ export default function DevlogsListSidebar() {
       </section>
 
       {/* Trending Devlog Tags */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-lg p-6 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-lg p-6 shadow-sm">
         <h3 className="font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
           <TrendingUp className="text-brand-blue" size={18} /> Trending Tags
         </h3>
@@ -185,7 +185,7 @@ export default function DevlogsListSidebar() {
         <div className="flex flex-wrap gap-2">
           {tagsLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-7 w-20 bg-slate-100 dark:bg-white/5 rounded-full animate-pulse" />
+              <div key={i} className="h-7 w-20 bg-slate-100 dark:bg-brand-surface/5 rounded-full animate-pulse" />
             ))
           ) : trendingTags.length > 0 ? (
             trendingTags.map((t, idx) => {
@@ -194,7 +194,7 @@ export default function DevlogsListSidebar() {
                 <Link 
                   key={tagName + idx} 
                   href={`/shop?q=${tagName}`}
-                  className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-brand-blue hover:text-white dark:hover:bg-white dark:hover:text-slate-900 transition-all"
+                  className="px-3 py-1.5 bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-full text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:bg-brand-blue hover:text-white dark:hover:bg-brand-surface dark:hover:text-slate-900 dark:text-white transition-all"
                 >
                   #{tagName}
                 </Link>
@@ -207,13 +207,13 @@ export default function DevlogsListSidebar() {
       </section>
 
       {/* Community CTA */}
-      <div className="bg-pink-600 rounded-lg p-6 text-white shadow-xl shadow-pink-500/20 relative overflow-hidden group">
-         <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 group-hover:opacity-80 transition-opacity duration-700" />
+      <div className="bg-pink-600 rounded-lg p-6 text-white shadow-sm shadow-pink-500/20 relative overflow-hidden group">
+         <div className="absolute top-0 right-0 w-24 h-24 bg-brand-surface/10 rounded-full -mr-12 -mt-12 group-hover:opacity-80 transition-opacity duration-700" />
          <h3 className="font-bold text-lg mb-2 relative z-10">Share Your Journey</h3>
          <p className="text-pink-100 text-[11px] mb-4 leading-relaxed relative z-10">
            Document your creative process, share insights, and connect with other developers.
          </p>
-         <Link href="/devlogs" className="inline-flex items-center gap-2 text-xs font-bold bg-white text-pink-600 px-4 py-2 rounded-lg hover:bg-pink-50 transition-colors relative z-10">
+         <Link href="/devlogs" className="inline-flex items-center gap-2 text-xs font-bold bg-brand-surface text-pink-600 px-4 py-2 rounded-lg hover:bg-pink-50 transition-colors relative z-10">
            Write a Devlog <ArrowRight size={14} />
          </Link>
       </div>

@@ -58,7 +58,7 @@ export default function SitemapPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-transparent font-sans pt-12 pb-24 px-6 md:px-12">
+    <div className="min-h-screen font-sans pt-12 pb-24 px-6 md:px-12 bg-brand-main">
       <div className="max-w-[980px] mx-auto">
         
         {/* Page Title */}

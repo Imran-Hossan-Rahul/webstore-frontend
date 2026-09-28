@@ -44,15 +44,15 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
 
       {/* Modal Card */}
       <div className="relative z-10 w-full max-w-md animate-in slide-in-from-bottom-4 zoom-in-95 duration-300">
-        <div className="relative bg-white dark:bg-[#0D1117] rounded-[4px] shadow-2xl overflow-hidden border border-slate-200 dark:border-white/10">
+        <div className="relative bg-brand-surface dark:bg-brand-dark rounded-[4px] shadow-sm overflow-hidden border border-brand-navy/[0.10] dark:border-white/10">
 
           {/* Subtle line top */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-slate-200 dark:bg-white/10" />
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-slate-200 dark:bg-brand-surface/10" />
 
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-brand-slate dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition-all z-10"
+            className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-200 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 transition-all z-10"
           >
             <X size={20} strokeWidth={1.5} />
           </button>
@@ -60,7 +60,7 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
           <div className="px-8 pt-10 pb-8">
             {/* Icon */}
             <div className="flex justify-center mb-5">
-              <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] flex items-center justify-center border border-slate-200 dark:border-white/10">
+              <div className="w-16 h-16 rounded-[4px] bg-brand-surface dark:bg-brand-surface flex items-center justify-center border border-brand-navy/[0.10] dark:border-white/10">
                 <Users strokeWidth={1.5} className="text-brand-navy dark:text-white" size={28} />
               </div>
             </div>
@@ -91,13 +91,13 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
 
               <button
                 onClick={() => router.push("/auth/login")}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-cloud dark:bg-transparent hover:bg-slate-100 dark:hover:bg-white/5 text-brand-navy dark:text-white font-sans font-medium text-[15px] rounded-[4px] border border-slate-200 dark:border-white/20 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-surface dark:bg-transparent hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 text-brand-navy dark:text-white font-sans font-medium text-[15px] rounded-[4px] border border-brand-navy/[0.10] dark:border-white/20 transition-all"
               >
                 Already have an account? Log in
               </button>
             </div>
 
-            <p className="text-center text-[11px] font-mono tracking-widest uppercase text-slate-400 dark:text-slate-500 mt-6">
+            <p className="text-center text-[11px] font-mono tracking-widest uppercase text-slate-400 dark:text-slate-500 dark:text-slate-400 mt-6">
               Free forever · Token-native platform
             </p>
           </div>

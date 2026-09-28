@@ -49,12 +49,12 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-xl w-full shadow-2xl">
+      <div className="bg-brand-surface rounded-2xl max-w-xl w-full shadow-sm">
         {/* Header */}
         <div className="sticky top-0 bg-slate-900 dark:bg-black text-white p-6 rounded-t-2xl border-b border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-brand-surface/20 rounded-full flex items-center justify-center">
                 <Users className="w-6 h-6" />
               </div>
               <div>
@@ -64,7 +64,7 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition"
+              className="w-10 h-10 bg-brand-surface/20 hover:bg-brand-surface/30 rounded-full flex items-center justify-center transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -72,29 +72,29 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
         </div>
 
         {/* Benefits */}
-        <div className="p-6 bg-brand-cloud dark:bg-white/[0.02]">
-          <h3 className="font-semibold text-slate-900 mb-4">What you&apos;ll get:</h3>
+        <div className="p-6 bg-brand-surface dark:bg-brand-surface/[0.02]">
+          <h3 className="font-semibold text-slate-900 dark:text-white mb-4">What you&apos;ll get:</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-xl shadow-sm">
+            <div className="bg-brand-surface p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
                 <Zap className="w-5 h-5 text-purple-600" />
               </div>
-              <h4 className="font-semibold text-slate-900 mb-1">Earn Tokens</h4>
-              <p className="text-sm text-brand-slate">Sell artifacts, codex, and services</p>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Earn Tokens</h4>
+              <p className="text-sm text-brand-slate dark:text-slate-300">Sell artifacts, codex, and services</p>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-sm">
+            <div className="bg-brand-surface p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
                 <TrendingUp className="w-5 h-5 text-brand-blue" />
               </div>
-              <h4 className="font-semibold text-slate-900 mb-1">Grow Your Brand</h4>
-              <p className="text-sm text-brand-slate">Build your portfolio and audience</p>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Grow Your Brand</h4>
+              <p className="text-sm text-brand-slate dark:text-slate-300">Build your portfolio and audience</p>
             </div>
-            <div className="bg-white p-4 rounded-xl shadow-sm">
+            <div className="bg-brand-surface p-4 rounded-xl shadow-sm">
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
                 <Users className="w-5 h-5 text-purple-600" />
               </div>
-              <h4 className="font-semibold text-slate-900 mb-1">Join Community</h4>
-              <p className="text-sm text-brand-slate">Connect with other craftsmen</p>
+              <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Join Community</h4>
+              <p className="text-sm text-brand-slate dark:text-slate-300">Connect with other craftsmen</p>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
           )}
 
           <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
+            <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
               Display Name *
             </label>
             <input
@@ -117,16 +117,16 @@ export default function CraftsmanAccountModal({ isOpen, onClose }) {
               value={formData.displayName}
               onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
               placeholder="Your creative name"
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl focus:border-slate-400 dark:focus:border-slate-500 focus:outline-none transition-all shadow-sm"
+              className="w-full px-4 py-3 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl focus:border-slate-400 dark:focus:border-slate-500 focus:outline-none transition-all shadow-sm"
             />
-            <p className="text-xs text-slate-500 mt-1">You can add more details after creating your account</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">You can add more details after creating your account</p>
           </div>
 
           <div className="flex gap-3 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border-2 border-slate-300 text-brand-slate font-semibold rounded-xl hover:bg-brand-cloud transition"
+              className="flex-1 px-6 py-3 border-2 border-brand-navy/[0.10] text-brand-slate dark:text-slate-300 font-semibold rounded-xl hover:bg-brand-surface transition"
             >
               Cancel
             </button>

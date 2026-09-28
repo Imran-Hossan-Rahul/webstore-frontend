@@ -71,7 +71,7 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
         className={`group/item relative flex items-center px-[12px] py-[10px] mb-1 rounded-[4px] transition-all duration-200 ${
           active
             ? "bg-brand-blue/10 text-brand-blue dark:bg-brand-blue/20 dark:text-brand-cyan"
-            : "text-brand-slate dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5"
+            : "text-brand-slate dark:text-slate-300 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5"
         }`}
       >
         <div className="relative z-10 flex items-center w-full justify-start gap-4">
@@ -98,7 +98,7 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
     <aside className="h-full flex flex-col py-6 relative w-full">
       {/* Top Logo */}
       <div className="px-4 mb-8 flex items-center gap-4 h-[32px] cursor-pointer">
-         <div className="w-[32px] h-[32px] bg-brand-navy rounded-[6px] flex items-center justify-center shrink-0 shadow-sm border border-brand-navy/10">
+         <div className="w-[32px] h-[32px] bg-brand-navy rounded-[6px] flex items-center justify-center shrink-0 shadow-sm border border-brand-navy/[0.08]">
             <span className="text-white font-display font-bold text-[18px] leading-none tracking-tighter">C</span>
          </div>
          <span className={`font-display font-semibold text-[18px] text-brand-navy dark:text-white tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300 opacity-100 max-w-[200px] lg:opacity-0 lg:max-w-0 lg:group-hover:opacity-100 lg:group-hover:max-w-[200px]`}>
@@ -114,7 +114,7 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
       </nav>
 
       {/* Bottom Navigation */}
-      <div className="px-3 mt-auto pt-4 border-t border-slate-200 dark:border-white/10 space-y-1">
+      <div className="px-3 mt-auto pt-4 border-t border-brand-navy/[0.08] dark:border-white/10 space-y-1">
         {bottomNav.map((item) => (
           <SidebarItem key={item.label} {...item} />
         ))}

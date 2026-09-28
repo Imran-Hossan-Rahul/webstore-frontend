@@ -18,7 +18,7 @@ export default function VerifySidebar() {
 
   return (
     <aside className="space-y-6 pb-20">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
           <Target size={12} className="text-brand-blue" /> Trust Score
         </h4>
@@ -34,13 +34,13 @@ export default function VerifySidebar() {
             <ShieldCheck size={28} className={score === 100 ? "text-brand-teal" : "text-indigo-200"} />
           </div>
           
-          <div className="w-full bg-slate-100 dark:bg-white/5 rounded-full h-2">
+          <div className="w-full bg-slate-100 dark:bg-brand-surface/5 rounded-full h-2">
             <div className="bg-brand-blue h-2 rounded-full transition-all duration-1000" style={{ width: `${score}%` }}></div>
           </div>
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
            <Zap size={12} className="text-brand-amber" /> Verification Benefits
          </h4>
@@ -52,7 +52,7 @@ export default function VerifySidebar() {
                </div>
                <div>
                   <h5 className="text-xs font-bold text-slate-900 dark:text-white mb-0.5">Higher Trust</h5>
-                  <p className="text-[10px] text-slate-500 leading-relaxed">Verified users are 3x more likely to be hired by premium patrons.</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">Verified users are 3x more likely to be hired by premium patrons.</p>
                </div>
             </div>
 
@@ -62,15 +62,15 @@ export default function VerifySidebar() {
                </div>
                <div>
                   <h5 className="text-xs font-bold text-slate-900 dark:text-white mb-0.5">Instant Grants</h5>
-                  <p className="text-[10px] text-slate-500 leading-relaxed">Earn TKNS instantly upon completing each verification tier.</p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">Earn TKNS instantly upon completing each verification tier.</p>
                </div>
             </div>
          </div>
       </div>
       
       {score < 100 && (
-          <div className="bg-brand-blue rounded-[32px] p-8 text-white shadow-xl shadow-indigo-600/20 relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-white/20 transition-all duration-700" />
+          <div className="bg-brand-blue rounded-[32px] p-8 text-white shadow-sm shadow-indigo-600/20 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-surface/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-surface/20 transition-all duration-700" />
             <div className="relative z-10">
               <h3 className="text-[10px] font-black text-indigo-200 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                 <ShieldCheck size={14} /> Claim Rewards
@@ -78,7 +78,7 @@ export default function VerifySidebar() {
               <p className="text-sm font-medium text-indigo-100 leading-relaxed mb-6">
                 Complete your profile verification to unlock all TKNS rewards and platform authority.
               </p>
-              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-between w-full py-4 px-5 bg-white text-brand-blue hover:bg-brand-sky rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-lg">
+              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-between w-full py-4 px-5 bg-brand-surface text-brand-blue hover:bg-brand-sky rounded-2xl text-[11px] font-bold uppercase tracking-widest transition-all shadow-sm">
                 Complete Now <ArrowRight size={14} />
               </button>
             </div>

@@ -44,9 +44,9 @@ export default function PagePopularityDetails() {
   }, []);
 
   return (
-    <div className="p-5 min-h-screen bg-brand-cloud">
+    <div className="p-5 min-h-screen bg-brand-main">
       <h1 className="text-[24px] font-display font-medium mb-5">All Pages Popularity</h1>
-      <div className="bg-white p-5 rounded-[4px]">
+      <div className="bg-brand-surface p-5 rounded-[4px]">
         <ResponsiveContainer width="100%" height={600}>
           <BarChart
             data={data}

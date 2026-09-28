@@ -240,7 +240,7 @@ export default function Checkout() {
       <PageContainer maxWidth="max-w-[600px]">
         <div className="flex flex-col items-center justify-center text-brand-navy dark:text-white py-32">
           <h2 className="text-[20px] font-display font-medium mb-4">No Checkout Item Selected</h2>
-          <p className="text-[14px] text-slate-500 mb-8">
+          <p className="text-[14px] text-slate-500 dark:text-slate-400 mb-8">
             Please select a product from your cart to proceed with checkout.
           </p>
           <Button onClick={() => router.push("/cart")}>
@@ -253,7 +253,7 @@ export default function Checkout() {
 
   if (!product)
     return (
-      <div className="min-h-screen bg-brand-cloud dark:bg-[#0D1117] flex items-center justify-center text-slate-400"></div>
+      <div className="min-h-screen ] flex items-center justify-center text-slate-400 bg-brand-main"></div>
     );
 
   const subTotal = baseFinalPrice * quantity;
@@ -275,12 +275,12 @@ export default function Checkout() {
     <button
       type="button"
       onClick={onClick}
-      className={`border flex items-center gap-3 py-3 px-4 transition-colors w-full rounded-[4px] ${selected ? "border-brand-blue text-brand-navy dark:text-white bg-brand-blue/5 shadow-sm" : "border-slate-200 dark:border-white/10 text-slate-500 hover:border-slate-300 dark:hover:border-white/20 hover:bg-white dark:hover:bg-white/5"}`}
+      className={`border flex items-center gap-3 py-3 px-4 transition-colors w-full rounded-[4px] ${selected ? "border-brand-blue text-brand-navy dark:text-white bg-brand-blue/5 shadow-sm" : "border-brand-navy/[0.08] dark:border-white/10 text-slate-500 dark:text-slate-400 hover:border-brand-navy/[0.08] dark:hover:border-white/20 hover:bg-brand-surface dark:hover:bg-brand-surface/5"}`}
     >
       <div
-        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${selected ? "border-brand-blue bg-brand-blue" : "border-slate-300 dark:border-white/20 bg-white dark:bg-transparent"}`}
+        className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-colors ${selected ? "border-brand-blue bg-brand-blue" : "border-brand-navy/[0.08] dark:border-white/20 bg-brand-surface dark:bg-transparent"}`}
       >
-        {selected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+        {selected && <div className="w-1.5 h-1.5 rounded-full bg-brand-surface" />}
       </div>
       <span className="text-[14px] font-sans font-medium truncate">{label}</span>
     </button>
@@ -320,9 +320,9 @@ export default function Checkout() {
           {/* Left Column */}
           <div className="w-full lg:w-7/12 flex flex-col gap-6 md:gap-8">
             {/* Payment Section */}
-            <div className="bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 p-5 md:p-6 shadow-sm dark:shadow-none">
+            <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-5 md:p-6 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-3 mb-5 md:mb-6 border-b border-slate-100 dark:border-white/5 pb-4">
-                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
+                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-brand-surface/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
                   01
                 </div>
                 <h2 className="text-[16px] font-display font-medium text-brand-navy dark:text-white uppercase tracking-wider">
@@ -331,7 +331,7 @@ export default function Checkout() {
               </div>
 
               <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3 text-brand-slate">
+                <div className="flex items-center gap-2 mb-3 text-brand-slate dark:text-slate-300">
                   <CreditCard size={18} />
                   <span className="font-semibold text-sm">Payment Type</span>
                 </div>
@@ -344,10 +344,10 @@ export default function Checkout() {
                   {paymentType === "bkash_manual" && (
                     <div className="mt-1 p-4 bg-[#e2136e]/5 border border-[#e2136e]/20 rounded-[4px] animate-in fade-in slide-in-from-top-2 duration-300">
                       <div className="flex items-start gap-3 mb-4">
-                        <img src="https://scripts.pay.bka.sh/logo/bkash_logo.png" alt="bKash" className="h-8 object-contain bg-white rounded-[4px] px-1.5 py-1 border border-[#e2136e]/20" />
+                        <img src="https://scripts.pay.bka.sh/logo/bkash_logo.png" alt="bKash" className="h-8 object-contain bg-brand-surface rounded-[4px] px-1.5 py-1 border border-[#e2136e]/20" />
                         <div>
                           <h4 className="font-sans font-medium text-[#e2136e] text-[14px]">Send Money to 017XXXXXXXX (Personal)</h4>
-                          <p className="text-[13px] font-sans text-slate-500 mt-1 leading-relaxed">
+                          <p className="text-[13px] font-sans text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
                             Please send exactly <strong>৳ {formatPrice(total)}</strong> to our bKash personal number. Add the 1.85% cash-out charge if possible. After sending, enter your bKash number and Transaction ID below.
                           </p>
                         </div>
@@ -359,7 +359,7 @@ export default function Checkout() {
                             type="tel"
                             value={form.payment_number}
                             onChange={(e) => setForm({ ...form, payment_number: e.target.value })}
-                            className="w-full border border-slate-300 dark:border-white/20 rounded-[4px] py-2.5 px-3 text-[14px] font-sans focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e]/20 bg-white dark:bg-[#0D1117] text-brand-navy dark:text-white placeholder:text-slate-400"
+                            className="w-full border border-brand-navy/[0.08] dark:border-white/20 rounded-[4px] py-2.5 px-3 text-[14px] font-sans focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e]/20 bg-brand-surface dark:bg-brand-surface text-brand-navy dark:text-white placeholder:text-slate-400"
                             placeholder="Your bKash Number (e.g. 018XXXXXXXX)"
                           />
                         </div>
@@ -369,7 +369,7 @@ export default function Checkout() {
                             type="text"
                             value={form.payment_trx_id}
                             onChange={(e) => setForm({ ...form, payment_trx_id: e.target.value.toUpperCase() })}
-                            className="w-full border border-slate-300 dark:border-white/20 rounded-[4px] py-2.5 px-3 text-[14px] font-sans focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e]/20 bg-white dark:bg-[#0D1117] text-brand-navy dark:text-white uppercase placeholder:text-slate-400 placeholder-normal"
+                            className="w-full border border-brand-navy/[0.08] dark:border-white/20 rounded-[4px] py-2.5 px-3 text-[14px] font-sans focus:outline-none focus:border-[#e2136e] focus:ring-1 focus:ring-[#e2136e]/20 bg-brand-surface dark:bg-brand-surface text-brand-navy dark:text-white uppercase placeholder:text-slate-400 placeholder-normal"
                             placeholder="Transaction ID (TrxID)"
                           />
                         </div>
@@ -381,9 +381,9 @@ export default function Checkout() {
             </div>
 
             {/* Customer Details */}
-            <div className="bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 p-5 md:p-6 shadow-sm dark:shadow-none">
+            <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-5 md:p-6 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-3 mb-5 md:mb-6 border-b border-slate-100 dark:border-white/5 pb-4">
-                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
+                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-brand-surface/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
                   02
                 </div>
                 <h2 className="text-[16px] font-display font-medium text-brand-navy dark:text-white uppercase tracking-wider">
@@ -397,7 +397,7 @@ export default function Checkout() {
                     Digital Delivery Information
                   </span>
                 </div>
-                <p className="text-xs text-slate-500 mb-5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">
                   Your license keys and download links will be sent to this
                   email address.
                 </p>
@@ -413,7 +413,7 @@ export default function Checkout() {
                       setForm({ ...form, name: e.target.value });
                       setFormErrors({ ...formErrors, name: null });
                     }}
-                    className={`w-full border rounded-[4px] py-2.5 px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-slate-300 dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-[#0D1117]"}`}
+                    className={`w-full border rounded-[4px] py-2.5 px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.name ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-brand-navy/[0.08] dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-brand-surface"}`}
                     placeholder="Full Name"
                   />
                   {formErrors.name && (
@@ -433,7 +433,7 @@ export default function Checkout() {
                         setForm({ ...form, phone: e.target.value });
                         setFormErrors({ ...formErrors, phone: null });
                       }}
-                      className={`w-full border rounded-[4px] py-2.5 px-3 sm:px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-slate-300 dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-[#0D1117]"}`}
+                      className={`w-full border rounded-[4px] py-2.5 px-3 sm:px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.phone ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-brand-navy/[0.08] dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-brand-surface"}`}
                       placeholder="Phone Number"
                     />
                     {formErrors.phone && (
@@ -453,7 +453,7 @@ export default function Checkout() {
                       setForm({ ...form, email: e.target.value });
                       setFormErrors({ ...formErrors, email: null });
                     }}
-                    className={`w-full border rounded-[4px] py-2.5 px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-slate-300 dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-[#0D1117]"}`}
+                    className={`w-full border rounded-[4px] py-2.5 px-4 text-[14px] font-sans focus:outline-none focus:ring-1 transition-colors ${formErrors.email ? "border-red-500 focus:border-red-500 focus:ring-red-500/20 bg-red-50 dark:bg-red-900/10" : "border-brand-navy/[0.08] dark:border-white/20 focus:border-brand-blue focus:ring-brand-blue/20 bg-brand-cloud dark:bg-brand-surface"}`}
                     placeholder="Email Address"
                   />
                   {formErrors.email && (
@@ -468,9 +468,9 @@ export default function Checkout() {
 
           {/* Right Column */}
           <div className="w-full lg:w-5/12 flex flex-col gap-6 md:gap-8">
-            <div className="bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 p-5 md:p-6 sticky top-24 shadow-sm dark:shadow-none">
+            <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-5 md:p-6 sticky top-24 shadow-sm dark:shadow-none">
               <div className="flex items-center gap-3 mb-5 md:mb-6 border-b border-slate-100 dark:border-white/5 pb-4">
-                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
+                <div className="w-6 h-6 rounded-[4px] bg-slate-100 dark:bg-brand-surface/10 text-slate-500 dark:text-slate-400 flex items-center justify-center font-mono text-[11px] font-medium tracking-widest">
                   03
                 </div>
                 <h2 className="text-[16px] font-display font-medium text-brand-navy dark:text-white uppercase tracking-wider">
@@ -486,28 +486,28 @@ export default function Checkout() {
                     </h3>
                   </Link>
                   {variantSummary && (
-                    <p className="text-[13px] font-mono text-slate-500 line-clamp-2 break-words">
+                    <p className="text-[13px] font-mono text-slate-500 dark:text-slate-400 line-clamp-2 break-words">
                       ({variantSummary})
                     </p>
                   )}
                 </div>
 
                 <div className="flex flex-col items-end shrink-0 gap-3">
-                  <div className="flex items-center border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-[#0D1117] rounded-[4px]">
+                  <div className="flex items-center border border-brand-navy/[0.08] dark:border-white/10 bg-brand-cloud dark:bg-brand-surface rounded-[4px]">
                     <button
                       type="button"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-2 py-1.5 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors"
+                      className="px-2 py-1.5 text-slate-500 dark:text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors"
                     >
                       <Minus size={14} />
                     </button>
-                    <span className="px-3 py-1 text-[13px] font-mono font-medium border-x border-slate-200 dark:border-white/10 text-brand-navy dark:text-white">
+                    <span className="px-3 py-1 text-[13px] font-mono font-medium border-x border-brand-navy/[0.08] dark:border-white/10 text-brand-navy dark:text-white">
                       {quantity}
                     </span>
                     <button
                       type="button"
                       onClick={() => setQuantity(quantity + 1)}
-                      className="px-2 py-1.5 text-slate-500 hover:text-brand-navy dark:hover:text-white transition-colors"
+                      className="px-2 py-1.5 text-slate-500 dark:text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors"
                     >
                       <Plus size={14} />
                     </button>
@@ -527,7 +527,7 @@ export default function Checkout() {
               </div>
 
               {/* Promo Code Section */}
-              <div className="mt-8 mb-6 pt-6 border-t border-slate-200 dark:border-white/10">
+              <div className="mt-8 mb-6 pt-6 border-t border-brand-navy/[0.08] dark:border-white/10">
                 <span className="font-sans font-medium text-[14px] text-brand-navy dark:text-white block mb-3">
                   Have a promo code?
                 </span>
@@ -556,12 +556,12 @@ export default function Checkout() {
                         value={promoCodeInput}
                         onChange={(e) => setPromoCodeInput(e.target.value)}
                         placeholder="Enter code"
-                        className="flex-1 border border-slate-300 dark:border-white/20 bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] py-[10px] px-[14px] font-mono text-[14px] focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue/20 transition-all text-brand-navy dark:text-white placeholder:text-slate-400 uppercase"
+                        className="flex-1 border border-brand-navy/[0.08] dark:border-white/20 bg-brand-cloud dark:bg-brand-surface rounded-[4px] py-[10px] px-[14px] font-mono text-[14px] focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue/20 transition-all text-brand-navy dark:text-white placeholder:text-slate-400 uppercase"
                       />
                       <button
                         type="button"
                         onClick={handleApplyPromo}
-                        className="bg-brand-navy dark:bg-white text-white dark:text-brand-navy px-5 py-2.5 rounded-[4px] font-sans text-[14px] font-medium hover:opacity-90 transition-opacity"
+                        className="bg-brand-navy dark:bg-brand-surface text-white dark:text-brand-navy px-5 py-2.5 rounded-[4px] font-sans text-[14px] font-medium hover:opacity-90 transition-opacity"
                       >
                         Apply
                       </button>
@@ -574,7 +574,7 @@ export default function Checkout() {
               </div>
 
               <div className="space-y-3 mb-6 mt-4">
-                <div className="flex justify-between text-[14px] text-slate-500 font-sans">
+                <div className="flex justify-between text-[14px] text-slate-500 dark:text-slate-400 font-sans">
                   <span>Sub total</span>
                   <span className="font-mono font-medium text-brand-navy dark:text-white">
                     BDT {formatPrice(subTotal)}
@@ -588,7 +588,7 @@ export default function Checkout() {
                     </span>
                   </div>
                 )}
-                <div className="flex justify-between text-[14px] text-slate-500 border-b border-slate-200 dark:border-white/10 pb-3 flex-col gap-2">
+                <div className="flex justify-between text-[14px] text-slate-500 dark:text-slate-400 border-b border-brand-navy/[0.08] dark:border-white/10 pb-3 flex-col gap-2">
                   <div className="flex justify-between w-full font-sans">
                     <span>
                       Delivery Charge
@@ -619,7 +619,7 @@ export default function Checkout() {
                 />
                 <label
                   htmlFor="terms"
-                  className="text-[13px] font-sans text-slate-500 leading-relaxed cursor-pointer"
+                  className="text-[13px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed cursor-pointer"
                 >
                   I accept the{" "}
                   <span className="text-brand-navy dark:text-white font-medium hover:text-brand-blue transition-colors">Terms & Conditions</span>{" "}
@@ -640,7 +640,7 @@ export default function Checkout() {
                       ? "bg-brand-teal/20 text-brand-teal cursor-default"
                       : isFormValid
                         ? "bg-brand-blue hover:bg-brand-blue/90 text-white shadow-sm"
-                        : "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-400 cursor-not-allowed"
+                        : "bg-slate-100 dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   {orderConfirmed ? (
@@ -663,14 +663,14 @@ export default function Checkout() {
 
       {showErrorModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-brand-navy/60 dark:bg-[#000000]/80 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-[#161B22] rounded-[4px] w-full max-w-sm p-6 text-center shadow-2xl border border-slate-200 dark:border-white/10 animate-in zoom-in-95 duration-200">
+          <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] w-full max-w-sm p-6 text-center shadow-sm border border-brand-navy/[0.08] dark:border-white/10 animate-in zoom-in-95 duration-200">
             <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-[4px] bg-red-100 dark:bg-red-900/30 mb-4">
               <span className="text-red-600 dark:text-red-400 font-bold text-xl">!</span>
             </div>
             <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white mb-2">
               Checkout Failed
             </h3>
-            <p className="text-[14px] font-sans text-slate-500 mb-6">{errorMessage}</p>
+            <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 mb-6">{errorMessage}</p>
             <Button
               type="button"
               onClick={() => setShowErrorModal(false)}

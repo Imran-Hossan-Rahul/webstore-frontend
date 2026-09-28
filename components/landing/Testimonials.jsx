@@ -37,7 +37,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 bg-white dark:bg-black overflow-hidden">
+    <section id="testimonials" className="py-24 bg-brand-surface dark:bg-black overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
         <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-6">
           Loved by <span className="text-pink-600">Craftsmen</span>
@@ -67,7 +67,7 @@ export default function Testimonials() {
                 </div>
                 <div>
                   <div className="font-bold text-slate-900 dark:text-white text-sm">{t.name}</div>
-                  <div className="text-xs text-slate-500">{t.role}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">{t.role}</div>
                 </div>
               </div>
             </div>

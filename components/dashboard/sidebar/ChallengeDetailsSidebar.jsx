@@ -105,7 +105,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
   return (
     <aside className="space-y-6 pb-10">
       {/* Action Card */}
-      <div className="bg-black dark:bg-white text-white dark:text-black rounded-3xl p-8 shadow-xl relative overflow-hidden group">
+      <div className="bg-black dark:bg-brand-surface text-white dark:text-black rounded-3xl p-8 shadow-sm relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-blue/30 transition-all duration-700" />
         
         <div className="relative z-10 space-y-6">
@@ -117,7 +117,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
               </div>
               <Link 
                 href={`/manage-challenges/${challenge._id}`}
-                className="w-full py-4 bg-slate-900 dark:bg-black text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:opacity-60"
+                className="w-full py-4 bg-slate-900 dark:bg-black text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm active:opacity-60"
               >
                 <ShieldCheck size={18} /> Manage Mission
               </Link>
@@ -132,12 +132,12 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
                 <button 
                   onClick={handleJoin}
                   disabled={isJoining}
-                  className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-blue transition-all shadow-lg shadow-indigo-600/20 active:opacity-60"
+                  className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-brand-blue transition-all shadow-sm shadow-indigo-600/20 active:opacity-60"
                 >
                   {isJoining ? <AppleSpinner size={18} className="animate-spin" /> : <>Accept Mission <ArrowRight size={18} /></>}
                 </button>
               ) : (
-                <div className="w-full py-3 px-4 bg-white/5 dark:bg-black/5 rounded-xl border border-white/10 dark:border-black/10 flex items-center justify-center gap-2">
+                <div className="w-full py-3 px-4 bg-brand-surface/5 dark:bg-black/5 rounded-xl border border-white/10 dark:border-black/10 flex items-center justify-center gap-2">
                   <span className="text-base">{gateMessage?.icon || '🔒'}</span>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{gateMessage?.text || 'Registration Closed'}</p>
                 </div>
@@ -145,19 +145,19 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
             </div>
           ) : !hasSubmitted ? (
             <div className="space-y-6">
-              <div className="flex items-center gap-3 p-4 bg-white/5 dark:bg-black/5 rounded-2xl border border-white/10 dark:border-black/10">
+              <div className="flex items-center gap-3 p-4 bg-brand-surface/5 dark:bg-black/5 rounded-2xl border border-white/10 dark:border-black/10">
                 <CheckCircle2 size={20} className="text-brand-teal" />
                 <p className="text-[10px] font-bold uppercase tracking-widest text-white dark:text-black">Mission Accepted</p>
               </div>
               {canSubmit ? (
                 <Link 
                   href={`/challenges/${challenge._id}/submit`}
-                  className="w-full py-4 bg-white text-black dark:bg-black dark:text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-xl active:opacity-60"
+                  className="w-full py-4 bg-brand-surface text-black dark:bg-black dark:text-white rounded-xl font-bold text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-sm active:opacity-60"
                 >
                   <Rocket size={18} /> Submit Artifact
                 </Link>
               ) : (
-                <div className="w-full py-3 px-4 bg-white/5 dark:bg-black/5 rounded-xl border border-white/10 dark:border-black/10 flex items-center justify-center gap-2">
+                <div className="w-full py-3 px-4 bg-brand-surface/5 dark:bg-black/5 rounded-xl border border-white/10 dark:border-black/10 flex items-center justify-center gap-2">
                   <span className="text-base">{gateMessage?.icon || '🔒'}</span>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{gateMessage?.text || 'Submissions Closed'}</p>
                 </div>
@@ -165,7 +165,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="w-full py-4 bg-brand-teal text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20">
+              <div className="w-full py-4 bg-brand-teal text-white rounded-xl flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest shadow-sm shadow-emerald-500/20">
                 <Trophy size={16} /> Artifact Deployed
               </div>
               <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest">
@@ -175,14 +175,14 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
           )}
 
           <div className="pt-4 border-t border-white/10 dark:border-black/10">
-            <p className="text-[9px] text-center text-slate-500 font-bold uppercase tracking-[0.2em]">
+            <p className="text-[9px] text-center text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.2em]">
               Secured by Antigravity Protocol
             </p>
           </div>
         </div>
       </div>
       {/* Challenge Dossier Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
           <Zap size={14} className="text-brand-amber" /> Challenge Dossier
         </h3>
@@ -191,7 +191,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
           <div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Bounty Pool</p>
             <p className="text-xl font-black text-slate-900 dark:text-white leading-tight">
-              {challenge.prize} <span className="text-[10px] text-slate-500 uppercase font-bold">TKNS</span>
+              {challenge.prize} <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold">TKNS</span>
             </p>
           </div>
 
@@ -220,12 +220,12 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
               displayName={challenge.craftsman?.name}
            >
               <div className="flex items-center gap-3 cursor-pointer">
-                 <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-white/10 shrink-0">
+                 <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 dark:bg-brand-surface/[0.05] border border-brand-navy/[0.08] dark:border-white/10 shrink-0">
                     {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-brand-blue" />}
                  </div>
                  <div className="min-w-0">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Host</p>
-                    <p className="text-xs font-bold text-slate-900 dark:text-white tracking-tight hover:text-brand-slate transition-colors truncate">{challenge.craftsman?.name}</p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-white tracking-tight hover:text-brand-slate dark:text-slate-300 transition-colors truncate">{challenge.craftsman?.name}</p>
                  </div>
               </div>
            </CraftsmanHoverCard>
@@ -233,7 +233,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
       </div>
 
       {/* Strategic Directives Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Strategic Directives</h3>
         <ul className="space-y-4">
            {(() => {
@@ -262,7 +262,7 @@ export default function ChallengeDetailsSidebar({ challengeId }) {
 
              return directives.map((tip, i) => (
                <li key={i} className="flex gap-4 group/tip">
-                  <p className="text-[11px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
+                  <p className="text-[11px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:text-white dark:group-hover/tip:text-white transition-colors">
                      {tip}
                   </p>
                </li>

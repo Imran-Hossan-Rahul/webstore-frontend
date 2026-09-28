@@ -70,7 +70,7 @@ export default function ExploreSidebar() {
     <aside className="flex flex-col gap-6 pb-32">
       
       {/* ── Elite Craftsmen ── */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl p-5 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-xl p-5 shadow-sm">
         <div className="flex items-center justify-between mb-5">
           <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2 text-sm">
             <Award className="text-brand-amber" size={16} /> Elite Craftsmen
@@ -84,10 +84,10 @@ export default function ExploreSidebar() {
           {craftsmenLoading ? (
             Array.from({ length: 3 }).map((_, i) => (
               <div key={i} className="flex gap-3 animate-pulse">
-                <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-white/10 shrink-0" />
+                <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-brand-surface/10 shrink-0" />
                 <div className="flex-1 space-y-2 pt-1">
-                  <div className="h-3 bg-slate-200 dark:bg-white/10 rounded w-2/3" />
-                  <div className="h-2 bg-slate-200 dark:bg-white/10 rounded w-1/2" />
+                  <div className="h-3 bg-slate-200 dark:bg-brand-surface/10 rounded w-2/3" />
+                  <div className="h-2 bg-slate-200 dark:bg-brand-surface/10 rounded w-1/2" />
                 </div>
               </div>
             ))
@@ -98,7 +98,7 @@ export default function ExploreSidebar() {
                 href={`/u/${craftsman.username}`}
                 className="flex items-center gap-3 group"
               >
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 dark:border-white/10 shrink-0">
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 shrink-0">
                   <img
                     src={craftsman.profilePicture || craftsman.profile_img || "/default-avatar.png"}
                     alt={craftsman.name}
@@ -124,7 +124,7 @@ export default function ExploreSidebar() {
       </section>
 
       {/* ── Trending Across Platforms ── */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl p-5 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-xl p-5 shadow-sm">
         <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 text-sm">
           <TrendingUp className="text-brand-teal" size={16} />
           Trending Topics
@@ -133,7 +133,7 @@ export default function ExploreSidebar() {
         <div className="flex flex-wrap gap-2">
           {tagsLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-7 w-20 bg-slate-200 dark:bg-white/10 rounded-full animate-pulse" />
+              <div key={i} className="h-7 w-20 bg-slate-200 dark:bg-brand-surface/10 rounded-full animate-pulse" />
             ))
           ) : trendingTags.length > 0 ? (
             trendingTags.map((tag, idx) => {
@@ -142,7 +142,7 @@ export default function ExploreSidebar() {
                 <Link
                   key={tagName + idx}
                   href={`/shop?q=${encodeURIComponent('#' + tagName)}`}
-                  className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full text-[11px] font-bold text-brand-slate dark:text-slate-300 hover:bg-brand-teal hover:text-white dark:hover:bg-brand-teal dark:hover:text-white hover:border-transparent transition-all"
+                  className="px-3 py-1.5 bg-slate-100 dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 rounded-full text-[11px] font-bold text-brand-slate dark:text-slate-300 hover:bg-brand-teal hover:text-white dark:hover:bg-brand-teal dark:hover:text-white hover:border-transparent transition-all"
                 >
                   #{tagName}
                 </Link>
@@ -155,7 +155,7 @@ export default function ExploreSidebar() {
       </section>
 
       {/* ── Popular Categories ── */}
-      <section className="bg-white/60 dark:bg-slate-900/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl p-5 shadow-sm">
+      <section className="bg-brand-surface/60 dark:bg-slate-900/40 backdrop-blur-xl border border-brand-navy/[0.08] dark:border-white/10 rounded-xl p-5 shadow-sm">
         <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2 text-sm">
           <Map className="text-brand-blue" size={16} />
           Popular Categories
@@ -164,20 +164,20 @@ export default function ExploreSidebar() {
         <div className="space-y-1">
           {categoriesLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-8 bg-slate-100 dark:bg-white/5 rounded-lg animate-pulse" />
+              <div key={i} className="h-8 bg-slate-100 dark:bg-brand-surface/5 rounded-lg animate-pulse" />
             ))
           ) : artifactCategories.length > 0 ? (
             artifactCategories.map((cat, idx) => (
               <Link
                 key={cat.category || `cat-${idx}`}
                 href={`/shop?q=${encodeURIComponent('category:"' + (cat.category || cat) + '"')}`}
-                className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 group transition-all"
+                className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 group transition-all"
               >
                 <span className="text-[12px] font-semibold text-brand-slate dark:text-slate-300 group-hover:text-brand-blue dark:group-hover:text-blue-400 transition-colors">
                   {cat.category || cat}
                 </span>
                 {cat.artifactCount !== undefined && (
-                  <span className="text-[10px] font-medium text-slate-400 bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded-full group-hover:bg-blue-100 group-hover:text-brand-blue dark:group-hover:bg-brand-blue/20 dark:group-hover:text-blue-400">
+                  <span className="text-[10px] font-medium text-slate-400 bg-slate-100 dark:bg-brand-surface/10 px-2 py-0.5 rounded-full group-hover:bg-blue-100 group-hover:text-brand-blue dark:group-hover:bg-brand-blue/20 dark:group-hover:text-blue-400">
                     {cat.artifactCount}
                   </span>
                 )}
@@ -190,7 +190,7 @@ export default function ExploreSidebar() {
       </section>
 
       {/* ── Discover CTA ── */}
-      <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-6 text-white shadow-xl shadow-slate-900/20 relative overflow-hidden group border border-slate-800">
+      <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-6 text-white shadow-sm shadow-slate-900/20 relative overflow-hidden group border border-slate-800">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/10 rounded-full blur-2xl -mr-16 -mt-16 group-hover:bg-brand-blue/20 transition-colors duration-700" />
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-brand-blue/10 rounded-full blur-xl -ml-12 -mb-12 group-hover:bg-brand-blue/20 transition-colors duration-700" />
         <div className="relative z-10">
@@ -204,7 +204,7 @@ export default function ExploreSidebar() {
           </p>
           <Link
             href={`/shop?q=${encodeURIComponent(defaultSearchQuery)}`}
-            className="inline-flex items-center gap-2 text-xs font-bold bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2.5 rounded-lg hover:bg-white hover:text-slate-900 transition-all shadow-lg"
+            className="inline-flex items-center gap-2 text-xs font-bold bg-brand-surface/10 backdrop-blur-md border border-white/20 text-white px-4 py-2.5 rounded-lg hover:bg-brand-surface hover:text-slate-900 dark:text-white transition-all shadow-sm"
           >
             <Sparkles size={13} /> Advanced Search
           </Link>

@@ -43,8 +43,8 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl max-w-2xl w-full shadow-2xl border border-white/10">
-        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+      <div className="bg-brand-surface dark:bg-brand-dark rounded-2xl max-w-2xl w-full shadow-sm border border-white/10">
+        <div className="p-6 border-b border-brand-navy/[0.10] dark:border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
@@ -54,8 +54,8 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
                 Start Discussion
               </h2>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
-              <X className="w-5 h-5 text-slate-500" />
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 rounded-xl">
+              <X className="w-5 h-5 text-slate-500 dark:text-slate-400" />
             </button>
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
                   className={`p-3 rounded-xl border-2 transition-all ${
                     formData.category === cat.id
                       ? `${cat.color} text-white border-transparent`
-                      : "border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:border-slate-300"
+                      : "border-brand-navy/[0.10] dark:border-white/10 text-brand-slate dark:text-slate-400 hover:border-brand-navy/[0.10]"
                   }`}
                 >
                   <span className="text-sm font-bold">{cat.label}</span>
@@ -92,7 +92,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.topic}
               onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
               placeholder="What would you like to discuss?"
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+              className="w-full px-4 py-3 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
               required
             />
           </div>
@@ -106,7 +106,7 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
               placeholder="Provide context for the discussion..."
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent resize-none"
+              className="w-full px-4 py-3 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent resize-none"
               required
             />
           </div>
@@ -120,22 +120,22 @@ export default function CreateDiscussionModal({ isOpen, onClose, onSuccess }) {
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
               placeholder="react, design, api, etc."
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+              className="w-full px-4 py-3 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-blue focus:border-transparent"
             />
           </div>
 
-          <div className="flex justify-end gap-4 pt-4 border-t border-slate-200 dark:border-white/10">
+          <div className="flex justify-end gap-4 pt-4 border-t border-brand-navy/[0.10] dark:border-white/10">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:text-slate-100 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg disabled:opacity-50 transition-all font-medium"
+              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-sm disabled:opacity-50 transition-all font-medium"
             >
               {loading ? "Creating..." : "Start Discussion"}
             </button>

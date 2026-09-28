@@ -16,9 +16,9 @@ export const Button = React.forwardRef(({
   
   const variants = {
     primary: "bg-brand-blue hover:bg-brand-blue/90 text-white border border-brand-blue",
-    secondary: "bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-brand-navy dark:text-white border border-transparent",
-    outline: "bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 text-brand-navy dark:text-white border border-slate-200 dark:border-white/10",
-    ghost: "bg-transparent hover:bg-slate-50 dark:hover:bg-white/5 text-brand-navy dark:text-white border border-transparent",
+    secondary: "bg-slate-100 dark:bg-brand-surface/[0.05] hover:bg-slate-200 dark:bg-brand-surface/5 dark:hover:bg-brand-surface/10 text-brand-navy dark:text-white border border-transparent",
+    outline: "bg-transparent hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 text-brand-navy dark:text-white border border-brand-navy/[0.08] dark:border-white/10",
+    ghost: "bg-transparent hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 text-brand-navy dark:text-white border border-transparent",
     danger: "bg-red-500 hover:bg-red-600 text-white border border-red-500"
   };
   

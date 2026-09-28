@@ -79,7 +79,7 @@ export default function GlobalTransitionLoader() {
   if (!isNavigating) return null;
 
   return (
-    <div id="global-loader" className="fixed inset-0 z-[40] bg-white/20 dark:bg-black/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 pointer-events-none">
+    <div id="global-loader" className="fixed inset-0 z-[40] bg-brand-surface/20 dark:bg-black/20 backdrop-blur-md flex items-center justify-center transition-all duration-300 pointer-events-none">
       <AppleSpinner size={48} />
     </div>
   );

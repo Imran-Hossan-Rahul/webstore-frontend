@@ -48,20 +48,20 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="relative bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
+      <div className="relative bg-brand-surface dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-sm animate-in zoom-in-95 duration-200">
         
         {/* Header */}
-        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-between bg-brand-cloud dark:bg-slate-800/50">
+        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-between bg-brand-surface dark:bg-brand-surface/50">
           <div className="flex items-center gap-3">
-             <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0 border border-slate-300 dark:border-white/20">
+             <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-brand-surface/10 overflow-hidden shrink-0 border border-brand-navy/[0.10] dark:border-white/20">
                {mentor.profilePicture ? <img src={getOptimizedUrl(mentor.profilePicture)} className="w-full h-full object-cover" /> : null}
              </div>
              <div>
                <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">Book {mentor.name}</h3>
-               <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-0.5">1-on-1 Mentorship</p>
+               <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-0.5">1-on-1 Mentorship</p>
              </div>
           </div>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-brand-slate dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-white hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 rounded-full transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -89,7 +89,7 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
                 required
                 value={formData.scheduledDate}
                 onChange={(e) => setFormData({...formData, scheduledDate: e.target.value})}
-                className="w-full bg-brand-cloud dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20"
+                className="w-full bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20"
               />
            </div>
 
@@ -101,7 +101,7 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
                 placeholder="e.g. System Design, Code Review"
                 value={formData.topic}
                 onChange={(e) => setFormData({...formData, topic: e.target.value})}
-                className="w-full bg-brand-cloud dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20"
+                className="w-full bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20"
               />
            </div>
 
@@ -111,14 +111,14 @@ export default function MentorshipBookingModal({ isOpen, onClose, mentor }) {
                 placeholder="What exactly do you need help with?"
                 value={formData.notes}
                 onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                className="w-full bg-brand-cloud dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 min-h-[80px] resize-none"
+                className="w-full bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.10] dark:border-white/10 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 min-h-[80px] resize-none"
               />
            </div>
 
            <button 
              type="submit"
              disabled={loading}
-             className="w-full mt-4 py-4 bg-slate-900 dark:bg-white hover:bg-black dark:hover:bg-slate-200 text-white dark:text-black font-bold rounded-xl transition-all shadow-xl flex items-center justify-center gap-2"
+             className="w-full mt-4 py-4 bg-slate-900 dark:bg-brand-surface hover:bg-black dark:hover:bg-slate-200 dark:bg-brand-surface/[0.1] text-white dark:text-black font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
            >
              {loading ? <AppleSpinner className="animate-spin" size={18} /> : null}
              {loading ? "Processing..." : "Confirm & Pay TKNS"}

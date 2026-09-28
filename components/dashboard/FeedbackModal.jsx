@@ -61,7 +61,7 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-[420px] bg-white/80 dark:bg-[#1c1c1e]/80 backdrop-blur-3xl rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 overflow-hidden pointer-events-auto flex flex-col"
+              className="w-full max-w-[420px] bg-brand-surface/80 dark:bg-brand-surface/80 backdrop-blur-3xl rounded-[32px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 overflow-hidden pointer-events-auto flex flex-col"
             >
               {/* Header */}
               <div className="px-8 pt-8 pb-2 flex items-start justify-between">
@@ -110,9 +110,9 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
                     </button>
 
                     <div className="flex items-center gap-4 my-1">
-                      <div className="h-[1px] flex-1 bg-black/5 dark:bg-white/5"></div>
+                      <div className="h-[1px] flex-1 bg-black/5 dark:bg-brand-surface/5"></div>
                       <span className="text-[13px] font-medium text-[#86868b]">Or send feedback</span>
-                      <div className="h-[1px] flex-1 bg-black/5 dark:bg-white/5"></div>
+                      <div className="h-[1px] flex-1 bg-black/5 dark:bg-brand-surface/5"></div>
                     </div>
 
                     {/* Feedback Form */}
@@ -121,7 +121,7 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
                         <button
                           type="button"
                           onClick={() => setFeedbackType("suggestion")}
-                          className={`flex-1 flex justify-center items-center gap-2 py-[6px] text-[13px] font-medium rounded-[7px] transition-all ${feedbackType === "suggestion" ? "bg-white dark:bg-[#3a3a3c] text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]" : "text-[#8a8a8e]"}`}
+                          className={`flex-1 flex justify-center items-center gap-2 py-[6px] text-[13px] font-medium rounded-[7px] transition-all ${feedbackType === "suggestion" ? "bg-brand-surface dark:bg-[#3a3a3c] text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]" : "text-[#8a8a8e]"}`}
                         >
                           <Lightbulb size={15} strokeWidth={2} />
                           Suggestion
@@ -129,7 +129,7 @@ export default function FeedbackModal({ isOpen, onClose, onOpenChat }) {
                         <button
                           type="button"
                           onClick={() => setFeedbackType("bug")}
-                          className={`flex-1 flex justify-center items-center gap-2 py-[6px] text-[13px] font-medium rounded-[7px] transition-all ${feedbackType === "bug" ? "bg-white dark:bg-[#3a3a3c] text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]" : "text-[#8a8a8e]"}`}
+                          className={`flex-1 flex justify-center items-center gap-2 py-[6px] text-[13px] font-medium rounded-[7px] transition-all ${feedbackType === "bug" ? "bg-brand-surface dark:bg-[#3a3a3c] text-black dark:text-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]" : "text-[#8a8a8e]"}`}
                         >
                           <Bug size={15} strokeWidth={2} />
                           Bug Report

@@ -106,7 +106,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
 
             {/* Modal */}
             <div 
-                className="relative w-full max-w-2xl bg-white dark:bg-[#0f0f0f] rounded-2xl shadow-2xl overflow-hidden border border-slate-100 dark:border-white/10 animate-in fade-in zoom-in-95 duration-200"
+                className="relative w-full max-w-2xl bg-brand-surface dark:bg-[#0f0f0f] rounded-2xl shadow-sm overflow-hidden border border-slate-100 dark:border-white/10 animate-in fade-in zoom-in-95 duration-200"
                 onClick={(e) => {
                     e.stopPropagation();
                     e.preventDefault();
@@ -128,7 +128,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                 {loading ? (
                     <div className="p-8 flex flex-col items-center justify-center min-h-[420px]">
                         <AppleSpinner className="mb-4" />
-                        <p className="text-slate-500 font-medium animate-pulse">Loading profile...</p>
+                        <p className="text-slate-500 dark:text-slate-400 font-medium animate-pulse">Loading profile...</p>
                     </div>
 
                 /* Error */
@@ -136,8 +136,8 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                     <div className="p-12 flex flex-col items-center text-center min-h-[420px] justify-center">
                         <User size={48} className="text-slate-300 mb-4" />
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Profile Unavailable</h3>
-                        <p className="text-slate-500 max-w-sm mb-6">{error.message || error}</p>
-                        <button onClick={onClose} className="px-6 py-2 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-slate-900 dark:text-white rounded-full font-medium transition-colors">
+                        <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">{error.message || error}</p>
+                        <button onClick={onClose} className="px-6 py-2 bg-slate-100 dark:bg-brand-surface/10 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/20 text-slate-900 dark:text-white rounded-full font-medium transition-colors">
                             Close
                         </button>
                     </div>
@@ -158,7 +158,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                             {isFullCraftsman && (
                                 <div className="absolute top-4 left-4 flex gap-2">
                                     {profile.level && (
-                                        <span className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-full">
+                                        <span className="px-3 py-1 bg-brand-surface/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded-full">
                                             {profile.level}
                                         </span>
                                     )}
@@ -177,7 +177,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                             {/* Avatar row */}
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
                                 {/* Avatar */}
-                                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white dark:border-[#0f0f0f] bg-white dark:bg-slate-800 overflow-hidden shadow-xl shrink-0">
+                                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full border-4 border-white dark:border-[#0f0f0f] bg-brand-surface dark:bg-brand-surface overflow-hidden shadow-sm shrink-0">
                                     {(profile.profilePicture || profile.userId?.profilePicture) ? (
                                         <img
                                             src={profile.profilePicture || profile.userId?.profilePicture}
@@ -199,7 +199,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                         disabled={followLoading}
                                         className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm transition-all active:opacity-60 shadow-sm ${
                                             isFollowing
-                                                ? 'bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-brand-slate dark:text-slate-200'
+                                                ? 'bg-slate-100 dark:bg-brand-surface/10 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/20 text-brand-slate dark:text-slate-200'
                                                 : 'bg-brand-teal hover:bg-brand-teal text-white shadow-emerald-500/25'
                                         } ${followLoading ? 'opacity-70 cursor-wait' : ''}`}
                                     >
@@ -211,7 +211,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     {profile.totalCodex > 0 && (
                                         <button
                                             onClick={handleViewCodex}
-                                            className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 text-brand-slate dark:text-slate-200 rounded-xl font-bold text-sm transition-colors"
+                                            className="flex items-center gap-2 px-4 py-2.5 bg-slate-100 dark:bg-brand-surface/10 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/20 text-brand-slate dark:text-slate-200 rounded-xl font-bold text-sm transition-colors"
                                             title="View all codex by this craftsman"
                                         >
                                             <BookOpen size={16} />
@@ -257,25 +257,25 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
 
                             {/* Stats — fetched from real DB aggregation */}
                             <div className="grid grid-cols-4 gap-3 mb-6">
-                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-surface dark:bg-brand-surface/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Eye size={18} className="text-brand-teal mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalViews || 0).toLocaleString()}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Views</span>
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wide mt-0.5">Views</span>
                                 </div>
-                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-surface dark:bg-brand-surface/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Star size={18} className="text-pink-500 mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalLikes || 0).toLocaleString()}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Stars</span>
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wide mt-0.5">Stars</span>
                                 </div>
-                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-surface dark:bg-brand-surface/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <BookOpen size={18} className="text-brand-blue mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalCodex || 0).toLocaleString()}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Codex</span>
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wide mt-0.5">Codex</span>
                                 </div>
-                                <div className="bg-brand-cloud dark:bg-white/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
+                                <div className="bg-brand-surface dark:bg-brand-surface/[0.03] border border-slate-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
                                     <Layers size={18} className="text-purple-500 mb-1.5" />
                                     <span className="text-xl font-bold text-slate-900 dark:text-white">{(profile.totalArtifacts || 0).toLocaleString()}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wide mt-0.5">Artifacts</span>
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wide mt-0.5">Artifacts</span>
                                 </div>
                             </div>
 
@@ -288,7 +288,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Core Skills</h3>
                                             <div className="flex flex-wrap gap-2">
                                                 {profile.skills.map((skill, i) => (
-                                                    <span key={i} className="px-3 py-1.5 bg-slate-100 dark:bg-white/5 text-brand-slate dark:text-slate-300 text-xs font-medium rounded-lg border border-slate-200 dark:border-white/5">
+                                                    <span key={i} className="px-3 py-1.5 bg-slate-100 dark:bg-brand-surface/5 text-brand-slate dark:text-slate-300 text-xs font-medium rounded-lg border border-brand-navy/[0.10] dark:border-white/5">
                                                         {skill}
                                                     </span>
                                                 ))}
@@ -302,8 +302,8 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">On The Web</h3>
                                             <div className="flex flex-col gap-2">
                                                 {profile.socialLinks?.github && (
-                                                    <a href={`https://github.com/${profile.socialLinks.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors group">
-                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-white/10 transition-colors">
+                                                    <a href={`https://github.com/${profile.socialLinks.github}`} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors group">
+                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center group-hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:group-hover:bg-brand-surface/10 transition-colors">
                                                             <Github size={14} />
                                                         </div>
                                                         <span className="text-sm font-medium">github.com/{profile.socialLinks.github}</span>
@@ -311,7 +311,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                 )}
                                                 {profile.socialLinks?.website && (
                                                     <a href={profile.socialLinks.website} target="_blank" rel="noreferrer" className="flex items-center gap-3 text-brand-slate dark:text-slate-400 hover:text-brand-teal transition-colors group">
-                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-brand-teal/10 transition-colors">
+                                                        <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center group-hover:bg-brand-teal/10 transition-colors">
                                                             <LinkIcon size={14} className="group-hover:text-brand-teal" />
                                                         </div>
                                                         <span className="text-sm font-medium truncate">{profile.socialLinks.website.replace(/^https?:\/\//, '')}</span>
@@ -331,10 +331,10 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                     </h3>
                                     <div className="space-y-4">
                                         {profile.latestReviews.map((review, i) => (
-                                            <div key={i} className="p-5 bg-brand-cloud dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-2xl">
+                                            <div key={i} className="p-5 bg-brand-surface dark:bg-brand-surface/[0.02] border border-slate-100 dark:border-white/5 rounded-2xl">
                                                 <div className="flex justify-between items-start mb-3">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+                                                        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-brand-surface/10 overflow-hidden">
                                                             {review.reviewerId?.profilePicture ? (
                                                                 <img src={getOptimizedUrl(review.reviewerId.profilePicture)} alt="" className="w-full h-full object-cover" />
                                                             ) : (
@@ -362,7 +362,7 @@ const CraftsmanProfileModal = ({ isOpen, onClose, userId }) => {
                                                 <p className="text-sm text-brand-slate dark:text-slate-400 leading-relaxed italic">
                                                     &quot;{review.comment}&quot;
                                                 </p>
-                                                <p className="text-[9px] text-slate-300 dark:text-slate-500 font-bold uppercase tracking-tighter mt-3">
+                                                <p className="text-[9px] text-slate-300 dark:text-slate-500 dark:text-slate-400 font-bold uppercase tracking-tighter mt-3">
                                                     {new Date(review.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                                                 </p>
                                             </div>

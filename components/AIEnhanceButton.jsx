@@ -58,7 +58,7 @@ const AIEnhanceButton = ({ text, onUpdate, className = "", placement = "top" }) 
       {isOpen && (
         <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className={`absolute left-0 z-50 w-48 bg-white dark:bg-[#1f1f1f] rounded-xl shadow-xl border border-slate-100 dark:border-white/10 overflow-hidden animate-in fade-in zoom-in-95 ${dropdownClasses}`}>
+            <div className={`absolute left-0 z-50 w-48 bg-brand-surface dark:bg-[#1f1f1f] rounded-xl shadow-sm border border-slate-100 dark:border-white/10 overflow-hidden animate-in fade-in zoom-in-95 ${dropdownClasses}`}>
                 <div className="p-1">
                     <button
                         onClick={() => handleGenerate('enhance')}

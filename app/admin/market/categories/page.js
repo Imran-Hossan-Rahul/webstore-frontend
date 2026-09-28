@@ -134,7 +134,7 @@ export default function AdminCategoriesPage() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-brand-navy dark:text-white">Market Categories</h1>
-          <p className="text-sm text-slate-500">Manage categories and sub-categories for the marketplace.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Manage categories and sub-categories for the marketplace.</p>
         </div>
         <button
           onClick={() => {
@@ -150,32 +150,32 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] border border-slate-200 dark:border-zinc-800 overflow-hidden">
+      <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-zinc-800 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-brand-cloud dark:bg-zinc-800/50 border-b border-slate-200 dark:border-zinc-800">
-                <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Category Structure</th>
-                <th className="px-6 py-4 text-xs font-semibold text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
+              <tr className="bg-brand-cloud dark:bg-zinc-800/50 border-b border-brand-navy/[0.08] dark:border-zinc-800">
+                <th className="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Category Structure</th>
+                <th className="px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Status</th>
+                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-zinc-800">
               {displayCategories.length === 0 ? (
                 <tr>
-                  <td colSpan="3" className="px-6 py-8 text-center text-sm text-slate-500">No categories found</td>
+                  <td colSpan="3" className="px-6 py-8 text-center text-sm text-slate-500 dark:text-slate-400">No categories found</td>
                 </tr>
               ) : (
                 displayCategories.map(cat => (
                   <tr key={cat._id} className="hover:bg-brand-cloud dark:hover:bg-zinc-800/30 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3" style={{ paddingLeft: `${cat.level * 24}px` }}>
-                        {cat.level > 0 && <CornerDownRight size={16} className="text-slate-500" />}
-                        <div className="w-10 h-10 rounded-[4px] bg-brand-cloud dark:bg-white/5 overflow-hidden flex items-center justify-center shrink-0 border border-slate-200 dark:border-white/10">
+                        {cat.level > 0 && <CornerDownRight size={16} className="text-slate-500 dark:text-slate-400" />}
+                        <div className="w-10 h-10 rounded-[4px] bg-brand-cloud dark:bg-brand-surface/5 overflow-hidden flex items-center justify-center shrink-0 border border-brand-navy/[0.08] dark:border-white/10">
                           {cat.image ? (
                             <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
                           ) : (
-                            <Folder size={18} className="text-slate-500" />
+                            <Folder size={18} className="text-slate-500 dark:text-slate-400" />
                           )}
                         </div>
                         <div>
@@ -190,17 +190,17 @@ export default function AdminCategoriesPage() {
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         cat.isActive 
                           ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                          : 'bg-slate-100 text-slate-800 dark:bg-white/5 dark:text-slate-500'
+                          : 'bg-slate-100 dark:bg-brand-surface/[0.05] text-slate-800 dark:text-slate-100 dark:bg-brand-surface/5 dark:text-slate-500 dark:text-slate-400'
                       }`}>
                         {cat.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => handleEdit(cat)} className="p-2 text-slate-500 hover:text-brand-blue transition-colors rounded-[4px] hover:bg-brand-sky dark:hover:bg-blue-900/20">
+                        <button onClick={() => handleEdit(cat)} className="p-2 text-slate-500 dark:text-slate-400 hover:text-brand-blue transition-colors rounded-[4px] hover:bg-brand-sky dark:hover:bg-blue-900/20">
                           <Edit2 size={16} />
                         </button>
-                        <button onClick={() => handleDelete(cat._id, cat.level > 0)} className="p-2 text-slate-500 hover:text-red-600 transition-colors rounded-[4px] hover:bg-red-50 dark:hover:bg-red-900/20">
+                        <button onClick={() => handleDelete(cat._id, cat.level > 0)} className="p-2 text-slate-500 dark:text-slate-400 hover:text-red-600 transition-colors rounded-[4px] hover:bg-red-50 dark:hover:bg-red-900/20">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -216,12 +216,12 @@ export default function AdminCategoriesPage() {
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="bg-white dark:bg-zinc-900 rounded-[4px] w-full max-w-md overflow-hidden">
+          <div className="bg-brand-surface dark:bg-zinc-900 rounded-[4px] w-full max-w-md overflow-hidden">
             <div className="px-6 py-4 border-b border-slate-100 dark:border-zinc-800 flex justify-between items-center">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-brand-navy dark:text-white">
                 {editId ? 'Edit Category' : 'Add Category'}
               </h3>
-              <button onClick={() => setShowModal(false)} className="text-slate-500 hover:text-brand-slate"><X size={20} /></button>
+              <button onClick={() => setShowModal(false)} className="text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:text-slate-300"><X size={20} /></button>
             </div>
             
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
@@ -231,7 +231,7 @@ export default function AdminCategoriesPage() {
                   type="text" 
                   value={formData.name}
                   onChange={e => setFormData({...formData, name: e.target.value})}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-zinc-700 rounded-[4px] bg-transparent text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  className="w-full px-3 py-2 border border-brand-navy/[0.08] dark:border-zinc-700 rounded-[4px] bg-transparent text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   required
                 />
               </div>
@@ -255,7 +255,7 @@ export default function AdminCategoriesPage() {
                   <select
                     value={formData.parentCategory}
                     onChange={e => setFormData({...formData, parentCategory: e.target.value})}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-zinc-700 rounded-[4px] bg-transparent text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-3 py-2 border border-brand-navy/[0.08] dark:border-zinc-700 rounded-[4px] bg-transparent text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                     required={formData.isSubcategory}
                   >
                     <option value="">Select Parent</option>
@@ -272,7 +272,7 @@ export default function AdminCategoriesPage() {
                   type="file" 
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-sky file:text-blue-700 hover:file:bg-blue-100"
+                  className="w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-sky file:text-blue-700 hover:file:bg-blue-100"
                 />
                 {imagePreview && (
                   <img src={imagePreview} alt="Preview" className="mt-2 h-20 rounded object-cover" />
@@ -293,7 +293,7 @@ export default function AdminCategoriesPage() {
               </div>
 
               <div className="pt-4 flex justify-end gap-3">
-                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-brand-slate bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white rounded-[4px] font-medium transition-colors">
+                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 text-brand-slate dark:text-slate-300 bg-slate-100 dark:bg-brand-surface/[0.05] hover:bg-slate-200 dark:bg-brand-surface/5 dark:hover:bg-brand-surface/10 dark:text-white rounded-[4px] font-medium transition-colors">
                   Cancel
                 </button>
                 <button type="submit" disabled={saving} className="px-4 py-2 bg-brand-blue hover:bg-blue-700 text-white rounded-[4px] font-medium disabled:opacity-50">

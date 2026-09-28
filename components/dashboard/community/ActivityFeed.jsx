@@ -27,7 +27,7 @@ const ActivityIcon = ({ type }) => {
     case "updated_profile":
       return <User {...iconProps} className="text-brand-cyan" />;
     default:
-      return <Zap {...iconProps} className="text-slate-500" />;
+      return <Zap {...iconProps} className="text-slate-500 dark:text-slate-400" />;
   }
 };
 
@@ -56,7 +56,7 @@ const ActivityItem = ({ activity }) => {
   };
 
   return (
-    <div className="flex items-start gap-4 p-4 border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud dark:hover:bg-white/5 transition-colors">
+    <div className="flex items-start gap-4 p-4 border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud dark:hover:bg-brand-surface/5 transition-colors">
       <div className="flex-shrink-0">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {activity.user?.avatar ? (
@@ -179,7 +179,7 @@ export default function ActivityFeed() {
           ))
         ) : (
           <div className="p-12 text-center">
-            <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
+            <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate dark:text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No activities yet
             </h3>

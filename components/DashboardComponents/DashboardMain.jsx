@@ -72,7 +72,7 @@ export default function DashboardMain() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50 dark:from-slate-900 dark:via-slate-950 dark:to-black text-slate-900 dark:text-slate-100 px-4 py-6 md:px-8 lg:px-12">
+    <div className="min-h-screen from-slate-100 via-white to-blue-50 dark:from-slate-900 dark:via-slate-950 dark:to-black text-slate-900 dark:text-slate-100 px-4 py-6 md:px-8 lg:px-12 bg-brand-main">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-2">
         <div>
@@ -95,14 +95,14 @@ export default function DashboardMain() {
 
       {/* Craftsman Account Prompt */}
       {!hasCraftsmanAccount && (
-        <div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white shadow-lg">
+        <div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white shadow-sm">
           <h2 className="text-2xl font-bold mb-2">Become a Craftsman! 🚀</h2>
           <p className="mb-4">
             Unlock craftsman features: publish codex, share artifacts, and showcase your work to thousands of users.
           </p>
           <button
             onClick={() => setShowCraftsmanForm(true)}
-            className="px-6 py-3 bg-white text-brand-blue rounded-full font-medium hover:bg-slate-100 transition-colors"
+            className="px-6 py-3 bg-brand-surface text-brand-blue rounded-full font-medium hover:bg-slate-100 dark:bg-brand-surface/[0.05] transition-colors"
           >
             Create Craftsman Account
           </button>
@@ -131,7 +131,7 @@ export default function DashboardMain() {
         {/* Left column */}
         <div className="lg:col-span-2 space-y-6">
           {/* Quick Actions */}
-          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <p className="text-sm font-semibold mb-4">Quick Actions</p>
             <div className="flex flex-wrap gap-3">
               {hasCraftsmanAccount && (
@@ -162,7 +162,7 @@ export default function DashboardMain() {
           </div>
 
           {/* Artifacts */}
-          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Your Artifacts</h2>
               <button
@@ -177,7 +177,7 @@ export default function DashboardMain() {
 
           {/* Codex + Activity */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+            <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-lg font-semibold">Your Codex</h2>
                 <button
@@ -202,7 +202,7 @@ export default function DashboardMain() {
                   {myCodex.map((b) => (
                     <div
                       key={b._id || b.slug || b.title}
-                      className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 p-3 shadow-sm"
+                      className="rounded-2xl border border-black/5 dark:border-white/10 bg-brand-surface dark:bg-slate-900 p-3 shadow-sm"
                     >
                       <p className="text-[11px] text-slate-500 dark:text-slate-400">
                         {b.category || "Codex"}
@@ -216,7 +216,7 @@ export default function DashboardMain() {
               )}
             </div>
 
-            <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+            <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
               <h2 className="text-lg font-semibold mb-3">Recent Activity</h2>
               <div className="space-y-3 text-xs text-brand-slate dark:text-slate-400">
                 <div className="rounded-2xl bg-gradient-to-r from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-800/30 border border-black/5 dark:border-white/10 p-3">
@@ -235,7 +235,7 @@ export default function DashboardMain() {
         {/* Right column */}
         <div className="space-y-6">
           {/* Sales & Earnings */}
-          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5 space-y-3">
+          <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5 space-y-3">
             <h2 className="text-lg font-semibold">Earnings</h2>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <MiniStat
@@ -252,7 +252,7 @@ export default function DashboardMain() {
           </div>
 
           {/* Recommended */}
-          <div className="rounded-2xl bg-white/80 dark:bg-slate-800/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
+          <div className="rounded-2xl bg-brand-surface/80 dark:bg-brand-surface/80 border border-black/5 dark:border-white/10 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Recommended</h2>
             </div>
@@ -268,7 +268,7 @@ function StatCard({ title, value, icon, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm hover:shadow-md transition-all duration-300 ${
+      className={`bg-brand-surface dark:bg-brand-surface rounded-2xl p-4 shadow-sm hover:shadow-sm transition-all duration-300 ${
         onClick ? "cursor-pointer hover:bg-brand-cloud dark:hover:bg-slate-700" : ""
       }`}
     >
@@ -291,7 +291,7 @@ function ActionButton({ label, icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-full text-sm font-medium hover:bg-slate-900 dark:hover:bg-slate-200 transition-all duration-300"
+      className="flex items-center gap-2 px-4 py-2 bg-black dark:bg-brand-surface text-white dark:text-black rounded-full text-sm font-medium hover:bg-slate-900 dark:hover:bg-slate-200 dark:bg-brand-surface/[0.1] transition-all duration-300"
     >
       <span>{icon}</span>
       <span>{label}</span>
@@ -301,7 +301,7 @@ function ActionButton({ label, icon, onClick }) {
 
 function MiniStat({ title, value, accent }) {
   return (
-    <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-white dark:bg-slate-900 p-3 shadow-sm">
+    <div className="rounded-2xl border border-black/5 dark:border-white/10 bg-brand-surface dark:bg-slate-900 p-3 shadow-sm">
       <p className="text-xs text-brand-slate dark:text-slate-400">{title}</p>
       <p className="text-xl font-bold text-black dark:text-white">{value}</p>
       <div className={`mt-2 h-1.5 rounded-full bg-gradient-to-r ${accent}`} />

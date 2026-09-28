@@ -169,7 +169,7 @@ export default function ChatWindow({
             {onBack && (
               <button 
                 onClick={onBack}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-white/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-white/10 backdrop-blur-md text-brand-blue transition-colors shadow-sm border border-black/5 dark:border-white/10"
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-brand-surface/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-brand-surface/10 backdrop-blur-md text-brand-blue transition-colors shadow-sm border border-black/5 dark:border-white/10"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
               </button>
@@ -178,7 +178,7 @@ export default function ChatWindow({
           <div className="absolute top-4 right-4 z-20">
             <button 
               onClick={onMinimize}
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-white/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-white/10 backdrop-blur-md text-[#86868b] hover:text-black dark:hover:text-white transition-colors shadow-sm border border-black/5 dark:border-white/10"
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-brand-surface/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-brand-surface/10 backdrop-blur-md text-[#86868b] hover:text-black dark:hover:text-white transition-colors shadow-sm border border-black/5 dark:border-white/10"
               title="Minimize"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -226,7 +226,7 @@ export default function ChatWindow({
         {!isLoadingMessages && messages.length === 0 && currentUser?.role === 'admin' && (
           <div className="flex flex-col pb-4">
             <div className="flex flex-col items-center justify-center h-full gap-4 opacity-40 mt-10">
-              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center">
                 <MessageCircle size={28} className="text-slate-400" />
               </div>
               <p className="text-sm font-medium text-slate-500 dark:text-slate-400">No messages yet. Say hello!</p>
@@ -283,7 +283,7 @@ export default function ChatWindow({
                         ? "p-0 bg-transparent shadow-none"
                         : `px-4 py-2.5 ${
                             msg.isUnsent
-                              ? "bg-slate-100 dark:bg-white/5 text-slate-400 dark:text-slate-500 italic border border-dashed border-slate-200 dark:border-white/10 rounded-2xl"
+                              ? "bg-slate-100 dark:bg-brand-surface/5 text-slate-400 dark:text-slate-500 dark:text-slate-400 italic border border-dashed border-brand-navy/[0.08] dark:border-white/10 rounded-2xl"
                               : isOwn 
                                 ? `bg-brand-blue text-white rounded-[20px] ${isLastInGroup ? 'rounded-br-[4px]' : ''} shadow-sm` 
                                 : `bg-[#e5e5ea] dark:bg-[#2c2c2e] text-black dark:text-white rounded-[20px] ${isLastInGroup ? 'rounded-bl-[4px]' : ''} shadow-sm`
@@ -306,9 +306,9 @@ export default function ChatWindow({
                         href={msg.fileUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-3 pr-2 rounded-xl group/file ${isOwn ? 'hover:opacity-80' : 'hover:bg-brand-cloud dark:hover:bg-white/5'}`}
+                        className={`flex items-center gap-3 pr-2 rounded-xl group/file ${isOwn ? 'hover:opacity-80' : 'hover:bg-brand-cloud dark:hover:bg-brand-surface/5'}`}
                       >
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isOwn ? 'bg-white/20' : 'bg-slate-100 dark:bg-white/10'}`}>
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isOwn ? 'bg-brand-surface/20' : 'bg-slate-100 dark:bg-brand-surface/10'}`}>
                           <FileText size={18} className={isOwn ? 'text-white' : 'text-brand-slate dark:text-slate-300'} />
                         </div>
                         <div className="min-w-0">
@@ -351,7 +351,7 @@ export default function ChatWindow({
 
 
                 {isLastInGroup && (
-                  <div className={`flex items-center gap-1.5 px-1 text-[11px] font-medium text-slate-400 dark:text-slate-500`}>
+                  <div className={`flex items-center gap-1.5 px-1 text-[11px] font-medium text-slate-400 dark:text-slate-500 dark:text-slate-400`}>
                     <span>
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
@@ -360,7 +360,7 @@ export default function ChatWindow({
                         // Pending — Clock icon
                         return (
                           <span className="flex items-center">
-                            <Clock size={13} className="text-slate-400 dark:text-slate-500" />
+                            <Clock size={13} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />
                           </span>
                         );
                       }
@@ -383,14 +383,14 @@ export default function ChatWindow({
                         // ✓✓ Grey — Delivered
                         return (
                           <span className="flex items-center">
-                            <CheckCheck size={15} className="text-slate-400 dark:text-slate-500" />
+                            <CheckCheck size={15} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />
                           </span>
                         );
                       } else {
                         // ✓ Grey — Sent
                         return (
                           <span className="flex items-center">
-                            <Check size={15} className="text-slate-400 dark:text-slate-500" />
+                            <Check size={15} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />
                           </span>
                         );
                       }
@@ -404,7 +404,7 @@ export default function ChatWindow({
 
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-white dark:bg-[#1a1a1a] border border-slate-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm w-fit">
+            <div className="bg-brand-surface dark:bg-[#1a1a1a] border border-slate-100 dark:border-white/5 px-5 py-4 rounded-2xl rounded-tl-sm w-fit">
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500 animate-bounce" style={{ animationDelay: "0ms" }} />
                 <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-500 animate-bounce" style={{ animationDelay: "150ms" }} />
@@ -417,23 +417,23 @@ export default function ChatWindow({
       </div>
 
       {/* Input Area */}
-      <div className="p-3 md:p-4 bg-white/70 dark:bg-[#1c1c1e]/80 backdrop-blur-xl border-t border-black/5 dark:border-white/5 z-10 shrink-0 min-w-0 w-full overflow-hidden">
+      <div className="p-3 md:p-4 bg-brand-surface/70 dark:bg-brand-surface/80 backdrop-blur-xl border-t border-black/5 dark:border-white/5 z-10 shrink-0 min-w-0 w-full overflow-hidden">
         
         {/* File Preview */}
         {selectedFile && (
-          <div className="mb-3 p-3 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl flex items-center gap-3">
+          <div className="mb-3 p-3 bg-brand-cloud dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl flex items-center gap-3">
             {filePreview ? (
               <img src={getOptimizedUrl(filePreview)} alt="Preview" className="w-12 h-12 object-cover rounded-xl border border-black/5 dark:border-white/10" />
             ) : (
               <div className="w-12 h-12 bg-slate-200 dark:bg-black rounded-xl flex items-center justify-center">
-                <FileText size={20} className="text-slate-500" />
+                <FileText size={20} className="text-slate-500 dark:text-slate-400" />
               </div>
             )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-slate-900 dark:text-white tracking-tight truncate">{selectedFile.name}</p>
-              <p className="text-xs font-medium text-slate-500">{(selectedFile.size / 1024).toFixed(1)} KB</p>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{(selectedFile.size / 1024).toFixed(1)} KB</p>
             </div>
-            <button onClick={handleRemoveFile} className="p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-full transition-colors text-slate-500">
+            <button onClick={handleRemoveFile} className="p-2 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 rounded-full transition-colors text-slate-500 dark:text-slate-400">
               <X size={16} />
             </button>
           </div>
@@ -449,12 +449,12 @@ export default function ChatWindow({
           />
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className={`shrink-0 flex items-center justify-center rounded-full bg-slate-100 dark:bg-[#2c2c2e] hover:bg-slate-200 dark:hover:bg-[#3a3a3c] transition-colors text-[#86868b] dark:text-[#98989d] ${isCompact ? 'w-8 h-8 mb-1' : 'w-9 h-9 mb-1'}`}
+            className={`shrink-0 flex items-center justify-center rounded-full bg-slate-100 dark:bg-[#2c2c2e] hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-[#3a3a3c] transition-colors text-[#86868b] dark:text-[#98989d] ${isCompact ? 'w-8 h-8 mb-1' : 'w-9 h-9 mb-1'}`}
           >
             <Plus size={isCompact ? 16 : 20} strokeWidth={2.5} />
           </button>
           
-          <div className="flex-1 min-w-0 bg-white dark:bg-[#1c1c1e] border border-slate-300 dark:border-white/10 rounded-full flex items-center pl-4 pr-1 py-1 transition-colors shadow-sm">
+          <div className="flex-1 min-w-0 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-full flex items-center pl-4 pr-1 py-1 transition-colors shadow-sm">
             <input
               type="text"
               placeholder="iMessage"
@@ -491,7 +491,7 @@ export default function ChatWindow({
         >
           {/* Close button */}
           <button 
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-colors backdrop-blur-md z-50"
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-brand-surface/10 hover:bg-brand-surface/25 text-white flex items-center justify-center transition-colors backdrop-blur-md z-50"
             onClick={(e) => { e.stopPropagation(); setFullScreenImage(null); }}
           >
             <X size={20} />
@@ -509,26 +509,26 @@ export default function ChatWindow({
             {({ zoomIn, zoomOut, resetTransform }) => (
               <>
                 {/* Zoom Controls */}
-                <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-[#1c1c1e]/80 backdrop-blur-xl px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/10 z-50 shadow-2xl">
+                <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 sm:gap-4 bg-[#1c1c1e]/80 backdrop-blur-xl px-4 py-2 sm:px-5 sm:py-2.5 rounded-full border border-white/10 z-50 shadow-sm">
                   <button 
                     onClick={(e) => { e.stopPropagation(); zoomOut(); }} 
-                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    className="w-10 h-10 rounded-full hover:bg-brand-surface/10 text-white flex items-center justify-center transition-colors active:scale-95"
                     title="Zoom Out"
                   >
                     <Minus size={22} strokeWidth={1.5} />
                   </button>
-                  <div className="w-[1px] h-5 bg-white/20 mx-1"></div>
+                  <div className="w-[1px] h-5 bg-brand-surface/20 mx-1"></div>
                   <button 
                     onClick={(e) => { e.stopPropagation(); resetTransform(); }} 
-                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    className="w-10 h-10 rounded-full hover:bg-brand-surface/10 text-white flex items-center justify-center transition-colors active:scale-95"
                     title="Reset Zoom"
                   >
                     <RotateCcw size={20} strokeWidth={1.5} />
                   </button>
-                  <div className="w-[1px] h-5 bg-white/20 mx-1"></div>
+                  <div className="w-[1px] h-5 bg-brand-surface/20 mx-1"></div>
                   <button 
                     onClick={(e) => { e.stopPropagation(); zoomIn(); }} 
-                    className="w-10 h-10 rounded-full hover:bg-white/10 text-white flex items-center justify-center transition-colors active:scale-95"
+                    className="w-10 h-10 rounded-full hover:bg-brand-surface/10 text-white flex items-center justify-center transition-colors active:scale-95"
                     title="Zoom In"
                   >
                     <Plus size={22} strokeWidth={1.5} />
@@ -582,12 +582,12 @@ function MessageHoverAction({ icon, tooltip, popover, align = "center" }) {
       <button
         onClick={() => setOpen(!open)}
         title={tooltip}
-        className="w-7 h-7 rounded-full bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-all shadow-sm"
+        className="w-7 h-7 rounded-full bg-brand-surface dark:bg-[#1a1a1a] border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white hover:border-brand-navy/[0.08] dark:hover:border-white/20 transition-all shadow-sm"
       >
         {icon}
       </button>
       {open && popover && (
-        <div className={`absolute bottom-9 ${align === 'right' ? 'right-0' : align === 'left' ? 'left-0' : 'left-1/2 -translate-x-1/2'} bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl z-50 whitespace-nowrap`}>
+        <div className={`absolute bottom-9 ${align === 'right' ? 'right-0' : align === 'left' ? 'left-0' : 'left-1/2 -translate-x-1/2'} bg-brand-surface dark:bg-[#1a1a1a] border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl shadow-sm z-50 whitespace-nowrap`}>
           {typeof popover === 'function' ? popover(() => setOpen(false)) : popover}
         </div>
       )}
@@ -602,9 +602,9 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
   if (confirming === 'me') {
     return (
       <div className="flex flex-col p-2 min-w-[160px] gap-2">
-        <p className="text-[12px] text-slate-500 font-medium text-center">Delete for you?</p>
+        <p className="text-[12px] text-slate-500 dark:text-slate-400 font-medium text-center">Delete for you?</p>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-brand-surface/5 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
           <button onClick={(e) => { e.stopPropagation(); onDeleteForMe?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
         </div>
       </div>
@@ -614,9 +614,9 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
   if (confirming === 'everyone') {
     return (
       <div className="flex flex-col p-2 min-w-[160px] gap-2">
-        <p className="text-[12px] text-slate-500 font-medium text-center">Delete for everyone?</p>
+        <p className="text-[12px] text-slate-500 dark:text-slate-400 font-medium text-center">Delete for everyone?</p>
         <div className="flex gap-2">
-          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
+          <button onClick={(e) => { e.stopPropagation(); setConfirming(null); }} className="flex-1 py-1 text-xs bg-slate-100 dark:bg-brand-surface/5 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 transition-colors rounded-lg text-brand-slate dark:text-slate-300 font-medium">Cancel</button>
           <button onClick={(e) => { e.stopPropagation(); onDeleteForEveryone?.(msgId); closePopover?.(); }} className="flex-1 py-1 text-xs bg-red-500 hover:bg-red-600 transition-colors text-white rounded-lg font-medium">Delete</button>
         </div>
       </div>
@@ -627,7 +627,7 @@ function DeleteMessageMenu({ msgId, onDeleteForMe, onDeleteForEveryone, closePop
     <div className="flex flex-col p-1.5 min-w-[160px]">
       <button
         onClick={(e) => { e.stopPropagation(); setConfirming('me'); }}
-        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-colors text-brand-slate dark:text-slate-300 flex items-center gap-2"
+        className="text-left px-3 py-2 text-[13px] font-medium hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 rounded-xl transition-colors text-brand-slate dark:text-slate-300 flex items-center gap-2"
       >
         <Trash2 size={14} className="text-slate-400" />
         Delete for me

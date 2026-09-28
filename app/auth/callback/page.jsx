@@ -74,11 +74,11 @@ export default function AuthCallback() {
   }, [searchParams, router]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black flex flex-col items-center justify-center p-8 selection:bg-zinc-200 dark:selection:bg-zinc-800">
+    <div className="min-h-screen flex flex-col items-center justify-center p-8 selection: dark:selection: bg-brand-main">
       <div className="w-full max-w-[280px] space-y-12">
         {/* Logo or Brand Placeholder */}
         <div className="flex justify-center">
-          <div className="w-8 h-8 rounded-full bg-zinc-950 dark:bg-white animate-pulse" />
+          <div className="w-8 h-8 rounded-full bg-zinc-950 dark:bg-brand-surface animate-pulse" />
         </div>
 
         <div className="space-y-6">
@@ -93,7 +93,7 @@ export default function AuthCallback() {
 
           {/* Precision Loading Bar */}
           <div className="relative h-[2px] w-full bg-zinc-100 dark:bg-zinc-900 overflow-hidden rounded-full">
-            <div className="absolute inset-0 bg-zinc-950 dark:bg-white w-1/3 animate-[loading_1.5s_infinite_ease-in-out]" />
+            <div className="absolute inset-0 bg-zinc-950 dark:bg-brand-surface w-1/3 animate-[loading_1.5s_infinite_ease-in-out]" />
           </div>
         </div>
 

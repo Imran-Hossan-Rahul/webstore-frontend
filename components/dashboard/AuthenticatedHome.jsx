@@ -54,7 +54,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
   };
 
   return (
-    <div className="min-h-screen bg-brand-cloud dark:bg-slate-900 text-slate-900 dark:text-white overflow-x-hidden selection:bg-brand-blue/20">
+    <div className="min-h-screen text-slate-900 dark:text-white overflow-x-hidden selection: bg-brand-main">
 
       {/* Background Mesh Gradient (Removed as per request) */}
       {/* 
@@ -76,7 +76,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
       />
 
       {/* Main Layout Container */}
-      <div className="relative z-10 flex pt-16 px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto">
+      <div className="relative z-10 flex pt-16 px-4 lg:px-6 gap-6 min-h-screen max-w-[1800px] mx-auto bg-brand-main">
 
         {/* Left Sidebar (Floating) */}
         <div className="hidden lg:block w-[240px] flex-shrink-0">
@@ -91,7 +91,7 @@ export default function AuthenticatedHome({ children, hideRightSidebar = false, 
                 {children || (
                   <div className="flex flex-col items-center justify-center h-[50vh] text-center">
                     <h1 className="text-3xl font-bold mb-4">Welcome to Antigravity</h1>
-                    <p className="text-slate-500">Select an option from the sidebar to get started.</p>
+                    <p className="text-slate-500 dark:text-slate-400">Select an option from the sidebar to get started.</p>
                   </div>
                 )}
             </div>

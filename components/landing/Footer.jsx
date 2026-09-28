@@ -1,88 +1,82 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Github, Linkedin, Mail, MessageCircle, Globe, Facebook, Instagram, Twitter, Store } from "lucide-react";
+import { Mail, Globe, Facebook, Instagram } from "lucide-react";
 import { useToast } from "@/components/ui/ToastProvider";
 
 export default function Footer() {
   const { showToast } = useToast();
   const links = {
-    Product: ["Features", "Artifacts", "Integrations", "Pricing", "Changelog"],
-    Company: ["About", "Careers", "Codex", "Contact", "Partners"],
-    Resources: ["Documentation", "Help Center", "Community", "Developers"],
-    Legal: ["Privacy", "Terms", "Security", "Cookies"],
+    Platform: ["Features", "Digital Products", "Integrations", "Pricing", "Changelog"],
+    Company: ["About Codalina", "Careers", "Engineering Blog", "Contact", "Partners"],
+    Resources: ["Documentation", "Help Center", "Community", "Developers API"],
+    Legal: ["Privacy Policy", "Terms of Service", "Security", "Cookie Preferences"],
   };
 
   return (
-    <footer className="bg-brand-cloud dark:bg-black pt-20 pb-10 border-t border-slate-100 dark:border-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-brand-dark text-white pt-20 pb-10 border-t border-brand-navy/[0.08] dark:border-white/10 relative overflow-hidden">
+      
+      {/* Subtle Background Variation */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#06172E] to-transparent -z-20" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
           {/* Brand */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
-                <div className="p-2 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-xl">
-                    <div className="w-4 h-4 bg-white rounded-full opacity-50" />
+                <div className="p-2 bg-brand-interaction rounded-[4px]">
+                    <div className="w-3 h-3 bg-white dark:bg-brand-surface rounded-[2px] opacity-90" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  <span className="text-xl font-display font-medium tracking-tight text-white">
                       Codalina
                   </span>
-                  <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-brand-blue/10 text-brand-blue dark:text-indigo-400 border border-brand-blue/20 rounded-full">
-                    Beta
+                  <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-widest bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 rounded-[4px]">
+                    Enterprise
                   </span>
                 </div>
             </Link>
-            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-xs mb-6">
-                Empowering craftsmen to build the future of the web. 
-                Simple, powerful, and beautiful.
+            <p className="text-brand-sky/60 font-sans text-[15px] max-w-xs mb-8 leading-relaxed">
+                Empowering engineering teams to build the future of digital infrastructure. 
+                Absolute precision. Complete control.
             </p>
-            <div className="mb-4">
-              <h4 className="font-bold text-slate-900 dark:text-white mb-2 text-sm">Connect with the Founder</h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 max-w-xs">
-                Have questions, business inquiries, or found a bug? Reach out directly!
-              </p>
-              <div className="flex flex-wrap gap-3">
-                  <a 
-                    href="mailto:info@codalina.com" 
-                    onClick={(e) => {
-                        e.preventDefault();
-                        navigator.clipboard.writeText("info@codalina.com");
-                        showToast("Email address copied to clipboard!", "success");
-                        window.location.href = "mailto:info@codalina.com";
-                    }}
-                    className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-red-500 transition-colors shadow-sm cursor-pointer" 
-                    title="Email"
-                  >
-                      <Mail className="w-5 h-5" />
-                  </a>
-                  <a href="https://wa.me/8801951768360" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366] hover:text-white rounded-full transition-colors shadow-sm" title="WhatsApp">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                      </svg>
-                  </a>
-                  <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-brand-blue transition-colors shadow-sm" title="Facebook">
-                      <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-pink-600 transition-colors shadow-sm" title="Instagram">
-                      <Instagram className="w-5 h-5" />
-                  </a>
-                  <a href="https://codalina.com" target="_blank" rel="noreferrer" className="p-2 bg-white dark:bg-slate-900 rounded-full text-slate-500 hover:text-brand-blue transition-colors shadow-sm flex items-center gap-1.5 px-3" title="Order Now">
-                      <Globe className="w-4 h-4" />
-                      <span className="text-xs font-semibold">Order Now</span>
-                  </a>
-              </div>
+            
+            <div className="flex flex-wrap gap-3">
+                <a 
+                  href="mailto:info@codalina.com" 
+                  onClick={(e) => {
+                      e.preventDefault();
+                      navigator.clipboard.writeText("info@codalina.com");
+                      showToast("Email address copied to clipboard!", "success");
+                      window.location.href = "mailto:info@codalina.com";
+                  }}
+                  className="p-2.5 bg-white dark:bg-brand-surface/5 border border-white/10 rounded-[4px] text-white/60 hover:text-white hover:bg-white dark:bg-brand-surface/10 hover:border-white/20 transition-all cursor-pointer" 
+                  title="Email"
+                >
+                    <Mail className="w-4 h-4" />
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="p-2.5 bg-white dark:bg-brand-surface/5 border border-white/10 rounded-[4px] text-white/60 hover:text-white hover:bg-white dark:bg-brand-surface/10 hover:border-white/20 transition-all cursor-pointer" title="Facebook">
+                    <Facebook className="w-4 h-4" />
+                </a>
+                <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="p-2.5 bg-white dark:bg-brand-surface/5 border border-white/10 rounded-[4px] text-white/60 hover:text-white hover:bg-white dark:bg-brand-surface/10 hover:border-white/20 transition-all cursor-pointer" title="Instagram">
+                    <Instagram className="w-4 h-4" />
+                </a>
+                <a href="https://codalina.com" target="_blank" rel="noreferrer" className="p-2.5 bg-brand-interaction border border-blue-500/50 rounded-[4px] text-white hover:bg-blue-600 transition-all flex items-center gap-2 px-4" title="Order Now">
+                    <Globe className="w-4 h-4" />
+                    <span className="text-[13px] font-medium">Access Portal</span>
+                </a>
             </div>
           </div>
 
           {/* Links */}
           {Object.entries(links).map(([category, items]) => (
             <div key={category}>
-              <h4 className="font-bold text-slate-900 dark:text-white mb-4">{category}</h4>
-              <ul className="space-y-2">
+              <h4 className="font-mono text-[11px] uppercase tracking-widest text-brand-sky/40 mb-6">{category}</h4>
+              <ul className="space-y-3">
                 {items.map((item) => (
                   <li key={item}>
-                    <Link href="#" className="text-sm text-slate-500 dark:text-slate-400 hover:text-brand-blue transition-colors">
+                    <Link href="#" className="text-[14px] text-white/60 hover:text-white transition-colors">
                       {item}
                     </Link>
                   </li>
@@ -92,14 +86,20 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-slate-500">
-                © {new Date().getFullYear()} Codalina Inc. All rights reserved. <span className="mx-2">•</span> Beta v1.0.0
-            </p>
-            <div className="flex items-center gap-1 text-sm text-slate-500">
-                <span>Designed with</span>
-                <span className="text-red-500">♥</span>
-                <span>by Imran</span>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <p className="text-[13px] font-mono text-brand-sky/40">
+                  © {new Date().getFullYear()} CODALINA INC.
+              </p>
+              <div className="w-1 h-1 rounded-full bg-brand-sky/20" />
+              <p className="text-[13px] font-mono text-brand-sky/40">
+                  ENGINEERED IN DHAKA
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2 text-[13px] font-mono text-brand-sky/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_#22C7E8]" />
+                SYSTEM OPERATIONAL
             </div>
         </div>
 
@@ -107,4 +107,3 @@ export default function Footer() {
     </footer>
   );
 }
-

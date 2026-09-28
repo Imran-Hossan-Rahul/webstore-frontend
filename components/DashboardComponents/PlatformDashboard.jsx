@@ -102,15 +102,15 @@ export default function PlatformDashboard() {
     <div className="w-full pt-4">
       {/* Search & Tabs */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 sticky top-20 z-30 py-4 bg-[#F3F6F8]/95 dark:bg-black/95 backdrop-blur-sm">
-          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 p-1.5 rounded-full border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="flex items-center gap-2 bg-brand-surface dark:bg-slate-900 p-1.5 rounded-full border border-brand-navy/[0.08] dark:border-slate-800 shadow-sm">
               {['all', 'codex'].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${
                       activeTab === tab
-                        ? "bg-black dark:bg-white text-white dark:text-black shadow-md transform"
-                        : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                        ? "bg-black dark:bg-brand-surface text-white dark:text-black shadow-sm transform"
+                        : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
                     }`}
                   >
                      {tab}
@@ -125,7 +125,7 @@ export default function PlatformDashboard() {
                 placeholder="Search resources..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all shadow-sm hover:shadow-md"
+                className="w-full pl-12 pr-4 py-3 bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-slate-800 rounded-full text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all shadow-sm hover:shadow-sm"
               />
           </div>
       </div>
@@ -161,7 +161,7 @@ function ContentGrid({ items, loading, router, limit }) {
         return (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-lg aspect-[4/3] animate-pulse" />
+              <div key={i} className="bg-brand-surface dark:bg-brand-surface rounded-lg aspect-[4/3] animate-pulse" />
             ))}
           </div>
         );
@@ -169,8 +169,8 @@ function ContentGrid({ items, loading, router, limit }) {
     
     if (items.length === 0) {
         return (
-          <div className="flex flex-col items-center justify-center min-h-[300px] text-center border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-lg">
-            <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+          <div className="flex flex-col items-center justify-center min-h-[300px] text-center border-2 border-dashed border-brand-navy/[0.08] dark:border-slate-800 rounded-lg">
+            <div className="w-16 h-16 bg-slate-100 dark:bg-brand-surface rounded-full flex items-center justify-center mb-4">
               <Search className="text-slate-400" size={24} />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h3>
@@ -352,7 +352,7 @@ function ContentCard({ item, router }) {
           Fixed rounding bug: Added transform-gpu and strict overflow handling
       */}
       <div
-        className="relative rounded-lg overflow-hidden shadow-sm group-hover:shadow-2xl cursor-pointer w-full bg-white dark:bg-slate-800 transition-shadow duration-500 transform-gpu z-0"
+        className="relative rounded-lg overflow-hidden shadow-sm group-hover:shadow-sm cursor-pointer w-full bg-brand-surface dark:bg-brand-surface transition-shadow duration-500 transform-gpu z-0"
         style={{ height: `${imagePixelHeight}px`, WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}
         onClick={handleClick}
       >
@@ -370,7 +370,7 @@ function ContentCard({ item, router }) {
                 FREE
               </span>
             ) : (
-              <div className="bg-white text-black px-2 py-1 rounded-full shadow-sm font-bold text-[10px]">
+              <div className="bg-brand-surface text-black px-2 py-1 rounded-full shadow-sm font-bold text-[10px]">
                 {item.price} TKNS
               </div>
             )
@@ -408,7 +408,7 @@ function ContentCard({ item, router }) {
              <div className="relative z-10 flex flex-col justify-end pointer-events-auto">
                  
                  {/* Title - Static, No animation up/down */}
-                 <h3 className="text-white font-bold text-lg leading-snug drop-shadow-md line-clamp-2 md:text-xl mb-1">
+                 <h3 className="text-white font-bold text-lg leading-snug drop-shadow-sm line-clamp-2 md:text-xl mb-1">
                     {truncatedTitle}
                  </h3>
 
@@ -419,7 +419,7 @@ function ContentCard({ item, router }) {
                           <div className="flex flex-wrap gap-1.5 items-center">
                               {/* Difficulty Badge */}
                               {item.devlogStats?.difficulty && (
-                                  <span className="text-[9px] font-bold uppercase text-white/90 bg-white/20 px-1.5 py-0.5 rounded backdrop-blur-sm">
+                                  <span className="text-[9px] font-bold uppercase text-white/90 bg-brand-surface/20 px-1.5 py-0.5 rounded backdrop-blur-sm">
                                       {item.devlogStats.difficulty}
                                   </span>
                               )}
@@ -441,7 +441,7 @@ function ContentCard({ item, router }) {
                               <div className="col-start-1 row-start-1 opacity-100 group-hover:opacity-0 transition-opacity duration-300 flex flex-wrap gap-1.5 items-center self-end">
                                   {displayedTags.length > 0 ? (
                                       displayedTags.map((t, i) => (
-                                         <span key={i} className="text-[10px] uppercase font-semibold tracking-wide text-white/90 bg-white/10 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/5">
+                                         <span key={i} className="text-[10px] uppercase font-semibold tracking-wide text-white/90 bg-brand-surface/10 px-2 py-0.5 rounded-full backdrop-blur-sm border border-white/5">
                                              {t}
                                          </span>
                                       ))
@@ -464,13 +464,13 @@ function ContentCard({ item, router }) {
              <div className="absolute bottom-3 right-4 flex items-center gap-2 z-40 pointer-events-auto">
                  <button 
                     onClick={handleLike} 
-                    className="flex items-center gap-1.5 hover:text-pink-400 transition-colors bg-white/10 hover:bg-white/20 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5"
+                    className="flex items-center gap-1.5 hover:text-pink-400 transition-colors bg-brand-surface/10 hover:bg-brand-surface/20 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5"
                  >
                      <Star size={14} className={liked ? "fill-pink-500 text-pink-500" : "text-white"} />
                      <span className="text-[10px] font-bold text-white">{likeCount}</span>
                  </button>
                  
-                 <div className="flex items-center gap-1.5 bg-white/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5">
+                 <div className="flex items-center gap-1.5 bg-brand-surface/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5">
                      <Eye size={14} className="text-white" />
                      <span className="text-[10px] font-bold text-white">{isArtifact ? item.viewsCount : item.views}</span>
                  </div>
@@ -478,7 +478,7 @@ function ContentCard({ item, router }) {
                  {isArtifact && (
                      <button
                         onClick={handleDownload} 
-                        className="flex items-center gap-1.5 hover:bg-white/20 transition-colors bg-white/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5 text-white"
+                        className="flex items-center gap-1.5 hover:bg-brand-surface/20 transition-colors bg-brand-surface/10 px-2 py-1.5 rounded-full backdrop-blur-md border border-white/5 text-white"
                         title="Download"
                      >
                         <Download size={14} />
@@ -496,7 +496,7 @@ function ContentCard({ item, router }) {
           <div className="flex items-center gap-3 w-full">
               {/* Avatar */}
               <div className="relative group/profile cursor-pointer">
-                  <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-white/50 dark:border-slate-700 shadow-sm group-hover/profile:border-purple-500 transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-brand-surface/[0.1] overflow-hidden border border-white/50 dark:border-slate-700 shadow-sm group-hover/profile:border-purple-500 transition-colors">
                       {author?.profilePic || author?.avatar ? (
                           <img src={getOptimizedUrl(author.profilePic || author.avatar)} alt={author?.name} className="w-full h-full object-cover" />
                       ) : (

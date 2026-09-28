@@ -43,7 +43,7 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
   return (
     <div className="space-y-2 mb-5">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase">
+        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 dark:text-slate-400 uppercase">
           {label}
         </label>
         {forgotLink && (
@@ -62,8 +62,8 @@ const AuthInput = ({ label, icon: Icon, error, forgotLink, type, ...props }) => 
         <input
           {...props}
           type={inputType}
-          className={`w-full h-10 pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-white dark:bg-[#0D1117] border ${
-            error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+          className={`w-full h-10 pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-brand-surface dark:bg-brand-surface border ${
+            error ? "border-red-500" : "border-brand-navy/[0.08] dark:border-white/10"
           } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-colors truncate`}
         />
         {isPassword && (
@@ -211,7 +211,7 @@ export default function LoginPage() {
       }
       footer={
         !requires2FA && (
-          <p className="text-center text-[15px] text-slate-500 font-sans">
+          <p className="text-center text-[15px] text-slate-500 dark:text-slate-400 font-sans">
             New here?{" "}
             <Link
               href="/auth/register"
@@ -252,7 +252,7 @@ export default function LoginPage() {
                 placeholder="000000"
                 value={twoFaCode}
                 onChange={(e) => setTwoFaCode(e.target.value.replace(/\D/g, ""))}
-                className="w-full text-center tracking-[0.5em] font-mono text-[28px] py-3 bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] text-brand-navy dark:text-white focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-all duration-300"
+                className="w-full text-center tracking-[0.5em] font-mono text-[28px] py-3 bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] text-brand-navy dark:text-white focus:border-brand-blue focus:ring-1 focus:ring-brand-blue focus:outline-none transition-all duration-300"
               />
               <AnimatePresence>
                 {twoFaError && (
@@ -282,7 +282,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setRequires2FA(false); setTwoFaCode(""); setTwoFaError(""); }}
-                className="w-full py-2 text-[14px] font-medium text-slate-400 hover:text-brand-slate dark:hover:text-zinc-300 transition-colors"
+                className="w-full py-2 text-[14px] font-medium text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-zinc-300 transition-colors"
               >
                 Cancel
               </button>
@@ -297,7 +297,7 @@ export default function LoginPage() {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center justify-center py-10"
           >
-            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
+            <div className="w-16 h-16 rounded-[4px] bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-brand-teal mb-6">
               <CheckCircle2 size={32} strokeWidth={2} />
             </div>
             <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white">
@@ -323,10 +323,10 @@ export default function LoginPage() {
             {/* Divider */}
             <div className="relative mb-8 mt-4">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200 dark:border-white/10" />
+                <div className="w-full border-t border-brand-navy/[0.08] dark:border-white/10" />
               </div>
               <div className="relative flex justify-center text-[10px] font-mono tracking-widest text-slate-400 uppercase">
-                <span className="px-3 bg-white dark:bg-[#0D1117]">
+                <span className="px-3 bg-brand-surface dark:bg-brand-surface">
                   or
                 </span>
               </div>

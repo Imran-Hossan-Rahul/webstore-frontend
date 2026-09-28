@@ -207,7 +207,7 @@ export default function DraggableResizableWindow({
   const content = (
     <div
       ref={windowRef}
-      className="fixed shadow-2xl bg-white dark:bg-black border border-slate-200 dark:border-white/10 rounded-2xl flex flex-col z-[9999]"
+      className="fixed shadow-sm bg-brand-surface dark:bg-black border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl flex flex-col z-[9999]"
       style={{
         left: 0,
         top: 0,

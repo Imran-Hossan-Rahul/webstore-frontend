@@ -23,7 +23,7 @@ export const Dropdown = ({ trigger, children, align = 'right', className = '' })
       </div>
 
       {isOpen && (
-        <div className={`absolute z-50 mt-2 w-48 rounded-[4px] shadow-lg bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 ${alignmentClass}`}>
+        <div className={`absolute z-50 mt-2 w-48 rounded-[4px] shadow-sm bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.10] dark:border-white/10 ${alignmentClass}`}>
           <div className="py-1" role="menu" aria-orientation="vertical">
             {React.Children.map(children, child => {
               if (React.isValidElement(child)) {
@@ -46,7 +46,7 @@ export const Dropdown = ({ trigger, children, align = 'right', className = '' })
 export const DropdownItem = ({ children, onClick, className = '', ...props }) => (
   <button
     onClick={onClick}
-    className={`w-full text-left px-4 py-2 text-[13px] font-sans text-brand-navy dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors ${className}`}
+    className={`w-full text-left px-4 py-2 text-[13px] font-sans text-brand-navy dark:text-slate-300 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 transition-colors ${className}`}
     role="menuitem"
     {...props}
   >

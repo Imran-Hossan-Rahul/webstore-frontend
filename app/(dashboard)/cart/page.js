@@ -135,9 +135,9 @@ export default function CartPage() {
         />
       ) : (
         <div className="flex flex-col gap-8">
-          <Card className="bg-white dark:bg-[#161B22] shadow-sm dark:shadow-none overflow-hidden">
+          <Card className="bg-brand-surface dark:bg-brand-surface shadow-sm dark:shadow-none overflow-hidden">
             {/* Table Header */}
-            <div className="border-b border-slate-200 dark:border-white/10 px-6 py-3 hidden md:flex items-center text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest bg-brand-cloud dark:bg-[#0D1117]">
+            <div className="border-b border-brand-navy/[0.08] dark:border-white/10 px-6 py-3 hidden md:flex items-center text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest bg-brand-cloud dark:bg-brand-surface">
               <div className="w-[5%]">#</div>
               <div className="w-[60%]">Product Name</div>
               <div className="w-[30%] text-right">Price</div>
@@ -154,16 +154,16 @@ export default function CartPage() {
                 const imageUrl = photos[0] ? getOptimizedUrl(photos[0]) : '';
                 
                 return (
-                  <div key={item.id} className="relative flex flex-col md:flex-row md:items-center py-5 md:py-4 border-b border-slate-200 dark:border-white/10 px-4 md:px-6 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors last:border-b-0">
-                    <div className="hidden md:block w-[5%] text-sm text-slate-500 font-medium">{index + 1}</div>
+                  <div key={item.id} className="relative flex flex-col md:flex-row md:items-center py-5 md:py-4 border-b border-brand-navy/[0.08] dark:border-white/10 px-4 md:px-6 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 transition-colors last:border-b-0">
+                    <div className="hidden md:block w-[5%] text-sm text-slate-500 dark:text-slate-400 font-medium">{index + 1}</div>
                     
                     {/* Image and Details Container */}
                     <div className="w-full md:w-[60%] flex items-start md:items-center gap-4 pr-10 md:pr-0">
-                      <div className="w-[85px] h-[85px] md:w-16 md:h-16 rounded-[4px] overflow-hidden shrink-0 border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] p-1">
+                      <div className="w-[85px] h-[85px] md:w-16 md:h-16 rounded-[4px] overflow-hidden shrink-0 border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface p-1">
                         {imageUrl ? (
                           <img src={imageUrl} alt={item.title} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
                         ) : (
-                          <div className="w-full h-full bg-brand-cloud dark:bg-[#161B22] flex items-center justify-center text-[11px] font-mono text-slate-400">No Img</div>
+                          <div className="w-full h-full bg-brand-cloud dark:bg-brand-surface flex items-center justify-center text-[11px] font-mono text-slate-400">No Img</div>
                         )}
                       </div>
                       <div className="flex-1 pt-1 md:pt-0">
@@ -176,7 +176,7 @@ export default function CartPage() {
                           </p>
                         )}
                         {(item.category || item.shop_name) && (
-                          <p className="text-[11px] font-mono text-slate-400 dark:text-slate-500 mt-1 line-clamp-1 tracking-widest uppercase">
+                          <p className="text-[11px] font-mono text-slate-400 dark:text-slate-500 dark:text-slate-400 mt-1 line-clamp-1 tracking-widest uppercase">
                             {[item.category, item.shop_name].filter(Boolean).join(' • ')}
                           </p>
                         )}
@@ -212,7 +212,7 @@ export default function CartPage() {
           {/* Bottom Section */}
           <div className="flex flex-col lg:flex-row justify-end">
             {/* Order Summary */}
-            <Card className="w-full lg:w-5/12 bg-brand-cloud dark:bg-[#161B22]">
+            <Card className="w-full lg:w-5/12 bg-brand-cloud dark:bg-brand-surface">
               <CardContent className="p-6">
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between">
@@ -220,7 +220,7 @@ export default function CartPage() {
                     <span className="text-[14px] font-mono font-medium text-brand-navy dark:text-white">{formatPrice(subTotal)} BDT</span>
                   </div>
                   
-                  <div className="border-t border-slate-200 dark:border-white/10 my-2"></div>
+                  <div className="border-t border-brand-navy/[0.08] dark:border-white/10 my-2"></div>
                   
                   <div className="flex items-center justify-between">
                     <span className="text-[14px] font-sans font-medium text-brand-navy dark:text-white">Total</span>

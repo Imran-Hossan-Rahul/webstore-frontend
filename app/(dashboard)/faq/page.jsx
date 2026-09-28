@@ -8,7 +8,7 @@ const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-slate-200 dark:border-white/10 last:border-0">
+    <div className="border-b border-brand-navy/[0.08] dark:border-white/10 last:border-0">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between py-5 text-left focus:outline-none group"
@@ -28,7 +28,7 @@ const FAQItem = ({ question, answer }) => {
           isOpen ? 'max-h-[500px] opacity-100 pb-5' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="text-[15px] font-sans text-slate-500 leading-relaxed max-w-[800px]">
+        <div className="text-[15px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed max-w-[800px]">
           {answer}
         </div>
       </div>
@@ -103,7 +103,7 @@ export default function FAQPage() {
           <Link href="/support" className="text-[13px] font-sans font-medium text-brand-blue hover:underline">
             Contact Support
           </Link>
-          <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20" />
+          <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-brand-surface/20" />
           <Link href="/legal" className="text-[13px] font-sans font-medium text-brand-blue hover:underline">
             Legal Resources
           </Link>
@@ -116,7 +116,7 @@ export default function FAQPage() {
             <h2 className="text-[14px] font-mono font-medium uppercase tracking-widest text-slate-400 mb-4 px-2">
               {section.category}
             </h2>
-            <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] px-6">
+            <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-6">
               {section.items.map((item, itemIdx) => (
                 <FAQItem key={itemIdx} question={item.question} answer={item.answer} />
               ))}

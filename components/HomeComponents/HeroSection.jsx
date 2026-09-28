@@ -90,8 +90,8 @@ export default function HeroSection() {
                 onClick={() => setActiveCategory(cat.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
                   active
-                    ? "bg-black text-white dark:bg-white dark:text-black border-black/80 dark:border-white/80"
-                    : "bg-white dark:bg-slate-900 border-black/10 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-black/30 dark:hover:border-white/30"
+                    ? "bg-black text-white dark:bg-brand-surface dark:text-black border-black/80 dark:border-white/80"
+                    : "bg-brand-surface dark:bg-slate-900 border-black/10 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-black/30 dark:hover:border-white/30"
                 }`}
               >
                 {cat.label}
@@ -101,7 +101,7 @@ export default function HeroSection() {
         </div>
 
         <div
-          className={`flex items-center gap-3 rounded-full border border-black/5 dark:border-white/10 bg-white/80 dark:bg-slate-900/80 backdrop-blur shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-all duration-300 ${
+          className={`flex items-center gap-3 rounded-full border border-black/5 dark:border-white/10 bg-brand-surface/80 dark:bg-slate-900/80 backdrop-blur shadow-[0_20px_60px_rgba(0,0,0,0.08)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.45)] transition-all duration-300 ${
             compact ? "px-5 py-3" : "px-6 py-4"
           }`}
         >
@@ -129,7 +129,7 @@ export default function HeroSection() {
                 type="button"
                 key={tag}
                 onClick={() => setQuery(tag)}
-                className="px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-white dark:bg-slate-900 hover:border-black/30 dark:hover:border-white/30 transition-colors"
+                className="px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-brand-surface dark:bg-slate-900 hover:border-black/30 dark:hover:border-white/30 transition-colors"
               >
                 {tag}
               </button>
@@ -139,7 +139,7 @@ export default function HeroSection() {
       </div>
 
       {(loading || results.length > 0 || query.trim()) && (
-        <div className="absolute z-20 mt-3 w-full rounded-2xl border border-black/5 dark:border-white/10 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-2xl overflow-hidden">
+        <div className="absolute z-20 mt-3 w-full rounded-2xl border border-black/5 dark:border-white/10 bg-brand-surface/95 dark:bg-slate-900/95 backdrop-blur shadow-sm overflow-hidden">
           {loading ? (
             <div className="px-5 py-4 text-sm text-brand-slate dark:text-slate-300">
               Searching...
@@ -208,7 +208,7 @@ export default function HeroSection() {
         </div>
 
         <div className="w-full lg:justify-self-end">
-          <div className="aspect-video rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur shadow-[0_25px_80px_rgba(0,0,0,0.08)] dark:shadow-[0_25px_80px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-500 dark:text-slate-400">
+          <div className="aspect-video rounded-2xl border border-black/5 dark:border-white/10 bg-brand-surface/70 dark:bg-slate-900/70 backdrop-blur shadow-[0_25px_80px_rgba(0,0,0,0.08)] dark:shadow-[0_25px_80px_rgba(0,0,0,0.45)] flex items-center justify-center text-slate-500 dark:text-slate-400">
             Video placeholder — drop your launch reel here
           </div>
         </div>

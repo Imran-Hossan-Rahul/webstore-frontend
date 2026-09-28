@@ -155,9 +155,9 @@ export default function ImageUploadModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg shadow-2xl relative animate-in zoom-in-95 duration-200">
+      <div className="bg-brand-surface dark:bg-slate-900 rounded-2xl w-full max-w-lg shadow-sm relative animate-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between p-6 border-b border-brand-navy/[0.10] dark:border-slate-800">
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -166,7 +166,7 @@ export default function ImageUploadModal({
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-slate-900 rounded-full transition-colors"
           >
             <X size={20} className="text-slate-500 dark:text-slate-400" />
           </button>
@@ -185,12 +185,12 @@ export default function ImageUploadModal({
               className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
                 dragActive
                   ? "border-brand-blue bg-brand-sky dark:bg-indigo-900/10"
-                  : "border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
+                  : "border-brand-navy/[0.10] dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               }`}
             >
               <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center">
-                  <Upload className="w-8 h-8 text-slate-400 dark:text-slate-500" />
+                <div className="w-16 h-16 bg-slate-100 dark:bg-brand-surface/5 rounded-full flex items-center justify-center">
+                  <Upload className="w-8 h-8 text-slate-400 dark:text-slate-500 dark:text-slate-400" />
                 </div>
                 <div>
                   <p className="text-slate-900 dark:text-white font-medium">
@@ -212,7 +212,7 @@ export default function ImageUploadModal({
           ) : (
             <div className="space-y-4">
               {/* Preview */}
-              <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-brand-surface">
                 <img
                   src={preview}
                   alt="Preview"
@@ -228,7 +228,7 @@ export default function ImageUploadModal({
                   setSelectedFile(null);
                   setPreview(null);
                 }}
-                className="w-full py-2 px-4 border border-slate-300 dark:border-slate-700 rounded-lg text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-2 px-4 border border-brand-navy/[0.10] dark:border-slate-700 rounded-lg text-brand-slate dark:text-slate-300 hover:bg-brand-surface dark:hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
               >
                 <Camera size={18} />
                 Change Image
@@ -245,10 +245,10 @@ export default function ImageUploadModal({
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 p-6 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex gap-3 p-6 border-t border-brand-navy/[0.10] dark:border-slate-800">
           <button
             onClick={handleClose}
-            className="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-brand-slate dark:text-slate-300 rounded-lg hover:bg-brand-cloud dark:hover:bg-slate-900 transition-colors font-medium"
+            className="flex-1 px-4 py-2.5 border border-brand-navy/[0.10] dark:border-slate-700 text-brand-slate dark:text-slate-300 rounded-lg hover:bg-brand-surface dark:hover:bg-slate-900 transition-colors font-medium"
           >
             Cancel
           </button>

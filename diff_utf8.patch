@@ -1,0 +1,1407 @@
+﻿diff --git a/components/dashboard/market/MarketClientView.jsx b/components/dashboard/market/MarketClientView.jsx
+index 1c18fc5..61f8aa8 100644
+--- a/components/dashboard/market/MarketClientView.jsx
++++ b/components/dashboard/market/MarketClientView.jsx
+@@ -5,14 +5,17 @@ import Link from 'next/link';
+ import { useSearchParams, useRouter } from 'next/navigation';
+ import Image from 'next/image';
+ import { DashboardContext } from "@/app/(dashboard)/layout";
+-import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star, Check, ArrowRight } from "lucide-react";
++import { Edit, Smartphone, Tablet, Laptop, Watch, Headphones, Speaker, Cable, Gamepad2, Tv, BatteryCharging, Shield, ChevronLeft, ChevronRight, Star, Check, ArrowRight, Network, ShoppingCart, Server, Rocket, MonitorPlay, Sparkles } from "lucide-react";
+ import AuthGuardModal from "@/components/ui/AuthGuardModal";
+ import MarketSEOContent from "./MarketSEOContent";
+ import AppleSpinner from "@/components/ui/AppleSpinner";
+-import { getCategoryIcon } from "@/components/dashboard/Sidebar";
+-import RightSidebar from "@/components/dashboard/RightSidebar";
+ import { PRODUCT_TYPE_COLORS } from "@/utils/digitalProducts";
+ 
++import TechnicalBackground from "@/components/ui/TechnicalBackground";
++import TechParticles from "@/components/ui/TechParticles";
++import ServicesStoryteller from "./ServicesStoryteller";
++import { motion, useScroll, useTransform, AnimatePresence, useSpring, useMotionValue } from 'framer-motion';
++
+ // Cloudinary optimization for free extreme performance
+ const getOptimizedUrl = (url) => {
+   if (!url) return '';
+@@ -25,88 +28,483 @@ const getOptimizedUrl = (url) => {
+   return url;
+ };
+ 
+-const ProcessSection = () => {
+-  const [activeIndex, setActiveIndex] = useState(0);
+-  const [scrollProgress, setScrollProgress] = useState(0);
+-  const sectionRef = useRef(null);
++// Custom Animated Brush Underline (Engineered to match the specific swoosh aesthetic)
++const BrushUnderline = ({ colorClass, delay }) => {
++  return (
++    <div className="absolute left-0 -bottom-1.5 md:-bottom-2 w-full h-[10px] md:h-[12px] pointer-events-none flex items-center justify-center overflow-hidden">
++      <motion.svg
++        viewBox="0 0 100 12"
++        preserveAspectRatio="none"
++        className={`w-full h-full ${colorClass}`}
++        initial={{ clipPath: "inset(0 100% 0 0)" }}
++        animate={{ clipPath: "inset(0 0% 0 0)" }}
++        transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
++      >
++        {/* Main thick brush body */}
++        <path d="M 2 9 L 6 3 Q 50 1 96 4 L 100 8 Q 50 6 2 9 Z" fill="currentColor" />
++        {/* Left bristle detail */}
++        <path d="M 0 10 L 4 5 Q 15 4 25 4 Q 15 6 0 10 Z" fill="currentColor" opacity="0.8" />
++        {/* Right bristle detail */}
++        <path d="M 75 5 Q 85 5 98 7 L 94 10 Q 85 7 75 5 Z" fill="currentColor" opacity="0.8" />
++      </motion.svg>
++    </div>
++  );
++};
+ 
+-  useEffect(() => {
+-    const handleScroll = () => {
+-      if (!sectionRef.current) return;
+-      const rect = sectionRef.current.getBoundingClientRect();
+-      const windowHeight = window.innerHeight;
+-      
+-      const start = windowHeight * 0.8;
+-      const end = windowHeight * 0.3;
+-      
+-      if (rect.top > start) {
+-        setScrollProgress(0);
+-        setActiveIndex(0);
+-      } else if (rect.top < end) {
+-        setScrollProgress(100);
+-        setActiveIndex(3);
+-      } else {
+-        const progress = ((start - rect.top) / (start - end)) * 100;
+-        setScrollProgress(progress);
+-        
+-        if (progress < 25) setActiveIndex(0);
+-        else if (progress < 50) setActiveIndex(1);
+-        else if (progress < 75) setActiveIndex(2);
+-        else setActiveIndex(3);
+-      }
+-    };
+-    
+-    window.addEventListener('scroll', handleScroll, { passive: true });
+-    handleScroll();
+-    return () => window.removeEventListener('scroll', handleScroll);
+-  }, []);
++const ElectronicCurrentText = ({ delay = 3.8 }) => {
++  return (
++    <motion.div 
++      initial={{ opacity: 0, y: -10 }}
++      animate={{ opacity: 1, y: 0 }}
++      transition={{ duration: 1, delay, ease: "easeOut" }}
++      className="fixed z-0 left-0 right-0 flex justify-center pointer-events-none"
++      style={{ top: 'calc(50vh + 90px)' }}
++    >
++      <motion.div
++        className="font-mono text-[10px] md:text-[12px] font-semibold tracking-[0.3em] uppercase text-transparent bg-clip-text"
++        style={{
++          backgroundImage: "linear-gradient(90deg, rgba(100,116,139,0.4) 0%, rgba(100,116,139,0.4) 40%, rgba(255,255,255,0.8) 47%, rgba(255,255,255,1) 50%, rgba(34,211,238,1) 53%, rgba(100,116,139,0.4) 60%, rgba(100,116,139,0.4) 100%)",
++          backgroundSize: "400% 100%",
++          WebkitBackgroundClip: "text",
++          WebkitTextFillColor: "transparent",
++        }}
++        animate={{
++          backgroundPosition: ["100% 0%", "0% 0%"]
++        }}
++        transition={{
++          duration: 3.5,
++          ease: "linear",
++          repeat: Infinity,
++          repeatDelay: 1.5
++        }}
++      >
++        Build Γ₧ö Launch Γ₧ö Maintain Γ₧ö Improve
++      </motion.div>
++    </motion.div>
++  );
++};
+ 
+-  const stages = [
+-    { num: '01', title: 'BUILD', desc: 'We design and engineer the foundation.' },
+-    { num: '02', title: 'LAUNCH', desc: 'We ship a stable, usable product.' },
+-    { num: '03', title: 'MAINTAIN', desc: 'We keep the system healthy and up to date.' },
+-    { num: '04', title: 'IMPROVE', desc: 'We continuously evolve the product.' }
++const ProcessSection = () => {
++  const containerRef = useRef(null);
++  const { scrollYProgress } = useScroll({
++    target: containerRef,
++    offset: ["start start", "end end"]
++  });
++
++  const rawRotate = useTransform(scrollYProgress, [0, 1], [0, -360]);
++  const carouselRotate = useSpring(rawRotate, { 
++    stiffness: 40, 
++    damping: 20, 
++    mass: 0.8,
++    restDelta: 0.001
++  });
++
++  const stepData = [
++    {
++      id: "01",
++      title: "Buy / Order & Customize",
++      subtitle: "Tailoring to your brand",
++      description: "First, you buy the product or place an order. We then meticulously customize the system, adapting the design, features, and identity to perfectly match your brand vision.",
++      chips: ["Custom Branding", "Feature Adaptation", "Full UI Retouch"],
++      icon: <ShoppingCart size={28} className="text-brand-cyan" />
++    },
++    {
++      id: "02",
++      title: "Deploy & Live Launch",
++      subtitle: "Production deployment",
++      description: "Once customized and thoroughly tested, our engineering team handles full deployment to your live server, ensuring ironclad stability, speed, and security.",
++      chips: ["Cloud Architecture", "DNS & SSL Setup", "Performance Tuning"],
++      icon: <Rocket size={28} className="text-brand-cyan" />
++    },
++    {
++      id: "03",
++      title: "1 Month Free Care",
++      subtitle: "Handover & stabilization",
++      description: "We provide 30 days of completely free maintenance. We resolve any post-launch issues, assist with database & content uploads, and hand over complete control if you wish.",
++      chips: ["30-Day Free Support", "Bug Fixes & Uploads", "Smooth Handover"],
++      icon: <Shield size={28} className="text-brand-cyan" />
++    },
++    {
++      id: "04",
++      title: "Ongoing Maintenance",
++      subtitle: "3, 6, or 12 Month Contracts",
++      description: "Keep your platform healthy long-term with structured care plans. We perform regular software upgrades, daily monitoring, security patches, and continuous improvements.",
++      chips: ["Daily Monitoring", "Regular Upgrades", "Priority SLA"],
++      icon: <MonitorPlay size={28} className="text-brand-cyan" />
++    }
+   ];
+ 
+   return (
+-    <div ref={sectionRef} className="w-full py-20 md:py-32 relative border-t border-slate-200 dark:border-white/5">
+-      <div className="flex flex-col mb-16 px-6 md:px-12 text-center items-center">
+-        <span className="text-[12px] font-mono font-medium tracking-widest text-brand-cyan uppercase mb-4">Partnership Model</span>
+-        <h2 className="text-[32px] md:text-[40px] font-display font-medium text-brand-navy dark:text-white leading-tight">
+-          Engineered for the long term.
+-        </h2>
+-      </div>
+-
+-      <div className="relative w-full max-w-5xl mx-auto px-6 md:px-0">
+-        {/* Connection Line Background */}
+-        <div className="absolute top-[28px] left-[12.5%] right-[12.5%] h-[1px] bg-slate-200 dark:bg-white/10 hidden md:block"></div>
++    <div ref={containerRef} className="h-[400vh] w-full relative bg-[#030712] border-t border-brand-navy/[0.08] dark:border-white/5">
++      {/* Pinned Sticky Viewport */}
++      <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden py-12 px-6">
++      {/* Background Atmosphere - Hero Style */}
++      <div className="absolute inset-0 z-0 pointer-events-none bg-black overflow-hidden">
++        {/* Deep Tech Subtle Radial Glow Behind Particles */}
++        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-brand-blue/20 blur-[120px] rounded-full"></div>
++        <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[400px] h-[300px] bg-brand-cyan/10 blur-[100px] rounded-full"></div>
++        <div className="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[500px] bg-brand-blue/15 blur-[120px] rounded-full"></div>
++        
++        <TechParticles scatterOnly={true} />
+         
+-        {/* Connection Line Progress */}
++        {/* 3D Ground Plane Grid (Cyberspace Floor) */}
+         <div 
+-          className="absolute top-[28px] left-[12.5%] h-[1px] bg-brand-blue hidden md:block transition-all duration-300 ease-out shadow-[0_0_10px_rgba(29,95,209,0.5)]"
+-          style={{ width: `${scrollProgress * 0.75}%` }}
+-        ></div>
+-
+-        <div className="flex flex-col md:flex-row justify-between relative z-10 gap-12 md:gap-0">
+-          {stages.map((stage, idx) => {
+-            const isActive = activeIndex >= idx;
+-            const isCurrent = activeIndex === idx;
++          className="absolute left-0 right-0 bottom-0 overflow-hidden z-0 pointer-events-none" 
++          style={{ top: '58vh', perspective: '800px', transformStyle: 'preserve-3d' }}
++        >
++          <div 
++            className="absolute left-[-50%] right-[-50%] top-0 h-[200vh]" 
++            style={{ 
++              transform: 'rotateX(75deg)',
++              transformOrigin: 'top center',
++              backgroundSize: '80px 80px',
++              backgroundImage: `linear-gradient(to right, rgba(56, 189, 248, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(56, 189, 248, 0.25) 1px, transparent 1px)`,
++              maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)',
++              WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)'
++            }}>
++          </div>
++        </div>
++      </div>
++
++
++      {/* 3D Carousel Stage */}
++      <div 
++        className="relative z-20 w-full mx-auto flex items-center justify-center h-[350px] md:h-[450px]" 
++        style={{ perspective: "1200px" }}
++      >
++        <motion.div
++          style={{ rotateY: carouselRotate, transformStyle: "preserve-3d", willChange: "transform" }}
++          className="relative w-[300px] md:w-[350px] h-[360px] md:h-[400px] scale-[0.6] sm:scale-75 md:scale-100 cursor-grab active:cursor-grabbing"
++        >
++          {stepData.map((step, index) => {
++            const rotateY = index * 90; // 0, 90, 180, 270
+             return (
+-              <div key={stage.num} className="flex-1 flex flex-col items-center text-center group">
+-                <div className={`w-14 h-14 rounded-full flex items-center justify-center border transition-all duration-700 mb-6 bg-brand-cloud dark:bg-[#0D1117] relative z-10 ${isActive ? 'border-brand-blue text-brand-blue' : 'border-slate-200 dark:border-white/10 text-slate-400 dark:text-slate-500'}`}>
+-                  <span className="text-[14px] font-mono font-semibold">{stage.num}</span>
+-                  {/* Subtle active ping */}
+-                  {isCurrent && <div className="absolute inset-0 rounded-full border border-brand-blue/50 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]"></div>}
++              <div
++                key={step.id}
++                className="absolute top-0 left-0 w-full h-full"
++                style={{
++                  transform: `rotateY(${rotateY}deg) translateZ(300px)`,
++                  transformStyle: "preserve-3d"
++                }}
++              >
++                {/* Front Face */}
++                <div 
++                  className="absolute inset-0 w-full h-full bg-[#060d1d] border-2 border-brand-cyan/40 hover:border-brand-cyan/70 rounded-3xl p-6 md:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.9),_0_0_20px_rgba(34,199,232,0.15)] flex flex-col transition-colors duration-300"
++                  style={{ backfaceVisibility: "hidden" }}
++                >
++                  {/* Cyber Corner Accents */}
++                  <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-brand-cyan/40"></div>
++                  <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-brand-cyan/40"></div>
++                  <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-brand-cyan/40"></div>
++                  <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-brand-cyan/40"></div>
++
++                  {/* Top Badge & Number */}
++                  <div className="flex items-center justify-between mb-5">
++                    <div className="flex items-center gap-3">
++                      <div className="w-12 h-12 rounded-2xl bg-brand-cyan/10 border border-brand-cyan/30 flex items-center justify-center shadow-[0_0_20px_rgba(34,199,232,0.2)]">
++                        {step.icon}
++                      </div>
++                      <div>
++                        <span className="text-brand-cyan font-mono text-[10px] uppercase tracking-wider block font-medium">
++                          {step.subtitle}
++                        </span>
++                        <h3 className="text-white font-display text-[18px] md:text-[20px] font-bold tracking-tight leading-tight mt-1">
++                          {step.title}
++                        </h3>
++                      </div>
++                    </div>
++                    <div className="font-mono text-[24px] md:text-[30px] font-black text-brand-cyan/25 select-none">
++                      {step.id}
++                    </div>
++                  </div>
++
++                  {/* Description */}
++                  <p className="text-slate-300 font-sans text-[13px] md:text-[14px] leading-relaxed mb-6 font-light">
++                    {step.description}
++                  </p>
++
++                  {/* Chips / Deliverables */}
++                  <div className="flex flex-wrap gap-2 pt-4 border-t border-white/[0.08] mt-auto">
++                    {step.chips.map((chip, idx) => (
++                      <span 
++                        key={idx}
++                        className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-brand-cyan/90 font-mono text-[10px] flex items-center gap-1.5"
++                      >
++                        <span className="w-1 h-1 rounded-full bg-brand-cyan"></span>
++                        {chip}
++                      </span>
++                    ))}
++                  </div>
++                </div>
++
++                {/* Back Face */}
++                <div 
++                  className="absolute inset-0 w-full h-full bg-[#030712] border-2 border-brand-cyan/20 rounded-3xl flex items-center justify-center shadow-[inset_0_0_40px_rgba(0,0,0,0.8)]"
++                  style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
++                >
++                  <div className="w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl absolute"></div>
++                  <span className="text-brand-cyan/10 font-black text-8xl font-mono tracking-tighter select-none">{step.id}</span>
+                 </div>
+-                <h3 className={`text-[18px] font-display font-semibold transition-colors duration-500 mb-3 ${isActive ? 'text-brand-navy dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
+-                  {stage.title}
+-                </h3>
+-                <p className={`text-[14px] font-sans leading-relaxed max-w-[200px] transition-colors duration-500 ${isActive ? 'text-slate-600 dark:text-slate-400' : 'text-slate-400/50 dark:text-slate-600'}`}>
+-                  {stage.desc}
+-                </p>
+               </div>
+             );
+           })}
++        </motion.div>
++      </div>
++
++      {/* Interactive Scroll Helper Hint */}
++      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-slate-500 text-[11px] font-mono uppercase tracking-widest pt-1 z-30">
++        <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-ping"></span>
++        <span>Scroll to Rotate</span>
++      </div>
++
++      </div>
++    </div>
++  );
++};
++
++
++const StorePreviewSection = ({ products }) => {
++  const cursorX = useMotionValue(-100);
++  const cursorY = useMotionValue(-100);
++  const [isHovering, setIsHovering] = React.useState(false);
++  const [isHoveringBuyBtn, setIsHoveringBuyBtn] = React.useState(false);
++  const [isDragging, setIsDragging] = React.useState(false);
++  const scrollRef = React.useRef(null);
++  const dragInfo = React.useRef({ startX: 0, scrollLeft: 0, hasDragged: false });
++
++  // Supply enough products for continuous multi-card exploration
++  const baseProducts = products || [];
++  let displayProducts = [];
++  if (baseProducts.length > 0) {
++    while (displayProducts.length < 8) {
++      displayProducts = [...displayProducts, ...baseProducts];
++    }
++    displayProducts = displayProducts.slice(0, 10);
++  }
++  
++  if (displayProducts.length === 0) return null;
++
++  // Asymmetrical unusual width classes (approx 3.5 to 4 cards fit across 100vw)
++  const getCardWidthClass = (idx) => {
++    const cycle = idx % 4;
++    switch (cycle) {
++      case 0:
++        return "w-[30vw] min-w-[340px] md:min-w-[420px]"; // Wide
++      case 1:
++        return "w-[21vw] min-w-[240px] md:min-w-[290px]"; // Compact
++      case 2:
++        return "w-[27vw] min-w-[290px] md:min-w-[360px]"; // Medium-Wide
++      case 3:
++      default:
++        return "w-[23vw] min-w-[260px] md:min-w-[310px]"; // Standard
++    }
++  };
++
++  const handleMouseDown = (e) => {
++    setIsDragging(true);
++    dragInfo.current = {
++      startX: e.pageX - (scrollRef.current ? scrollRef.current.offsetLeft : 0),
++      scrollLeft: scrollRef.current ? scrollRef.current.scrollLeft : 0,
++      hasDragged: false
++    };
++  };
++
++  const handleMouseMove = (e) => {
++    cursorX.set(e.clientX);
++    cursorY.set(e.clientY);
++    if (!isDragging || !scrollRef.current) return;
++    const x = e.pageX - scrollRef.current.offsetLeft;
++    const walk = (x - dragInfo.current.startX) * 1.4;
++    if (Math.abs(walk) > 5) {
++      dragInfo.current.hasDragged = true;
++    }
++    scrollRef.current.scrollLeft = dragInfo.current.scrollLeft - walk;
++  };
++
++  const handleMouseUp = () => {
++    setIsDragging(false);
++  };
++
++  const scrollByAmount = (amount) => {
++    if (scrollRef.current) {
++      scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
++    }
++  };
++
++  return (
++    <div className="w-full bg-white py-20 md:py-32 relative border-t border-slate-200 z-30 pointer-events-auto overflow-hidden">
++      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-brand-blue/30 to-transparent"></div>
++      
++      <div className="max-w-[1400px] w-full mx-auto flex flex-col items-center text-center px-6 md:px-12 mb-12 relative z-10">
++        <div className="flex flex-col items-center gap-5">
++          <h2 className="text-brand-navy dark:text-brand-navy text-[28px] md:text-[40px] lg:text-[48px] font-display font-medium leading-[1.15] tracking-tight max-w-5xl">
++            Explore our store and buy your website <span className="text-slate-400 dark:text-slate-500 whitespace-normal md:whitespace-nowrap">just like an ecommerce store.</span>
++          </h2>
++          <p className="text-slate-500 dark:text-slate-500 font-sans text-[16px] md:text-[18px] max-w-3xl leading-relaxed">
++            Zero technical hassle. Pick a website, and we will handle the customization, content upload, and deployment according to your brand at NO extra cost.
++          </p>
++          
++          {/* Navigation Controls */}
++          <div className="flex items-center gap-3 mt-2">
++            <button 
++              type="button"
++              onClick={() => scrollByAmount(-480)} 
++              className="w-10 h-10 rounded-full border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-700 hover:text-brand-blue shadow-sm transition-all cursor-pointer"
++              aria-label="Previous websites"
++            >
++              <ChevronLeft size={20} />
++            </button>
++            <button 
++              type="button"
++              onClick={() => scrollByAmount(480)} 
++              className="w-10 h-10 rounded-full border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center text-slate-700 hover:text-brand-blue shadow-sm transition-all cursor-pointer"
++              aria-label="Next websites"
++            >
++              <ChevronRight size={20} />
++            </button>
++          </div>
++        </div>
++      </div>
++      
++      {/* Custom Cursor Overlay */}
++      <motion.div 
++        className={`fixed top-0 left-0 w-24 h-24 bg-white/95 backdrop-blur-sm rounded-full flex items-center justify-center text-brand-navy font-display text-[13px] font-bold tracking-widest pointer-events-none z-[100] transition-all duration-200 ease-out shadow-xl ${(isHovering && !isHoveringBuyBtn) ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}`}
++        style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%", transitionProperty: 'opacity, background-color' }}
++      >
++        DETAILS
++      </motion.div>
++
++      {/* Horizontal Showcase (Full Width - 3.5 to 4 items visible across width with asymmetrical widths) */}
++      <div 
++        className="w-[calc(100%+4px)] -ml-[2px] relative z-10"
++        onMouseMove={handleMouseMove}
++        onMouseEnter={() => setIsHovering(true)}
++        onMouseLeave={() => {
++          setIsHovering(false);
++          setIsDragging(false);
++        }}
++      >
++        <div 
++          ref={scrollRef}
++          onMouseDown={handleMouseDown}
++          onMouseUp={handleMouseUp}
++          className="flex gap-[13px] overflow-x-auto no-scrollbar scroll-smooth cursor-none select-none pb-2 px-1"
++        >
++           {displayProducts.map((product, idx) => {
++             const widthClass = getCardWidthClass(idx);
++
++             return (
++               <Link 
++                 key={`${product.id || product._id}-${idx}`} 
++                 href={`/product/${product.id || product._id}`} 
++                 onClick={(e) => {
++                   if (dragInfo.current.hasDragged) {
++                     e.preventDefault();
++                   }
++                 }}
++                 draggable={false}
++                 className={`group flex-shrink-0 flex flex-col h-[350px] md:h-[480px] cursor-none ${widthClass}`}
++               >
++                 
++                 {/* Visual Container */}
++                 <div className="w-full h-full bg-slate-50 border border-slate-200/80 rounded-none overflow-hidden relative flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-brand-blue/30 group-hover:shadow-[0_20px_40px_-15px_rgba(29,95,209,0.15)]">
++                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none"></div>
++                   {product.photos && JSON.parse(product.photos)[0] ? (
++                     <img 
++                       src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
++                       alt={product.title} 
++                       draggable={false}
++                       className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none" 
++                     />
++                   ) : (
++                     <div className="text-slate-400 font-mono text-[12px] flex flex-col items-center gap-2 relative z-10">
++                       <span className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center">?</span>
++                       NO_PREVIEW
++                     </div>
++                   )}
++                   
++                   {/* Hover UI Overlay */}
++                   <div className="absolute bottom-5 left-4 right-4 flex items-center justify-between z-30 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-400 ease-out">
++                     <div className="bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full text-brand-navy font-sans text-[12px] font-semibold tracking-tight shadow-sm whitespace-nowrap">
++                       {idx % 4 === 0 ? "7 Days Delivery" : idx % 4 === 1 ? "15 Days Delivery" : idx % 4 === 2 ? "3 Days Delivery" : "1 Month Delivery"}
++                     </div>
++                     <div 
++                       className="bg-brand-blue hover:bg-blue-600 text-white px-4 py-1.5 rounded-full font-sans text-[12px] font-semibold tracking-tight shadow-lg shadow-brand-blue/30 flex items-center gap-1.5 cursor-pointer transition-colors whitespace-nowrap"
++                       onMouseEnter={(e) => {
++                         e.stopPropagation();
++                         setIsHoveringBuyBtn(true);
++                       }}
++                       onMouseLeave={(e) => {
++                         e.stopPropagation();
++                         setIsHoveringBuyBtn(false);
++                       }}
++                       onClick={(e) => {
++                         e.preventDefault();
++                         e.stopPropagation();
++                         console.log("Buy clicked for product:", product.id || product._id);
++                       }}
++                     >
++                       Buy Now <ArrowRight size={13} />
++                     </div>
++                   </div>
++                 </div>
++               </Link>
++             );
++           })}
++        </div>
++      </div>
++      
++      {/* Bottom Action & Custom Project CTA */}
++      <div className="w-full max-w-[1400px] mx-auto mt-24 mb-12 px-6 md:px-12 relative z-10">
++        <div className="group flex flex-col relative">
++
++          <div className="relative z-10 flex flex-col w-full mb-10">
++            <h3 className="text-brand-navy dark:text-brand-navy text-[36px] md:text-[48px] lg:text-[52px] xl:text-[56px] font-display font-semibold leading-[1.05] tracking-tight mb-4">
++              Need something completely custom?
++            </h3>
++            <p className="text-slate-600 dark:text-slate-600 font-sans text-[16px] md:text-[18px] leading-relaxed max-w-full font-light">
++              Got a unique idea? Whether it's a custom web app or a scalable SaaS platform, we build it from scratch. Tell us your vision, and we'll handle the rest.
++            </p>
++          </div>
++          
++          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between w-full border-t border-brand-navy/[0.08] dark:border-brand-navy/[0.08] pt-10 gap-8 lg:gap-0">
++            
++            {/* Human Touch Vibe - Solo Founder */}
++            <div className="flex items-center gap-4">
++              <div className="relative">
++                {/* Just replace this URL with your actual professional photo */}
++                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&auto=format&fit=crop&q=80" alt="Founder & Lead Architect" className="w-14 h-14 rounded-full border-[3px] border-white dark:border-white object-cover shadow-sm" />
++                {/* Green online status dot */}
++                <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-white rounded-full"></span>
++              </div>
++              <div className="flex flex-col">
++                <span className="text-brand-navy dark:text-brand-navy font-sans text-[16px] font-semibold tracking-tight">Talk directly to the Founder</span>
++                <span className="text-brand-blue dark:text-brand-blue font-sans text-[14px]">Available for discovery calls</span>
++              </div>
++            </div>
++
++            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
++              <button 
++                onClick={(e) => {
++                  e.preventDefault();
++                  console.log("Open Project Brief Form");
++                }}
++                className="bg-white dark:bg-white hover:bg-slate-50 dark:hover:bg-slate-50 border border-slate-200 dark:border-slate-200 text-brand-navy dark:text-brand-navy px-8 py-4 rounded-full font-sans text-[15px] font-semibold transition-all duration-300 flex items-center justify-center w-full sm:w-auto shadow-sm"
++              >
++                Submit Project Brief
++              </button>
++              
++              <button 
++                onClick={(e) => {
++                  e.preventDefault();
++                  console.log("Open Booking Modal");
++                }}
++                className="bg-brand-navy dark:bg-brand-navy text-white dark:text-white hover:bg-brand-blue dark:hover:bg-brand-blue px-8 py-4 rounded-full font-sans text-[15px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand-navy/10 transform hover:-translate-y-1 w-full sm:w-auto"
++              >
++                Book a Strategy Call <ArrowRight size={18} />
++              </button>
++            </div>
++          </div>
+         </div>
+       </div>
+     </div>
+@@ -116,7 +514,7 @@ const ProcessSection = () => {
+ const EditorialProductShowcase = ({ products, isLoading }) => {
+   if (isLoading) {
+     return (
+-      <div className="w-full py-24 flex items-center justify-center border-t border-slate-200 dark:border-white/5">
++      <div className="w-full py-24 flex items-center justify-center border-t border-brand-navy/[0.08] dark:border-white/5">
+         <AppleSpinner size={40} className="text-brand-blue" />
+       </div>
+     );
+@@ -137,7 +535,7 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
+   };
+ 
+   return (
+-    <div className="w-full py-16 md:py-24 relative border-t border-slate-200 dark:border-white/5">
++    <div className="w-full py-16 md:py-24 relative border-t border-brand-navy/[0.08] dark:border-white/5">
+       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 px-6 md:px-12 gap-6 max-w-6xl mx-auto">
+         <div>
+           <span className="text-[12px] font-mono font-medium tracking-widest text-brand-cyan uppercase mb-4 block">Selected Works</span>
+@@ -158,13 +556,13 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
+             <Link href={`/product/${featured.id || featured._id}`} className="absolute inset-0 z-10"></Link>
+             
+             {/* Visual Area */}
+-            <div className="w-full aspect-[4/3] bg-white dark:bg-[#0D1117] rounded-[4px] border border-slate-200 dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
+-              <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-brand-navy/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
++            <div className="w-full aspect-[4/3] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
++              <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+               {featured.photos && JSON.parse(featured.photos)[0] ? (
+                 <img 
+                   src={getOptimizedUrl(JSON.parse(featured.photos)[0])}
+                   alt={featured.title}
+-                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:-translate-y-2 relative z-10 drop-shadow-sm group-hover:drop-shadow-md"
++                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:-translate-y-2 relative z-10 drop-shadow-sm group-hover:drop-shadow-sm"
+                 />
+               ) : (
+                 <span className="font-mono text-slate-400">NO_IMAGE</span>
+@@ -208,14 +606,14 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
+         )}
+ 
+         {/* Secondary Products */}
+-        <div className="lg:col-span-5 flex flex-col gap-8 lg:border-l lg:border-slate-200 lg:dark:border-white/10 lg:pl-8">
++        <div className="lg:col-span-5 flex flex-col gap-8 lg:border-l lg:border-brand-navy/[0.08] lg:dark:border-white/10 lg:pl-8">
+           {secondary.map((product) => (
+             <div key={product.id || product._id} className="flex-1 flex flex-col group relative">
+               <Link href={`/product/${product.id || product._id}`} className="absolute inset-0 z-10"></Link>
+               
+               {/* Visual Area */}
+-              <div className="w-full aspect-[16/9] bg-white dark:bg-[#0D1117] rounded-[4px] border border-slate-200 dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
+-                <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-brand-navy/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
++              <div className="w-full aspect-[16/9] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
++                <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                 {product.photos && JSON.parse(product.photos)[0] ? (
+                   <img 
+                     src={getOptimizedUrl(JSON.parse(product.photos)[0])}
+@@ -299,7 +697,7 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink,
+           {title}
+         </h2>
+         {viewAllLink && (
+-          <Link href={viewAllLink} className="text-[13px] md:text-[14px] font-medium text-brand-navy dark:text-white bg-transparent border border-slate-200 dark:border-white/10 px-4 py-1.5 md:px-5 md:py-2 rounded-[4px] hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue transition-colors">
++          <Link href={viewAllLink} className="text-[13px] md:text-[14px] font-medium text-brand-navy dark:text-white bg-transparent border border-brand-navy/[0.08] dark:border-white/10 px-4 py-1.5 md:px-5 md:py-2 rounded-[4px] hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue transition-colors">
+             See all
+           </Link>
+         )}
+@@ -314,7 +712,7 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink,
+           {showLeft && (
+             <button 
+               onClick={() => scroll('left')}
+-              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 md:-ml-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
++              className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 md:-ml-5 z-10 bg-brand-surface/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
+             >
+               <ChevronLeft size={24} />
+             </button>
+@@ -341,7 +739,7 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink,
+           {showRight && products.length > 3 && (
+             <button 
+               onClick={() => scroll('right')}
+-              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 md:-mr-5 z-10 bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
++              className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 md:-mr-5 z-10 bg-brand-surface/90 dark:bg-[#1d1d1f]/90 backdrop-blur border border-apple-hairline p-2 md:p-3 rounded-full shadow-sm text-apple-ink hover:scale-105 transition-transform"
+             >
+               <ChevronRight size={24} />
+             </button>
+@@ -373,16 +771,34 @@ export default function MarketClientView({ initialData = [], initialPagination =
+   const [loadingBuyId, setLoadingBuyId] = useState(null);
+   const [loadingCartId, setLoadingCartId] = useState(null);
+   const [cartItems, setCartItems] = useState([]);
+-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
++  const isScrolledPastHeroRef = useRef(false);
++  const [floorCoords, setFloorCoords] = useState({ y: 0, x: null, textWidth: 500 });
++  const searchBarRef = useRef(null);
+ 
+-  const handleMouseMove = (e) => {
+-    if (typeof window !== 'undefined') {
+-      // Calculate from -1 to 1 based on screen size
+-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+-      setMousePos({ x, y });
+-    }
+-  };
++  useEffect(() => {
++    const handleFloor = (e) => setFloorCoords({ y: e.detail.y, x: e.detail.x, textWidth: e.detail.textWidth || 500 });
++    window.addEventListener('floor-position', handleFloor);
++    return () => window.removeEventListener('floor-position', handleFloor);
++  }, []);
++
++  useEffect(() => {
++    const handleScroll = () => {
++      if (!searchBarRef.current) return;
++      
++      const rect = searchBarRef.current.getBoundingClientRect();
++      // Trigger when the element reaches exactly 80px from the top of the viewport 
++      // (navbar is 52px, so this is just as it starts to slide underneath)
++      const scrolled = rect.top < 80;
++      
++      if (scrolled !== isScrolledPastHeroRef.current) {
++          isScrolledPastHeroRef.current = scrolled;
++          window.dispatchEvent(new CustomEvent('toggle-navbar-search', { detail: scrolled }));
++      }
++    };
++    window.addEventListener('scroll', handleScroll, { passive: true });
++    handleScroll();
++    return () => window.removeEventListener('scroll', handleScroll);
++  }, []);
+ 
+   useEffect(() => {
+     const updateCart = () => {
+@@ -616,10 +1032,10 @@ export default function MarketClientView({ initialData = [], initialPagination =
+     const isAdded = cartItems.includes((product.id || product._id)?.toString());
+     
+     return (
+-      <div key={product.id} className="bg-white dark:bg-[#0D1117] rounded-[8px] transition-all duration-300 overflow-hidden border border-slate-200 dark:border-[#30363D] flex flex-col relative group hover:shadow-[0_8px_24px_rgba(0,0,0,0.04)] dark:hover:shadow-none dark:hover:border-[#8B949E]/50">
++      <div key={product.id} className="bg-brand-surface dark:bg-brand-surface rounded-[8px] transition-all duration-300 overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 flex flex-col relative group hover:shadow-[1px_1px_10px_rgba(11,37,69,0.02)] dark:hover:shadow-none dark:hover:border-white/20/50">
+         <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
+       {product.photos && JSON.parse(product.photos)[0] ? (
+-        <div className="aspect-square w-full bg-brand-cloud dark:bg-[#010409] flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-[#30363D]">
++        <div className="aspect-square w-full bg-brand-cloud dark:bg-brand-dark flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-white/10">
+           <img 
+             src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
+             alt={product.title} 
+@@ -630,7 +1046,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
+           {(user?.role === 'admin' || user?.role === 'superadmin') && (
+             <Link 
+               href={`/admin/market/products?edit=${product.id}`}
+-              className="absolute top-2 right-2 bg-white/90 p-2 rounded-[4px] text-brand-blue hover:bg-brand-blue hover:text-white transition shadow-sm border border-slate-200 z-20"
++              className="absolute top-2 right-2 bg-brand-surface/90 p-2 rounded-[4px] text-brand-blue hover:bg-brand-blue hover:text-white transition shadow-sm border border-brand-navy/[0.08] z-20"
+               onClick={(e) => e.stopPropagation()}
+               title="Edit Product"
+             >
+@@ -639,13 +1055,13 @@ export default function MarketClientView({ initialData = [], initialPagination =
+           )}
+         </div>
+       ) : (
+-        <div className="aspect-square w-full bg-brand-cloud dark:bg-[#010409] flex items-center justify-center text-brand-slate/50 text-[13px] border-b border-slate-100 dark:border-[#30363D] font-mono">
++        <div className="aspect-square w-full bg-brand-cloud dark:bg-brand-dark flex items-center justify-center text-brand-slate dark:text-slate-300/50 text-[13px] border-b border-slate-100 dark:border-white/10 font-mono">
+           NO_IMAGE
+         </div>
+       )}
+       <div className="p-4 flex flex-col flex-1 bg-transparent">
+         {product.productType && (
+-          <span className={`inline-block text-[11px] font-mono font-medium px-2 py-0.5 rounded-[4px] mb-2 self-start ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300'}`}>
++          <span className={`inline-block text-[11px] font-mono font-medium px-2 py-0.5 rounded-[4px] mb-2 self-start ${PRODUCT_TYPE_COLORS[product.productType] || 'bg-slate-100 dark:bg-brand-surface/[0.05] text-slate-600 dark:text-slate-300 dark:bg-brand-surface/10 dark:text-slate-300'}`}>
+             {product.productType}
+           </span>
+         )}
+@@ -683,7 +1099,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
+           <button 
+             onClick={(e) => handleBuyNow(e, product)}
+             disabled={isPending && loadingBuyId === (product.id || product._id)}
+-            className="flex-auto bg-transparent border border-slate-300 dark:border-white/20 text-brand-navy dark:text-white py-2 px-3 text-[13px] font-sans font-medium rounded-[4px] transition-colors duration-200 hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
++            className="flex-auto bg-transparent border border-brand-navy/[0.08] dark:border-white/20 text-brand-navy dark:text-white py-2 px-3 text-[13px] font-sans font-medium rounded-[4px] transition-colors duration-200 hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
+           >
+             {isPending && loadingBuyId === (product.id || product._id) ? (
+               <AppleSpinner size={16} className="text-brand-navy dark:text-white" />
+@@ -700,368 +1116,159 @@ export default function MarketClientView({ initialData = [], initialPagination =
+   };
+ 
+   return (
+-    <div className="min-h-screen font-sans">
++    <div className="min-h-screen font-sans bg-brand-main">
+       <AuthGuardModal 
+         isOpen={showAuthModal} 
+         onClose={() => setShowAuthModal(false)} 
+         reason="like" 
+       />
+ 
+-      {/* Digital Technology Partner Hero Section */}
+-      {/* Digital Technology Partner Hero Section */}
++      
++      
++      {/* World-Class Premium Hero Section */}
+       {!query && (
+-        <div 
+-          className="w-full relative overflow-hidden bg-brand-cloud dark:bg-brand-navy border-b border-slate-200 dark:border-brand-navy/10 mt-0 mb-12 rounded-[4px]"
+-          onMouseMove={handleMouseMove}
+-          onMouseLeave={() => setMousePos({ x: 0, y: 0 })}
+-        >
+-          {/* Solid Foundation */}
+-          <div className="absolute inset-0 bg-white dark:bg-brand-navy z-0"></div>
++        <div className="relative w-full min-h-[100vh] flex flex-col items-center justify-start border-b border-white/[0.05]">
+           
+-          {/* Subtle Grid Pattern for tech feel */}
+-          <div className="absolute inset-0 bg-[url('/icons/grid-pattern.svg')] opacity-[0.03] dark:opacity-[0.03] z-0 pointer-events-none transition-transform duration-500 ease-out invert dark:invert-0" 
+-            style={{ 
+-              backgroundSize: '40px 40px',
+-              transform: `translate(${mousePos.x * -20}px, ${mousePos.y * -20}px)`
+-            }}
+-          ></div>
+-
+-          <div className="relative z-10 w-full flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 py-20 md:py-32 min-h-[600px] max-w-[1400px] mx-auto">
++          {/* Fixed Background for Parallax Effect */}
++          <div className="fixed inset-0 z-0 pointer-events-none bg-black overflow-hidden">
++            {/* Background Effects - Ultra Premium Glow */}
++            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-brand-blue/20 blur-[120px] rounded-full"></div>
++            <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[400px] h-[300px] bg-brand-cyan/10 blur-[100px] rounded-full"></div>
++            
++            {/* Deep Tech Subtle Radial Glow Behind Particles */}
++            {/* Deep Tech Subtle Radial Glow Behind Particles */}
++            <motion.div 
++              initial={{ opacity: 0, scale: 0.5 }}
++              animate={{ opacity: 1, scale: 1 }}
++              transition={{ duration: 3.5, ease: "easeOut", delay: 3.5 }}
++              className="absolute top-[45vh] -translate-y-1/2 w-[600px] h-[500px] bg-brand-blue/15 blur-[120px] rounded-full z-0 pointer-events-none" 
++              style={{ left: floorCoords.x ? `${floorCoords.x}px` : '50%', transform: 'translate(-50%, -50%)' }}
++            ></motion.div>
++            
++            <TechParticles />
+             
+-            {/* Left Content (Text & CTAs) */}
++            {/* 3D Ground Plane Grid (Cyberspace Floor) */}
+             <div 
+-              className="w-full lg:w-[45%] flex flex-col items-start text-left z-20 mb-16 lg:mb-0 transition-transform duration-700 ease-out animate-in fade-in slide-in-from-bottom-4 duration-700"
+-              style={{
+-                transform: `translate(${mousePos.x * -6}px, ${mousePos.y * -6}px)`
+-              }}
++              className="absolute left-0 right-0 bottom-0 overflow-hidden z-0 pointer-events-none" 
++              style={{ top: floorCoords.y ? `${floorCoords.y}px` : '58vh', perspective: '800px', transformStyle: 'preserve-3d' }}
+             >
+-              {/* Technical Identifier Badge */}
+-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[2px] bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan text-[11px] font-mono font-medium mb-8 tracking-widest">
+-                <div className="w-1.5 h-1.5 bg-brand-cyan animate-pulse-soft"></div>
+-                DIGITAL TECHNOLOGY PARTNER
+-              </div>
+-
+-              <h1 className="text-[40px] md:text-[56px] lg:text-[64px] font-display font-semibold tracking-tight text-brand-navy dark:text-white mb-6 leading-[1.1]">
+-                Build. Launch.<br/>
+-                <span className="text-brand-blue dark:text-white/90">Maintain. Improve.</span>
+-              </h1>
+-              
+-              <p className="text-[16px] md:text-[18px] text-slate-500 dark:text-brand-cloud/80 max-w-lg mb-10 font-sans leading-[1.6]">
+-                Websites, software, tools and custom solutions ΓÇö built to last and cared for after launch.
+-              </p>
+-              
+-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center w-full sm:w-auto mb-12">
+-                <button 
+-                  onClick={() => {
+-                    const el = document.getElementById('shop-categories');
+-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+-                  }} 
+-                  className="group relative inline-flex items-center justify-center gap-2 bg-brand-blue text-white px-8 py-3.5 rounded-[4px] font-sans font-medium text-[14px] hover:bg-brand-blue/90 transition-all duration-200 w-full sm:w-auto"
+-                >
+-                  Start a Project
+-                </button>
+-                
+-                <Link 
+-                  href="/shop" 
+-                  className="group inline-flex items-center justify-center gap-2 bg-slate-100 dark:bg-transparent text-brand-navy dark:text-white border border-transparent dark:border-white/20 px-8 py-3.5 rounded-[4px] font-sans font-medium text-[14px] hover:bg-slate-200 dark:hover:bg-white/5 transition-all duration-200 w-full sm:w-auto"
+-                >
+-                  Explore Products
+-                </Link>
+-              </div>
+-
+-              {/* Technical Metadata */}
+-              <div className="flex items-center gap-6 text-[11px] font-mono text-brand-cyan uppercase tracking-widest border-t border-slate-200 dark:border-white/10 pt-6 w-full max-w-sm">
+-                <div className="flex flex-col gap-1">
+-                  <span className="text-slate-400 dark:text-white/40">Latency</span>
+-                  <span className="text-brand-blue dark:text-brand-cyan">{"< 50ms"}</span>
+-                </div>
+-                <div className="flex flex-col gap-1">
+-                  <span className="text-slate-400 dark:text-white/40">Uptime</span>
+-                  <span className="text-brand-blue dark:text-brand-cyan">99.99%</span>
+-                </div>
+-                <div className="flex flex-col gap-1">
+-                  <span className="text-slate-400 dark:text-white/40">Global Edge</span>
+-                  <span className="text-brand-blue dark:text-brand-cyan">Active</span>
+-                </div>
+-              </div>
++              <motion.div 
++                initial={{ rotateX: -20, z: 1200, y: -200, scale: 1.5, opacity: 0 }}
++                animate={{ rotateX: 75, z: 0, y: 0, scale: 1, opacity: 1 }}
++                transition={{ duration: 1.2, ease: [0.05, 1, 0.1, 1], delay: 0.1 }}
++                className="absolute left-[-50%] right-[-50%] top-0 h-[200vh]" 
++                style={{ 
++                  transformOrigin: floorCoords.x ? `${floorCoords.x + (typeof window !== 'undefined' ? window.innerWidth : 1920) * 0.5}px top` : 'top center',
++                  backgroundSize: '80px 80px',
++                  backgroundImage: `linear-gradient(to right, rgba(56, 189, 248, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(56, 189, 248, 0.25) 1px, transparent 1px)`,
++                  maskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)',
++                  WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 60%)'
++                }}>
++              </motion.div>
+             </div>
+ 
+-            {/* Right Content (Custom Visual Experience) */}
++            {/* Sharp Horizon Line */}
++            <motion.div 
++              initial={{ opacity: 0, scaleX: 0, filter: "blur(10px)" }}
++              animate={{ opacity: 1, scaleX: 1, filter: "blur(1px)" }}
++              transition={{ duration: 0.6, ease: "circOut", delay: 0.8 }}
++              className="absolute left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-brand-cyan/80 to-transparent z-0 pointer-events-none origin-center" 
++              style={{ top: floorCoords.y ? `${floorCoords.y}px` : '58vh' }}
++            ></motion.div>
++
++            {/* Letter-Specific Synchronized Reflection Glows */}
+             <div 
+-              className="w-full lg:w-[55%] relative h-[400px] md:h-[500px] flex items-center justify-center lg:justify-end z-10 pointer-events-none transition-transform duration-700 ease-out"
+-              style={{
+-                transform: `translate(${mousePos.x * 20}px, ${mousePos.y * 20}px) perspective(1000px) rotateX(${mousePos.y * -10}deg) rotateY(${mousePos.x * 10}deg)`
++              className="absolute h-[100px] z-0 pointer-events-none origin-bottom"
++              style={{ 
++                width: floorCoords.textWidth ? `${floorCoords.textWidth}px` : '500px',
++                top: floorCoords.y ? `${floorCoords.y - 10}px` : '57vh', 
++                left: floorCoords.x ? `${floorCoords.x}px` : '50%', 
++                transform: 'translateX(-50%) perspective(800px) rotateX(75deg)' 
+               }}
+             >
+-              
+-              {/* Outer Ambient Glow */}
+-              <div 
+-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] md:w-[400px] h-[280px] md:h-[400px] bg-brand-blue/20 rounded-full blur-[80px] md:blur-[100px] opacity-60 transition-transform duration-1000"
+-                style={{ transform: `translate(calc(-50% + ${mousePos.x * -40}px), calc(-50% + ${mousePos.y * -40}px))` }}
+-              ></div>
+-              
+-              {/* The "Core" Wrapper */}
+-              <div className="relative w-[280px] h-[280px] md:w-[420px] md:h-[420px] animate-[pulseSoft_6s_ease-in-out_infinite]">
+-                
+-                {/* Connection Lines (SVG) */}
+-                <svg 
+-                  className="absolute inset-0 w-full h-full text-brand-cyan/20 transition-transform duration-500 ease-out" 
+-                  viewBox="0 0 400 400" 
+-                  fill="none" 
+-                  xmlns="http://www.w3.org/2000/svg"
+-                  style={{ transform: `translate(${mousePos.x * -30}px, ${mousePos.y * -30}px)` }}
+-                >
+-                  <path d="M200 50 L200 350 M50 200 L350 200" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" className="animate-[spin_40s_linear_infinite_reverse]" style={{ transformOrigin: 'center' }} />
+-                  <circle cx="200" cy="200" r="140" stroke="currentColor" strokeWidth="1" strokeDasharray="2 6" className="animate-[spin_30s_linear_infinite]" style={{ transformOrigin: 'center' }} />
+-                  <circle cx="200" cy="200" r="100" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+-                </svg>
+-
+-                {/* Layered Geometric Modules */}
+-                <div 
+-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] md:w-[240px] h-[200px] md:h-[240px] border border-brand-blue/20 bg-[#071932]/80 backdrop-blur-sm transition-transform duration-[400ms] ease-out"
+-                  style={{ transform: `translate(calc(-50% + ${mousePos.x * 15}px), calc(-50% + ${mousePos.y * 15}px)) rotate(45deg)` }}
+-                ></div>
+-                <div 
+-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] md:w-[200px] h-[160px] md:h-[200px] border border-brand-cyan/40 bg-brand-navy transition-transform duration-[500ms] ease-out"
+-                  style={{ transform: `translate(calc(-50% + ${mousePos.x * 25}px), calc(-50% + ${mousePos.y * 25}px)) rotate(45deg)` }}
+-                >
+-                   {/* Inner core grid */}
+-                   <div className="absolute inset-0 bg-[url('/icons/grid-pattern.svg')] opacity-20" style={{ backgroundSize: '20px 20px' }}></div>
+-                </div>
+-                
+-                {/* Central Floating Processor */}
+-                <div 
+-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] bg-brand-cyan shadow-[0_0_30px_rgba(34,199,232,0.15)] flex items-center justify-center transition-transform duration-[200ms] ease-out"
+-                  style={{ transform: `translate(calc(-50% + ${mousePos.x * 40}px), calc(-50% + ${mousePos.y * 40}px))` }}
+-                >
+-                   <div className="w-[60px] h-[60px] bg-brand-navy flex items-center justify-center">
+-                      <div className="w-4 h-4 bg-white/90 animate-pulse"></div>
+-                   </div>
+-                </div>
+-
+-                {/* Floating Technical Labels (Parallax Depth) */}
+-                <div 
+-                  className="absolute top-[10%] left-[50%] -translate-x-1/2 bg-brand-navy/90 border border-brand-cyan/20 px-2 py-1 text-[10px] font-mono text-brand-cyan uppercase tracking-widest backdrop-blur-md transition-transform duration-700 ease-out"
+-                  style={{ transform: `translate(calc(-50% + ${mousePos.x * 50}px), ${mousePos.y * 50}px)` }}
+-                >
+-                  SYSTEM
+-                </div>
+-                <div 
+-                  className="absolute bottom-[20%] left-[5%] bg-brand-navy/90 border border-brand-cyan/20 px-2 py-1 text-[10px] font-mono text-brand-cloud uppercase tracking-widest backdrop-blur-md transition-transform duration-1000 ease-out"
+-                  style={{ transform: `translate(${mousePos.x * -60}px, ${mousePos.y * -60}px)` }}
+-                >
+-                  BUILD
+-                </div>
+-                <div 
+-                  className="absolute top-[20%] right-[5%] bg-brand-navy/90 border border-brand-cyan/20 px-2 py-1 text-[10px] font-mono text-[#F5A623] uppercase tracking-widest backdrop-blur-md transition-transform duration-500 ease-out"
+-                  style={{ transform: `translate(${mousePos.x * 30}px, ${mousePos.y * 30}px)` }}
+-                >
+-                  DEPLOY
+-                </div>
+-                <div 
+-                  className="absolute bottom-[10%] right-[20%] bg-brand-navy/90 border border-brand-cyan/20 px-2 py-1 text-[10px] font-mono text-brand-cyan uppercase tracking-widest backdrop-blur-md transition-transform duration-700 ease-out"
+-                  style={{ transform: `translate(${mousePos.x * 45}px, ${mousePos.y * 45}px)` }}
+-                >
+-                  MONITOR
+-                </div>
+-                <div 
+-                  className="absolute top-[45%] left-0 -translate-y-1/2 bg-brand-navy/90 border border-brand-cyan/20 px-2 py-1 text-[10px] font-mono text-brand-teal uppercase tracking-widest backdrop-blur-md transition-transform duration-1000 ease-out"
+-                  style={{ transform: `translate(${mousePos.x * -70}px, calc(-50% + ${mousePos.y * -70}px))` }}
+-                >
+-                  IMPROVE
+-                </div>
+-
+-                {/* Orbiting Modules */}
+-                <div className="absolute top-0 left-0 w-full h-full animate-[spin_15s_linear_infinite]" style={{ transformOrigin: 'center' }}>
+-                  <div className="absolute top-[20px] left-[50%] -translate-x-1/2 w-2 h-2 bg-brand-cyan shadow-[0_0_10px_#22C7E8]"></div>
+-                </div>
+-                <div className="absolute top-0 left-0 w-full h-full animate-[spin_25s_linear_infinite_reverse]" style={{ transformOrigin: 'center' }}>
+-                  <div className="absolute bottom-[40px] right-[40px] w-1.5 h-1.5 bg-[#F5A623] shadow-[0_0_10px_#F5A623]"></div>
+-                </div>
+-
+-              </div>
++              {/* Phase 1: 'a', 'i', 'a' (1.5s) */}
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut", delay: 1.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '46%', width: '12%' }}></motion.div>
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut", delay: 1.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '66%', width: '6%' }}></motion.div>
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut", delay: 1.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '86%', width: '14%' }}></motion.div>
++
++              {/* Phase 2: 'o', 'n' (2.5s) */}
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut", delay: 2.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '17%', width: '14%' }}></motion.div>
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, ease: "easeOut", delay: 2.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '72%', width: '14%' }}></motion.div>
++
++              {/* Phase 3: 'C', 'd', 'l' (3.5s) */}
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, ease: "easeOut", delay: 3.5 }} className="absolute top-0 h-full bg-brand-cyan/30 blur-[30px] rounded-full" style={{ left: '0%', width: '17%' }}></motion.div>
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, ease: "easeOut", delay: 3.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '31%', width: '14%' }}></motion.div>
++              <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5, ease: "easeOut", delay: 3.5 }} className="absolute top-0 h-full bg-brand-cyan/25 blur-[30px] rounded-full" style={{ left: '59%', width: '7%' }}></motion.div>
+             </div>
+-            
+           </div>
+-        </div>
+-      )}
++          
++          {/* Electronic Current Text Below Codalina */}
++          <ElectronicCurrentText delay={3.8} />
++          
++          {/* Scrollable Overlay Content */}
++          <div className="relative z-10 w-full flex flex-col items-center pointer-events-none">
++            
++            {/* Transparent spacer to show the fixed Codalina background initially. 
++                85vh means the next section will peek 15vh from the bottom. */}
++            <div className="w-full" style={{ height: '85vh' }}></div>
+ 
+-      {/* Capabilities Section */}
+-      {!query && (
+-        <div className="w-full border-t border-slate-200 dark:border-white/5 relative">
+-          <div className="flex flex-col md:flex-row gap-12 md:gap-24 items-start px-6 md:px-12 py-12 md:py-20 max-w-[1400px] mx-auto">
+-            <div className="md:w-1/3">
+-              <span className="text-[12px] font-mono font-medium tracking-widest text-brand-cyan uppercase mb-4 block">Our Capabilities</span>
+-              <h2 className="text-[28px] md:text-[36px] font-display font-medium text-brand-navy dark:text-white leading-tight mb-6">
+-                Engineered for scale and performance.
+-              </h2>
+-              <p className="text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
+-                We don't just write code. We architect reliable systems that act as the technical foundation for your business operations. From complex data pipelines to highly responsive user interfaces.
+-              </p>
+-            </div>
+-            <div className="md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-8 w-full">
+-              {[
+-                { title: "Custom Web Applications", desc: "React, Next.js, and Node.js ecosystems built for high traffic and maximum uptime." },
+-                { title: "SaaS Infrastructure", desc: "Scalable multi-tenant architectures, secure authentication, and robust billing integrations." },
+-                { title: "System Integrations", desc: "Connecting your bespoke tools with CRM, ERP, and payment gateways seamlessly." },
+-                { title: "Technical Maintenance", desc: "Continuous monitoring, version upgrades, and performance tuning for existing systems." },
+-              ].map((item, idx) => (
+-                <div key={idx} className="group">
+-                  <div className="w-10 h-10 rounded-[4px] bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center mb-4 text-brand-navy dark:text-white group-hover:border-brand-blue group-hover:text-brand-blue transition-colors">
+-                    <Check size={18} />
+-                  </div>
+-                  <h3 className="text-[16px] font-medium text-brand-navy dark:text-white mb-2">{item.title}</h3>
+-                  <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{item.desc}</p>
+-                </div>
+-              ))}
+-            </div>
++            {/* Solid Black Content Block that scrolls over the fixed background */}
++            <div className="w-full bg-black z-30 pointer-events-auto rounded-t-[32px] border-t border-white/[0.05] shadow-[0_-20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center">
++              
++              {/* Tagline Section - Big Centered Text */}
++              <motion.div
++                initial={{ opacity: 0, y: 40 }}
++                whileInView={{ opacity: 1, y: 0 }}
++                viewport={{ once: true, margin: "-100px" }}
++                transition={{ duration: 1, ease: "easeOut" }}
++                className="w-full py-24 md:py-32 px-6 flex flex-col items-center justify-center max-w-6xl mx-auto"
++              >
++                <h2 className="text-[32px] md:text-[48px] lg:text-[60px] font-display font-medium text-white text-center leading-[1.2] lg:leading-[1.1] tracking-tight">
++                  We partner with you to build, launch, maintain, and continuously improve your{" "}
++                  <span className="relative inline-block group px-1 md:px-2">
++                    <span className="relative z-10 text-white group-hover:text-brand-cyan transition-colors duration-500">websites</span>
++                    <BrushUnderline colorClass="text-brand-cyan" delay={0.2} />
++                  </span>,{" "}
++                  <span className="relative inline-block group px-1 md:px-2">
++                    <span className="relative z-10 text-white group-hover:text-brand-cyan transition-colors duration-500">SaaS</span>
++                    <BrushUnderline colorClass="text-brand-cyan" delay={0.4} />
++                  </span>, and{" "}
++                  <span className="relative inline-block group px-1 md:px-2">
++                    <span className="relative z-10 text-white group-hover:text-brand-cyan transition-colors duration-500">web applications</span>
++                    <BrushUnderline colorClass="text-brand-cyan" delay={0.6} />
++                  </span>{" "}
++                  <span className="text-slate-400">with dedicated care long after launch.</span>
++                </h2>
++              </motion.div>
++
++              {/* Premium Services Scrolling Narrative */}
++              <ServicesStoryteller />
+           </div>
+-        </div>
+-      )}
+ 
+-      {/* Mobile Right Sidebar (Flash Deals, etc) */}
+-      {!query && (
+-        <div className="lg:hidden w-full px-2 mt-4 mb-2">
+-          <RightSidebar />
++            {/* Store Preview / Ready-made Alternative */}
++            <StorePreviewSection products={displayedProducts.length > 0 ? displayedProducts : popularProducts} />
++          </div>
+         </div>
+       )}
++      
++      {/* Content Below Hero */}
++      <div className="relative z-10 w-full bg-brand-main">
+ 
+-      {/* What We Build (Premium Capability Grid) */}
+-      {!query && (
+-        <div id="what-we-build" className="w-full py-16 md:py-24 relative">
+-          
+-          <div className="flex flex-col mb-12 px-2 md:px-0">
+-            <span className="text-[12px] font-mono font-medium tracking-widest text-brand-cyan uppercase mb-4">Core Focus</span>
+-            <h2 className="text-[32px] md:text-[40px] font-display font-medium text-brand-navy dark:text-white leading-tight">
+-              What we build
+-            </h2>
+-          </div>
+-
+-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-2 md:px-0">
+-            
+-            {/* 1. Websites (Wide) */}
+-            <Link href="/shop?type=service" className="group md:col-span-2 bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] p-8 md:p-10 flex flex-col md:flex-row gap-8 hover:border-brand-blue/40 transition-colors duration-300 relative overflow-hidden">
+-              <div className="flex-1 flex flex-col z-10">
+-                <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6">01 / Digital Real Estate</span>
+-                <h3 className="text-[28px] font-display font-medium text-brand-navy dark:text-white mb-4 group-hover:text-brand-blue transition-colors">Websites</h3>
+-                <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm mb-8">
+-                  High-performance digital experiences and bespoke business websites architected for speed, conversion, and scale.
+-                </p>
+-                <div className="mt-auto flex items-center gap-2 text-[13px] font-semibold text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors">
+-                  Explore <ArrowRight size={14} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+-                </div>
+-              </div>
+-              {/* Visual Component */}
+-              <div className="w-full md:w-[240px] h-[160px] md:h-full relative shrink-0 flex items-center justify-center pointer-events-none">
+-                <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/5 to-transparent rounded-[4px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+-                <div className="w-[80%] h-[80%] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-sm flex flex-col p-3 transform transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-md">
+-                  <div className="w-full h-[12px] border-b border-slate-100 dark:border-white/5 mb-3 flex items-center gap-1">
+-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+-                  </div>
+-                  <div className="w-full h-8 bg-brand-cloud dark:bg-white/5 rounded-[2px] mb-2 transform origin-left transition-transform duration-300 group-hover:scale-x-[0.99]"></div>
+-                  <div className="flex gap-2 flex-1">
+-                    <div className="flex-1 bg-brand-cloud dark:bg-white/5 rounded-[2px]"></div>
+-                    <div className="w-1/3 bg-brand-cloud dark:bg-white/5 rounded-[2px]"></div>
+-                  </div>
+-                </div>
+-              </div>
+-            </Link>
+ 
+-            {/* 2. Software (Square) */}
+-            <Link href="/shop?type=software" className="group md:col-span-1 bg-brand-navy border border-brand-navy/10 rounded-[4px] p-8 md:p-10 flex flex-col hover:border-brand-cyan/40 transition-colors duration-300 relative overflow-hidden">
+-              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/10 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none transition-opacity duration-500 opacity-50 group-hover:opacity-100"></div>
+-              
+-              <div className="flex-1 flex flex-col z-10">
+-                <span className="text-[11px] font-mono text-brand-cyan/70 uppercase tracking-widest mb-6">02 / Systems</span>
+-                <h3 className="text-[28px] font-display font-medium text-white mb-4">Software</h3>
+-                <p className="text-[14px] text-white/70 leading-relaxed mb-8">
+-                  Custom tools, complex business systems, and scalable software solutions.
+-                </p>
+-                <div className="mt-auto flex items-center gap-2 text-[13px] font-semibold text-brand-cyan">
+-                  Explore <ArrowRight size={14} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+-                </div>
+-              </div>
+-              {/* Visual Component */}
+-              <div className="w-full h-[120px] mt-8 relative flex items-end pointer-events-none">
+-                 <div className="w-full h-full border-t border-brand-cyan/20 border-l border-brand-cyan/20 flex p-4 relative">
+-                   <div className="absolute -top-1 -left-1 w-2 h-2 bg-brand-cyan shadow-[0_0_8px_#22C7E8] transition-shadow duration-300 group-hover:shadow-[0_0_12px_#22C7E8]"></div>
+-                   <div className="w-full h-full bg-gradient-to-tr from-brand-cyan/5 to-transparent">
+-                     <svg className="w-full h-full text-brand-cyan/20" viewBox="0 0 100 50" preserveAspectRatio="none">
+-                       <path d="M0,50 L20,30 L40,40 L60,10 L80,20 L100,0" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" className="transition-transform duration-500 ease-out transform group-hover:translate-y-[-2px]" />
+-                     </svg>
+-                   </div>
+-                 </div>
+-              </div>
+-            </Link>
+ 
+-            {/* 3. Digital Products (Square) */}
+-            <Link href="/shop?type=product" className="group md:col-span-1 bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] p-8 md:p-10 flex flex-col hover:border-brand-blue/40 transition-colors duration-300 relative overflow-hidden">
+-              <div className="flex-1 flex flex-col z-10">
+-                <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6">03 / Assets</span>
+-                <h3 className="text-[28px] font-display font-medium text-brand-navy dark:text-white mb-4 group-hover:text-brand-blue transition-colors">Products</h3>
+-                <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed mb-8">
+-                  Templates, UI systems, components, and premium developer assets.
+-                </p>
+-                <div className="mt-auto flex items-center gap-2 text-[13px] font-semibold text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors">
+-                  Explore <ArrowRight size={14} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+-                </div>
+-              </div>
+-              {/* Visual Component */}
+-              <div className="w-full h-[120px] mt-8 relative flex items-center justify-center pointer-events-none">
+-                 <div className="w-16 h-16 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-sm absolute left-1/2 -translate-x-full -ml-2 transform transition-transform duration-500 group-hover:-translate-x-[110%] group-hover:-translate-y-2 group-hover:rotate-[-5deg]"></div>
+-                 <div className="w-16 h-16 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-md absolute left-1/2 -translate-x-1/2 z-10 transform transition-transform duration-500 group-hover:-translate-y-4"></div>
+-                 <div className="w-16 h-16 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] shadow-sm absolute left-1/2 ml-2 transform transition-transform duration-500 group-hover:translate-x-[10%] group-hover:-translate-y-2 group-hover:rotate-[5deg]"></div>
+-              </div>
+-            </Link>
+ 
+-            {/* 4. Ongoing Care (Wide) */}
+-            <Link href="/shop?type=service" className="group md:col-span-2 bg-[#0A1A2F] border border-[#132A4A] rounded-[4px] p-8 md:p-10 flex flex-col md:flex-row gap-8 hover:border-[#1C4173] transition-colors duration-300 relative overflow-hidden">
+-              <div className="flex-1 flex flex-col z-10">
+-                <span className="text-[11px] font-mono text-brand-teal uppercase tracking-widest mb-6">04 / Lifecycle</span>
+-                <h3 className="text-[28px] font-display font-medium text-white mb-4">Ongoing Care</h3>
+-                <p className="text-[14px] text-white/70 leading-relaxed max-w-sm mb-8">
+-                  Maintenance, security updates, monitoring, and continuous improvement for your digital systems.
+-                </p>
+-                <div className="mt-auto flex items-center gap-2 text-[13px] font-semibold text-brand-teal">
+-                  Explore <ArrowRight size={14} className="transform transition-transform duration-300 group-hover:translate-x-1" />
+-                </div>
+-              </div>
+-              {/* Visual Component */}
+-              <div className="w-full md:w-[240px] h-[160px] md:h-full relative shrink-0 flex items-center justify-center pointer-events-none">
+-                 <div className="w-[120px] h-[120px] rounded-full border border-brand-teal/20 flex items-center justify-center relative">
+-                   <div className="absolute inset-0 rounded-full border border-brand-teal/10 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+-                   <div className="w-[80px] h-[80px] rounded-full border border-brand-teal/40 flex items-center justify-center">
+-                      <div className="w-2 h-2 bg-brand-teal rounded-full shadow-[0_0_15px_#0B7A68]"></div>
+-                   </div>
+-                   {/* Orbiting element */}
+-                   <div className="absolute top-0 left-0 w-full h-full animate-[spin_8s_linear_infinite]" style={{ transformOrigin: 'center' }}>
+-                     <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-brand-cyan/50 rounded-full"></div>
+-                   </div>
+-                 </div>
+-              </div>
+-            </Link>
+ 
+-          </div>
+-        </div>
+-      )}
+ 
+       {/* Product Lifecycle Process Section */}
+       {!query && <ProcessSection />}
+ 
+-      {/* Editorial Product Showcase */}
+-      {!query && (
+-        <EditorialProductShowcase 
+-          products={displayedProducts.length > 0 ? displayedProducts : popularProducts} 
+-          isLoading={loading && displayedProducts.length === 0} 
+-        />
+-      )}
++
+       
+       {/* Search Empty State */}
+       {query && displayedProducts.length === 0 && (
+-        <div className="text-center py-20 bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] border border-slate-200 dark:border-white/5 w-full my-8">
++        <div className="text-center py-20 bg-brand-cloud dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/5 w-full my-8">
+           <h3 className="text-lg font-semibold text-brand-navy dark:text-white">No products found</h3>
+-          <p className="text-slate-500 mt-2">Try adjusting your search query</p>
++          <p className="text-slate-500 dark:text-slate-400 mt-2">Try adjusting your search query</p>
+         </div>
+       )}
+       
+@@ -1073,169 +1280,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
+         />
+       )}
+ 
+-      {/* Why Codalina Editorial */}
+-      {!query && (
+-        <div className="w-full py-24 md:py-32 relative border-t border-slate-200 dark:border-white/5">
+-          <div className="flex flex-col lg:flex-row gap-16 md:gap-24 px-6 md:px-12 max-w-6xl mx-auto relative">
+-            
+-            {/* Left: Sticky Header */}
+-            <div className="lg:w-1/3 flex flex-col items-start lg:sticky lg:top-32 h-fit">
+-              <span className="text-[12px] font-mono font-medium tracking-widest text-brand-cyan uppercase mb-6 flex items-center gap-2">
+-                <span className="w-1.5 h-1.5 bg-brand-cyan rounded-full animate-pulse-soft"></span>
+-                Why Codalina
+-              </span>
+-              <h2 className="text-[32px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white leading-[1.1] mb-6">
+-                Built for today.<br />Designed to evolve.
+-              </h2>
+-              <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm">
+-                We engineer digital infrastructure with a focus on maintainable architecture and proactive care.
+-              </p>
+-            </div>
+ 
+-            {/* Right: The 5 Principles List */}
+-            <div className="lg:w-2/3 flex flex-col">
+-              
+-              {/* Principle 1 */}
+-              <div className="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 md:py-12 border-t border-slate-200 dark:border-white/10 relative">
+-                 <div className="md:w-1/3 shrink-0 flex items-center gap-4">
+-                   <div className="w-8 h-8 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-[11px] text-brand-slate dark:text-slate-400 group-hover:bg-brand-blue group-hover:border-brand-blue group-hover:text-white transition-colors duration-300">01</div>
+-                   <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors duration-300">Reliable by design</h3>
+-                 </div>
+-                 <div className="md:w-2/3">
+-                   <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-brand-navy dark:group-hover:text-slate-300 transition-colors duration-300">
+-                     Every system we build is security-conscious by design. We use proven frameworks and established deployment pipelines to ensure stability without sacrificing speed.
+-                   </p>
+-                 </div>
+-              </div>
+-              
+-              {/* Principle 2 */}
+-              <div className="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 md:py-12 border-t border-slate-200 dark:border-white/10 relative">
+-                 <div className="md:w-1/3 shrink-0 flex items-center gap-4">
+-                   <div className="w-8 h-8 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-[11px] text-brand-slate dark:text-slate-400 group-hover:bg-brand-blue group-hover:border-brand-blue group-hover:text-white transition-colors duration-300">02</div>
+-                   <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors duration-300">Clear communication</h3>
+-                 </div>
+-                 <div className="md:w-2/3">
+-                   <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-brand-navy dark:group-hover:text-slate-300 transition-colors duration-300">
+-                     We translate complex technical requirements into plain language. No dark patterns, no hidden dependenciesΓÇöjust honest technical partnership.
+-                   </p>
+-                 </div>
+-              </div>
+ 
+-              {/* Principle 3 */}
+-              <div className="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 md:py-12 border-t border-slate-200 dark:border-white/10 relative">
+-                 <div className="md:w-1/3 shrink-0 flex items-center gap-4">
+-                   <div className="w-8 h-8 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-[11px] text-brand-slate dark:text-slate-400 group-hover:bg-brand-blue group-hover:border-brand-blue group-hover:text-white transition-colors duration-300">03</div>
+-                   <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors duration-300">Maintainable technology</h3>
+-                 </div>
+-                 <div className="md:w-2/3">
+-                   <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-brand-navy dark:group-hover:text-slate-300 transition-colors duration-300">
+-                     We avoid brittle abstractions and exotic tech stacks. Our software is built to adapt, with clean codebases that future developers can confidently inherit.
+-                   </p>
+-                 </div>
+-              </div>
+ 
+-              {/* Principle 4 */}
+-              <div className="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 md:py-12 border-t border-slate-200 dark:border-white/10 relative">
+-                 <div className="md:w-1/3 shrink-0 flex items-center gap-4">
+-                   <div className="w-8 h-8 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-[11px] text-brand-slate dark:text-slate-400 group-hover:bg-brand-blue group-hover:border-brand-blue group-hover:text-white transition-colors duration-300">04</div>
+-                   <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors duration-300">Long-term care</h3>
+-                 </div>
+-                 <div className="md:w-2/3">
+-                   <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-brand-navy dark:group-hover:text-slate-300 transition-colors duration-300">
+-                     Launching is just the starting line. We provide proactive care, regular security patches, and performance monitoring to keep your platform healthy.
+-                   </p>
+-                 </div>
+-              </div>
+-
+-              {/* Principle 5 */}
+-              <div className="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 md:py-12 border-t border-slate-200 dark:border-white/10 border-b relative">
+-                 <div className="md:w-1/3 shrink-0 flex items-center gap-4">
+-                   <div className="w-8 h-8 rounded-[4px] bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 flex items-center justify-center font-mono text-[11px] text-brand-slate dark:text-slate-400 group-hover:bg-brand-blue group-hover:border-brand-blue group-hover:text-white transition-colors duration-300">05</div>
+-                   <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white group-hover:text-brand-blue transition-colors duration-300">Continuous improvement</h3>
+-                 </div>
+-                 <div className="md:w-2/3">
+-                   <p className="text-[15px] font-sans text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-brand-navy dark:group-hover:text-slate-300 transition-colors duration-300">
+-                     Digital products are living systems. We rely on user feedback and data metrics to constantly refine, iterate, and improve the user experience.
+-                   </p>
+-                 </div>
+-              </div>
+-
+-            </div>
+-
+-          </div>
+-        </div>
+-      )}
+-
+-      {/* Premium Final Conversion CTA */}
+-      {!query && (
+-        <div className="w-full px-6 md:px-12 pb-20 pt-12 md:pt-20">
+-          <div className="relative w-full bg-brand-navy rounded-[8px] overflow-hidden border border-brand-navy/5 flex flex-col items-center text-center px-6 py-24 md:py-32 shadow-2xl">
+-            
+-            {/* Background & Technical Accents */}
+-            <div className="absolute inset-0 bg-[url('/icons/grid-pattern.svg')] opacity-[0.03] z-0 pointer-events-none" style={{ backgroundSize: '30px 30px' }}></div>
+-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-brand-cyan/10 rounded-full blur-[100px] pointer-events-none transition-opacity duration-700 hover:opacity-100"></div>
+-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-brand-blue/20 rounded-full blur-[100px] pointer-events-none transition-opacity duration-700 hover:opacity-100"></div>
+-            
+-            {/* Subtle technical UI elements around the edges */}
+-            <div className="absolute top-8 left-8 hidden md:flex flex-col gap-2 z-10 opacity-70">
+-              <span className="text-[10px] font-mono text-brand-cyan uppercase tracking-widest text-left">System State</span>
+-              <div className="flex gap-2 items-center">
+-                <span className="w-1.5 h-1.5 bg-brand-cyan rounded-full animate-[ping_2s_ease-out_infinite]"></span>
+-                <span className="text-[11px] font-mono text-white/50">ONLINE</span>
+-              </div>
+-            </div>
+-            
+-            <div className="absolute bottom-8 right-8 hidden md:flex flex-col gap-2 z-10 text-right opacity-70">
+-              <span className="text-[10px] font-mono text-brand-cyan uppercase tracking-widest">Project Types</span>
+-              <div className="flex flex-col gap-1 items-end">
+-                <span className="text-[11px] font-mono text-white/50 hover:text-brand-cyan cursor-default transition-colors">WEBSITE</span>
+-                <span className="text-[11px] font-mono text-white/50 hover:text-brand-cyan cursor-default transition-colors">SOFTWARE</span>
+-                <span className="text-[11px] font-mono text-white/50 hover:text-brand-cyan cursor-default transition-colors">DIGITAL PRODUCT</span>
+-                <span className="text-[11px] font-mono text-white/50 hover:text-brand-cyan cursor-default transition-colors">ONGOING CARE</span>
+-              </div>
+-            </div>
+-            
+-            {/* Corner brackets */}
+-            <div className="absolute top-6 left-6 w-4 h-4 border-t border-l border-brand-cyan/20 pointer-events-none"></div>
+-            <div className="absolute top-6 right-6 w-4 h-4 border-t border-r border-brand-cyan/20 pointer-events-none"></div>
+-            <div className="absolute bottom-6 left-6 w-4 h-4 border-b border-l border-brand-cyan/20 pointer-events-none"></div>
+-            <div className="absolute bottom-6 right-6 w-4 h-4 border-b border-r border-brand-cyan/20 pointer-events-none"></div>
+-
+-            {/* Main Content */}
+-            <div className="relative z-20 flex flex-col items-center max-w-2xl mx-auto mt-4">
+-              
+-              <h2 className="text-[40px] md:text-[56px] font-display font-semibold tracking-tight text-white mb-6 leading-[1.1]">
+-                Have something to build?<br />
+-                <span className="text-white/70">Let's make it real.</span>
+-              </h2>
+-              
+-              <p className="text-[16px] md:text-[18px] text-brand-cloud/70 max-w-lg mb-12 font-sans leading-[1.6]">
+-                Tell us what you're building, improving or maintaining. We're ready to engineer your next digital solution.
+-              </p>
+-              
+-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+-                <Link 
+-                  href="/contact" 
+-                  className="w-full sm:w-auto bg-[#F5A623] hover:bg-[#e0961f] text-brand-navy px-8 py-4 rounded-[4px] font-sans font-semibold text-[15px] transition-all duration-200 flex items-center justify-center gap-2"
+-                >
+-                  Start a Project
+-                  <ArrowRight size={18} />
+-                </Link>
+-                
+-                <Link 
+-                  href="/shop" 
+-                  className="w-full sm:w-auto bg-transparent border border-white/20 hover:border-brand-cyan hover:text-brand-cyan text-white px-8 py-4 rounded-[4px] font-sans font-medium text-[15px] transition-all duration-200 flex items-center justify-center gap-2"
+-                >
+-                  Explore Codalina
+-                </Link>
+-              </div>
+-            </div>
+-            
+-          </div>
+-        </div>
+-      )}
+       
+       <MarketSEOContent />
++      </div>
+     </div>
+   );
+ }

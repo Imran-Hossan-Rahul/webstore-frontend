@@ -379,7 +379,7 @@ export default function ChatPage() {
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
         <button 
           onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full bg-white dark:bg-black border-2 border-brand-blue shadow-2xl flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
+          className="w-14 h-14 rounded-full bg-brand-surface dark:bg-black border-2 border-brand-blue shadow-sm flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
         >
           {selectedChat && avatar ? (
              <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
@@ -397,7 +397,7 @@ export default function ChatPage() {
 
   return (
     <DraggableResizableWindow initialWidth={1200} initialHeight={720} minWidth={620} minHeight={420}>
-      <div className="flex h-full w-full bg-white dark:bg-[#0D1117] overflow-hidden relative">
+      <div className="flex h-full w-full bg-brand-surface dark:bg-brand-surface overflow-hidden relative">
         {/* Call Overlay */}
         <CallInterface 
            isOpen={isCallOpen}

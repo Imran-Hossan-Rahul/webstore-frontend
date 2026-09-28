@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 
 export const Breadcrumbs = ({ items, className = '', ...props }) => {
   return (
-    <nav className={`flex items-center text-[11px] font-mono tracking-widest uppercase text-slate-500 ${className}`} {...props}>
+    <nav className={`flex items-center text-[11px] font-mono tracking-widest uppercase text-slate-500 dark:text-slate-400 ${className}`} {...props}>
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (

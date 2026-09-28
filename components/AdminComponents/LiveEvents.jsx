@@ -46,7 +46,7 @@ export default function LiveEvents() {
   return (
     <div className="h-[400px] overflow-auto border">
       <table className="w-full border-collapse border">
-        <thead className="sticky top-0 bg-slate-200">
+        <thead className="sticky top-0 bg-slate-200 dark:bg-brand-surface/[0.1]">
           <tr>
             <th>Visitor ID</th>
             <th>Session ID</th>
@@ -58,7 +58,7 @@ export default function LiveEvents() {
         </thead>
         <tbody>
           {sessions.map((s) => (
-            <tr key={s.sessionId} className="hover:bg-slate-100">
+            <tr key={s.sessionId} className="hover:bg-slate-100 dark:bg-brand-surface/[0.05]">
               <td>{s.visitorId || "Unknown"}</td>
               <td>{s.sessionId || "Unknown"}</td>
               <td>{(s.eventTypes || []).join(", ")}</td>

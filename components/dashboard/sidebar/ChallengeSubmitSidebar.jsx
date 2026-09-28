@@ -36,7 +36,7 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
   return (
     <aside className="space-y-6 pb-10">
       {/* Context Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm overflow-hidden relative group">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm overflow-hidden relative group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/[0.03] rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-brand-blue/[0.06] transition-all duration-1000" />
         
         <div className="space-y-8 relative">
@@ -51,10 +51,10 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
               <div>
                  <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-white leading-tight mb-2">{challenge.title}</h2>
                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-100 border border-slate-200 dark:border-white/10">
+                    <div className="w-5 h-5 rounded-full overflow-hidden bg-slate-100 dark:bg-brand-surface/[0.05] border border-brand-navy/[0.08] dark:border-white/10">
                        {challenge.craftsman?.profilePicture ? <img src={getOptimizedUrl(challenge.craftsman.profilePicture)} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-brand-blue" />}
                     </div>
-                    <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">By {challenge.craftsman?.name}</p>
+                    <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">By {challenge.craftsman?.name}</p>
                  </div>
               </div>
 
@@ -83,7 +83,7 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
                  ].map((item, i) => (
                    <li key={i} className="flex gap-3 group/tip">
                       <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${item.color}`} />
-                      <p className="text-[10px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:group-hover/tip:text-white transition-colors">
+                      <p className="text-[10px] font-bold text-brand-slate dark:text-slate-400 leading-relaxed group-hover/tip:text-slate-900 dark:text-white dark:group-hover/tip:text-white transition-colors">
                          {item.tip}
                       </p>
                    </li>
@@ -93,10 +93,10 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
         </div>
         
         <div className="mt-8 pt-4">
-           <div className="p-4 bg-brand-cloud dark:bg-white/[0.03] rounded-3xl border border-slate-100 dark:border-white/10 flex items-center justify-between">
+           <div className="p-4 bg-brand-cloud dark:bg-brand-surface/[0.03] rounded-3xl border border-slate-100 dark:border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-3">
                  <ShieldCheck size={18} className="text-slate-400" />
-                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Secure Protocol</span>
+                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Secure Protocol</span>
               </div>
               <ArrowRight size={14} className="text-brand-teal" />
            </div>
@@ -104,15 +104,15 @@ export default function ChallengeSubmitSidebar({ challengeId }) {
       </div>
 
       {/* Support Node */}
-      <div className="bg-slate-900 dark:bg-white rounded-3xl p-6 space-y-5 shadow-xl shadow-slate-900/10 relative overflow-hidden group">
-         <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/5 dark:bg-black/5 rounded-full -mb-16 -mr-16 blur-2xl group-hover:opacity-80 transition-opacity duration-1000" />
+      <div className="bg-slate-900 dark:bg-brand-surface rounded-3xl p-6 space-y-5 shadow-sm shadow-slate-900/10 relative overflow-hidden group">
+         <div className="absolute bottom-0 right-0 w-32 h-32 bg-brand-surface/5 dark:bg-black/5 rounded-full -mb-16 -mr-16 blur-2xl group-hover:opacity-80 transition-opacity duration-1000" />
          <div className="space-y-2 relative z-10">
             <p className="text-[9px] font-black text-white/50 dark:text-slate-400 uppercase tracking-[0.3em]">Technical Support</p>
-            <p className="text-xs font-bold text-white dark:text-slate-900 leading-relaxed tracking-tight">
+            <p className="text-xs font-bold text-white dark:text-slate-900 dark:text-white leading-relaxed tracking-tight">
                Encountering structural conflicts or transmission errors?
             </p>
          </div>
-         <button className="w-full py-3.5 bg-white/10 dark:bg-slate-900/10 backdrop-blur-md border border-white/20 dark:border-slate-900/20 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white dark:text-slate-900 hover:bg-white/20 dark:hover:bg-slate-900/20 transition-all relative z-10 active:opacity-60 flex items-center justify-center gap-2">
+         <button className="w-full py-3.5 bg-brand-surface/10 dark:bg-slate-900/10 backdrop-blur-md border border-white/20 dark:border-slate-900/20 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white dark:text-slate-900 dark:text-white hover:bg-brand-surface/20 dark:hover:bg-slate-900/20 transition-all relative z-10 active:opacity-60 flex items-center justify-center gap-2">
             Initialize Discord Node <ArrowRight size={12} />
          </button>
       </div>

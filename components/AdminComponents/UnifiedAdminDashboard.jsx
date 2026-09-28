@@ -136,12 +136,12 @@ const UnifiedAdminDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-brand-cloud dark:bg-[#0D1117] lg:-mt-8 font-sans selection:bg-brand-blue/10">
+    <div className="flex flex-col lg:flex-row min-h-screen ] lg:-mt-8 font-sans selection: bg-brand-main">
       {/* Elite Sidebar */}
-      <aside className="w-full lg:w-64 bg-white dark:bg-[#161B22] border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-white/10 flex flex-col lg:sticky top-0 lg:h-screen transition-all duration-500 z-40">
+      <aside className="w-full lg:w-64 bg-brand-surface dark:bg-brand-surface border-b lg:border-b-0 lg:border-r border-brand-navy/[0.08] dark:border-white/10 flex flex-col lg:sticky top-0 lg:h-screen transition-all duration-500 z-40">
         {/* Logo */}
         <div className="p-8 flex items-center gap-3">
-          <div className="w-8 h-8 bg-white dark:bg-[#161B22] dark:bg-white rounded-[4px] flex items-center justify-center text-white dark:text-black">
+          <div className="w-8 h-8 bg-brand-surface dark:bg-brand-surface dark:bg-brand-surface rounded-[4px] flex items-center justify-center text-white dark:text-black">
             <Command size={18} />
           </div>
           <div>
@@ -166,8 +166,8 @@ const UnifiedAdminDashboard = () => {
               }}
               className={`w-auto shrink-0 lg:w-full flex items-center justify-center lg:justify-between px-4 py-2.5 lg:py-3 rounded-[4px] transition-all group ${
                 activeTab === item.id || (item.isLink && false)
-                  ? 'bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white'
-                  : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-200 hover:bg-brand-cloud dark:hover:bg-white/[0.02]'
+                  ? 'bg-slate-100 dark:bg-brand-surface/5 text-slate-900 dark:text-white'
+                  : 'text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-200 hover:bg-brand-cloud dark:hover:bg-brand-surface/[0.02]'
               }`}
             >
               <div className="flex items-center gap-3">
@@ -188,7 +188,7 @@ const UnifiedAdminDashboard = () => {
         {/* Platform Health Mini Widget */}
         {platformHealth && (
           <div className="px-4 pb-4 hidden lg:block">
-            <div className="bg-brand-cloud dark:bg-white/[0.02] rounded-[4px] p-4 border border-slate-100 dark:border-white/10 space-y-3">
+            <div className="bg-brand-cloud dark:bg-brand-surface/[0.02] rounded-[4px] p-4 border border-slate-100 dark:border-white/10 space-y-3">
               <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Platform Health</p>
               <div className="space-y-2">
                 <HealthBar label="Memory" value={platformHealth.server.memory.usagePercent} />
@@ -208,7 +208,7 @@ const UnifiedAdminDashboard = () => {
         )}
 
         <div className="p-6 border-t border-slate-100 dark:border-white/10 hidden lg:block">
-          <div className="bg-brand-cloud dark:bg-white/5 rounded-[4px] p-4 flex items-center gap-3">
+          <div className="bg-brand-cloud dark:bg-brand-surface/5 rounded-[4px] p-4 flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 border border-white dark:border-white/10" />
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-bold text-slate-900 dark:text-white truncate uppercase tracking-tighter">System Root</p>
@@ -241,19 +241,19 @@ const UnifiedAdminDashboard = () => {
               <input
                 type="text"
                 placeholder="Quick Search (⌘K)"
-                className="pl-11 pr-6 py-2.5 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[4px] outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue/50 transition-all text-xs font-medium w-64"
+                className="pl-11 pr-6 py-2.5 bg-brand-cloud dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue/50 transition-all text-xs font-medium w-64"
               />
             </div>
             <button onClick={fetchDashboardData} className="p-2.5 text-slate-400 hover:text-brand-blue transition-all">
               <RefreshCw size={18} />
             </button>
-            <button className="relative p-2.5 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <button className="relative p-2.5 text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all">
               <Bell size={20} />
               {stats.pendingVerifications > 0 && (
                 <span className="absolute top-2 right-2 w-2 h-2 bg-brand-blue rounded-full border-2 border-white dark:border-black" />
               )}
             </button>
-            <button className="p-2.5 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+            <button className="p-2.5 text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all">
               <Settings size={20} />
             </button>
           </div>
@@ -332,7 +332,7 @@ const DashboardOverview = ({ stats, overviewData, funnel, liveEvents, platformHe
       {/* Main Grid: Activity Chart + Live Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Activity Chart */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6">
+        <div className="lg:col-span-2 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">User Activity</h3>
@@ -347,7 +347,7 @@ const DashboardOverview = ({ stats, overviewData, funnel, liveEvents, platformHe
         </div>
 
         {/* Live Event Feed */}
-        <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] flex flex-col overflow-hidden">
+        <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] flex flex-col overflow-hidden">
           <div className="p-5 border-b border-slate-100 dark:border-white/10 flex items-center gap-3">
             <div className="w-2 h-2 bg-brand-teal rounded-full animate-pulse" />
             <h3 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest">Live Event Stream</h3>
@@ -371,7 +371,7 @@ const DashboardOverview = ({ stats, overviewData, funnel, liveEvents, platformHe
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Conversion Funnel */}
         {funnel.length > 0 && (
-          <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6">
+          <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6">
             <h3 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest mb-6">Conversion Funnel</h3>
             <div className="space-y-3">
               {funnel.map((step, i) => (
@@ -380,7 +380,7 @@ const DashboardOverview = ({ stats, overviewData, funnel, liveEvents, platformHe
                     <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{step.label}</span>
                     <span className="text-[10px] font-bold text-slate-900 dark:text-brand-navy dark:text-white">{step.count?.toLocaleString()}</span>
                   </div>
-                  <div className="h-2 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2 bg-slate-100 dark:bg-brand-surface/5 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${step.percent}%` }}
@@ -401,7 +401,7 @@ const DashboardOverview = ({ stats, overviewData, funnel, liveEvents, platformHe
 
       {/* Platform Health Row */}
       {platformHealth && (
-        <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6">
+        <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-[11px] font-bold text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
               <Server size={14} className="text-brand-blue" /> Platform Status
@@ -432,7 +432,7 @@ const KPICard = ({ label, value, trend, trendUp, icon: Icon, color, live }) => {
     blue: "bg-brand-blue/10 text-brand-blue",
   };
   return (
-    <div className="bg-white dark:bg-[#161B22] p-7 rounded-[4px] border border-slate-200 dark:border-white/10 transition-all hover:border-slate-300 dark:hover:border-white/20 group hover:">
+    <div className="bg-brand-surface dark:bg-brand-surface p-7 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 transition-all hover:border-brand-navy/[0.08] dark:hover:border-white/20 group hover:">
       <div className="flex items-start justify-between mb-5">
         <div className={`w-10 h-10 rounded-[4px] flex items-center justify-center ${colorMap[color] || colorMap.indigo}`}>
           <Icon size={18} />
@@ -458,7 +458,7 @@ const KPICard = ({ label, value, trend, trendUp, icon: Icon, color, live }) => {
 const LiveEventRow = ({ event }) => {
   const typeConfig = {
     page_visit: { color: "text-brand-blue", bg: "bg-brand-blue/10", emoji: "🔵" },
-    click: { color: "text-slate-500", bg: "bg-slate-100 dark:bg-white/5", emoji: "👆" },
+    click: { color: "text-slate-500 dark:text-slate-400", bg: "bg-slate-100 dark:bg-brand-surface/5", emoji: "👆" },
     rage_click: { color: "text-red-500", bg: "bg-red-500/10", emoji: "😤" },
     purchase: { color: "text-brand-teal", bg: "bg-brand-teal/10", emoji: "💰" },
     exit_intent: { color: "text-brand-amber", bg: "bg-brand-amber/10", emoji: "🚪" },
@@ -470,12 +470,12 @@ const LiveEventRow = ({ event }) => {
     keystroke: { color: "text-brand-blue", bg: "bg-brand-blue/10", emoji: "⌨️" },
     clipboard: { color: "text-orange-500", bg: "bg-orange-500/10", emoji: "📋" },
     tab_activity: { color: "text-brand-cyan", bg: "bg-brand-cyan/10", emoji: "📑" },
-    device_metrics: { color: "text-slate-500", bg: "bg-slate-500/10", emoji: "📱" },
+    device_metrics: { color: "text-slate-500 dark:text-slate-400", bg: "bg-slate-500/10", emoji: "📱" },
   };
-  const cfg = typeConfig[event.eventType] || { color: "text-slate-400", bg: "bg-brand-cloud dark:bg-white/[0.02]", emoji: "•" };
+  const cfg = typeConfig[event.eventType] || { color: "text-slate-400", bg: "bg-brand-cloud dark:bg-brand-surface/[0.02]", emoji: "•" };
 
   return (
-    <div className="flex items-center gap-3 px-5 py-3 hover:bg-brand-cloud dark:hover:bg-white/[0.02] transition-colors">
+    <div className="flex items-center gap-3 px-5 py-3 hover:bg-brand-cloud dark:hover:bg-brand-surface/[0.02] transition-colors">
       <span className="text-base">{cfg.emoji}</span>
       <div className="flex-1 min-w-0">
         <p className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-wide truncate">
@@ -485,7 +485,7 @@ const LiveEventRow = ({ event }) => {
           {event.userName || (event.visitorId ? `Visitor_${event.visitorId.slice(0, 5)}` : 'Anonymous')} {event.country ? `· ${event.country}` : ''}
         </p>
       </div>
-      <span className="text-[8px] font-bold text-slate-300 dark:text-brand-slate uppercase tracking-widest whitespace-nowrap">
+      <span className="text-[8px] font-bold text-slate-300 dark:text-brand-slate dark:text-slate-300 uppercase tracking-widest whitespace-nowrap">
         {event.timestamp ? new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : 'Now'}
       </span>
     </div>
@@ -498,7 +498,7 @@ const HealthBar = ({ label, value }) => (
       <span className="text-slate-400 uppercase tracking-widest">{label}</span>
       <span className={value > 80 ? 'text-red-500' : value > 60 ? 'text-brand-amber' : 'text-brand-teal'}>{value}%</span>
     </div>
-    <div className="h-1.5 bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
+    <div className="h-1.5 bg-slate-100 dark:bg-brand-surface/5 rounded-full overflow-hidden">
       <div
         className={`h-full rounded-full transition-all ${value > 80 ? 'bg-red-500' : value > 60 ? 'bg-brand-amber' : 'bg-brand-teal'}`}
         style={{ width: `${value}%` }}
@@ -522,7 +522,7 @@ const HealthMetric = ({ label, value, sub, icon: Icon, warning, ok }) => (
 
 // Minimal Tracking Placeholders
 const UsersActivityAreaChart = () => (
-  <div className="h-[250px] flex items-center justify-center border-2 border-dashed border-slate-200 dark:border-white/10 rounded-[4px] mt-4">
+  <div className="h-[250px] flex items-center justify-center border-2 border-dashed border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] mt-4">
     <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
       Deep Activity Tracking Disabled<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
     </p>
@@ -530,7 +530,7 @@ const UsersActivityAreaChart = () => (
 );
 
 const VisitorAccountPieChart = () => (
-  <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 flex flex-col items-center justify-center min-h-[250px]">
+  <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 flex flex-col items-center justify-center min-h-[250px]">
     <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
       Account Distribution Hidden<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
     </p>
@@ -538,7 +538,7 @@ const VisitorAccountPieChart = () => (
 );
 
 const TopCountriesBarChart = () => (
-  <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 flex flex-col items-center justify-center min-h-[250px]">
+  <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 flex flex-col items-center justify-center min-h-[250px]">
     <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest text-center px-4">
       Geographic Tracking Disabled<br/><span className="text-[9px] opacity-70">(Minimal Tracking Mode Active)</span>
     </p>

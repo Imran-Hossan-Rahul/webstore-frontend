@@ -116,7 +116,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
     const isExpanded = expandedThreads.has(msg._id);
 
     return (
-      <div className={`${isReply ? 'ml-8 border-l-2 border-slate-200 dark:border-white/10 pl-4' : ''}`}>
+      <div className={`${isReply ? 'ml-8 border-l-2 border-brand-navy/[0.08] dark:border-white/10 pl-4' : ''}`}>
         <div className="flex gap-3 group">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
             {msg.author?.name?.[0] || "U"}
@@ -139,7 +139,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
             </div>
             
             {msg.content && (
-              <p className="text-brand-slate dark:text-slate-300 text-sm bg-brand-cloud dark:bg-white/5 rounded-xl p-3 mb-2">
+              <p className="text-brand-slate dark:text-slate-300 text-sm bg-brand-cloud dark:bg-brand-surface/5 rounded-xl p-3 mb-2">
                 {msg.content}
               </p>
             )}
@@ -165,7 +165,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
                       <video src={att.url} controls className="max-w-sm rounded-xl" />
                     )}
                     {att.type === "file" && (
-                      <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-white/5 rounded-xl max-w-sm">
+                      <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-brand-surface/5 rounded-xl max-w-sm">
                         <FileText className="w-4 h-4" />
                         <span className="text-sm flex-1 truncate">{att.name}</span>
                         <a href={att.url} download={att.name}>
@@ -203,15 +203,15 @@ export default function DiscussionChat({ discussionId, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-[#0a0a0a] rounded-2xl max-w-4xl w-full h-[80vh] shadow-2xl border border-white/10 flex flex-col">
-        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+      <div className="bg-brand-surface dark:bg-brand-dark rounded-2xl max-w-4xl w-full h-[80vh] shadow-sm border border-white/10 flex flex-col">
+        <div className="p-6 border-b border-brand-navy/[0.08] dark:border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 {discussion?.topic || "Discussion"}
               </h2>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
+            <button onClick={onClose} className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 rounded-xl">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -235,7 +235,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
           <div ref={messagesEndRef} />
         </div>
 
-        <form onSubmit={handleSendMessage} className="p-6 border-t border-slate-200 dark:border-white/10">
+        <form onSubmit={handleSendMessage} className="p-6 border-t border-brand-navy/[0.08] dark:border-white/10">
           {replyingTo && (
             <div className="mb-3 p-2 bg-brand-sky dark:bg-blue-900/20 rounded-lg flex items-center justify-between">
               <span className="text-sm text-brand-blue dark:text-blue-400">
@@ -250,7 +250,7 @@ export default function DiscussionChat({ discussionId, onClose }) {
           {selectedFiles.length > 0 && (
             <div className="flex gap-2 mb-3 flex-wrap">
               {selectedFiles.map((file, i) => (
-                <div key={i} className="relative bg-slate-100 dark:bg-white/5 rounded-lg p-2 pr-8">
+                <div key={i} className="relative bg-slate-100 dark:bg-brand-surface/5 rounded-lg p-2 pr-8">
                   <span className="text-xs">{file.name}</span>
                   <button onClick={() => setSelectedFiles(selectedFiles.filter((_, idx) => idx !== i))} className="absolute top-1 right-1">
                     <X className="w-3 h-3" />
@@ -262,17 +262,17 @@ export default function DiscussionChat({ discussionId, onClose }) {
           
           <div className="flex gap-3">
             <input type="file" ref={fileInputRef} onChange={(e) => setSelectedFiles([...selectedFiles, ...Array.from(e.target.files)])} multiple accept="image/*,video/*,.pdf,.zip,.doc,.docx,.txt" className="hidden" />
-            <button type="button" onClick={() => fileInputRef.current?.click()} className="p-3 border border-slate-200 dark:border-white/10 rounded-xl hover:bg-brand-cloud dark:hover:bg-white/5">
-              <Paperclip className="w-5 h-5 text-slate-500" />
+            <button type="button" onClick={() => fileInputRef.current?.click()} className="p-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl hover:bg-brand-cloud dark:hover:bg-brand-surface/5">
+              <Paperclip className="w-5 h-5 text-slate-500 dark:text-slate-400" />
             </button>
             <input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type your message..."
-              className="flex-1 px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="flex-1 px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             />
-            <button type="submit" disabled={!newMessage.trim() && selectedFiles.length === 0} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg disabled:opacity-50 flex items-center gap-2">
+            <button type="submit" disabled={!newMessage.trim() && selectedFiles.length === 0} className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-sm disabled:opacity-50 flex items-center gap-2">
               <Send className="w-4 h-4" />
               Send
             </button>

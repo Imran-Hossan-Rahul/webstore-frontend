@@ -2,12 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 
 export const FooterSection = ({ className = '', logo, links = [], bottomText }) => (
-  <footer className={`w-full bg-white dark:bg-[#0D1117] border-t border-slate-200 dark:border-white/10 pt-16 pb-8 ${className}`}>
+  <footer className={`w-full bg-brand-surface dark:bg-brand-surface border-t border-brand-navy/[0.08] dark:border-white/10 pt-16 pb-8 ${className}`}>
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
         <div className="max-w-xs">
           {logo || <div className="text-[20px] font-display font-bold text-brand-navy dark:text-white mb-4">Codalina</div>}
-          <p className="text-[13px] font-sans text-slate-500">
+          <p className="text-[13px] font-sans text-slate-500 dark:text-slate-400">
             Premium digital assets, tools, and UI kits for elite developers and designers.
           </p>
         </div>
@@ -21,7 +21,7 @@ export const FooterSection = ({ className = '', logo, links = [], bottomText }) 
               <ul className="flex flex-col gap-4">
                 {group.items.map((item, itemIdx) => (
                   <li key={itemIdx}>
-                    <Link href={item.href} className="text-[13px] font-sans text-slate-500 hover:text-brand-blue transition-colors">
+                    <Link href={item.href} className="text-[13px] font-sans text-slate-500 dark:text-slate-400 hover:text-brand-blue transition-colors">
                       {item.label}
                     </Link>
                   </li>
@@ -32,7 +32,7 @@ export const FooterSection = ({ className = '', logo, links = [], bottomText }) 
         </div>
       </div>
       
-      <div className="pt-8 border-t border-slate-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="pt-8 border-t border-brand-navy/[0.08] dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-[12px] font-sans text-slate-400">
           {bottomText || `© ${new Date().getFullYear()} Codalina. All rights reserved.`}
         </p>

@@ -96,12 +96,12 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-        <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl overflow-hidden shadow-2xl border border-white/20 relative">
+        <div className="bg-brand-surface dark:bg-slate-900 w-full max-w-md rounded-2xl overflow-hidden shadow-sm border border-white/20 relative">
             
             {/* Progress Bar */}
-            <div className="h-1 bg-slate-100 dark:bg-white/10 w-full">
+            <div className="h-1 bg-slate-100 dark:bg-brand-surface/10 w-full">
                 <div 
-                    className="h-full bg-black dark:bg-white transition-all duration-500"
+                    className="h-full bg-black dark:bg-brand-surface transition-all duration-500"
                     style={{ width: step === 1 ? "50%" : "100%" }}
                 />
             </div>
@@ -121,7 +121,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         <div className="flex justify-center mb-8">
                             <div 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-32 h-32 rounded-full border-2 border-dashed border-slate-300 dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
+                                className="w-32 h-32 rounded-full border-2 border-dashed border-brand-navy/[0.10] dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
                             >
                                 {previewUrl ? (
                                     <img src={getOptimizedUrl(previewUrl)} alt="Preview" className="w-full h-full object-cover" />
@@ -143,13 +143,13 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
 
                         <button 
                             onClick={() => setStep(2)}
-                            className="w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2"
+                            className="w-full py-3 rounded-xl bg-black dark:bg-brand-surface text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2"
                         >
                             Continue <ArrowRight size={18} />
                         </button>
                         <button 
                             onClick={onClose}
-                            className="w-full mt-3 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
+                            className="w-full mt-3 py-2 text-slate-500 dark:text-slate-400 font-bold hover:text-slate-800 dark:text-slate-100 dark:hover:text-white transition-colors"
                         >
                             Skip for now
                         </button>
@@ -173,8 +173,8 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                     onClick={() => toggleInterest(interest)}
                                     className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${
                                         selectedInterests.includes(interest)
-                                        ? "bg-brand-blue border-brand-blue text-white shadow-lg shadow-blue-500/30"
-                                        : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-blue-400"
+                                        ? "bg-brand-blue border-brand-blue text-white shadow-sm shadow-blue-500/30"
+                                        : "bg-brand-surface dark:bg-brand-surface/5 border-brand-navy/[0.10] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-blue-400"
                                     }`}
                                 >
                                     {interest}
@@ -185,20 +185,20 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         <button 
                             onClick={handleSubmit}
                             disabled={loading}
-                            className={`w-full py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2 ${loading ? "opacity-70 cursor-wait" : ""}`}
+                            className={`w-full py-3 rounded-xl bg-black dark:bg-brand-surface text-white dark:text-black font-bold hover:transform hover:opacity-80 transition-all flex items-center justify-center gap-2 ${loading ? "opacity-70 cursor-wait" : ""}`}
                         >
                             {loading ? "Setting up..." : "Finish Setup"}
                         </button>
                         <div className="flex gap-2 mt-3">
                             <button 
                                 onClick={() => setStep(1)}
-                                className="flex-1 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
+                                className="flex-1 py-2 text-slate-500 dark:text-slate-400 font-bold hover:text-slate-800 dark:text-slate-100 dark:hover:text-white transition-colors"
                             >
                                 Back
                             </button>
                             <button 
                                 onClick={onClose}
-                                className="flex-1 py-2 text-slate-500 font-bold hover:text-slate-800 dark:hover:text-white transition-colors"
+                                className="flex-1 py-2 text-slate-500 dark:text-slate-400 font-bold hover:text-slate-800 dark:text-slate-100 dark:hover:text-white transition-colors"
                             >
                                 Skip for now
                             </button>

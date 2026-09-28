@@ -150,7 +150,7 @@ export default function NotificationModal({ isOpen, onClose }) {
       case "follow": return <UserPlus className="text-purple-500" size={18} />;
       case "purchase": return <ShoppingBag className="text-brand-teal" size={18} />;
       case "comment": return <MessageCircle className="text-brand-amber" size={18} />;
-      default: return <Info className="text-slate-500" size={18} />;
+      default: return <Info className="text-slate-500 dark:text-slate-400" size={18} />;
     }
   };
 
@@ -164,10 +164,10 @@ export default function NotificationModal({ isOpen, onClose }) {
       minHeight={400}
       storageKey="notification_window_state"
     >
-      <div className="flex flex-col h-full w-full bg-white/90 dark:bg-black/90 backdrop-blur-2xl overflow-hidden relative rounded-2xl shadow-2xl border border-white/20 dark:border-white/5">
+      <div className="flex flex-col h-full w-full bg-brand-surface/90 dark:bg-black/90 backdrop-blur-2xl overflow-hidden relative rounded-2xl shadow-sm border border-white/20 dark:border-white/5">
         
         {/* Header */}
-        <div className="p-5 border-b border-slate-200/50 dark:border-white/5 flex items-center justify-between bg-white/50 dark:bg-white/5 backdrop-blur-md z-10">
+        <div className="p-5 border-b border-brand-navy/[0.10]/50 dark:border-white/5 flex items-center justify-between bg-brand-surface/50 dark:bg-brand-surface/5 backdrop-blur-md z-10">
           <div className="flex items-center gap-3">
             <h1 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Notifications</h1>
             {unreadCount > 0 && (
@@ -179,7 +179,7 @@ export default function NotificationModal({ isOpen, onClose }) {
           <div className="flex items-center gap-1">
             <button
               onClick={markAllRead}
-              className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-slate-400 hover:text-brand-teal"
+              className="p-2 hover:bg-black/5 dark:hover:bg-brand-surface/10 rounded-full transition-colors text-slate-400 hover:text-brand-teal"
               title="Mark all as read"
             >
               <Check size={20} />
@@ -194,16 +194,16 @@ export default function NotificationModal({ isOpen, onClose }) {
         </div>
 
         {/* Filters */}
-        <div className="flex px-4 py-3 gap-2 border-b border-slate-200/50 dark:border-white/5">
+        <div className="flex px-4 py-3 gap-2 border-b border-brand-navy/[0.10]/50 dark:border-white/5">
           <button
             onClick={() => setFilter("all")}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filter === "all" ? "bg-black text-white dark:bg-white dark:text-black shadow-lg" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5"}`}
+            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filter === "all" ? "bg-black text-white dark:bg-brand-surface dark:text-black shadow-sm" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5"}`}
           >
             All
           </button>
           <button
             onClick={() => setFilter("unread")}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filter === "unread" ? "bg-black text-white dark:bg-white dark:text-black shadow-lg" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-white/5"}`}
+            className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${filter === "unread" ? "bg-black text-white dark:bg-brand-surface dark:text-black shadow-sm" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5"}`}
           >
             Unread
           </button>
@@ -218,24 +218,24 @@ export default function NotificationModal({ isOpen, onClose }) {
           ) : notifications.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-8 opacity-50">
               <Bell size={48} className="mb-4 text-slate-300" />
-              <p className="text-sm font-bold text-slate-500">No notifications yet.</p>
+              <p className="text-sm font-bold text-slate-500 dark:text-slate-400">No notifications yet.</p>
             </div>
           ) : (
             notifications.map((notif) => (
               <div
                 key={notif._id}
                 onClick={() => !notif.read && markAsRead(notif._id)}
-                className={`group relative flex gap-4 p-4 rounded-2xl transition-all cursor-pointer border ${notif.read ? "bg-white/40 dark:bg-white/5 border-transparent opacity-80" : "bg-white dark:bg-white/10 border-slate-100 dark:border-white/10 shadow-sm"}`}
+                className={`group relative flex gap-4 p-4 rounded-2xl transition-all cursor-pointer border ${notif.read ? "bg-brand-surface/40 dark:bg-brand-surface/5 border-transparent opacity-80" : "bg-brand-surface dark:bg-brand-surface/10 border-slate-100 dark:border-white/10 shadow-sm"}`}
               >
                 {/* Status Dot */}
                 {!notif.read && (
-                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brand-blue rounded-full shadow-lg shadow-blue-500/50" />
+                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brand-blue rounded-full shadow-sm shadow-blue-500/50" />
                 )}
 
                 {/* Sender Avatar / Icon */}
                 <div className="shrink-0">
                   <div className="relative w-12 h-12">
-                    <div className="w-full h-full rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5">
+                    <div className="w-full h-full rounded-2xl bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center overflow-hidden border border-brand-navy/[0.10] dark:border-white/5">
                       {notif.sender?.profilePicture ? (
                         <img src={getOptimizedUrl(notif.sender.profilePicture)} className="w-full h-full object-cover" alt="" />
                       ) : (
@@ -245,7 +245,7 @@ export default function NotificationModal({ isOpen, onClose }) {
                       )}
                     </div>
                     {/* Floating Type Icon */}
-                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-white dark:bg-black shadow-lg border border-slate-100 dark:border-white/10 flex items-center justify-center">
+                    <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-lg bg-brand-surface dark:bg-black shadow-sm border border-slate-100 dark:border-white/10 flex items-center justify-center">
                       {getIcon(notif.type)}
                     </div>
                   </div>
@@ -293,7 +293,7 @@ export default function NotificationModal({ isOpen, onClose }) {
         </div>
         
         {/* Footer */}
-        <div className="p-4 bg-brand-cloud/50 dark:bg-white/5 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-center">
+        <div className="p-4 bg-brand-surface/50 dark:bg-brand-surface/5 border-t border-brand-navy/[0.10]/50 dark:border-white/5 flex items-center justify-center">
            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[2px]">End of activities</p>
         </div>
       </div>

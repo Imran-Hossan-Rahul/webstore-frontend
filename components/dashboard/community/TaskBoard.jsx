@@ -16,9 +16,9 @@ const TaskCard = ({ task, onTaskClick }) => {
       case "solved":
         return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
       case "closed":
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
+        return "bg-slate-100 dark:bg-brand-surface/[0.05] text-slate-800 dark:text-slate-100 dark:bg-slate-900 dark:text-slate-200";
       default:
-        return "bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200";
+        return "bg-slate-100 dark:bg-brand-surface/[0.05] text-slate-800 dark:text-slate-100 dark:bg-slate-900 dark:text-slate-200";
     }
   };
 
@@ -33,14 +33,14 @@ const TaskCard = ({ task, onTaskClick }) => {
       case "low":
         return "text-brand-teal";
       default:
-        return "text-slate-500";
+        return "text-slate-500 dark:text-slate-400";
     }
   };
 
   return (
     <div
       onClick={() => onTaskClick(task)}
-      className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-xl p-6 hover:shadow-lg transition-all cursor-pointer"
+      className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-xl p-6 hover:shadow-sm transition-all cursor-pointer"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex-1">
@@ -94,7 +94,7 @@ const TaskCard = ({ task, onTaskClick }) => {
             </span>
           ))}
           {task.tags.length > 3 && (
-            <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-brand-slate dark:text-slate-400 text-xs rounded-full">
+            <span className="px-2 py-1 bg-slate-100 dark:bg-brand-surface text-brand-slate dark:text-slate-400 text-xs rounded-full">
               +{task.tags.length - 3}
             </span>
           )}
@@ -147,7 +147,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-brand-surface dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-slate-100 dark:border-white/10">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Share Your Problem
@@ -166,7 +166,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="What's your problem?"
               required
             />
@@ -180,7 +180,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="Describe your problem in detail..."
               required
             />
@@ -194,7 +194,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
               <select
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="design">Design</option>
                 <option value="development">Development</option>
@@ -216,7 +216,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -234,7 +234,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
               type="text"
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-              className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               placeholder="react, api, design, etc."
             />
           </div>
@@ -243,7 +243,7 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
+              className="px-6 py-2 text-brand-slate dark:text-slate-400 hover:text-slate-800 dark:text-slate-100 dark:hover:text-white transition-colors"
             >
               Cancel
             </button>
@@ -345,7 +345,7 @@ export default function TaskBoard() {
                 placeholder="Search tasks..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
           </div>
@@ -353,7 +353,7 @@ export default function TaskBoard() {
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-4 py-2 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="px-4 py-2 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="all">All Categories</option>
             <option value="design">Design</option>
@@ -371,7 +371,7 @@ export default function TaskBoard() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-4 py-2 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="px-4 py-2 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
           >
             <option value="all">All Status</option>
             <option value="open">Open</option>
@@ -407,7 +407,7 @@ export default function TaskBoard() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <AlertCircle className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
+            <AlertCircle className="w-16 h-16 text-slate-300 dark:text-brand-slate dark:text-slate-300 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
               No tasks found
             </h3>

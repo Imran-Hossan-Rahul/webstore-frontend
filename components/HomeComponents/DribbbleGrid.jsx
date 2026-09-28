@@ -67,7 +67,7 @@ export default function DribbbleGrid({
           {[...Array(8)].map((_, i) => (
             <div
               key={i}
-              className="bg-white dark:bg-slate-800 rounded-2xl aspect-[4/3] animate-pulse"
+              className="bg-brand-surface dark:bg-brand-surface rounded-2xl aspect-[4/3] animate-pulse"
             />
           ))}
         </div>
@@ -90,8 +90,8 @@ export default function DribbbleGrid({
                 onClick={() => setFilter(f)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   filter === f
-                    ? "bg-black dark:bg-white text-white dark:text-black"
-                    : "bg-white dark:bg-slate-800 text-black dark:text-white hover:bg-slate-100 dark:hover:bg-slate-700"
+                    ? "bg-black dark:bg-brand-surface text-white dark:text-black"
+                    : "bg-brand-surface dark:bg-brand-surface text-black dark:text-white hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-slate-700"
                 }`}
               >
                 {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -116,7 +116,7 @@ export default function DribbbleGrid({
         <div className="flex justify-center mt-10">
           <button
             onClick={() => router.push("/auth/register")}
-            className="px-6 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black font-semibold shadow-lg hover:-translate-y-0.5 transition transform"
+            className="px-6 py-3 rounded-full bg-black text-white dark:bg-brand-surface dark:text-black font-semibold shadow-sm hover:-translate-y-0.5 transition transform"
           >
             Sign up to continue
           </button>
@@ -142,7 +142,7 @@ function ArtifactCard({ artifact, onClick }) {
       onMouseLeave={() => setIsHovered(false)}
       className="group cursor-pointer"
     >
-      <div className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+      <div className="bg-brand-surface dark:bg-brand-surface rounded-2xl overflow-hidden shadow-sm hover:shadow-sm transition-all duration-300 transform hover:-translate-y-1">
         {/* Image/Preview */}
         <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-700 overflow-hidden">
           {artifact.thumbnailSource ? (
@@ -178,7 +178,7 @@ function ArtifactCard({ artifact, onClick }) {
 
           {/* Price Badge */}
           {artifact.priceType === "paid" && (
-            <div className="absolute top-3 right-3 bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-3 right-3 bg-black dark:bg-brand-surface text-white dark:text-black px-3 py-1 rounded-full text-sm font-semibold">
               ${artifact.price}
             </div>
           )}

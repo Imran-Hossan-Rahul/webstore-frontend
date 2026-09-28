@@ -36,7 +36,7 @@ const bodyMuted =
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 function Divider() {
-  return <div className="w-full h-px bg-slate-200 dark:bg-white/8" />;
+  return <div className="w-full h-px bg-slate-200 dark:bg-brand-surface/8" />;
 }
 
 function PillBadge({ children }) {
@@ -50,7 +50,7 @@ function PillBadge({ children }) {
 function CapabilityRow({ icon: Icon, label, desc }) {
   return (
     <div className="flex gap-4 py-5 border-b border-slate-100 dark:border-white/6 last:border-none">
-      <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-[4px] bg-slate-100 dark:bg-white/6 text-brand-blue mt-0.5">
+      <div className="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-[4px] bg-slate-100 dark:bg-brand-surface/6 text-brand-blue mt-0.5">
         <Icon size={15} />
       </div>
       <div>
@@ -75,7 +75,7 @@ function PipelineDiagram() {
     { label: "Iterate", sub: "Improve" },
   ];
   return (
-    <div className="w-full rounded-[4px] border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-[#161B22] p-6 md:p-8 overflow-hidden">
+    <div className="w-full rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-cloud dark:bg-brand-surface p-6 md:p-8 overflow-hidden">
       <p className={`${sectionLabel} mb-6`}>Engagement Lifecycle</p>
       <div className="flex items-center gap-0 w-full">
         {steps.map((step, i) => (
@@ -137,13 +137,13 @@ function ArchDiagram() {
     },
   ];
   return (
-    <div className="w-full rounded-[4px] border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-[#161B22] p-6 overflow-hidden">
+    <div className="w-full rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-cloud dark:bg-brand-surface p-6 overflow-hidden">
       <p className={`${sectionLabel} mb-5`}>Typical Stack Composition</p>
       <div className="grid grid-cols-2 gap-3">
         {layers.map((layer, i) => (
           <div
             key={i}
-            className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0D1117] p-4"
+            className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface p-4"
           >
             <p
               className={`text-[10px] font-mono font-medium tracking-widest uppercase text-${layer.color} mb-2`}
@@ -170,13 +170,13 @@ function ArchDiagram() {
 
 function TerminalSnippet({ lines }) {
   return (
-    <div className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-[#0D1117] overflow-hidden font-mono text-[12px]">
+    <div className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface overflow-hidden font-mono text-[12px]">
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/8 bg-white/4">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/8 bg-brand-surface/4">
         <div className="w-3 h-3 rounded-full bg-red-500/70" />
         <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
         <div className="w-3 h-3 rounded-full bg-green-500/70" />
-        <span className="ml-auto text-[10px] text-slate-500 tracking-widest uppercase">
+        <span className="ml-auto text-[10px] text-slate-500 dark:text-slate-400 tracking-widest uppercase">
           Terminal
         </span>
       </div>
@@ -187,7 +187,7 @@ function TerminalSnippet({ lines }) {
             <span
               className={
                 line.type === "comment"
-                  ? "text-slate-600"
+                  ? "text-slate-600 dark:text-slate-300"
                   : line.type === "output"
                   ? "text-slate-400"
                   : "text-slate-200"
@@ -208,7 +208,7 @@ export default function SolutionsPage() {
   return (
     <div className="w-full font-sans bg-transparent">
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-[100px] pb-[80px] px-6 border-b border-slate-200 dark:border-white/8">
+      <section className="pt-[100px] pb-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -255,7 +255,7 @@ export default function SolutionsPage() {
                 ].map((item) => (
                   <div
                     key={item.n}
-                    className="flex items-center gap-3 p-3 rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22]"
+                    className="flex items-center gap-3 p-3 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface"
                   >
                     <div className="w-1.5 h-1.5 rounded-full bg-brand-teal" />
                     <div>
@@ -275,7 +275,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* ── PRODUCT MARKETPLACE ──────────────────────────────────────────── */}
-      <section className="py-[80px] px-6 border-b border-slate-200 dark:border-white/8">
+      <section className="py-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 items-start">
             <div>
@@ -323,8 +323,8 @@ export default function SolutionsPage() {
             </div>
 
             {/* Category visual */}
-            <div className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-[#161B22] overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-white/10">
+            <div className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-cloud dark:bg-brand-surface overflow-hidden">
+              <div className="p-5 border-b border-brand-navy/[0.08] dark:border-white/10">
                 <p className={sectionLabel}>Product Categories</p>
               </div>
               {[
@@ -337,7 +337,7 @@ export default function SolutionsPage() {
                 <Link
                   key={row.cat}
                   href={`/shop?category=${encodeURIComponent(row.cat)}`}
-                  className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-white/6 last:border-none hover:bg-white dark:hover:bg-white/4 transition-colors group"
+                  className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-white/6 last:border-none hover:bg-brand-surface dark:hover:bg-brand-surface/4 transition-colors group"
                 >
                   <div className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full bg-${row.color}`} />
@@ -356,7 +356,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* ── CUSTOM SOFTWARE ───────────────────────────────────────────────── */}
-      <section className="py-[80px] px-6 border-b border-slate-200 dark:border-white/8">
+      <section className="py-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8">
         <div className="max-w-[1100px] mx-auto">
           <span className={`${eyebrow} mb-6 block`}>Custom Software</span>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -416,7 +416,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* ── FOUR PILLARS ─────────────────────────────────────────────────── */}
-      <section className="py-[80px] px-6 border-b border-slate-200 dark:border-white/8 bg-brand-cloud dark:bg-[#0A0F17]">
+      <section className="py-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8 bg-brand-cloud dark:bg-[#0A0F17]">
         <div className="max-w-[1100px] mx-auto">
           <div className="text-center mb-16">
             <span className={`${eyebrow} mb-4 block`}>The Four Pillars</span>
@@ -502,7 +502,7 @@ export default function SolutionsPage() {
               >
                 <div className="flex items-start justify-between mb-6">
                   <div
-                    className={`w-10 h-10 rounded-[4px] border ${pillar.borderColor} bg-white dark:bg-[#0D1117] flex items-center justify-center ${pillar.color}`}
+                    className={`w-10 h-10 rounded-[4px] border ${pillar.borderColor} bg-brand-surface dark:bg-brand-surface flex items-center justify-center ${pillar.color}`}
                   >
                     <pillar.icon size={18} />
                   </div>
@@ -539,7 +539,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* ── SOFTWARE PRODUCTS ────────────────────────────────────────────── */}
-      <section className="py-[80px] px-6 border-b border-slate-200 dark:border-white/8">
+      <section className="py-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-16 items-start">
             {/* Left: content */}
@@ -596,7 +596,7 @@ export default function SolutionsPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22] p-5"
+                  className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface p-5"
                 >
                   <div className="w-8 h-8 rounded-[4px] bg-brand-blue/8 flex items-center justify-center text-brand-blue mb-4">
                     <item.icon size={15} />
@@ -615,7 +615,7 @@ export default function SolutionsPage() {
       </section>
 
       {/* ── WARRANTY & SUPPORT ───────────────────────────────────────────── */}
-      <section className="py-[80px] px-6 border-b border-slate-200 dark:border-white/8">
+      <section className="py-[80px] px-6 border-b border-brand-navy/[0.08] dark:border-white/8">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
@@ -652,20 +652,20 @@ export default function SolutionsPage() {
             </div>
 
             {/* Warranty UI mockup */}
-            <div className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-brand-cloud dark:bg-[#161B22] overflow-hidden">
-              <div className="p-5 border-b border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-cloud dark:bg-brand-surface overflow-hidden">
+              <div className="p-5 border-b border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-between">
                 <p className={sectionLabel}>Warranty Lookup</p>
                 <div className="flex gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-white/20" />
-                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-white/20" />
-                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-white/20" />
+                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-brand-surface/20" />
+                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-brand-surface/20" />
+                  <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-brand-surface/20" />
                 </div>
               </div>
               <div className="p-6 space-y-4">
                 {/* Search input mockup */}
                 <div className="relative">
-                  <div className="w-full h-10 rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0D1117] flex items-center px-3 gap-2">
-                    <div className="w-4 h-4 rounded-[2px] border border-slate-300 dark:border-white/20" />
+                  <div className="w-full h-10 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface flex items-center px-3 gap-2">
+                    <div className="w-4 h-4 rounded-[2px] border border-brand-navy/[0.08] dark:border-white/20" />
                     <span className="text-[13px] font-mono text-slate-400">
                       Enter serial number or scan QR
                     </span>
@@ -681,16 +681,16 @@ export default function SolutionsPage() {
                       <p className="text-[13px] font-sans font-medium text-brand-teal mb-0.5">
                         Warranty Active
                       </p>
-                      <p className="text-[12px] font-mono text-slate-500">
+                      <p className="text-[12px] font-mono text-slate-500 dark:text-slate-400">
                         SN: COD-2026-SW-00471
                       </p>
-                      <p className="text-[12px] font-sans text-slate-500 mt-1">
+                      <p className="text-[12px] font-sans text-slate-500 dark:text-slate-400 mt-1">
                         Smartwatch X3 Pro · Valid until Dec 2027
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0D1117] p-4 space-y-2">
+                <div className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface p-4 space-y-2">
                   {[
                     ["Product", "Smartwatch X3 Pro"],
                     ["Purchase Date", "Dec 12, 2026"],
@@ -729,7 +729,7 @@ export default function SolutionsPage() {
             <Link href="/shop">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-white hover:bg-white/90 text-brand-navy border-white"
+                className="w-full sm:w-auto bg-brand-surface hover:bg-brand-surface/90 text-brand-navy border-white"
                 rightIcon={<ArrowRight size={16} />}
               >
                 Browse the Marketplace
@@ -739,7 +739,7 @@ export default function SolutionsPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full sm:w-auto border-white/20 text-white hover:bg-white/8"
+                className="w-full sm:w-auto border-white/20 text-white hover:bg-brand-surface/8"
               >
                 About Codalina
               </Button>

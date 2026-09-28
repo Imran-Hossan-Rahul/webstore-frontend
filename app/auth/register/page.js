@@ -70,7 +70,7 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
   return (
     <div className="space-y-2 mb-5">
       <div className="flex justify-between items-center px-1">
-        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 uppercase">
+        <label className="text-[11px] font-mono font-medium tracking-[0.1em] text-slate-500 dark:text-slate-400 uppercase">
           {label}
         </label>
       </div>
@@ -81,8 +81,8 @@ const AuthInput = ({ label, icon: Icon, error, type, ...props }) => {
         <input
           {...props}
           type={inputType}
-          className={`w-full pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-brand-cloud dark:bg-[#161B22] border ${
-            error ? "border-red-500" : "border-slate-200 dark:border-white/10"
+          className={`w-full pl-10 ${isPassword ? "pr-10" : "pr-4"} py-2.5 bg-brand-cloud dark:bg-brand-surface border ${
+            error ? "border-red-500" : "border-brand-navy/[0.08] dark:border-white/10"
           } rounded-[4px] text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:border-brand-blue/40 focus:ring-1 focus:ring-brand-blue/40 focus:outline-none transition-all duration-200 truncate`}
         />
         {isPassword && (
@@ -126,7 +126,7 @@ function PasswordStrengthBar({ password }) {
           <div
             key={i}
             className={`flex-1 h-1 rounded-none transition-all duration-300 ${
-              i <= score ? STRENGTH_COLORS[score] : "bg-slate-200 dark:bg-white/10"
+              i <= score ? STRENGTH_COLORS[score] : "bg-slate-200 dark:bg-brand-surface/10"
             }`}
           />
         ))}
@@ -207,7 +207,7 @@ export default function RegisterPage() {
       title="Create account"
       subtitle="Join the marketplace today"
       footer={
-        <p className="text-center text-[15px] text-slate-500 font-sans">
+        <p className="text-center text-[15px] text-slate-500 dark:text-slate-400 font-sans">
           Already a member?{" "}
           <Link
             href="/auth/login"
@@ -255,10 +255,10 @@ export default function RegisterPage() {
             {/* Divider */}
             <div className="relative mb-8 mt-4">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200 dark:border-white/10" />
+                <div className="w-full border-t border-brand-navy/[0.08] dark:border-white/10" />
               </div>
               <div className="relative flex justify-center text-[10px] font-mono tracking-widest text-slate-400 uppercase">
-                <span className="px-3 bg-white dark:bg-[#0D1117]">
+                <span className="px-3 bg-brand-surface dark:bg-brand-surface">
                   or
                 </span>
               </div>
@@ -341,7 +341,7 @@ export default function RegisterPage() {
                     <input
                       type="checkbox"
                       required
-                      className="peer h-[18px] w-[18px] cursor-pointer appearance-none rounded-[4px] border border-slate-300 dark:border-white/20 bg-brand-cloud dark:bg-[#161B22] transition-all checked:bg-brand-blue checked:border-brand-blue"
+                      className="peer h-[18px] w-[18px] cursor-pointer appearance-none rounded-[4px] border border-brand-navy/[0.08] dark:border-white/20 bg-brand-cloud dark:bg-brand-surface transition-all checked:bg-brand-blue checked:border-brand-blue"
                     />
                     <svg
                       className="absolute h-3 w-3 pointer-events-none hidden peer-checked:block text-white left-1 top-[3px]"

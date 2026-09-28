@@ -41,18 +41,18 @@ export default function ButtonShowOff({ refresh }) {
   return (
     <div className="rounded-2xl p-4 absolute top-5 w-[78%] h-[96%] left-[90px] overflow-auto">
       {loading && (
-        <p className="text-slate-500 text-center">Loading artifacts...</p>
+        <p className="text-slate-500 dark:text-slate-400 text-center">Loading artifacts...</p>
       )}
       {error && <p className="text-red-500 text-center">{error.message || error}</p>}
       {!loading && !error && artifacts.length === 0 && (
-        <p className="text-slate-500 text-center">No artifacts found.</p>
+        <p className="text-slate-500 dark:text-slate-400 text-center">No artifacts found.</p>
       )}
 
       <div className="grid gap-4 md:grid-cols-3">
         {artifacts.map((t) => (
           <div
             key={t._id}
-            className="bg-white rounded-2xl p-4 h-[420px] flex flex-col justify-between"
+            className="bg-brand-surface rounded-2xl p-4 h-[420px] flex flex-col justify-between"
           >
             <div>
               <h3 className="text-lg font-semibold">{t.title}</h3>
@@ -61,7 +61,7 @@ export default function ButtonShowOff({ refresh }) {
                 {t.tags.map((tag, idx) => (
                   <span
                     key={idx}
-                    className="bg-slate-200 text-brand-slate px-2 py-1 rounded-md text-xs"
+                    className="bg-slate-200 dark:bg-brand-surface/[0.1] text-brand-slate dark:text-slate-300 px-2 py-1 rounded-md text-xs"
                   >
                     {tag}
                   </span>

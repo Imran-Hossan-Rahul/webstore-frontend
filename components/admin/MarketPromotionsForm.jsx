@@ -146,7 +146,7 @@ export default function MarketPromotionsForm() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold dark:text-white">{label}</h3>
-          <span className="text-sm text-slate-500">{list?.length || 0} selected</span>
+          <span className="text-sm text-slate-500 dark:text-slate-400">{list?.length || 0} selected</span>
         </div>
         
         <div className="relative">
@@ -156,12 +156,12 @@ export default function MarketPromotionsForm() {
             placeholder="Search to add products..." 
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-white placeholder:text-slate-500"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-900 border border-slate-800 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none text-white placeholder:text-slate-500 dark:text-slate-400"
           />
         </div>
 
         {displayProducts.length === 0 && !searchQuery && (
-          <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-xl text-slate-500 text-sm">
+          <div className="py-8 text-center border-2 border-dashed border-slate-800 rounded-xl text-slate-500 dark:text-slate-400 text-sm">
             No products selected. Search above to add products.
           </div>
         )}
@@ -177,7 +177,7 @@ export default function MarketPromotionsForm() {
                 className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${isSelected ? 'border-brand-blue bg-blue-900/20' : 'border-slate-800 hover:border-slate-700 bg-slate-900/50'}`}
               >
                 <div className="w-12 h-12 rounded-lg bg-slate-800 overflow-hidden shrink-0">
-                  {photo ? <img src={getOptimizedUrl(photo)} alt="" className="w-full h-full object-cover" /> : <ImageIcon className="m-auto mt-3 text-slate-500" />}
+                  {photo ? <img src={getOptimizedUrl(photo)} alt="" className="w-full h-full object-cover" /> : <ImageIcon className="m-auto mt-3 text-slate-500 dark:text-slate-400" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className={`text-sm font-medium truncate ${isSelected ? 'text-blue-400' : 'text-slate-200'}`}>{product.title || 'No Title'}</p>
@@ -284,7 +284,7 @@ export default function MarketPromotionsForm() {
                 <label className="block text-sm font-medium text-slate-300 mb-1">Logo Image</label>
                 <div className="flex items-center gap-3">
                   <div className="w-16 h-16 bg-slate-950 rounded-xl overflow-hidden shrink-0 border border-slate-800">
-                    {config.brandSpotlight.logoUrl ? <img src={config.brandSpotlight.logoUrl} className="w-full h-full object-contain" /> : <ImageIcon className="m-auto mt-4 text-brand-slate" />}
+                    {config.brandSpotlight.logoUrl ? <img src={config.brandSpotlight.logoUrl} className="w-full h-full object-contain" /> : <ImageIcon className="m-auto mt-4 text-brand-slate dark:text-slate-300" />}
                   </div>
                   <label className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg cursor-pointer text-sm font-medium transition-colors">
                     Upload
@@ -296,7 +296,7 @@ export default function MarketPromotionsForm() {
                 <label className="block text-sm font-medium text-slate-300 mb-1">Background Image</label>
                 <div className="flex items-center gap-3">
                   <div className="w-24 h-16 bg-slate-950 rounded-xl overflow-hidden shrink-0 border border-slate-800">
-                    {config.brandSpotlight.bgUrl ? <img src={config.brandSpotlight.bgUrl} className="w-full h-full object-cover" /> : <ImageIcon className="m-auto mt-4 text-brand-slate" />}
+                    {config.brandSpotlight.bgUrl ? <img src={config.brandSpotlight.bgUrl} className="w-full h-full object-cover" /> : <ImageIcon className="m-auto mt-4 text-brand-slate dark:text-slate-300" />}
                   </div>
                   <label className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg cursor-pointer text-sm font-medium transition-colors">
                     Upload

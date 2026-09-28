@@ -47,12 +47,12 @@ export default function Features() {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className={`group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 hover:shadow-2xl transition-all duration-300 ${feature.className}`}
+              className={`group relative overflow-hidden rounded-2xl bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-8 hover:shadow-sm transition-all duration-300 ${feature.className}`}
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-bl-full -mr-8 -mt-8 transition-opacity group-hover:opacity-80 duration-500" />
               
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-6 text-slate-900 dark:text-white group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
+                <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-brand-surface flex items-center justify-center mb-6 text-slate-900 dark:text-white group-hover:bg-brand-blue group-hover:text-white transition-colors duration-300">
                   <feature.icon className="w-6 h-6" />
                 </div>
                 
@@ -80,7 +80,7 @@ export default function Features() {
                 <div className="text-4xl font-extrabold mb-1">10k+</div>
                 <div className="text-sm opacity-80">Community Members</div>
              </div>
-             <div className="p-6 rounded-2xl bg-slate-900 dark:bg-slate-800 text-white text-center flex items-center justify-center">
+             <div className="p-6 rounded-2xl bg-slate-900 dark:bg-brand-surface text-white text-center flex items-center justify-center">
                 <div className="font-bold text-lg flex items-center gap-2">
                     <Globe className="w-5 h-5"/>
                     Global CDN

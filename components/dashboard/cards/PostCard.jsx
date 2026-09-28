@@ -168,7 +168,7 @@ const PostCard = ({
   return (
     <>
     <div 
-        className="sm:border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud/50 dark:hover:bg-white/5 transition-colors group cursor-pointer flex gap-2 sm:gap-3 p-4" 
+        className="sm:border-b border-slate-100 dark:border-white/5 hover:bg-brand-cloud/50 dark:hover:bg-brand-surface/5 transition-colors group cursor-pointer flex gap-2 sm:gap-3 p-4" 
         onClick={handleNavigate}
     >
        <div className="flex-shrink-0">
@@ -179,11 +179,11 @@ const PostCard = ({
                             src={user.avatar} 
                             width={48} 
                             height={48} 
-                            className="rounded-full object-cover border border-slate-200 dark:border-white/10" 
+                            className="rounded-full object-cover border border-brand-navy/[0.08] dark:border-white/10" 
                             alt={user.name} 
                         />
                    ) : (
-                       <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 font-bold text-lg">
+                       <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-slate-400 font-bold text-lg">
                            {user?.name?.[0] || "U"}
                        </div>
                    )}
@@ -203,7 +203,7 @@ const PostCard = ({
                         </span>
                    )}
                    <span className="text-slate-400 text-xs font-semibold">@{user?.username || "user"}</span>
-                   <span className="text-slate-300 dark:text-brand-slate text-xs">•</span>
+                   <span className="text-slate-300 dark:text-brand-slate dark:text-slate-300 text-xs">•</span>
                    <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
                </div>
            </div>
@@ -238,7 +238,7 @@ const PostCard = ({
                         displayImages.length === 3 ? 'grid-cols-2' : 'grid-cols-2'
                     }`}>
                         {displayImages.map((img, idx) => (
-                            <div key={idx} className={`relative group/image overflow-hidden cursor-pointer bg-slate-100 dark:bg-white/5 ${
+                            <div key={idx} className={`relative group/image overflow-hidden cursor-pointer bg-slate-100 dark:bg-brand-surface/5 ${
                                 displayImages.length === 1 ? 'aspect-video max-h-[500px]' : 
                                 (displayImages.length === 3 && idx === 0) ? 'row-span-2 aspect-[1/2]' : 'aspect-square'
                             }`}>
@@ -335,7 +335,7 @@ const PostCard = ({
                                  value={commentText}
                                  onChange={(e) => setCommentText(e.target.value)}
                                  placeholder="Tweet your reply" 
-                                 className="flex-1 bg-transparent border-none focus:ring-0 text-sm text-slate-900 dark:text-white placeholder-gray-400 resize-none py-2 border-b border-slate-200 dark:border-white/10"
+                                 className="flex-1 bg-transparent border-none focus:ring-0 text-sm text-slate-900 dark:text-white placeholder-gray-400 resize-none py-2 border-b border-brand-navy/[0.08] dark:border-white/10"
                                  rows={1}
                                  onKeyDown={(e) => {
                                      if (e.key === 'Enter' && !e.shiftKey) {

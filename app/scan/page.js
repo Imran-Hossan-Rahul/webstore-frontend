@@ -26,7 +26,7 @@ export default function ScanLandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 sm:p-12 font-sans relative z-10">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 sm:p-12 font-sans relative z-10 bg-brand-main">
       <motion.div 
         className="w-full max-w-md mx-auto"
         variants={containerVariants}
@@ -39,7 +39,7 @@ export default function ScanLandingPage() {
           <div className="w-24 h-24 flex items-center justify-center -mb-6 mt-16 cursor-default relative overflow-hidden">
              <img src="/codalina-logo.png" alt="Codalina Logo" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-2 text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-2 text-center">
             Codalina
           </h1>
           <p className="text-neutral-500 text-sm tracking-[0.2em] uppercase font-semibold text-center mt-2">
@@ -49,14 +49,14 @@ export default function ScanLandingPage() {
 
         {/* Authentication Card */}
         <motion.div variants={itemVariants} className="mb-8 w-full">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-slate-50 border border-slate-200 shadow-xl shadow-slate-100 p-[1px] group hover:border-brand-primary/30 transition-colors duration-500">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white to-slate-50 border border-brand-navy/[0.08] shadow-sm shadow-slate-100 p-[1px] group hover:border-brand-primary/30 transition-colors duration-500">
             <div className="absolute inset-0 bg-brand-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="relative bg-white/90 backdrop-blur-xl rounded-2xl p-6 flex items-start space-x-4 border border-slate-100">
+            <div className="relative bg-brand-surface/90 backdrop-blur-xl rounded-2xl p-6 flex items-start space-x-4 border border-slate-100 dark:border-white/5">
               <div className="bg-emerald-50 p-3 rounded-full mt-1 border border-emerald-100">
                 <ShieldCheck className="w-6 h-6 text-brand-teal" />
               </div>
               <div className="flex-1">
-                <h3 className="text-slate-900 font-semibold text-lg mb-1 flex items-center">
+                <h3 className="text-slate-900 dark:text-white font-semibold text-lg mb-1 flex items-center">
                   Product Verified
                   <CheckCircle className="w-4 h-4 ml-2 text-brand-teal" />
                 </h3>

@@ -128,7 +128,7 @@ const VerificationForm = () => {
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed mb-10">
           Your information has been securely submitted for review. You will be notified once the audit is complete.
         </p>
-        <button onClick={() => window.location.href = '/dashboard'} className="px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-semibold transition-all">
+        <button onClick={() => window.location.href = '/dashboard'} className="px-8 py-3.5 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl text-xs font-semibold transition-all">
           Return to Dashboard
         </button>
       </div>
@@ -151,7 +151,7 @@ const VerificationForm = () => {
          
          <div className="flex items-center justify-center gap-2">
             {[0, 1, 2, 3, 4].map(s => (
-               <div key={s} className={`h-1 rounded-full transition-all duration-500 ${step === s ? 'w-10 bg-brand-blue' : 'w-2 bg-slate-100 dark:bg-white/10'}`} />
+               <div key={s} className={`h-1 rounded-full transition-all duration-500 ${step === s ? 'w-10 bg-brand-blue' : 'w-2 bg-slate-100 dark:bg-brand-surface/10'}`} />
             ))}
          </div>
       </div>
@@ -160,7 +160,7 @@ const VerificationForm = () => {
          
          {step === 0 && (
             <motion.div key="step0" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
-               <div className="p-8 bg-brand-cloud dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5 space-y-6">
+               <div className="p-8 bg-brand-cloud dark:bg-brand-surface/[0.02] rounded-2xl border border-slate-100 dark:border-white/5 space-y-6">
                   <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Requirements Checklist</h4>
                   <div className="space-y-4">
                      <EligibilityItem label="Name & Profile Picture" met={eligibility?.profileComplete} />
@@ -177,7 +177,7 @@ const VerificationForm = () => {
                <button 
                   disabled={!Object.values(eligibility || {}).every(v => v)}
                   onClick={nextStep}
-                  className="w-full py-4.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-30 transition-all shadow-lg"
+                  className="w-full py-4.5 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-30 transition-all shadow-sm"
                >
                   Get Started
                </button>
@@ -193,7 +193,7 @@ const VerificationForm = () => {
                </div>
 
                <div className="p-5 bg-brand-blue/5 rounded-2xl border border-brand-blue/10 flex items-center gap-4 cursor-pointer" onClick={() => setFormData({...formData, rulesAgreed: !formData.rulesAgreed})}>
-                  <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.rulesAgreed ? 'bg-brand-blue border-brand-blue text-white' : 'border-slate-200'}`}>
+                  <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${formData.rulesAgreed ? 'bg-brand-blue border-brand-blue text-white' : 'border-brand-navy/[0.08]'}`}>
                      {formData.rulesAgreed && <LucideCheck size={12} strokeWidth={3} />}
                   </div>
                   <span className="text-[10px] font-bold text-brand-slate dark:text-slate-300 uppercase tracking-widest leading-relaxed">I agree to the Platform Code of Conduct</span>
@@ -201,7 +201,7 @@ const VerificationForm = () => {
 
                <div className="flex items-center gap-4">
                   <button onClick={prevStep} className="flex-1 py-4 border border-slate-100 dark:border-white/5 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-400 hover:bg-brand-cloud transition-all">Back</button>
-                  <button disabled={!formData.rulesAgreed} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-all shadow-lg">Continue</button>
+                  <button disabled={!formData.rulesAgreed} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-widest disabled:opacity-20 transition-all shadow-sm">Continue</button>
                </div>
             </motion.div>
          )}
@@ -218,13 +218,13 @@ const VerificationForm = () => {
                      type="text" 
                      value={formData.legalName}
                      onChange={(e) => setFormData({...formData, legalName: e.target.value})}
-                     className="w-full py-4 bg-brand-cloud dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-sm font-medium focus:border-brand-blue/50 transition-all"
+                     className="w-full py-4 bg-brand-cloud dark:bg-brand-surface/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-sm font-medium focus:border-brand-blue/50 transition-all"
                      placeholder="Enter your name as per official ID"
                   />
                </div>
                <div className="flex items-center gap-4 pt-8">
-                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate transition-colors">Back</button>
-                  <button disabled={!formData.legalName} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg">Next</button>
+                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate dark:text-slate-300 transition-colors">Back</button>
+                  <button disabled={!formData.legalName} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm">Next</button>
                </div>
             </motion.div>
          )}
@@ -237,7 +237,7 @@ const VerificationForm = () => {
                      <select 
                         value={formData.idType}
                         onChange={(e) => setFormData({...formData, idType: e.target.value})}
-                        className="w-full py-4 bg-brand-cloud dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-xs font-bold uppercase tracking-widest appearance-none cursor-pointer"
+                        className="w-full py-4 bg-brand-cloud dark:bg-brand-surface/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-xs font-bold uppercase tracking-widest appearance-none cursor-pointer"
                      >
                         <option value="national_id">National ID Card</option>
                         <option value="passport">Passport</option>
@@ -250,7 +250,7 @@ const VerificationForm = () => {
                         type="text" 
                         value={formData.idNumber}
                         onChange={(e) => setFormData({...formData, idNumber: e.target.value})}
-                        className="w-full py-4 bg-brand-cloud dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-sm font-medium focus:border-brand-blue/50 transition-all"
+                        className="w-full py-4 bg-brand-cloud dark:bg-brand-surface/[0.02] border border-slate-100 dark:border-white/5 rounded-xl outline-none px-6 text-sm font-medium focus:border-brand-blue/50 transition-all"
                      />
                   </div>
                </div>
@@ -259,7 +259,7 @@ const VerificationForm = () => {
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Photo of ID Document</label>
                   <div 
                      onClick={() => document.getElementById('idUp').click()}
-                     className={`aspect-video rounded-2xl border-2 border-dashed flex items-center justify-center cursor-pointer transition-all ${formData.idDocumentFront ? 'border-brand-teal/20 bg-brand-teal/5' : 'border-slate-100 dark:border-white/5 hover:border-brand-blue/30 bg-brand-cloud/50 dark:bg-white/[0.01]'}`}
+                     className={`aspect-video rounded-2xl border-2 border-dashed flex items-center justify-center cursor-pointer transition-all ${formData.idDocumentFront ? 'border-brand-teal/20 bg-brand-teal/5' : 'border-slate-100 dark:border-white/5 hover:border-brand-blue/30 bg-brand-cloud/50 dark:bg-brand-surface/[0.01]'}`}
                   >
                      <input type="file" id="idUp" hidden onChange={(e) => uploadFile(e.target.files[0], 'idDocumentFront')} />
                      {uploading === 'idDocumentFront' ? <AppleSpinner className="animate-spin text-brand-blue" /> : 
@@ -270,8 +270,8 @@ const VerificationForm = () => {
                </div>
 
                <div className="flex items-center gap-4 pt-8">
-                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate transition-colors">Back</button>
-                  <button disabled={!formData.idDocumentFront || !formData.idNumber} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg">Continue</button>
+                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate dark:text-slate-300 transition-colors">Back</button>
+                  <button disabled={!formData.idDocumentFront || !formData.idNumber} onClick={nextStep} className="flex-[2] py-4 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-sm">Continue</button>
                </div>
             </motion.div>
          )}
@@ -281,7 +281,7 @@ const VerificationForm = () => {
                <div className="relative w-full aspect-square max-w-[240px] mx-auto">
                   <div 
                      onClick={() => setShowCamera(true)}
-                     className={`w-full h-full rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden transition-all ${formData.selfieWithId ? 'border-brand-blue shadow-xl shadow-blue-600/10' : 'border-slate-100 dark:border-white/5 hover:border-brand-blue/30 bg-brand-cloud/50 dark:bg-white/[0.01]'}`}
+                     className={`w-full h-full rounded-full border-2 border-dashed flex items-center justify-center cursor-pointer overflow-hidden transition-all ${formData.selfieWithId ? 'border-brand-blue shadow-sm shadow-blue-600/10' : 'border-slate-100 dark:border-white/5 hover:border-brand-blue/30 bg-brand-cloud/50 dark:bg-brand-surface/[0.01]'}`}
                   >
                      {uploading === 'selfieWithId' ? <AppleSpinner className="animate-spin text-brand-blue" /> : 
                       formData.selfieWithId ? <img src={getOptimizedUrl(getFullUrl(formData.selfieWithId))} className="w-full h-full object-cover scale-105" alt="" /> :
@@ -295,11 +295,11 @@ const VerificationForm = () => {
                </p>
 
                <div className="flex items-center gap-4 pt-8">
-                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate transition-colors">Back</button>
+                  <button onClick={prevStep} className="flex-1 py-4 text-xs font-bold uppercase tracking-widest text-slate-400 hover:text-brand-slate dark:text-slate-300 transition-colors">Back</button>
                   <button 
                      disabled={loading || !formData.selfieWithId} 
                      onClick={handleSubmit} 
-                     className="flex-[2] py-4 bg-brand-blue text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 disabled:opacity-20 transition-all flex items-center justify-center gap-3"
+                     className="flex-[2] py-4 bg-brand-blue text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-sm shadow-blue-600/20 hover:shadow-blue-600/40 disabled:opacity-20 transition-all flex items-center justify-center gap-3"
                   >
                      {loading ? <AppleSpinner className="animate-spin" size={16} /> : <><Fingerprint size={16} /> Submit for Review</>}
                   </button>
@@ -322,14 +322,14 @@ const VerificationForm = () => {
 const EligibilityItem = ({ label, met }) => (
    <div className="flex items-center justify-between group py-1.5">
       <span className={`text-xs font-medium transition-colors ${met ? 'text-brand-slate dark:text-slate-300' : 'text-slate-400'}`}>{label}</span>
-      <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${met ? 'bg-emerald-50 dark:bg-brand-teal/10 text-brand-teal' : 'bg-brand-cloud dark:bg-white/5 text-slate-300'}`}>
+      <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-all ${met ? 'bg-emerald-50 dark:bg-brand-teal/10 text-brand-teal' : 'bg-brand-cloud dark:bg-brand-surface/5 text-slate-300'}`}>
          {met ? <LucideCheck size={10} strokeWidth={4} /> : <LucideX size={10} strokeWidth={4} />}
       </div>
    </div>
 );
 
 const RuleBlock = ({ icon, title, text }) => (
-   <div className="p-6 bg-brand-cloud dark:bg-white/[0.02] rounded-2xl border border-slate-100 dark:border-white/5 space-y-3 hover:border-brand-blue/20 transition-all group">
+   <div className="p-6 bg-brand-cloud dark:bg-brand-surface/[0.02] rounded-2xl border border-slate-100 dark:border-white/5 space-y-3 hover:border-brand-blue/20 transition-all group">
       <div className="flex items-center gap-3 text-slate-900 dark:text-white">
          <div className="p-2 bg-brand-sky dark:bg-brand-blue/10 rounded-lg text-brand-blue transition-colors">
             {icon}
@@ -341,7 +341,7 @@ const RuleBlock = ({ icon, title, text }) => (
 );
 
 const CategoryBtn = ({ active, label, icon, onClick }) => (
-   <button onClick={onClick} className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${active ? 'border-brand-blue bg-brand-sky/50 dark:bg-brand-blue/5 text-brand-blue shadow-md shadow-blue-500/5' : 'border-slate-100 dark:border-white/5 text-slate-400 hover:border-brand-blue/20'}`}>
+   <button onClick={onClick} className={`p-8 rounded-2xl border-2 transition-all flex flex-col items-center gap-4 ${active ? 'border-brand-blue bg-brand-sky/50 dark:bg-brand-blue/5 text-brand-blue shadow-sm shadow-blue-500/5' : 'border-slate-100 dark:border-white/5 text-slate-400 hover:border-brand-blue/20'}`}>
       <div className={`transition-opacity duration-300 ${active ? 'scale-110' : ''}`}>
          {icon}
       </div>

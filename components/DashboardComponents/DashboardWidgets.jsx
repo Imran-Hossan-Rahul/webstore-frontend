@@ -52,11 +52,11 @@ export function ViewsWidget({ title, totalViews, data, onClick }) {
 
   return (
     <div 
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
+        className="bg-brand-surface rounded-[26px] p-6 shadow-sm border border-slate-100 dark:border-white/5 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-sm group"
     >
       <div className="flex justify-between items-start mb-4">
         <div onClick={onClick}>
-          <h3 className="font-medium text-base text-slate-800 group-hover:text-brand-blue transition-colors font-sans">{title}</h3>
+          <h3 className="font-medium text-base text-slate-800 dark:text-slate-100 group-hover:text-brand-blue transition-colors font-sans">{title}</h3>
           <p className="text-3xl font-medium text-black mt-1 font-mono tracking-tight">{totalViews}</p>
           <p className="text-[10px] text-slate-400 uppercase tracking-[0.15em] font-mono mt-1">Total Views</p>
         </div>
@@ -67,7 +67,7 @@ export function ViewsWidget({ title, totalViews, data, onClick }) {
               e.stopPropagation();
               setTimeRange(e.target.value);
             }}
-            className="text-xs px-2 py-1 rounded border border-slate-200 bg-white text-brand-slate cursor-pointer hover:border-blue-400 focus:outline-none focus:border-brand-blue"
+            className="text-xs px-2 py-1 rounded border border-brand-navy/[0.08] bg-brand-surface text-brand-slate dark:text-slate-300 cursor-pointer hover:border-blue-400 focus:outline-none focus:border-brand-blue"
           >
             <option value="24hours">Last 24 Hours</option>
             <option value="7days">Last 7 Days</option>
@@ -119,15 +119,15 @@ export function DownloadsWidget({ title, totalDownloads, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
+        className="bg-brand-surface rounded-[26px] p-6 shadow-sm border border-slate-100 dark:border-white/5 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-sm group"
     >
         <div className="flex justify-between items-start mb-4">
             <div>
-                 <h3 className="font-medium text-base text-slate-800 group-hover:text-green-600 transition-colors font-sans">{title}</h3>
+                 <h3 className="font-medium text-base text-slate-800 dark:text-slate-100 group-hover:text-green-600 transition-colors font-sans">{title}</h3>
                  <p className="text-3xl font-medium text-black mt-1 font-mono tracking-tight">{totalDownloads}</p>
                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.15em] font-mono mt-1">Total Downloads</p>
             </div>
-             <button className="p-2 rounded-full hover:bg-brand-cloud border border-slate-200 text-brand-slate">
+             <button className="p-2 rounded-full hover:bg-brand-cloud border border-brand-navy/[0.08] text-brand-slate dark:text-slate-300">
                 <MoreVertical size={16} />
             </button>
         </div>
@@ -154,11 +154,11 @@ export function CountryWidget({ title, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
+        className="bg-brand-surface rounded-[26px] p-6 shadow-sm border border-slate-100 dark:border-white/5 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-sm group"
     >
        <div className="flex justify-between items-start mb-2">
-           <h3 className="font-medium text-base text-slate-800 group-hover:text-yellow-600 transition-colors font-sans">{title}</h3>
-            <button className="p-2 rounded-full hover:bg-brand-cloud border border-slate-200 text-brand-slate">
+           <h3 className="font-medium text-base text-slate-800 dark:text-slate-100 group-hover:text-yellow-600 transition-colors font-sans">{title}</h3>
+            <button className="p-2 rounded-full hover:bg-brand-cloud border border-brand-navy/[0.08] text-brand-slate dark:text-slate-300">
                 <MoreVertical size={16} />
             </button>
       </div>
@@ -183,14 +183,14 @@ export function EarningsWidget({ title, totalEarnings, data, onClick }) {
   return (
     <div 
         onClick={onClick}
-        className="bg-white rounded-[26px] p-6 shadow-sm border border-slate-100 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-md group"
+        className="bg-brand-surface rounded-[26px] p-6 shadow-sm border border-slate-100 dark:border-white/5 h-full relative font-sans flex flex-col cursor-pointer transition-opacity hover:opacity-80 hover:shadow-sm group"
     >
       <div className="flex justify-between items-start mb-2">
         <div>
-            <h3 className="font-medium text-base text-slate-800 group-hover:text-red-600 transition-colors font-sans">{title}</h3>
+            <h3 className="font-medium text-base text-slate-800 dark:text-slate-100 group-hover:text-red-600 transition-colors font-sans">{title}</h3>
             <p className="text-3xl font-medium text-black mt-1 font-mono tracking-tight">{totalEarnings} <span className="text-sm">TKNS</span></p>
         </div>
-        <button className="p-2 rounded-full hover:bg-brand-cloud border border-slate-200 text-brand-slate">
+        <button className="p-2 rounded-full hover:bg-brand-cloud border border-brand-navy/[0.08] text-brand-slate dark:text-slate-300">
             <MoreVertical size={16} />
         </button>
       </div>

@@ -143,14 +143,14 @@ export default function AdminBannersPage() {
       {loading ? (
         <div className="text-center py-10">Loading...</div>
       ) : banners.length === 0 ? (
-        <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-10 text-center text-slate-500">
+        <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-10 text-center text-slate-500 dark:text-slate-400">
           No banners found. Create one to get started!
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {banners.map((banner) => (
-            <div key={banner._id} className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] overflow-hidden relative group">
-              <div className="h-40 bg-brand-cloud dark:bg-[#0D1117] relative">
+            <div key={banner._id} className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] overflow-hidden relative group">
+              <div className="h-40 bg-brand-cloud dark:bg-brand-surface relative">
                 <img 
                   src={`${process.env.NEXT_PUBLIC_API_URL}${banner.image}`} 
                   alt={banner.titleBottom}
@@ -161,9 +161,9 @@ export default function AdminBannersPage() {
                   <span className="text-xl font-bold text-brand-amber uppercase">{banner.titleBottom}</span>
                 </div>
               </div>
-              <div className="p-4 flex items-center justify-between bg-white dark:bg-[#161B22]">
+              <div className="p-4 flex items-center justify-between bg-brand-surface dark:bg-brand-surface">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs bg-brand-cloud dark:bg-[#0D1117] px-2 py-1 rounded">Order: {banner.order}</span>
+                  <span className="text-xs bg-brand-cloud dark:bg-brand-surface px-2 py-1 rounded">Order: {banner.order}</span>
                   <button 
                     onClick={() => toggleActive(banner)}
                     className={`text-xs px-2 py-1 rounded ${banner.isActive ? 'bg-green-600/20 text-brand-teal' : 'bg-red-600/20 text-red-500'}`}
@@ -172,10 +172,10 @@ export default function AdminBannersPage() {
                   </button>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => openEditModal(banner)} className="p-2 hover:bg-brand-cloud dark:bg-[#0D1117] rounded text-blue-400">
+                  <button onClick={() => openEditModal(banner)} className="p-2 hover:bg-brand-cloud dark:bg-brand-surface rounded text-blue-400">
                     <Edit2 size={16} />
                   </button>
-                  <button onClick={() => handleDelete(banner._id)} className="p-2 hover:bg-brand-cloud dark:bg-[#0D1117] rounded text-red-400">
+                  <button onClick={() => handleDelete(banner._id)} className="p-2 hover:bg-brand-cloud dark:bg-brand-surface rounded text-red-400">
                     <Trash2 size={16} />
                   </button>
                 </div>
@@ -188,61 +188,61 @@ export default function AdminBannersPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] w-full max-w-lg overflow-hidden">
-            <div className="p-4 border-b border-slate-200 dark:border-white/10 flex justify-between items-center">
+          <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] w-full max-w-lg overflow-hidden">
+            <div className="p-4 border-b border-brand-navy/[0.08] dark:border-white/10 flex justify-between items-center">
               <h2 className="text-lg font-bold">{editId ? 'Edit Banner' : 'Create Banner'}</h2>
-              <button onClick={() => setShowModal(false)} className="text-slate-500 hover:text-brand-navy dark:text-white">
+              <button onClick={() => setShowModal(false)} className="text-slate-500 dark:text-slate-400 hover:text-brand-navy dark:text-white">
                 <X size={20} />
               </button>
             </div>
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Title Top (e.g., Best Deals on)</label>
+                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Title Top (e.g., Best Deals on)</label>
                 <input 
                   type="text" name="titleTop" value={formData.titleTop} onChange={handleInputChange} required
-                  className="w-full bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
+                  className="w-full bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Title Bottom (e.g., WINDOWS LAPTOPS)</label>
+                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Title Bottom (e.g., WINDOWS LAPTOPS)</label>
                 <input 
                   type="text" name="titleBottom" value={formData.titleBottom} onChange={handleInputChange} required
-                  className="w-full bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
+                  className="w-full bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
                 />
               </div>
               <div>
-                <label className="block text-xs text-slate-500 mb-1">Banner Image (PNG, JPG, WEBP)</label>
+                <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Banner Image (PNG, JPG, WEBP)</label>
                 <input 
                   type="file" name="image" onChange={handleInputChange} accept="image/*"
-                  className="w-full bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
+                  className="w-full bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
                 />
-                {!formData.image && editId && <p className="text-xs text-slate-500 mt-1">Leave empty to keep existing image</p>}
+                {!formData.image && editId && <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Leave empty to keep existing image</p>}
               </div>
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block text-xs text-slate-500 mb-1">Link (Optional)</label>
+                  <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Link (Optional)</label>
                   <input 
                     type="text" name="link" value={formData.link} onChange={handleInputChange}
-                    className="w-full bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
+                    className="w-full bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
                   />
                 </div>
                 <div className="w-24">
-                  <label className="block text-xs text-slate-500 mb-1">Order</label>
+                  <label className="block text-xs text-slate-500 dark:text-slate-400 mb-1">Order</label>
                   <input 
                     type="number" name="order" value={formData.order} onChange={handleInputChange}
-                    className="w-full bg-brand-cloud dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
+                    className="w-full bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] px-3 py-2 text-white"
                   />
                 </div>
               </div>
               <div className="flex items-center gap-2 mt-4">
                 <input 
                   type="checkbox" name="isActive" id="isActive" checked={formData.isActive} onChange={handleInputChange}
-                  className="w-4 h-4 rounded bg-brand-cloud dark:bg-[#0D1117] border-slate-200 dark:border-white/10"
+                  className="w-4 h-4 rounded bg-brand-cloud dark:bg-brand-surface border-brand-navy/[0.08] dark:border-white/10"
                 />
                 <label htmlFor="isActive" className="text-sm">Is Active</label>
               </div>
               <div className="pt-4 flex justify-end gap-3">
-                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-700">Cancel</button>
+                <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 rounded-[4px] bg-brand-cloud dark:bg-brand-surface hover:bg-slate-700">Cancel</button>
                 <button type="submit" disabled={saving} className="px-4 py-2 rounded-[4px] bg-brand-blue hover:bg-blue-700 disabled:opacity-50">
                   {saving ? 'Saving...' : 'Save Banner'}
                 </button>

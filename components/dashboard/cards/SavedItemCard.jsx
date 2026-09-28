@@ -136,11 +136,11 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
     return (
         <div 
             onClick={handleCardClick}
-            className="group relative flex flex-col bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-white/10 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
+            className="group relative flex flex-col bg-brand-surface dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-white/10 hover:shadow-sm hover:shadow-indigo-500/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden cursor-pointer"
         >
             
             {/* Top Indicator / Badge */}
-            <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md backdrop-blur-md bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-sm">
+            <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md backdrop-blur-md bg-brand-surface/90 dark:bg-slate-900/90 border border-brand-navy/[0.08] dark:border-white/10 shadow-sm">
                 <span className="text-slate-900 dark:text-white">
                     {TypeIcon && <TypeIcon size={11} strokeWidth={1.5} />}
                 </span>
@@ -156,7 +156,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                     e.stopPropagation();
                     onRemove(item._id || item.id, type);
                 }}
-                className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-white/90 dark:bg-slate-900/90 border border-slate-100 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 shadow-sm"
+                className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-brand-surface/90 dark:bg-slate-900/90 border border-slate-100 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 shadow-sm"
                 title="Remove from Saved"
             >
                 <Trash2 size={14} strokeWidth={1.5} />
@@ -171,7 +171,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                     </p>
                 </div>
             ) : (
-                <div className="relative h-48 bg-brand-cloud dark:bg-slate-800/50 block overflow-hidden">
+                <div className="relative h-48 bg-brand-cloud dark:bg-brand-surface/50 block overflow-hidden">
                     {imageUrl ? (
                         <img 
                             src={imageUrl} 
@@ -179,7 +179,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                             className="w-full h-full object-cover transition-opacity duration-500"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-200 dark:text-brand-slate">
+                        <div className="w-full h-full flex items-center justify-center text-slate-200 dark:text-brand-slate dark:text-slate-300">
                             {TypeIcon && <TypeIcon size={48} strokeWidth={1} />}
                         </div>
                     )}
@@ -196,19 +196,19 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                         avatarUrl={author?.profilePicture}
                     >
                         <div className="flex items-center gap-2 cursor-pointer group/author">
-                            <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-white/5 overflow-hidden ring-1 ring-slate-100 dark:ring-white/10 shrink-0">
+                            <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-brand-surface/5 overflow-hidden ring-1 ring-slate-100 dark:ring-white/10 shrink-0">
                                 {author?.profilePicture ? (
                                     <img src={getOptimizedUrl(author.profilePicture)} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="w-full h-full bg-slate-200 dark:bg-slate-700" />
                                 )}
                             </div>
-                            <span className="text-[10px] font-bold text-slate-500 truncate hover:text-slate-900 dark:hover:text-white transition-colors">
+                            <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 truncate hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors">
                                 {highlightText(author?.name || "Anonymous", searchQuery)}
                             </span>
                         </div>
                     </CraftsmanHoverCard>
-                    <span className="text-slate-300 dark:text-brand-slate">·</span>
+                    <span className="text-slate-300 dark:text-brand-slate dark:text-slate-300">·</span>
                     <span className="text-[10px] font-medium text-slate-400">
                         {item.createdAt ? formatDistanceToNow(new Date(item.createdAt)) : "recently"}
                     </span>
@@ -226,13 +226,13 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                 {/* Type-Specific Meta */}
                 <div className="mb-0">
                     {type === 'job' && (
-                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
+                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-brand-surface/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
                             <Zap size={12} strokeWidth={1.5} className="text-slate-400" />
                             <span>{item.budget?.min}-{item.budget?.max} TKNS</span>
                         </div>
                     )}
                     {type === 'challenge' && (
-                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-white/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
+                        <div className="flex items-center gap-2 text-[11px] font-bold text-slate-900 dark:text-white bg-brand-cloud dark:bg-brand-surface/5 px-2.5 py-1 rounded-lg w-fit border border-slate-100 dark:border-white/10">
                             <Trophy size={12} strokeWidth={1.5} className="text-slate-400" />
                             <span>{item.prize} Prize Pool</span>
                         </div>
@@ -250,12 +250,12 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
 
                 <div className="mt-auto flex items-center justify-between pt-2 border-t border-slate-50 dark:border-white/5">
                     <div className="relative group/folder">
-                        <button className="p-1.5 text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors" title="Move to Folder">
+                        <button className="p-1.5 text-slate-300 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" title="Move to Folder">
                             <FolderPlus size={14} strokeWidth={1.5} />
                         </button>
                         
                         <div className="absolute bottom-full left-0 pb-2 w-52 opacity-0 invisible group-hover/folder:opacity-100 group-hover/folder:visible transition-all z-30">
-                            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl shadow-xl py-2">
+                            <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl shadow-sm py-2">
                                 <p className="px-4 py-1 text-[10px] font-black text-slate-400 border-b border-slate-100 dark:border-white/5 mb-1">Move to...</p>
                                 <div className="max-h-48 overflow-y-auto custom-scrollbar">
                                     {(() => {
@@ -282,7 +282,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                                                     }
                                                 }}
                                                 disabled={movingFolderId === folder._id}
-                                                className="w-full text-left px-4 py-2 text-[12px] font-bold text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50"
+                                                className="w-full text-left px-4 py-2 text-[12px] font-bold text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-brand-surface/5 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors flex items-center gap-2 disabled:opacity-50"
                                             >
                                                 {movingFolderId === folder._id ? (
                                                     <AppleSpinner className="w-3 h-3 animate-spin text-brand-blue" />
@@ -301,7 +301,7 @@ const SavedItemCard = ({ item, onRemove, folders, onMove, onRemoveFromFolder, se
                     <div className="flex items-center gap-1">
                         <button 
                             onClick={handleLike} 
-                            className={`p-1.5 transition-colors flex items-center gap-1 rounded-md ${isLiked ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10' : 'text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-brand-cloud dark:hover:bg-white/5'}`} 
+                            className={`p-1.5 transition-colors flex items-center gap-1 rounded-md ${isLiked ? 'text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10' : 'text-slate-300 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-brand-cloud dark:hover:bg-brand-surface/5'}`} 
                             title={isLiked ? "Unlike" : "Star"}
                         >
                             <Star size={14} strokeWidth={1.5} className={isLiked ? 'fill-current' : ''} />

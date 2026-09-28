@@ -46,7 +46,7 @@ export default function MobileMarketBottomNav() {
       <div className="flex gap-2 justify-start pointer-events-auto" style={{ marginRight: '150px' }}>
         <Link 
           href="/market/cart" 
-          className="flex items-center justify-center gap-2 h-11 px-5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all text-brand-slate dark:text-slate-200 font-semibold"
+          className="flex items-center justify-center gap-2 h-11 px-5 bg-slate-100 dark:bg-brand-surface hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-slate-700 rounded-xl transition-all text-brand-slate dark:text-slate-200 font-semibold"
         >
            <div className="relative">
              <ShoppingCart size={17} strokeWidth={2} />
@@ -61,7 +61,7 @@ export default function MobileMarketBottomNav() {
 
         <Link 
           href="/market/orders" 
-          className="flex items-center justify-center gap-2 h-11 px-5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-black dark:hover:bg-slate-100 rounded-xl transition-all font-semibold shadow-sm"
+          className="flex items-center justify-center gap-2 h-11 px-5 bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white hover:bg-black dark:hover:bg-slate-100 dark:bg-brand-surface/[0.05] rounded-xl transition-all font-semibold shadow-sm"
         >
            <Package size={17} strokeWidth={2} />
            <span className="text-[13px]">My Orders</span>

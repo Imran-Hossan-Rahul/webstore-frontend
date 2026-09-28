@@ -29,7 +29,7 @@ export default function VerifyEmailTab({ profile, onVerified }) {
 
   if (profile.emailVerified) {
     return (
-      <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
+      <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
         <div className="flex flex-col items-center text-center py-6">
           {/* Verified icon */}
           <div className="w-20 h-20 rounded-full bg-emerald-50 dark:bg-brand-teal/10 flex items-center justify-center mb-6">
@@ -54,7 +54,7 @@ export default function VerifyEmailTab({ profile, onVerified }) {
   }
 
   return (
-    <div className="bg-white dark:bg-[#1c1c1e] rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
+    <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
       <div className="flex flex-col items-center text-center py-4">
 
         {/* Unverified icon */}
@@ -92,7 +92,7 @@ export default function VerifyEmailTab({ profile, onVerified }) {
             <button
               onClick={handleResend}
               disabled={isSending}
-              className="w-full py-3.5 bg-[#1d1d1f] dark:bg-white text-white dark:text-black rounded-full text-[15px] font-medium transition-all hover:opacity-80 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3.5 bg-[#1d1d1f] dark:bg-brand-surface text-white dark:text-black rounded-full text-[15px] font-medium transition-all hover:opacity-80 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isSending ? (
                 <AppleSpinner className="w-4 h-4 animate-spin" />

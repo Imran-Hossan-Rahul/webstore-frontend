@@ -29,7 +29,7 @@ const MessageBubble = ({ message, isOwn }) => {
         <div className={`rounded-2xl px-4 py-2 ${
           isOwn
             ? 'bg-purple-600 text-white'
-            : 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
+            : 'bg-slate-100 dark:bg-brand-surface/10 text-slate-900 dark:text-white'
         }`}>
           {!isOwn && (
             <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">
@@ -50,7 +50,7 @@ const MessageBubble = ({ message, isOwn }) => {
 
 const OnlineUser = ({ user, isOnline }) => {
   return (
-    <div className="flex items-center gap-3 p-2 hover:bg-brand-cloud dark:hover:bg-white/5 rounded-lg cursor-pointer">
+    <div className="flex items-center gap-3 p-2 hover:bg-brand-cloud dark:hover:bg-brand-surface/5 rounded-lg cursor-pointer">
       <div className="relative">
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
           {user.avatar ? (
@@ -142,7 +142,7 @@ export default function CommunityChat() {
   };
 
   return (
-    <div className="h-[600px] bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-xl overflow-hidden">
+    <div className="h-[600px] bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-xl overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b border-slate-100 dark:border-white/5">
         <div className="flex items-center justify-between">
@@ -159,8 +159,8 @@ export default function CommunityChat() {
               </p>
             </div>
           </div>
-          <button className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg">
-            <MoreVertical className="w-4 h-4 text-slate-500" />
+          <button className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 rounded-lg">
+            <MoreVertical className="w-4 h-4 text-slate-500 dark:text-slate-400" />
           </button>
         </div>
       </div>
@@ -188,7 +188,7 @@ export default function CommunityChat() {
             ) : (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <MessageCircle className="w-12 h-12 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
+                  <MessageCircle className="w-12 h-12 text-slate-300 dark:text-brand-slate dark:text-slate-300 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
                     No messages yet
                   </h3>
@@ -209,14 +209,14 @@ export default function CommunityChat() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Type a message..."
-                  className="w-full px-4 py-3 pr-12 border border-slate-200 dark:border-white/10 rounded-lg bg-white dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-brand-navy/[0.08] dark:border-white/10 rounded-lg bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   disabled={sending}
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-slate-100 dark:hover:bg-white/5 rounded"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 rounded"
                 >
-                  <Smile className="w-4 h-4 text-slate-500" />
+                  <Smile className="w-4 h-4 text-slate-500 dark:text-slate-400" />
                 </button>
               </div>
               <button

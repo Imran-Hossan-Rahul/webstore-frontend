@@ -62,9 +62,9 @@ export default function OnboardingWizard({ onComplete }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white rounded-[4px] w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div className="bg-brand-surface rounded-[4px] w-full max-w-2xl shadow-sm overflow-hidden flex flex-col">
         {/* Progress Bar */}
-        <div className="w-full h-2 bg-slate-100">
+        <div className="w-full h-2 bg-slate-100 dark:bg-brand-surface/[0.05]">
           <div 
             className="h-full bg-black transition-all duration-300 ease-out"
             style={{ width: step === 1 ? "50%" : "100%" }}
@@ -79,17 +79,17 @@ export default function OnboardingWizard({ onComplete }) {
                 <div className="w-16 h-16 bg-brand-sky rounded-full flex items-center justify-center mx-auto mb-4 text-brand-blue">
                     <User size={32} />
                 </div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome! Let&apos;s get to know you.</h2>
-                <p className="text-slate-500">Tell us a bit about yourself to personalize your experience.</p>
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Welcome! Let&apos;s get to know you.</h2>
+                <p className="text-slate-500 dark:text-slate-400">Tell us a bit about yourself to personalize your experience.</p>
               </div>
 
               <div>
-                  <label className="block text-sm font-semibold text-brand-slate mb-2">Bio</label>
+                  <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-2">Bio</label>
                   <textarea 
                     value={formData.bio}
                     onChange={(e) => setFormData({...formData, bio: e.target.value})}
                     placeholder="I am a software engineer passionate about..."
-                    className="w-full p-4 rounded-[4px] bg-brand-cloud border-2 border-transparent focus:border-black focus:bg-white transition-all outline-none resize-none h-32"
+                    className="w-full p-4 rounded-[4px] bg-brand-cloud border-2 border-transparent focus:border-black focus:bg-brand-surface transition-all outline-none resize-none h-32"
                   />
                   <p className="text-right text-xs text-slate-400 mt-1">{formData.bio.length}/500</p>
               </div>
@@ -102,34 +102,34 @@ export default function OnboardingWizard({ onComplete }) {
                 <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
                     {/* Icon removed */}
                 </div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Professional Details</h2>
-                <p className="text-slate-500">How do you usually work?</p>
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">Professional Details</h2>
+                <p className="text-slate-500 dark:text-slate-400">How do you usually work?</p>
               </div>
 
               {/* Work Type */}
               <div className="grid grid-cols-2 gap-4">
                   <button 
                     onClick={() => setFormData({...formData, workType: 'solo'})}
-                    className={`p-6 rounded-[4px] border-2 text-left transition-all ${formData.workType === 'solo' ? 'border-black bg-brand-cloud' : 'border-slate-100 hover:border-slate-200'}`}
+                    className={`p-6 rounded-[4px] border-2 text-left transition-all ${formData.workType === 'solo' ? 'border-black bg-brand-cloud' : 'border-slate-100 dark:border-white/5 hover:border-brand-navy/[0.08]'}`}
                   >
                       <h3 className="font-bold text-lg mb-1">Solo Craftsman</h3>
-                      <p className="text-sm text-slate-500">I work on devlogs by myself.</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">I work on devlogs by myself.</p>
                   </button>
                   <button 
                     onClick={() => setFormData({...formData, workType: 'team'})}
-                    className={`p-6 rounded-[4px] border-2 text-left transition-all ${formData.workType === 'team' ? 'border-black bg-brand-cloud' : 'border-slate-100 hover:border-slate-200'}`}
+                    className={`p-6 rounded-[4px] border-2 text-left transition-all ${formData.workType === 'team' ? 'border-black bg-brand-cloud' : 'border-slate-100 dark:border-white/5 hover:border-brand-navy/[0.08]'}`}
                   >
                       <h3 className="font-bold text-lg mb-1">Team / Agency</h3>
-                      <p className="text-sm text-slate-500">I collaborate with a team.</p>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">I collaborate with a team.</p>
                   </button>
               </div>
 
               {/* Skills */}
               <div>
-                  <label className="block text-sm font-semibold text-brand-slate mb-2">Skills</label>
-                  <div className="w-full p-3 rounded-[4px] bg-brand-cloud border-2 border-transparent focus-within:border-black focus-within:bg-white transition-all flex flex-wrap gap-2 min-h-[56px]">
+                  <label className="block text-sm font-semibold text-brand-slate dark:text-slate-300 mb-2">Skills</label>
+                  <div className="w-full p-3 rounded-[4px] bg-brand-cloud border-2 border-transparent focus-within:border-black focus-within:bg-brand-surface transition-all flex flex-wrap gap-2 min-h-[56px]">
                       {formData.skills.map(skill => (
-                          <span key={skill} className="bg-white border border-slate-200 px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-sm">
+                          <span key={skill} className="bg-brand-surface border border-brand-navy/[0.08] px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 shadow-sm">
                               {skill}
                               <button onClick={() => removeSkill(skill)} className="text-slate-400 hover:text-red-500"><X size={14}/></button>
                           </span>
@@ -148,10 +148,10 @@ export default function OnboardingWizard({ onComplete }) {
         </div>
 
         {/* Footer */}
-        <div className="p-8 border-t border-slate-100 flex justify-between items-center bg-brand-cloud/50">
+        <div className="p-8 border-t border-slate-100 dark:border-white/5 flex justify-between items-center bg-brand-cloud/50">
             <button 
                 onClick={handleSkip}
-                className="text-slate-500 font-medium hover:text-black transition-colors"
+                className="text-slate-500 dark:text-slate-400 font-medium hover:text-black transition-colors"
             >
                 Skip for now
             </button>
@@ -159,7 +159,7 @@ export default function OnboardingWizard({ onComplete }) {
                 {step > 1 && (
                     <button 
                         onClick={handleBack}
-                        className="px-6 py-3 rounded-[4px] font-medium text-brand-slate hover:bg-slate-200 transition-colors"
+                        className="px-6 py-3 rounded-[4px] font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-200 dark:bg-brand-surface/[0.1] transition-colors"
                     >
                         Back
                     </button>

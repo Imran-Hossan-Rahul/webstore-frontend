@@ -47,7 +47,7 @@ const UserDirectory = () => {
   return (
     <div className="relative min-h-[600px] space-y-6">
       {/* Search & Filters */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white dark:bg-[#161B22] p-6 rounded-[4px] border border-slate-200 dark:border-white/10">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-brand-surface dark:bg-brand-surface p-6 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10">
         <form onSubmit={handleSearch} className="relative flex-1 max-w-md group">
           <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-blue transition-colors" size={16} />
           <input 
@@ -55,19 +55,19 @@ const UserDirectory = () => {
             placeholder="Search directory..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-12 pr-6 py-3.5 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[4px] outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue/50 transition-all text-sm font-medium"
+            className="w-full pl-12 pr-6 py-3.5 bg-brand-cloud dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue/50 transition-all text-sm font-medium"
           />
         </form>
 
-        <div className="flex items-center gap-2 bg-brand-cloud dark:bg-white/5 p-1.5 rounded-[4px] border border-slate-200/50 dark:border-white/10">
+        <div className="flex items-center gap-2 bg-brand-cloud dark:bg-brand-surface/5 p-1.5 rounded-[4px] border border-brand-navy/[0.08]/50 dark:border-white/10">
           {['', 'patron', 'craftsman', 'admin'].map((r) => (
             <button
               key={r}
               onClick={() => { setRole(r); setPage(1); }}
               className={`px-5 py-2 rounded-[4px] text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                 role === r 
-                  ? 'bg-white dark:bg-[#111] text-brand-blue border border-slate-200/50 dark:border-white/10' 
-                  : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-200'
+                  ? 'bg-brand-surface dark:bg-[#111] text-brand-blue border border-brand-navy/[0.08]/50 dark:border-white/10' 
+                  : 'text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-200'
               }`}
             >
               {r || 'All Entities'}
@@ -77,11 +77,11 @@ const UserDirectory = () => {
       </div>
 
       {/* Modern Data Table */}
-      <div className="bg-white dark:bg-[#161B22] rounded-[40px] border border-slate-200 dark:border-white/10 overflow-hidden">
+      <div className="bg-brand-surface dark:bg-brand-surface rounded-[40px] border border-brand-navy/[0.08] dark:border-white/10 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-100 dark:border-white/10 bg-brand-cloud/20 dark:bg-white/[0.01]">
+              <tr className="border-b border-slate-100 dark:border-white/10 bg-brand-cloud/20 dark:bg-brand-surface/[0.01]">
                 <th className="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">User Entity</th>
                 <th className="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Access Level</th>
                 <th className="px-8 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Compliance</th>
@@ -100,11 +100,11 @@ const UserDirectory = () => {
                 <tr 
                   key={user._id} 
                   onClick={() => handleUserClick(user._id)}
-                  className="group cursor-pointer hover:bg-brand-cloud dark:hover:bg-white/[0.01] transition-all duration-300"
+                  className="group cursor-pointer hover:bg-brand-cloud dark:hover:bg-brand-surface/[0.01] transition-all duration-300"
                 >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-5">
-                      <div className="w-12 h-12 rounded-[4px] overflow-hidden border border-slate-200 dark:border-white/10 group-hover:-translate-y-0.5 transition-opacity duration-500">
+                      <div className="w-12 h-12 rounded-[4px] overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 group-hover:-translate-y-0.5 transition-opacity duration-500">
                         <img 
                           src={user.profilePicture ? getOptimizedUrl(user.profilePicture) : 'https://ui-avatars.com/api/?name=User&background=random'} 
                           alt="" 
@@ -125,7 +125,7 @@ const UserDirectory = () => {
                         ? 'bg-brand-blue/10 text-brand-blue border border-brand-blue/20'
                         : user.role === 'patron'
                         ? 'bg-brand-teal/10 text-brand-teal border border-brand-teal/20'
-                        : 'bg-slate-500/10 text-slate-500 border border-slate-500/20'
+                        : 'bg-slate-500/10 text-slate-500 dark:text-slate-400 border border-slate-500/20'
                     }`}>
                       {user.role}
                     </span>
@@ -152,7 +152,7 @@ const UserDirectory = () => {
                     </div>
                   </td>
                   <td className="px-8 py-6 text-right">
-                    <div className="w-12 h-12 ml-auto rounded-[4px] bg-brand-cloud dark:bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-brand-blue group-hover:text-white group-hover: group-hover: transition-all duration-500">
+                    <div className="w-12 h-12 ml-auto rounded-[4px] bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center text-slate-400 group-hover:bg-brand-blue group-hover:text-white group-hover: group-hover: transition-all duration-500">
                        <ArrowUpRight size={18} />
                     </div>
                   </td>
@@ -173,14 +173,14 @@ const UserDirectory = () => {
             <button 
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="w-12 h-12 flex items-center justify-center rounded-[4px] bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 text-brand-slate dark:text-slate-400 disabled:opacity-20 hover:border-slate-300 dark:hover:border-white/20 transition-all"
+              className="w-12 h-12 flex items-center justify-center rounded-[4px] bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-400 disabled:opacity-20 hover:border-brand-navy/[0.08] dark:hover:border-white/20 transition-all"
             >
               <ChevronLeft size={20} />
             </button>
             <button 
               disabled={page === pagination.pages}
               onClick={() => setPage(p => p + 1)}
-              className="px-8 h-12 rounded-[4px] bg-white dark:bg-[#161B22] dark:bg-white text-[10px] font-bold uppercase tracking-widest text-white dark:text-slate-900 disabled:opacity-20 hover:opacity-90 transition-all"
+              className="px-8 h-12 rounded-[4px] bg-brand-surface dark:bg-brand-surface dark:bg-brand-surface text-[10px] font-bold uppercase tracking-widest text-white dark:text-slate-900 dark:text-white disabled:opacity-20 hover:opacity-90 transition-all"
             >
               Next Registry
             </button>

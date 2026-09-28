@@ -650,11 +650,11 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
               initial={{ opacity: 0, x: 20, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1, transition: { delay: 1, duration: 0.3 } }}
               exit={{ opacity: 0, x: 20, scale: 0.9, transition: { duration: 0.2 } }}
-              className="relative bg-white dark:bg-[#1c1c1e] text-apple-ink dark:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-1 md:mb-2 max-w-[180px] md:max-w-[220px]"
+              className="relative bg-brand-surface dark:bg-brand-surface text-apple-ink dark:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-1 md:mb-2 max-w-[180px] md:max-w-[220px]"
             >
               <button 
                 onClick={(e) => { e.stopPropagation(); setShowGreeting(false); }}
-                className="absolute -top-1.5 -left-1.5 md:-top-2 md:-left-2 w-4 h-4 md:w-5 md:h-5 bg-white dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
+                className="absolute -top-1.5 -left-1.5 md:-top-2 md:-left-2 w-4 h-4 md:w-5 md:h-5 bg-brand-surface dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
               >
                 <X className="w-2.5 h-2.5 md:w-3 md:h-3" />
               </button>
@@ -677,7 +677,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                 </span>
               </p>
               {/* Little triangle pointing to the avatar */}
-              <div className="absolute top-1/2 -right-1.5 md:-right-2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-white dark:bg-[#1c1c1e] border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
+              <div className="absolute top-1/2 -right-1.5 md:-right-2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-brand-surface dark:bg-brand-surface border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -721,7 +721,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
             setIsChatButtonLoading(false);
             setIsOpenInternal(true); 
           }}
-          className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-white dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
+          className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-brand-surface dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
         >
           {isChatButtonLoading ? (
             <div className="w-full h-full bg-brand-blue/10 flex items-center justify-center">
@@ -748,9 +748,9 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
     <>
       {/* Incoming Call Toast (Small Floating Modal) */}
       {showIncomingToast && callData && (
-         <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9999] w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-4 flex flex-col gap-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
+         <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9999] w-80 bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.10] dark:border-white/10 rounded-2xl shadow-sm p-4 flex flex-col gap-4 animate-in slide-in-from-bottom-5 fade-in duration-300">
             <div className="flex items-center gap-3">
-               <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden shrink-0 border border-slate-200 dark:border-white/5 flex items-center justify-center">
+               <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-brand-surface/10 overflow-hidden shrink-0 border border-brand-navy/[0.10] dark:border-white/5 flex items-center justify-center">
                  {callData.callerAvatar ? (
                    <img src={getOptimizedUrl(callData.callerAvatar)} alt="Caller" className="w-full h-full object-cover" />
                  ) : (
@@ -771,7 +771,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                </button>
                <button 
                  onClick={handleAcceptFromToast} 
-                 className="flex-1 bg-brand-teal text-white hover:bg-green-600 rounded-xl py-2.5 flex justify-center shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5"
+                 className="flex-1 bg-brand-teal text-white hover:bg-green-600 rounded-xl py-2.5 flex justify-center shadow-sm shadow-green-500/20 transition-all hover:-translate-y-0.5"
                >
                  <Phone size={20}/>
                </button>
@@ -781,7 +781,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
 
       {/* FIXED CHAT WIDGET */}
       {isModalOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-white/90 dark:bg-[#1c1c1e]/90 backdrop-blur-2xl rounded-[4px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-brand-surface/90 dark:bg-brand-surface/90 backdrop-blur-2xl rounded-[4px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
            
            {!selectedChat ? (
               currentUser?.role === 'admin' ? (
@@ -908,13 +908,13 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       {/* Confirmation Modal */}
       {confirmDialog.isOpen && (
         <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-[#1a1a1a] w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-white/20 dark:border-white/5 animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-brand-surface dark:bg-[#1a1a1a] w-full max-w-sm rounded-3xl p-6 shadow-sm border border-white/20 dark:border-white/5 animate-in fade-in zoom-in-95 duration-200">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{confirmDialog.title}</h3>
             <p className="text-slate-500 dark:text-slate-400 text-[15px] mb-6 leading-relaxed">{confirmDialog.message}</p>
             <div className="flex gap-3 justify-end">
               <button 
                 onClick={() => setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null })}
-                className="px-5 py-2.5 rounded-xl font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors"
+                className="px-5 py-2.5 rounded-xl font-medium text-brand-slate dark:text-slate-300 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 transition-colors"
               >
                 Cancel
               </button>
@@ -923,7 +923,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                   if (confirmDialog.onConfirm) confirmDialog.onConfirm();
                   setConfirmDialog({ isOpen: false, title: "", message: "", onConfirm: null });
                 }}
-                className="px-5 py-2.5 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 transition-colors shadow-md shadow-red-500/20"
+                className="px-5 py-2.5 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 transition-colors shadow-sm shadow-red-500/20"
               >
                 Delete
               </button>

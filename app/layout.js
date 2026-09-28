@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { UserProvider } from "@/context/UserContext";
 import { ToastProvider } from "@/components/ui/ToastProvider";
 import GlobalTracker from "@/components/GlobalTracker";
+import SmoothScroller from "@/components/SmoothScroller";
 
 const inter = Inter({ 
   subsets: ['latin'], 
@@ -86,7 +87,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark" data-theme="dark">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         </head>
@@ -113,9 +114,10 @@ export default function RootLayout({ children }) {
                     })
                   }}
                 />
-                <GlobalTracker />
-
-                {children}
+                <SmoothScroller>
+                  <GlobalTracker />
+                  {children}
+                </SmoothScroller>
               </ToastProvider>
             </UserProvider>
           </LanguageProvider>

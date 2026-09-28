@@ -121,7 +121,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 animate-in fade-in duration-300">
-      <div className="bg-white dark:bg-[#050505] border border-slate-200 dark:border-white/10 rounded-xl w-full max-w-4xl shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300 max-h-[90vh] flex flex-col">
+      <div className="bg-brand-surface dark:bg-[#050505] border border-brand-navy/[0.10] dark:border-white/10 rounded-xl w-full max-w-4xl shadow-sm relative overflow-hidden animate-in zoom-in-95 duration-300 max-h-[90vh] flex flex-col">
         
         {/* Simple Header */}
         <div className="relative h-40 flex-shrink-0 bg-slate-900 dark:bg-black overflow-hidden border-b border-slate-100 dark:border-white/5">
@@ -143,7 +143,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                   {currentChallenge.type}
                 </span>
                 <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded border ${
-                  isActive ? 'bg-white text-green-600 border-green-100' : 'bg-slate-800 text-slate-400 border-slate-700'
+                  isActive ? 'bg-brand-surface text-green-600 border-green-100' : 'bg-slate-800 text-slate-400 border-slate-700'
                 }`}>
                   {isActive ? 'Active' : currentChallenge.status}
                 </span>
@@ -155,7 +155,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
             
             <button 
               onClick={onClose}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10"
+              className="p-2 rounded-lg bg-brand-surface/10 hover:bg-brand-surface/20 text-white transition-colors border border-white/10"
             >
               <X size={20} />
             </button>
@@ -177,7 +177,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest border-l-2 border-brand-blue pl-3">
                   Guidelines
                 </h3>
-                <div className="bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-lg p-5">
+                <div className="bg-brand-surface dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-lg p-5">
                   <ul className="space-y-3">
                     {currentChallenge.rules.map((rule, idx) => (
                       <li key={idx} className="flex items-start gap-3 text-sm text-brand-slate dark:text-slate-400">
@@ -198,7 +198,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {currentChallenge.winners.sort((a, b) => a.rank - b.rank).map((winner, idx) => (
-                    <div key={idx} className="p-4 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-lg text-center">
+                    <div key={idx} className="p-4 bg-brand-surface dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-lg text-center">
                       <div className="text-2xl mb-1">
                         {winner.rank === 1 ? "🥇" : winner.rank === 2 ? "🥈" : "🥉"}
                       </div>
@@ -213,7 +213,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
             )}
             
             {showSubmitForm && isActive && !hasSubmitted && (
-              <section className="bg-white dark:bg-[#0a0a0a] border border-indigo-100 dark:border-brand-blue/20 rounded-lg p-6 shadow-sm">
+              <section className="bg-brand-surface dark:bg-brand-dark border border-indigo-100 dark:border-brand-blue/20 rounded-lg p-6 shadow-sm">
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Submission Form</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
@@ -224,7 +224,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                       value={devlogLink}
                       onChange={(e) => setDevlogLink(e.target.value)}
                       placeholder="Enter live devlog or repository link" 
-                      className="w-full px-4 py-3 bg-brand-cloud dark:bg-black/50 border border-slate-200 dark:border-white/10 rounded-lg outline-none focus:border-brand-blue transition-colors text-sm"
+                      className="w-full px-4 py-3 bg-brand-surface dark:bg-black/50 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg outline-none focus:border-brand-blue transition-colors text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -234,21 +234,21 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       placeholder="Describe your process..." 
-                      className="w-full px-4 py-3 bg-brand-cloud dark:bg-black/50 border border-slate-200 dark:border-white/10 rounded-lg outline-none focus:border-brand-blue transition-colors text-sm min-h-[120px] resize-none"
+                      className="w-full px-4 py-3 bg-brand-surface dark:bg-black/50 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg outline-none focus:border-brand-blue transition-colors text-sm min-h-[120px] resize-none"
                     />
                   </div>
                   <div className="flex justify-end gap-4 pt-4 border-t border-slate-100 dark:border-white/10">
                     <button 
                       type="button" 
                       onClick={() => setShowSubmitForm(false)}
-                      className="px-6 py-2 text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors"
+                      className="px-6 py-2 text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white transition-colors"
                     >
                       Cancel
                     </button>
                     <button 
                       type="submit" 
                       disabled={isSubmitting}
-                      className="px-8 py-2.5 bg-brand-blue hover:bg-brand-blue text-white rounded-lg font-bold shadow-md transition-all flex items-center gap-2"
+                      className="px-8 py-2.5 bg-brand-blue hover:bg-brand-blue text-white rounded-lg font-bold shadow-sm transition-all flex items-center gap-2"
                     >
                       {isSubmitting ? (
                         <AppleSpinner size={20} />
@@ -275,13 +275,13 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
               {currentChallenge.submissions && currentChallenge.submissions.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {currentChallenge.submissions.map((submission, idx) => (
-                    <div key={idx} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-5 flex flex-col group transition-all hover:bg-brand-cloud dark:hover:bg-white/10 shadow-sm">
+                    <div key={idx} className="bg-brand-surface dark:bg-brand-surface/5 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg p-5 flex flex-col group transition-all hover:bg-brand-surface dark:hover:bg-brand-surface/10 shadow-sm">
                       <div className="flex items-center gap-3 mb-4 pb-4 border-b border-slate-50 dark:border-white/5">
-                        <div className="w-8 h-8 rounded bg-slate-100 dark:bg-white/10 overflow-hidden">
+                        <div className="w-8 h-8 rounded bg-slate-100 dark:bg-brand-surface/10 overflow-hidden">
                           {submission.user?.profilePicture ? (
                             <img src={getOptimizedUrl(submission.user.profilePicture)} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100 dark:bg-slate-800">
+                            <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-100 dark:bg-brand-surface">
                                <Trophy size={14} />
                             </div>
                           )}
@@ -311,7 +311,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                           className={`flex items-center gap-1.5 px-2 py-1 rounded text-[10px] font-bold transition-all border ${
                             submission.likes?.includes(user?._id)
                               ? "bg-red-50 text-red-500 border-red-100 dark:bg-red-500/10 dark:border-red-500/20"
-                              : "bg-white text-slate-500 border-slate-200 dark:bg-white/5 dark:border-white/10 hover:bg-brand-cloud"
+                              : "bg-brand-surface text-slate-500 dark:text-slate-400 border-brand-navy/[0.10] dark:bg-brand-surface/5 dark:border-white/10 hover:bg-brand-surface"
                           }`}
                         >
                           <Star size={10} fill={submission.likes?.includes(user?._id) ? "currentColor" : "none"} />
@@ -322,7 +322,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-10 bg-brand-cloud dark:bg-white/5 rounded-lg border border-dashed border-slate-200 dark:border-white/10">
+                <div className="text-center py-10 bg-brand-surface dark:bg-brand-surface/5 rounded-lg border border-dashed border-brand-navy/[0.10] dark:border-white/10">
                   <p className="text-xs text-slate-400 font-medium">Waiting for the first entry...</p>
                 </div>
               )}
@@ -340,8 +340,8 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                   hasSubmitted 
                     ? "bg-green-50 text-green-600 border-green-100 dark:bg-brand-teal/10 dark:text-green-400 cursor-not-allowed" 
                     : !isActive
-                    ? "bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed border-slate-200 dark:border-white/10"
-                    : "bg-slate-900 dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-slate-100 shadow-lg active:opacity-60"
+                    ? "bg-slate-100 dark:bg-brand-surface/5 text-slate-400 cursor-not-allowed border-brand-navy/[0.10] dark:border-white/10"
+                    : "bg-slate-900 dark:bg-brand-surface text-white dark:text-black hover:bg-black dark:hover:bg-slate-100 dark:bg-brand-surface/[0.05] shadow-sm active:opacity-60"
                 }`}
               >
                 {hasSubmitted ? "Entry Submitted" : !isActive ? "Closed" : "Submit Entry"}
@@ -351,7 +351,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
             )}
 
             {/* Prize Block */}
-            <div className="p-6 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg">
+            <div className="p-6 bg-brand-surface dark:bg-brand-surface/5 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg">
               <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Challenge Reward</h4>
               <p className="text-2xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">{currentChallenge.prize}</p>
               
@@ -359,19 +359,19 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
                 <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-white/5">
                   {currentChallenge.prizeDetails.first && (
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">1st Place</span>
+                      <span className="text-slate-500 dark:text-slate-400">1st Place</span>
                       <span className="font-bold text-slate-900 dark:text-white">{currentChallenge.prizeDetails.first}</span>
                     </div>
                   )}
                   {currentChallenge.prizeDetails.second && (
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">2nd Place</span>
+                      <span className="text-slate-500 dark:text-slate-400">2nd Place</span>
                       <span className="font-bold text-slate-900 dark:text-white">{currentChallenge.prizeDetails.second}</span>
                     </div>
                   )}
                   {currentChallenge.prizeDetails.third && (
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-500">3rd Place</span>
+                      <span className="text-slate-500 dark:text-slate-400">3rd Place</span>
                       <span className="font-bold text-slate-900 dark:text-white">{currentChallenge.prizeDetails.third}</span>
                     </div>
                   )}
@@ -380,7 +380,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
             </div>
 
             {/* Timeline Block */}
-            <div className="p-6 bg-brand-cloud dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg">
+            <div className="p-6 bg-brand-surface dark:bg-brand-surface/5 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg">
               <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Timeline</h4>
               <div className="space-y-6">
                 <div className="flex items-start gap-3">
@@ -404,7 +404,7 @@ export default function ChallengeDetailsModal({ challenge, isOpen, onClose, isGu
             </div>
 
             {/* Stats */}
-            <div className="p-6 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg flex items-center justify-between">
+            <div className="p-6 bg-brand-surface dark:bg-brand-surface/5 border border-brand-navy/[0.10] dark:border-white/10 rounded-lg flex items-center justify-between">
               <div>
                 <p className="text-[10px] text-slate-400 uppercase font-bold mb-1">Participants</p>
                 <p className="text-xl font-bold text-slate-900 dark:text-white">{currentChallenge.submissions?.length || 0}</p>

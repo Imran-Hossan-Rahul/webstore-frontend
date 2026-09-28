@@ -66,7 +66,7 @@ export default function VerifyEmailPage() {
       <div className="flex flex-col items-center py-4">
         {/* Status Icon */}
         <div className={`w-16 h-16 rounded-[4px] border flex items-center justify-center mb-8 ${
-          status === 'verifying' ? 'bg-brand-cloud dark:bg-[#161B22] border-slate-200 dark:border-white/10 text-brand-blue' :
+          status === 'verifying' ? 'bg-brand-cloud dark:bg-brand-surface border-brand-navy/[0.08] dark:border-white/10 text-brand-blue' :
           status === 'success'   ? 'bg-brand-teal/10 border-brand-teal/20 text-brand-teal' :
                                    'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20 text-red-500'
         }`}>
@@ -77,7 +77,7 @@ export default function VerifyEmailPage() {
 
         {/* Progress bar for success */}
         {status === 'success' && (
-          <div className="w-full h-[3px] bg-slate-100 dark:bg-white/10 rounded-full overflow-hidden mb-8">
+          <div className="w-full h-[3px] bg-slate-100 dark:bg-brand-surface/10 rounded-full overflow-hidden mb-8">
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: '100%' }}

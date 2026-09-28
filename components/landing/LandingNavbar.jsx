@@ -28,7 +28,7 @@ export default function LandingNavbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 dark:bg-black/80 backdrop-blur-lg border-b border-slate-100 dark:border-slate-800 h-16"
+          ? "bg-brand-surface/80 dark:bg-black/80 backdrop-blur-lg border-b border-slate-100 dark:border-slate-800 h-16"
           : "bg-transparent h-20"
       }`}
     >
@@ -67,7 +67,7 @@ export default function LandingNavbar() {
               <Link href="/auth/login" className="text-sm font-medium text-brand-slate dark:text-slate-200 hover:text-black dark:hover:text-white transition-colors">
                 Log in
               </Link>
-              <Link href="/auth/register" className="px-5 py-2.5 bg-black dark:bg-white text-white dark:text-black text-sm font-bold rounded-full hover:opacity-80 transition-all flex items-center gap-2 group">
+              <Link href="/auth/register" className="px-5 py-2.5 bg-black dark:bg-brand-surface text-white dark:text-black text-sm font-bold rounded-full hover:opacity-80 transition-all flex items-center gap-2 group">
                 Get Started
                 <ArrowRight strokeWidth={1.5} className="w-4 h-4 group-hover:translate-x-1 transition-opacity" />
               </Link>
@@ -94,7 +94,7 @@ export default function LandingNavbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white dark:bg-black border-b border-slate-100 dark:border-slate-800 p-4 md:hidden flex flex-col gap-4 shadow-xl animate-in slide-in-from-top-2">
+        <div className="absolute top-full left-0 right-0 bg-brand-surface dark:bg-black border-b border-slate-100 dark:border-slate-800 p-4 md:hidden flex flex-col gap-4 shadow-sm animate-in slide-in-from-top-2">
           {navLinks.map((link) => (
             <Link
               key={link.label}
@@ -105,7 +105,7 @@ export default function LandingNavbar() {
               {link.label}
             </Link>
           ))}
-          <div className="h-px bg-slate-100 dark:bg-slate-800 my-2" />
+          <div className="h-px bg-slate-100 dark:bg-brand-surface my-2" />
           {isGuest ? (
             <>
               <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 text-center font-medium text-brand-slate dark:text-slate-200 bg-brand-cloud dark:bg-slate-900 rounded-xl block">

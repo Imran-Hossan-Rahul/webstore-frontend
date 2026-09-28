@@ -31,14 +31,14 @@ export default function BlogPage() {
 
   return (
     <PageContainer maxWidth="max-w-[1000px]" className="py-16 md:py-24">
-      <header className="mb-16 border-b border-slate-200 dark:border-white/10 pb-12">
+      <header className="mb-16 border-b border-brand-navy/[0.08] dark:border-white/10 pb-12">
         <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-medium text-brand-blue mb-4">
           Updates & Insights
         </p>
         <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
           Codalina Blog
         </h1>
-        <p className="text-[17px] font-sans text-slate-500 max-w-[640px] leading-relaxed">
+        <p className="text-[17px] font-sans text-slate-500 dark:text-slate-400 max-w-[640px] leading-relaxed">
           Engineering deep dives, design system updates, and company news.
         </p>
       </header>
@@ -53,7 +53,7 @@ export default function BlogPage() {
               <span className="text-[13px] font-sans text-slate-400">
                 {post.date}
               </span>
-              <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-white/20" />
+              <span className="w-1 h-1 rounded-full bg-slate-300 dark:bg-brand-surface/20" />
               <span className="text-[13px] font-mono text-slate-400">
                 {post.readTime}
               </span>
@@ -63,7 +63,7 @@ export default function BlogPage() {
               <Link href="#">{post.title}</Link>
             </h2>
             
-            <p className="text-[15px] font-sans text-slate-500 leading-relaxed max-w-[800px] mb-6">
+            <p className="text-[15px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed max-w-[800px] mb-6">
               {post.excerpt}
             </p>
             
@@ -75,7 +75,7 @@ export default function BlogPage() {
       </div>
 
       <div className="mt-12 flex justify-center">
-        <button className="px-6 py-2.5 rounded-[4px] border border-slate-200 dark:border-white/10 text-[14px] font-sans font-medium text-brand-navy dark:text-white hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+        <button className="px-6 py-2.5 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 text-[14px] font-sans font-medium text-brand-navy dark:text-white hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 transition-colors">
           Load More Posts
         </button>
       </div>

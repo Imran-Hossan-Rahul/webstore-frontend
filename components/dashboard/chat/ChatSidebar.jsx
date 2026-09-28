@@ -54,7 +54,7 @@ export default function ChatSidebar({
   });
 
   return (
-    <div className="h-full w-full bg-white/60 dark:bg-[#0a0a0a]/80 backdrop-blur-xl flex flex-col overflow-hidden relative">
+    <div className="h-full w-full bg-brand-surface/60 dark:bg-brand-dark/80 backdrop-blur-xl flex flex-col overflow-hidden relative">
       {loading && (
         <>
           <style>{`
@@ -64,7 +64,7 @@ export default function ChatSidebar({
               100% { transform: translateX(100%); }
             }
           `}</style>
-          <div className="absolute top-0 left-0 right-0 h-[3px] bg-slate-100 dark:bg-white/5 overflow-hidden z-50">
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-slate-100 dark:bg-brand-surface/5 overflow-hidden z-50">
             <div 
               className="h-full bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-400 shadow-[0_0_10px_rgba(99,102,241,0.8)]"
               style={{
@@ -76,14 +76,14 @@ export default function ChatSidebar({
         </>
       )}
       {/* Header */}
-      <div className="p-5 border-b border-slate-200/50 dark:border-white/5 whitespace-nowrap">
+      <div className="p-5 border-b border-brand-navy/[0.08]/50 dark:border-white/5 whitespace-nowrap">
         <div className="flex items-center justify-between mb-5">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Messages</h1>
           <div className="flex items-center gap-1">
             {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <button
                 onClick={onStartNewChat}
-                className="p-2 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-colors text-brand-slate dark:text-slate-300"
+                className="p-2 hover:bg-black/5 dark:hover:bg-brand-surface/10 rounded-full transition-colors text-brand-slate dark:text-slate-300"
                 title="New Chat"
               >
                 <Plus size={20} />
@@ -101,20 +101,20 @@ export default function ChatSidebar({
 
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500" size={16} />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 dark:text-slate-400" size={16} />
           <input
             type="text"
             placeholder="Search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-white/5 border border-transparent focus:border-slate-300 dark:focus:border-white/20 rounded-xl text-sm focus:outline-none transition-all dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-brand-surface/5 border border-transparent focus:border-brand-navy/[0.08] dark:focus:border-white/20 rounded-xl text-sm focus:outline-none transition-all dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
           />
         </div>
       </div>
 
       {/* Tabs */}
       {currentUser?.role === 'admin' && (
-      <div className="flex px-2 pt-2 border-b border-slate-200/50 dark:border-white/5 whitespace-nowrap">
+      <div className="flex px-2 pt-2 border-b border-brand-navy/[0.08]/50 dark:border-white/5 whitespace-nowrap">
         {[{ id: "Chats", label: "Chats" }, { id: "Directory", label: "Directory" }].map((tab) => (
           <button
             key={tab.id}
@@ -138,24 +138,24 @@ export default function ChatSidebar({
             {[...Array(6)].map((_, idx) => (
               <div 
                 key={idx} 
-                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-brand-cloud/30 dark:bg-white/[0.02] border border-slate-100/50 dark:border-white/[0.03]"
+                className="w-full flex items-center gap-3 p-3 rounded-2xl bg-brand-cloud/30 dark:bg-brand-surface/[0.02] border border-slate-100 dark:border-white/5/50 dark:border-white/[0.03]"
               >
                 {/* Avatar skeleton */}
                 <div className="relative shrink-0">
-                  <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-white/10 border border-slate-200 dark:border-white/5" />
+                  <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-brand-surface/10 border border-brand-navy/[0.08] dark:border-white/5" />
                 </div>
 
                 {/* Content skeleton */}
                 <div className="flex-1 min-w-0 text-left space-y-2">
                   {/* Row 1: Name & Time */}
                   <div className="flex items-center justify-between gap-2">
-                    <div className="h-4 bg-slate-200 dark:bg-white/10 rounded-lg w-28" />
-                    <div className="h-3 bg-slate-200 dark:bg-white/5 rounded-lg w-10" />
+                    <div className="h-4 bg-slate-200 dark:bg-brand-surface/10 rounded-lg w-28" />
+                    <div className="h-3 bg-slate-200 dark:bg-brand-surface/5 rounded-lg w-10" />
                   </div>
                   
                   {/* Row 2: Message preview */}
                   <div className="flex items-center justify-between gap-2">
-                    <div className="h-3 bg-slate-200/80 dark:bg-white/5 rounded-lg w-44" />
+                    <div className="h-3 bg-slate-200 dark:bg-brand-surface/[0.1]/80 dark:bg-brand-surface/5 rounded-lg w-44" />
                   </div>
                 </div>
               </div>
@@ -163,8 +163,8 @@ export default function ChatSidebar({
           </div>
         ) : filteredList.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center px-4">
-            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center mb-3">
-              <MessageCircle className="text-slate-400 dark:text-slate-500" size={24} />
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center mb-3">
+              <MessageCircle className="text-slate-400 dark:text-slate-500 dark:text-slate-400" size={24} />
             </div>
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Nothing found.</p>
           </div>
@@ -174,7 +174,7 @@ export default function ChatSidebar({
               <div className="relative group">
                 <button
                   onClick={() => onSelectUser({ _id: "support_channel", name: "Customer Support", username: "support", role: "admin", isSupportChat: true })}
-                  className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5 dark:hover:bg-white/5"
+                  className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5 dark:hover:bg-brand-surface/5"
                 >
                   <div className="relative shrink-0">
                     <div className="w-11 h-11 rounded-full bg-indigo-100 dark:bg-brand-blue/20 flex items-center justify-center overflow-hidden border border-indigo-200 dark:border-brand-blue/30">
@@ -209,17 +209,17 @@ export default function ChatSidebar({
                     onClick={() => isChat ? onSelectChat(item) : onSelectUser(targetUser)}
                     className={`w-full flex items-center gap-3 p-3 rounded-2xl transition-all ${
                       isSelected
-                        ? "bg-black/5 dark:bg-white/10"
-                        : "hover:bg-black/5 dark:hover:bg-white/5"
+                        ? "bg-black/5 dark:bg-brand-surface/10"
+                        : "hover:bg-black/5 dark:hover:bg-brand-surface/5"
                     }`}
                   >
                     {/* Avatar */}
                     <div className="relative shrink-0">
-                      <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/5">
+                      <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-brand-surface/10 flex items-center justify-center overflow-hidden border border-brand-navy/[0.08] dark:border-white/5">
                         {avatar ? (
                           <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
                         ) : (
-                          <User size={20} className="text-slate-400 dark:text-slate-500" />
+                          <User size={20} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />
                         )}
                       </div>
                       {isOnline && (
@@ -235,7 +235,7 @@ export default function ChatSidebar({
                           {targetUser.name || targetUser.username || "Unknown"}
                         </h3>
                         {isChat && item.lastMessage && (
-                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-400 dark:text-slate-500"}`}>
+                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-400 dark:text-slate-500 dark:text-slate-400"}`}>
                             {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         )}
@@ -248,13 +248,13 @@ export default function ChatSidebar({
                              {item._id === activeCallChatId ? `📞 ${activeCallStatus || "In call"}` : (item.lastMessage?.content || "No messages yet")}
                            </p>
                         ) : (
-                           <p className="text-[12px] text-slate-400 dark:text-slate-500 truncate flex-1">
+                           <p className="text-[12px] text-slate-400 dark:text-slate-500 dark:text-slate-400 truncate flex-1">
                              @{targetUser.username}
                            </p>
                         )}
                         
                         {isChat && item.unreadCount > 0 && (
-                          <div className="shrink-0 w-5 h-5 bg-brand-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20 animate-in zoom-in duration-300">
+                          <div className="shrink-0 w-5 h-5 bg-brand-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm shadow-blue-500/20 animate-in zoom-in duration-300">
                             {item.unreadCount}
                           </div>
                         )}

@@ -45,6 +45,23 @@ const GlassNavbar = ({
     else setSearchType('all');
   }, [pathname]);
 
+  const [showNavbarSearch, setShowNavbarSearch] = useState(false);
+
+  useEffect(() => {
+    if (pathname !== '/') {
+        setShowNavbarSearch(true);
+        return;
+    }
+    
+    // We rely purely on the custom event dispatched by MarketClientView
+    // which correctly uses getBoundingClientRect on mount.
+    const handleToggle = (e) => {
+        setShowNavbarSearch(e.detail);
+    };
+    window.addEventListener('toggle-navbar-search', handleToggle);
+    return () => window.removeEventListener('toggle-navbar-search', handleToggle);
+  }, [pathname]);
+
   const [cartCount, setCartCount] = useState(0);
 
   useEffect(() => {
@@ -74,12 +91,16 @@ const GlassNavbar = ({
   useEffect(() => {
     if (isGuest || user?.role === 'guest') return;
     const fetchCounts = async () => {
-        const [notifRes, chatRes] = await Promise.all([
-            api.get("/notifications/unread-count"),
-            api.get("/chat/unread-count")
-        ]);
-        if (notifRes.success) setUnreadNotifications(notifRes.count);
-        if (chatRes.success) setUnreadChatCount(chatRes.count);
+        try {
+            const [notifRes, chatRes] = await Promise.all([
+                api.get("/notifications/unread-count"),
+                api.get("/chat/unread-count")
+            ]);
+            if (notifRes.success) setUnreadNotifications(notifRes.count);
+            if (chatRes.success) setUnreadChatCount(chatRes.count);
+        } catch (error) {
+            console.error("Failed to fetch notification counts:", error);
+        }
     };
     if (user) fetchCounts();
   }, [isGuest, user]);
@@ -90,8 +111,12 @@ const GlassNavbar = ({
 
     const handleCountUpdate = () => setUnreadNotifications(p => p + 1);
     const handleChatUpdate = async () => {
-        const res = await api.get("/chat/unread-count");
-        if (res.success) setUnreadChatCount(res.count);
+        try {
+            const res = await api.get("/chat/unread-count");
+            if (res.success) setUnreadChatCount(res.count);
+        } catch (error) {
+            console.error("Failed to fetch chat count:", error);
+        }
     };
 
     const handleLocalCountSync = (e) => {
@@ -161,22 +186,22 @@ const GlassNavbar = ({
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <div className="max-w-[1800px] mx-auto bg-brand-navy border-b border-white/10 pl-[12px] pr-[16px] h-[52px] flex items-center justify-between relative overflow-visible">
+    <nav className="fixed top-0 left-0 right-0 z-50" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <div className="w-full bg-white/60 backdrop-blur-2xl saturate-[1.8] border-b border-black/[0.08] shadow-[0_1px_0_rgba(0,0,0,0.06)] pl-[12px] pr-[16px] h-[48px] flex items-center justify-between relative overflow-visible">
         
         {/* Left Section */}
         <div className={`flex items-center flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 gap-0 md:max-w-none md:opacity-100 md:gap-2' : 'max-w-[50px] md:max-w-none opacity-100 gap-2'}`}>
-            <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors outline-none focus:outline-none focus:ring-0 -ml-2 shrink-0">
+            <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-brand-surface/10 rounded-lg transition-colors outline-none focus:outline-none focus:ring-0 -ml-2 shrink-0">
                 {sidebarOpen ? (
-                  <X strokeWidth={1.5} className="w-[22px] h-[22px] text-white" />
+                  <X strokeWidth={1.5} className="w-[22px] h-[22px] text-black" />
                 ) : (
-                  <Menu strokeWidth={1.5} className="w-[22px] h-[22px] text-white" />
+                  <Menu strokeWidth={1.5} className="w-[22px] h-[22px] text-black" />
                 )}
             </button>
             <Link href="/" className="hidden md:flex items-center gap-2 group shrink-0 ml-2">
                 <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
                 <div className="hidden sm:flex items-center gap-2">
-                  <span className="font-medium text-xl tracking-tight text-white font-sans">
+                  <span className="font-semibold text-xl tracking-tight text-black font-display">
                       Codalina
                   </span>
                 </div>
@@ -187,7 +212,15 @@ const GlassNavbar = ({
         <div className={`flex-1 flex justify-center relative transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${mobileSearchOpen ? 'px-0' : 'px-2'}`}>
           
           {/* Mobile Search Container (only visible on mobile) */}
-          <div className={`md:hidden flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full relative ${mobileSearchOpen ? 'max-w-full' : 'max-w-[200px] justify-center'}`}>
+          <AnimatePresence>
+          {showNavbarSearch && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className={`md:hidden flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full relative ${mobileSearchOpen ? 'max-w-full' : 'max-w-[200px] justify-center'}`}
+          >
             <div 
               onClick={() => {
                 if (!mobileSearchOpen) {
@@ -195,7 +228,7 @@ const GlassNavbar = ({
                   setTimeout(() => document.getElementById('navbar-search-input')?.focus(), 100);
                 }
               }}
-              className={`relative flex items-center h-[32px] bg-white/10 rounded-[6px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] border overflow-visible cursor-text w-full ${mobileSearchOpen ? 'border-brand-blue/50' : 'border-white/10'}`} 
+              className={`relative flex items-center h-[32px] rounded-[6px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] border overflow-visible cursor-text w-full ${mobileSearchOpen ? 'bg-black/5 border-brand-blue/60' : 'bg-black/5 border-black/15'}`} 
             >
               
               {/* Left Flex Spacer for Bulletproof Centering */}
@@ -211,7 +244,7 @@ const GlassNavbar = ({
                   id="navbar-search-input"
                   type="text" 
                   placeholder="Search Codalina" 
-                  className={`bg-transparent border-none outline-none text-[14px] text-left text-white transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-10 h-full w-full mb-[3px] ${mobileSearchOpen ? 'placeholder:text-white/50' : 'placeholder:text-white/70 cursor-pointer pointer-events-none select-none'}`}
+                  className={`bg-transparent border-none outline-none text-[14px] text-left text-black transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-10 h-full w-full mb-[3px] font-sans ${mobileSearchOpen ? 'placeholder:text-black/40' : 'placeholder:text-black/50 cursor-pointer pointer-events-none select-none'}`}
                   value={searchQuery || ""}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => {
@@ -249,7 +282,7 @@ const GlassNavbar = ({
 
             {/* Mobile Suggestions inline overlay */}
             {mobileSearchOpen && searchFocused && searchQuery?.trim() && (
-                <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[4px] shadow-2xl overflow-hidden z-[100]">
+                <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-brand-surface dark:bg-brand-dark border border-brand-navy/[0.10] dark:border-white/10 rounded-[4px] shadow-[0_8px_32px_rgba(11,37,69,0.08)] overflow-hidden z-[100]">
                   <SearchSuggestions 
                       suggestions={suggestions} 
                       isSearching={isSearching} 
@@ -259,16 +292,28 @@ const GlassNavbar = ({
                     />
                 </div>
             )}
-          </div>
+          </motion.div>
+          )}
+          </AnimatePresence>
 
           {/* Desktop Search Container */}
+          <AnimatePresence>
+          {showNavbarSearch && (
+          <motion.div
+            layoutId="global-search-bar-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+            className="hidden md:flex w-full max-w-[500px] items-center relative overflow-visible"
+          >
           <div 
             onClick={() => {
                 if (!searchFocused) {
                   setTimeout(() => document.getElementById('desktop-search-input')?.focus(), 100);
                 }
             }}
-            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-white/10 border-brand-blue/50 shadow-sm' : 'bg-white/5 border-white/10'} border rounded-[6px] px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-visible`}
+            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-black/5 border-brand-blue/60 shadow-sm' : 'bg-black/5 border-black/15'} border rounded-[6px] px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-visible`}
           >
               
               {/* Left Flex Spacer */}
@@ -281,12 +326,12 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: (searchFocused || searchQuery) ? '1 0 128px' : '0 0 128px' }}
               >
-                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-white mb-[3px]" />
+                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-black/50 mb-[3px]" />
                   <input 
                       id="desktop-search-input"
                       type="text" 
                       placeholder="Search Codalina" 
-                      className={`bg-transparent border-none outline-none text-[14px] text-left w-full mb-[3px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${(searchFocused || searchQuery) ? 'text-white placeholder:text-white/70' : 'text-white placeholder:text-white/50 cursor-pointer pointer-events-none select-none'}`}
+                      className={`bg-transparent border-none outline-none text-[14px] text-black text-left w-full mb-[3px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${(searchFocused || searchQuery) ? 'placeholder:text-black/40' : 'placeholder:text-black/40 cursor-pointer pointer-events-none select-none'}`}
                       value={searchQuery || ""}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => {
@@ -308,7 +353,7 @@ const GlassNavbar = ({
               
               {/* Modular Suggestions */}
               {searchFocused && searchQuery?.trim() && (
-                  <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-white/95 dark:bg-[#1c1c1e]/95 backdrop-blur-3xl border border-slate-200/60 dark:border-white/10 rounded-[4px] shadow-2xl overflow-hidden z-[100] transform transition-all">
+                  <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-brand-surface dark:bg-brand-dark border border-brand-navy/[0.10] dark:border-white/10 rounded-[4px] shadow-[0_8px_32px_rgba(11,37,69,0.08)] overflow-hidden z-[100] transform transition-all">
                       <SearchSuggestions 
                         suggestions={suggestions} 
                         isSearching={isSearching} 
@@ -319,6 +364,9 @@ const GlassNavbar = ({
                   </div>
               )}
           </div>
+          </motion.div>
+          )}
+          </AnimatePresence>
 
           {/* Desktop Search/Cancel Button */}
           <div className={`hidden md:flex overflow-hidden transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] justify-start shrink-0 ${(searchFocused || searchQuery) ? 'w-[65px] opacity-100 ml-2' : 'w-0 opacity-0 ml-0'}`}>
@@ -343,7 +391,7 @@ const GlassNavbar = ({
         <div className={`flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 md:max-w-none md:opacity-100 md:gap-4 gap-0' : 'max-w-none opacity-100 sm:gap-4 gap-2'}`}>
             {/* Cart and Orders Links */}
             <div className="hidden md:flex items-center gap-2 shrink-0">
-              <Link href="/cart" className="p-2 rounded-xl text-white hover:bg-white/10 transition-all relative group flex items-center justify-center">
+              <Link href="/cart" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                 {cartCount > 0 && (
                   <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
@@ -351,12 +399,12 @@ const GlassNavbar = ({
                   </span>
                 )}
               </Link>
-              <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} className="p-2 rounded-xl text-white hover:bg-white/10 transition-all">
+              <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} className="p-2 rounded-xl text-black hover:bg-black/5 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
               </Link>
             </div>
 
-            <div className="flex items-center gap-1 sm:gap-2 border-r border-white/10 pr-2 sm:pr-4 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 border-r border-black/10 pr-2 sm:pr-4 shrink-0">
                 <div className="hidden sm:block shrink-0">
                   <ThemeToggle />
                 </div>
@@ -364,24 +412,24 @@ const GlassNavbar = ({
 
             {loading ? (
               <div className="flex items-center gap-3 z-50 relative shrink-0">
-                 <div className="hidden xl:block w-24 h-4 bg-white/10 rounded animate-pulse"></div>
-                 <div className="w-9 h-9 rounded-full bg-white/10 animate-pulse shrink-0"></div>
+                 <div className="hidden xl:block w-24 h-4 bg-brand-surface/10 rounded animate-pulse"></div>
+                 <div className="w-9 h-9 rounded-full bg-brand-surface/10 animate-pulse shrink-0"></div>
               </div>
             ) : (isGuest || user?.role === 'guest') ? (
               <div className="flex items-center gap-1.5 sm:gap-3 z-50 relative shrink-0">
-                <Link href="/auth/login" className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-white hover:opacity-80 transition-opacity whitespace-nowrap">Log in</Link>
+                <Link href="/auth/login" className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-black hover:opacity-70 transition-opacity whitespace-nowrap">Log in</Link>
                 <Link href="/auth/register" className="px-3 sm:px-[14px] py-[6px] rounded-[4px] bg-brand-blue border border-brand-blue text-white text-[12px] sm:text-[13px] font-sans font-medium hover:bg-brand-blue/90 transition-all whitespace-nowrap">Join</Link>
               </div>
             ) : (
               <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group shrink-0">
                   <div className="text-right hidden xl:block shrink-0">
-                      <div className="text-[14px] font-normal text-white font-sans leading-tight">{user?.name}</div>
+                      <div className="text-[14px] font-normal text-black font-sans leading-tight">{user?.name}</div>
                   </div>
-                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-white/10 overflow-hidden border border-white/20">
+                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15">
                       {user?.profilePicture ? (
                         <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-white/50 font-bold">{user?.name?.[0]}</div>
+                        <div className="w-full h-full flex items-center justify-center text-black/50 font-bold">{user?.name?.[0]}</div>
                       )}
                   </div>
               </div>

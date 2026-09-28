@@ -2,11 +2,11 @@ import { useEffect } from "react";
 
 export default function Form() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-brand-cloud dark:bg-[#0a0a0a] p-5">
+    <div className="flex items-center justify-center min-h-screen ] p-5 bg-brand-main">
       <div className="login-container w-full max-w-[420px]">
-        <div className="login-card bg-white dark:bg-[#111] rounded-2xl p-10 shadow-sm border border-slate-200 dark:border-white/5 transition-all duration-300">
+        <div className="login-card bg-brand-surface dark:bg-[#111] rounded-2xl p-10 shadow-sm border border-brand-navy/[0.08] dark:border-white/5 transition-all duration-300">
           <div className="login-header text-center mb-10">
-            <div className="neu-icon w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-xl bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/5">
+            <div className="neu-icon w-16 h-16 mx-auto mb-6 flex items-center justify-center rounded-xl bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/5">
               <div className="icon-inner w-8 h-8 flex items-center justify-center text-slate-400">
                 <svg
                   viewBox="0 0 24 24"
@@ -29,7 +29,7 @@ export default function Form() {
           <form id="loginForm" className="login-form" noValidate>
             {/* Email Input */}
             <div className="form-group mb-6 relative">
-              <div className="neu-input relative bg-brand-cloud dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 transition-all focus-within:border-brand-blue/50">
+              <div className="neu-input relative bg-brand-cloud dark:bg-brand-surface/5 rounded-xl border border-brand-navy/[0.08] dark:border-white/10 transition-all focus-within:border-brand-blue/50">
                 <input
                   type="email"
                   id="email"

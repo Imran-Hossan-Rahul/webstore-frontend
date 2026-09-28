@@ -30,7 +30,7 @@ const ArtifactCard = ({
   return (
     <>
       <div
-        className="relative rounded-xl overflow-hidden shadow group cursor-pointer w-full h-64 bg-white transition-all duration-300"
+        className="relative rounded-xl overflow-hidden shadow group cursor-pointer w-full h-64 bg-brand-surface transition-all duration-300"
         onClick={() => setEmbedModalOpen(true)}
       >
         {/* FREE or PAID Badge */}
@@ -79,7 +79,7 @@ const ArtifactCard = ({
         {/* Overlay */}
         <div className="absolute bottom-2 left-0 right-0 z-20 px-4 flex flex-col gap-1 transition-all duration-300">
           {/* Title */}
-          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-lg transition-all duration-300 font-sans">
+          <h3 className="text-white absolute top-4 group-hover:-translate-y-11 text-base font-medium drop-shadow-sm transition-all duration-300 font-sans">
             {truncatedTitle}
           </h3>
 
@@ -116,7 +116,7 @@ const ArtifactCard = ({
 
           {/* Download Icon */}
           <div className="absolute bottom-3 -right-3 group-hover:-translate-x-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="bg-white text-black p-2 rounded-full shadow hover:bg-slate-200">
+            <button className="bg-brand-surface text-black p-2 rounded-full shadow hover:bg-slate-200 dark:bg-brand-surface/[0.1]">
               <Download size={18} />
             </button>
           </div>
@@ -129,7 +129,7 @@ const ArtifactCard = ({
       {/* Embed Modal */}
       {embedModalOpen && embedUrl && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl w-full max-w-4xl relative">
+          <div className="bg-brand-surface p-6 rounded-xl w-full max-w-4xl relative">
             <iframe
               src={embedUrl}
               className="w-full h-[500px] rounded"
@@ -138,7 +138,7 @@ const ArtifactCard = ({
             ></iframe>
             <button
               onClick={() => setEmbedModalOpen(false)}
-              className="absolute top-3 right-3 text-slate-500 hover:text-slate-800 font-bold text-xl"
+              className="absolute top-3 right-3 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:text-slate-100 font-bold text-xl"
             >
               ✕
             </button>

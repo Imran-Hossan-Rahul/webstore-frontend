@@ -70,7 +70,7 @@ export default function PatronDashboard() {
           </button>
           <button
             onClick={() => router.push("/opportunities")}
-            className="px-6 py-3 bg-white text-black rounded-full font-medium border-2 border-black hover:bg-brand-cloud transition-colors"
+            className="px-6 py-3 bg-brand-surface text-black rounded-full font-medium border-2 border-black hover:bg-brand-cloud transition-colors"
           >
             Browse Craftsmen
           </button>
@@ -83,25 +83,25 @@ export default function PatronDashboard() {
           <h2 className="text-2xl font-semibold text-black">Your Opportunities</h2>
           <button
             onClick={() => router.push("/opportunities")}
-            className="text-brand-slate hover:text-black transition-colors"
+            className="text-brand-slate dark:text-slate-300 hover:text-black transition-colors"
           >
             View All →
           </button>
         </div>
         {recentOpportunities.length === 0 ? (
-          <p className="text-brand-slate">No opportunities posted yet. Create your first one!</p>
+          <p className="text-brand-slate dark:text-slate-300">No opportunities posted yet. Create your first one!</p>
         ) : (
           <div className="space-y-4">
             {recentOpportunities.map((opp) => (
               <div
                 key={opp.id}
-                className="bg-white rounded-[26px] p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-brand-surface rounded-[26px] p-6 shadow-sm hover:shadow-sm transition-all duration-300"
               >
                 <h3 className="text-xl font-semibold text-black mb-2">{opp.title}</h3>
-                <p className="text-brand-slate mb-4">{opp.description}</p>
+                <p className="text-brand-slate dark:text-slate-300 mb-4">{opp.description}</p>
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-bold text-black">{opp.budget}</span>
-                  <span className="text-sm text-slate-500">{opp.status}</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400">{opp.status}</span>
                 </div>
               </div>
             ))}
@@ -114,10 +114,10 @@ export default function PatronDashboard() {
 
 function StatCard({ title, value, icon }) {
   return (
-    <div className="bg-white rounded-[26px] p-6 shadow-lg">
+    <div className="bg-brand-surface rounded-[26px] p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-brand-slate text-sm mb-1">{title}</p>
+          <p className="text-brand-slate dark:text-slate-300 text-sm mb-1">{title}</p>
           <p className="text-3xl font-bold text-black">{value}</p>
         </div>
         <div className="text-4xl">{icon}</div>

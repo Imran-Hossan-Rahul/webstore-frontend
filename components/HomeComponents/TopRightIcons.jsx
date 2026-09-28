@@ -46,7 +46,7 @@ export default function TopRightIcons() {
       <div
         ref={searchRef}
         onClick={handleSearchClick}
-        className={`flex items-center rounded-full overflow-hidden cursor-pointer transition-all duration-300 ease-in-out origin-left bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 ${
+        className={`flex items-center rounded-full overflow-hidden cursor-pointer transition-all duration-300 ease-in-out origin-left bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-slate-700 ${
           searchOpen ? "w-64 shadow-sm" : "w-11"
         }`}
         style={{ height: "44px" }}
@@ -85,7 +85,7 @@ export default function TopRightIcons() {
             handleIconClick("mail");
             window.dispatchEvent(new CustomEvent("toggle-chat"));
           }}
-          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-brand-surface dark:bg-brand-surface hover:bg-brand-cloud dark:hover:bg-slate-700 border border-brand-navy/[0.08] dark:border-slate-700"
         >
           <Mail
             strokeWidth={1.5}
@@ -101,7 +101,7 @@ export default function TopRightIcons() {
             handleIconClick("bell");
             window.dispatchEvent(new CustomEvent("toggle-notification"));
           }}
-          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700"
+          className="w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-brand-surface dark:bg-brand-surface hover:bg-brand-cloud dark:hover:bg-slate-700 border border-brand-navy/[0.08] dark:border-slate-700"
         >
           <Bell
             strokeWidth={1.5}
@@ -113,10 +113,10 @@ export default function TopRightIcons() {
 
         <div
           onClick={() => handleIconClick("profile")}
-          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-white dark:bg-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-700 border ${
+          className={`w-11 h-11 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 bg-brand-surface dark:bg-brand-surface hover:bg-brand-cloud dark:hover:bg-slate-700 border ${
             activeIcon === "profile"
               ? "border-brand-blue dark:border-blue-400"
-              : "border-slate-200 dark:border-slate-700"
+              : "border-brand-navy/[0.08] dark:border-slate-700"
           }`}
         >
           <img

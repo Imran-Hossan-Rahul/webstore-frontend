@@ -11,7 +11,7 @@ export default function ChallengesSidebar() {
     <aside className="flex flex-col gap-4 pb-10">
       
       {/* Host a Challenge CTA - Premium Card */}
-      <div className="bg-[#0f172a] dark:bg-white/[0.03] p-6 rounded-[4px] border border-white/5 shadow-2xl relative overflow-hidden group">
+      <div className="bg-[#0f172a] dark:bg-brand-surface/[0.03] p-6 rounded-[4px] border border-white/5 shadow-sm relative overflow-hidden group">
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-blue/10 blur-[80px] rounded-full group-hover:bg-brand-blue/20 transition-all duration-700" />
         
         <div className="relative z-10">
@@ -22,7 +22,7 @@ export default function ChallengesSidebar() {
           
           <Link 
             href={isAuthorized ? "/challenges/create" : "/verify"}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-white text-slate-900 rounded-xl text-xs font-bold transition-all hover:bg-slate-100 hover:opacity-80 active:opacity-60 shadow-xl shadow-black/20"
+            className="flex items-center justify-center gap-2 w-full py-3 bg-brand-surface text-slate-900 dark:text-white rounded-xl text-xs font-bold transition-all hover:bg-slate-100 dark:bg-brand-surface/[0.05] hover:opacity-80 active:opacity-60 shadow-sm shadow-black/20"
           >
             {isAuthorized ? (
               <>
@@ -38,8 +38,8 @@ export default function ChallengesSidebar() {
       </div>
 
       {/* Participation CTA */}
-      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[4px] p-6 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden group">
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors" />
+      <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[4px] p-6 text-white shadow-sm shadow-blue-500/20 relative overflow-hidden group">
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand-surface/10 rounded-full blur-2xl group-hover:bg-brand-surface/20 transition-colors" />
         <h3 className="font-bold text-lg mb-1 relative z-10 flex items-center gap-2">
           <Trophy size={18} strokeWidth={1.5} /> Ready to Compete?
         </h3>
@@ -48,14 +48,14 @@ export default function ChallengesSidebar() {
         </p>
         <Link 
           href="/achievements"
-          className="w-full py-3 bg-white text-brand-blue hover:bg-brand-cloud rounded-xl font-bold text-xs shadow-lg transition-all relative z-10 flex items-center justify-center gap-2"
+          className="w-full py-3 bg-brand-surface text-brand-blue hover:bg-brand-cloud rounded-xl font-bold text-xs shadow-sm transition-all relative z-10 flex items-center justify-center gap-2"
         >
           <Star size={14} strokeWidth={1.5} /> View Achievements
         </Link>
       </div>
 
       {/* Guidelines & Benefits */}
-      <div className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/10 rounded-[4px] p-6 shadow-sm">
+      <div className="bg-brand-surface/80 dark:bg-slate-900/40 backdrop-blur-md border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-5 flex items-center gap-2">
           <Info size={14} strokeWidth={1.5} className="text-brand-blue" /> Challenge Rules
         </h3>
@@ -66,7 +66,7 @@ export default function ChallengesSidebar() {
             </div>
             <div>
               <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-blue transition-colors">Original Work</h4>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-medium">All submissions must be your own original work.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">All submissions must be your own original work.</p>
             </div>
           </div>
           <div className="flex gap-4 group">
@@ -75,7 +75,7 @@ export default function ChallengesSidebar() {
             </div>
             <div>
               <h4 className="text-[13px] font-bold text-slate-900 dark:text-white mb-1 group-hover:text-brand-blue transition-colors">Fair Judging</h4>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-medium">Entries are evaluated based on a strict rubric.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed font-medium">Entries are evaluated based on a strict rubric.</p>
             </div>
           </div>
         </div>

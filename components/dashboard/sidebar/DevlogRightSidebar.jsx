@@ -152,10 +152,10 @@ const DevlogRightSidebar = ({ currentPostId }) => {
     <div className="space-y-6 pb-20">
       
       {/* Project Timeline (Feed Style) */}
-      <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
+      <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Project Timeline</h3>
-              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-full">
+              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-full">
                   <div className={`w-2 h-2 rounded-full animate-pulse ${
                       phase === 'Completed' ? 'bg-brand-teal' :
                       phase === 'Live' ? 'bg-brand-blue' :
@@ -169,12 +169,12 @@ const DevlogRightSidebar = ({ currentPostId }) => {
           </div>
           
           <div className="space-y-2">
-              <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-tight">
+              <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-tight">
                   <span>{startDate ? new Date(startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'Start'}</span>
                   <span>{Math.round(progress)}% Completed</span>
                   <span>{endDate ? new Date(endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'End'}</span>
               </div>
-              <div className="h-1.5 w-full bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden flex">
+              <div className="h-1.5 w-full bg-slate-100 dark:bg-brand-surface/5 rounded-full overflow-hidden flex">
                   <div 
                       style={{ width: `${progress}%` }} 
                       className={`h-full relative transition-all duration-1000 ease-out ${
@@ -192,7 +192,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
       </div>
       
       {/* Interactive Stats & Links */}
-      <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 space-y-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 space-y-6 shadow-sm">
           
           <div className="space-y-4 pb-6 border-b border-slate-100 dark:border-white/5">
               <div className="flex items-center justify-between">
@@ -233,40 +233,40 @@ const DevlogRightSidebar = ({ currentPostId }) => {
           {/* Action Buttons */}
           <div className="space-y-3">
               {devlogLink && (
-                  <a href={devlogLink} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded-lg text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-3">
+                  <a href={devlogLink} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-slate-900 dark:bg-brand-surface text-white dark:text-black rounded-lg text-xs font-black uppercase tracking-widest hover:opacity-90 transition-opacity flex items-center justify-center gap-3">
                       <Github size={16} /> Repository
                   </a>
               )}
               {livePreviewUrl && (
-                  <a href={livePreviewUrl} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-white dark:bg-black text-slate-900 dark:text-white border-2 border-slate-100 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-slate-300 dark:hover:border-white/30 transition-colors flex items-center justify-center gap-3">
+                  <a href={livePreviewUrl} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-brand-surface dark:bg-black text-slate-900 dark:text-white border-2 border-slate-100 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-brand-navy/[0.08] dark:hover:border-white/30 transition-colors flex items-center justify-center gap-3">
                       <ExternalLink size={16} /> Live Preview
                   </a>
               )}
               {resources && resources.length > 0 && (
-                  <a href={resources[0].link || resources[0].url} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-white dark:bg-black text-slate-900 dark:text-white border-2 border-slate-100 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-slate-300 dark:hover:border-white/30 transition-colors flex items-center justify-center gap-3">
+                  <a href={resources[0].link || resources[0].url} target="_blank" rel="noreferrer" className="w-full py-3.5 bg-brand-surface dark:bg-black text-slate-900 dark:text-white border-2 border-slate-100 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-brand-navy/[0.08] dark:hover:border-white/30 transition-colors flex items-center justify-center gap-3">
                       <Download size={16} /> Download
                   </a>
               )}
           </div>
 
           <div className="grid grid-cols-2 gap-3 pt-2">
-              <button onClick={handleLike} className={`py-3.5 rounded-lg border-2 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-colors ${isLiked ? 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20 text-red-500' : 'bg-white dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-white/5'}`}>
+              <button onClick={handleLike} className={`py-3.5 rounded-lg border-2 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-colors ${isLiked ? 'bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20 text-red-500' : 'bg-brand-surface dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 hover:bg-brand-cloud dark:hover:bg-brand-surface/5'}`}>
                   <Star size={14} className={isLiked ? 'fill-current text-red-500' : ''} />
                   {isLiked ? 'Starred' : 'Star'}
               </button>
-              <button onClick={handleShare} className="py-3.5 rounded-xl border-2 bg-white dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-brand-cloud dark:hover:bg-white/5 transition-colors">
+              <button onClick={handleShare} className="py-3.5 rounded-xl border-2 bg-brand-surface dark:bg-black border-slate-100 dark:border-white/10 text-brand-slate dark:text-slate-400 font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-brand-cloud dark:hover:bg-brand-surface/5 transition-colors">
                   <Share2 size={14} /> Share
               </button>
           </div>
       </div>
 
       {/* Technology Stack & Tags */}
-      <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-6">
+      <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-6">
           <div>
               <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Technology Stack</h3>
               <div className="flex flex-wrap gap-2">
                   {tools.length > 0 ? tools.map(tool => (
-                      <span key={tool} className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-brand-slate dark:text-slate-300">
+                      <span key={tool} className="px-3 py-1.5 bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-lg text-[10px] font-black uppercase tracking-widest text-brand-slate dark:text-slate-300">
                           {tool}
                       </span>
                   )) : <span className="text-xs text-slate-400 font-medium italic">No technologies listed</span>}
@@ -290,7 +290,7 @@ const DevlogRightSidebar = ({ currentPostId }) => {
 
       {/* Milestones */}
       {milestones && milestones.length > 0 && (
-          <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
+          <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm space-y-4">
               <div className="flex items-center justify-between">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
                       <Flag size={12} className="text-brand-blue" />
@@ -302,14 +302,14 @@ const DevlogRightSidebar = ({ currentPostId }) => {
               </div>
               <div className="space-y-2">
                   {milestones.map((milestone, idx) => (
-                      <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/5">
+                      <div key={idx} className="flex items-start gap-2.5 p-3 rounded-xl bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/5">
                           <div className="mt-0.5 shrink-0">
                               {milestone.status === 'Completed' ? (
                                   <CheckCircle2 size={13} className="text-brand-teal" />
                               ) : milestone.status === 'In Progress' ? (
                                   <Clock size={13} className="text-brand-blue animate-pulse" />
                               ) : (
-                                  <Circle size={13} className="text-slate-300 dark:text-brand-slate" />
+                                  <Circle size={13} className="text-slate-300 dark:text-brand-slate dark:text-slate-300" />
                               )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -329,10 +329,10 @@ const DevlogRightSidebar = ({ currentPostId }) => {
 
       {/* 1. Author Profile Snippet */}
       {author && (
-        <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm">
+        <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm">
             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Craftsman</h3>
             <div className="flex items-center gap-4 mb-5 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => setIsCraftsmanModalOpen(true)}>
-                <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center overflow-hidden border border-slate-200 dark:border-white/10">
+                <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-brand-surface/10 flex items-center justify-center overflow-hidden border border-brand-navy/[0.08] dark:border-white/10">
                      {authorImage ? (
                          <Image src={authorImage} width={48} height={48} className="object-cover w-full h-full" alt={author.name || 'Author'} />
                      ) : (
@@ -341,12 +341,12 @@ const DevlogRightSidebar = ({ currentPostId }) => {
                 </div>
                 <div>
                     <h4 className="font-bold text-slate-900 dark:text-white text-sm">{author.name}</h4>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mt-1">@{authorUsername}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">@{authorUsername}</p>
                 </div>
             </div>
             <button 
                 onClick={() => setIsCraftsmanModalOpen(true)}
-                className="w-full py-3 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all"
+                className="w-full py-3 bg-slate-100 dark:bg-brand-surface/[0.05] hover:bg-slate-200 dark:bg-brand-surface/5 dark:hover:bg-brand-surface/10 text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest rounded-lg transition-all"
             >
                 View Profile
             </button>
@@ -355,19 +355,19 @@ const DevlogRightSidebar = ({ currentPostId }) => {
 
       {/* 2. More from Author */}
       {moreFromAuthor.length > 0 && (
-          <div className="bg-white dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm">
+          <div className="bg-brand-surface dark:bg-black rounded-lg p-6 border border-slate-100 dark:border-white/5 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                   <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">More by Craftsman</h3>
-                  <ArrowRight size={14} className="text-slate-400 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors" />
+                  <ArrowRight size={14} className="text-slate-400 cursor-pointer hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" />
               </div>
               <div className="space-y-4">
                   {moreFromAuthor.map(p => (
                       <div key={p._id || p.slug} onClick={() => router.push(`/post/${p._id}`)} className="group flex items-center justify-between cursor-pointer">
                           <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 rounded bg-brand-cloud dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all">
-                                  <ArrowRight size={12} className="text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors" />
+                              <div className="w-8 h-8 rounded bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5 group-hover:border-brand-navy/[0.08] dark:group-hover:border-white/20 transition-all">
+                                  <ArrowRight size={12} className="text-slate-400 group-hover:text-slate-900 dark:text-white dark:group-hover:text-white transition-colors" />
                               </div>
-                              <span className="text-xs font-bold text-brand-slate dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors line-clamp-2 leading-relaxed">
+                              <span className="text-xs font-bold text-brand-slate dark:text-slate-300 group-hover:text-slate-900 dark:text-white dark:group-hover:text-white transition-colors line-clamp-2 leading-relaxed">
                                   {p.title}
                               </span>
                           </div>

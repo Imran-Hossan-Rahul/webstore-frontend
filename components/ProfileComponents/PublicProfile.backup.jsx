@@ -21,15 +21,15 @@ const ClassicExploreCard = dynamic(() => import('../dashboard/cards/ClassicExplo
 const ActivityIcon = ({ type }) => {
   const iconProps = { className: "w-5 h-5" };
   switch (type) {
-    case "working_on_devlog": return <Palette {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "sharing_task": return <CheckCircle {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "solving_problem": return <Code {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "joined_collaboration": return <Users {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "completed_task": return <CheckCircle {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "started_chatting": return <MessageSquare {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "created_post": return <FileText {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    case "updated_profile": return <UserCheck {...iconProps} className="text-slate-400 dark:text-slate-500" />;
-    default: return <Zap {...iconProps} className="text-slate-500" />;
+    case "working_on_devlog": return <Palette {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "sharing_task": return <CheckCircle {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "solving_problem": return <Code {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "joined_collaboration": return <Users {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "completed_task": return <CheckCircle {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "started_chatting": return <MessageSquare {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "created_post": return <FileText {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    case "updated_profile": return <UserCheck {...iconProps} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />;
+    default: return <Zap {...iconProps} className="text-slate-500 dark:text-slate-400" />;
   }
 };
 
@@ -397,11 +397,11 @@ const PublicProfile = ({ username }) => {
   if (error || !profile) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-        <div className="w-20 h-20 bg-brand-cloud dark:bg-white/5 rounded-full flex items-center justify-center mb-6">
+        <div className="w-20 h-20 bg-brand-cloud dark:bg-brand-surface/5 rounded-full flex items-center justify-center mb-6">
           <User size={32} className="text-slate-300" />
         </div>
         <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">Profile Not Found</h2>
-        <p className="text-slate-500 max-w-sm mb-8 text-sm leading-relaxed">This account may have been removed or the link might be broken.</p>
+        <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-8 text-sm leading-relaxed">This account may have been removed or the link might be broken.</p>
         <button 
           onClick={() => router.push('/')}
           className="px-6 py-2.5 bg-slate-900 text-white dark:text-black rounded-full font-bold text-sm hover:opacity-80 transition-all"
@@ -416,7 +416,7 @@ const PublicProfile = ({ username }) => {
     return (
       <div className="w-full pr-[30px] left-[15px] pt-9 pb-20 relative">
         <div className="relative h-48 md:h-72 w-full bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden mb-12">
-            <div className="w-full h-full bg-brand-cloud dark:bg-white/5 flex items-center justify-center">
+            <div className="w-full h-full bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center">
                <Lock size={48} className="text-slate-200 dark:text-white/10" />
             </div>
         </div>
@@ -425,26 +425,26 @@ const PublicProfile = ({ username }) => {
             {profile.profilePicture ? (
               <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover grayscale opacity-50" />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400 text-4xl font-bold uppercase">
+              <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-brand-surface text-slate-400 text-4xl font-bold uppercase">
                 {profile.name[0]}
               </div>
             )}
           </div>
           <h2 className="text-2xl font-medium text-slate-900 dark:text-white mb-2 font-sans">{profile.name}</h2>
-          <p className="text-slate-500 text-[10px] font-mono font-medium uppercase tracking-[0.2em] mb-8">@{profile.username}</p>
+          <p className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-[0.2em] mb-8">@{profile.username}</p>
           
-          <div className="max-w-md p-8 border border-slate-100 dark:border-white/5 rounded-3xl bg-white/50 dark:bg-white/[0.02] backdrop-blur-sm">
-             <div className="w-12 h-12 bg-slate-100 dark:bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="max-w-md p-8 border border-slate-100 dark:border-white/5 rounded-3xl bg-brand-surface/50 dark:bg-brand-surface/[0.02] backdrop-blur-sm">
+             <div className="w-12 h-12 bg-slate-100 dark:bg-brand-surface/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock size={20} className="text-slate-400" />
              </div>
              <h3 className="text-sm font-bold text-slate-900 dark:text-white mb-2">This Profile is Private</h3>
-             <p className="text-xs text-slate-500 leading-relaxed">
+             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                {profile.privacy?.visibility === 'connections' 
                  ? "You need to be a connection to view this profile's full details and creations."
                  : "This user has set their profile to private. Only they can see their content."}
              </p>
              {!currentUser && (
-               <button onClick={() => router.push('/auth/login')} className="mt-6 px-6 py-2 bg-slate-900 text-white dark:bg-white dark:text-black rounded-full font-bold text-[10px] uppercase tracking-widest">
+               <button onClick={() => router.push('/auth/login')} className="mt-6 px-6 py-2 bg-slate-900 text-white dark:bg-brand-surface dark:text-black rounded-full font-bold text-[10px] uppercase tracking-widest">
                   Login to Connect
                </button>
              )}
@@ -457,8 +457,8 @@ const PublicProfile = ({ username }) => {
   return (
     <div className="w-full pr-[30px] left-[15px] pt-9 pb-20 relative">
       {/* Header Navigation (Mobile) */}
-      <div className="flex items-center gap-4 px-4 py-3 sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-40 lg:hidden border-b border-slate-100 dark:border-white/5">
-         <button onClick={() => router.back()} className="p-2 hover:bg-slate-100 dark:hover:bg-white/5 rounded-full transition-colors">
+      <div className="flex items-center gap-4 px-4 py-3 sticky top-0 bg-brand-surface/80 dark:bg-slate-900/80 backdrop-blur-md z-40 lg:hidden border-b border-slate-100 dark:border-white/5">
+         <button onClick={() => router.back()} className="p-2 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 rounded-full transition-colors">
             <ArrowLeft size={20} />
          </button>
          <div>
@@ -474,14 +474,14 @@ const PublicProfile = ({ username }) => {
           {profile.coverPicture ? (
             <img src={getOptimizedUrl(profile.coverPicture)} alt="Cover" className="w-full h-full object-cover" />
           ) : (
-            <div className="w-full h-full bg-brand-cloud dark:bg-white/5" />
+            <div className="w-full h-full bg-brand-cloud dark:bg-brand-surface/5" />
           )}
           
           {isOwner && (
             <div className="absolute inset-0 bg-slate-900/20 opacity-0 group-hover/profile:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                 <button 
                   onClick={() => openImageUpload("cover")}
-                  className="pointer-events-auto flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-lg text-[10px] font-mono font-medium uppercase tracking-[0.2em] hover:bg-white/30 transition-all shadow-xl"
+                  className="pointer-events-auto flex items-center gap-2 px-4 py-2 bg-brand-surface/20 backdrop-blur-md border border-white/30 text-white rounded-lg text-[10px] font-mono font-medium uppercase tracking-[0.2em] hover:bg-brand-surface/30 transition-all shadow-sm"
                 >
                   <Camera size={14} />
                   Change Cover
@@ -500,7 +500,7 @@ const PublicProfile = ({ username }) => {
                 {profile.profilePicture ? (
                   <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-400 text-4xl font-bold uppercase">
+                  <div className="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-brand-surface text-slate-400 text-4xl font-bold uppercase">
                     {profile.name[0]}
                   </div>
                 )}
@@ -523,7 +523,7 @@ const PublicProfile = ({ username }) => {
                   {profile?.hasCraftsmanAccount && (
                     <button 
                       onClick={() => router.push('/user/craftsman')}
-                      className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white dark:bg-white dark:text-black rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:opacity-90 transition-all border border-slate-900 dark:border-white"
+                      className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white dark:bg-brand-surface dark:text-black rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:opacity-90 transition-all border border-slate-900 dark:border-white"
                     >
                       <UserCheck size={14} />
                       Craftsman Dashboard
@@ -531,7 +531,7 @@ const PublicProfile = ({ username }) => {
                   )}
                   <button 
                     onClick={() => router.push('/dashboard')}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-brand-slate dark:text-slate-300 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700"
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-brand-surface text-brand-slate dark:text-slate-300 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.15em] hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-slate-700 transition-all border border-brand-navy/[0.08] dark:border-slate-700"
                   >
                     <LayoutGrid size={14} />
                     Platform Dashboard
@@ -540,7 +540,7 @@ const PublicProfile = ({ username }) => {
                     onClick={handleLogout}
                     className={`flex items-center gap-2 p-2.5 rounded-full transition-all border border-transparent ${
                       confirmLogout 
-                        ? 'bg-red-500 text-white hover:bg-red-600 px-4 shadow-lg shadow-red-500/20' 
+                        ? 'bg-red-500 text-white hover:bg-red-600 px-4 shadow-sm shadow-red-500/20' 
                         : 'text-red-500 hover:bg-red-500/10 hover:border-red-500/20'
                     }`}
                   >
@@ -555,8 +555,8 @@ const PublicProfile = ({ username }) => {
                     disabled={followLoading}
                     className={`px-8 py-2.5 rounded-lg font-mono font-medium text-[10px] uppercase tracking-[0.2em] transition-all ${
                       isFollowing
-                        ? 'border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white hover:bg-brand-cloud'
-                        : 'bg-slate-900 text-white dark:bg-white dark:text-black'
+                        ? 'border border-brand-navy/[0.08] dark:border-white/10 text-slate-900 dark:text-white hover:bg-brand-cloud'
+                        : 'bg-slate-900 text-white dark:bg-brand-surface dark:text-black'
                     }`}
                   >
                     {followLoading ? (
@@ -568,7 +568,7 @@ const PublicProfile = ({ username }) => {
                       if (!currentUser) return showToast('Please login to message', 'info');
                       openChatWithUser?.(profile._id);
                     }}
-                    className="p-2.5 border border-slate-200 dark:border-white/10 rounded-full hover:bg-brand-cloud dark:hover:bg-white/5 transition-all"
+                    className="p-2.5 border border-brand-navy/[0.08] dark:border-white/10 rounded-full hover:bg-brand-cloud dark:hover:bg-brand-surface/5 transition-all"
                   >
                     <MessageSquare size={20} />
                   </button>
@@ -585,7 +585,7 @@ const PublicProfile = ({ username }) => {
                 {profile.pronouns && <span className="text-slate-400 text-[10px] font-mono font-medium tracking-tight uppercase">({profile.pronouns})</span>}
                 {profile.isVerified && <Verified size={20} className="text-slate-900 dark:text-white" />}
               </div>
-              <p className="text-slate-500 text-[10px] font-mono font-medium uppercase tracking-[0.2em]">@{profile.username}</p>
+              <p className="text-slate-500 dark:text-slate-400 text-[10px] font-mono font-medium uppercase tracking-[0.2em]">@{profile.username}</p>
             </div>
 
             <p className="text-brand-slate dark:text-slate-300 text-base leading-relaxed max-w-2xl whitespace-pre-wrap break-words font-normal font-sans">
@@ -606,22 +606,22 @@ const PublicProfile = ({ username }) => {
                 {/* Enhanced Social Links - Responsive Grid */}
                 <div className="flex items-center gap-4 border-l border-slate-100 dark:border-white/5 pl-6 ml-0">
                   {profile.professionalLinks?.github && (
-                    <a href={profile.professionalLinks.github.startsWith('http') ? profile.professionalLinks.github : `https://${profile.professionalLinks.github}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="GitHub">
+                    <a href={profile.professionalLinks.github.startsWith('http') ? profile.professionalLinks.github : `https://${profile.professionalLinks.github}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" title="GitHub">
                       <Github size={16} />
                     </a>
                   )}
                   {profile.professionalLinks?.linkedin && (
-                    <a href={profile.professionalLinks.linkedin.startsWith('http') ? profile.professionalLinks.linkedin : `https://${profile.professionalLinks.linkedin}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="LinkedIn">
+                    <a href={profile.professionalLinks.linkedin.startsWith('http') ? profile.professionalLinks.linkedin : `https://${profile.professionalLinks.linkedin}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" title="LinkedIn">
                       <Linkedin size={16} />
                     </a>
                   )}
                   {profile.professionalLinks?.twitter && (
-                    <a href={profile.professionalLinks.twitter.startsWith('http') ? profile.professionalLinks.twitter : `https://${profile.professionalLinks.twitter}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Twitter / X">
+                    <a href={profile.professionalLinks.twitter.startsWith('http') ? profile.professionalLinks.twitter : `https://${profile.professionalLinks.twitter}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" title="Twitter / X">
                       <Twitter size={16} />
                     </a>
                   )}
                   {profile.professionalLinks?.portfolio && (
-                    <a href={profile.professionalLinks.portfolio.startsWith('http') ? profile.professionalLinks.portfolio : `https://${profile.professionalLinks.portfolio}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" title="Portfolio / Website">
+                    <a href={profile.professionalLinks.portfolio.startsWith('http') ? profile.professionalLinks.portfolio : `https://${profile.professionalLinks.portfolio}`} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors" title="Portfolio / Website">
                       <Globe size={16} />
                     </a>
                   )}
@@ -637,7 +637,7 @@ const PublicProfile = ({ username }) => {
       </div>
 
       {/* Profile Navigation Tabs */}
-      <div className="mt-8 px-0 border border-slate-100 dark:border-white/5 rounded-2xl sticky top-14 lg:top-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-30 overflow-hidden shadow-sm">
+      <div className="mt-8 px-0 border border-slate-100 dark:border-white/5 rounded-2xl sticky top-14 lg:top-16 bg-brand-surface/80 dark:bg-slate-900/80 backdrop-blur-md z-30 overflow-hidden shadow-sm">
          <div className="flex justify-center gap-8 overflow-x-auto no-scrollbar">
             {[
               { id: 'creations', label: 'Creations', icon: <LayoutGrid size={16} /> },
@@ -650,13 +650,13 @@ const PublicProfile = ({ username }) => {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 py-4 text-[10px] font-mono font-medium uppercase tracking-[0.2em] transition-all relative whitespace-nowrap ${
-                  activeTab === tab.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 hover:text-brand-slate dark:hover:text-slate-200'
+                  activeTab === tab.id ? 'text-slate-900 dark:text-white' : 'text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
                 {tab.label}
                 {activeTab === tab.id && (
-                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-white rounded-t-sm" />
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-brand-surface rounded-t-sm" />
                 )}
               </button>
             ))}
@@ -679,8 +679,8 @@ const PublicProfile = ({ username }) => {
                   onClick={() => setCreationsTab(tab.id)}
                   className={`px-4 py-2 rounded-lg text-[9px] font-mono font-medium uppercase tracking-[0.2em] transition-all ${
                     creationsTab === tab.id 
-                      ? 'bg-slate-900 text-white dark:bg-white dark:text-black' 
-                      : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      ? 'bg-slate-900 text-white dark:bg-brand-surface dark:text-black' 
+                      : 'text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white'
                   }`}
                 >
                   {tab.label} <span className="opacity-40 ml-1">[{tab.count}]</span>
@@ -762,9 +762,9 @@ const PublicProfile = ({ username }) => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       {publicFavorites.folders.map(folder => (
-                        <div key={folder._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-brand-blue/50 transition-colors">
+                        <div key={folder._id} className="p-6 bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:border-brand-blue/50 transition-colors">
                            <div className="flex items-center gap-3 mb-4">
-                             <div className="w-10 h-10 rounded-xl bg-brand-cloud dark:bg-slate-800 flex items-center justify-center" style={{ color: folder.color || '#4f46e5' }}>
+                             <div className="w-10 h-10 rounded-xl bg-brand-cloud dark:bg-brand-surface flex items-center justify-center" style={{ color: folder.color || '#4f46e5' }}>
                                <Bookmark size={20} />
                              </div>
                              <div>
@@ -804,7 +804,7 @@ const PublicProfile = ({ username }) => {
                                {note.noteContent}
                              </p>
                            )}
-                           <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                           <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
                               <span className="flex items-center gap-1"><FileText size={12} /> {note.codex?.title || "Unknown Source"}</span>
                               <span>{formatDistanceToNow(new Date(note.createdAt))} ago</span>
                            </div>
@@ -833,7 +833,7 @@ const PublicProfile = ({ username }) => {
                   <h3 className="text-lg font-medium text-slate-900 dark:text-white font-sans">GitHub Portfolio</h3>
                   <p className="text-[10px] font-mono font-medium text-slate-400 uppercase tracking-[0.2em] mt-1">Live from @{profile.connectedAccounts?.github?.username}</p>
                </div>
-               <a href={`https://github.com/${profile.connectedAccounts?.github?.username}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg text-[9px] font-mono font-medium uppercase tracking-[0.2em] transition-all">
+               <a href={`https://github.com/${profile.connectedAccounts?.github?.username}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-brand-surface/5 hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/10 rounded-lg text-[9px] font-mono font-medium uppercase tracking-[0.2em] transition-all">
                   View All Repos <ExternalLink size={14} />
                </a>
             </div>
@@ -841,7 +841,7 @@ const PublicProfile = ({ username }) => {
             {githubLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="h-32 bg-brand-cloud dark:bg-white/[0.02] rounded-2xl animate-pulse border border-slate-100 dark:border-white/5" />
+                  <div key={i} className="h-32 bg-brand-cloud dark:bg-brand-surface/[0.02] rounded-2xl animate-pulse border border-slate-100 dark:border-white/5" />
                 ))}
               </div>
             ) : githubRepos.length > 0 ? (
@@ -852,17 +852,17 @@ const PublicProfile = ({ username }) => {
                     href={repo.html_url} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl hover:border-slate-300 dark:hover:border-white/20 transition-all group"
+                    className="p-6 bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl hover:border-brand-navy/[0.08] dark:hover:border-white/20 transition-all group"
                   >
                     <div className="flex justify-between items-start mb-3">
-                       <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-brand-slate dark:group-hover:text-white transition-colors">{repo.name}</h4>
+                       <h4 className="font-bold text-slate-900 dark:text-white group-hover:text-brand-slate dark:text-slate-300 dark:group-hover:text-white transition-colors">{repo.name}</h4>
                        {repo.language && (
-                         <span className="px-2 py-0.5 bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-[9px] font-black uppercase rounded-md">
+                         <span className="px-2 py-0.5 bg-slate-100 dark:bg-brand-surface/10 text-slate-900 dark:text-white text-[9px] font-black uppercase rounded-md">
                            {repo.language}
                          </span>
                        )}
                     </div>
-                    <p className="text-[13px] text-slate-500 line-clamp-2 mb-4 h-10">{repo.description || "No description provided."}</p>
+                    <p className="text-[13px] text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 h-10">{repo.description || "No description provided."}</p>
                     <div className="flex items-center gap-4 text-[10px] font-mono font-medium text-slate-400 uppercase tracking-tighter">
                        <div className="flex items-center gap-1">
                           <Trophy size={12} className="text-brand-amber" />
@@ -881,7 +881,7 @@ const PublicProfile = ({ username }) => {
               </div>
             ) : (
               <div className="text-center py-20">
-                 <p className="text-sm text-slate-500">No public repositories found.</p>
+                 <p className="text-sm text-slate-500 dark:text-slate-400">No public repositories found.</p>
               </div>
             )}
           </div>
@@ -893,7 +893,7 @@ const PublicProfile = ({ username }) => {
               <div className="flex justify-end mb-6">
                 <Link 
                   href="/settings"
-                  className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white dark:bg-white dark:text-black rounded-xl text-[10px] font-bold uppercase tracking-widest hover:opacity-80 active:opacity-60 transition-all shadow-xl shadow-slate-900/10 dark:shadow-white/10"
+                  className="flex items-center gap-2 px-6 py-3 bg-slate-900 text-white dark:bg-brand-surface dark:text-black rounded-xl text-[10px] font-bold uppercase tracking-widest hover:opacity-80 active:opacity-60 transition-all shadow-sm shadow-slate-900/10 dark:shadow-white/10"
                 >
                   <SettingsIcon size={14} />
                   Edit Profile Settings
@@ -904,10 +904,10 @@ const PublicProfile = ({ username }) => {
               
 
               {/* 1. Identity & Bio Card */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-8 shadow-sm h-fit">
+              <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-8 shadow-sm h-fit">
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white rounded-xl flex items-center justify-center">
+                    <div className="w-10 h-10 bg-slate-100 dark:bg-brand-surface/10 text-slate-900 dark:text-white rounded-xl flex items-center justify-center">
                       <User size={18} />
                     </div>
                     <div>
@@ -934,7 +934,7 @@ const PublicProfile = ({ username }) => {
                         {item.isTags ? (
                           item.tags?.length > 0 ? (
                             item.tags.map((tag, i) => (
-                              <span key={i} className="px-3 py-1 rounded-full text-[10px] font-bold border border-slate-100 dark:border-white/10 bg-brand-cloud dark:bg-white/5 text-brand-slate dark:text-slate-300 uppercase tracking-tight">
+                              <span key={i} className="px-3 py-1 rounded-full text-[10px] font-bold border border-slate-100 dark:border-white/10 bg-brand-cloud dark:bg-brand-surface/5 text-brand-slate dark:text-slate-300 uppercase tracking-tight">
                                 {tag}
                               </span>
                             ))
@@ -951,7 +951,7 @@ const PublicProfile = ({ username }) => {
               </div>
 
             {/* 2. Professional & Contact Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-8 shadow-sm h-fit">
+            <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl p-8 shadow-sm h-fit">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-brand-blue/10 text-brand-blue rounded-xl flex items-center justify-center">
@@ -1008,10 +1008,10 @@ const PublicProfile = ({ username }) => {
             ) : activities.length > 0 ? (
               <div className="space-y-4">
                 {activities.map((activity) => (
-                  <div key={activity._id} className="p-6 bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm hover:shadow-md transition-all group">
+                  <div key={activity._id} className="p-6 bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-2xl shadow-sm hover:shadow-sm transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0 mt-1">
-                        <div className="w-12 h-12 rounded-2xl bg-brand-cloud dark:bg-white/5 flex items-center justify-center group-hover:opacity-80 transition-opacity">
+                        <div className="w-12 h-12 rounded-2xl bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center group-hover:opacity-80 transition-opacity">
                           <ActivityIcon type={activity.type} />
                         </div>
                       </div>
@@ -1077,7 +1077,7 @@ const PublicProfile = ({ username }) => {
 };
 
 const EmptyCreations = ({ title, desc }) => (
-  <div className="col-span-full flex flex-col items-center justify-center py-16 text-center opacity-40 bg-brand-cloud/50 dark:bg-white/[0.01] border border-dashed border-slate-200 dark:border-white/10 rounded-3xl">
+  <div className="col-span-full flex flex-col items-center justify-center py-16 text-center opacity-40 bg-brand-cloud/50 dark:bg-brand-surface/[0.01] border border-dashed border-brand-navy/[0.08] dark:border-white/10 rounded-3xl">
     <LayoutGrid size={32} className="mb-4 stroke-[1px]" />
     <h4 className="text-sm font-bold uppercase tracking-widest mb-1">{title}</h4>
     <p className="text-[10px] font-medium max-w-[200px]">{desc}</p>

@@ -19,11 +19,11 @@ const data = [
 
 export default function RegisterRevenueCard() {
   return (
-    <div className="bg-white dark:bg-[#1a1a1a] p-8 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-slate-100 dark:border-slate-800">
+    <div className="bg-brand-surface dark:bg-[#1a1a1a] p-8 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.05)] w-full max-w-md border border-slate-100 dark:border-slate-800">
       <div className="flex justify-between items-start mb-6">
         <div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Revenue</h3>
-          <p className="text-sm text-slate-500 font-medium mt-1">Monthly earnings</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">Monthly earnings</p>
         </div>
         <div className="w-2 h-2 rounded-full bg-green-400"></div>
       </div>
@@ -65,7 +65,7 @@ export default function RegisterRevenueCard() {
       
       <div className="mt-8 text-center"> 
         <h4 className="font-bold text-slate-900 dark:text-white mb-2">Real-time Analytics Dashboard</h4>
-        <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mx-auto">
             Track your performance with live analytics. Monitor views, downloads, revenue, and user growth in real-time.
         </p>
       </div>

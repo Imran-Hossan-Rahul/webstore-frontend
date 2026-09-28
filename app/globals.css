@@ -87,27 +87,55 @@ body {
 }
 
 :root {
-  --background: #F4F7FB;
-  --foreground: #34435A;
-  --clr: rgba(228, 228, 228, 0.5);
+  /* Codalina Global Background System (Dark Theme by Default) */
+  --bg-main: #000000;
+  --bg-surface: #0A0A0A;
+  --bg-dark-section: #000000;
+  --bg-primary-interaction: #1D5FD1;
+  --bg-tech-accent: #22C7E8;
+  --bg-important-cta: #F5A623;
+  --bg-success: #0B7A68;
+  
+  /* Codalina Typography (Dark Mode by Default) */
+  --text-primary: #FFFFFF;
+  --text-secondary: #8DA4C4;
+
+  /* Legacy Fallbacks */
+  --background: var(--bg-main);
+  --foreground: var(--text-primary);
+  --clr: rgba(26, 26, 46, 0.5);
   --font-inter: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Apple Design Tokens */
-  --apple-ink: #1d1d1f;
-  --apple-text-secondary: #6e6e73;
+  /* Apple Design Tokens (Dark Mode) */
+  --apple-ink: #ffffff;
+  --apple-text-secondary: #cccccc;
   --apple-text-muted: #86868b;
-  --apple-canvas: #ffffff;
-  --apple-parchment: #f5f5f7;
-  --apple-surface-dark: #272729;
-  --apple-hairline: #d2d2d7;
-  --apple-accent: #0066cc;
+  --apple-canvas: #000000;
+  --apple-parchment: #272729;
+  --apple-surface-dark: #2a2a2c;
+  --apple-hairline: rgba(255, 255, 255, 0.1);
+  --apple-accent: #2997ff;
   --apple-accent-ondark: #2997ff;
 }
 
 [data-theme="dark"] {
-  --background: #0B2545;
-  --foreground: #F4F7FB;
+  /* Codalina Global Background System (Dark Mode) */
+  --bg-main: #000000;
+  --bg-surface: #0A0A0A;
+  --bg-dark-section: #000000;
+  --bg-primary-interaction: #1D5FD1;
+  --bg-tech-accent: #22C7E8;
+  --bg-important-cta: #F5A623;
+  --bg-success: #0B7A68;
+  
+  /* Codalina Typography (Dark Mode) */
+  --text-primary: #FFFFFF;
+  --text-secondary: #8DA4C4;
+
+  /* Legacy Fallbacks */
+  --background: var(--bg-main);
+  --foreground: var(--text-primary);
 
   /* Apple Design Tokens (Dark Mode) */
   --apple-ink: #ffffff;

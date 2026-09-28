@@ -120,7 +120,7 @@ export default function LiveAnalyticsCards() {
 
   if (loading) {
     return (
-      <div className="w-[500px] h-[400px] bg-white rounded-2xl shadow-lg flex items-center justify-center">
+      <div className="w-[500px] h-[400px] bg-brand-surface rounded-2xl shadow-sm flex items-center justify-center">
         <div className="animate-pulse text-slate-400">Loading analytics...</div>
       </div>
     );
@@ -141,12 +141,12 @@ export default function LiveAnalyticsCards() {
                 : "opacity-0 translate-x-full scale-95"
             }`}
           >
-            <div className="bg-white rounded-2xl shadow-xl p-8 h-full border border-slate-100">
+            <div className="bg-brand-surface rounded-2xl shadow-sm p-8 h-full border border-slate-100 dark:border-white/5">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-900">{card.title}</h3>
-                  <p className="text-sm text-slate-500 mt-1">{card.subtitle}</p>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{card.title}</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{card.subtitle}</p>
                 </div>
                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: card.color }}></div>
               </div>
@@ -209,21 +209,21 @@ export default function LiveAnalyticsCards() {
               </div>
 
               {/* Stats Summary */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-white/5">
                 <div>
-                  <p className="text-xs text-slate-500">Current</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Current</p>
                   <p className="text-lg font-bold" style={{ color: card.color }}>
                     {card.data[card.data.length - 1]?.value.toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Goal</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Goal</p>
                   <p className="text-lg font-bold text-slate-400">
                     {card.data[card.data.length - 1]?.goal.toLocaleString()}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500">Growth</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Growth</p>
                   <p className="text-lg font-bold text-green-600">
                     +{Math.floor(Math.random() * 20 + 5)}%
                   </p>

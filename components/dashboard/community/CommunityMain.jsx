@@ -120,7 +120,7 @@ export default function CommunityMain() {
         </div>
         <button
           onClick={() => setShowCreatePost(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:shadow-lg transition-all font-medium"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:shadow-sm transition-all font-medium"
         >
           <Plus className="w-4 h-4" />
           Create Post
@@ -156,7 +156,7 @@ export default function CommunityMain() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-slate-200 dark:border-white/10">
+      <div className="flex gap-2 border-b border-brand-navy/[0.08] dark:border-white/10">
         <TabButton
           active={activeTab === "feed"}
           onClick={() => setActiveTab("feed")}
@@ -259,7 +259,7 @@ const StatCard = ({ icon: Icon, label, value, color }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[color]} flex items-center justify-center`}>
           <Icon className="w-6 h-6 text-white" />
@@ -279,7 +279,7 @@ const TabButton = ({ active, onClick, icon: Icon, label }) => (
     className={`flex items-center gap-2 px-4 py-3 font-medium transition-all border-b-2 ${
       active
         ? "border-purple-600 text-purple-600"
-        : "border-transparent text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+        : "border-transparent text-brand-slate dark:text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white"
     }`}
   >
     <Icon className="w-4 h-4" />
@@ -318,7 +318,7 @@ const ActivityCard = ({ activity }) => {
       case "created_post":
         return <TrendingUp className="w-5 h-5 text-orange-500" />;
       default:
-        return <Zap className="w-5 h-5 text-slate-500" />;
+        return <Zap className="w-5 h-5 text-slate-500 dark:text-slate-400" />;
     }
   };
 
@@ -365,7 +365,7 @@ const ActivityCard = ({ activity }) => {
     }
     if (activity.metadata?.postType) {
       const typeColors = {
-        comment: "bg-slate-100 dark:bg-white/10 text-brand-slate dark:text-slate-300",
+        comment: "bg-slate-100 dark:bg-brand-surface/10 text-brand-slate dark:text-slate-300",
         question: "bg-brand-blue/10 text-brand-blue",
         answer: "bg-brand-teal/10 text-brand-teal",
         issue: "bg-red-500/10 text-red-500",
@@ -399,7 +399,7 @@ const ActivityCard = ({ activity }) => {
 
   return (
     <>
-    <div onClick={handleCardClick} className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-lg transition-all cursor-pointer">
+    <div onClick={handleCardClick} className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-sm transition-all cursor-pointer">
       <div className="flex items-start gap-4">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold flex-shrink-0">
           {activity.user?.name?.[0] || "U"}
@@ -433,15 +433,15 @@ const ActivityCard = ({ activity }) => {
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button className="flex items-center gap-1 text-slate-500 hover:text-red-500 transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-red-500 transition-colors">
                 <Star className="w-4 h-4" />
                 <span className="text-sm">{likes}</span>
               </button>
-              <button className="flex items-center gap-1 text-slate-500 hover:text-brand-blue transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-brand-blue transition-colors">
                 <MessageSquare className="w-4 h-4" />
                 <span className="text-sm">{comments}</span>
               </button>
-              <button className="flex items-center gap-1 text-slate-500 hover:text-brand-teal transition-colors">
+              <button className="flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-brand-teal transition-colors">
                 <Share2 className="w-4 h-4" />
               </button>
             </div>
@@ -477,7 +477,7 @@ const TaskCard = ({ task }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-lg transition-all cursor-pointer">
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6 hover:shadow-sm transition-all cursor-pointer">
       <div className="flex items-start justify-between mb-3">
         <h3 className="text-lg font-bold text-slate-900 dark:text-white">
           {task.title}
@@ -547,7 +547,7 @@ const OnlineUsers = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
       <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <Users className="w-5 h-5" />
         Recently Active
@@ -581,7 +581,7 @@ const OnlineUsers = () => {
 };
 
 const QuickActions = ({ onStartDiscussion, onFindCollaborators, onShareResource }) => (
-  <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
+  <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
     <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
       <Zap className="w-5 h-5 text-purple-600" />
       Quick Actions
@@ -604,7 +604,7 @@ const TrendingTopics = () => {
   ];
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
       <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <TrendingUp className="w-5 h-5 text-orange-600" />
         Trending Topics
@@ -643,7 +643,7 @@ const ActiveRooms = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-6">
       <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
         <Users className="w-5 h-5 text-brand-blue" />
         Active Rooms
@@ -651,7 +651,7 @@ const ActiveRooms = () => {
       <div className="space-y-3">
         {rooms.length > 0 ? (
           rooms.map((room) => (
-            <div key={room._id} className="p-3 bg-brand-cloud dark:bg-white/5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all cursor-pointer">
+            <div key={room._id} className="p-3 bg-brand-cloud dark:bg-brand-surface/5 rounded-xl hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 transition-all cursor-pointer">
               <div className="flex items-center justify-between mb-1">
                 <span className="text-sm font-medium text-slate-900 dark:text-white">
                   {room.name}
@@ -677,7 +677,7 @@ const ActiveRooms = () => {
 const ActionButton = ({ icon: Icon, label, onClick }) => (
   <button 
     onClick={onClick}
-    className="w-full flex items-center gap-3 px-4 py-3 text-left text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-white/5 rounded-xl transition-all"
+    className="w-full flex items-center gap-3 px-4 py-3 text-left text-brand-slate dark:text-slate-300 hover:bg-brand-cloud dark:hover:bg-brand-surface/5 rounded-xl transition-all"
   >
     <Icon className="w-4 h-4" />
     <span className="text-sm font-medium">{label}</span>
@@ -713,8 +713,8 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-slate-200 dark:border-white/10">
+      <div className="bg-brand-surface dark:bg-black/90 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6 border-b border-brand-navy/[0.08] dark:border-white/10">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Share Your Problem
           </h2>
@@ -725,7 +725,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             placeholder="What's your problem?"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <textarea
@@ -733,14 +733,14 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={4}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             required
           />
           <div className="grid grid-cols-2 gap-4">
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             >
               <option value="design">Design</option>
               <option value="development">Development</option>
@@ -750,7 +750,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             <select
               value={formData.priority}
               onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-              className="px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+              className="px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
@@ -763,7 +763,7 @@ const CreateTaskModal = ({ onClose, onCreated }) => {
             placeholder="Tags (comma separated)"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            className="w-full px-4 py-3 border border-slate-200 dark:border-white/10 rounded-xl bg-white dark:bg-black/40 text-slate-900 dark:text-white"
+            className="w-full px-4 py-3 border border-brand-navy/[0.08] dark:border-white/10 rounded-xl bg-brand-surface dark:bg-black/40 text-slate-900 dark:text-white"
           />
           <div className="flex justify-end gap-4 pt-4">
             <button
@@ -808,8 +808,8 @@ const EmptyState = ({ message }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-12 text-center">
-      <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate mx-auto mb-4" />
+    <div className="bg-brand-surface dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl p-12 text-center">
+      <Zap className="w-16 h-16 text-slate-300 dark:text-brand-slate dark:text-slate-300 mx-auto mb-4" />
       <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
         No activities yet
       </h3>

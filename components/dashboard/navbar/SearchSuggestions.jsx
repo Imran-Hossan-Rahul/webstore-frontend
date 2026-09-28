@@ -21,7 +21,7 @@ export default function SearchSuggestions({
 }) {
     if (isSearching) {
         return (
-            <div className="p-4 text-center text-xs font-bold text-slate-500 flex items-center justify-center gap-2">
+            <div className="p-4 text-center text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center justify-center gap-2">
                 <AppleSpinner size={16} />
                 Searching...
             </div>
@@ -41,7 +41,7 @@ export default function SearchSuggestions({
     } = suggestions;
 
     if (totalResults === 0) {
-        return <div className="p-4 text-center text-xs font-bold text-slate-500">No results found</div>;
+        return <div className="p-4 text-center text-xs font-bold text-slate-500 dark:text-slate-400">No results found</div>;
     }
 
     return (
@@ -52,9 +52,9 @@ export default function SearchSuggestions({
                         <Link 
                             href={`/product/${item._id}`} 
                             key={item._id} 
-                            className="flex items-center gap-3 px-3 py-2 mx-1 hover:bg-slate-100/80 dark:hover:bg-white/5 rounded-[4px] transition-all group"
+                            className="flex items-center gap-3 px-3 py-2 mx-1 hover:bg-slate-100 dark:bg-brand-surface/[0.05]/80 dark:hover:bg-brand-surface/5 rounded-[4px] transition-all group"
                         >
-                             <div className="w-10 h-10 rounded-lg overflow-hidden bg-brand-cloud dark:bg-white/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5">
+                             <div className="w-10 h-10 rounded-lg overflow-hidden bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5">
                                 {item.photos && (() => {
                                     try {
                                         const parsedPhotos = Array.isArray(item.photos) ? item.photos : JSON.parse(item.photos);

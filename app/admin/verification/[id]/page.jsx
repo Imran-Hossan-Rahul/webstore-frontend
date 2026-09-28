@@ -76,26 +76,26 @@ export default function VerificationReviewPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white dark:bg-[#0D1117] flex items-center justify-center">
+      <div className="min-h-screen ] flex items-center justify-center bg-brand-main">
         <AppleSpinner />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0D1117] text-slate-900 dark:text-white pb-32">
+    <div className="min-h-screen ] text-slate-900 dark:text-white pb-32 bg-brand-main">
       {/* Ultra Minimal Header */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-[#0D1117]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/10">
+      <div className="sticky top-0 z-50 bg-brand-surface/80 dark:bg-brand-surface/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/10">
         <div className="max-w-[1200px] mx-auto px-8 h-24 flex items-center justify-between">
            <div className="flex items-center gap-8">
               <button 
                 onClick={() => router.back()}
-                className="group flex items-center gap-3 text-[10px] font-medium uppercase tracking-widest text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                className="group flex items-center gap-3 text-[10px] font-medium uppercase tracking-widest text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all"
               >
                 <ChevronLeft size={16} />
                 Requests
               </button>
-              <div className="h-4 w-[1px] bg-slate-200 dark:bg-white/10" />
+              <div className="h-4 w-[1px] bg-slate-200 dark:bg-brand-surface/10" />
               <h1 className="text-[11px] font-medium uppercase tracking-widest text-slate-400">Forensic Audit _<span className="text-slate-900 dark:text-brand-navy dark:text-white">Review</span></h1>
            </div>
 
@@ -134,7 +134,7 @@ export default function VerificationReviewPage() {
               </button>
               <button 
                 onClick={() => handleReview('approved')}
-                className="px-12 py-4 bg-white dark:bg-[#161B22] dark:bg-white text-white dark:text-slate-900 rounded-full text-[10px] font-medium uppercase tracking-widest hover:opacity-90 transition-all"
+                className="px-12 py-4 bg-brand-surface dark:bg-brand-surface dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white rounded-full text-[10px] font-medium uppercase tracking-widest hover:opacity-90 transition-all"
               >
                  Authorize User
               </button>
@@ -145,7 +145,7 @@ export default function VerificationReviewPage() {
         <div className="space-y-16">
            <div className="flex items-center gap-4">
               <h4 className="text-[10px] font-medium text-slate-400 uppercase tracking-widest whitespace-nowrap">Full Behavioral Context</h4>
-              <div className="h-[1px] w-full bg-slate-100 dark:bg-white/5" />
+              <div className="h-[1px] w-full bg-slate-100 dark:bg-brand-surface/5" />
            </div>
            <UserIntelligenceHub dossier={dossier} />
         </div>
@@ -156,10 +156,10 @@ export default function VerificationReviewPage() {
         {isPreviewOpen && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white/98 dark:bg-black/98 z-[200] flex items-center justify-center p-12"
+            className="fixed inset-0 bg-brand-surface/98 dark:bg-black/98 z-[200] flex items-center justify-center p-12"
             onClick={() => setIsPreviewOpen(false)}
           >
-             <button className="absolute top-12 right-12 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+             <button className="absolute top-12 right-12 text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all">
                <X size={32} strokeWidth={1} />
              </button>
              <img src={getOptimizedUrl(previewImage)} className="max-w-full max-h-full object-contain rounded-sm" alt="Artifact" />
@@ -177,13 +177,13 @@ const AssetCard = ({ label, type, url, onClick }) => (
           <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest">{label}</span>
           <p className="text-[11px] font-medium text-slate-900 dark:text-white uppercase tracking-tight mt-1">{type}</p>
        </div>
-       <button onClick={onClick} className="text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+       <button onClick={onClick} className="text-slate-300 hover:text-slate-900 dark:text-white dark:hover:text-white transition-colors">
           <ArrowUpRight size={18} />
        </button>
     </div>
     <div 
       onClick={onClick}
-      className="aspect-video rounded-[4px] overflow-hidden bg-brand-cloud dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 cursor-zoom-in"
+      className="aspect-video rounded-[4px] overflow-hidden bg-brand-cloud dark:bg-brand-surface/[0.02] border border-brand-navy/[0.08] dark:border-white/10 cursor-zoom-in"
     >
       <img src={getOptimizedUrl(url)} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" alt="" />
     </div>

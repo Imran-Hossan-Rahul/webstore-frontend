@@ -10,18 +10,18 @@ export function ThemeProvider({ children }) {
   const applyTheme = useCallback((newTheme) => {
     if (typeof window === "undefined") return;
 
-    // Force light mode permanently for the marketplace pivot
-    setTheme("light");
-    localStorage.setItem("app-theme", "light");
+    // Force dark mode permanently for the marketplace pivot
+    setTheme("dark");
+    localStorage.setItem("app-theme", "dark");
 
-    document.documentElement.classList.remove("dark");
-    document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.classList.add("dark");
+    document.documentElement.setAttribute("data-theme", "dark");
   }, []);
 
   useEffect(() => {
-    applyTheme("light"); // Force light on mount
+    applyTheme("dark"); // Force dark on mount
 
-    // Theme is locked to light mode
+    // Theme is locked to dark mode
     return () => {};
   }, []);
 

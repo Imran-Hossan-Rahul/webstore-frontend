@@ -37,7 +37,7 @@ export default function BasicsSection({
           value={devlogData.title}
           onChange={(e) => setDevlogData(prev => ({ ...prev, title: e.target.value }))}
           placeholder="Enter your devlog name..."
-          className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white focus:outline-none transition"
+          className="w-full px-4 py-3 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white focus:outline-none transition"
         />
       </div>
 
@@ -51,7 +51,7 @@ export default function BasicsSection({
           onChange={(e) => setDevlogData(prev => ({ ...prev, description: e.target.value }))}
           placeholder="Write your devlog story..."
           rows={6}
-          className="w-full px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-gray-500 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white focus:outline-none transition resize-none text-sm leading-relaxed"
+          className="w-full px-4 py-3 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-gray-500 focus:border-black dark:focus:border-white focus:ring-1 focus:ring-black dark:focus:ring-white focus:outline-none transition resize-none text-sm leading-relaxed"
         />
       </div>
 
@@ -75,13 +75,13 @@ export default function BasicsSection({
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addTag()}
               placeholder="Add tag..."
-              className="flex-1 px-4 py-2 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm"
+              className="flex-1 px-4 py-2 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm"
             />
             <button onClick={addTag} className="btn-primary px-4 py-2 rounded-lg text-xs font-bold">Add</button>
           </div>
           <div className="flex flex-wrap gap-2 mt-2">
             {devlogData.tags.map(tag => (
-              <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-[#171717] border border-slate-200 dark:border-[#262626] rounded-full text-[10px] font-medium flex items-center gap-1">
+              <span key={tag} className="px-2 py-1 bg-slate-100 dark:bg-[#171717] border border-brand-navy/[0.08] dark:border-[#262626] rounded-full text-[10px] font-medium flex items-center gap-1">
                 {tag}
                 <button onClick={() => removeTag(tag)}><X size={14} strokeWidth={1.5} /></button>
               </span>
@@ -100,13 +100,13 @@ export default function BasicsSection({
             value={userSearchTerm}
             onChange={(e) => setUserSearchTerm(e.target.value)}
             placeholder="Search @username..."
-            className="w-full pl-9 pr-10 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm"
+            className="w-full pl-9 pr-10 py-2 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:border-black dark:focus:border-white focus:outline-none text-sm"
           />
           {isSearchingUsers && <AppleSpinner size={16} strokeWidth={1.5} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-slate-400" />}
         </div>
         
         {userSearchResults.length > 0 && (
-          <div className="absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#0A0A0A] border border-slate-200 dark:border-[#262626] rounded-lg shadow-sm z-50 max-h-48 overflow-y-auto">
+          <div className="absolute top-full left-0 w-full mt-1 bg-brand-surface dark:bg-[#0A0A0A] border border-brand-navy/[0.08] dark:border-[#262626] rounded-lg shadow-sm z-50 max-h-48 overflow-y-auto">
             {userSearchResults.map(u => (
               <button key={u._id} onClick={() => handleSelectCollaborator(u)} className="w-full text-left px-4 py-2 hover:bg-brand-cloud dark:hover:bg-slate-900 text-sm flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-700" />

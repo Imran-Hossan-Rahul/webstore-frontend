@@ -41,14 +41,14 @@ export function EmptyState({
           icon: <SearchX strokeWidth={1.5} className="w-8 h-8 text-slate-400" />,
           title: "No results found",
           description: "We couldn't find anything matching your search. Try different keywords or broader terms.",
-          bgIcon: "bg-slate-100 dark:bg-white/5"
+          bgIcon: "bg-slate-100 dark:bg-brand-surface/5"
         };
       default:
         return {
           icon: <Layers strokeWidth={1.5} className="w-8 h-8 text-slate-400" />,
           title: "Nothing to see here",
           description: "There is no content available at the moment.",
-          bgIcon: "bg-slate-100 dark:bg-white/5"
+          bgIcon: "bg-slate-100 dark:bg-brand-surface/5"
         };
     }
   };
@@ -61,8 +61,8 @@ export function EmptyState({
   const displayActionHref = actionHref || defaults.actionHref;
 
   return (
-    <div className="text-center py-16 px-6 flex flex-col items-center justify-center border border-slate-200 dark:border-white/10 rounded-[4px] mt-4 bg-brand-cloud dark:bg-[#0D1117] animate-in fade-in duration-500">
-       <div className={`w-12 h-12 ${defaults.bgIcon} rounded-[4px] flex items-center justify-center mb-5 border border-slate-200 dark:border-white/10`}>
+    <div className="text-center py-16 px-6 flex flex-col items-center justify-center border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] mt-4 bg-brand-cloud dark:bg-brand-surface animate-in fade-in duration-500">
+       <div className={`w-12 h-12 ${defaults.bgIcon} rounded-[4px] flex items-center justify-center mb-5 border border-brand-navy/[0.08] dark:border-white/10`}>
            <div className="scale-75 flex items-center justify-center">
              {IconEl}
            </div>

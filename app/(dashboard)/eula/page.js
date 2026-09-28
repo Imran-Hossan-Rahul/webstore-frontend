@@ -19,7 +19,7 @@ export default function EULAPage() {
       lastUpdated="July 2026"
       sidebarLinks={sidebarLinks}
     >
-      <div className="bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
+      <div className="bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
         <h3 className="text-[18px] font-display font-medium text-brand-navy dark:text-white mt-0 mb-3">Introduction</h3>
         <p className="m-0">
           This End User License Agreement (EULA) is a legal agreement between you (the "Licensee") and Codalina (the "Licensor") governing the use of digital products (software, templates, UI kits, source code, scripts) purchased from our marketplace. By downloading and using the product, you agree to these terms.

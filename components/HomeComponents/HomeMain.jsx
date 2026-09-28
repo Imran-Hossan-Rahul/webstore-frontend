@@ -125,7 +125,7 @@ export default function HomeMain({ initialCategory = "All" }) {
 
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white">
+    <div className="min-h-screen text-black dark:text-white bg-brand-main">
       {/* 1. Navbar */}
       {/* 1. Navbar */}
       <Navbar 
@@ -152,7 +152,7 @@ export default function HomeMain({ initialCategory = "All" }) {
              {/* Content Grid */}
              <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                  {loading ? (
-                    <div className="col-span-full h-96 flex items-center justify-center text-slate-500">
+                    <div className="col-span-full h-96 flex items-center justify-center text-slate-500 dark:text-slate-400">
                         Loading content...
                     </div>
                  ) : filteredItems.length > 0 ? (
@@ -164,7 +164,7 @@ export default function HomeMain({ initialCategory = "All" }) {
                         />
                     ))
                  ) : (
-                    <div className="col-span-full h-96 flex flex-col items-center justify-center text-slate-500">
+                    <div className="col-span-full h-96 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
                         <p className="text-lg font-medium">No content found</p>
                         <p className="text-sm">Try changing the category or search query.</p>
                     </div>

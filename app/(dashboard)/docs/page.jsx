@@ -61,14 +61,14 @@ export default function DocsPage() {
         <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
           Codalina Docs
         </h1>
-        <p className="text-[17px] font-sans text-slate-500 max-w-[640px] leading-relaxed mb-8">
+        <p className="text-[17px] font-sans text-slate-500 dark:text-slate-400 max-w-[640px] leading-relaxed mb-8">
           Explore technical guides, API references, and architecture overviews for Codalina products and platforms.
         </p>
         <div className="relative max-w-[500px]">
           <input 
             type="text" 
             placeholder="Search documentation..."
-            className="w-full h-12 pl-12 pr-4 rounded-[4px] border border-slate-300 dark:border-white/20 bg-white dark:bg-[#161B22] text-[15px] font-sans text-brand-navy dark:text-white focus:outline-none focus:border-brand-blue"
+            className="w-full h-12 pl-12 pr-4 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/20 bg-brand-surface dark:bg-brand-surface text-[15px] font-sans text-brand-navy dark:text-white focus:outline-none focus:border-brand-blue"
           />
           <svg className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -78,14 +78,14 @@ export default function DocsPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {categories.map((cat, idx) => (
-          <div key={idx} className="bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-8 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors">
-            <div className="w-10 h-10 rounded-[4px] bg-white dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 flex items-center justify-center text-brand-blue mb-6">
+          <div key={idx} className="bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-8 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors">
+            <div className="w-10 h-10 rounded-[4px] bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-brand-blue mb-6">
               <cat.icon size={18} />
             </div>
             <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-2">
               {cat.title}
             </h3>
-            <p className="text-[14px] font-sans text-slate-500 leading-relaxed mb-6">
+            <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
               {cat.description}
             </p>
             <ul className="space-y-3">

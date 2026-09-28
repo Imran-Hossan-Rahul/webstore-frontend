@@ -8,7 +8,7 @@ export const PageHeader = ({ title, description, actions, className = '', ...pro
           {title}
         </h1>
         {description && (
-          <p className="text-[14px] font-sans text-slate-500 mt-1">
+          <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 mt-1">
             {description}
           </p>
         )}

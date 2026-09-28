@@ -59,8 +59,8 @@ export default function WorkspaceSidebar() {
   if (loading) {
     return (
       <aside className="space-y-6 pb-20 animate-pulse">
-        <div className="bg-slate-100 dark:bg-white/5 rounded-2xl h-40"></div>
-        <div className="bg-slate-100 dark:bg-white/5 rounded-2xl h-40"></div>
+        <div className="bg-slate-100 dark:bg-brand-surface/5 rounded-2xl h-40"></div>
+        <div className="bg-slate-100 dark:bg-brand-surface/5 rounded-2xl h-40"></div>
       </aside>
     );
   }
@@ -68,7 +68,7 @@ export default function WorkspaceSidebar() {
   return (
     <aside className="space-y-6 pb-20">
       {/* 1. Escrow Overview */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
         <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
           <Briefcase size={12} className="text-brand-blue" /> Escrow Overview
         </h4>
@@ -81,7 +81,7 @@ export default function WorkspaceSidebar() {
             </p>
           </div>
           
-          <div className="h-px bg-slate-100 dark:bg-white/5 w-full my-4" />
+          <div className="h-px bg-slate-100 dark:bg-brand-surface/5 w-full my-4" />
           
           <div className="flex justify-between items-center text-[10px]">
              <span className="text-slate-400 font-bold uppercase tracking-tighter">Amount Released</span>
@@ -94,7 +94,7 @@ export default function WorkspaceSidebar() {
 
       {/* 2. Upcoming Milestones */}
       {upcomingMilestones.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+        <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
              <Clock size={12} className="text-brand-teal" /> Upcoming Milestones
            </h4>
@@ -120,7 +120,7 @@ export default function WorkspaceSidebar() {
       )}
 
       {/* 3. Action Items */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl p-6 shadow-sm">
          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 dark:border-white/5 pb-3 mb-5 flex items-center gap-2">
            <CheckCircle size={12} className="text-rose-500" /> Pending Actions
          </h4>
@@ -130,7 +130,7 @@ export default function WorkspaceSidebar() {
                <span className="text-[11px] font-bold uppercase tracking-wider">Sign Agreements ({pendingSignatures})</span>
                <ArrowRight size={14} />
             </button>
-            <button onClick={() => router.push('/workspace')} className="w-full flex justify-between items-center p-3 bg-brand-cloud dark:bg-white/5 text-brand-slate dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-white/10 transition-colors border border-slate-100 dark:border-white/10">
+            <button onClick={() => router.push('/workspace')} className="w-full flex justify-between items-center p-3 bg-brand-cloud dark:bg-brand-surface/5 text-brand-slate dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 transition-colors border border-slate-100 dark:border-white/10">
                <span className="text-[11px] font-bold uppercase tracking-wider">Fund Milestones ({pendingFunding})</span>
                <ArrowRight size={14} />
             </button>

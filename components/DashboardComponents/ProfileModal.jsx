@@ -141,12 +141,12 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-        <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+        <div className="bg-brand-surface dark:bg-slate-900 rounded-2xl w-full max-w-lg shadow-sm relative overflow-hidden animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
           
           {/* Close Button */}
           <button 
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-brand-slate dark:text-slate-300 z-20 transition-colors"
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-100 dark:bg-brand-surface hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-slate-700 text-brand-slate dark:text-slate-300 z-20 transition-colors"
           >
               <X size={20} />
           </button>
@@ -154,11 +154,11 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
           {/* Cover Picture */}
           <div 
             onClick={() => openImageUpload("cover")}
-            className="h-32 bg-slate-200 dark:bg-slate-800 w-full relative cursor-pointer group"
+            className="h-32 bg-slate-200 dark:bg-brand-surface w-full relative cursor-pointer group"
             style={displayCoverPicture ? { backgroundImage: `url(${displayCoverPicture})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
           >
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2">
+              <div className="bg-brand-surface/20 backdrop-blur-sm px-4 py-2 rounded-full flex items-center gap-2">
                 <Camera size={18} className="text-white" />
                 <span className="text-white text-sm font-medium">Change Cover</span>
               </div>
@@ -170,7 +170,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
               <div className="relative inline-block">
                   <div 
                     onClick={() => openImageUpload("profile")}
-                    className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 overflow-hidden bg-slate-200 dark:bg-slate-800 shadow-lg cursor-pointer group relative"
+                    className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 overflow-hidden bg-slate-200 dark:bg-brand-surface shadow-sm cursor-pointer group relative"
                   >
                       {displayProfilePicture ? (
                           <img src={getOptimizedUrl(displayProfilePicture)} alt={displayProfile?.displayName || user?.name} className="w-full h-full object-cover" />
@@ -211,7 +211,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                           <div className="mt-4">
                             <button
                               onClick={goToCraftsmanDashboard}
-                              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2"
+                              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition shadow-sm shadow-orange-500/20 flex items-center justify-center gap-2"
                             >
                               <User size={18} />
                               Go to Craftsman Dashboard
@@ -219,7 +219,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                             </button>
                           </div>
                         ) : (
-                          <div className="mt-4 p-4 bg-brand-cloud dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700">
+                          <div className="mt-4 p-4 bg-brand-surface dark:bg-brand-surface rounded-xl border border-slate-100 dark:border-slate-700">
                             <p className="text-sm text-brand-slate dark:text-slate-400 text-center mb-3">
                               Ready to share your work?
                             </p>
@@ -227,7 +227,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                 onClick={() => {
                                     setShowCraftsmanModal(true);
                                 }}
-                                className="w-full bg-black dark:bg-white text-white dark:text-black px-4 py-2.5 rounded-lg font-bold hover:opacity-80 transition flex items-center justify-center gap-2"
+                                className="w-full bg-black dark:bg-brand-surface text-white dark:text-black px-4 py-2.5 rounded-lg font-bold hover:opacity-80 transition flex items-center justify-center gap-2"
                             >
                                 <User size={16} />
                                 Start Crafting
@@ -241,7 +241,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                             <div className="flex items-center justify-between mb-2">
                                 <h3 className="font-semibold text-slate-900 dark:text-white">About</h3>
                                 {!isEditing && user?.hasCraftsmanAccount && (
-                                    <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
+                                    <button onClick={() => setIsEditing(true)} className="p-1.5 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-slate-900 rounded-full text-slate-500 dark:text-slate-400 transition-colors">
                                         <Edit2 size={14} />
                                     </button>
                                 )}
@@ -254,7 +254,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                       <textarea 
                                           value={editBio} 
                                           onChange={(e) => setEditBio(e.target.value)} 
-                                          className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm min-h-[100px]"
+                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm min-h-[100px]"
                                           placeholder="Write a bio..."
                                       />
                                     </div>
@@ -264,13 +264,13 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                           type="text"
                                           value={editSkills} 
                                           onChange={(e) => setEditSkills(e.target.value)} 
-                                          className="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm"
+                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm"
                                           placeholder="UI/UX, Web Dev, Design..."
                                       />
                                     </div>
                                     <div className="flex justify-end gap-2 mt-2">
-                                        <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Cancel</button>
-                                        <button onClick={handleSaveBio} className="px-4 py-2 text-sm font-medium bg-black dark:bg-white text-white dark:text-black rounded-lg hover:opacity-90">Save</button>
+                                        <button onClick={() => setIsEditing(false)} className="px-4 py-2 text-sm font-medium text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white">Cancel</button>
+                                        <button onClick={handleSaveBio} className="px-4 py-2 text-sm font-medium bg-black dark:bg-brand-surface text-white dark:text-black rounded-lg hover:opacity-90">Save</button>
                                     </div>
                                 </div>
                             ) : (
@@ -291,7 +291,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                                         </span>
                                     ))
                                 ) : (
-                                    <span className="text-slate-400 dark:text-slate-500 text-sm italic">No skills added</span>
+                                    <span className="text-slate-400 dark:text-slate-500 dark:text-slate-400 text-sm italic">No skills added</span>
                                 )}
                             </div>
                         </div>

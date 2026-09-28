@@ -53,7 +53,7 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur-2xl border border-apple-hairline shadow-[0_8px_30px_rgb(0,0,0,0.12)] pointer-events-auto animate-slide-up"
+            className="flex items-center gap-3 px-5 py-3 rounded-full bg-brand-surface/90 dark:bg-[#1d1d1f]/90 backdrop-blur-2xl border border-apple-hairline shadow-[0_8px_30px_rgb(0,0,0,0.12)] pointer-events-auto animate-slide-up"
             style={{ animation: "slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}
           >
             {icons[toast.type]}

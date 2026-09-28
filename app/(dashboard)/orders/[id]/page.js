@@ -136,7 +136,7 @@ export default function OrderDetailPage({ params }) {
 
   return (
     <PageContainer maxWidth="max-w-[1000px]">
-      <Card className="bg-white dark:bg-[#161B22] shadow-sm dark:shadow-none border-slate-200 dark:border-white/10 mb-8">
+      <Card className="bg-brand-surface dark:bg-brand-surface shadow-sm dark:shadow-none border-brand-navy/[0.08] dark:border-white/10 mb-8">
         <CardContent className="p-4 md:p-8">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-4 md:pb-6 mb-4 md:mb-6">
@@ -189,12 +189,12 @@ export default function OrderDetailPage({ params }) {
                   </span>
                 )}
               </div>
-              <p className="text-[13px] font-sans text-slate-500">
+              <p className="text-[13px] font-sans text-slate-500 dark:text-slate-400">
                 Placed on {placedDate}
               </p>
             </div>
             <div className="flex flex-col md:items-end">
-              <span className="font-mono text-[11px] font-medium tracking-widest uppercase text-slate-500 mb-1">
+              <span className="font-mono text-[11px] font-medium tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-1">
                 Total Amount
               </span>
               <div className="text-[24px] md:text-[28px] font-mono font-bold text-brand-navy dark:text-white leading-none">
@@ -235,7 +235,7 @@ export default function OrderDetailPage({ params }) {
             </div>
           )}
 
-          <div className="text-center text-[13px] font-sans text-slate-500 mb-12 flex flex-col items-center gap-1.5">
+          <div className="text-center text-[13px] font-sans text-slate-500 dark:text-slate-400 mb-12 flex flex-col items-center gap-1.5">
             <p>
               Status:{" "}
               <span className="font-mono font-medium tracking-widest uppercase text-[11px] text-brand-navy dark:text-white">
@@ -254,10 +254,10 @@ export default function OrderDetailPage({ params }) {
             return (
               <div
                 key={idx}
-                className="bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 border border-slate-200 dark:border-white/10 gap-4"
+                className="bg-brand-cloud dark:bg-brand-surface rounded-[4px] p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 border border-brand-navy/[0.08] dark:border-white/10 gap-4"
               >
                 <div className="flex items-center gap-4 flex-1 w-full">
-                  <div className="w-16 h-16 bg-white dark:bg-[#161B22] rounded-[4px] border border-slate-200 dark:border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-1.5">
+                  <div className="w-16 h-16 bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 overflow-hidden flex items-center justify-center shrink-0 p-1.5">
                     {photo ? (
                       <img
                         src={photo}
@@ -283,7 +283,7 @@ export default function OrderDetailPage({ params }) {
                       </h3>
                     </Link>
                     <div className="flex flex-wrap items-center gap-3 mt-2">
-                      <span className="text-[11px] font-mono font-medium text-brand-navy dark:text-white bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 px-2 py-0.5 rounded-[4px]">
+                      <span className="text-[11px] font-mono font-medium text-brand-navy dark:text-white bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 px-2 py-0.5 rounded-[4px]">
                         License: {item.product?.licenseType || "Personal"}
                       </span>
                       {item.license_key && (
@@ -304,9 +304,9 @@ export default function OrderDetailPage({ params }) {
                   </div>
                 </div>
 
-                <div className="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between border-t border-slate-200 dark:border-white/10 sm:border-t-0 pt-4 sm:pt-0">
+                <div className="w-full sm:w-auto flex flex-row sm:flex-col items-center sm:items-end justify-between border-t border-brand-navy/[0.08] dark:border-white/10 sm:border-t-0 pt-4 sm:pt-0">
                   <div className="flex flex-col items-start sm:items-end mb-0 sm:mb-3">
-                    <span className="font-mono text-[10px] font-medium tracking-widest uppercase text-slate-500 mb-1">
+                    <span className="font-mono text-[10px] font-medium tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-1">
                       Total Paid
                     </span>
                     <div className="text-[16px] font-mono font-bold text-brand-navy dark:text-white">
@@ -322,7 +322,7 @@ export default function OrderDetailPage({ params }) {
                             <span className="text-red-500 font-sans text-[11px] font-medium mb-1">Link Expired</span>
                             <button
                               onClick={() => alert("Please contact support to request a new download link.")}
-                              className="bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-200 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-brand-navy dark:text-white px-4 py-1.5 rounded-[4px] text-[12px] font-sans font-medium transition-colors"
+                              className="bg-brand-cloud dark:bg-brand-surface hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 text-brand-navy dark:text-white px-4 py-1.5 rounded-[4px] text-[12px] font-sans font-medium transition-colors"
                             >
                               Request New Link
                             </button>
@@ -338,13 +338,13 @@ export default function OrderDetailPage({ params }) {
                             >
                               Download Asset
                             </a>
-                            <span className="text-slate-500 font-mono text-[10px] mt-1.5 tracking-widest uppercase">
+                            <span className="text-slate-500 dark:text-slate-400 font-mono text-[10px] mt-1.5 tracking-widest uppercase">
                               Expires in {Math.ceil((new Date(item.download_expires_at) - new Date()) / (1000 * 60 * 60 * 24))} days
                             </span>
                           </div>
                         )
                       ) : (
-                        <span className="text-slate-500 font-sans text-[12px]">Processing...</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-sans text-[12px]">Processing...</span>
                       )}
                     </div>
                   )}
@@ -357,9 +357,9 @@ export default function OrderDetailPage({ params }) {
 
           {/* Bottom Section */}
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-8">
-            <div className="flex-1 bg-white dark:bg-[#161B22] rounded-[4px] p-5 md:p-6 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
+            <div className="flex-1 bg-brand-surface dark:bg-brand-surface rounded-[4px] p-5 md:p-6 border border-brand-navy/[0.08] dark:border-white/10 shadow-sm dark:shadow-none">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 text-[12px]">
+                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400 text-[12px]">
                   Customer Details
                 </h3>
                 <span className="font-mono text-[10px] font-medium tracking-widest uppercase bg-brand-sky text-brand-blue px-2 py-0.5 rounded-[4px]">
@@ -381,30 +381,30 @@ export default function OrderDetailPage({ params }) {
               </div>
             </div>
 
-            <div className="w-full md:w-[380px] bg-white dark:bg-[#161B22] rounded-[4px] p-5 md:p-6 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-none">
+            <div className="w-full md:w-[380px] bg-brand-surface dark:bg-brand-surface rounded-[4px] p-5 md:p-6 border border-brand-navy/[0.08] dark:border-white/10 shadow-sm dark:shadow-none">
               <div className="flex justify-between items-center mb-6 border-b border-slate-100 dark:border-white/5 pb-4">
-                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 text-[12px]">
+                <h3 className="font-display font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400 text-[12px]">
                   Order Summary
                 </h3>
-                <span className="font-mono text-[10px] font-medium tracking-widest uppercase bg-slate-100 dark:bg-white/5 text-slate-500 px-2 py-0.5 rounded-[4px]">
+                <span className="font-mono text-[10px] font-medium tracking-widest uppercase bg-slate-100 dark:bg-brand-surface/5 text-slate-500 dark:text-slate-400 px-2 py-0.5 rounded-[4px]">
                   Online Payment
                 </span>
               </div>
 
               <div className="space-y-3.5 mt-2">
-                <div className="flex justify-between text-[14px] font-sans text-slate-500">
+                <div className="flex justify-between text-[14px] font-sans text-slate-500 dark:text-slate-400">
                   <span>Items Total</span>
                   <span className="font-mono font-medium text-brand-navy dark:text-white">BDT {formatPrice(itemsPrice)}</span>
                 </div>
 
-                <div className="border-t border-dashed border-slate-200 dark:border-white/10 my-2"></div>
+                <div className="border-t border-dashed border-brand-navy/[0.08] dark:border-white/10 my-2"></div>
 
-                <div className="flex justify-between font-sans text-[14px] text-slate-500">
+                <div className="flex justify-between font-sans text-[14px] text-slate-500 dark:text-slate-400">
                   <span>Subtotal</span>
                   <span className="font-mono font-medium text-brand-navy dark:text-white">BDT {formatPrice(subtotal)}</span>
                 </div>
 
-                <div className="border-t border-solid border-slate-200 dark:border-white/10 my-3"></div>
+                <div className="border-t border-solid border-brand-navy/[0.08] dark:border-white/10 my-3"></div>
 
                 <div className="flex justify-between items-center mt-4 pt-4">
                   <span className="font-sans font-medium text-brand-navy dark:text-white text-[16px]">

@@ -22,7 +22,7 @@ export default function BetaBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-brand-cloud dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-brand-cloud dark:bg-slate-900 border-b border-brand-navy/[0.08] dark:border-white/10 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       {/* Background decoration */}
       <div
         className="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl"

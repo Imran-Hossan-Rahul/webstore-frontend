@@ -35,7 +35,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange, className = 
             className={`w-8 h-8 flex items-center justify-center rounded-[4px] text-[13px] font-sans font-medium transition-colors ${
               p === currentPage
                 ? 'bg-brand-blue text-white'
-                : 'bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 text-brand-navy dark:text-white hover:border-brand-blue hover:text-brand-blue'
+                : 'bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 text-brand-navy dark:text-white hover:border-brand-blue hover:text-brand-blue'
             }`}
           >
             {p}

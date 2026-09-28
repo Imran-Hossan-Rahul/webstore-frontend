@@ -15,7 +15,7 @@ export const SearchInput = React.forwardRef(({
       <input 
         ref={ref}
         value={value}
-        className={`w-full bg-white dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] h-10 pl-10 pr-10 text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${className}`}
+        className={`w-full bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] h-10 pl-10 pr-10 text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${className}`}
         {...props}
       />
       {value && onClear && (

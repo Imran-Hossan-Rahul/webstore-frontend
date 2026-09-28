@@ -76,7 +76,7 @@ export default function ExploreFeed() {
         
         {/* Tabs Filter Bar (Stays visible & interactive even during load) */}
         <div className="mb-8">
-            <div className="flex items-center gap-8 border-b border-slate-200 dark:border-slate-800">
+            <div className="flex items-center gap-8 border-b border-brand-navy/[0.08] dark:border-slate-800">
                 {tabs.map(tab => {
                     const isActive = activeTab === tab.id;
                     return (
@@ -87,12 +87,12 @@ export default function ExploreFeed() {
                           className={`pb-3 text-sm font-medium transition-all duration-200 relative ${
                               isActive 
                               ? "text-slate-900 dark:text-white" 
-                              : "text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:hover:text-slate-300 disabled:opacity-50"
+                              : "text-slate-500 dark:text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-300 disabled:opacity-50"
                           }`}
                         >
                           {tab.label}
                           {isActive && (
-                              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-white" />
+                              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-slate-900 dark:bg-brand-surface" />
                           )}
                         </button>
                     );
@@ -116,7 +116,7 @@ export default function ExploreFeed() {
             </div>
             
             {filteredItems.length === 0 && (
-                 <div className="text-center py-20 text-slate-400 dark:text-brand-slate">
+                 <div className="text-center py-20 text-slate-400 dark:text-brand-slate dark:text-slate-300">
                      No items found.
                  </div>
             )}

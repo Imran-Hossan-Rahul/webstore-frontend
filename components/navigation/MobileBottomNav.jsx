@@ -116,14 +116,14 @@ export default function MobileBottomNav() {
 
         {/* Background */}
         <div
-          className="absolute inset-0 bg-white/40 dark:bg-[#0a0a0a]/60 backdrop-blur-xl border-t border-white/60 dark:border-white/10 transform-gpu"
+          className="absolute inset-0 bg-brand-surface/40 dark:bg-brand-dark/60 backdrop-blur-xl border-t border-white/60 dark:border-white/10 transform-gpu"
           style={{ clipPath: 'url(#smooth-notch)', WebkitClipPath: 'url(#smooth-notch)' }}
         />
 
         {/* Floating Active Circle */}
         {activeIndex !== -1 && (
           <motion.div
-            className="absolute -top-7 w-[56px] h-[56px] bg-slate-900 dark:bg-slate-100 rounded-full shadow-lg pointer-events-none z-20 transform-gpu"
+            className="absolute -top-7 w-[56px] h-[56px] bg-slate-900 dark:bg-slate-100 dark:bg-brand-surface/[0.05] rounded-full shadow-sm pointer-events-none z-20 transform-gpu"
             style={{ x: circleLeft }}
           />
         )}
@@ -146,7 +146,7 @@ export default function MobileBottomNav() {
                   transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.8 }}
                   className={`relative flex items-center justify-center transition-colors duration-300 ${
                     isActive
-                      ? "text-white dark:text-slate-900"
+                      ? "text-white dark:text-slate-900 dark:text-white"
                       : "text-black dark:text-white"
                   }`}
                 >

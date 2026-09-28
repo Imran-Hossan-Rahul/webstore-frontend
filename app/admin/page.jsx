@@ -44,7 +44,7 @@ export default function AdminPage() {
 
   if (loading || !isAuthorized) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-[#161B22]">
+      <div className="min-h-screen flex flex-col items-center justify-center ] bg-brand-main">
         <AppleSpinner className="animate-spin text-brand-blue mb-4" />
         <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Verifying Admin Privileges</p>
       </div>
@@ -55,7 +55,7 @@ export default function AdminPage() {
     <Background>
       <TrackerPatron />
       
-      <div className="min-h-screen overflow-hidden">
+      <div className="min-h-screen overflow-hidden bg-brand-main">
         <UnifiedAdminDashboard />
       </div>
     </Background>

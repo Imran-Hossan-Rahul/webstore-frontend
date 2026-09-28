@@ -68,19 +68,19 @@ export default function PopularProductsPage() {
     <div className="p-4 md:p-8 max-w-7xl mx-auto text-brand-navy dark:text-white">
       <div className="mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-bold mb-1 text-purple-400">Popular Products</h1>
-        <p className="text-slate-500 text-sm">Toggle products to show them in the Popular section on the homepage.</p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">Toggle products to show them in the Popular section on the homepage.</p>
       </div>
 
-      <div className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-4 mb-6">
+      <div className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-4 mb-6">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400" size={18} />
           <input 
             type="text" 
             placeholder="Search by Title or SKU..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearch}
-            className="w-full bg-white dark:bg-[#0D1117] border border-slate-200 dark:border-white/10 rounded-[4px] pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-blue-500 transition"
+            className="w-full bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-blue-500 transition"
           />
         </div>
       </div>
@@ -88,36 +88,36 @@ export default function PopularProductsPage() {
       {/* Products Grid — 2 columns */}
       <div className="hidden md:grid grid-cols-2 gap-3">
         {loading && page === 1 ? (
-          <div className="col-span-2 py-16 flex flex-col items-center text-slate-500">
+          <div className="col-span-2 py-16 flex flex-col items-center text-slate-500 dark:text-slate-400">
             <AppleSpinner className="animate-spin mb-3" />
             <span className="text-sm">Loading products...</span>
           </div>
         ) : products.length === 0 ? (
-          <div className="col-span-2 py-16 text-center text-slate-500 text-sm">No products found.</div>
+          <div className="col-span-2 py-16 text-center text-slate-500 dark:text-slate-400 text-sm">No products found.</div>
         ) : products.map(p => {
           let image = null;
           try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
           return (
-            <div key={p.id} className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:bg-white/5 transition group">
+            <div key={p.id} className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:bg-brand-surface/5 transition group">
               <div className="shrink-0">
                 {image ? (
-                  <img src={getOptimizedUrl(image)} alt="Product" className="w-12 h-12 object-cover rounded-[4px] bg-brand-cloud dark:bg-[#0D1117]" />
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-12 h-12 object-cover rounded-[4px] bg-brand-cloud dark:bg-brand-surface" />
                 ) : (
-                  <div className="w-12 h-12 bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] flex items-center justify-center text-brand-slate"><ImageIcon size={16} /></div>
+                  <div className="w-12 h-12 bg-brand-cloud dark:bg-brand-surface rounded-[4px] flex items-center justify-center text-brand-slate dark:text-slate-300"><ImageIcon size={16} /></div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-[13px] font-semibold text-slate-100 truncate leading-tight">{p.title}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className="text-[11px] text-slate-500">{p.sku || 'No SKU'}</span>
-                  <span className="text-brand-slate text-[11px]">·</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{p.sku || 'No SKU'}</span>
+                  <span className="text-brand-slate dark:text-slate-300 text-[11px]">·</span>
                   <span className="text-[12px] font-bold text-green-400">BDT {p.selling_price}</span>
                 </div>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" checked={!!p.isPopular} onChange={() => togglePopular(p)} />
-                  <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-surface after:border-brand-navy/[0.08] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                 </label>
               </div>
             </div>
@@ -128,36 +128,36 @@ export default function PopularProductsPage() {
       {/* Mobile Card List */}
       <div className="md:hidden flex flex-col gap-3">
         {loading && page === 1 ? (
-          <div className="py-12 flex flex-col items-center text-slate-500">
+          <div className="py-12 flex flex-col items-center text-slate-500 dark:text-slate-400">
             <AppleSpinner className="animate-spin mb-2" />
             <span className="text-sm">Loading...</span>
           </div>
         ) : products.length === 0 ? (
-          <div className="py-12 text-center text-slate-500 text-sm">No products found.</div>
+          <div className="py-12 text-center text-slate-500 dark:text-slate-400 text-sm">No products found.</div>
         ) : products.map(p => {
           let image = null;
           try { const a = JSON.parse(p.photos); image = a[0]; } catch(e) {}
           return (
-            <div key={p.id} className="bg-white dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-4 flex items-center gap-4">
+            <div key={p.id} className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-4 flex items-center gap-4">
               <div className="shrink-0">
                 {image ? (
-                  <img src={getOptimizedUrl(image)} alt="Product" className="w-14 h-14 object-cover rounded-[4px] bg-brand-cloud dark:bg-[#0D1117] p-1" />
+                  <img src={getOptimizedUrl(image)} alt="Product" className="w-14 h-14 object-cover rounded-[4px] bg-brand-cloud dark:bg-brand-surface p-1" />
                 ) : (
-                  <div className="w-14 h-14 bg-brand-cloud dark:bg-[#0D1117] rounded-[4px] flex items-center justify-center text-slate-500"><ImageIcon size={20} /></div>
+                  <div className="w-14 h-14 bg-brand-cloud dark:bg-brand-surface rounded-[4px] flex items-center justify-center text-slate-500 dark:text-slate-400"><ImageIcon size={20} /></div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-slate-100 text-sm truncate">{p.title}</p>
                 <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                  <span className="text-xs text-slate-500">{p.sku || 'No SKU'}</span>
-                  <span className="text-brand-slate text-xs">·</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">{p.sku || 'No SKU'}</span>
+                  <span className="text-brand-slate dark:text-slate-300 text-xs">·</span>
                   <span className="text-sm font-bold text-green-400">BDT {p.selling_price}</span>
                 </div>
               </div>
               <div className="flex shrink-0">
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" checked={!!p.isPopular} onChange={() => togglePopular(p)} />
-                  <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  <div className="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-surface after:border-brand-navy/[0.08] after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                 </label>
               </div>
             </div>
@@ -173,7 +173,7 @@ export default function PopularProductsPage() {
               setPage(nextPage);
               fetchProducts(nextPage);
             }}
-            className="bg-brand-cloud dark:bg-[#0D1117] hover:bg-slate-700 text-white px-6 py-2 rounded-[4px] text-sm transition"
+            className="bg-brand-cloud dark:bg-brand-surface hover:bg-slate-700 text-white px-6 py-2 rounded-[4px] text-sm transition"
           >
             Load More
           </button>

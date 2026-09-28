@@ -1,7 +1,7 @@
 import React from 'react';
 
 export const Table = ({ className = '', children, ...props }) => (
-  <div className="w-full overflow-x-auto rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22]">
+  <div className="w-full overflow-x-auto rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface">
     <table className={`w-full text-left border-collapse ${className}`} {...props}>
       {children}
     </table>
@@ -9,19 +9,19 @@ export const Table = ({ className = '', children, ...props }) => (
 );
 
 export const TableHeader = ({ className = '', children, ...props }) => (
-  <thead className={`bg-slate-50 dark:bg-[#0D1117] border-b border-slate-200 dark:border-white/10 ${className}`} {...props}>
+  <thead className={`bg-slate-50 dark:bg-brand-surface border-b border-brand-navy/[0.08] dark:border-white/10 ${className}`} {...props}>
     {children}
   </thead>
 );
 
 export const TableRow = ({ className = '', children, ...props }) => (
-  <tr className={`border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors last:border-0 ${className}`} {...props}>
+  <tr className={`border-b border-slate-100 dark:border-white/5 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5 transition-colors last:border-0 ${className}`} {...props}>
     {children}
   </tr>
 );
 
 export const TableHead = ({ className = '', children, ...props }) => (
-  <th className={`px-6 py-4 text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest ${className}`} {...props}>
+  <th className={`px-6 py-4 text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest ${className}`} {...props}>
     {children}
   </th>
 );

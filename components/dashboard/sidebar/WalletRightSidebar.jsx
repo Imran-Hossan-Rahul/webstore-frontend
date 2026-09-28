@@ -26,9 +26,9 @@ const WalletRightSidebar = () => {
 
       {/* 2. Earning Sections */}
       {earningRules.map((section, idx) => (
-        <div key={idx} className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-100 dark:border-white/10 rounded-3xl p-6 shadow-sm shrink-0">
+        <div key={idx} className="bg-brand-surface/80 dark:bg-slate-900/40 backdrop-blur-md border border-slate-100 dark:border-white/10 rounded-3xl p-6 shadow-sm shrink-0">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-brand-cloud dark:bg-white/5 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center">
               {section.icon}
             </div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white tracking-tight">{section.title}</h3>
@@ -36,16 +36,16 @@ const WalletRightSidebar = () => {
 
           <div className="space-y-1">
             {section.items.map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-brand-cloud dark:hover:bg-white/5 transition-all group">
+              <div key={i} className="flex items-center justify-between p-3 rounded-2xl hover:bg-brand-cloud dark:hover:bg-brand-surface/5 transition-all group">
                 <div className="flex items-center gap-3">
                   <div className="text-slate-400 group-hover:text-brand-blue transition-colors">
                     {item.icon}
                   </div>
-                  <span className="text-[12px] font-bold text-brand-slate dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+                  <span className="text-[12px] font-bold text-brand-slate dark:text-slate-400 group-hover:text-slate-900 dark:text-white dark:group-hover:text-white transition-colors">
                     {item.label}
                   </span>
                 </div>
-                <span className="text-[10px] font-black tabular-nums bg-brand-cloud dark:bg-white/5 px-2 py-1 rounded-lg text-slate-400 group-hover:text-brand-blue dark:group-hover:text-indigo-400 transition-colors">
+                <span className="text-[10px] font-black tabular-nums bg-brand-cloud dark:bg-brand-surface/5 px-2 py-1 rounded-lg text-slate-400 group-hover:text-brand-blue dark:group-hover:text-indigo-400 transition-colors">
                   +{item.reward}
                 </span>
               </div>
@@ -55,18 +55,18 @@ const WalletRightSidebar = () => {
       ))}
 
       {/* 3. Authority CTA */}
-      <div className="bg-slate-900 dark:bg-white rounded-3xl p-6 text-white dark:text-slate-900 shadow-xl shadow-slate-900/10 dark:shadow-slate-200/50 relative overflow-hidden group shrink-0">
-         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-white/10 dark:bg-slate-900/5 rounded-full blur-2xl group-hover:opacity-80 transition-opacity duration-700" />
+      <div className="bg-slate-900 dark:bg-brand-surface rounded-3xl p-6 text-white dark:text-slate-900 dark:text-white shadow-sm shadow-slate-900/10 dark:shadow-slate-200/50 relative overflow-hidden group shrink-0">
+         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-surface/10 dark:bg-slate-900/5 rounded-full blur-2xl group-hover:opacity-80 transition-opacity duration-700" />
          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 rounded-full bg-white/10 dark:bg-slate-100 flex items-center justify-center shrink-0 text-white dark:text-slate-900">
+            <div className="w-8 h-8 rounded-full bg-brand-surface/10 dark:bg-slate-100 dark:bg-brand-surface/[0.05] flex items-center justify-center shrink-0 text-white dark:text-slate-900 dark:text-white">
                <Award size={16} />
             </div>
             <h3 className="text-xs font-bold uppercase tracking-widest">Authority Bonus</h3>
          </div>
-         <p className="text-[11px] text-slate-300 dark:text-brand-slate leading-relaxed font-medium relative z-10 mb-4">
+         <p className="text-[11px] text-slate-300 dark:text-brand-slate dark:text-slate-300 leading-relaxed font-medium relative z-10 mb-4">
             Higher authority levels unlock exclusive features, lower commission rates, and priority support.
          </p>
-         <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">
+         <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 dark:text-slate-400">
             <ShieldCheck size={10} /> Tier 1: Verified Contributor
          </div>
       </div>

@@ -46,14 +46,14 @@ export default function LegalPage() {
     <PageContainer maxWidth="max-w-[1200px]" className="py-16 md:py-24">
       
       {/* Hero Section */}
-      <div className="pb-12 border-b border-slate-200 dark:border-white/8 mb-16 text-center md:text-left">
+      <div className="pb-12 border-b border-brand-navy/[0.08] dark:border-white/8 mb-16 text-center md:text-left">
         <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-medium text-brand-blue mb-4">
           Legal Resources
         </p>
         <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
           Codalina Legal & Information
         </h1>
-        <p className="text-[17px] font-sans text-slate-500 max-w-[640px] leading-relaxed mx-auto md:mx-0">
+        <p className="text-[17px] font-sans text-slate-500 dark:text-slate-400 max-w-[640px] leading-relaxed mx-auto md:mx-0">
           Find legal information, data protection policies, and licensing resources for Codalina products and platforms.
         </p>
       </div>
@@ -61,7 +61,7 @@ export default function LegalPage() {
       {/* Content Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         {legalSections.map((section, idx) => (
-          <Card key={idx} className="bg-white dark:bg-[#161B22] border-slate-200 dark:border-white/10 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors shadow-sm dark:shadow-none h-full">
+          <Card key={idx} className="bg-brand-surface dark:bg-brand-surface border-brand-navy/[0.08] dark:border-white/10 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors shadow-sm dark:shadow-none h-full">
             <CardContent className="p-8 flex flex-col h-full">
               <div className="w-10 h-10 rounded-[4px] bg-brand-blue/10 flex items-center justify-center text-brand-blue mb-6">
                 <section.icon size={20} />
@@ -69,7 +69,7 @@ export default function LegalPage() {
               <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-3 leading-tight">
                 {section.title}
               </h3>
-              <p className="text-[14px] font-sans text-slate-500 leading-relaxed mb-8 flex-1">
+              <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed mb-8 flex-1">
                 {section.description}
               </p>
               <div className="flex flex-col items-start space-y-2 mt-auto">

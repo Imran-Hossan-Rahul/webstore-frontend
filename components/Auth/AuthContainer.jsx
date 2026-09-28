@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const AuthContainer = ({ children, title, subtitle, footer }) => {
   return (
-    <div className="min-h-screen bg-brand-cloud dark:bg-[#0D1117] flex flex-col items-center justify-center p-4 sm:p-6 font-sans relative">
+    <div className="min-h-screen ] flex flex-col items-center justify-center p-4 sm:p-6 font-sans relative bg-brand-main">
       {/* Subtle Technical Grid Background */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-20 dark:opacity-5 pointer-events-none"></div>
 
@@ -16,7 +16,7 @@ const AuthContainer = ({ children, title, subtitle, footer }) => {
         >
           {/* Codalina Logo Mark */}
           <div className="inline-flex items-center gap-3 mb-8">
-            <div className="flex items-center justify-center w-9 h-9 border border-brand-navy/15 dark:border-white/20 rounded-[4px] bg-brand-navy/5 dark:bg-white/5 relative">
+            <div className="flex items-center justify-center w-9 h-9 border border-brand-navy/15 dark:border-white/20 rounded-[4px] bg-brand-navy/5 dark:bg-brand-surface/5 relative">
               <div className="w-1.5 h-1.5 bg-brand-cyan absolute top-1 right-1 rounded-full shadow-[0_0_8px_#22C7E8]"></div>
               <span className="font-display font-semibold text-[16px] text-brand-navy dark:text-white">C</span>
             </div>
@@ -36,7 +36,7 @@ const AuthContainer = ({ children, title, subtitle, footer }) => {
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="bg-white dark:bg-[#161B22] rounded-[4px] p-8 sm:p-10 border border-slate-200 dark:border-white/10 shadow-sm"
+          className="bg-brand-surface dark:bg-brand-surface rounded-[4px] p-8 sm:p-10 border border-brand-navy/[0.08] dark:border-white/10 shadow-sm"
         >
           {children}
         </motion.div>

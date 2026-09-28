@@ -63,7 +63,7 @@ export default function FeaturedRow({ type, title }) {
         {/* Gap দেয়ার জন্য margin বা space-x-4 ব্যবহার করেছি */}
         <button
           onClick={goToAllArtifactsPage}
-          className="flex items-center text-brand-slate hover:text-slate-900 font-medium"
+          className="flex items-center text-brand-slate dark:text-slate-300 hover:text-slate-900 dark:text-white font-medium"
         >
           <span className="mt-1">{totalCount}</span>
           <svg
@@ -88,7 +88,7 @@ export default function FeaturedRow({ type, title }) {
         {canScrollLeft && (
           <button
             onClick={() => scrollRow(-1)}
-            className="absolute left-2 z-50 bg-white p-2 rounded-full shadow hover:opacity-80"
+            className="absolute left-2 z-50 bg-brand-surface p-2 rounded-full shadow hover:opacity-80"
           >
             {"<"}
           </button>
@@ -104,7 +104,7 @@ export default function FeaturedRow({ type, title }) {
         {canScrollRight && (
           <button
             onClick={() => scrollRow(1)}
-            className="absolute right-2 z-50 bg-white p-2 rounded-full shadow hover:opacity-80"
+            className="absolute right-2 z-50 bg-brand-surface p-2 rounded-full shadow hover:opacity-80"
           >
             {">"}
           </button>

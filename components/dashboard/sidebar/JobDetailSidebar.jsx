@@ -35,7 +35,7 @@ export default function JobDetailSidebar({ jobId }) {
   return (
     <aside className="space-y-6 pb-10">
       {/* Job Overview Card */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
+      <div className="bg-brand-surface dark:bg-slate-900 border border-slate-100 dark:border-white/5 rounded-3xl p-6 shadow-sm">
         <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">
           Job Overview
         </h3>
@@ -44,7 +44,7 @@ export default function JobDetailSidebar({ jobId }) {
           <div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Budget</p>
             <p className="text-sm font-bold text-slate-900 dark:text-white capitalize">
-              {job.budget?.type || "Fixed"} • {job.budget?.min}–{job.budget?.max} <span className="text-[10px] text-slate-500 uppercase tracking-tighter">TKNS</span>
+              {job.budget?.type || "Fixed"} • {job.budget?.min}–{job.budget?.max} <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-tighter">TKNS</span>
             </p>
           </div>
 
@@ -70,7 +70,7 @@ export default function JobDetailSidebar({ jobId }) {
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Required Skills</p>
             <div className="flex flex-wrap gap-2">
               {job.skills.map((skill, i) => (
-                <span key={i} className="px-3 py-1.5 bg-brand-cloud dark:bg-white/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-bold text-brand-slate dark:text-slate-400 hover:border-brand-blue transition-colors">
+                <span key={i} className="px-3 py-1.5 bg-brand-cloud dark:bg-brand-surface/5 border border-slate-100 dark:border-white/10 rounded-xl text-[11px] font-bold text-brand-slate dark:text-slate-400 hover:border-brand-blue transition-colors">
                   {skill}
                 </span>
               ))}
@@ -80,7 +80,7 @@ export default function JobDetailSidebar({ jobId }) {
       </div>
 
       {/* Pro Tip Card */}
-      <div className="bg-[#0f172a] rounded-[32px] p-8 text-white shadow-xl shadow-slate-900/10 relative overflow-hidden group">
+      <div className="bg-[#0f172a] rounded-[32px] p-8 text-white shadow-sm shadow-slate-900/10 relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-blue/20 transition-all duration-700" />
         <div className="relative z-10">
           <h3 className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function JobDetailSidebar({ jobId }) {
           <p className="text-xs font-medium text-slate-300 leading-relaxed mb-6">
             Don&apos;t just look at the rate! Review their portfolios and previous patron feedback to ensure the best quality for your devlog.
           </p>
-          <button className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all">
+          <button className="w-full py-4 bg-brand-surface/5 hover:bg-brand-surface/10 border border-white/10 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all">
             Edit Job Details
           </button>
         </div>

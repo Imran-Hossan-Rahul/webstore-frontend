@@ -56,7 +56,7 @@ const VerificationBanner = ({ user }) => {
               </button>
               <button 
                 onClick={() => setIsVisible(false)}
-                className="text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all"
               >
                 <X size={14} />
               </button>

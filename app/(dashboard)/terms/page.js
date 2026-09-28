@@ -19,7 +19,7 @@ export default function TermsPage() {
       lastUpdated="July 2026"
       sidebarLinks={sidebarLinks}
     >
-      <div className="bg-brand-cloud dark:bg-[#161B22] border border-slate-200 dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
+      <div className="bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-6 md:p-8 mb-12 shadow-sm dark:shadow-none">
         <p className="m-0">
           <strong>Welcome to Codalina.</strong> These Terms & Conditions ("Terms") govern your use of our website, platform, and services. By accessing or using Codalina ("we", "us", "our"), you agree to be bound by these Terms. If you do not agree, please do not use our services.
         </p>
@@ -139,17 +139,17 @@ export default function TermsPage() {
         If you have any questions about these Terms, wish to report a violation, or need legal clarification, please contact us through any of the following channels:
       </p>
       
-      <div className="flex flex-col sm:flex-row gap-8 not-prose mt-8 p-6 rounded-[4px] border border-slate-200 dark:border-white/10 bg-white dark:bg-[#161B22]">
+      <div className="flex flex-col sm:flex-row gap-8 not-prose mt-8 p-6 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface">
         <div>
-          <p className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest mb-1.5">Email</p>
+          <p className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Email</p>
           <a href="mailto:info@codalina.com" className="text-[14px] font-sans text-brand-blue hover:underline">info@codalina.com</a>
         </div>
         <div>
-          <p className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest mb-1.5">Phone</p>
+          <p className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Phone</p>
           <a href="tel:+8801951768360" className="text-[14px] font-sans text-brand-blue hover:underline">01951768360</a>
         </div>
         <div>
-          <p className="text-[11px] font-mono font-medium text-slate-500 uppercase tracking-widest mb-1.5">Registered In</p>
+          <p className="text-[11px] font-mono font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-1.5">Registered In</p>
           <p className="text-[14px] font-sans text-brand-navy dark:text-white">Dhaka, Bangladesh</p>
         </div>
       </div>
