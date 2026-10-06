@@ -83,31 +83,48 @@ export function generateInvoice(order) {
   if (hasPhases || (order.status && order.status !== 'Pending Verification')) {
     const currentPhaseIndex = phases.indexOf(order.projectPhase);
     const isDelivered = order.status === 'Delivered' || order.status === 'Active';
+    const isHalted = order.status === 'Suspended' || order.status === 'Cancelled' || order.status === 'Payment Failed';
     
     let phaseRows = phases.map((phase, idx) => {
       let phaseStatus = 'Pending';
       let color = '#6e6e73';
       let icon = '○';
+      let trackingText = 'Awaiting';
 
       if (isDelivered) {
         phaseStatus = 'Completed';
         color = '#10B981';
         icon = '●';
+        trackingText = 'Done';
       } else if (idx < currentPhaseIndex) {
         phaseStatus = 'Completed';
         color = '#10B981';
         icon = '●';
+        trackingText = 'Done';
       } else if (idx === currentPhaseIndex) {
-        phaseStatus = 'In Progress';
-        color = '#0071e3';
-        icon = '◐';
+        if (isHalted) {
+          phaseStatus = 'Suspended';
+          color = '#F59E0B';
+          icon = '⊗';
+          trackingText = 'Halted';
+        } else {
+          phaseStatus = 'In Progress';
+          color = '#0071e3';
+          icon = '◐';
+          trackingText = 'Current Phase';
+        }
+      } else if (isHalted && idx > currentPhaseIndex) {
+        phaseStatus = 'Aborted';
+        color = '#ef4444';
+        icon = '×';
+        trackingText = 'Cancelled';
       }
 
       return `
         <tr>
           <td style="font-weight: 500; color: #1d1d1f;"><span style="color: ${color}; margin-right: 6px; font-size: 14px;">${icon}</span> ${phase}</td>
           <td style="color: ${color}; font-weight: 500;">${phaseStatus}</td>
-          <td style="color: #6e6e73;">${phaseStatus === 'Completed' ? 'Done' : (phaseStatus === 'In Progress' ? 'Current Phase' : 'Awaiting')}</td>
+          <td style="color: #6e6e73;">${trackingText}</td>
         </tr>
       `;
     }).join('');
@@ -130,18 +147,26 @@ export function generateInvoice(order) {
       `;
     }
 
+    let statusColor = '#0071e3';
+    if (isDelivered) statusColor = '#10B981';
+    if (order.status === 'Suspended') statusColor = '#F59E0B';
+    if (order.status === 'Cancelled' || order.status === 'Payment Failed') statusColor = '#EF4444';
+
+    let phaseColor = isHalted ? '#F59E0B' : '#0071e3';
+    let phaseLabel = isHalted ? 'Halted At Phase' : 'Active Phase';
+
     phaseHtml = `
       <div class="divider"></div>
       <div class="section-header">Project Tracking & Status</div>
       <div style="display: flex; gap: 40px; margin-bottom: 16px;">
         <div>
           <div style="font-size: 10px; color: #6e6e73; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Current Order Status</div>
-          <div style="font-size: 13px; font-weight: 700; color: ${isDelivered ? '#10B981' : '#0071e3'}; text-transform: uppercase;">${order.status}</div>
+          <div style="font-size: 13px; font-weight: 700; color: ${statusColor}; text-transform: uppercase;">${order.status}</div>
         </div>
         ${hasPhases ? `
         <div>
-          <div style="font-size: 10px; color: #6e6e73; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Active Phase</div>
-          <div style="font-size: 13px; font-weight: 700; color: #0071e3; text-transform: uppercase;">${order.projectPhase}</div>
+          <div style="font-size: 10px; color: #6e6e73; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">${phaseLabel}</div>
+          <div style="font-size: 13px; font-weight: 700; color: ${phaseColor}; text-transform: uppercase;">${order.projectPhase}</div>
         </div>
         ` : ''}
       </div>
