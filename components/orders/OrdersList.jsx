@@ -313,6 +313,20 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
           </div>
         </div>
 
+                  {isCustomMode && (
+            <div className="flex gap-2 overflow-x-auto mt-6 pb-1 scrollbar-hide border-t border-brand-navy/5 pt-4">
+              {['All', 'Briefs', 'Strategy Calls', 'Partnerships'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => { setCustomFilter(tab); setPage(1); }}
+                  className={`px-4 py-1.5 rounded-full text-[13px] font-medium transition-colors whitespace-nowrap border ${customFilter === tab ? 'bg-brand-navy text-white border-brand-navy shadow-sm' : 'bg-white/60 text-slate-600 border-brand-navy/[0.08] hover:bg-slate-50'}`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+          )}
+
         {/* Guest Track Order UI */}
         {!user && (
           <div className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] p-6 mb-6 shadow-sm">
