@@ -120,6 +120,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [customFilter, setCustomFilter] = useState('All');
   const [sortBy, setSortBy] = useState('Newest');
   const [page, setPage] = useState(1);
   const [copiedId, setCopiedId] = useState(null);
@@ -209,15 +210,22 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
   };
 
   const filtered = orders.filter(o => {
-      if (isCustomMode) {
-        if (o.payment_method !== 'Custom Project' && o.source_channel !== 'Custom Brief') return false;
-      }
-    if (isProjectsMode) {
+    if (isCustomMode) {
+      if (o.payment_method !== 'Custom Project' && o.source_channel !== 'Custom Brief') return false;
+      const type = (o.custom_details?.projectType || '').toLowerCase();
+      if (customFilter === 'Strategy Calls' && !type.includes('strategy call')) return false;
+      if (customFilter === 'Partnerships' && !type.includes('partnership')) return false;
+      if (customFilter === 'Briefs' && (type.includes('strategy call') || type.includes('partnership'))) return false;
+    } else if (isProjectsMode) {
+      if (o.payment_method === 'Custom Project' || o.source_channel === 'Custom Brief') return false;
       const isPaid = o.payment_status === 'Verified' || o.status === 'Completed' || o.status === 'Delivered';
       if (!isPaid) return false;
+    } else {
+      // Normal orders
+      if (o.payment_method === 'Custom Project' || o.source_channel === 'Custom Brief') return false;
     }
 
-    if (statusFilter !== 'All') {
+    if (!isCustomMode && statusFilter !== 'All') {
       const status = o.status || 'Order placed';
       if (status !== statusFilter) return false;
     }

@@ -98,7 +98,7 @@ export default function PartnerPage() {
     return errors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const errors = validateForm(formData);
@@ -110,12 +110,38 @@ export default function PartnerPage() {
     
     setFormErrors({});
     setIsSubmitting(true);
-    // TODO: Replace with real API call
-    setTimeout(() => {
+
+    try {
+      const payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        projectType: 'Partnership - ' + formData.get('partnershipType'),
+        budget: formData.get('budget') || 'N/A',
+        timeline: formData.get('timeline') || 'Flexible',
+        projectDetails: formData.get('message'),
+        source: 'Partner Program'
+      };
+
+      const res = await api.post('/market/orders/custom-brief', payload);
+      
+      if (!user && res && res.data && res.data._id) {
+         try {
+           const existing = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+           if (!existing.includes(res.data._id)) {
+             existing.push(res.data._id);
+             localStorage.setItem('codalina_guest_orders', JSON.stringify(existing));
+           }
+         } catch(err) {}
+      }
+
       setIsSubmitting(false);
       setSubmitted(true);
-      setOrderId(res.data?._id || res.data?.orderId || data?._id || data?.orderId);
-    }, 1500);
+      setOrderId(res.data?._id || res.data?.orderId);
+    } catch (err) {
+      setIsSubmitting(false);
+      alert("Failed to submit application: " + err.message);
+    }
   };
 
   return (
