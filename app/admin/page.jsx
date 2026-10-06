@@ -158,26 +158,6 @@ export default function AdminPage() {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
       
-      {/* Welcome Banner */}
-      <div className="relative p-8 rounded-2xl bg-gradient-to-br from-brand-cyan/10 to-blue-600/10 border border-white/5 overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-3xl font-display font-medium text-white mb-2">
-              Welcome back, {user?.name || 'Admin'}
-            </h2>
-            <p className="text-white/60 text-[15px] max-w-xl">
-              Here is the live performance overview of your digital agency. You have <strong className="text-brand-cyan">{analytics?.activeOrdersCount || 0} active projects</strong> in collaboration.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-             <button onClick={() => router.push('/admin/orders')} className="px-5 py-2.5 bg-brand-cyan text-black font-semibold text-sm rounded-xl shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.4)] transition-all">
-               Manage Orders
-             </button>
-          </div>
-        </div>
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-brand-cyan/20 to-transparent blur-3xl opacity-50 pointer-events-none" />
-      </div>
-
       {!analytics ? (
         <div className="p-12 text-center text-white/50 border border-white/10 rounded-2xl bg-[#080808]">
           <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
@@ -357,3 +337,4 @@ export default function AdminPage() {
     </div>
   );
 }
+
