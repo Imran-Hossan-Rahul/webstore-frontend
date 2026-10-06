@@ -19,6 +19,100 @@ const STATUS_STYLE = {
 
 const ITEMS_PER_PAGE = 10;
 
+const CustomRequestCard = ({ order, router, copyId, copiedId, formatDate, STATUS_STYLE }) => {
+  const oid = order.id?.toString() || order._id?.toString();
+  const shortId = oid?.slice(-8).toUpperCase();
+  const statusStyle = STATUS_STYLE[order.status] || STATUS_STYLE['Order placed'];
+  
+  const details = order.custom_details || {};
+  const projectType = details.projectType || (order.items && order.items[0] ? order.items[0].product_name : 'Custom Brief');
+  const budget = details.budget || 'TBD';
+  const timeline = details.timeline || 'TBD';
+  const projectDetails = details.projectDetails || 'No additional details provided.';
+  
+  return (
+    <div
+      onClick={() => router.push(`/orders/${oid}`)}
+      className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-brand-blue/30 transition-all duration-300 group shadow-sm flex flex-col h-full"
+    >
+      <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-slate-100">
+        <div className="flex justify-between items-start md:block w-full md:w-auto mb-3 md:mb-0">
+          <div>
+            <div className="flex items-center gap-2 mb-1 w-full overflow-hidden">
+              <span className="text-[15px] font-mono font-medium text-brand-navy uppercase truncate" title={`Request #CB${shortId}`}>
+                Request #CB{shortId}
+              </span>
+              <button
+                onClick={e => copyId(e, `CB${shortId}`)}
+                className="text-slate-400 hover:text-brand-blue transition-colors shrink-0"
+                title="Copy Request Number"
+              >
+                <Copy size={14} />
+              </button>
+              {copiedId === `CB${shortId}` && (
+                <span className="font-mono text-[10px] text-brand-teal font-medium bg-brand-teal/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
+              )}
+            </div>
+            <p className="text-[12px] font-sans text-slate-500">
+              Submitted on {formatDate(order.createdAt)}
+            </p>
+          </div>
+          
+          <div className="md:hidden flex flex-col items-end gap-1.5">
+            <span className={`font-mono text-[10px] font-medium px-2 py-1 rounded-[4px] uppercase tracking-widest ${statusStyle}`}>
+              {order.status || 'Pending'}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto mt-2 md:mt-0">
+          <div className="hidden md:flex items-center gap-2">
+            <span className={`font-mono text-[11px] font-medium tracking-widest uppercase px-2.5 py-1 rounded-[4px] ${statusStyle}`}>
+              {order.status || 'Pending'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={e => { e.stopPropagation(); router.push(`/orders/${oid}`); }}
+              className="p-2 rounded-[4px] bg-transparent hover:bg-slate-200 border border-brand-navy/[0.08] text-slate-500 hover:text-brand-navy transition-colors"
+              title="View Request Details"
+            >
+              <Eye size={16} />
+            </button>
+            <button
+              onClick={e => { e.stopPropagation(); router.push(`/orders/${oid}?chat=true`); }}
+              className="p-2 flex items-center gap-2 rounded-[4px] bg-brand-blue/10 hover:bg-brand-blue/20 border border-brand-blue/20 text-brand-blue transition-colors"
+              title="Open Collaboration Room"
+            >
+              <span className="font-mono text-[10px] uppercase font-semibold">Collab Room</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-4 md:p-5 flex-1 flex flex-col gap-4">
+        <div>
+          <h4 className="text-[16px] font-display font-medium text-brand-navy mb-1">{projectType}</h4>
+          <p className="text-[13px] font-sans text-slate-500 line-clamp-2">{projectDetails}</p>
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-4 mt-auto pt-2 border-t border-brand-navy/[0.04]">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-slate-400 mb-0.5">Budget</span>
+            <span className="text-[13px] font-sans font-medium text-brand-navy">{budget}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-mono tracking-widest uppercase text-slate-400 mb-0.5">Timeline</span>
+            <span className="text-[13px] font-sans font-medium text-brand-navy">{timeline}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 export default function OrdersList({ isEmbedded = false, isProjectsMode = false, isCustomMode = false }) {
   const { user, isGuest } = useUser();
   const router = useRouter();
@@ -277,9 +371,13 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
               const total = itemsPrice + Math.round(itemsPrice * 0.01);
               const statusStyle = STATUS_STYLE[order.status] || STATUS_STYLE['Order placed'];
 
-              return (
-                <div
-                  key={oid}
+                if (isCustomMode) {
+                  return <CustomRequestCard key={oid} order={order} router={router} copyId={copyId} copiedId={copiedId} formatDate={formatDate} STATUS_STYLE={STATUS_STYLE} />;
+                }
+
+                return (
+                  <div
+                    key={oid}
                   onClick={() => router.push(`/orders/${oid}`)}
                   className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-brand-blue/30 transition-all duration-300 group shadow-sm"
                 >
@@ -446,6 +544,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
     </div>
   );
 }
+
 
 
 
