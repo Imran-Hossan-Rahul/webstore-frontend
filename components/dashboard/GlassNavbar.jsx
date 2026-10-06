@@ -13,6 +13,7 @@ import ThemeToggle from '../ThemeToggle';
 import { useUser } from "@/context/UserContext";
 import SearchSuggestions from "./navbar/SearchSuggestions";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const GlassNavbar = ({ 
   toggleSidebar, 
@@ -39,6 +40,13 @@ const GlassNavbar = ({
   const [unreadChatCount, setUnreadChatCount] = useState(0);
   const [suggestions, setSuggestions] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
+  
+  const searchParams = useSearchParams();
+  const [navigatingId, setNavigatingId] = useState(null);
+
+  useEffect(() => {
+    setNavigatingId(null);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     if (pathname.startsWith('/market')) setSearchType('marketplace');
@@ -199,7 +207,7 @@ const GlassNavbar = ({
     return () => clearTimeout(timer);
   }, [searchQuery, searchFocused]);
 
-  const searchParams = useSearchParams();
+  
 
   const totalResults = useMemo(() => {
     if (!suggestions) return 0;
@@ -229,8 +237,14 @@ const GlassNavbar = ({
                   <Menu strokeWidth={1.5} className="w-[22px] h-[22px] text-black" />
                 )}
             </button>
-            <Link href="/" className="hidden md:flex items-center gap-2 group shrink-0 ml-2">
-                <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
+            <Link href="/" onClick={() => setNavigatingId('home')} className="hidden md:flex items-center gap-2 group shrink-0 ml-2" style={{ pointerEvents: navigatingId === 'home' ? 'none' : 'auto' }}>
+                {navigatingId === 'home' ? (
+                  <div className="h-8 w-8 flex items-center justify-center">
+                    <AppleSpinner size={24} className="text-black" />
+                  </div>
+                ) : (
+                  <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
+                )}
                 <div className="hidden sm:flex items-center gap-2">
                   <span className="font-semibold text-xl tracking-tight text-black font-display">
                       Codalina
@@ -423,28 +437,38 @@ const GlassNavbar = ({
             {/* Cart and Orders Links */}
             {pathname !== "/book-call" && (
               <div className="hidden md:flex items-center gap-2 shrink-0">
-                <Link href="/cart" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                  {cartCount > 0 && (
-                    <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
-                      {cartCount}
-                    </span>
+                <Link href="/cart" onClick={() => setNavigatingId('cart')} style={{ pointerEvents: navigatingId === 'cart' ? 'none' : 'auto' }} className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                  {navigatingId === 'cart' ? (
+                    <AppleSpinner size={18} className="text-black" />
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                      {cartCount > 0 && (
+                        <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                          {cartCount}
+                        </span>
+                      )}
+                    </>
                   )}
                 </Link>
-                <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} title="My Orders" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
-                  <div className={`relative transition-colors duration-500 ${hasPendingOrders ? 'text-brand-blue' : ''}`}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={hasPendingOrders ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''}>
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-                      <path d="M3 6h18"/>
-                      <path d="M16 10a4 4 0 0 1-8 0"/>
-                    </svg>
-                    {hasPendingOrders && (
-                      <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75 duration-1000"></span>
-                        <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-brand-blue"></span>
-                      </span>
-                    )}
-                  </div>
+                <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} onClick={() => setNavigatingId('orders')} style={{ pointerEvents: navigatingId === 'orders' ? 'none' : 'auto' }} title="My Orders" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                  {navigatingId === 'orders' ? (
+                    <AppleSpinner size={18} className="text-black" />
+                  ) : (
+                    <div className={`relative transition-colors duration-500 ${hasPendingOrders ? 'text-brand-blue' : ''}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={hasPendingOrders ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''}>
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                        <path d="M3 6h18"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                      </svg>
+                      {hasPendingOrders && (
+                        <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75 duration-1000"></span>
+                          <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-brand-blue"></span>
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </Link>
                 {user && (
                   <button 
@@ -482,16 +506,22 @@ const GlassNavbar = ({
               </div>
             ) : (!user || isGuest || user?.role === 'guest') ? (
               <div className="flex items-center gap-1.5 sm:gap-3 z-50 relative shrink-0">
-                <Link href="/auth/login" className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-black hover:opacity-70 transition-opacity whitespace-nowrap">Log in</Link>
-                <Link href="/auth/register" className="px-3 sm:px-[14px] py-[6px] rounded-[4px] bg-brand-blue border border-brand-blue text-white text-[12px] sm:text-[13px] font-sans font-medium hover:bg-brand-blue/90 transition-all whitespace-nowrap">Join</Link>
+                <Link href="/auth/login" onClick={() => setNavigatingId('login')} style={{ pointerEvents: navigatingId === 'login' ? 'none' : 'auto' }} className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-black hover:opacity-70 transition-opacity whitespace-nowrap flex items-center justify-center min-w-[60px]">
+                  {navigatingId === 'login' ? <AppleSpinner size={16} className="text-black" /> : 'Log in'}
+                </Link>
+                <Link href="/auth/register" onClick={() => setNavigatingId('join')} style={{ pointerEvents: navigatingId === 'join' ? 'none' : 'auto' }} className="px-3 sm:px-[14px] py-[6px] rounded-[4px] bg-brand-blue border border-brand-blue text-white text-[12px] sm:text-[13px] font-sans font-medium hover:bg-brand-blue/90 transition-all whitespace-nowrap flex items-center justify-center min-w-[55px]">
+                  {navigatingId === 'join' ? <AppleSpinner size={16} className="text-white" /> : 'Join'}
+                </Link>
               </div>
             ) : isHomePage ? (
-              <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group shrink-0">
+              <div onClick={() => { setNavigatingId('profile'); router.push(`/u/${user?.username}`); }} style={{ pointerEvents: navigatingId === 'profile' ? 'none' : 'auto' }} className="flex items-center gap-3 cursor-pointer group shrink-0">
                   <div className="text-right hidden xl:block shrink-0">
                       <div className="text-[14px] font-normal text-black font-sans leading-tight">{user?.name}</div>
                   </div>
-                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15">
-                      {user?.profilePicture ? (
+                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center">
+                      {navigatingId === 'profile' ? (
+                        <AppleSpinner size={18} className="text-brand-blue" />
+                      ) : user?.profilePicture ? (
                         <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-black/50 font-bold">{user?.name?.[0]}</div>
@@ -509,6 +539,8 @@ const GlassNavbar = ({
 };
 
 export default React.memo(GlassNavbar);
+
+
 
 
 

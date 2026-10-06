@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   ArrowRight,
   Code2,
@@ -205,6 +206,14 @@ function TerminalSnippet({ lines }) {
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function SolutionsPage() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [navigatingId, setNavigatingId] = useState(null);
+
+  useEffect(() => {
+    setNavigatingId(null);
+  }, [pathname, searchParams]);
+
   return (
     <div className="w-full font-sans bg-transparent">
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -230,13 +239,13 @@ export default function SolutionsPage() {
                 keep them operational long-term.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/store">
-                  <Button variant="primary" size="lg" rightIcon={<ArrowRight size={16} />}>
+                <Link href="/store" onClick={() => setNavigatingId('store-hero')} style={{ pointerEvents: navigatingId === 'store-hero' ? 'none' : 'auto' }}>
+                  <Button variant="primary" size="lg" rightIcon={<ArrowRight size={16} />} isLoading={navigatingId === 'store-hero'}>
                     Explore Products
                   </Button>
                 </Link>
-                <Link href="/about">
-                  <Button variant="outline" size="lg">
+                <Link href="/about" onClick={() => setNavigatingId('about-hero')} style={{ pointerEvents: navigatingId === 'about-hero' ? 'none' : 'auto' }}>
+                  <Button variant="outline" size="lg" isLoading={navigatingId === 'about-hero'}>
                     About Codalina
                   </Button>
                 </Link>
@@ -314,8 +323,8 @@ export default function SolutionsPage() {
               </div>
 
               <div className="mt-8">
-                <Link href="/store">
-                  <Button variant="outline" rightIcon={<ChevronRight size={15} />}>
+                <Link href="/store" onClick={() => setNavigatingId('store-marketplace')} style={{ pointerEvents: navigatingId === 'store-marketplace' ? 'none' : 'auto' }}>
+                  <Button variant="outline" rightIcon={<ChevronRight size={15} />} isLoading={navigatingId === 'store-marketplace'}>
                     Browse the Marketplace
                   </Button>
                 </Link>
@@ -563,8 +572,8 @@ export default function SolutionsPage() {
                 These products are built to the same engineering standard as our
                 custom work. Documented, maintained, and updated.
               </p>
-              <Link href="/store?type=software">
-                <Button variant="outline" rightIcon={<ExternalLink size={14} />}>
+              <Link href="/store?type=software" onClick={() => setNavigatingId('store-software')} style={{ pointerEvents: navigatingId === 'store-software' ? 'none' : 'auto' }}>
+                <Button variant="outline" rightIcon={<ExternalLink size={14} />} isLoading={navigatingId === 'store-software'}>
                   View Software Products
                 </Button>
               </Link>
@@ -644,8 +653,8 @@ export default function SolutionsPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/warranty">
-                <Button variant="outline" rightIcon={<ChevronRight size={15} />}>
+              <Link href="/warranty" onClick={() => setNavigatingId('warranty')} style={{ pointerEvents: navigatingId === 'warranty' ? 'none' : 'auto' }}>
+                <Button variant="outline" rightIcon={<ChevronRight size={15} />} isLoading={navigatingId === 'warranty'}>
                   Check Warranty Status
                 </Button>
               </Link>
@@ -726,20 +735,22 @@ export default function SolutionsPage() {
             to maintain — Codalina is the partner that stays through every phase.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/store">
+            <Link href="/store" onClick={() => setNavigatingId('store-cta')} style={{ pointerEvents: navigatingId === 'store-cta' ? 'none' : 'auto' }}>
               <Button
                 size="lg"
                 className="w-full sm:w-auto bg-brand-surface hover:bg-brand-surface/90 text-brand-navy border-white"
                 rightIcon={<ArrowRight size={16} />}
+                isLoading={navigatingId === 'store-cta'}
               >
                 Browse the Marketplace
               </Button>
             </Link>
-            <Link href="/about">
+            <Link href="/about" onClick={() => setNavigatingId('about-cta')} style={{ pointerEvents: navigatingId === 'about-cta' ? 'none' : 'auto' }}>
               <Button
                 size="lg"
                 variant="outline"
                 className="w-full sm:w-auto border-white/20 text-white hover:bg-brand-surface/8"
+                isLoading={navigatingId === 'about-cta'}
               >
                 About Codalina
               </Button>

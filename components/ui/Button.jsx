@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import AppleSpinner from '@/components/ui/AppleSpinner';
 
 export const Button = React.forwardRef(({ 
   className = '', 
@@ -35,7 +36,7 @@ export const Button = React.forwardRef(({
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >
-      {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+      {isLoading && <span className="mr-2"><AppleSpinner size={16} className={variant === 'primary' ? 'text-white' : 'text-brand-blue'} /></span>}
       {!isLoading && leftIcon && <span className="mr-2">{leftIcon}</span>}
       {children}
       {!isLoading && rightIcon && <span className="ml-2">{rightIcon}</span>}

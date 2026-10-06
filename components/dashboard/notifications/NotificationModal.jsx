@@ -1,4 +1,5 @@
-"use client";`nimport Image from "next/image";
+"use client";
+import Image from "next/image";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";

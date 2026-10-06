@@ -1,9 +1,19 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { PageContainer } from '@/components/ui/PageContainer';
+import AppleSpinner from '@/components/ui/AppleSpinner';
 
 export default function AboutMain() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [navigatingId, setNavigatingId] = useState(null);
+
+  useEffect(() => {
+    setNavigatingId(null);
+  }, [pathname, searchParams]);
+
   return (
     <div className="w-full bg-transparent font-sans pb-16">
       
@@ -98,8 +108,8 @@ export default function AboutMain() {
               Let's discuss how our engineering expertise can help you launch, scale, and dominate your market.
             </p>
             <div className="relative z-10">
-              <Link href="/support" className="inline-flex h-12 items-center justify-center rounded-full bg-[#0071e3] px-8 text-[15px] font-medium text-white hover:bg-[#0077ed] transition-colors shadow-[0_8px_20px_rgba(0,113,227,0.3)]">
-                Start a Project
+              <Link href="/support" onClick={() => setNavigatingId('support')} style={{ pointerEvents: navigatingId === 'support' ? 'none' : 'auto' }} className="inline-flex h-12 min-w-[150px] items-center justify-center rounded-full bg-[#0071e3] px-8 text-[15px] font-medium text-white hover:bg-[#0077ed] transition-colors shadow-[0_8px_20px_rgba(0,113,227,0.3)]">
+                {navigatingId === 'support' ? <AppleSpinner size={16} className="text-white" /> : 'Start a Project'}
               </Link>
             </div>
           </div>

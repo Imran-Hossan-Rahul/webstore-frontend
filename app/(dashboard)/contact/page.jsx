@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import SpinnerLink from '@/components/ui/SpinnerLink';
 import { PageContainer } from '@/components/ui/PageContainer';
 import { Mail, MessageCircleQuestion, MapPin, Phone, Facebook, Instagram } from 'lucide-react';
 
@@ -55,9 +56,9 @@ export default function ContactPage() {
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   Talk to our support team instantly directly from the platform.
                 </p>
-                <Link href="/support" className="text-[15px] font-medium text-[#0071e3] hover:underline">
+                <SpinnerLink href="/support" className="text-[15px] font-medium text-[#0071e3] hover:underline" spinnerSize={14}>
                   Open Support Chat
-                </Link>
+                </SpinnerLink>
               </div>
 
               {/* Location */}
