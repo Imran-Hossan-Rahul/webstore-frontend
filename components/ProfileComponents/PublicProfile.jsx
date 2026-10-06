@@ -464,7 +464,8 @@ export default function PublicProfile({ username }) {
                   <button onClick={() => handleTabChange('orders')} className={`pb-3 text-[14px] font-sans font-medium transition-colors border-b-2 ${activeTab === 'orders' ? 'border-brand-blue text-brand-navy ' : 'border-transparent text-slate-500  hover:text-brand-navy '}`}>
                     Orders
                   </button>
-                  <button onClick={() => handleTabChange('projects')} className={`pb-3 text-[14px] font-sans font-medium transition-colors border-b-2 ${activeTab === 'projects' ? 'border-brand-blue text-brand-navy ' : 'border-transparent text-slate-500  hover:text-brand-navy '}`}>
+                  <button onClick={() => handleTabChange('custom')} className={`pb-3 text-[14px] font-sans font-medium transition-colors border-b-2 ${activeTab === 'custom' ? 'border-brand-blue text-brand-navy ' : 'border-transparent text-slate-500  hover:text-brand-navy '}`}>Custom</button>
+                    <button onClick={() => handleTabChange('projects')} className={`pb-3 text-[14px] font-sans font-medium transition-colors border-b-2 ${activeTab === 'projects' ? 'border-brand-blue text-brand-navy ' : 'border-transparent text-slate-500  hover:text-brand-navy '}`}>
                     Projects
                   </button>
                   <button onClick={() => handleTabChange('addresses')} className={`pb-3 text-[14px] font-sans font-medium transition-colors border-b-2 ${activeTab === 'addresses' ? 'border-brand-blue text-brand-navy ' : 'border-transparent text-slate-500  hover:text-brand-navy '}`}>
@@ -619,6 +620,9 @@ export default function PublicProfile({ username }) {
     </PageContainer>
   );
 }
+
+
+
 
 
 
