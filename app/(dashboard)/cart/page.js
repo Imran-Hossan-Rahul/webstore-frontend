@@ -4,13 +4,22 @@ import { api } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Link from 'next/link';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { PageContainer } from '@/components/ui/PageContainer';
+import AppleSpinner from '@/components/ui/AppleSpinner';
 import { EmptyState, LoadingState } from '@/components/ui/States';
 
 export default function CartPage() {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [navigatingId, setNavigatingId] = useState(null);
+
+  useEffect(() => {
+    setNavigatingId(null);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     const fetchCartProducts = async () => {
@@ -88,10 +97,7 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     if (cartItems.length > 0) {
-      // In a real flow, you'd pass all cart items or store them in state.
-      // For now, we'll just go to checkout with the first item's ID or general checkout.
-      // Since checkout page expects single productId in query right now, we can adapt it later.
-      // But let's just go to checkout for the first item for now to match flow.
+      setNavigatingId('checkout');
       const item = cartItems[0];
       const query = new URLSearchParams({
         productId: item.id,
@@ -128,8 +134,8 @@ export default function CartPage() {
           title="Your cart is empty"
           description="Looks like you haven't added any products to your cart yet."
           action={{
-            label: "Continue Shopping",
-            onClick: () => router.push('/store')
+            label: navigatingId === 'explore' ? <AppleSpinner size={16} className="text-white" /> : "Continue Shopping",
+            onClick: () => { setNavigatingId('explore'); router.push('/store'); }
           }}
         />
       ) : (
@@ -228,16 +234,18 @@ export default function CartPage() {
 
                   <div className="flex flex-col sm:flex-row items-center justify-end gap-3 mt-6">
                     <button 
-                      onClick={() => router.push('/store')}
+                      onClick={() => { setNavigatingId('continue'); router.push('/store'); }}
+                      style={{ pointerEvents: navigatingId === 'continue' ? 'none' : 'auto' }}
                       className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all bg-white text-[#1D5FD1] border border-[#1D5FD1] hover:bg-brand-blue/5"
                     >
-                      Continue Shopping
+                      {navigatingId === 'continue' ? <AppleSpinner size={16} className="text-brand-blue" /> : 'Continue Shopping'}
                     </button>
                     <button 
                       onClick={handleCheckout}
+                      style={{ pointerEvents: navigatingId === 'checkout' ? 'none' : 'auto' }}
                       className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all shadow-md bg-[#1D5FD1] text-white border border-[#1D5FD1] hover:bg-brand-blue/90"
                     >
-                      Check Out
+                      {navigatingId === 'checkout' ? <AppleSpinner size={16} className="text-white" /> : 'Check Out'}
                     </button>
                   </div>
                 </div>
