@@ -374,6 +374,13 @@ export default function BookCallPage() {
                     </div>
                     <h3 tabIndex="-1" ref={(el) => { if(el && submitted) el.focus(); }} className="text-[24px] font-display font-semibold text-brand-navy mb-3 outline-none">Request Received!</h3>
                     <p className="text-[15px] text-slate-600 mb-2">We'll send your calendar link to <strong className="text-brand-navy">{submittedEmail}</strong>.</p>
+                    
+                    <div className="mt-4 mb-6 p-4 bg-brand-blue/5 border border-brand-blue/20 rounded-[12px] text-left max-w-sm mx-auto">
+                      <p className="text-[13px] text-slate-600 mb-1">Your Tracking Reference:</p>
+                      <p className="text-[18px] font-mono font-bold text-brand-navy">{submittedRef}</p>
+                      {!user && <p className="text-[12px] text-slate-500 mt-2">Please save this reference ID. Since you are not logged in, you will need it to track your request if you clear your browser data.</p>}
+                      {user && <p className="text-[12px] text-slate-500 mt-2">You can track this request directly from your profile's <strong>Custom</strong> tab.</p>}
+                    </div>
                     <button onClick={() => setSubmitted(false)} className="text-[13px] text-brand-blue hover:underline mb-8 font-medium focus:outline-none focus:ring-2 focus:ring-brand-blue/30 rounded px-1">Wrong email? Go back and edit</button>
                     
                     <div className="text-left bg-white border border-slate-200 rounded-[16px] p-6 max-w-sm mx-auto shadow-sm mb-8">
