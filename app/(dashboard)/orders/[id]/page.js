@@ -20,6 +20,142 @@ import { PageContainer } from "@/components/ui/PageContainer";
 import { Button } from "@/components/ui/Button";
 import { LoadingState, ErrorState } from '@/components/ui/States';
 
+
+const CustomBriefDetails = ({ order, router, copyId, copied, formatDate }) => {
+  const oid = order.id?.toString() || order._id?.toString();
+  const shortId = oid?.slice(-8).toUpperCase();
+  const details = order.custom_details || {};
+  const projectType = details.projectType || (order.items && order.items[0] ? order.items[0].product_name : 'Custom Brief');
+  const budget = details.budget || 'TBD';
+  const timeline = details.timeline || 'TBD';
+  const features = details.features || [];
+  const contactMethod = details.contactMethod || 'Email';
+  const projectDetails = details.projectDetails || 'No additional details provided.';
+  
+  return (
+    <PageContainer maxWidth="max-w-[1000px]" className="relative z-10 pt-4 pb-12">
+      <div className="bg-white/40 backdrop-blur-3xl rounded-[32px] overflow-hidden border border-white/40 shadow-[0_8px_32px_rgba(11,37,69,0.04)] mb-8">
+        <div className="p-4 md:p-8">
+          
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-brand-navy/[0.04] pb-4 md:pb-6 mb-4 md:mb-6 gap-4">
+            <h1 className="text-[24px] md:text-[28px] font-display font-medium text-brand-navy">
+              Project Brief
+            </h1>
+            <div className="flex items-center gap-3 w-full md:w-auto">
+              <Button
+                variant="primary"
+                leftIcon={<MessageSquare size={16} />}
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent("open-order-room", { detail: { orderId: order._id || order.id } }));
+                }}
+                className="flex-1 md:flex-none !rounded-[20px] bg-brand-blue hover:bg-brand-blue/90 text-white border-0"
+              >
+                Collab Room
+              </Button>
+              <Button
+                variant="secondary"
+                leftIcon={<ArrowLeft size={16} />}
+                onClick={() => router.back()}
+                className="!rounded-[20px] flex-1 md:flex-none"
+              >
+                Go Back
+              </Button>
+            </div>
+          </div>
+
+          {/* ID & Date row */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[13px] font-mono tracking-widest uppercase text-slate-500 font-medium">Request</span>
+                <span className="text-[15px] font-mono font-medium text-brand-navy uppercase">#CB{shortId}</span>
+                <button
+                  onClick={(e) => copyId(e, `CB${shortId}`)}
+                  className="text-slate-400 hover:text-brand-blue transition-colors"
+                >
+                  <Copy size={14} />
+                </button>
+                {copied === `CB${shortId}` && (
+                  <span className="font-mono text-[10px] text-brand-teal font-medium bg-brand-teal/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
+                )}
+              </div>
+              <p className="text-[13px] font-sans text-slate-500">
+                Submitted on {formatDate(order.createdAt)}
+              </p>
+            </div>
+
+            <div className="flex flex-col items-start md:items-end p-4 rounded-[16px] bg-brand-navy/[0.02] border border-brand-navy/[0.04]">
+               <span className="text-[10px] font-mono tracking-widest uppercase text-slate-500 mb-1">Status</span>
+               <div className="flex items-center gap-2">
+                 <span className="text-[14px] font-mono font-medium text-brand-navy">{order.status || 'Pending Verification'}</span>
+                 {order.projectPhase && order.projectPhase !== 'Not applicable' && (
+                   <span className="font-mono text-[10px] font-medium px-2 py-1 rounded-[4px] uppercase tracking-widest bg-brand-blue/10 text-brand-blue border border-brand-blue/20">
+                     {order.projectPhase}
+                   </span>
+                 )}
+               </div>
+            </div>
+          </div>
+
+          {/* Body Content */}
+          <div className="bg-white/60 backdrop-blur-md rounded-[20px] border border-brand-navy/[0.08] p-6 mb-6">
+            <h3 className="text-[18px] font-display font-medium text-brand-navy mb-4">{projectType}</h3>
+            
+            <div className="mb-6">
+              <span className="block text-[11px] font-mono tracking-widest uppercase text-slate-400 mb-2">Project Details</span>
+              <p className="text-[14px] font-sans text-slate-600 whitespace-pre-wrap leading-relaxed">{projectDetails}</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-brand-navy/[0.04]">
+              <div>
+                <span className="block text-[11px] font-mono tracking-widest uppercase text-slate-400 mb-1">Budget Expectation</span>
+                <span className="text-[14px] font-sans font-medium text-brand-navy">{budget}</span>
+              </div>
+              <div>
+                <span className="block text-[11px] font-mono tracking-widest uppercase text-slate-400 mb-1">Desired Timeline</span>
+                <span className="text-[14px] font-sans font-medium text-brand-navy">{timeline}</span>
+              </div>
+              <div>
+                <span className="block text-[11px] font-mono tracking-widest uppercase text-slate-400 mb-1">Preferred Contact</span>
+                <span className="text-[14px] font-sans font-medium text-brand-navy">{contactMethod}</span>
+              </div>
+            </div>
+
+            {features.length > 0 && (
+              <div className="pt-6 mt-6 border-t border-brand-navy/[0.04]">
+                <span className="block text-[11px] font-mono tracking-widest uppercase text-slate-400 mb-3">Requested Features</span>
+                <div className="flex flex-wrap gap-2">
+                  {features.map((f, i) => (
+                    <span key={i} className="px-3 py-1 bg-brand-navy/[0.03] border border-brand-navy/[0.06] rounded-[8px] text-[13px] text-brand-navy">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Client Details */}
+          <div className="bg-white/60 backdrop-blur-md rounded-[20px] border border-brand-navy/[0.08] p-6">
+             <div className="flex items-center justify-between mb-4">
+               <h4 className="text-[12px] font-mono tracking-widest uppercase text-slate-500 font-semibold">Client Details</h4>
+             </div>
+             
+             <div className="flex flex-col gap-1">
+               <span className="text-[15px] font-display font-medium text-brand-navy">{order.customer_name}</span>
+               <span className="text-[14px] font-sans text-slate-500">{order.email}</span>
+               {order.phone && <span className="text-[14px] font-sans text-slate-500">{order.phone}</span>}
+             </div>
+          </div>
+          
+        </div>
+      </div>
+    </PageContainer>
+  );
+};
+
+
 export default function OrderDetailPage({ params }) {
   const { user, loading: userLoading } = useUser();
   const router = useRouter();
