@@ -99,7 +99,7 @@ export function generateInvoice(order) {
       } else if (idx < currentPhaseIndex) {
         phaseStatus = 'Completed';
         color = '#10B981';
-        icon = '●';
+        icon = '✓';
         trackingText = 'Done';
       } else if (idx === currentPhaseIndex) {
         if (isHalted) {
@@ -152,8 +152,15 @@ export function generateInvoice(order) {
     if (order.status === 'Suspended') statusColor = '#F59E0B';
     if (order.status === 'Cancelled' || order.status === 'Payment Failed') statusColor = '#EF4444';
 
-    let phaseColor = isHalted ? '#F59E0B' : '#0071e3';
-    let phaseLabel = isHalted ? 'Halted At Phase' : 'Active Phase';
+    let phaseColor = '#0071e3';
+    let phaseLabel = 'Active Phase';
+    if (isHalted) {
+       phaseColor = '#F59E0B';
+       phaseLabel = 'Halted At Phase';
+    } else if (isDelivered) {
+       phaseColor = '#10B981';
+       phaseLabel = 'Completed Phase';
+    }
 
     phaseHtml = `
       <div class="divider"></div>
