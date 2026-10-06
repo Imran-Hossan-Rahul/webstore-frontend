@@ -91,12 +91,7 @@ export function generateInvoice(order) {
       let icon = '○';
       let trackingText = 'Awaiting';
 
-      if (isDelivered) {
-        phaseStatus = 'Completed';
-        color = '#10B981';
-        icon = '●';
-        trackingText = 'Done';
-      } else if (idx < currentPhaseIndex) {
+      if (idx < currentPhaseIndex) {
         phaseStatus = 'Completed';
         color = '#10B981';
         icon = '✓';
@@ -107,17 +102,29 @@ export function generateInvoice(order) {
           color = '#F59E0B';
           icon = '⊗';
           trackingText = 'Halted';
+        } else if (isDelivered) {
+          phaseStatus = 'Delivered';
+          color = '#10B981';
+          icon = '✓';
+          trackingText = 'Delivered Here';
         } else {
           phaseStatus = 'In Progress';
           color = '#0071e3';
           icon = '◐';
           trackingText = 'Current Phase';
         }
-      } else if (isHalted && idx > currentPhaseIndex) {
-        phaseStatus = 'Aborted';
-        color = '#ef4444';
-        icon = '×';
-        trackingText = 'Cancelled';
+      } else if (idx > currentPhaseIndex) {
+        if (isHalted) {
+          phaseStatus = 'Aborted';
+          color = '#ef4444';
+          icon = '×';
+          trackingText = 'Cancelled';
+        } else if (isDelivered) {
+          phaseStatus = 'Skipped';
+          color = '#d1d5db';
+          icon = '—';
+          trackingText = 'Not Needed';
+        }
       }
 
       return `
@@ -159,7 +166,7 @@ export function generateInvoice(order) {
        phaseLabel = 'Halted At Phase';
     } else if (isDelivered) {
        phaseColor = '#10B981';
-       phaseLabel = 'Completed Phase';
+       phaseLabel = 'Delivered At Phase';
     }
 
     phaseHtml = `
