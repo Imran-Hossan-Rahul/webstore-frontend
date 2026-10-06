@@ -587,7 +587,7 @@ const GlassNavbar = ({
                   <div className="text-right hidden xl:block shrink-0">
                       <div className={`text-[14px] font-normal font-sans leading-tight ${isOverDark ? 'text-white' : 'text-black'}`}>{user?.name}</div>
                   </div>
-                  <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center">
+                  <div className="relative w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center">
                       {navigatingId === 'profile' ? (
                         <AppleSpinner size={18} className={isOverDark ? "text-white" : "text-brand-blue"} />
                       ) : user?.profilePicture ? (

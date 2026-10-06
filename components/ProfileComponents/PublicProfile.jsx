@@ -617,7 +617,30 @@ export default function PublicProfile({ username }) {
           
 
         </div>
-    </PageContainer>
+    
+            {/* Custom Tab */}
+            {activeTab === 'custom' && isOwner && (
+              <div className="border-transparent">
+                <h3 className="text-[20px] font-display font-medium text-brand-navy mb-4">Custom & Partnerships</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                  <Link href="/submit-brief" className="group flex flex-col p-6 rounded-[20px] bg-white border border-brand-navy/[0.08] hover:border-brand-blue/30 transition-all shadow-sm hover:shadow-md cursor-pointer">
+                    <h3 className="font-display font-medium text-brand-navy group-hover:text-brand-blue transition-colors mb-2 text-[16px]">Submit New Brief</h3>
+                    <p className="text-[13px] text-slate-500">Need a custom website or software? Submit your requirements directly to our engineering team.</p>
+                  </Link>
+                  <Link href="/partner" className="group flex flex-col p-6 rounded-[20px] bg-white border border-brand-navy/[0.08] hover:border-brand-blue/30 transition-all shadow-sm hover:shadow-md cursor-pointer">
+                    <h3 className="font-display font-medium text-brand-navy group-hover:text-brand-blue transition-colors mb-2 text-[16px]">Partner Program</h3>
+                    <p className="text-[13px] text-slate-500">Join forces with us. Submit a partnership request for agency scaling or B2B collaboration.</p>
+                  </Link>
+                </div>
+
+                <div className="mt-2">
+                   <OrdersList isEmbedded={true} isCustomMode={true} />
+                </div>
+              </div>
+            )}
+
+      </PageContainer>
   );
 }
 
