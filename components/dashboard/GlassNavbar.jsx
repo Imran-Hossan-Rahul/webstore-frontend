@@ -308,11 +308,11 @@ const GlassNavbar = ({
                     <AppleSpinner size={24} className={isOverDark ? 'text-white' : 'text-black'} />
                   </div>
                 ) : (
-                  <Image src="/logo.png" alt="Codalina" width={32} height={32} className="h-8 w-8 object-contain" />
+                  <Image src="/codalina-logo.png" alt="Codalina" width={32} height={32} className="h-8 w-8 object-contain" />
                 )}
                 <div className="hidden sm:flex items-center gap-2">
                   <span className={`font-semibold text-xl tracking-tight font-display ${isOverDark ? 'text-white' : 'text-black'}`}>
-                      Codalina
+                      CodalinaHQ
                   </span>
                 </div>
             </Link>
@@ -348,7 +348,7 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: mobileSearchOpen ? '1 0 128px' : '0 0 128px' }}
               >
-                <Image src="/logo.png" alt="Codalina" width={15} height={15} className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10 mb-[3px]" />
+                <Image src="/codalina-logo.png" alt="Codalina" width={15} height={15} className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10 mb-[3px]" />
                 
                 <input 
                   id="navbar-search-input"
