@@ -270,7 +270,25 @@ export default function OrderDetailPage({ params }) {
   const statusDate = formatDate(order.confirmed_at || order.createdAt);
   const placedDate = formatDate(order.createdAt);
 
-  const isCancelled = order.status === "Cancelled";
+    const isCancelled = order.status === "Cancelled";
+
+  const isCustomMode = order.payment_method === 'Custom Project' || order.source_channel === 'Custom Brief';
+  if (isCustomMode) {
+    return (
+      <CustomBriefDetails 
+        order={order} 
+        router={router} 
+        copyId={(e, text) => {
+          e.stopPropagation();
+          navigator.clipboard.writeText(text);
+          setCopied(text);
+          setTimeout(() => setCopied(null), 2000);
+        }} 
+        copied={copied} 
+        formatDate={formatDate} 
+      />
+    );
+  }
 
   return (
     <>
