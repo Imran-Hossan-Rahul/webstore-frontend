@@ -215,7 +215,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
               {isProjectsMode ? 'Track Your Project' : 'Track Your Order'}
             </h3>
             <p className="text-[13px] font-sans text-slate-500  mb-4">
-              If you are not logged in and forgot or didn't see your order, enter your Phone Number or Order ID below to track it.
+              If you are not logged in and forgot or didn&apos;t see your order, enter your Phone Number or Order ID below to track it.
             </p>
             <form onSubmit={handleTrackOrder} className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 relative">

@@ -1,85 +1,98 @@
 import React from 'react';
 import Link from 'next/link';
+import GlassBackground from '@/components/dashboard/market/GlassBackground';
+import { ArrowRight } from "lucide-react";
 
 export const metadata = {
   title: 'Site Map - Codalina',
-  description: 'A complete overview of the Codalina Marketplace.',
+  description: 'Navigate through our web development services, premium templates, and resources.',
 };
 
 export default function SitemapPage() {
   const sitemapData = [
     {
-      title: "Shop and Learn",
+      title: "Codalina Platform",
+      description: "Learn more about who we are and what we do.",
       links: [
-        { label: "Marketplace Home", href: "/" },
-        { label: "Search Products", href: "/search" },
-        { label: "Smartwatches", href: "/category/smartwatch" },
-        { label: "Audio & Headphones", href: "/category/audio" },
-        { label: "Power Banks & Cables", href: "/category/powerbank" },
-        { label: "Adapters", href: "/category/adapter" }
+        { label: "Home", href: "/" },
+        { label: "About Us", href: "/about" },
+        { label: "Partner Program", href: "/partner" },
+        { label: "Contact Us", href: "/contact" }
       ]
     },
     {
-      title: "Account",
+      title: "Services & Store",
+      description: "Explore our web solutions and premium templates.",
       links: [
-        { label: "Manage Your Account", href: "/settings" },
-        { label: "Shopping Cart", href: "/cart" },
-        { label: "Sign In", href: "/auth/login" },
-        { label: "Create Account", href: "/auth/register" }
+        { label: "Template Store", href: "/store" },
+        { label: "Submit Project Brief", href: "/submit-brief" },
+        { label: "Book a Consultation", href: "/book-call" },
+        { label: "Shopping Cart", href: "/cart" }
       ]
     },
     {
-      title: "Services & Solutions",
+      title: "Resources & Help",
+      description: "Find answers and learn how to use our platform.",
       links: [
-        { label: "Product Warranty Check", href: "/warranty" },
-        { label: "Checkout", href: "/checkout" }
-      ]
-    },
-    {
-      title: "Resources & Support",
-      links: [
-        { label: "Help & Support", href: "/support" },
         { label: "Documentation", href: "/docs" },
-        { label: "FAQ", href: "/faq" }
+        { label: "Help & Support", href: "/support" },
+        { label: "Frequently Asked Questions", href: "/faq" },
+        { label: "Warranty Check", href: "/warranty" }
       ]
     },
     {
-      title: "About Codalina",
+      title: "Legal & Policies",
+      description: "Important terms and guidelines for our users.",
       links: [
-        { label: "About", href: "/about" },
+        { label: "Legal Hub", href: "/legal" },
         { label: "Privacy Policy", href: "/privacy" },
         { label: "Terms of Service", href: "/terms" },
-        { label: "End User License", href: "/eula" },
-        { label: "Legal Hub", href: "/legal" }
+        { label: "End User License (EULA)", href: "/eula" }
       ]
     }
   ];
 
   return (
-    <div className="min-h-screen font-sans pt-12 pb-24 px-6 md:px-12 bg-brand-main">
-      <div className="max-w-[980px] mx-auto">
+    <div className="min-h-screen bg-transparent relative overflow-hidden font-sans pb-24 selection:bg-brand-navy selection:text-white">
+      <GlassBackground />
+      
+      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-8 xl:px-12 pt-28 md:pt-36">
         
-        {/* Page Title */}
-        <h1 className="text-[32px] md:text-[40px] font-[600] tracking-[-0.01em] text-[#1d1d1f] mb-4">
-          Codalina Site Map
-        </h1>
-        <div className="w-full h-[1px] bg-[#d2d2d7] mb-10"></div>
+        {/* Header Section */}
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+          <div className="inline-flex items-center gap-2 border border-brand-navy/[0.08] bg-white/40 backdrop-blur-md shadow-sm text-brand-navy text-[11px] font-mono tracking-widest uppercase px-3 py-1.5 rounded-[20px] mb-6">
+            Directory
+          </div>
+          <h1 className="text-[36px] md:text-[52px] font-bold text-brand-navy font-display leading-[1.1] mb-4 tracking-tight max-w-[800px]">
+            Platform <span className="text-brand-blue">Sitemap</span>
+          </h1>
+          <p className="text-[16px] md:text-[18px] text-slate-500 max-w-[600px] leading-relaxed">
+            Navigate through our web development services, premium templates, and resources to find exactly what you're looking for.
+          </p>
+        </div>
 
         {/* Sitemap Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-[1200px] mx-auto">
           {sitemapData.map((section, idx) => (
-            <div key={idx} className="flex flex-col">
-              <h3 className="text-[14px] font-[600] text-[#1d1d1f] mb-3">
+            <div 
+              key={idx} 
+              className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] shadow-sm rounded-[20px] p-8 hover:shadow-md hover:border-brand-blue/20 transition-all duration-300"
+            >
+              <h3 className="text-[16px] font-semibold text-brand-navy font-display mb-2">
                 {section.title}
               </h3>
-              <ul className="flex flex-col space-y-2">
+              <p className="text-[13px] text-slate-500 mb-6 leading-relaxed">
+                {section.description}
+              </p>
+              <ul className="flex flex-col space-y-3">
                 {section.links.map((link, linkIdx) => (
                   <li key={linkIdx}>
                     <Link 
                       href={link.href}
-                      className="text-[13px] font-[400] text-[#0066cc] hover:underline"
+                      className="group flex items-center justify-between text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors"
                     >
-                      {link.label}
+                      <span>{link.label}</span>
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-brand-blue" />
                     </Link>
                   </li>
                 ))}

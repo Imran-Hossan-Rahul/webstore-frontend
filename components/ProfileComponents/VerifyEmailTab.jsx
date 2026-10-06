@@ -105,7 +105,7 @@ export default function VerifyEmailTab({ profile, onVerified }) {
         </div>
 
         <p className="mt-5 text-[12px] text-[#86868b]">
-          Didn't receive it? Check your spam folder or request a new link above.
+          Didn&apos;t receive it? Check your spam folder or request a new link above.
         </p>
       </div>
     </div>

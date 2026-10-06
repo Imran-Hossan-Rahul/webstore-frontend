@@ -280,7 +280,7 @@ const StorePreviewSection = ({ products }) => {
               Need something completely custom?
             </h3>
             <p className="text-slate-600 dark:text-slate-600 font-sans text-[15px] md:text-[18px] leading-relaxed max-w-full font-light">
-              Got a unique idea? Whether it's a custom web app or a scalable SaaS platform, we build it from scratch. Tell us your vision, and we'll handle the rest.
+              Got a unique idea? Whether it&apos;s a custom web app or a scalable SaaS platform, we build it from scratch. Tell us your vision, and we&apos;ll handle the rest.
             </p>
           </div>
           

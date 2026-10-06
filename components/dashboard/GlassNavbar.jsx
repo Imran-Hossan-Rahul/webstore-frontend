@@ -192,20 +192,34 @@ const GlassNavbar = ({
       
       let dark = false;
       for (const el of contentElements) {
+        if (el.tagName.toLowerCase() === 'body' || el.tagName.toLowerCase() === 'html') {
+          continue;
+        }
+
         const style = window.getComputedStyle(el);
         const bg = style.backgroundColor;
-        if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+        
+        let hasDarkClass = false;
+        if (el.classList) {
+           const cls = Array.from(el.classList);
+           hasDarkClass = cls.includes('bg-black') || cls.includes('bg-brand-navy') || cls.includes('dark:bg-black');
+        }
+
+        if (hasDarkClass || (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent')) {
           const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
           if (match) {
             const r = parseInt(match[1]);
             const g = parseInt(match[2]);
             const b = parseInt(match[3]);
             const a = match[4] ? parseFloat(match[4]) : 1;
-            if (a > 0.1) {
+            if (a > 0.1 || hasDarkClass) {
               const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-              dark = brightness < 128;
+              dark = brightness < 128 || hasDarkClass;
               break;
             }
+          } else if (hasDarkClass) {
+             dark = true;
+             break;
           }
         }
       }

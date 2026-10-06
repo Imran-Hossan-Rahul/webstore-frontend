@@ -35,13 +35,13 @@ const ProcessSection = () => {
       title: "Buy / Order & Customize",
       subtitle: "Tailoring to your brand",
       descriptionParts: [
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           After you place an order, our team begins <span className="relative inline">customizing the platform<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span> to align perfectly with your brand vision.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           Development typically takes <span className="relative inline">up to 1–2 months<BrushUnderline colorClass="text-white/40" delay={0.1} /></span> for large-scale projects.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           We maintain <span className="relative inline">100% pricing transparency<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span> upfront. Zero hidden charges, ever.
         </p>
       ],
@@ -53,13 +53,13 @@ const ProcessSection = () => {
       title: "Deploy & Live Launch",
       subtitle: "Production deployment",
       descriptionParts: [
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          Once customized and thoroughly tested, it's time to go live. You have <span className="relative inline">full flexibility<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span> in how deployment happens.
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+          Once customized and thoroughly tested, it&apos;s time to go live. You have <span className="relative inline">full flexibility<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span> in how deployment happens.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          You can <span className="relative inline">deploy it yourself<BrushUnderline colorClass="text-white/40" delay={0.1} /></span> on your own server. We'll provide complete handover documentation and guide you through the entire process.
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+          You can <span className="relative inline">deploy it yourself<BrushUnderline colorClass="text-white/40" delay={0.1} /></span> on your own server. We&apos;ll provide complete handover documentation and guide you through the entire process.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           Or, our engineering team can handle <span className="relative inline">full production deployment for you<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. This covers DNS setup, SSL, server configuration, and go-live verification. <span className="text-white font-medium">No extra charge.</span>
         </p>
       ],
@@ -71,14 +71,14 @@ const ProcessSection = () => {
       title: "1 Month Free Care",
       subtitle: "Handover & stabilization",
       descriptionParts: [
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           From the <span className="relative inline">exact day of deployment<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span>, we maintain your website or web app for exactly 30 days. Completely free.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           During this period, we act as your dedicated development team. We fix bugs, push updates, resolve any issues, and ensure <span className="relative inline">zero data or security vulnerabilities<BrushUnderline colorClass="text-white/40" delay={0.1} /></span>.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          This is <span className="relative inline">our offer to you<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. No obligation. If you'd prefer to manage independently after launch, you're free to skip this. But if you want peace of mind, we're here.
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+          This is <span className="relative inline">our offer to you<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. No obligation. If you&apos;d prefer to manage independently after launch, you&apos;re free to skip this. But if you want peace of mind, we&apos;re here.
         </p>
       ],
       chips: ["30-Day Free Support", "Bug Fixes & Uploads", "Smooth Handover"],
@@ -89,13 +89,13 @@ const ProcessSection = () => {
       title: "Ongoing Maintenance",
       subtitle: "3, 6, or 12 Month Contracts",
       descriptionParts: [
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           After the free period, you can choose to <span className="relative inline">collaborate with us long-term<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span>. We offer 3, 6, or 12-month contracts based on what fits you best.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          Our developers will be <span className="relative inline">dedicated to your platform<BrushUnderline colorClass="text-white/40" delay={0.1} /></span>. They fix bugs, ship updates, and resolve new issues. You won't need to hire a separate developer.
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+          Our developers will be <span className="relative inline">dedicated to your platform<BrushUnderline colorClass="text-white/40" delay={0.1} /></span>. They fix bugs, ship updates, and resolve new issues. You won&apos;t need to hire a separate developer.
         </p>,
-        <p className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
+        <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           Pricing is <span className="relative inline">flexible and project-based<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. What you pay depends on the scale and complexity of your project. No fixed overpriced packages.
         </p>
       ],
@@ -221,7 +221,7 @@ const ProcessSection = () => {
                 >
                   <AnimatePresence>
                     {activeIndex === index && step.chips.map((chip, i) => {
-                      // Different layouts for each card index so they don't look repetitive
+                      // Different layouts for each card index so they don&apos;t look repetitive
                       const layouts = [
                         [ // Card 1
                           { left: "calc(-15% - 60px)", top: "15%", rotate: -12 }, 

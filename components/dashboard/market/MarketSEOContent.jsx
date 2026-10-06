@@ -30,7 +30,7 @@ const FAQ_ITEMS = [
     answer: (
       <>
         Due to the non-returnable nature of digital products and source code, our refund policy is strictly structured as follows:<br /><br />
-        <strong>1. Before Payment Verification:</strong> If you have placed an order but your payment is not yet verified (meaning you haven't received the download link or work hasn't started), you can get a full refund. However, you MUST call us to request the refund <em>before</em> the payment verification is completed.<br />
+        <strong>1. Before Payment Verification:</strong> If you have placed an order but your payment is not yet verified (meaning you haven&apos;t received the download link or work hasn&apos;t started), you can get a full refund. However, you MUST call us to request the refund <em>before</em> the payment verification is completed.<br />
         <strong>2. First Installment is Non-Refundable:</strong> Once your payment is verified and you receive access to the code, the first installment (deposit) is never refundable under any circumstances. Since the code is downloaded and work has begun, this amount covers the initial delivery and setup.<br />
         <strong>3. Cancellations & Disputes:</strong> If the project is canceled midway due to issues from either side, you will not be required to pay the remaining installments, but the first installment remains non-refundable.<br />
         <strong>4. Technical Defects:</strong> If you encounter a critical technical defect that we cannot fix, we will refund any extra money paid beyond the first installment. If you paid the full amount upfront, an amount equivalent to the first installment percentage will be deducted and kept, and the rest will be refunded.
