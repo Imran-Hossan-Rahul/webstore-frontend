@@ -63,6 +63,7 @@ const FAQ_ITEMS = [
 export default function PartnerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [orderId, setOrderId] = useState(null);
   const [formErrors, setFormErrors] = useState({});
   const [selectedInterest, setSelectedInterest] = useState("White-Label Development");
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
@@ -113,6 +114,7 @@ export default function PartnerPage() {
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
+      setOrderId(res.data?._id || res.data?.orderId || data?._id || data?.orderId);
     }, 1500);
   };
 
@@ -334,7 +336,14 @@ export default function PartnerPage() {
                 </div>
                 <h4 className="text-[15px] font-semibold text-brand-navy mb-2">Application Received!</h4>
                 <p className="text-[13px] text-slate-700 mb-4">Thanks! Our partnership manager will contact you within 24 hours.</p>
-                <button onClick={() => setSubmitted(false)} className="text-[13px] text-brand-blue underline focus:outline-none">Submit another</button>
+                <button onClick={() => {
+                  if (orderId) {
+                    window.location.href = '/orders/' + orderId + '?chat=true';
+                  }
+                }} className="w-full max-w-sm mx-auto h-12 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-xl font-semibold text-[15px] transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50 mb-3">
+                  <MessageCircle size={18} /> Live Chat
+                </button>
+                <button onClick={() => { setSubmitted(false); setOrderId(null); }} className="text-[13px] text-slate-500 hover:text-brand-navy hover:underline mt-2 focus:outline-none">Submit another application</button>
               </motion.div>
             ) : (
               <form className="space-y-4" onSubmit={handleSubmit} noValidate>

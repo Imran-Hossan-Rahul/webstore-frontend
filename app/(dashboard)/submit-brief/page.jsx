@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, AlertCircle, Briefcase, Handshake, Code2, ShieldCheck, Zap, CheckCircle, ChevronDown, Upload, X, Clock, Calendar, Check, Link as LinkIcon } from 'lucide-react';
+import { MessageCircle, ArrowRight, AlertCircle, Briefcase, Handshake, Code2, ShieldCheck, Zap, CheckCircle, ChevronDown, Upload, X, Clock, Calendar, Check, Link as LinkIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from "@/context/UserContext";
 import Link from 'next/link';
@@ -87,6 +87,7 @@ export default function SubmitBriefPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [refId, setRefId] = useState('');
+  const [orderId, setOrderId] = useState(null);
   const [formErrors, setFormErrors] = useState({});
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -171,6 +172,7 @@ export default function SubmitBriefPage() {
       }
 
       setRefId(generatedRefId);
+      setOrderId(res.data?._id || res.data?.orderId || data?._id || data?.orderId);
       setSubmitted(true);
       window.scrollTo({ top: formRef.current?.offsetTop - 100, behavior: 'smooth' });
     } catch (err) {
@@ -262,7 +264,14 @@ export default function SubmitBriefPage() {
                     <li className="flex gap-3 text-[14px] text-slate-700 font-medium"><span className="font-bold text-brand-blue">3.</span> We'll provide a technical proposal and quote.</li>
                   </ol>
                 </div>
-                <button onClick={() => { setSubmitted(false); setRefId(''); }} className="text-[15px] font-medium text-brand-blue hover:underline focus:outline-none focus:ring-2 focus:ring-brand-blue rounded-md px-2 py-1">Submit another brief</button>
+                <button onClick={() => {
+                  if (orderId) {
+                    window.location.href = '/orders/' + orderId + '?chat=true';
+                  }
+                }} className="w-full max-w-sm mx-auto h-12 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-xl font-semibold text-[15px] transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50 mb-4">
+                  <MessageCircle size={18} /> Live Chat
+                </button>
+                <button onClick={() => { setSubmitted(false); setRefId(''); setOrderId(null); }} className="text-[15px] font-medium text-slate-500 hover:text-brand-navy hover:underline focus:outline-none focus:ring-2 focus:ring-brand-blue rounded-md px-2 py-1 mt-2">Submit another brief</button>
               </motion.div>
             ) : (
               <>

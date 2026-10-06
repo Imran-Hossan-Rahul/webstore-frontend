@@ -114,6 +114,7 @@ const CustomSelect = ({ id, name, options, placeholder, error, value, onChange }
 export default function BookCallPage() {
   const { user } = useUser();
   const [submittedRef, setSubmittedRef] = useState(null);
+  const [orderId, setOrderId] = useState(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -227,6 +228,7 @@ export default function BookCallPage() {
       track("form_submit_success", { projectType: formData.get('projectType') });
       setSubmittedEmail(email);
       setSubmittedRef(generatedRefId);
+      setOrderId(res._id || res.orderId);
       setSubmitted(true);
     } catch (err) {
       setSubmitError(err.message || "Failed to submit request.");
@@ -393,9 +395,13 @@ export default function BookCallPage() {
                     </div>
 
                     <div className="space-y-4 max-w-sm mx-auto">
-                      <a href={`https://wa.me/${CONFIG.WHATSAPP_NUMBER.replace(/\+/g, '')}?text=Hi%20Codalina,%20I%20just%20submitted%20a%20request%20for%20a%20strategy%20call.`} target="_blank" rel="noopener noreferrer" className="w-full h-12 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-xl font-semibold text-[15px] transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#25D366]/50">
-                        <MessageCircle size={18} /> Message on WhatsApp
-                      </a>
+                      <button onClick={() => {
+                          if (orderId) {
+                            window.location.href = '/orders/' + orderId + '?chat=true';
+                          }
+                        }} className="w-full h-12 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-xl font-semibold text-[15px] transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/50">
+                          <MessageCircle size={18} /> Live Chat
+                        </button>
                       <div className="flex flex-col gap-2 pt-2">
                         
                         <p className="text-[12px] text-slate-500 mt-2">Don't see our email? Check your spam or promotions folder.</p>
