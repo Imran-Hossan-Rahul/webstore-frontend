@@ -28,6 +28,16 @@ import {
 const COLORS = ['#00FFFF', '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899'];
 const ALT_COLORS = ['#8B5CF6', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#00FFFF', '#3B82F6'];
 
+// Custom Hover List Component
+const HoverList = ({ title, items, renderItem, className = "" }) => (
+  <div className={`absolute z-50 left-1/2 -translate-x-1/2 top-[105%] w-full min-w-[280px] max-h-[250px] overflow-y-auto bg-[#0a0a0a] border border-white/10 rounded-xl p-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-[0_10px_40px_rgba(0,0,0,0.8)] custom-scrollbar translate-y-2 group-hover:translate-y-0 ${className}`}>
+    <h4 className="text-[11px] font-bold text-brand-cyan mb-2 uppercase tracking-wider sticky top-0 bg-[#0a0a0a] pb-2 z-10 border-b border-white/5">{title}</h4>
+    <div className="space-y-1.5 flex flex-col">
+      {items.length > 0 ? items.map(renderItem) : <div className="text-xs text-white/30 text-center py-4">No data</div>}
+    </div>
+  </div>
+);
+
 export default function AdminPage() {
   const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
@@ -101,7 +111,6 @@ export default function AdminPage() {
 
     let totalRevenue = 0;
     let pendingRevenue = 0;
-    let activeOrdersCount = 0;
     let totalPaidOrders = 0;
 
     const statusCounts = {};
@@ -109,27 +118,31 @@ export default function AdminPage() {
     const revenueByDateMap = {};
     const paymentMethods = {};
     const projectPhases = {};
-    const clientOrderCounts = {};
+    const clientDetails = {};
 
     filteredOrders.forEach(order => {
       const amount = order.total_amount || 0;
+      const isPaid = order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active';
       
       // Clients Tracking
-      const clientKey = (order.email || order.customer_name || 'guest').toLowerCase();
-      clientOrderCounts[clientKey] = (clientOrderCounts[clientKey] || 0) + 1;
+      const clientKey = (order.email || order.customer_name || 'Guest User').toLowerCase();
+      if (!clientDetails[clientKey]) {
+        clientDetails[clientKey] = {
+          name: order.customer_name || 'Guest',
+          email: order.email || 'N/A',
+          count: 0,
+          spent: 0
+        };
+      }
+      clientDetails[clientKey].count += 1;
+      if (isPaid) clientDetails[clientKey].spent += amount;
 
       // Revenue
-      const isPaid = order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active';
       if (isPaid) {
         totalRevenue += amount;
         totalPaidOrders++;
       } else if (order.payment_status !== 'Failed' && order.status !== 'Cancelled') {
         pendingRevenue += (order.payment_due || amount);
-      }
-
-      // Active
-      if (['Confirmed', 'In Collaboration', 'Provisioning', 'Active'].includes(order.status)) {
-        activeOrdersCount++;
       }
 
       // Status Distribution
@@ -168,35 +181,44 @@ export default function AdminPage() {
     const statusData = Object.keys(statusCounts).map(name => ({ name, value: statusCounts[name] }));
     const paymentData = Object.keys(paymentMethods).map(name => ({ name, value: paymentMethods[name] }));
     
-    // Ordered Project Phases
     const phaseOrder = ['Discovery', 'Design', 'Development', 'Testing', 'Launch'];
-    const phaseData = phaseOrder.map(name => ({
-      name,
-      count: projectPhases[name] || 0
-    }));
+    const phaseData = phaseOrder.map(name => ({ name, count: projectPhases[name] || 0 }));
 
     const topProducts = Object.keys(productSales)
       .map(name => ({ name, revenue: productSales[name] }))
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
 
-    const totalClients = Object.keys(clientOrderCounts).length;
-    const repeatClientsCount = Object.values(clientOrderCounts).filter(count => count > 1).length;
-    const repeatRate = totalClients > 0 ? ((repeatClientsCount / totalClients) * 100).toFixed(1) : 0;
+    const allClientsList = Object.values(clientDetails).sort((a, b) => b.spent - a.spent);
+    const repeatClientsList = allClientsList.filter(c => c.count > 1);
+    
+    const totalClients = allClientsList.length;
+    const repeatRate = totalClients > 0 ? ((repeatClientsList.length / totalClients) * 100).toFixed(1) : 0;
     const averageOrderValue = totalPaidOrders > 0 ? (totalRevenue / totalPaidOrders) : 0;
+
+    // Detailed Lists for Modals/Hover states
+    const verifiedOrdersList = filteredOrders.filter(o => o.payment_status === 'Verified' || o.status === 'Delivered').sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 20);
+    const activeOrdersList = filteredOrders.filter(o => ['Confirmed', 'In Collaboration', 'Provisioning', 'Active'].includes(o.status));
+    const highestOrdersList = [...filteredOrders].sort((a, b) => b.total_amount - a.total_amount).slice(0, 10);
 
     return {
       totalRevenue,
       pendingRevenue,
       totalClients,
       repeatRate,
-      activeOrdersCount,
       averageOrderValue,
       revenueTimeline,
       statusData,
       paymentData,
       phaseData,
-      topProducts
+      topProducts,
+      
+      // Hover Lists
+      allClientsList,
+      repeatClientsList,
+      verifiedOrdersList,
+      activeOrdersList,
+      highestOrdersList
     };
   }, [filteredOrders]);
 
@@ -222,7 +244,8 @@ export default function AdminPage() {
         <>
           {/* Main Key Metrics */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
+            
+            <div className="relative group p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-green-500/10 text-green-400">
                   <DollarSign className="w-6 h-6" />
@@ -230,9 +253,23 @@ export default function AdminPage() {
               </div>
               <h3 className="text-white/50 text-[14px] font-medium mb-1">Total Verified Revenue</h3>
               <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.totalRevenue)}</p>
+              
+              <HoverList 
+                title="Recent Verified Orders" 
+                items={analytics.verifiedOrdersList} 
+                renderItem={(order, i) => (
+                  <div key={i} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5 last:border-0 hover:bg-white/5 px-2 rounded-md">
+                    <div>
+                      <span className="text-brand-cyan font-mono">#{order._id?.slice(-5).toUpperCase()}</span>
+                      <span className="text-white/60 ml-2">{order.customer_name || 'Guest'}</span>
+                    </div>
+                    <span className="text-green-400 font-medium">{formatCurrency(order.total_amount)}</span>
+                  </div>
+                )} 
+              />
             </div>
             
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
+            <div className="relative group p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-brand-cyan/10 text-brand-cyan">
                   <TrendingUp className="w-6 h-6" />
@@ -240,29 +277,93 @@ export default function AdminPage() {
               </div>
               <h3 className="text-white/50 text-[14px] font-medium mb-1">Average Order Value</h3>
               <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.averageOrderValue)}</p>
+              
+              <HoverList 
+                title="Highest Value Orders" 
+                items={analytics.highestOrdersList} 
+                renderItem={(order, i) => (
+                  <div key={i} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5 last:border-0 hover:bg-white/5 px-2 rounded-md">
+                    <div>
+                      <span className="text-brand-cyan font-mono">#{order._id?.slice(-5).toUpperCase()}</span>
+                      <span className="text-white/60 ml-2">{order.customer_name || 'Guest'}</span>
+                    </div>
+                    <span className="text-white font-medium">{formatCurrency(order.total_amount)}</span>
+                  </div>
+                )} 
+              />
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
+            <div className="relative group p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
                   <Activity className="w-6 h-6" />
                 </div>
               </div>
               <h3 className="text-white/50 text-[14px] font-medium mb-1">Active Projects / Orders</h3>
-              <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.activeOrdersCount}</p>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.activeOrdersList.length}</p>
+
+              <HoverList 
+                title="Active Projects" 
+                items={analytics.activeOrdersList} 
+                renderItem={(order, i) => (
+                  <div key={i} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5 last:border-0 hover:bg-white/5 px-2 rounded-md">
+                    <div className="flex flex-col">
+                      <span className="text-white">{order.items?.[0]?.product_id?.title || order.items?.[0]?.product_name || 'Custom Project'}</span>
+                      <span className="text-white/40">{order.customer_name}</span>
+                    </div>
+                    <span className="text-blue-400 text-[10px] uppercase bg-blue-500/10 px-2 py-1 rounded">{order.status}</span>
+                  </div>
+                )} 
+              />
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
+            <div className="relative group p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
                   <Users className="w-6 h-6" />
                 </div>
-                <div className="bg-purple-500/10 px-2 py-1 rounded-md text-xs font-bold text-purple-400 flex items-center gap-1">
-                  <Repeat className="w-3 h-3"/> {analytics.repeatRate}% Repeat
+                
+                {/* Repeat Badge acts as its own hover group */}
+                <div className="relative group/badge">
+                  <div className="bg-purple-500/10 px-2 py-1 rounded-md text-xs font-bold text-purple-400 flex items-center gap-1 cursor-help hover:bg-purple-500/20 transition-colors">
+                    <Repeat className="w-3 h-3"/> {analytics.repeatRate}% Repeat
+                  </div>
+                  
+                  {/* Repeat Clients Hover Modal */}
+                  <HoverList 
+                    className="group-hover/badge:opacity-100 group-hover/badge:visible left-auto right-0 translate-x-0 origin-top-right w-[260px]"
+                    title="Repeat Customers" 
+                    items={analytics.repeatClientsList} 
+                    renderItem={(client, i) => (
+                      <div key={i} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5 last:border-0 hover:bg-white/5 px-2 rounded-md">
+                        <div className="flex flex-col">
+                          <span className="text-white">{client.name}</span>
+                          <span className="text-white/40">{client.email}</span>
+                        </div>
+                        <span className="text-purple-400 font-bold bg-purple-500/10 px-2 py-1 rounded-full">{client.count} Orders</span>
+                      </div>
+                    )} 
+                  />
                 </div>
+
               </div>
               <h3 className="text-white/50 text-[14px] font-medium mb-1">Unique Clients</h3>
               <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.totalClients}</p>
+
+              {/* All Clients Hover Modal */}
+              <HoverList 
+                title="All Clients (By Spend)" 
+                items={analytics.allClientsList.slice(0, 15)} 
+                renderItem={(client, i) => (
+                  <div key={i} className="flex justify-between items-center text-xs py-1.5 border-b border-white/5 last:border-0 hover:bg-white/5 px-2 rounded-md">
+                    <div className="flex flex-col">
+                      <span className="text-white">{client.name}</span>
+                      <span className="text-white/40">{client.email}</span>
+                    </div>
+                    <span className="text-green-400">{formatCurrency(client.spent)}</span>
+                  </div>
+                )} 
+              />
             </div>
           </div>
 
