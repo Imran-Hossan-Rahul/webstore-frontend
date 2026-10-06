@@ -73,9 +73,31 @@ export default function AdminPage() {
     fetchData();
   }, [router]);
 
+  // Filter out legacy physical/electronics orders
+  const filteredOrders = useMemo(() => {
+    return orders.filter(order => {
+      if (order.courier_name || order.tracking_id || order.delivery_charge > 0) return false;
+      
+      const isLegacy = (order.items || []).some(item => {
+        const title = (item.product_id?.title || item.product_name || '').toLowerCase();
+        return title.includes('geeoo') || 
+               title.includes('smartwatch') || 
+               title.includes('bluetooth') || 
+               title.includes('tws') || 
+               title.includes('earbud') || 
+               title.includes('headphone') ||
+               title.includes('waterproof') ||
+               title.includes('neckband') ||
+               title.includes('speaker') ||
+               title.includes('powerbank');
+      });
+      return !isLegacy;
+    });
+  }, [orders]);
+
   // Derived Analytics Data
   const analytics = useMemo(() => {
-    if (!orders.length) return null;
+    if (!filteredOrders.length) return null;
 
     let totalRevenue = 0;
     let pendingRevenue = 0;
@@ -89,7 +111,7 @@ export default function AdminPage() {
     const projectPhases = {};
     const clientOrderCounts = {};
 
-    orders.forEach(order => {
+    filteredOrders.forEach(order => {
       const amount = order.total_amount || 0;
       
       // Clients Tracking
@@ -176,7 +198,7 @@ export default function AdminPage() {
       phaseData,
       topProducts
     };
-  }, [orders]);
+  }, [filteredOrders]);
 
   if (loading) {
     return (
@@ -363,7 +385,7 @@ export default function AdminPage() {
 
             {/* Top Selling Products */}
             <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
-              <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Package className="w-5 h-5 text-green-400" /> Top Selling Products</h3>
+              <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Package className="w-5 h-5 text-green-400" /> Top Selling Digital Assets</h3>
               <p className="text-xs text-white/40 mb-4">Highest revenue generating assets</p>
               {analytics.topProducts.length > 0 ? (
                 <div className="flex-1 min-h-[250px]">
@@ -402,7 +424,7 @@ export default function AdminPage() {
               <button onClick={() => router.push('/admin/orders')} className="text-[13px] text-brand-cyan hover:text-white transition-colors bg-brand-cyan/10 px-4 py-2 rounded-lg">View All Orders</button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-              {orders.slice(0, 5).map((order) => (
+              {filteredOrders.slice(0, 5).map((order) => (
                 <div key={order._id} className={"flex flex-col gap-3 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"}>
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs text-brand-cyan">#{order._id?.slice(-6).toUpperCase()}</span>
