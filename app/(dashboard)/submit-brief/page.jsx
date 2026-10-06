@@ -157,14 +157,17 @@ export default function SubmitBriefPage() {
     setIsSubmitting(true);
     
     try {
-      // TODO: Replace with real API endpoint
-      // const payload = Object.fromEntries(formData);
-      // payload.features = selectedFeatures;
-      // await api.post('/briefs', payload);
+      const payload = Object.fromEntries(formData);
+      payload.features = selectedFeatures;
       
-      await new Promise(res => setTimeout(res, 1500));
+      const res = await api.post('/market/orders/custom-brief', payload);
+      const data = res.data;
       
-      const generatedRefId = `CB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      let generatedRefId = `CB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      if (data && data._id) {
+         generatedRefId = `#${data._id.toString().slice(-8).toUpperCase()}`;
+      }
+
       setRefId(generatedRefId);
       setSubmitted(true);
       window.scrollTo({ top: formRef.current?.offsetTop - 100, behavior: 'smooth' });
@@ -244,6 +247,11 @@ export default function SubmitBriefPage() {
                 </div>
                 <h3 className="text-[24px] font-display font-semibold text-brand-navy mb-2">Brief Received!</h3>
                 <p className="text-[15px] text-slate-600 mb-6 font-medium">Reference ID: <span className="font-bold text-brand-navy">{refId}</span></p>
+                  <div className="bg-brand-blue/5 border border-brand-blue/20 rounded-[12px] p-4 text-center max-w-sm mx-auto mb-8">
+                    <p className="text-[14px] text-brand-navy font-medium">
+                      You can now track the status of this brief and chat with our team directly from your <Link href="/profile?tab=custom" className="text-brand-blue font-bold hover:underline">Profile &rarr; Custom tab</Link>.
+                    </p>
+                  </div>
                 <div className="bg-white border border-slate-200 rounded-[16px] p-6 text-left max-w-sm mx-auto mb-8 shadow-sm">
                   <h4 className="font-semibold text-brand-navy mb-4">What happens next?</h4>
                   <ol className="space-y-4">
@@ -638,3 +646,4 @@ export default function SubmitBriefPage() {
     </div>
   );
 }
+

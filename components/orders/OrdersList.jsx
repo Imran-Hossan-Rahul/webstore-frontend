@@ -19,7 +19,7 @@ const STATUS_STYLE = {
 
 const ITEMS_PER_PAGE = 10;
 
-export default function OrdersList({ isEmbedded = false, isProjectsMode = false }) {
+export default function OrdersList({ isEmbedded = false, isProjectsMode = false, isCustomMode = false }) {
   const { user, isGuest } = useUser();
   const router = useRouter();
   const [orders, setOrders] = useState([]);
@@ -115,6 +115,9 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
   };
 
   const filtered = orders.filter(o => {
+      if (isCustomMode) {
+        if (o.payment_method !== 'Custom Project' && o.source_channel !== 'Custom Brief') return false;
+      }
     if (isProjectsMode) {
       const isPaid = o.payment_status === 'Verified' || o.status === 'Completed' || o.status === 'Delivered';
       if (!isPaid) return false;
@@ -152,8 +155,8 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             {!isEmbedded && (
               <h1 className="text-[18px] md:text-[20px] font-display font-medium text-brand-navy flex items-center gap-2">
-                {isProjectsMode ? <Briefcase size={22} className="text-brand-navy" /> : <Package size={22} className="text-brand-navy" />}
-                {isProjectsMode ? 'My Projects' : 'My Orders'}
+                {isCustomMode ? <Briefcase size={22} className="text-brand-navy" /> : isProjectsMode ? <Briefcase size={22} className="text-brand-navy" /> : <Package size={22} className="text-brand-navy" />}
+                {isCustomMode ? 'Custom Requests' : isProjectsMode ? 'My Projects' : 'My Orders'}
               </h1>
             )}
             
@@ -171,7 +174,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
               </div>
               
               {/* Filter */}
-              {!isProjectsMode && (
+              {(!isProjectsMode && !isCustomMode) && (
                 <div className="relative w-full flex-1">
                   <Filter size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <select
@@ -212,8 +215,8 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
         {!user && (
           <div className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] p-6 mb-6 shadow-sm">
             <h3 className="text-[16px] font-display font-medium text-brand-navy mb-2 flex items-center">
-              {isProjectsMode ? <Briefcase className="w-5 h-5 mr-2 text-brand-blue" /> : <Package className="w-5 h-5 mr-2 text-brand-blue" />}
-              {isProjectsMode ? 'Track Your Project' : 'Track Your Order'}
+              {isCustomMode ? <Briefcase className="w-5 h-5 mr-2 text-brand-blue" /> : isProjectsMode ? <Briefcase className="w-5 h-5 mr-2 text-brand-blue" /> : <Package className="w-5 h-5 mr-2 text-brand-blue" />}
+              {isCustomMode ? 'Track Request' : isProjectsMode ? 'Track Your Project' : 'Track Your Order'}
             </h3>
             <p className="text-[13px] font-sans text-slate-500  mb-4">
               If you are not logged in and forgot or didn&apos;t see your order, enter your Phone Number or Order ID below to track it.
@@ -256,8 +259,8 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
           </div>
         ) : paginated.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-slate-400">
-            {isProjectsMode ? <Briefcase size={40} className="mb-3 opacity-30" /> : <ShoppingBag size={40} className="mb-3 opacity-30" />}
-            <p className="text-[14px] font-sans font-medium">{isProjectsMode ? 'No projects found' : 'No orders found'}</p>
+            {isCustomMode ? <Briefcase size={40} className="mb-3 opacity-30" /> : isProjectsMode ? <Briefcase size={40} className="mb-3 opacity-30" /> : <ShoppingBag size={40} className="mb-3 opacity-30" />}
+            <p className="text-[14px] font-sans font-medium">{isCustomMode ? 'No custom requests found' : isProjectsMode ? 'No projects found' : 'No orders found'}</p>
             <button
               onClick={() => router.push('/')}
               className="mt-4 text-brand-blue text-[14px] font-sans hover:underline"
@@ -443,6 +446,9 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
     </div>
   );
 }
+
+
+
 
 
 
