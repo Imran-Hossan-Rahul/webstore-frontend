@@ -5,6 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { api } from "@/utils/api";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
+import { useUser } from "@/context/UserContext";
+import OrdersList from "@/components/orders/OrdersList";
+import { AlertTriangle } from "lucide-react";
+
 
 // === CONFIGURATION ===
 const CONFIG = {
@@ -108,6 +112,9 @@ const CustomSelect = ({ id, name, options, placeholder, error, value, onChange }
 };
 
 export default function BookCallPage() {
+  const { user } = useUser();
+  const [submittedRef, setSubmittedRef] = useState(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
@@ -172,10 +179,7 @@ export default function BookCallPage() {
     const errors = validateForm(formData);
     
     // Check honeypot field (D15)
-    if (formData.get('bot_field')) {
-      // Silently fail for bots
-      return;
-    }
+    if (formData.get('bot_field')) return;
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -190,34 +194,43 @@ export default function BookCallPage() {
     const email = formData.get('email');
     
     try {
-      const res = await fetch('/api/book-call', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const payload = {
           name: formData.get('name'),
           email,
-          phone: formData.get('phone'),
-          whatsapp: formData.get('whatsapp'),
-          projectType: formData.get('projectType'),
+          phone: formData.get('phone') || formData.get('whatsapp'),
+          contactMethod: formData.get('whatsapp') ? 'WhatsApp' : 'Email',
+          projectType: 'Strategy Call - ' + formData.get('projectType'),
           budget: formData.get('budget'),
           timeline: formData.get('timeline'),
-          topic: formData.get('topic')
-        })
-      });
+          projectDetails: formData.get('topic'),
+          features: [],
+          source: 'Strategy Call Booking'
+      };
 
-      const data = await res.json();
+      const res = await api.post('/market/orders/custom-brief', payload);
       
-      if (!res.ok) {
-        throw new Error(data.error || "Failed to submit request.");
+      let generatedRefId = `CB-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`;
+      if (res && res._id) {
+         generatedRefId = `#${res._id.toString().slice(-8).toUpperCase()}`;
+      }
+      
+      if (!user && res && res._id) {
+         try {
+           const existing = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+           if (!existing.includes(res._id)) {
+             existing.push(res._id);
+             localStorage.setItem('codalina_guest_orders', JSON.stringify(existing));
+           }
+         } catch(e) {}
       }
 
       track("form_submit_success", { projectType: formData.get('projectType') });
       setSubmittedEmail(email);
+      setSubmittedRef(generatedRefId);
       setSubmitted(true);
     } catch (err) {
-      console.error(err);
-      setSubmitError("Something went wrong. Please try again or message us on WhatsApp.");
-      track("form_submit_error", { reason: "server_error", message: err.message });
+      setSubmitError(err.message || "Failed to submit request.");
+      track("form_submit_error", { reason: "api_error" });
     } finally {
       setIsSubmitting(false);
     }
@@ -452,6 +465,15 @@ export default function BookCallPage() {
                         {formErrors.topic && <p className="text-red-500 text-[13px] font-medium mt-1.5">{formErrors.topic}</p>}
                       </div>
 
+                      
+                      {!user && (
+                        <div className="flex items-start gap-3 p-4 mb-4 rounded-[12px] bg-amber-50 border border-amber-200/50">
+                          <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+                          <p className="text-[12.5px] leading-relaxed text-amber-700/80 font-medium">
+                            <strong className="text-amber-800">You are not logged in.</strong> Please note that if you clear your browser data, you might lose access to track this request. Be sure to save the Reference ID provided after submission!
+                          </p>
+                        </div>
+                      )}
                       <div className="pt-2">
                         <button type="submit" disabled={isSubmitting} className="w-full h-14 bg-brand-navy text-white rounded-xl font-semibold text-[16px] hover:bg-brand-blue transition-all focus:outline-none flex items-center justify-center gap-2 disabled:opacity-70 shadow-md">
                           {isSubmitting ? (
@@ -476,7 +498,17 @@ export default function BookCallPage() {
         <div className="max-w-[1200px] mx-auto px-4 md:px-6 mt-16 md:mt-24">
           
           {/* Stats & Logos */}
-          {CONFIG.SHOW_SOCIAL_PROOF && (
+          
+        {/* Tracking List */}
+        <div className="max-w-[1200px] mx-auto px-4 md:px-6 mt-16 md:mt-24">
+          <div className="mb-8">
+            <h2 className="text-[24px] font-display font-medium text-brand-navy">Your Strategy Calls & Briefs</h2>
+            {!user && <p className="text-[14px] text-slate-500 mt-1">Showing requests stored on this device.</p>}
+          </div>
+          <OrdersList isEmbedded={true} isCustomMode={true} />
+        </div>
+
+        {CONFIG.SHOW_SOCIAL_PROOF && (
             <div className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[24px] p-8 lg:p-10 mb-12">
               <div className="grid grid-cols-3 gap-6 text-center border-b border-brand-navy/10 pb-8 mb-8">
                 <div><div className="text-[28px] md:text-[36px] font-display font-semibold text-brand-navy">{CONFIG.STATS.projects}</div><div className="text-[14px] text-slate-600 mt-1 font-medium">Projects Delivered</div></div>

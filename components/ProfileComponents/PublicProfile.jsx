@@ -221,7 +221,11 @@ export default function PublicProfile({ username }) {
         <h2 className="text-[24px] font-display font-medium text-brand-navy ">Profile Not Found</h2>
         <p className="text-[15px] font-sans text-slate-500  mt-2">The user you are looking for does not exist.</p>
         <Link href="/" className="mt-6 text-brand-blue hover:underline text-[15px] font-medium">Go back home</Link>
-      </div>
+                  <Link href="/book-call" className="group flex flex-col p-6 rounded-[20px] bg-white border border-brand-navy/[0.08] hover:border-brand-blue/30 transition-all shadow-sm hover:shadow-md cursor-pointer">
+                    <h3 className="font-display font-medium text-brand-navy group-hover:text-brand-blue transition-colors mb-2 text-[16px]">Strategy Call</h3>
+                    <p className="text-[13px] text-slate-500">Talk directly to the founder. Get architecture and scaling advice for your next big idea.</p>
+                  </Link>
+                </div>
     );
   }
 
@@ -623,7 +627,7 @@ export default function PublicProfile({ username }) {
               <div className="border-transparent">
                 <h3 className="text-[20px] font-display font-medium text-brand-navy mb-4">Custom & Partnerships</h3>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                   <Link href="/submit-brief" className="group flex flex-col p-6 rounded-[20px] bg-white border border-brand-navy/[0.08] hover:border-brand-blue/30 transition-all shadow-sm hover:shadow-md cursor-pointer">
                     <h3 className="font-display font-medium text-brand-navy group-hover:text-brand-blue transition-colors mb-2 text-[16px]">Submit New Brief</h3>
                     <p className="text-[13px] text-slate-500">Need a custom website or software? Submit your requirements directly to our engineering team.</p>
