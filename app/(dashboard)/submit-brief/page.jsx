@@ -1,10 +1,11 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowRight, Briefcase, Handshake, Code2, ShieldCheck, Zap, CheckCircle, ChevronDown, Upload, X, Clock, Calendar, Check, Link as LinkIcon } from 'lucide-react';
+import { ArrowRight, AlertCircle, Briefcase, Handshake, Code2, ShieldCheck, Zap, CheckCircle, ChevronDown, Upload, X, Clock, Calendar, Check, Link as LinkIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from "@/context/UserContext";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import OrdersList from '@/components/orders/OrdersList';
 
 const PROJECT_TYPES = ["Website", "Web App", "SaaS Platform", "E-commerce", "Mobile App", "Redesign", "MVP", "Other"];
 const TIMELINES = ["ASAP", "Within 1 month", "1–3 months", "3+ months", "Flexible"];
@@ -646,4 +647,8 @@ export default function SubmitBriefPage() {
     </div>
   );
 }
+
+
+
+
 

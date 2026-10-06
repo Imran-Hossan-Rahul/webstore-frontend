@@ -1,8 +1,11 @@
 "use client";
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Briefcase, Users, Handshake, Code2, Globe, ShieldCheck, Zap, ChevronDown, CheckCircle } from 'lucide-react';
+import { ArrowRight, AlertCircle, Briefcase, Users, Handshake, Code2, Globe, ShieldCheck, Zap, ChevronDown, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUser } from '@/context/UserContext';
+import OrdersList from '@/components/orders/OrdersList';
+import { api } from '@/utils/api';
 
 // TODO: Replace these placeholders with real data when available
 const PARTNER_CONFIG = {
@@ -499,3 +502,8 @@ export default function PartnerPage() {
     </div>
   );
 }
+
+
+
+
+
