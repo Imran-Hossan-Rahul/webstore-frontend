@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/utils/api";
 import { 
@@ -9,33 +9,141 @@ import {
   ShoppingCart, 
   ShieldAlert, 
   ArrowUpRight,
-  Activity
+  Activity,
+  DollarSign,
+  Package,
+  Clock,
+  CheckCircle2,
+  Calendar,
+  PieChart as PieChartIcon
 } from "lucide-react";
+import { 
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
+  BarChart, Bar, PieChart, Pie, Cell, Legend
+} from 'recharts';
+
+const COLORS = ['#00FFFF', '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899'];
 
 export default function AdminPage() {
   const [user, setUser] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  // Basic auth check (simulated for UI demonstration)
   useEffect(() => {
-    const checkAuth = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get("/user/profile");
-        if (res.success && (res.data.role === 'admin' || res.data.role === 'superadmin')) {
-          setUser(res.data);
+        const [profileRes, ordersRes, productsRes] = await Promise.all([
+          api.get("/user/profile").catch(() => null),
+          api.get("/market/orders/all?limit=1000").catch(() => []),
+          api.get("/market/products").catch(() => [])
+        ]);
+
+        if (profileRes?.success && (profileRes.data.role === 'admin' || profileRes.data.role === 'superadmin')) {
+          setUser(profileRes.data);
         } else {
           router.push('/auth/login');
+          return;
         }
+
+        let ordersData = [];
+        if (Array.isArray(ordersRes)) ordersData = ordersRes;
+        else if (ordersRes?.data && Array.isArray(ordersRes.data)) ordersData = ordersRes.data;
+        else if (ordersRes?.orders && Array.isArray(ordersRes.orders)) ordersData = ordersRes.orders;
+
+        let productsData = [];
+        if (Array.isArray(productsRes)) productsData = productsRes;
+        else if (productsRes?.data && Array.isArray(productsRes.data)) productsData = productsRes.data;
+        else if (productsRes?.products && Array.isArray(productsRes.products)) productsData = productsRes.products;
+
+        setOrders(ordersData);
+        setProducts(productsData);
+
       } catch (err) {
-        console.error("Admin Auth Check Failed", err);
-        router.push('/auth/login');
+        console.error("Dashboard Fetch Failed", err);
       } finally {
         setLoading(false);
       }
     };
-    checkAuth();
+    fetchData();
   }, [router]);
+
+  // Derived Analytics Data
+  const analytics = useMemo(() => {
+    if (!orders.length) return null;
+
+    let totalRevenue = 0;
+    let pendingRevenue = 0;
+    let uniqueClients = new Set();
+    let activeOrdersCount = 0;
+
+    const statusCounts = {};
+    const productSales = {};
+    const revenueByDateMap = {};
+
+    orders.forEach(order => {
+      const amount = order.total_amount || 0;
+      
+      // Clients
+      if (order.email) uniqueClients.add(order.email.toLowerCase());
+      else if (order.customer_name) uniqueClients.add(order.customer_name.toLowerCase());
+
+      // Revenue
+      if (order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active') {
+        totalRevenue += amount;
+      } else if (order.payment_status !== 'Failed' && order.status !== 'Cancelled') {
+        pendingRevenue += (order.payment_due || amount);
+      }
+
+      // Active
+      if (['Confirmed', 'In Collaboration', 'Provisioning', 'Active'].includes(order.status)) {
+        activeOrdersCount++;
+      }
+
+      // Status Distribution
+      const stat = order.status || 'Unknown';
+      statusCounts[stat] = (statusCounts[stat] || 0) + 1;
+
+      // Product Sales Breakdown
+      if (order.items && Array.isArray(order.items)) {
+        order.items.forEach(item => {
+          const pName = item.product_id?.title || item.product_name || 'Custom Service';
+          productSales[pName] = (productSales[pName] || 0) + (item.price_at_purchase * item.quantity);
+        });
+      }
+
+      // Timeline (Revenue grouped by day)
+      const date = new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      if (!revenueByDateMap[date]) revenueByDateMap[date] = { date, revenue: 0, orders: 0 };
+      if (order.payment_status === 'Verified') {
+        revenueByDateMap[date].revenue += amount;
+      }
+      revenueByDateMap[date].orders += 1;
+    });
+
+    const revenueTimeline = Object.values(revenueByDateMap).sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+    const statusData = Object.keys(statusCounts).map(key => ({
+      name: key,
+      value: statusCounts[key]
+    }));
+
+    const topProducts = Object.keys(productSales)
+      .map(key => ({ name: key, revenue: productSales[key] }))
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 5);
+
+    return {
+      totalRevenue,
+      pendingRevenue,
+      totalClients: uniqueClients.size,
+      activeOrdersCount,
+      revenueTimeline,
+      statusData,
+      topProducts
+    };
+  }, [orders]);
 
   if (loading) {
     return (
@@ -45,92 +153,206 @@ export default function AdminPage() {
     );
   }
 
-  const stats = [
-    { label: "Total Revenue", value: "$124,500", trend: "+14.5%", icon: TrendingUp, color: "text-green-400", bg: "bg-green-400/10" },
-    { label: "Active Subscriptions", value: "842", trend: "+5.2%", icon: Users, color: "text-blue-400", bg: "bg-blue-400/10" },
-    { label: "Pending Orders", value: "14", trend: "-2.1%", icon: ShoppingCart, color: "text-brand-cyan", bg: "bg-brand-cyan/10" },
-    { label: "Security Alerts", value: "3", trend: "+1", icon: ShieldAlert, color: "text-red-400", bg: "bg-red-400/10" },
-  ];
+  const formatCurrency = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
       
       {/* Welcome Banner */}
       <div className="relative p-8 rounded-2xl bg-gradient-to-br from-brand-cyan/10 to-blue-600/10 border border-white/5 overflow-hidden">
-        <div className="relative z-10">
-          <h2 className="text-3xl font-display font-medium text-white mb-2">
-            Welcome back, {user?.name || 'Admin'}
-          </h2>
-          <p className="text-white/60 text-[15px] max-w-xl">
-            Here&apos;s what&apos;s happening with your platform today. You have 14 pending orders and 3 security alerts that need your attention.
-          </p>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-display font-medium text-white mb-2">
+              Welcome back, {user?.name || 'Admin'}
+            </h2>
+            <p className="text-white/60 text-[15px] max-w-xl">
+              Here is the live performance overview of your digital agency. You have <strong className="text-brand-cyan">{analytics?.activeOrdersCount || 0} active projects</strong> in collaboration.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+             <button onClick={() => router.push('/admin/orders')} className="px-5 py-2.5 bg-brand-cyan text-black font-semibold text-sm rounded-xl shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.4)] transition-all">
+               Manage Orders
+             </button>
+          </div>
         </div>
-        
-        {/* Decorative elements */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-brand-cyan/20 to-transparent blur-3xl opacity-50" />
+        <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-brand-cyan/20 to-transparent blur-3xl opacity-50 pointer-events-none" />
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
-            <div className="flex items-start justify-between mb-4">
-              <div className={`p-3 rounded-xl ${stat.bg}`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
+      {!analytics ? (
+        <div className="p-12 text-center text-white/50 border border-white/10 rounded-2xl bg-[#080808]">
+          <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
+          <p>No data available yet. Start selling products to see analytics.</p>
+        </div>
+      ) : (
+        <>
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-green-500/10 text-green-400">
+                  <DollarSign className="w-6 h-6" />
+                </div>
               </div>
-              <span className="flex items-center gap-1 text-[13px] font-medium text-green-400 bg-green-400/10 px-2 py-1 rounded-full">
-                {stat.trend} <ArrowUpRight className="w-3 h-3" />
-              </span>
+              <h3 className="text-white/50 text-[14px] font-medium mb-1">Total Verified Revenue</h3>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.totalRevenue)}</p>
             </div>
-            <h3 className="text-white/50 text-[14px] font-medium mb-1">{stat.label}</h3>
-            <p className="text-3xl font-display font-semibold text-white tracking-tight">{stat.value}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Recent Activity & Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="col-span-2 p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-medium text-white">Recent Activity</h3>
-            <button className="text-[13px] text-brand-cyan hover:text-white transition-colors">View All</button>
-          </div>
-          <div className="space-y-4">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5">
-                <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                  <Activity className="w-5 h-5 text-blue-400" />
+            
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-orange-500/10 text-orange-400">
+                  <Clock className="w-6 h-6" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-[14px] text-white">New order <span className="font-medium text-brand-cyan">#ORD-{9823 + i}</span> placed for Custom E-Commerce.</p>
-                  <p className="text-[12px] text-white/40">2 minutes ago</p>
-                </div>
-                <button className="px-3 py-1.5 rounded-lg bg-white/10 text-[12px] font-medium text-white hover:bg-white/20 transition-colors">
-                  Review
-                </button>
               </div>
-            ))}
-          </div>
-        </div>
+              <h3 className="text-white/50 text-[14px] font-medium mb-1">Pending / Unverified Due</h3>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.pendingRevenue)}</p>
+            </div>
 
-        <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl">
-          <h3 className="text-lg font-medium text-white mb-6">Quick Actions</h3>
-          <div className="flex flex-col gap-3">
-            <button className="p-4 rounded-xl bg-brand-cyan/10 border border-brand-cyan/20 hover:bg-brand-cyan/20 transition-colors text-left flex flex-col gap-1">
-              <span className="font-medium text-brand-cyan text-[14px]">Create New Product</span>
-              <span className="text-[12px] text-brand-cyan/60">Upload new source code or script</span>
-            </button>
-            <button className="p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors text-left flex flex-col gap-1">
-              <span className="font-medium text-white text-[14px]">Generate License</span>
-              <span className="text-[12px] text-white/40">Manually issue a domain license</span>
-            </button>
-            <button className="p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors text-left flex flex-col gap-1">
-              <span className="font-medium text-white text-[14px]">Review Alerts</span>
-              <span className="text-[12px] text-white/40">Check 3 unresolved security flags</span>
-            </button>
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
+                  <Activity className="w-6 h-6" />
+                </div>
+              </div>
+              <h3 className="text-white/50 text-[14px] font-medium mb-1">Active Projects / Orders</h3>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.activeOrdersCount}</p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
+                  <Users className="w-6 h-6" />
+                </div>
+              </div>
+              <h3 className="text-white/50 text-[14px] font-medium mb-1">Unique Clients</h3>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.totalClients}</p>
+            </div>
           </div>
-        </div>
-      </div>
+
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Revenue Trend Chart */}
+            <div className="col-span-1 lg:col-span-2 p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <h3 className="text-lg font-medium text-white mb-6 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-brand-cyan" /> Revenue Trend</h3>
+              <div className="flex-1 min-h-[300px]">
+                {analytics.revenueTimeline.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={analytics.revenueTimeline} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#00FFFF" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#00FFFF" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                      <XAxis dataKey="date" stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => "৳" + (value/1000) + "k"} />
+                      <RechartsTooltip 
+                        contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
+                        itemStyle={{ color: '#fff' }}
+                        formatter={(value) => [formatCurrency(value), 'Revenue']}
+                      />
+                      <Area type="monotone" dataKey="revenue" stroke="#00FFFF" strokeWidth={3} fillOpacity={1} fill="url(#colorRevenue)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-white/30 text-sm">Not enough timeline data</div>
+                )}
+              </div>
+            </div>
+
+            {/* Status Distribution */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <h3 className="text-lg font-medium text-white mb-6 flex items-center gap-2"><PieChartIcon className="w-5 h-5 text-brand-cyan" /> Order Statuses</h3>
+              <div className="flex-1 min-h-[300px] flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={analytics.statusData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {analytics.statusData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip 
+                      contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                    <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: '12px', color: '#aaa' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Third Row: Top Products & Recent Activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            {/* Top Products */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl">
+              <h3 className="text-lg font-medium text-white mb-6">Top Selling Products</h3>
+              {analytics.topProducts.length > 0 ? (
+                <div className="h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={analytics.topProducts} layout="vertical" margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" horizontal={true} vertical={false} />
+                      <XAxis type="number" hide />
+                      <YAxis dataKey="name" type="category" stroke="#ffffff50" fontSize={11} tickLine={false} axisLine={false} width={120} />
+                      <RechartsTooltip 
+                        cursor={{ fill: '#ffffff05' }}
+                        contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
+                        formatter={(value) => [formatCurrency(value), 'Generated Revenue']}
+                      />
+                      <Bar dataKey="revenue" fill="#3B82F6" radius={[0, 4, 4, 0]}>
+                        {analytics.topProducts.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="h-[250px] flex items-center justify-center text-white/30 text-sm">No sales data found</div>
+              )}
+            </div>
+
+            {/* Recent Orders List */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-medium text-white">Recent Orders</h3>
+                <button onClick={() => router.push('/admin/orders')} className="text-[13px] text-brand-cyan hover:text-white transition-colors">View All</button>
+              </div>
+              <div className="space-y-3 flex-1 overflow-y-auto max-h-[250px] pr-2 custom-scrollbar">
+                {orders.slice(0, 5).map((order) => (
+                  <div key={order._id} className={"flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"}>
+                    <div className="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center shrink-0">
+                      <ShoppingCart className="w-5 h-5 text-brand-cyan" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[14px] text-white truncate">Order <span className="font-mono text-brand-cyan">#{order._id?.slice(-6).toUpperCase()}</span></p>
+                      <p className="text-[12px] text-white/40 truncate">{order.customer_name || order.email || 'Guest'}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-[14px] font-medium text-white">{formatCurrency(order.total_amount)}</p>
+                      <p className={"text-[10px] font-bold uppercase tracking-wider mt-0.5 " + (order.payment_status === 'Verified' ? 'text-green-400' : 'text-yellow-400')}>
+                        {order.payment_status || 'Pending'}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </>
+      )}
       
     </div>
   );
