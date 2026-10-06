@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { api } from '@/utils/api';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Edit, ChevronLeft, ChevronRight, Check, ArrowRight } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";
@@ -63,6 +63,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const { user } = React.useContext(DashboardContext) || {};
   const searchParams = useSearchParams();
   const router = useRouter();
+  const pathname = usePathname();
   const [categories, setCategories] = useState([]);
   const query = searchParams.get('q')?.toLowerCase() || '';
   const [isPending, startTransition] = React.useTransition();
@@ -74,6 +75,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [floorCoords, setFloorCoords] = useState({ y: 0, x: null, textWidth: 500 });
   const searchBarRef = useRef(null);
+  
+  useEffect(() => {
+    setNavigatingId(null);
+    setLoadingBuyId(null);
+    setLoadingCartId(null);
+  }, [pathname, searchParams]);
 
   const { scrollY } = useScroll();
   const heroOpacity = useTransform(scrollY, [0, 800], [1, 0]);
@@ -85,16 +92,24 @@ export default function MarketClientView({ initialData = [], initialPagination =
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      if (!searchBarRef.current) return;
-      const rect = searchBarRef.current.getBoundingClientRect();
-      const scrolled = rect.top < 80;
-      if (scrolled !== isScrolledPastHero) {
-          setIsScrolledPastHero(scrolled);
-          window.dispatchEvent(new CustomEvent('toggle-navbar-search', { detail: scrolled }));
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          if (searchBarRef.current) {
+            const rect = searchBarRef.current.getBoundingClientRect();
+            const scrolled = rect.top < 80;
+            if (scrolled !== isScrolledPastHero) {
+                setIsScrolledPastHero(scrolled);
+                window.dispatchEvent(new CustomEvent('toggle-navbar-search', { detail: scrolled }));
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isScrolledPastHero]);
@@ -376,6 +391,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
               if (isAdded) {
                 e.preventDefault();
                 e.stopPropagation();
+                setLoadingCartId(product.id || product._id);
                 router.push('/cart');
               } else {
                 handleAddToCart(e, product);
@@ -829,3 +845,4 @@ export default function MarketClientView({ initialData = [], initialPagination =
     </div>
   );
 }
+

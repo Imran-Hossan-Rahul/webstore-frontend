@@ -135,7 +135,7 @@ const StorePreviewSection = ({ products }) => {
       )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none"></div>
         {firstPhoto ? (
-          <Image src={getOptimizedUrl(firstPhoto)} alt={product.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover z-10" />
+          <Image src={getOptimizedUrl(firstPhoto)} alt={product.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover z-10" priority unoptimized />
         ) : (
           <div className="text-slate-400 font-mono text-[12px] flex flex-col items-center gap-2 relative z-10">
             <span className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center">?</span>
@@ -290,7 +290,7 @@ const StorePreviewSection = ({ products }) => {
             <div className="flex items-center gap-4">
               <div className="relative w-14 h-14 rounded-full border-[3px] border-white dark:border-white shadow-sm overflow-hidden">
                 {/* Just replace this URL with your actual professional photo */}
-                <Image src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&auto=format&fit=crop&q=80" alt="Founder & Lead Architect" fill sizes="56px" className="object-cover" />
+                <Image src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&auto=format&fit=crop&q=80" alt="Founder & Lead Architect" fill sizes="56px" className="object-cover" unoptimized />
                 {/* Green online status dot */}
                 <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-white rounded-full z-10"></span>
               </div>
@@ -329,3 +329,4 @@ const StorePreviewSection = ({ products }) => {
 };
 
 export default StorePreviewSection;
+
