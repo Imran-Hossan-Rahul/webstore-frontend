@@ -27,7 +27,7 @@ const DELIVERY_TIME   = "{{DELIVERY_TIME}}";    // TODO: e.g. "4–8 weeks"
 const SUPPORT_DAYS    = "{{SUPPORT_DAYS}}";     // TODO: e.g. "30"
 
 // TODO: Update this to your real quote/contact page route
-export const PORTAL_QUOTE_LINK = "/store?category_name=Custom+Web+Platforms";
+const PORTAL_QUOTE_LINK = "/store?category_name=Custom+Web+Platforms";
 
 // ─── OUTCOME-FOCUSED DESCRIPTION ─────────────────────────────────────────────
 
@@ -138,3 +138,4 @@ export const WEB_PORTAL_PLANS = {
     { name: "Mobile app",                       price: null },  // TODO: {{ADDON_PRICE_APP}}
   ],
 };
+

@@ -42,4 +42,5 @@ export const initTracker = (config) => {
   return instance;
 };
 
-export const getTracker = () => instance;
+const getTracker = () => instance;
+

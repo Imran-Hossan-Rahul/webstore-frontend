@@ -16,7 +16,7 @@ import { useUser } from "@/context/UserContext";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter } from 'next/navigation';
 
-export const getCategoryIcon = (categoryName) => {
+const getCategoryIcon = (categoryName) => {
   if (!categoryName) return Box;
   const name = categoryName.toLowerCase();
   
@@ -157,3 +157,4 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
     </aside>
   );
 }
+

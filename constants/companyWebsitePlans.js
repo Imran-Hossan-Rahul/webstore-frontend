@@ -17,7 +17,7 @@ const BUSINESS_PRICE = "BDT 29,999";    // ✅ Confirmed — discounted launch p
 const PREMIUM_PRICE  = "BDT 49,999";    // ✅ Confirmed — discounted launch price
 
 // TODO: Update to your actual quote/contact page route
-export const QUOTE_LINK = "/book-call";  // ✅ Confirmed — routes to Book a Call page
+const QUOTE_LINK = "/book-call";  // ✅ Confirmed — routes to Book a Call page
 
 // ─── OUTCOME-FOCUSED DESCRIPTION ─────────────────────────────────────────────
 
@@ -180,3 +180,4 @@ export const COMPANY_WEBSITE_PLANS = {
     },
   ],
 };
+

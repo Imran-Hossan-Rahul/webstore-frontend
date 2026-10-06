@@ -8,8 +8,8 @@
 
 // ─── Currency ────────────────────────────────────────────────────────────────
 // Change this to 'USD' (and update formatPrice callers) when going global.
-export const CURRENCY = 'BDT';
-export const CURRENCY_SYMBOL = '৳';
+const CURRENCY = 'BDT';
+const CURRENCY_SYMBOL = '৳';
 
 // ─── Product Types ───────────────────────────────────────────────────────────
 export const PRODUCT_TYPES = [
@@ -45,7 +45,7 @@ export const TECH_STACK_OPTIONS = [
 
 // ─── Product Type Icons (Lucide icon names as strings) ──────────────────────
 // Used in category/filter displays.
-export const PRODUCT_TYPE_ICONS = {
+const PRODUCT_TYPE_ICONS = {
   'SaaS Tool':          'Globe',
   'Web Template':       'Layout',
   'Script/Automation':  'Zap',
@@ -63,7 +63,7 @@ export const PRODUCT_TYPE_COLORS = {
 };
 
 // ─── License Badge Colors ────────────────────────────────────────────────────
-export const LICENSE_COLORS = {
+const LICENSE_COLORS = {
   'Personal':   'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300',
   'Commercial': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
   'Extended':   'bg-gold-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
@@ -99,3 +99,5 @@ export function safeParseJSON(str, fallback = []) {
     return fallback;
   }
 }
+
+

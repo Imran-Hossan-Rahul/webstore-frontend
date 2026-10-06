@@ -14,7 +14,7 @@ const MVP_PRICE     = "BDT 60,000";
 const GROWTH_PRICE  = "BDT 1,49,999";
 
 // Route to booking/consultation page
-export const SOFTWARE_QUOTE_LINK = "/book-call";
+const SOFTWARE_QUOTE_LINK = "/book-call";
 
 // ─── OUTCOME-FOCUSED DESCRIPTION ─────────────────────────────────────────────
 
@@ -138,3 +138,4 @@ export const SOFTWARE_PLANS = {
     { name: "Dedicated developer / hourly team extension",price: null },  // TODO: {{ADDON_PRICE_TEAM}}
   ],
 };
+

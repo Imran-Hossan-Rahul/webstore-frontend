@@ -15,7 +15,7 @@ const STARTER_PRICE  = "BDT 35,000";        // ✅ Starter launch price
 const BUSINESS_PRICE = "BDT 75,000";        // ✅ Business launch price
 
 // Route to Book a Call page
-export const ECOMMERCE_QUOTE_LINK = "/book-call";
+const ECOMMERCE_QUOTE_LINK = "/book-call";
 
 // ─── OUTCOME-FOCUSED DESCRIPTION ─────────────────────────────────────────────
 
@@ -107,3 +107,4 @@ export const ECOMMERCE_PLANS = {
     { name: "Global payments (Stripe / PayPal)",      price: null },  // TODO: {{ADDON_PRICE_GLOBAL_PAY}}
   ],
 };
+

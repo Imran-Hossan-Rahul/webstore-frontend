@@ -12,7 +12,7 @@ export const LoadingState = ({ message = 'Loading...', className = '' }) => (
   </div>
 );
 
-export const ProcessingState = ({ message = 'Processing your request...', className = '' }) => (
+const ProcessingState = ({ message = 'Processing your request...', className = '' }) => (
   <div className={`flex flex-col items-center justify-center p-12 text-center w-full min-h-[200px] bg-brand-cloud/50  rounded-[4px] border border-brand-navy/[0.08]/50  ${className}`}>
     <div className="relative mb-6">
       <div className="w-10 h-10 rounded-[4px] bg-brand-blue/10 flex items-center justify-center border border-brand-blue/20">
@@ -39,7 +39,7 @@ export const ErrorState = ({ title = 'An issue occurred', message, onRetry, acti
   </div>
 );
 
-export const UnavailableState = ({ title = 'Service Unavailable', message = 'This service or resource is currently unavailable. Please try again later.', className = '' }) => (
+const UnavailableState = ({ title = 'Service Unavailable', message = 'This service or resource is currently unavailable. Please try again later.', className = '' }) => (
   <div className={`flex flex-col items-center justify-center p-12 text-center w-full min-h-[200px] bg-slate-50  border border-brand-navy/[0.08]  rounded-[4px] ${className}`}>
     <div className="w-10 h-10 rounded-[4px] bg-slate-100  flex items-center justify-center border border-brand-navy/[0.08]  mb-5">
       <ServerCrash className="w-5 h-5 text-slate-400" />
@@ -49,7 +49,7 @@ export const UnavailableState = ({ title = 'Service Unavailable', message = 'Thi
   </div>
 );
 
-export const DisabledState = ({ title = 'Access Disabled', message, className = '' }) => (
+const DisabledState = ({ title = 'Access Disabled', message, className = '' }) => (
   <div className={`flex flex-col items-center justify-center p-12 text-center w-full min-h-[200px] bg-brand-cloud  border border-brand-navy/[0.08]  rounded-[4px] opacity-75 ${className}`}>
     <div className="w-10 h-10 rounded-[4px] bg-slate-200  flex items-center justify-center mb-5">
       <Ban className="w-5 h-5 text-slate-500 " />
@@ -61,7 +61,7 @@ export const DisabledState = ({ title = 'Access Disabled', message, className = 
 
 // ─── Success & Status States ──────────────────────────────────────────────────
 
-export const SuccessState = ({ title = 'Completed Successfully', message, action, className = '' }) => (
+const SuccessState = ({ title = 'Completed Successfully', message, action, className = '' }) => (
   <div className={`flex flex-col items-center justify-center p-12 text-center w-full min-h-[200px] bg-brand-teal/5 border border-brand-teal/20 rounded-[4px] ${className}`}>
     <div className="w-10 h-10 rounded-[4px] bg-brand-teal/10 flex items-center justify-center border border-brand-teal/30 mb-5">
       <CheckCircle className="w-5 h-5 text-brand-teal" />
@@ -72,7 +72,7 @@ export const SuccessState = ({ title = 'Completed Successfully', message, action
   </div>
 );
 
-export const PendingState = ({ title = 'Pending Approval', message, className = '' }) => (
+const PendingState = ({ title = 'Pending Approval', message, className = '' }) => (
   <div className={`flex flex-col items-center justify-center p-12 text-center w-full min-h-[200px] bg-amber-50  border border-amber-200  rounded-[4px] ${className}`}>
     <div className="w-10 h-10 rounded-[4px] bg-amber-100  flex items-center justify-center border border-amber-200  mb-5">
       <Clock className="w-5 h-5 text-amber-500" />
@@ -84,4 +84,5 @@ export const PendingState = ({ title = 'Pending Approval', message, className = 
 
 // We export the existing EmptyState for backwards compatibility
 export const EmptyState = BaseEmptyState;
+
 

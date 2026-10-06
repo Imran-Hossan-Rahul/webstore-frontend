@@ -24,7 +24,7 @@ export const hoverModalVariants = {
   }
 };
 
-export const tooltipVariants = {
+const tooltipVariants = {
   hidden: { opacity: 0, y: 5, scale: 0.95 },
   visible: { 
     opacity: 1, 
@@ -33,3 +33,4 @@ export const tooltipVariants = {
     transition: { duration: 0.2, ease: "easeOut" }
   }
 };
+
