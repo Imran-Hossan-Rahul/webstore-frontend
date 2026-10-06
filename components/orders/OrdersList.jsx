@@ -85,7 +85,7 @@ const CustomRequestCard = ({ order, router, copyId, copiedId, formatDate, STATUS
               className="p-2 flex items-center gap-2 rounded-[4px] bg-brand-blue/10 hover:bg-brand-blue/20 border border-brand-blue/20 text-brand-blue transition-colors"
               title="Open Collaboration Room"
             >
-              <span className="font-mono text-[10px] uppercase font-semibold">Collab Room</span>
+              <span className="font-mono text-[10px] uppercase font-semibold">Chat in Live</span>
             </button>
           </div>
         </div>

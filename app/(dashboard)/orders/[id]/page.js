@@ -50,9 +50,7 @@ const CustomBriefDetails = ({ order, router, copyId, copied, formatDate }) => {
                   window.dispatchEvent(new CustomEvent("open-order-room", { detail: { orderId: order._id || order.id } }));
                 }}
                 className="flex-1 md:flex-none !rounded-[20px] bg-brand-blue hover:bg-brand-blue/90 text-white border-0"
-              >
-                Collab Room
-              </Button>
+              >Chat in Live</Button>
               <Button
                 variant="secondary"
                 leftIcon={<ArrowLeft size={16} />}
