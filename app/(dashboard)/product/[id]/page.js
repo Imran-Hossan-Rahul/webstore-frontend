@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState, useContext, useTransition } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Star, Download, Truck, ShieldCheck, Globe, FileCode2, BookOpen, ShoppingCart, CreditCard, ChevronRight, ChevronLeft, X, Check, Minus, Plus, Home, Share2, Eye, ArrowLeftRight, ShoppingBag, Package, Award, Edit, ZoomIn, ZoomOut, Zap, Tag, ExternalLink } from "lucide-react";
 import { isDigitalProduct, PRODUCT_TYPE_COLORS, safeParseJSON } from "@/utils/digitalProducts";
@@ -26,6 +26,8 @@ const getOptimizedUrl = (url) => {
 
 export default function ProductDetails({ params }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { id } = params;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -55,6 +57,12 @@ export default function ProductDetails({ params }) {
   const [categories, setCategories] = useState([]);
   const [isPending, startTransition] = useTransition();
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [navigatingId, setNavigatingId] = useState(null);
+  
+  useEffect(() => {
+    setNavigatingId(null);
+  }, [pathname, searchParams]);
+
   // Digital product parsed fields
   const [techStackTags, setTechStackTags] = useState([]);
   const [changelogEntries, setChangelogEntries] = useState([]);
@@ -318,6 +326,7 @@ export default function ProductDetails({ params }) {
   };
 
   const handleBuyNow = () => {
+    setNavigatingId('checkout');
     const query = new URLSearchParams({
       productId: product.id,
       quantity,
@@ -560,7 +569,7 @@ export default function ProductDetails({ params }) {
                     <div className="mt-3 flex items-center gap-3">
                       <span className="text-[11px] font-mono tracking-widest text-slate-500  uppercase">SKU: {product.sku}</span>
                       <Link 
-                        href={`/admin/market/products?edit=${product.id}`}
+                        href={`/admin/products/${product.id}`}
                         className="text-[11px] font-mono uppercase bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan px-2 py-1 rounded-[20px] flex items-center gap-1 hover:bg-brand-cyan/20 transition-colors"
                       >
                         <Edit size={12} /> Edit Product
@@ -570,7 +579,7 @@ export default function ProductDetails({ params }) {
                   {(user?.role === 'admin' || user?.role === 'superadmin') && !product.sku && (
                     <div className="mt-2">
                       <Link 
-                        href={`/admin/market/products?edit=${product.id}`}
+                        href={`/admin/products/${product.id}`}
                         className="text-xs bg-blue-100  text-brand-blue  px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-blue-200  transition"
                       >
                         <Edit size={12} /> Edit Product
@@ -959,14 +968,15 @@ export default function ProductDetails({ params }) {
                     }}
                     onClick={() => {
                       if (addedToCart) {
+                        setNavigatingId('cart');
                         router.push('/cart');
                       } else {
                         handleAddToCart();
                       }
                     }}
-                    disabled={isAddingToCart}
+                    disabled={isAddingToCart || navigatingId === 'cart'}
                   >
-                    {isAddingToCart ? (
+                    {navigatingId === 'cart' || isAddingToCart ? (
                       <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-brand-blue"} />
                     ) : addedToCart ? (
                       <><Check size={18} strokeWidth={1.5} className="mr-2" /> Added</>
@@ -984,9 +994,9 @@ export default function ProductDetails({ params }) {
                       borderStyle: 'solid'
                     }}
                     onClick={handleBuyNow}
-                    disabled={isPending}
+                    disabled={isPending || navigatingId === 'checkout'}
                   >
-                    {isPending ? (
+                    {(isPending || navigatingId === 'checkout') ? (
                       <AppleSpinner size={18} className="text-white" />
                     ) : (
                       <><ShoppingBag size={18} strokeWidth={1.5} className="mr-2" /> {isDigital ? 'Get License' : 'Buy Now'}</>
@@ -1204,3 +1214,4 @@ export default function ProductDetails({ params }) {
     </div>
   );
 }
+

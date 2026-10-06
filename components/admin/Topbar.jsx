@@ -121,7 +121,7 @@ export default function Topbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    router.push(`/admin/market/products?search=${encodeURIComponent(searchQuery)}`);
+    router.push(`/admin/products?search=${encodeURIComponent(searchQuery)}`);
   };
 
   const markAsRead = async (id, isRead) => {
@@ -294,3 +294,5 @@ export default function Topbar() {
     </header>
   );
 }
+
+

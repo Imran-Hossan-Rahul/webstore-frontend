@@ -358,7 +358,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
           />
           {(user?.role === 'admin' || user?.role === 'superadmin') && (
             <Link 
-              href={`/admin/market/products?edit=${product.id}`}
+              href={`/admin/products/${product.id}`}
               className="absolute top-2 right-2 bg-brand-surface/90 p-2 rounded-[4px] text-brand-blue hover:bg-brand-blue hover:text-white transition shadow-sm border border-brand-navy/[0.08] z-20"
               onClick={(e) => e.stopPropagation()}
               title="Edit Product"
@@ -845,4 +845,6 @@ export default function MarketClientView({ initialData = [], initialPagination =
     </div>
   );
 }
+
+
 
