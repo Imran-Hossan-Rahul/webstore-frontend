@@ -34,7 +34,7 @@ export default function AdminMessagesPage() {
           const supportChats = (chatsRes.chats || []).filter(c => c.isSupportChat);
           setChats(supportChats);
         } else {
-          router.push('/dashboard');
+          router.push('/');
         }
       } catch (error) {
         router.push('/auth/login');

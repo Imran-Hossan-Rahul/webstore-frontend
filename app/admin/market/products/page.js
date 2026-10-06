@@ -445,7 +445,7 @@ export default function ProductsManager() {
                   p.status === 'Draft' ? 'bg-brand-cloud dark:bg-brand-surface text-slate-500 dark:text-slate-400 border border-brand-navy/[0.08] dark:border-white/10' :
                   'bg-orange-900/30 text-orange-400 border border-orange-900/50'
                 }`}>{p.status}</span>
-                <a href={`/market/product/${p.id || p._id}`} target="_blank" rel="noopener noreferrer"
+                <a href={`/product/${p.id || p._id}`} target="_blank" rel="noopener noreferrer"
                   className="p-1.5 rounded-[4px] bg-brand-cloud dark:bg-brand-surface hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-white transition" title="View">
                   <Eye size={13} />
                 </a>
@@ -518,7 +518,7 @@ export default function ProductsManager() {
                 </div>
               </div>
               <div className="flex flex-col gap-2 shrink-0">
-                <a href={`/market/product/${p.id}`} target="_blank" rel="noopener noreferrer" className="p-2 bg-brand-cloud dark:bg-brand-surface hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-white rounded-[4px] transition" title="View">
+                <a href={`/product/${p.id}`} target="_blank" rel="noopener noreferrer" className="p-2 bg-brand-cloud dark:bg-brand-surface hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-white rounded-[4px] transition" title="View">
                   <Eye size={15} />
                 </a>
                 <button onClick={() => handleEditClick(p)} className="p-2 bg-blue-900/30 text-blue-400 border border-blue-900/50 rounded-[4px] transition" title="Edit">

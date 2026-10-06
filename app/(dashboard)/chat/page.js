@@ -446,7 +446,7 @@ function ChatContent() {
           onUnsendMessage={handleUnsendMessage}
           onReactMessage={handleReactMessage}
           onDeleteMessage={handleDeleteMessage}
-          onClose={() => router.push("/dashboard")}
+          onClose={() => router.push("/")}
         />
       </div>
     </DraggableResizableWindow>

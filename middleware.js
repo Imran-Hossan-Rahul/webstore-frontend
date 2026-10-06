@@ -92,7 +92,6 @@ export async function middleware(req) {
       "/settings",
       "/upload",
       "/opportunities",
-      "/inbox",
     ];
 
     for (const prefix of protectedPrefixes) {

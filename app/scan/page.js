@@ -71,7 +71,7 @@ export default function ScanLandingPage() {
 
         {/* Footer */}
         <motion.div variants={itemVariants} className="mt-12 text-center flex flex-col items-center">
-          <Link href="/market" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full font-medium text-sm hover:opacity-80 transition-opacity duration-300 shadow-[0_8px_20px_rgba(0,0,0,0.12)] mb-8">
+          <Link href="/store" className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-full font-medium text-sm hover:opacity-80 transition-opacity duration-300 shadow-[0_8px_20px_rgba(0,0,0,0.12)] mb-8">
             Explore our Marketplace
             <ArrowRight className="w-4 h-4" />
           </Link>
