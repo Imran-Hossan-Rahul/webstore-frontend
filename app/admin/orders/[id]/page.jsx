@@ -4,11 +4,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft, MessageSquare, Paperclip, Send, Download, ShieldCheck,
-  CreditCard, Lock, Layers, Package, User as UserIcon, Mail, Phone, Loader2, AlertTriangle
+  CreditCard, Lock, Layers, Package, User as UserIcon, Mail, Phone, Loader2, AlertTriangle, FileText
 } from 'lucide-react';
 import { api } from '@/utils/api';
 import socket from '@/utils/socket';
 import { useUser } from '@/context/UserContext';
+import { generateInvoice } from '@/utils/generateInvoice';
 
 const PHASES = ['Discovery', 'Design', 'Development', 'Testing', 'Launch', 'N/A'];
 
@@ -232,6 +233,13 @@ export default function OrderCollaborationRoom({ params }) {
         </div>
 
         <div className="flex gap-2">
+          <button
+            onClick={() => generateInvoice(order)}
+            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-[13px] font-medium text-white hover:bg-white/10 transition-colors flex items-center gap-2"
+            title="Download Invoice"
+          >
+            <FileText className="w-4 h-4" /> Invoice
+          </button>
           <button
             disabled={!!actionLoading || order.status === 'Cancelled'}
             onClick={() =>
