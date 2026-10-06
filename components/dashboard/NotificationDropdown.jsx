@@ -1,4 +1,4 @@
-"use client";
+"use client";`nimport Image from "next/image";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useState, useEffect, useRef } from "react";
 import { Bell, Check, CheckCheck } from "lucide-react";
@@ -156,9 +156,9 @@ export default function NotificationDropdown() {
                     }}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-sm">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-sm relative overflow-hidden">
                         {notif.sender?.profilePicture ? (
-                          <img src={getOptimizedUrl(notif.sender.profilePicture)} alt="" className="w-full h-full rounded-full object-cover" />
+                          <Image src={getOptimizedUrl(notif.sender.profilePicture)} alt="Profile" fill sizes="44px" className="object-cover" />
                         ) : (
                           notif.sender?.name?.[0] || "S"
                         )}
@@ -194,3 +194,5 @@ export default function NotificationDropdown() {
     </div>
   );
 }
+
+

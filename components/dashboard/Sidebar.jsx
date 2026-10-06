@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { 
@@ -134,9 +135,9 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
           >
             <div className="relative z-10 flex items-center w-full justify-start gap-4">
               <div className="flex items-center justify-center shrink-0 w-[28px] -ml-[2px]">
-                <div className="w-[32px] h-[32px] shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center shadow-sm">
+                <div className="w-[32px] h-[32px] shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center shadow-sm relative">
                     {user?.profilePicture ? (
-                      <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
+                      <Image src={getOptimizedUrl(user.profilePicture)} alt="Profile" fill sizes="32px" className="object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-black/50 font-bold text-[12px]">{user?.name?.[0]}</div>
                     )}
@@ -157,4 +158,5 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
     </aside>
   );
 }
+
 

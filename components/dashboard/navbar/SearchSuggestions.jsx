@@ -2,6 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Search, User, Layout, FileText, BookOpen, Trophy } from "lucide-react";
 
@@ -54,11 +55,11 @@ export default function SearchSuggestions({
                             key={item._id} 
                             className="flex items-center gap-3 px-3 py-2 mx-1 hover:bg-slate-100 dark:bg-brand-surface/[0.05]/80 dark:hover:bg-brand-surface/5 rounded-[4px] transition-all group"
                         >
-                             <div className="w-10 h-10 rounded-lg overflow-hidden bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5">
+                             <div className="w-10 h-10 rounded-lg overflow-hidden bg-brand-cloud dark:bg-brand-surface/5 flex items-center justify-center flex-shrink-0 border border-slate-100 dark:border-white/5 relative">
                                 {item.photos && (() => {
                                     try {
                                         const parsedPhotos = Array.isArray(item.photos) ? item.photos : JSON.parse(item.photos);
-                                        return parsedPhotos[0] ? <img src={getOptimizedUrl(parsedPhotos[0])} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" /> : null;
+                                        return parsedPhotos[0] ? <Image src={getOptimizedUrl(parsedPhotos[0])} alt="Product" fill sizes="40px" className="object-contain mix-blend-multiply dark:mix-blend-normal" /> : null;
                                     } catch(e) { return null; }
                                 })()}
                              </div>
@@ -84,3 +85,5 @@ export default function SearchSuggestions({
         </div>
     );
 }
+
+

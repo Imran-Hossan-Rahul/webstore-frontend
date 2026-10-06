@@ -1,4 +1,4 @@
-"use client";
+"use client";`nimport Image from "next/image";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -235,9 +235,9 @@ export default function NotificationModal({ isOpen, onClose }) {
                 {/* Sender Avatar / Icon */}
                 <div className="shrink-0">
                   <div className="relative w-12 h-12">
-                    <div className="w-full h-full rounded-2xl bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center overflow-hidden border border-brand-navy/[0.10] dark:border-white/5">
+                    <div className="w-full h-full rounded-2xl bg-slate-100 dark:bg-brand-surface/5 flex items-center justify-center overflow-hidden border border-brand-navy/[0.10] dark:border-white/5 relative">
                       {notif.sender?.profilePicture ? (
-                        <img src={getOptimizedUrl(notif.sender.profilePicture)} className="w-full h-full object-cover" alt="" />
+                        <Image src={getOptimizedUrl(notif.sender.profilePicture)} alt="Profile" fill sizes="48px" className="object-cover" />
                       ) : (
                         <div className="text-slate-400 font-bold text-sm uppercase">
                           {notif.sender?.name?.[0] || notif.sender?.username?.[0] || "?"}
@@ -300,3 +300,4 @@ export default function NotificationModal({ isOpen, onClose }) {
     </DraggableResizableWindow>
   );
 }
+

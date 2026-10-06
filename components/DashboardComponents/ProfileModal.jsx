@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
@@ -173,7 +174,7 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                     className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-900 overflow-hidden bg-slate-200 dark:bg-brand-surface shadow-sm cursor-pointer group relative"
                   >
                       {displayProfilePicture ? (
-                          <img src={getOptimizedUrl(displayProfilePicture)} alt={displayProfile?.displayName || user?.name} className="w-full h-full object-cover" />
+                          <Image src={getOptimizedUrl(displayProfilePicture)} alt={displayProfile?.displayName || user?.name || "Profile"} fill sizes="96px" className="object-cover" />
                       ) : (
                           <div className="w-full h-full flex items-center justify-center text-slate-500 dark:text-slate-400 font-bold text-3xl">
                               {(displayProfile?.displayName || user?.name || "?").charAt(0).toUpperCase()}
