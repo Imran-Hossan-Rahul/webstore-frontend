@@ -31,7 +31,11 @@ const ALT_COLORS = ['#8B5CF6', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#00F
 // Custom Hover List Component
 const HoverList = ({ title, items, renderItem, className = "", hoverClasses = "group-hover:opacity-100 group-hover:visible group-hover:translate-y-0" }) => (
   <div className={`absolute z-50 left-0 top-[100%] pt-2 w-max min-w-[280px] max-w-[350px] opacity-0 invisible transition-all duration-200 translate-y-2 ${hoverClasses} ${className}`}>
-    <div className="max-h-[250px] overflow-y-auto overscroll-contain pointer-events-auto bg-[#0a0a0a] border border-white/10 rounded-xl p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)] custom-scrollbar">
+    <div 
+      className="max-h-[250px] overflow-y-auto overscroll-none pointer-events-auto bg-[#0a0a0a] border border-white/10 rounded-xl p-3 shadow-[0_10px_40px_rgba(0,0,0,0.8)] custom-scrollbar"
+      onWheel={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
+    >
       <h4 className="text-[11px] font-bold text-brand-cyan mb-2 uppercase tracking-wider sticky top-0 bg-[#0a0a0a] pb-2 z-10 border-b border-white/5">{title}</h4>
       <div className="space-y-1.5 flex flex-col">
         {items.length > 0 ? items.map(renderItem) : <div className="text-xs text-white/30 text-center py-4">No data</div>}
@@ -567,4 +571,5 @@ export default function AdminPage() {
     </div>
   );
 }
+
 
