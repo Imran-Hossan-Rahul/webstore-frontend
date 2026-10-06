@@ -397,7 +397,7 @@ export default function BookCallPage() {
                         <MessageCircle size={18} /> Message on WhatsApp
                       </a>
                       <div className="flex flex-col gap-2 pt-2">
-                        <Link href={CONFIG.PORTFOLIO_URL} className="text-[14px] font-semibold text-brand-blue hover:underline">See our work</Link>
+                        
                         <p className="text-[12px] text-slate-500 mt-2">Don't see our email? Check your spam or promotions folder.</p>
                       </div>
                     </div>
