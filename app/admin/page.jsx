@@ -15,14 +15,18 @@ import {
   Clock,
   CheckCircle2,
   Calendar,
-  PieChart as PieChartIcon
+  PieChart as PieChartIcon,
+  CreditCard,
+  Target,
+  Repeat
 } from "lucide-react";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer,
-  BarChart, Bar, PieChart, Pie, Cell, Legend
+  BarChart, Bar, PieChart, Pie, Cell, Legend, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
 } from 'recharts';
 
 const COLORS = ['#00FFFF', '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899'];
+const ALT_COLORS = ['#8B5CF6', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#00FFFF', '#3B82F6'];
 
 export default function AdminPage() {
   const [user, setUser] = useState(null);
@@ -75,23 +79,28 @@ export default function AdminPage() {
 
     let totalRevenue = 0;
     let pendingRevenue = 0;
-    let uniqueClients = new Set();
     let activeOrdersCount = 0;
+    let totalPaidOrders = 0;
 
     const statusCounts = {};
     const productSales = {};
     const revenueByDateMap = {};
+    const paymentMethods = {};
+    const projectPhases = {};
+    const clientOrderCounts = {};
 
     orders.forEach(order => {
       const amount = order.total_amount || 0;
       
-      // Clients
-      if (order.email) uniqueClients.add(order.email.toLowerCase());
-      else if (order.customer_name) uniqueClients.add(order.customer_name.toLowerCase());
+      // Clients Tracking
+      const clientKey = (order.email || order.customer_name || 'guest').toLowerCase();
+      clientOrderCounts[clientKey] = (clientOrderCounts[clientKey] || 0) + 1;
 
       // Revenue
-      if (order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active') {
+      const isPaid = order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active';
+      if (isPaid) {
         totalRevenue += amount;
+        totalPaidOrders++;
       } else if (order.payment_status !== 'Failed' && order.status !== 'Cancelled') {
         pendingRevenue += (order.payment_due || amount);
       }
@@ -105,6 +114,16 @@ export default function AdminPage() {
       const stat = order.status || 'Unknown';
       statusCounts[stat] = (statusCounts[stat] || 0) + 1;
 
+      // Payment Method
+      const pm = order.payment_method || 'Unknown';
+      paymentMethods[pm] = (paymentMethods[pm] || 0) + 1;
+
+      // Project Phase
+      const phase = order.projectPhase || 'N/A';
+      if (phase !== 'N/A') {
+        projectPhases[phase] = (projectPhases[phase] || 0) + 1;
+      }
+
       // Product Sales Breakdown
       if (order.items && Array.isArray(order.items)) {
         order.items.forEach(item => {
@@ -116,7 +135,7 @@ export default function AdminPage() {
       // Timeline (Revenue grouped by day)
       const date = new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       if (!revenueByDateMap[date]) revenueByDateMap[date] = { date, revenue: 0, orders: 0 };
-      if (order.payment_status === 'Verified') {
+      if (isPaid) {
         revenueByDateMap[date].revenue += amount;
       }
       revenueByDateMap[date].orders += 1;
@@ -124,23 +143,37 @@ export default function AdminPage() {
 
     const revenueTimeline = Object.values(revenueByDateMap).sort((a, b) => new Date(a.date) - new Date(b.date));
     
-    const statusData = Object.keys(statusCounts).map(key => ({
-      name: key,
-      value: statusCounts[key]
+    const statusData = Object.keys(statusCounts).map(name => ({ name, value: statusCounts[name] }));
+    const paymentData = Object.keys(paymentMethods).map(name => ({ name, value: paymentMethods[name] }));
+    
+    // Ordered Project Phases
+    const phaseOrder = ['Discovery', 'Design', 'Development', 'Testing', 'Launch'];
+    const phaseData = phaseOrder.map(name => ({
+      name,
+      count: projectPhases[name] || 0
     }));
 
     const topProducts = Object.keys(productSales)
-      .map(key => ({ name: key, revenue: productSales[key] }))
+      .map(name => ({ name, revenue: productSales[name] }))
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
+
+    const totalClients = Object.keys(clientOrderCounts).length;
+    const repeatClientsCount = Object.values(clientOrderCounts).filter(count => count > 1).length;
+    const repeatRate = totalClients > 0 ? ((repeatClientsCount / totalClients) * 100).toFixed(1) : 0;
+    const averageOrderValue = totalPaidOrders > 0 ? (totalRevenue / totalPaidOrders) : 0;
 
     return {
       totalRevenue,
       pendingRevenue,
-      totalClients: uniqueClients.size,
+      totalClients,
+      repeatRate,
       activeOrdersCount,
+      averageOrderValue,
       revenueTimeline,
       statusData,
+      paymentData,
+      phaseData,
       topProducts
     };
   }, [orders]);
@@ -156,7 +189,7 @@ export default function AdminPage() {
   const formatCurrency = (val) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0 }).format(val);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
+    <div className="max-w-[1400px] mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-12">
       
       {!analytics ? (
         <div className="p-12 text-center text-white/50 border border-white/10 rounded-2xl bg-[#080808]">
@@ -165,9 +198,9 @@ export default function AdminPage() {
         </div>
       ) : (
         <>
-          {/* Key Metrics */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+          {/* Main Key Metrics */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-green-500/10 text-green-400">
                   <DollarSign className="w-6 h-6" />
@@ -177,17 +210,17 @@ export default function AdminPage() {
               <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.totalRevenue)}</p>
             </div>
             
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
               <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-orange-500/10 text-orange-400">
-                  <Clock className="w-6 h-6" />
+                <div className="p-3 rounded-xl bg-brand-cyan/10 text-brand-cyan">
+                  <TrendingUp className="w-6 h-6" />
                 </div>
               </div>
-              <h3 className="text-white/50 text-[14px] font-medium mb-1">Pending / Unverified Due</h3>
-              <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.pendingRevenue)}</p>
+              <h3 className="text-white/50 text-[14px] font-medium mb-1">Average Order Value</h3>
+              <p className="text-3xl font-display font-semibold text-white tracking-tight">{formatCurrency(analytics.averageOrderValue)}</p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
                   <Activity className="w-6 h-6" />
@@ -197,10 +230,13 @@ export default function AdminPage() {
               <p className="text-3xl font-display font-semibold text-white tracking-tight">{analytics.activeOrdersCount}</p>
             </div>
 
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-white/10 transition-colors">
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors">
               <div className="flex items-start justify-between mb-4">
                 <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
                   <Users className="w-6 h-6" />
+                </div>
+                <div className="bg-purple-500/10 px-2 py-1 rounded-md text-xs font-bold text-purple-400 flex items-center gap-1">
+                  <Repeat className="w-3 h-3"/> {analytics.repeatRate}% Repeat
                 </div>
               </div>
               <h3 className="text-white/50 text-[14px] font-medium mb-1">Unique Clients</h3>
@@ -208,7 +244,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Charts Row */}
+          {/* Core Analytics Row */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Revenue Trend Chart */}
@@ -226,7 +262,7 @@ export default function AdminPage() {
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
                       <XAxis dataKey="date" stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => "৳" + (value/1000) + "k"} />
+                      <YAxis stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `৳${value/1000}k`} />
                       <RechartsTooltip 
                         contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
                         itemStyle={{ color: '#fff' }}
@@ -251,8 +287,8 @@ export default function AdminPage() {
                       data={analytics.statusData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
+                      innerRadius={65}
+                      outerRadius={85}
                       paddingAngle={5}
                       dataKey="value"
                     >
@@ -272,64 +308,121 @@ export default function AdminPage() {
 
           </div>
 
-          {/* Third Row: Top Products & Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Deep Analytics Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            {/* Top Products */}
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl">
-              <h3 className="text-lg font-medium text-white mb-6">Top Selling Products</h3>
+            {/* Project Phase Pipeline */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Target className="w-5 h-5 text-blue-400" /> Project Pipeline</h3>
+              <p className="text-xs text-white/40 mb-4">Current phase distribution for active projects</p>
+              <div className="flex-1 min-h-[250px] flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <RadarChart cx="50%" cy="50%" outerRadius="70%" data={analytics.phaseData}>
+                    <PolarGrid stroke="#ffffff20" />
+                    <PolarAngleAxis dataKey="name" stroke="#ffffff80" fontSize={11} />
+                    <PolarRadiusAxis angle={30} domain={[0, 'auto']} stroke="#ffffff50" fontSize={10} />
+                    <Radar name="Projects" dataKey="count" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.4} />
+                    <RechartsTooltip 
+                      contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                  </RadarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><CreditCard className="w-5 h-5 text-purple-400" /> Payment Methods</h3>
+              <p className="text-xs text-white/40 mb-4">Distribution of revenue collection channels</p>
+              <div className="flex-1 min-h-[250px] flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={analytics.paymentData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {analytics.paymentData.map((entry, index) => (
+                        <Cell key={`pm-${index}`} fill={ALT_COLORS[index % ALT_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip 
+                      contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Top Selling Products */}
+            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+              <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2"><Package className="w-5 h-5 text-green-400" /> Top Selling Products</h3>
+              <p className="text-xs text-white/40 mb-4">Highest revenue generating assets</p>
               {analytics.topProducts.length > 0 ? (
-                <div className="h-[250px]">
+                <div className="flex-1 min-h-[250px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={analytics.topProducts} layout="vertical" margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+                    <BarChart data={analytics.topProducts} layout="vertical" margin={{ top: 0, right: 0, left: -10, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" horizontal={true} vertical={false} />
                       <XAxis type="number" hide />
-                      <YAxis dataKey="name" type="category" stroke="#ffffff50" fontSize={11} tickLine={false} axisLine={false} width={120} />
+                      <YAxis dataKey="name" type="category" stroke="#ffffff80" fontSize={11} tickLine={false} axisLine={false} width={100} />
                       <RechartsTooltip 
                         cursor={{ fill: '#ffffff05' }}
                         contentStyle={{ backgroundColor: '#000', borderColor: '#333', borderRadius: '8px' }}
-                        formatter={(value) => [formatCurrency(value), 'Generated Revenue']}
+                        formatter={(value) => [formatCurrency(value), 'Revenue']}
                       />
-                      <Bar dataKey="revenue" fill="#3B82F6" radius={[0, 4, 4, 0]}>
+                      <Bar dataKey="revenue" fill="#10B981" radius={[0, 4, 4, 0]}>
                         {analytics.topProducts.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          <Cell key={`tp-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="h-[250px] flex items-center justify-center text-white/30 text-sm">No sales data found</div>
+                <div className="flex-1 flex items-center justify-center text-white/30 text-sm">No sales data found</div>
               )}
             </div>
 
-            {/* Recent Orders List */}
-            <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-medium text-white">Recent Orders</h3>
-                <button onClick={() => router.push('/admin/orders')} className="text-[13px] text-brand-cyan hover:text-white transition-colors">View All</button>
-              </div>
-              <div className="space-y-3 flex-1 overflow-y-auto max-h-[250px] pr-2 custom-scrollbar">
-                {orders.slice(0, 5).map((order) => (
-                  <div key={order._id} className={"flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"}>
-                    <div className="w-10 h-10 rounded-full bg-brand-cyan/10 flex items-center justify-center shrink-0">
-                      <ShoppingCart className="w-5 h-5 text-brand-cyan" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[14px] text-white truncate">Order <span className="font-mono text-brand-cyan">#{order._id?.slice(-6).toUpperCase()}</span></p>
-                      <p className="text-[12px] text-white/40 truncate">{order.customer_name || order.email || 'Guest'}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="text-[14px] font-medium text-white">{formatCurrency(order.total_amount)}</p>
-                      <p className={"text-[10px] font-bold uppercase tracking-wider mt-0.5 " + (order.payment_status === 'Verified' ? 'text-green-400' : 'text-yellow-400')}>
-                        {order.payment_status || 'Pending'}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          </div>
 
+          {/* Bottom Row: Recent Orders List */}
+          <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-medium text-white">Recent Transactions</h3>
+                <p className="text-xs text-white/40 mt-1">Live feed of the latest orders and payments</p>
+              </div>
+              <button onClick={() => router.push('/admin/orders')} className="text-[13px] text-brand-cyan hover:text-white transition-colors bg-brand-cyan/10 px-4 py-2 rounded-lg">View All Orders</button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+              {orders.slice(0, 5).map((order) => (
+                <div key={order._id} className={"flex flex-col gap-3 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"}>
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs text-brand-cyan">#{order._id?.slice(-6).toUpperCase()}</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${order.payment_status === 'Verified' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}`}>
+                      {order.payment_status || 'Pending'}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-[14px] text-white truncate font-medium">{order.customer_name || order.email || 'Guest User'}</p>
+                    <p className="text-[12px] text-white/50 truncate flex items-center gap-1 mt-1">
+                      <CreditCard className="w-3 h-3" /> {order.payment_method || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="mt-auto pt-3 border-t border-white/5 flex justify-between items-center">
+                    <span className="text-xs text-white/40">{new Date(order.createdAt).toLocaleDateString()}</span>
+                    <span className="text-[14px] font-bold text-white">{formatCurrency(order.total_amount)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -337,4 +430,3 @@ export default function AdminPage() {
     </div>
   );
 }
-
