@@ -43,6 +43,7 @@ const GlassNavbar = ({
   
   const searchParams = useSearchParams();
   const [navigatingId, setNavigatingId] = useState(null);
+  const [isOverDark, setIsOverDark] = useState(false);
 
   useEffect(() => {
     setNavigatingId(null);
@@ -183,6 +184,55 @@ const GlassNavbar = ({
     };
   }, [user?._id]);
 
+  useEffect(() => {
+    const checkBg = () => {
+      const elements = document.elementsFromPoint(window.innerWidth / 2, 24);
+      if (!elements) return;
+      const contentElements = elements.filter(el => !el.closest('nav'));
+      
+      let dark = false;
+      for (const el of contentElements) {
+        const style = window.getComputedStyle(el);
+        const bg = style.backgroundColor;
+        if (bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+          const match = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+          if (match) {
+            const r = parseInt(match[1]);
+            const g = parseInt(match[2]);
+            const b = parseInt(match[3]);
+            const a = match[4] ? parseFloat(match[4]) : 1;
+            if (a > 0.1) {
+              const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+              dark = brightness < 128;
+              break;
+            }
+          }
+        }
+      }
+      setIsOverDark(dark);
+    };
+    
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          checkBg();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    setTimeout(checkBg, 100);
+    
+    return () => {
+       window.removeEventListener('scroll', handleScroll);
+       window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   // Search Suggestions Logic
   useEffect(() => {
     const fetchSuggestions = async () => {
@@ -232,21 +282,21 @@ const GlassNavbar = ({
         <div className={`flex items-center flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 gap-0 md:max-w-none md:opacity-100 md:gap-2' : 'max-w-[50px] md:max-w-none opacity-100 gap-2'}`}>
             <button onClick={toggleSidebar} className="lg:hidden p-2 hover:bg-brand-surface/10 rounded-lg transition-colors outline-none focus:outline-none focus:ring-0 -ml-2 shrink-0">
                 {sidebarOpen ? (
-                  <X strokeWidth={1.5} className="w-[22px] h-[22px] text-black" />
+                  <X strokeWidth={1.5} className={`w-[22px] h-[22px] ${isOverDark ? 'text-white' : 'text-black'}`} />
                 ) : (
-                  <Menu strokeWidth={1.5} className="w-[22px] h-[22px] text-black" />
+                  <Menu strokeWidth={1.5} className={`w-[22px] h-[22px] ${isOverDark ? 'text-white' : 'text-black'}`} />
                 )}
             </button>
             <Link href="/" onClick={() => setNavigatingId('home')} className="hidden md:flex items-center gap-2 group shrink-0 ml-2" style={{ pointerEvents: navigatingId === 'home' ? 'none' : 'auto' }}>
                 {navigatingId === 'home' ? (
                   <div className="h-8 w-8 flex items-center justify-center">
-                    <AppleSpinner size={24} className="text-black" />
+                    <AppleSpinner size={24} className={isOverDark ? 'text-white' : 'text-black'} />
                   </div>
                 ) : (
                   <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
                 )}
                 <div className="hidden sm:flex items-center gap-2">
-                  <span className="font-semibold text-xl tracking-tight text-black font-display">
+                  <span className={`font-semibold text-xl tracking-tight font-display ${isOverDark ? 'text-white' : 'text-black'}`}>
                       Codalina
                   </span>
                 </div>
@@ -289,7 +339,7 @@ const GlassNavbar = ({
                   id="navbar-search-input"
                   type="text" 
                   placeholder="Search Codalina" 
-                  className={`bg-transparent border-none outline-none text-[14px] text-left text-black transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-10 h-full w-full mb-[3px] font-sans ${mobileSearchOpen ? 'placeholder:text-black/40' : 'placeholder:text-black/50 cursor-pointer pointer-events-none select-none'}`}
+                  className={`bg-transparent border-none outline-none text-[14px] text-left transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] z-10 h-full w-full mb-[3px] font-sans ${isOverDark ? 'text-white' : 'text-black'} ${mobileSearchOpen ? (isOverDark ? 'placeholder:text-white/40' : 'placeholder:text-black/40') : (isOverDark ? 'placeholder:text-white/50' : 'placeholder:text-black/50')} ${!mobileSearchOpen && 'cursor-pointer pointer-events-none select-none'}`}
                   value={searchQuery || ""}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => {
@@ -319,7 +369,7 @@ const GlassNavbar = ({
                     setSearchFocused(false);
                   }
                 }} 
-                className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] text-brand-blue font-normal`}
+                className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] font-normal ${isOverDark ? 'text-white' : 'text-brand-blue'}`}
               >
                 {searchQuery?.trim() ? 'Search' : 'Cancel'}
               </button>
@@ -371,12 +421,12 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: (searchFocused || searchQuery) ? '1 0 128px' : '0 0 128px' }}
               >
-                  <Search strokeWidth={2} className="w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors text-black/50 mb-[3px]" />
+                  <Search strokeWidth={2} className={`w-[17px] h-[17px] shrink-0 mr-1.5 transition-colors mb-[3px] ${isOverDark ? 'text-white/60' : 'text-black/50'}`} />
                   <input 
                       id="desktop-search-input"
                       type="text" 
                       placeholder="Search Codalina" 
-                      className={`bg-transparent border-none outline-none text-[14px] text-black text-left w-full mb-[3px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${(searchFocused || searchQuery) ? 'placeholder:text-black/40' : 'placeholder:text-black/40 cursor-pointer pointer-events-none select-none'}`}
+                      className={`bg-transparent border-none outline-none text-[14px] text-left w-full mb-[3px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${isOverDark ? 'text-white' : 'text-black'} ${(searchFocused || searchQuery) ? (isOverDark ? 'placeholder:text-white/40' : 'placeholder:text-black/40') : (isOverDark ? 'placeholder:text-white/40 cursor-pointer pointer-events-none select-none' : 'placeholder:text-black/40 cursor-pointer pointer-events-none select-none')}`}
                       value={searchQuery || ""}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onFocus={() => {
@@ -424,7 +474,7 @@ const GlassNavbar = ({
                   setSearchFocused(false);
                 }
               }} 
-              className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] text-brand-blue font-normal`}
+              className={`text-[17px] font-sans whitespace-nowrap shrink-0 px-2 transition-all active:opacity-50 tracking-[-0.4px] font-normal ${isOverDark ? 'text-white' : 'text-brand-blue'}`}
             >
               {searchQuery?.trim() ? 'Search' : 'Cancel'}
             </button>
@@ -437,9 +487,9 @@ const GlassNavbar = ({
             {/* Cart and Orders Links */}
             {pathname !== "/book-call" && (
               <div className="hidden md:flex items-center gap-2 shrink-0">
-                <Link href="/cart" onClick={() => setNavigatingId('cart')} style={{ pointerEvents: navigatingId === 'cart' ? 'none' : 'auto' }} className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                <Link href="/cart" onClick={() => setNavigatingId('cart')} style={{ pointerEvents: navigatingId === 'cart' ? 'none' : 'auto' }} className={`p-2 rounded-xl transition-all relative group flex items-center justify-center ${isOverDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}>
                   {navigatingId === 'cart' ? (
-                    <AppleSpinner size={18} className="text-black" />
+                    <AppleSpinner size={18} className={isOverDark ? "text-white" : "text-black"} />
                   ) : (
                     <>
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
@@ -451,11 +501,11 @@ const GlassNavbar = ({
                     </>
                   )}
                 </Link>
-                <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} onClick={() => setNavigatingId('orders')} style={{ pointerEvents: navigatingId === 'orders' ? 'none' : 'auto' }} title="My Orders" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} onClick={() => setNavigatingId('orders')} style={{ pointerEvents: navigatingId === 'orders' ? 'none' : 'auto' }} title="My Orders" className={`p-2 rounded-xl transition-all relative group flex items-center justify-center ${isOverDark ? 'text-white hover:bg-white/10' : 'text-black hover:bg-black/5'}`}>
                   {navigatingId === 'orders' ? (
-                    <AppleSpinner size={18} className="text-black" />
+                    <AppleSpinner size={18} className={isOverDark ? "text-white" : "text-black"} />
                   ) : (
-                    <div className={`relative transition-colors duration-500 ${hasPendingOrders ? 'text-brand-blue' : ''}`}>
+                    <div className={`relative transition-colors duration-500 ${hasPendingOrders ? (isOverDark ? 'text-white' : 'text-brand-blue') : ''}`}>
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={hasPendingOrders ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''}>
                         <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
                         <path d="M3 6h18"/>
@@ -463,8 +513,8 @@ const GlassNavbar = ({
                       </svg>
                       {hasPendingOrders && (
                         <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75 duration-1000"></span>
-                          <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-brand-blue"></span>
+                          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 duration-1000 ${isOverDark ? 'bg-white' : 'bg-brand-blue'}`}></span>
+                          <span className={`relative inline-flex rounded-full h-[8px] w-[8px] ${isOverDark ? 'bg-white' : 'bg-brand-blue'}`}></span>
                         </span>
                       )}
                     </div>
@@ -474,13 +524,17 @@ const GlassNavbar = ({
                   <button 
                     onClick={() => {
                       if (onToggleChat) onToggleChat();
-                      else router.push('/chat');
+                      else { setNavigatingId('chat'); router.push('/chat'); }
                     }}
                     title="Live Chat" 
-                    className="px-3 py-1.5 ml-1 rounded-full bg-brand-blue/10 text-brand-blue hover:bg-brand-blue/20 transition-all relative group flex items-center gap-2 justify-center border border-brand-blue/20 shadow-sm shadow-brand-blue/5"
+                    className={`px-3 py-1.5 ml-1 rounded-full transition-all relative group flex items-center gap-2 justify-center border shadow-sm ${isOverDark ? 'bg-white/20 text-white hover:bg-white/30 border-white/30 shadow-white/5' : 'bg-brand-blue/10 text-brand-blue hover:bg-brand-blue/20 border-brand-blue/20 shadow-brand-blue/5'}`}
                   >
                     <div className="relative flex items-center justify-center">
-                      <MessageCircleQuestion size={16} className={unreadChatCount > 0 ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''} />
+                      {navigatingId === 'chat' ? (
+                        <AppleSpinner size={16} className={isOverDark ? "text-white" : "text-brand-blue"} />
+                      ) : (
+                        <MessageCircleQuestion size={16} className={unreadChatCount > 0 ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''} />
+                      )}
                       {unreadChatCount > 0 && (
                         <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 duration-1000"></span>
@@ -506,8 +560,8 @@ const GlassNavbar = ({
               </div>
             ) : (!user || isGuest || user?.role === 'guest') ? (
               <div className="flex items-center gap-1.5 sm:gap-3 z-50 relative shrink-0">
-                <Link href="/auth/login" onClick={() => setNavigatingId('login')} style={{ pointerEvents: navigatingId === 'login' ? 'none' : 'auto' }} className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-black hover:opacity-70 transition-opacity whitespace-nowrap flex items-center justify-center min-w-[60px]">
-                  {navigatingId === 'login' ? <AppleSpinner size={16} className="text-black" /> : 'Log in'}
+                <Link href="/auth/login" onClick={() => setNavigatingId('login')} style={{ pointerEvents: navigatingId === 'login' ? 'none' : 'auto' }} className={`px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium hover:opacity-70 transition-opacity whitespace-nowrap flex items-center justify-center min-w-[60px] ${isOverDark ? 'text-white' : 'text-black'}`}>
+                  {navigatingId === 'login' ? <AppleSpinner size={16} className={isOverDark ? 'text-white' : 'text-black'} /> : 'Log in'}
                 </Link>
                 <Link href="/auth/register" onClick={() => setNavigatingId('join')} style={{ pointerEvents: navigatingId === 'join' ? 'none' : 'auto' }} className="px-3 sm:px-[14px] py-[6px] rounded-[4px] bg-brand-blue border border-brand-blue text-white text-[12px] sm:text-[13px] font-sans font-medium hover:bg-brand-blue/90 transition-all whitespace-nowrap flex items-center justify-center min-w-[55px]">
                   {navigatingId === 'join' ? <AppleSpinner size={16} className="text-white" /> : 'Join'}
@@ -516,15 +570,15 @@ const GlassNavbar = ({
             ) : isHomePage ? (
               <div onClick={() => { setNavigatingId('profile'); router.push(`/u/${user?.username}`); }} style={{ pointerEvents: navigatingId === 'profile' ? 'none' : 'auto' }} className="flex items-center gap-3 cursor-pointer group shrink-0">
                   <div className="text-right hidden xl:block shrink-0">
-                      <div className="text-[14px] font-normal text-black font-sans leading-tight">{user?.name}</div>
+                      <div className={`text-[14px] font-normal font-sans leading-tight ${isOverDark ? 'text-white' : 'text-black'}`}>{user?.name}</div>
                   </div>
                   <div className="w-7 h-7 md:w-9 md:h-9 shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center">
                       {navigatingId === 'profile' ? (
-                        <AppleSpinner size={18} className="text-brand-blue" />
+                        <AppleSpinner size={18} className={isOverDark ? "text-white" : "text-brand-blue"} />
                       ) : user?.profilePicture ? (
                         <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-black/50 font-bold">{user?.name?.[0]}</div>
+                        <div className={`w-full h-full flex items-center justify-center font-bold ${isOverDark ? 'text-white/70' : 'text-black/50'}`}>{user?.name?.[0]}</div>
                       )}
                   </div>
               </div>

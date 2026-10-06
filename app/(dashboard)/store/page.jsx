@@ -64,6 +64,12 @@ export default function ShopPage() {
   const [loadingCartId, setLoadingCartId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [isPending, startTransition] = React.useTransition();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setLoadingCartId(null);
+    setLoadingBuyId(null);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     const updateCart = () => {
@@ -434,6 +440,7 @@ export default function ShopPage() {
               if (isAdded) {
                 e.preventDefault();
                 e.stopPropagation();
+                setLoadingCartId(product.id || product._id);
                 router.push('/cart');
               } else {
                 handleAddToCart(e, product);

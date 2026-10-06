@@ -57,6 +57,7 @@ export default function Checkout() {
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [navigatingId, setNavigatingId] = useState(null);
 
   const [marketConfig, setMarketConfig] = useState(null);
   const [promoCodeInput, setPromoCodeInput] = useState("");
@@ -258,7 +259,7 @@ export default function Checkout() {
           <p className="text-[14px] text-slate-500 mb-8">
             Please select a product from your cart to proceed with checkout.
           </p>
-          <Button onClick={() => router.push("/cart")}>
+          <Button onClick={() => { setNavigatingId('cart'); router.push("/cart"); }} isLoading={navigatingId === 'cart'}>
             Return to Cart
           </Button>
         </div>
