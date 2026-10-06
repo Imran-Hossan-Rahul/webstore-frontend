@@ -1,19 +1,21 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { api } from '@/utils/api';
-import { ChevronDown, Search, RefreshCw, Package, CheckCircle2, Truck, Home, XCircle, Clock, FileText, Calendar } from "lucide-react";
+import { ChevronDown, Search, RefreshCw, Package, CheckCircle2, Home, XCircle, Clock, FileText, Calendar, MessageSquare, Settings, Activity, AlertTriangle, Globe, Github, User } from "lucide-react";
 import { generateInvoice } from '@/utils/generateInvoice';
 import AppleSpinner from "@/components/ui/AppleSpinner";
 
-const STATUS_FLOW = ['Pending Verification', 'Order placed', 'Confirmed', 'Processing', 'Shipped', 'Delivered'];
+const STATUS_FLOW = ['Pending Verification', 'Confirmed', 'In Collaboration', 'Provisioning', 'Active', 'Delivered'];
 
 const STATUS_CONFIG = {
   'Pending Verification': { color: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-100 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/30', icon: Clock },
-  'Order placed': { color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-100 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/30', icon: Clock },
+  'Payment Failed': { color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-500/10 border-red-200 dark:border-red-500/30', icon: XCircle },
   'Confirmed':    { color: 'text-blue-600 dark:text-blue-400',   bg: 'bg-blue-100 dark:bg-blue-500/10 border-blue-200 dark:border-blue-500/30',   icon: CheckCircle2 },
-  'Processing':   { color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/30', icon: Package },
-  'Shipped':      { color: 'text-cyan-600 dark:text-cyan-400',   bg: 'bg-cyan-100 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/30',   icon: Truck },
+  'In Collaboration': { color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/30', icon: MessageSquare },
+  'Provisioning': { color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-100 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/30', icon: Settings },
+  'Active': { color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30', icon: Activity },
   'Delivered':    { color: 'text-green-600 dark:text-green-400',  bg: 'bg-green-100 dark:bg-green-500/10 border-green-200 dark:border-green-500/30', icon: Home },
+  'Suspended': { color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-100 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/30', icon: AlertTriangle },
   'Cancelled':    { color: 'text-red-600 dark:text-red-400',    bg: 'bg-red-100 dark:bg-red-500/10 border-red-200 dark:border-red-500/30',     icon: XCircle },
 };
 
@@ -25,7 +27,6 @@ export default function AdminOrdersPage() {
   const [filterStatus, setFilterStatus] = useState('All');
   const [dateFilter, setDateFilter] = useState('All');
   const [expandedOrder, setExpandedOrder] = useState(null);
-  const [shippingModal, setShippingModal] = useState({ isOpen: false, orderId: null, courier: '', tracking: '' });
   const [toast, setToast] = useState(null);
   const [activeStatusPicker, setActiveStatusPicker] = useState(null);
 
@@ -49,27 +50,18 @@ export default function AdminOrdersPage() {
   useEffect(() => { fetchOrders(); }, []);
 
   const handleStatusChange = async (orderId, newStatus) => {
-    if (newStatus === 'Shipped') {
-      setShippingModal({ isOpen: true, orderId, courier: '', tracking: '' });
-      return;
-    }
-    await updateStatus(orderId, newStatus, {});
-  };
-
-  const updateStatus = async (orderId, newStatus, payloadData = {}) => {
     setUpdating(orderId);
     try {
-      await api.patch(`/market/orders/` + orderId + `/status`, { status: newStatus, ...payloadData });
+      await api.patch(`/market/orders/${orderId}/status`, { status: newStatus });
       setOrders(prev => prev.map(o => o.id === orderId || o._id?.toString() === orderId 
         ? { 
             ...o, 
             status: newStatus, 
-            confirmed_at: newStatus === 'Confirmed' ? new Date().toISOString() : o.confirmed_at,
-            ...payloadData
+            confirmed_at: newStatus === 'Confirmed' ? new Date().toISOString() : o.confirmed_at
           }
         : o
       ));
-      showToast(`Order status updated to "` + newStatus + `"`);
+      showToast(`Order status updated to "${newStatus}"`);
     } catch (err) {
       showToast('Failed to update status', 'error');
     } finally {
@@ -78,31 +70,25 @@ export default function AdminOrdersPage() {
     }
   };
 
-  const handleShippingSubmit = async () => {
-    const { orderId, courier, tracking } = shippingModal;
-    if (!courier.trim() || !tracking.trim()) {
-      showToast('Both Courier Name and Tracking ID are required.', 'error');
-      return;
-    }
-    setShippingModal({ isOpen: false, orderId: null, courier: '', tracking: '' });
-    await updateStatus(orderId, 'Shipped', { courier_name: courier.trim(), tracking_id: tracking.trim() });
-  };
-
   const formatDate = (d) => d ? new Date(d).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }) : '—';
   const formatPrice = (p) => new Intl.NumberFormat('en-IN').format(p || 0);
 
   const filtered = orders.filter(o => {
     const matchStatus = filterStatus === 'All' || o.status === filterStatus;
     const searchLower = search.toLowerCase();
-    let trackingMatch = o.tracking_id?.toLowerCase().includes(searchLower);
+    
     let nameMatch = false;
+    let emailMatch = false;
     try {
       const addrObj = typeof o.address === 'string' ? JSON.parse(o.address) : o.address;
-      nameMatch = addrObj?.name?.toLowerCase().includes(searchLower);
+      nameMatch = (o.customer_name || addrObj?.name || '').toLowerCase().includes(searchLower);
+      emailMatch = (o.email || '').toLowerCase().includes(searchLower);
     } catch(e) {}
+    
     const matchSearch = !search || 
       (o.id || o._id?.toString() || '').toLowerCase().includes(searchLower) ||
-      (o.phone || '').includes(search) || trackingMatch || nameMatch;
+      (o.phone || '').includes(search) || emailMatch || nameMatch || 
+      (o.deliveryDomain || '').toLowerCase().includes(searchLower);
 
     let matchDate = true;
     if (dateFilter !== 'All') {
@@ -124,14 +110,16 @@ export default function AdminOrdersPage() {
     return acc;
   }, {});
 
+  const getAllStatuses = () => [...STATUS_FLOW, 'Payment Failed', 'Suspended', 'Cancelled'];
+
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto text-slate-800 dark:text-slate-200">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold mb-2 text-slate-900 dark:text-white flex items-center gap-2">
-            <Package className="text-blue-500" size={28} /> Order Management
+            <Package className="text-blue-500" size={28} /> Digital Orders
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm">View, track, and update the status of marketplace orders.</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm">Manage website and software license orders, provisioning, and delivery.</p>
         </div>
         <button
           onClick={fetchOrders}
@@ -141,8 +129,8 @@ export default function AdminOrdersPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3 mb-8">
-        {['All', ...STATUS_FLOW, 'Cancelled'].map(status => {
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-8">
+        {['All', ...STATUS_FLOW].map(status => {
           const count = status === 'All' ? orders.length : (statusCounts[status] || 0);
           return (
             <button
@@ -168,7 +156,7 @@ export default function AdminOrdersPage() {
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Search by ID, Phone, Name, or Tracking..."
+            placeholder="Search by ID, Name, Email, Phone, or Domain..."
             className="w-full bg-white dark:bg-brand-surface border border-slate-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-slate-800 dark:text-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition shadow-sm placeholder:text-slate-400 dark:placeholder:text-slate-500"
           />
         </div>
@@ -195,7 +183,7 @@ export default function AdminOrdersPage() {
               <th className="p-4 rounded-tl-xl">Order ID</th>
               <th className="p-4">Customer</th>
               <th className="p-4">Date</th>
-              <th className="p-4">Items</th>
+              <th className="p-4">Products</th>
               <th className="p-4">Total</th>
               <th className="p-4">Status</th>
               <th className="p-4 w-48">Update Status</th>
@@ -219,16 +207,18 @@ export default function AdminOrdersPage() {
               </tr>
             ) : filtered.map(order => {
               const orderId = order.id || order._id?.toString();
-              const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Order placed'];
+              const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Pending Verification'];
               const Icon = cfg.icon;
+              
               const itemsPrice = (order.items || []).reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
-              const deliveryCharge = typeof order.delivery_charge === 'number' ? order.delivery_charge : Math.round(itemsPrice * 0.01);
-              const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice + deliveryCharge;
+              const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice - (order.discount_amount || 0);
               const isExpanded = expandedOrder === orderId;
-              const dueAmount = order.status === 'Delivered' || order.status === 'Cancelled' ? 0 : total;
-              const timeSinceOrder = Math.floor((new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24));
+              const isPaid = order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active';
+              const dueAmount = isPaid || order.status === 'Cancelled' ? 0 : total;
+              
               let addrObj = {};
               try { addrObj = (typeof order.address === 'string' ? JSON.parse(order.address) : order.address) || {}; } catch(e) {}
+              const customerName = order.customer_name || addrObj.name || '—';
 
               return (
                 <React.Fragment key={orderId}>
@@ -237,14 +227,14 @@ export default function AdminOrdersPage() {
                       <span className="font-mono text-xs font-semibold text-slate-700 dark:text-slate-300">#{orderId?.slice(-8).toUpperCase()}</span>
                     </td>
                     <td className="p-4 align-top">
-                      <div className="text-sm font-medium text-slate-900 dark:text-white">{addrObj.name || '—'}</div>
+                      <div className="text-sm font-medium text-slate-900 dark:text-white">{customerName}</div>
                       <div className="text-xs text-slate-500 mt-0.5">{order.phone || '—'}</div>
                     </td>
                     <td className="p-4 align-top text-xs text-slate-500 whitespace-nowrap font-medium">
                       {formatDate(order.createdAt)}
                     </td>
                     <td className="p-4 align-top text-sm font-medium text-slate-700 dark:text-slate-300">
-                      {order.items?.length || 0} item{(order.items?.length || 0) !== 1 ? 's' : ''}
+                      {order.items?.length || 0} product{(order.items?.length || 0) !== 1 ? 's' : ''}
                     </td>
                     <td className="p-4 align-top font-bold text-slate-900 dark:text-white text-sm">
                       ৳ {formatPrice(total)}
@@ -268,9 +258,10 @@ export default function AdminOrdersPage() {
                         
                         {activeStatusPicker === orderId && (
                           <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 shadow-xl rounded-lg py-1 z-[100] max-h-60 overflow-y-auto">
-                            {[...STATUS_FLOW, 'Cancelled'].map(s => {
+                            {getAllStatuses().map(s => {
                               const sCfg = STATUS_CONFIG[s];
-                              const SIcon = sCfg?.icon;
+                              if (!sCfg) return null;
+                              const SIcon = sCfg.icon;
                               const isSelected = order.status === s;
                               return (
                                 <button
@@ -303,8 +294,9 @@ export default function AdminOrdersPage() {
                       <td colSpan="8" className="p-0 border-t border-slate-200 dark:border-white/10">
                         <div className="px-6 py-6 border-b-2 border-blue-500/20 shadow-inner">
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            {/* Products Section */}
                             <div>
-                              <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2"><Package size={14} /> Ordered Items</h4>
+                              <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2"><Package size={14} /> Digital Assets / Products</h4>
                               <div className="space-y-2">
                                 {(order.items || []).map((item, idx) => {
                                   let photo = null;
@@ -315,58 +307,67 @@ export default function AdminOrdersPage() {
                                         {photo ? <img src={photo} alt="" className="w-full h-full object-cover" /> : <Package size={20} className="text-slate-400" />}
                                       </div>
                                       <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{item.product?.title || 'Unknown Product'}</p>
-                                        {item.variants && <p className="text-xs font-medium text-slate-500 mt-0.5">Variant: <span className="text-slate-700 dark:text-slate-300">{item.variants}</span></p>}
-                                        {item.product?.warranty_info && <p className="text-[10px] text-green-600 dark:text-green-400 mt-1 font-mono font-bold">Warranty: {item.product.warranty_info}</p>}
+                                        <p className="text-sm font-semibold text-slate-900 dark:text-white truncate">{item.product?.title || 'Unknown Product'}</p>
+                                        {item.variants && <p className="text-xs text-slate-500 mt-0.5">Variant: <span className="font-medium text-slate-700 dark:text-slate-300">{item.variants}</span></p>}
+                                        {item.product?.warranty_info && <p className="text-[10px] text-green-600 dark:text-green-400 mt-1 font-mono font-medium">Support: {item.product.warranty_info}</p>}
                                       </div>
                                       <div className="text-right shrink-0">
-                                        <p className="text-sm font-black text-slate-900 dark:text-white">৳ {formatPrice(item.price_at_purchase * item.quantity)}</p>
-                                        <p className="text-xs font-bold text-slate-500 mt-0.5">Qty: {item.quantity}</p>
+                                        <p className="text-sm font-bold text-slate-900 dark:text-white">৳ {formatPrice(item.price_at_purchase * item.quantity)}</p>
+                                        <p className="text-xs font-medium text-slate-500 mt-0.5">Qty: {item.quantity}</p>
                                       </div>
                                     </div>
                                   );
                                 })}
                               </div>
+
+                              <div className="mt-5 grid grid-cols-2 gap-3">
+                                <div className="bg-white dark:bg-brand-surface rounded-lg p-3 border border-slate-200 dark:border-white/10 shadow-sm">
+                                  <p className="text-[10px] font-bold text-slate-500 uppercase mb-1">Total</p>
+                                  <p className="font-black text-slate-900 dark:text-white text-lg">৳ {formatPrice(total)}</p>
+                                </div>
+                                <div className="bg-white dark:bg-brand-surface rounded-lg p-3 border border-slate-200 dark:border-white/10 shadow-sm">
+                                  <p className="text-[10px] font-bold text-slate-500 uppercase mb-1">Due</p>
+                                  <p className={`font-black text-lg ` + (dueAmount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400')}>৳ {formatPrice(dueAmount)}</p>
+                                </div>
+                              </div>
                             </div>
                             
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                              {/* Customer Details */}
                               <div className="col-span-1 sm:col-span-2">
-                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2"><Truck size={14} /> Shipping Information</h4>
+                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2"><User size={14} /> Customer Details</h4>
                                 <div className="bg-white dark:bg-brand-surface rounded-lg p-4 border border-slate-200 dark:border-white/10 text-sm space-y-1.5 text-slate-700 dark:text-slate-300 shadow-sm">
-                                  <p className="font-bold text-slate-900 dark:text-white text-base">{addrObj.name || '—'}</p>
-                                  <p className="flex items-center gap-2"><span className="text-slate-500 font-medium">Phone:</span> <span className="font-mono font-medium">{order.phone || '—'}</span></p>
-                                  <p className="flex items-center gap-2"><span className="text-slate-500 font-medium">Area:</span> <span className="font-medium">{addrObj.upazila || ''}{addrObj.district ? `, ${addrObj.district}` : ''}</span></p>
-                                  <p className="flex gap-2"><span className="text-slate-500 font-medium">Address:</span> <span className="leading-snug font-medium">{addrObj.details || '—'}</span></p>
+                                  <p className="font-bold text-slate-900 dark:text-white text-base">{customerName}</p>
+                                  <p className="flex items-center gap-2"><span className="text-slate-400">Email:</span> <span className="font-medium text-slate-900 dark:text-white">{order.email || '—'}</span></p>
+                                  <p className="flex items-center gap-2"><span className="text-slate-400">Phone:</span> <span className="font-mono">{order.phone || '—'}</span></p>
                                 </div>
                               </div>
                               
-                              <div>
-                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2 mb-3">Order Summary</h4>
-                                <div className="bg-white dark:bg-brand-surface rounded-lg p-4 border border-slate-200 dark:border-white/10 text-sm space-y-2.5 shadow-sm">
-                                  <div className="flex justify-between text-slate-600 dark:text-slate-400 font-bold"><span>Subtotal</span><span>৳ {formatPrice(itemsPrice)}</span></div>
-                                  <div className="flex justify-between text-slate-600 dark:text-slate-400 font-bold"><span>Delivery</span><span>৳ {formatPrice(deliveryCharge)}</span></div>
-                                  <div className="flex justify-between font-black text-slate-900 dark:text-white border-t border-slate-100 dark:border-white/10 pt-2.5 text-base"><span>Total</span><span>৳ {formatPrice(total)}</span></div>
-                                  <div className={`flex justify-between font-black pt-1 ` + (dueAmount > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400')}>
-                                    <span>Due</span><span>৳ {formatPrice(dueAmount)}</span>
-                                  </div>
+                              {/* Project / Delivery Info */}
+                              <div className="col-span-1 sm:col-span-2">
+                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2 mb-3">Project & Provisioning</h4>
+                                <div className="bg-white dark:bg-brand-surface rounded-lg p-4 border border-slate-200 dark:border-white/10 text-sm space-y-2.5 shadow-sm text-slate-700 dark:text-slate-300">
+                                  <div className="flex justify-between items-center"><span className="text-slate-500 flex items-center gap-1.5"><Globe size={14}/> Domain</span><span className="font-medium">{order.deliveryDomain || '—'}</span></div>
+                                  <div className="flex justify-between items-center"><span className="text-slate-500 flex items-center gap-1.5"><Github size={14}/> GitHub</span><span className="font-mono font-medium">{order.githubHandle || '—'}</span></div>
+                                  <div className="flex justify-between items-center"><span className="text-slate-500 flex items-center gap-1.5"><Settings size={14}/> Phase</span><span className="font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.projectPhase || 'N/A'}</span></div>
                                 </div>
                               </div>
                               
-                              <div>
-                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2 mb-3">Payment & Tracking</h4>
+                              {/* Payment Info */}
+                              <div className="col-span-1 sm:col-span-2">
+                                <h4 className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-2 mb-3">Payment Info</h4>
                                 <div className="bg-white dark:bg-brand-surface rounded-lg p-4 border border-slate-200 dark:border-white/10 text-[13px] space-y-2.5 shadow-sm text-slate-700 dark:text-slate-300">
-                                  <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Method</span><span className="font-black text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.payment_method || 'COD'}</span></div>
-                                  {order.payment_method === 'bkash_manual' && (
+                                  <div className="flex justify-between items-center"><span className="text-slate-500">Status</span>
+                                    <span className={`font-bold px-2 py-0.5 rounded ` + (order.payment_status === 'Verified' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400')}>
+                                      {order.payment_status || 'Pending'}
+                                    </span>
+                                  </div>
+                                  <div className="flex justify-between items-center"><span className="text-slate-500">Method</span><span className="font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.payment_method || 'Stripe'}</span></div>
+                                  {['bkash_manual', 'nagad_manual'].includes(order.payment_method) && (
                                     <>
-                                      <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">bKash</span><span className="font-mono font-bold text-slate-900 dark:text-white">{order.payment_number}</span></div>
-                                      <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">TrxID</span><span className="font-mono font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded">{order.payment_trx_id}</span></div>
+                                      <div className="flex justify-between items-center"><span className="text-slate-500">Account</span><span className="font-mono font-medium">{order.payment_number || '—'}</span></div>
+                                      <div className="flex justify-between items-center"><span className="text-slate-500">TrxID</span><span className="font-mono font-bold text-blue-600 dark:text-blue-400">{order.payment_trx_id || '—'}</span></div>
                                     </>
-                                  )}
-                                  {(order.courier_name || order.tracking_id) && (
-                                    <div className="pt-2 mt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
-                                      {order.courier_name && <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Courier</span><span className="font-bold text-slate-900 dark:text-white">{order.courier_name}</span></div>}
-                                      {order.tracking_id && <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Tracking</span><span className="font-mono font-bold text-slate-900 dark:text-white">{order.tracking_id}</span></div>}
-                                    </div>
                                   )}
                                 </div>
                               </div>
@@ -392,6 +393,7 @@ export default function AdminOrdersPage() {
         </table>
       </div>
 
+      {/* Mobile Design */}
       <div className="md:hidden flex flex-col gap-4 relative z-10">
         {loading ? (
           <div className="py-12 flex flex-col items-center text-slate-500">
@@ -405,15 +407,17 @@ export default function AdminOrdersPage() {
           </div>
         ) : filtered.map(order => {
           const orderId = order.id || order._id?.toString();
-          const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Order placed'];
+          const cfg = STATUS_CONFIG[order.status] || STATUS_CONFIG['Pending Verification'];
           const Icon = cfg.icon;
           const itemsPrice = (order.items || []).reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
-          const deliveryCharge = typeof order.delivery_charge === 'number' ? order.delivery_charge : Math.round(itemsPrice * 0.01);
-          const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice + deliveryCharge;
+          const total = typeof order.total_amount === 'number' && order.total_amount > 0 ? order.total_amount : itemsPrice - (order.discount_amount || 0);
           const isExpanded = expandedOrder === orderId;
-          const dueAmount = order.status === 'Delivered' || order.status === 'Cancelled' ? 0 : total;
+          const isPaid = order.payment_status === 'Verified' || order.status === 'Delivered' || order.status === 'Active';
+          const dueAmount = isPaid || order.status === 'Cancelled' ? 0 : total;
+          
           let addrObj = {};
           try { addrObj = (typeof order.address === 'string' ? JSON.parse(order.address) : order.address) || {}; } catch(e) {}
+          const customerName = order.customer_name || addrObj.name || '—';
 
           return (
             <div key={orderId} className="bg-white dark:bg-brand-surface border border-slate-200 dark:border-white/10 rounded-xl overflow-visible shadow-sm">
@@ -421,7 +425,7 @@ export default function AdminOrdersPage() {
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
                     <span className="font-mono text-[11px] font-bold text-slate-500 bg-slate-100 dark:bg-white/5 px-2 py-0.5 rounded-md">#{orderId?.slice(-8).toUpperCase()}</span>
-                    <p className="font-bold text-slate-900 dark:text-white mt-1.5">{addrObj.name || '—'}</p>
+                    <p className="font-bold text-slate-900 dark:text-white mt-1.5">{customerName}</p>
                     <p className="text-xs font-bold text-slate-500 mt-0.5">{order.phone || '—'}</p>
                   </div>
                   <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold border shrink-0 uppercase tracking-wide ` + cfg.bg + ` ` + cfg.color}>
@@ -430,7 +434,7 @@ export default function AdminOrdersPage() {
                 </div>
                 <div className="flex items-center justify-between border-t border-slate-100 dark:border-white/5 pt-3 mt-1">
                   <div>
-                    <p className="text-xs font-bold text-slate-500">{order.items?.length || 0} item(s) • {formatDate(order.createdAt)}</p>
+                    <p className="text-xs font-bold text-slate-500">{order.items?.length || 0} product(s) • {formatDate(order.createdAt)}</p>
                     <p className="font-black text-slate-900 dark:text-white text-lg mt-0.5">৳ {formatPrice(total)}</p>
                   </div>
                 </div>
@@ -445,9 +449,10 @@ export default function AdminOrdersPage() {
                   </button>
                   {activeStatusPicker === orderId && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-white/10 rounded-lg shadow-xl overflow-hidden z-[100]">
-                      {[...STATUS_FLOW, 'Cancelled'].map(s => {
+                      {getAllStatuses().map(s => {
                         const sCfg = STATUS_CONFIG[s];
-                        const SIcon = sCfg?.icon;
+                        if (!sCfg) return null;
+                        const SIcon = sCfg.icon;
                         const isSelected = order.status === s;
                         return (
                           <button
@@ -475,7 +480,7 @@ export default function AdminOrdersPage() {
               {isExpanded && (
                 <div className="border-t border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02] p-4 space-y-5">
                   <div>
-                    <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Package size={14} /> Items</h4>
+                    <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Package size={14} /> Products</h4>
                     <div className="space-y-2">
                       {(order.items || []).map((item, idx) => {
                         let photo = null;
@@ -498,17 +503,7 @@ export default function AdminOrdersPage() {
                       })}
                     </div>
                   </div>
-                  
-                  <div>
-                    <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Truck size={14} /> Shipping</h4>
-                    <div className="bg-white dark:bg-brand-surface rounded-lg p-3.5 border border-slate-200 dark:border-white/10 text-[13px] text-slate-700 dark:text-slate-300 space-y-1.5 shadow-sm font-medium">
-                      <p className="font-bold text-slate-900 dark:text-white text-sm">{addrObj.name || '—'}</p>
-                      <p className="font-mono">{order.phone || '—'}</p>
-                      <p className="text-slate-600 dark:text-slate-400">{addrObj.upazila || ''}{addrObj.district ? `, ${addrObj.district}` : ''}</p>
-                      <p className="leading-snug">{addrObj.details || ''}</p>
-                    </div>
-                  </div>
-                  
+
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-white dark:bg-brand-surface rounded-lg p-3 border border-slate-200 dark:border-white/10 shadow-sm">
                       <p className="text-[10px] font-bold text-slate-500 uppercase mb-1">Total</p>
@@ -520,19 +515,37 @@ export default function AdminOrdersPage() {
                     </div>
                   </div>
                   
+                  <div>
+                    <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><User size={14} /> Customer</h4>
+                    <div className="bg-white dark:bg-brand-surface rounded-lg p-3.5 border border-slate-200 dark:border-white/10 text-[13px] text-slate-700 dark:text-slate-300 space-y-1.5 shadow-sm font-medium">
+                      <p className="font-bold text-slate-900 dark:text-white text-sm">{customerName}</p>
+                      <p className="font-mono">{order.email || '—'}</p>
+                      <p className="font-mono">{order.phone || '—'}</p>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Settings size={14} /> Project Details</h4>
+                    <div className="bg-white dark:bg-brand-surface rounded-lg p-3.5 border border-slate-200 dark:border-white/10 text-[13px] text-slate-700 dark:text-slate-300 space-y-2 shadow-sm font-medium">
+                      <p className="flex justify-between items-center"><span className="text-slate-500">Domain</span> <span>{order.deliveryDomain || '—'}</span></p>
+                      <p className="flex justify-between items-center"><span className="text-slate-500">GitHub</span> <span className="font-mono">{order.githubHandle || '—'}</span></p>
+                      <p className="flex justify-between items-center"><span className="text-slate-500">Phase</span> <span className="font-bold bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.projectPhase || 'N/A'}</span></p>
+                    </div>
+                  </div>
+                  
                   <div className="bg-white dark:bg-brand-surface rounded-lg p-3.5 border border-slate-200 dark:border-white/10 text-[13px] space-y-2.5 shadow-sm text-slate-700 dark:text-slate-300">
-                    <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Payment</span><span className="font-black text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.payment_method || 'COD'}</span></div>
-                    {order.payment_method === 'bkash_manual' && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-500 font-bold">Pay Status</span>
+                      <span className={`font-bold px-2 py-0.5 rounded ` + (order.payment_status === 'Verified' ? 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-400' : 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400')}>
+                        {order.payment_status || 'Pending'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Method</span><span className="font-black text-slate-900 dark:text-white bg-slate-100 dark:bg-white/10 px-2 py-0.5 rounded">{order.payment_method || 'Stripe'}</span></div>
+                    {['bkash_manual', 'nagad_manual'].includes(order.payment_method) && (
                       <>
-                        <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">bKash</span><span className="font-mono font-bold text-slate-900 dark:text-white">{order.payment_number}</span></div>
+                        <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">Account</span><span className="font-mono font-bold text-slate-900 dark:text-white">{order.payment_number}</span></div>
                         <div className="flex justify-between items-center"><span className="text-slate-500 font-bold">TrxID</span><span className="font-mono font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10 px-2 py-0.5 rounded">{order.payment_trx_id}</span></div>
                       </>
-                    )}
-                    {(order.courier_name || order.tracking_id) && (
-                      <div className="pt-2 mt-2 border-t border-slate-100 dark:border-white/10 space-y-2">
-                        {order.courier_name && <div className="flex justify-between"><span className="text-slate-500 font-bold">Courier</span><span className="font-bold text-slate-900 dark:text-white">{order.courier_name}</span></div>}
-                        {order.tracking_id && <div className="flex justify-between"><span className="text-slate-500 font-bold">Tracking</span><span className="font-mono font-bold text-slate-900 dark:text-white">{order.tracking_id}</span></div>}
-                      </div>
                     )}
                   </div>
                   
@@ -555,58 +568,6 @@ export default function AdminOrdersPage() {
         )}>
           {toast.type === 'error' ? <XCircle size={18} /> : <CheckCircle2 size={18} className={toast.type === 'error' ? '' : 'text-green-400 dark:text-green-600'} />}
           {toast.msg}
-        </div>
-      )}
-
-      {shippingModal.isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-md bg-white dark:bg-brand-surface border border-slate-200 dark:border-white/10 rounded-xl p-6 relative overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
-            <div className="absolute top-0 left-0 w-full h-1.5 bg-blue-500"></div>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2"><Truck size={22} className="text-blue-500" /> Shipping Details</h3>
-              <button onClick={() => setShippingModal({ ...shippingModal, isOpen: false })} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition">
-                <XCircle size={24} />
-              </button>
-            </div>
-            
-            <div className="space-y-5">
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wider">Courier Name <span className="text-red-500">*</span></label>
-                <input 
-                  type="text" 
-                  value={shippingModal.courier}
-                  onChange={e => setShippingModal({...shippingModal, courier: e.target.value})}
-                  className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-slate-900 dark:text-white text-sm font-bold focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                  placeholder="e.g. Pathao, Steadfast"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 uppercase tracking-wider">Tracking ID <span className="text-red-500">*</span></label>
-                <input 
-                  type="text" 
-                  value={shippingModal.tracking}
-                  onChange={e => setShippingModal({...shippingModal, tracking: e.target.value})}
-                  className="w-full bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-4 py-3 text-slate-900 dark:text-white text-sm font-bold focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                  placeholder="e.g. P123456789"
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-8">
-              <button 
-                onClick={() => setShippingModal({ ...shippingModal, isOpen: false })}
-                className="flex-1 py-3 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 rounded-lg font-bold text-sm transition"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleShippingSubmit}
-                className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-sm transition shadow-md shadow-blue-500/20"
-              >
-                Save & Ship
-              </button>
-            </div>
-          </div>
         </div>
       )}
     </div>
