@@ -1,24 +1,22 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Filter, MessageSquare, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
-
+import { Search, Filter, MessageSquare, Clock, CheckCircle2, AlertCircle, Package, Settings, Activity, Home, XCircle, AlertTriangle } from 'lucide-react';
 import { api } from '@/utils/api';
+
+const STATUS_FLOW = ['Pending Verification', 'Confirmed', 'In Collaboration', 'Provisioning', 'Active', 'Delivered'];
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterStatus, setFilterStatus] = useState('All');
 
   const fetchOrders = async () => {
     try {
       setLoading(true);
       const res = await api.get('/market/orders/all?limit=100');
       
-      console.log("Orders API Response:", res);
-      
-      // The API returns an array directly, or an object depending on the wrapper
       if (Array.isArray(res)) {
         setOrders(res);
       } else if (res && res.data && Array.isArray(res.data)) {
@@ -37,6 +35,14 @@ export default function AdminOrdersPage() {
     fetchOrders();
   }, []);
 
+  const statusCounts = orders.reduce((acc, order) => {
+    const s = order.status || 'Unknown';
+    acc[s] = (acc[s] || 0) + 1;
+    return acc;
+  }, {});
+
+  const displayStatuses = ['All', ...STATUS_FLOW];
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
@@ -46,6 +52,28 @@ export default function AdminOrdersPage() {
           <h1 className="text-2xl font-display font-medium text-white">Orders & Collaboration</h1>
           <p className="text-white/60 text-[14px]">Manage client projects, verify payments, and deliver source codes.</p>
         </div>
+      </div>
+
+      {/* Stats Bar / Status Filters */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        {displayStatuses.map(status => {
+          const count = status === 'All' ? orders.length : (statusCounts[status] || 0);
+          const isSelected = filterStatus === status;
+          return (
+            <button
+              key={status}
+              onClick={() => setFilterStatus(status)}
+              className={"p-3.5 rounded-xl border text-left transition duration-200 flex flex-col justify-between min-h-[88px] " + (
+                isSelected 
+                  ? "bg-brand-cyan/20 border-brand-cyan/50 shadow-[0_0_15px_rgba(0,255,255,0.1)]" 
+                  : "bg-[#080808] border-white/10 hover:border-white/30 shadow-sm"
+              )}
+            >
+              <div className={"text-2xl font-bold font-mono tracking-tight " + (isSelected ? "text-brand-cyan" : "text-white")}>{count}</div>
+              <div className={"text-[11px] font-semibold uppercase tracking-wider truncate mt-1 " + (isSelected ? "text-white" : "text-white/50")}>{status}</div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Filters & Search */}
@@ -72,11 +100,11 @@ export default function AdminOrdersPage() {
           <table className="w-full text-left text-[14px]">
             <thead className="bg-white/5 border-b border-white/10 text-white/50 font-medium">
               <tr>
-                <th className="px-6 py-4">Order / Client</th>
-                <th className="px-6 py-4">Product / Service</th>
-                <th className="px-6 py-4">Status & Phase</th>
-                <th className="px-6 py-4">Payment</th>
-                <th className="px-6 py-4 text-right">Action</th>
+                <th className="px-6 py-4 whitespace-nowrap">Order / Client</th>
+                <th className="px-6 py-4 whitespace-nowrap">Product / Service</th>
+                <th className="px-6 py-4 whitespace-nowrap">Status & Phase</th>
+                <th className="px-6 py-4 whitespace-nowrap">Payment</th>
+                <th className="px-6 py-4 text-right whitespace-nowrap">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -98,10 +126,12 @@ export default function AdminOrdersPage() {
               ) : (
                 orders
                 .filter(order => {
+                   const matchStatus = filterStatus === 'All' || order.status === filterStatus;
                    const s = searchQuery.toLowerCase();
-                   return order._id.toLowerCase().includes(s) || 
+                   const matchSearch = order._id.toLowerCase().includes(s) || 
                           (order.customer_name || '').toLowerCase().includes(s) || 
                           (order.email || '').toLowerCase().includes(s);
+                   return matchStatus && matchSearch;
                 })
                 .map((order) => {
                   const productNames = order.items?.map(i => i.product_id?.title || i.product_name).filter(Boolean).join(', ');
@@ -123,12 +153,11 @@ export default function AdminOrdersPage() {
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-2 items-start">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider
-                          ${order.status === 'In Collaboration' || order.status === 'Active' ? 'bg-blue-500/10 text-blue-400' : 
+                        <span className={"inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider " +
+                          (order.status === 'In Collaboration' || order.status === 'Active' ? 'bg-blue-500/10 text-blue-400' : 
                             order.status === 'Pending Verification' ? 'bg-yellow-500/10 text-yellow-400' :
-                            'bg-green-500/10 text-green-400'
-                          }
-                        `}>
+                            'bg-green-500/10 text-green-400')
+                        }>
                           {order.status}
                         </span>
                         {order.projectPhase && order.projectPhase !== 'N/A' && (
@@ -151,7 +180,7 @@ export default function AdminOrdersPage() {
                     <td className="px-6 py-4 text-right">
                       <Link 
                         href={`/admin/orders/${order._id}`}
-                        className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-white/10 hover:bg-brand-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] text-[13px] font-medium text-white transition-all duration-300"
+                        className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-white/10 hover:bg-brand-cyan hover:text-black hover:shadow-[0_0_15px_rgba(0,255,255,0.3)] text-[13px] font-medium text-white transition-all duration-300 whitespace-nowrap"
                       >
                         Enter Room
                       </Link>
