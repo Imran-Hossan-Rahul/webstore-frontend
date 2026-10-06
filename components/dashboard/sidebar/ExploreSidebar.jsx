@@ -141,7 +141,7 @@ export default function ExploreSidebar() {
               return (
                 <Link
                   key={tagName + idx}
-                  href={`/shop?q=${encodeURIComponent('#' + tagName)}`}
+                  href={`/store?q=${encodeURIComponent('#' + tagName)}`}
                   className="px-3 py-1.5 bg-slate-100 dark:bg-brand-surface/5 border border-brand-navy/[0.08] dark:border-white/10 rounded-full text-[11px] font-bold text-brand-slate dark:text-slate-300 hover:bg-brand-teal hover:text-white dark:hover:bg-brand-teal dark:hover:text-white hover:border-transparent transition-all"
                 >
                   #{tagName}
@@ -170,7 +170,7 @@ export default function ExploreSidebar() {
             artifactCategories.map((cat, idx) => (
               <Link
                 key={cat.category || `cat-${idx}`}
-                href={`/shop?q=${encodeURIComponent('category:"' + (cat.category || cat) + '"')}`}
+                href={`/store?q=${encodeURIComponent('category:"' + (cat.category || cat) + '"')}`}
                 className="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 group transition-all"
               >
                 <span className="text-[12px] font-semibold text-brand-slate dark:text-slate-300 group-hover:text-brand-blue dark:group-hover:text-blue-400 transition-colors">
@@ -203,7 +203,7 @@ export default function ExploreSidebar() {
             Explore thousands of devlogs, high quality UI artifacts, and codex from elite developers worldwide.
           </p>
           <Link
-            href={`/shop?q=${encodeURIComponent(defaultSearchQuery)}`}
+            href={`/store?q=${encodeURIComponent(defaultSearchQuery)}`}
             className="inline-flex items-center gap-2 text-xs font-bold bg-brand-surface/10 backdrop-blur-md border border-white/20 text-white px-4 py-2.5 rounded-lg hover:bg-brand-surface hover:text-slate-900 dark:text-white transition-all shadow-sm"
           >
             <Sparkles size={13} /> Advanced Search

@@ -126,3 +126,4 @@ export const LaserTypography = () => {
     </div>
   );
 };
+

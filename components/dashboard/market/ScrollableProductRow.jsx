@@ -8,6 +8,7 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink,
   const scrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
+  const [navigatingId, setNavigatingId] = useState(null);
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
@@ -38,8 +39,8 @@ const ScrollableProductRow = ({ title, products, renderProductCard, viewAllLink,
           {title}
         </h2>
         {viewAllLink && (
-          <Link href={viewAllLink} className="text-[13px] md:text-[14px] font-medium text-brand-navy dark:text-white bg-transparent border border-brand-navy/[0.08] dark:border-white/10 px-4 py-1.5 md:px-5 md:py-2 rounded-[4px] hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue transition-colors">
-            See all
+          <Link href={viewAllLink} onClick={() => setNavigatingId('viewAll')} className="text-[13px] md:text-[14px] font-medium text-brand-navy dark:text-white bg-transparent border border-brand-navy/[0.08] dark:border-white/10 px-4 py-1.5 md:px-5 md:py-2 rounded-[4px] hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue transition-colors" style={{ pointerEvents: navigatingId === 'viewAll' ? 'none' : 'auto' }}>
+            {navigatingId === 'viewAll' ? <AppleSpinner size={14} className="text-brand-navy dark:text-white mr-1.5 inline-block" /> : null}See all
           </Link>
         )}
       </div>

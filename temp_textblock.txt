@@ -1,0 +1,14 @@
+                      {/* Text content */}
+                      {(msg.type === "text" || !msg.type) && (
+                        <div className="flex flex-col gap-2">
+                          <span className="whitespace-pre-wrap">{msg.isUnsent ? "This message was unsent" : msg.content}</span>
+                          {!msg.isUnsent && msg.content && msg.content.includes("Codalina Support chat") && onGoToSupport && (
+                            <button
+                              onClick={(e) => { e.stopPropagation(); onGoToSupport(); }}
+                              className="mt-1 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 border border-white/20 text-white text-[13px] font-medium transition-colors w-fit flex items-center gap-2 shadow-sm"
+                            >
+                              <MessageCircle size={14} /> Go to Support
+                            </button>
+                          )}
+                        </div>
+                      )}

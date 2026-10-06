@@ -2,9 +2,9 @@ import React from 'react';
 
 export const SectionHeader = ({ title, badge, action, className = '', ...props }) => {
   return (
-    <div className={`flex items-center justify-between border-b border-brand-navy/[0.08] dark:border-white/10 pb-4 mb-6 ${className}`} {...props}>
+    <div className={`flex items-center justify-between border-b border-brand-navy/[0.08]  pb-4 mb-6 ${className}`} {...props}>
       <div className="flex items-center gap-3">
-        <h2 className="text-[18px] md:text-[20px] font-display font-medium text-brand-navy dark:text-white">
+        <h2 className="text-[18px] md:text-[20px] font-display font-medium text-brand-navy ">
           {title}
         </h2>
         {badge && (
@@ -17,3 +17,4 @@ export const SectionHeader = ({ title, badge, action, className = '', ...props }
     </div>
   );
 };
+

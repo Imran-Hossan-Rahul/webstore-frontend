@@ -89,22 +89,22 @@ const CameraCapture = ({ onCapture, onClose }) => {
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-slate-900/40 backdrop-blur-md flex flex-col items-center justify-center p-4 md:p-8"
     >
-      <div className="relative w-full max-w-lg bg-brand-surface dark:bg-[#0A0A0A] rounded-[4px] overflow-hidden shadow-sm border border-brand-navy/[0.08] dark:border-white/5 flex flex-col">
+      <div className="relative w-full max-w-lg bg-brand-surface  rounded-[4px] overflow-hidden shadow-sm border border-brand-navy/[0.08]  flex flex-col">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-white/5">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 ">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-[4px] bg-brand-blue flex items-center justify-center text-white">
               <ShieldCheck size={20} strokeWidth={1.5} />
             </div>
             <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-none">Identity Verification</h3>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">Biometric Scan</p>
+              <h3 className="text-sm font-bold text-slate-900  leading-none">Identity Verification</h3>
+              <p className="text-[10px] text-slate-500  font-bold uppercase tracking-widest mt-1">Biometric Scan</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white transition-all"
+            className="p-2 text-slate-400 hover:text-slate-900  :text-white transition-all"
           >
             <X size={20} strokeWidth={1.5} />
           </button>
@@ -176,16 +176,16 @@ const CameraCapture = ({ onCapture, onClose }) => {
         </div>
 
         {/* Footer Controls */}
-        <div className="px-8 py-8 bg-brand-cloud dark:bg-black/20 flex flex-col items-center gap-6">
+        <div className="px-8 py-8 bg-brand-cloud  flex flex-col items-center gap-6">
           {!capturedImage ? (
             <>
-              <p className="text-slate-500 dark:text-slate-400 text-xs font-medium text-center">
+              <p className="text-slate-500  text-xs font-medium text-center">
                 Please ensure you are in a well-lit area and your face is fully visible within the frame.
               </p>
               <div className="flex items-center gap-8">
                 <button 
                   onClick={onClose}
-                  className="text-slate-400 hover:text-slate-900 dark:text-white dark:hover:text-white font-bold text-sm transition-all"
+                  className="text-slate-400 hover:text-slate-900  :text-white font-bold text-sm transition-all"
                 >
                   Cancel
                 </button>
@@ -204,14 +204,14 @@ const CameraCapture = ({ onCapture, onClose }) => {
               <div className="flex items-center gap-4 w-full">
                 <button 
                   onClick={retake}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/5 text-brand-slate dark:text-slate-400 font-bold transition-all hover:bg-brand-surface dark:hover:bg-brand-surface/5"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] border border-brand-navy/[0.08]  text-brand-slate  font-bold transition-all hover:bg-brand-surface :bg-brand-surface/5"
                 >
                   <RefreshCw size={16} strokeWidth={1.5} /> Retake
                 </button>
                 <button 
                   onClick={confirm}
                   disabled={loading}
-                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] bg-slate-900 dark:bg-brand-surface text-white dark:text-slate-900 dark:text-white font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-sm shadow-slate-900/10"
+                  className="flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-[4px] bg-slate-900  text-white   font-bold transition-all hover:opacity-80 active:opacity-60 disabled:opacity-50 shadow-sm shadow-slate-900/10"
                 >
                   {loading ? (
                     <AppleSpinner strokeWidth={1.5} className="animate-spin" size={16} />
@@ -240,3 +240,4 @@ const CameraCapture = ({ onCapture, onClose }) => {
 };
 
 export default CameraCapture;
+

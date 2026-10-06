@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { 
   Home, 
   Box, 
@@ -10,8 +10,11 @@ import {
   Layers, 
   Headset, 
   UserCircle,
-  Cloud, TerminalSquare, Component, Code, Smartphone, Shirt, Monitor, ShoppingBag, Dumbbell, Book, Car, Coffee, Heart, Gamepad, Camera, Gift
+  Cloud, TerminalSquare, Component, Code, Smartphone, Shirt, Monitor, ShoppingBag, ShoppingCart, Dumbbell, Book, Car, Coffee, Heart, Gamepad, Camera, Gift
 } from "lucide-react";
+import { useUser } from "@/context/UserContext";
+import { getOptimizedUrl } from "@/utils/optimizeImage";
+import { useRouter } from 'next/navigation';
 
 export const getCategoryIcon = (categoryName) => {
   if (!categoryName) return Box;
@@ -48,37 +51,51 @@ export const getCategoryIcon = (categoryName) => {
 
 export default function Sidebar({ isHovered = false, isCollapsed = false }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const { user, isGuest, loading } = useUser();
+  const router = useRouter();
+  
+  const currentCategoryName = searchParams ? searchParams.get('category_name') : null;
+  const currentType = searchParams ? searchParams.get('type') : null;
 
   const mainNav = [
-    { label: "Home", href: "/", icon: Home },
-    { label: "Products", href: "/shop?type=product", icon: Box },
-    { label: "Software", href: "/shop?type=software", icon: Code2 },
-    { label: "Services", href: "/shop?type=service", icon: Briefcase },
-    { label: "Solutions", href: "/solutions", icon: Layers },
+    { label: "Store", href: "/store", icon: ShoppingBag, isStoreRoot: true },
+    { label: "Custom Web Platforms", href: "/store?category_name=Custom+Web+Platforms", icon: Monitor, categoryName: "Custom Web Platforms" },
+    { label: "SaaS & Web Apps", href: "/store?category_name=SaaS+%26+Web+Applications", icon: Cloud, categoryName: "SaaS & Web Applications" },
+    { label: "Enterprise E-Commerce", href: "/store?category_name=Enterprise+E-Commerce", icon: ShoppingCart, categoryName: "Enterprise E-Commerce" },
+    { label: "Internal Tools & APIs", href: "/store?category_name=Internal+Tools+%26+APIs", icon: Code, categoryName: "Internal Tools & APIs" },
+    { label: "Proactive Maintenance", href: "/store?category_name=Proactive+Maintenance", icon: Heart, categoryName: "Proactive Maintenance" },
   ];
 
-  const bottomNav = [
-    { label: "Support", href: "/support", icon: Headset },
-    { label: "Account", href: "/settings/profile", icon: UserCircle },
-  ];
-
-  const SidebarItem = ({ icon: Icon, label, href }) => {
-    const active = href === '/' ? pathname === '/' : pathname.startsWith(href.split('?')[0]);
+  const SidebarItem = ({ icon: Icon, label, href, isStoreRoot, categoryName }) => {
+    let active = false;
+    
+    if (href === '/') {
+      active = pathname === '/';
+    } else if (categoryName) {
+      active = currentCategoryName === categoryName;
+    } else if (isStoreRoot) {
+      active = pathname === href && !currentType && !currentCategoryName;
+    } else {
+      active = pathname.startsWith(href);
+    }
     
     return (
       <Link
         href={href}
-        className={`group/item relative flex items-center px-[12px] py-[10px] mb-1 rounded-[4px] transition-all duration-200 ${
+        aria-label={label}
+        title={label}
+        className={`group/item relative flex items-center px-[12px] py-[10px] mb-1.5 rounded-[10px] transition-all duration-200 border ${
           active
-            ? "bg-brand-blue/10 text-brand-blue dark:bg-brand-blue/20 dark:text-brand-cyan"
-            : "text-brand-slate dark:text-slate-300 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5"
+            ? "border-[#0071e3]/50 shadow-sm text-[#0071e3] bg-white/20"
+            : "border-transparent text-slate-700 hover:bg-black/5"
         }`}
       >
         <div className="relative z-10 flex items-center w-full justify-start gap-4">
           <div className="flex items-center justify-center shrink-0 w-[24px]">
             <Icon
               className={`w-[20px] h-[20px] transition-all duration-300 ${
-                active ? "stroke-[2.5px]" : "stroke-[2px] opacity-80"
+                active ? "stroke-[2.5px] text-[#0071e3]" : "stroke-[2px] opacity-80"
               }`}
             />
           </div>
@@ -86,26 +103,12 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
             {label}
           </span>
         </div>
-        
-        {active && (
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[60%] bg-brand-blue rounded-r-full" />
-        )}
       </Link>
     );
   };
 
   return (
     <aside className="h-full flex flex-col py-6 relative w-full">
-      {/* Top Logo */}
-      <div className="px-4 mb-8 flex items-center gap-4 h-[32px] cursor-pointer">
-         <div className="w-[32px] h-[32px] bg-brand-navy rounded-[6px] flex items-center justify-center shrink-0 shadow-sm border border-brand-navy/[0.08]">
-            <span className="text-white font-display font-bold text-[18px] leading-none tracking-tighter">C</span>
-         </div>
-         <span className={`font-display font-semibold text-[18px] text-brand-navy dark:text-white tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300 opacity-100 max-w-[200px] lg:opacity-0 lg:max-w-0 lg:group-hover:opacity-100 lg:group-hover:max-w-[200px]`}>
-           Codalina
-         </span>
-      </div>
-
       {/* Main Navigation */}
       <nav className="flex-1 px-3 space-y-1">
         {mainNav.map((item) => (
@@ -114,10 +117,42 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
       </nav>
 
       {/* Bottom Navigation */}
-      <div className="px-3 mt-auto pt-4 border-t border-brand-navy/[0.08] dark:border-white/10 space-y-1">
-        {bottomNav.map((item) => (
-          <SidebarItem key={item.label} {...item} />
-        ))}
+      <div className="px-3 mt-auto pt-4 border-t border-brand-navy/[0.08] space-y-1">
+        <SidebarItem label="Support" href="/support" icon={Headset} />
+        
+        {loading ? (
+          <div className="flex items-center p-2 mt-2 gap-3 group/item">
+             <div className="w-[20px] h-[20px] ml-[2px] rounded-full bg-black/5 animate-pulse shrink-0"></div>
+             <div className="hidden lg:group-hover:block w-24 h-4 bg-black/5 rounded animate-pulse opacity-0 lg:group-hover:opacity-100 transition-opacity"></div>
+          </div>
+        ) : (!user || isGuest || user.role === 'guest') ? (
+          <SidebarItem label="Account" href="/auth/login" icon={UserCircle} />
+        ) : (
+          <div 
+            onClick={() => router.push(`/u/${user.username}`)} 
+            className="group/item relative flex items-center px-[12px] py-[10px] mb-1.5 rounded-[10px] transition-all duration-200 border border-transparent text-slate-700 hover:bg-black/5 cursor-pointer mt-1"
+          >
+            <div className="relative z-10 flex items-center w-full justify-start gap-4">
+              <div className="flex items-center justify-center shrink-0 w-[28px] -ml-[2px]">
+                <div className="w-[32px] h-[32px] shrink-0 rounded-full bg-black/10 overflow-hidden border border-black/15 flex items-center justify-center shadow-sm">
+                    {user?.profilePicture ? (
+                      <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-black/50 font-bold text-[12px]">{user?.name?.[0]}</div>
+                    )}
+                </div>
+              </div>
+              <div className="flex flex-col overflow-hidden transition-all duration-300 opacity-100 max-w-[200px] lg:opacity-0 lg:max-w-0 lg:group-hover:opacity-100 lg:group-hover:max-w-[200px]">
+                  <span className="text-[14px] font-medium font-sans text-slate-700 whitespace-nowrap leading-tight">
+                    {user?.name}
+                  </span>
+                  <span className="text-[11px] text-slate-500 whitespace-nowrap mt-0.5">
+                    View Profile
+                  </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

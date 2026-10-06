@@ -3,7 +3,7 @@ import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock, ArrowUp, Plus } from "lucide-react";
+import { Send, Paperclip, Phone, Video, MoreVertical, User, X, Check, CheckCheck, Minus, RotateCcw, Smile, Download, FileText, Trash2, Clock, ArrowUp, Plus, ChevronLeft } from "lucide-react";
 import { MessageCircle } from "lucide-react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import AppleSpinner from "@/components/ui/AppleSpinner";
@@ -27,6 +27,7 @@ export default function ChatWindow({
   onDeleteMessage,
   onBack,
   isFullScreen = false,
+  onGoToSupport,
 }) {
   const [newMessage, setNewMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -46,7 +47,7 @@ export default function ChatWindow({
     const virtualMsg = {
       _id: 'virtual-greeting',
       sender: adminParticipant || 'admin',
-      content: "Hi, I'm Imran! 👋\nHow can I help you today?",
+      content: "Hey I'm Imran from codalina. do you need any help?",
       type: "text",
       createdAt: chat?.createdAt || new Date().toISOString(),
       reactions: virtualGreetingReactions,
@@ -160,55 +161,58 @@ export default function ChatWindow({
   };
 
   return (
-    <div ref={headerRef} className="flex-1 flex flex-col bg-[#fafafa] dark:bg-black relative min-w-0 overflow-hidden w-full h-full">
+    <div ref={headerRef} className="flex-1 flex flex-col bg-transparent relative min-w-0 overflow-hidden w-full h-full">
       
-      {/* Floating Action Buttons */}
+      {/* Fixed Window Controls Header */}
       {!isFullScreen && (
-        <>
-          <div className="absolute top-4 left-4 z-20 flex gap-2">
+        <div className="flex items-center justify-end px-3 py-[3px] shrink-0 z-20">
+          <div className="flex items-center gap-1.5">
+            <button 
+              onClick={onMinimize}
+              className="w-6 h-6 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 transition-colors text-slate-400 hover:text-slate-700"
+              title="Minimize"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>
+            </button>
             {onBack && (
               <button 
                 onClick={onBack}
-                className="w-8 h-8 flex items-center justify-center rounded-full bg-brand-surface/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-brand-surface/10 backdrop-blur-md text-brand-blue transition-colors shadow-sm border border-black/5 dark:border-white/10"
+                className="w-6 h-6 flex items-center justify-center rounded-full bg-transparent hover:bg-black/5 transition-colors text-slate-400 hover:text-slate-700"
+                title="Back to Chats"
               >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                <ChevronLeft size={16} strokeWidth={2.5} className="-ml-0.5" />
               </button>
             )}
           </div>
-          <div className="absolute top-4 right-4 z-20">
-            <button 
-              onClick={onMinimize}
-              className="w-8 h-8 rounded-full flex items-center justify-center bg-brand-surface/50 dark:bg-black/50 hover:bg-black/10 dark:hover:bg-brand-surface/10 backdrop-blur-md text-[#86868b] hover:text-black dark:hover:text-white transition-colors shadow-sm border border-black/5 dark:border-white/10"
-              title="Minimize"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
-          </div>
-        </>
+        </div>
       )}
 
       {/* Messages Area */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto py-6 px-[4px] scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto overscroll-contain py-6 px-[4px] scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10">
         
         {/* Profile Info Header in Chat Body (iOS iMessage style) */}
         <div className="flex flex-col items-center justify-center pt-0 pb-0 mb-6 select-none animate-in fade-in zoom-in-95 duration-500">
           <div className="relative mb-2.5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-100 dark:bg-[#2c2c2e] flex items-center justify-center overflow-hidden shrink-0 shadow-sm border border-black/5 dark:border-white/10">
-              {avatar ? (
-                <img src={getOptimizedUrl(avatar, 150)} className="w-full h-full object-cover" alt="" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/50 dark:bg-black/10 flex items-center justify-center overflow-hidden shrink-0 shadow-sm border border-black/5 dark:border-white/10 backdrop-blur-md">
+              {currentUser?.role === 'admin' || currentUser?.role === 'superadmin' ? (
+                avatar ? (
+                  <img src={getOptimizedUrl(avatar, 150)} className="w-full h-full object-cover" alt="" />
+                ) : (
+                  <User size={32} className="text-[#86868b]" />
+                )
               ) : (
-                <User size={32} className="text-[#86868b]" />
+                <img src="/codalina-logo.png" className="w-full h-full object-cover p-2" alt="Codalina" />
               )}
             </div>
             {isOnline && (
-              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-brand-teal border-[2.5px] border-[#fafafa] dark:border-black rounded-full shadow-sm"></div>
+              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 sm:w-4 sm:h-4 bg-brand-teal border-[2.5px] border-white/50 dark:border-black/50 rounded-full shadow-sm"></div>
             )}
           </div>
-          <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white tracking-tight">
-            {otherUser.name || otherUser.username}
+          <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+            {currentUser?.role === 'admin' || currentUser?.role === 'superadmin' ? (otherUser.name || otherUser.username) : "Codalina Support"}
           </h2>
-          <p className="text-[12px] text-[#86868b] dark:text-[#98989d] mt-0.5 tracking-tight">
-            Codalina Support
+          <p className="text-[12px] text-slate-500 mt-0.5 tracking-tight font-medium">
+            {currentUser?.role === 'admin' || currentUser?.role === 'superadmin' ? (otherUser.email || "Customer") : "We typically reply in a few minutes"}
           </p>
         </div>
 
@@ -265,16 +269,20 @@ export default function ChatWindow({
                 
                 <div className={`relative flex items-center gap-2 ${isOwn ? 'flex-row-reverse' : 'flex-row'}`}>
                   
-                  {isLastInGroup ? (
-                    <div className="w-7 h-7 rounded-full shrink-0 overflow-hidden bg-slate-200 dark:bg-slate-700 flex items-center justify-center shadow-sm">
-                      {senderObj?.profilePicture ? (
-                        <img src={getOptimizedUrl(senderObj.profilePicture, 100)} alt="avatar" className="w-full h-full object-cover" />
-                      ) : (
-                        <User className="w-4 h-4 text-slate-500 dark:text-slate-300" />
-                      )}
-                    </div>
-                  ) : (
-                    <div className="w-7 h-7 shrink-0" />
+                  {!isOwn && (
+                    isLastInGroup ? (
+                      <div className="w-7 h-7 rounded-full shrink-0 overflow-hidden bg-white flex items-center justify-center shadow-sm">
+                        {currentUser?.role !== 'admin' && currentUser?.role !== 'superadmin' ? (
+                          <img src="/codalina-logo.png" className="w-full h-full object-cover p-1" alt="Codalina" />
+                        ) : senderObj?.profilePicture ? (
+                          <img src={getOptimizedUrl(senderObj.profilePicture, 100)} alt="avatar" className="w-full h-full object-cover" />
+                        ) : (
+                          <User className="w-4 h-4 text-slate-500" />
+                        )}
+                      </div>
+                    ) : (
+                      <div className="w-7 h-7 shrink-0" />
+                    )
                   )}
 
                   <div 
@@ -321,7 +329,21 @@ export default function ChatWindow({
 
                     {/* Text content */}
                     {(msg.type === "text" || !msg.type) && (
-                      <span>{msg.isUnsent ? "This message was unsent" : msg.content}</span>
+                      <div className="flex flex-col gap-2">
+                        <span className="whitespace-pre-wrap">{msg.isUnsent ? "This message was unsent" : msg.content}</span>
+                        {!msg.isUnsent && msg.content && msg.content.includes("Codalina Support chat") && onGoToSupport && (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); onGoToSupport(); }}
+                            className={`mt-1 px-3 py-1.5 rounded-lg border text-[13px] font-medium transition-colors w-fit flex items-center gap-2 shadow-sm ${
+                              isOwn
+                                ? "bg-white/20 hover:bg-white/30 border-white/20 text-white"
+                                : "bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20 border-black/5 dark:border-white/10 text-slate-800 dark:text-white"
+                            }`}
+                          >
+                            <MessageCircle size={14} /> Go to Support
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
 
@@ -449,12 +471,12 @@ export default function ChatWindow({
           />
           <button 
             onClick={() => fileInputRef.current?.click()}
-            className={`shrink-0 flex items-center justify-center rounded-full bg-slate-100 dark:bg-[#2c2c2e] hover:bg-slate-200 dark:bg-brand-surface/[0.1] dark:hover:bg-[#3a3a3c] transition-colors text-[#86868b] dark:text-[#98989d] ${isCompact ? 'w-8 h-8 mb-1' : 'w-9 h-9 mb-1'}`}
+            className={`shrink-0 flex items-center justify-center rounded-full bg-slate-200/60 hover:bg-slate-300/80 transition-colors text-slate-500 shadow-sm backdrop-blur-md ${isCompact ? 'w-8 h-8 mb-1' : 'w-9 h-9 mb-1'}`}
           >
             <Plus size={isCompact ? 16 : 20} strokeWidth={2.5} />
           </button>
           
-          <div className="flex-1 min-w-0 bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-full flex items-center pl-4 pr-1 py-1 transition-colors shadow-sm">
+          <div className="flex-1 min-w-0 bg-white/60 dark:bg-black/10 backdrop-blur-md border border-slate-200/50 dark:border-white/10 rounded-full flex items-center pl-4 pr-1 py-1 transition-colors shadow-sm">
             <input
               type="text"
               placeholder="iMessage"
@@ -466,7 +488,7 @@ export default function ChatWindow({
                   handleSend();
                 }
               }}
-              className="flex-1 min-w-0 bg-transparent outline-none border-none text-slate-900 dark:text-white placeholder:text-[#86868b] font-sans tracking-tight text-[15px] py-1.5"
+              className="flex-1 min-w-0 bg-transparent outline-none border-none text-slate-900 placeholder:text-slate-500 font-sans tracking-tight text-[15px] py-1.5"
             />
             
             <button 
@@ -475,7 +497,7 @@ export default function ChatWindow({
               className={`shrink-0 flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full transition-all ml-2 ${
                 (newMessage.trim() || selectedFile)
                   ? "bg-brand-blue text-white hover:scale-105 shadow-sm"
-                  : "bg-slate-100 dark:bg-[#2c2c2e] text-slate-300 dark:text-[#48484a]"
+                  : "bg-slate-200/60 text-slate-400 backdrop-blur-md"
               }`}
             >
               <ArrowUp size={16} strokeWidth={3} className={(newMessage.trim() || selectedFile) ? "" : "opacity-50"} />

@@ -10,7 +10,7 @@ import MarketSEOContent from "./MarketSEOContent";
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import { PRODUCT_TYPE_COLORS } from "@/utils/digitalProducts";
 import ServicesStoryteller from "./ServicesStoryteller";
-import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useScroll, useTransform } from 'framer-motion';
 
 // Sub-components (extracted for maintainability)
 import { getOptimizedUrl } from './marketUtils';
@@ -67,12 +67,16 @@ export default function MarketClientView({ initialData = [], initialPagination =
   const query = searchParams.get('q')?.toLowerCase() || '';
   const [isPending, startTransition] = React.useTransition();
   const [loadingBuyId, setLoadingBuyId] = useState(null);
+  const [navigatingId, setNavigatingId] = useState(null);
   const [loadingCartId, setLoadingCartId] = useState(null);
   const [cartItems, setCartItems] = useState([]);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const [floorCoords, setFloorCoords] = useState({ y: 0, x: null, textWidth: 500 });
   const searchBarRef = useRef(null);
+
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 800], [1, 0]);
 
   useEffect(() => {
     const handleFloor = (e) => setFloorCoords({ y: e.detail.y, x: e.detail.x, textWidth: e.detail.textWidth || 500 });
@@ -323,7 +327,12 @@ export default function MarketClientView({ initialData = [], initialPagination =
     const isAdded = cartItems.includes((product.id || product._id)?.toString());
     return (
       <div key={product.id} className="bg-brand-surface dark:bg-brand-surface rounded-[8px] transition-all duration-300 overflow-hidden border border-brand-navy/[0.08] dark:border-white/10 flex flex-col relative group hover:shadow-[1px_1px_10px_rgba(11,37,69,0.02)] dark:hover:shadow-none dark:hover:border-white/20/50">
-        <Link href={`/product/${product.id}`} className="absolute inset-0 z-10"></Link>
+        <Link href={`/product/${product.id}`} onClick={() => setNavigatingId(`product-${product.id}`)} className="absolute inset-0 z-10"></Link>
+        {navigatingId === `product-${product.id}` && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px]">
+             <AppleSpinner size={32} className="text-[#0071e3]" />
+          </div>
+        )}
       {product.photos && JSON.parse(product.photos)[0] ? (
         <div className="aspect-square w-full bg-brand-cloud dark:bg-brand-dark flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-white/10">
           <img 
@@ -405,7 +414,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
   };
 
   return (
-    <div className="min-h-screen font-sans bg-brand-main">
+    <div className="min-h-screen font-sans bg-transparent">
       <AuthGuardModal 
         isOpen={showAuthModal} 
         onClose={() => setShowAuthModal(false)} 
@@ -416,7 +425,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && (
         <div className="relative w-full border-b border-white/[0.05]">
           {/* Fixed Container for Hero (Locks it completely in place) */}
-          <div className="fixed top-0 left-0 w-full h-[100vh] flex flex-col items-center justify-start overflow-hidden z-0 pointer-events-none">
+          <motion.div style={{ opacity: heroOpacity }} className="fixed top-0 left-0 w-full h-[100vh] flex flex-col items-center justify-start overflow-hidden z-0 pointer-events-none">
             
           {/* Hero Background (white bg + 3D grid) */}
           <HeroBackground floorCoords={floorCoords} />
@@ -679,9 +688,14 @@ export default function MarketClientView({ initialData = [], initialPagination =
               </div>
 
               {/* Right Button */}
-              <div className="flex-1 min-[320px]:flex-none h-[88%] md:h-[85%] relative -translate-x-[1px] ml-1.5 min-[380px]:ml-2 sm:ml-3 md:ml-8 px-2 min-[380px]:px-2.5 min-[450px]:px-3 md:px-7 border-[1.5px] border-brand-blue bg-transparent rounded-full flex items-center justify-center text-brand-blue font-medium text-[12px] min-[320px]:text-[10px] min-[350px]:text-[11px] min-[380px]:text-[12px] sm:text-[13px] md:text-[16px] whitespace-nowrap hover:bg-brand-blue/5 transition-colors">
-                Launch Your Site &rarr;
-              </div>
+              <Link href="/store" 
+                onClick={() => setNavigatingId('store')}
+                className="flex-1 min-[320px]:flex-none h-[88%] md:h-[85%] relative -translate-x-[1px] ml-1.5 min-[380px]:ml-2 sm:ml-3 md:ml-8 px-2 min-[380px]:px-2.5 min-[450px]:px-3 md:px-7 border-[1.5px] border-brand-blue bg-transparent rounded-full flex items-center justify-center text-brand-blue font-medium text-[12px] min-[320px]:text-[10px] min-[350px]:text-[11px] min-[380px]:text-[12px] sm:text-[13px] md:text-[16px] whitespace-nowrap hover:bg-brand-blue/5 transition-colors cursor-pointer pointer-events-auto"
+                style={{ pointerEvents: navigatingId === 'store' ? 'none' : 'auto' }}
+              >
+                {navigatingId === 'store' ? <AppleSpinner size={16} className="text-brand-blue" /> : <>Launch Your Site &rarr;
+              </>}
+              </Link>
             </div>
           </div>
           
@@ -733,13 +747,13 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div className="mt-8 min-[320px]:mt-10 md:mt-12 flex flex-row items-center justify-center gap-2 min-[320px]:gap-3 sm:gap-6 pointer-events-auto w-full">
                 {/* Liquid Glass Button (See Plans) */}
                 <button 
+                  onClick={() => window.dispatchEvent(new Event('expandServices'))}
                   className="group relative px-4 py-2 min-[320px]:px-5 min-[320px]:py-2.5 min-[380px]:px-8 min-[380px]:py-3.5 md:py-4 md:px-10 rounded-full overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   style={{
                     background: 'rgba(241, 245, 249, 0.7)', /* Light gray/slate tone */
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(203, 213, 225, 0.5)', /* Subtle gray border */
-                    borderTop: '1px solid rgba(255, 255, 255, 0.9)', /* Glossy top edge */
+                    border: '1px solid rgba(203, 213, 225, 0.8)', /* Uniform subtle gray border */
                     boxShadow: '0 8px 25px -4px rgba(0, 0, 0, 0.05), inset 0 2px 5px rgba(255, 255, 255, 0.8)',
                   }}
                 >
@@ -749,19 +763,30 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
                 {/* Primary CTA (Partner with Us) */}
                 <button 
+                  onClick={() => {
+                  setNavigatingId('partner');
+                  router.push('/partner');
+                }}
+                disabled={navigatingId === 'partner'}
                   className="group relative px-4 py-2 min-[320px]:px-5 min-[320px]:py-2.5 min-[380px]:px-8 min-[380px]:py-3.5 md:py-4 md:px-10 rounded-full border border-transparent bg-brand-blue text-white overflow-hidden transition-all duration-300 hover:bg-blue-600 hover:shadow-[0_8px_30px_-5px_rgba(37,99,235,0.4)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <span className="relative z-10 font-medium text-[11px] min-[320px]:text-[13px] min-[380px]:text-[15px] md:text-[17px] tracking-tight flex items-center gap-1.5 min-[380px]:gap-2 whitespace-nowrap">
+                  {navigatingId === 'partner' ? (
+                    <><AppleSpinner size={20} className="text-white" /> Partner with Us</>
+                  ) : (
+                    <>
                     Partner with Us
                     <svg className="w-3 h-3 min-[320px]:w-3.5 min-[320px]:h-3.5 min-[380px]:w-4 min-[380px]:h-4 md:w-5 md:h-5 transform group-hover:translate-x-1.5 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
-                  </span>
+                  </>
+                  )}
+                </span>
                 </button>
               </div>
             </motion.div>
           </div>
-          </div>
+          </motion.div>
           
           {/* Scrollable Overlay Content */}
           <div className="relative z-10 w-full flex flex-col items-center pointer-events-none mt-[100vh]">
@@ -772,7 +797,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
           </div>
 
             {/* Store Preview / Ready-made Alternative */}
-            <StorePreviewSection products={displayedProducts.length > 0 ? displayedProducts : popularProducts} />
+            <StorePreviewSection products={displayedProducts.length > 0 ? displayedProducts : (popularProducts.length > 0 ? popularProducts : products)} />
           </div>
         </div>
       )}
@@ -781,7 +806,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
       {!query && <ProcessSection />}
 
       {/* Content Below Hero */}
-      <div className="relative z-10 w-full bg-brand-main">
+      <div className="relative z-10 w-full bg-transparent">
       
         {/* Search Empty State */}
         {query && displayedProducts.length === 0 && (

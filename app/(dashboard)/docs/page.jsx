@@ -1,8 +1,12 @@
-"use client";
 import React from 'react';
 import Link from 'next/link';
 import { PageContainer } from '@/components/ui/PageContainer';
-import { Book, Code, Terminal, Server } from 'lucide-react';
+import { Book, Code, Terminal, Server, ArrowRight, Search } from 'lucide-react';
+
+export const metadata = {
+  title: 'Documentation | Codalina',
+  description: 'Explore technical guides, API references, and architecture overviews.',
+};
 
 export default function DocsPage() {
   const categories = [
@@ -53,54 +57,74 @@ export default function DocsPage() {
   ];
 
   return (
-    <PageContainer maxWidth="max-w-[1200px]" className="py-16 md:py-24">
-      <header className="mb-16">
-        <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-medium text-brand-blue mb-4">
-          Documentation
-        </p>
-        <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
-          Codalina Docs
-        </h1>
-        <p className="text-[17px] font-sans text-slate-500 dark:text-slate-400 max-w-[640px] leading-relaxed mb-8">
-          Explore technical guides, API references, and architecture overviews for Codalina products and platforms.
-        </p>
-        <div className="relative max-w-[500px]">
-          <input 
-            type="text" 
-            placeholder="Search documentation..."
-            className="w-full h-12 pl-12 pr-4 rounded-[4px] border border-brand-navy/[0.08] dark:border-white/20 bg-brand-surface dark:bg-brand-surface text-[15px] font-sans text-brand-navy dark:text-white focus:outline-none focus:border-brand-blue"
-          />
-          <svg className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {categories.map((cat, idx) => (
-          <div key={idx} className="bg-brand-cloud dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] p-8 hover:border-brand-blue/50 dark:hover:border-brand-blue/50 transition-colors">
-            <div className="w-10 h-10 rounded-[4px] bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 flex items-center justify-center text-brand-blue mb-6">
-              <cat.icon size={18} />
+    <div className="w-full h-full relative z-10 flex flex-col min-h-screen">
+      <div className="w-full bg-transparent font-sans pb-16">
+        
+        {/* Header */}
+        <section className="text-center pt-[80px] pb-[60px] px-6">
+          <PageContainer maxWidth="max-w-[980px]">
+            <div className="flex flex-col items-center">
+              <span className="text-[12px] font-mono font-semibold uppercase tracking-widest text-[#0071e3] mb-[18px] block bg-white/60 px-4 py-1.5 rounded-full shadow-sm border border-[#0071e3]/10">
+                DOCUMENTATION
+              </span>
+              <h1 className="text-[40px] md:text-[56px] font-display font-medium text-slate-900 leading-[1.1] mb-[20px] max-w-[800px]">
+                Everything you need to build with Codalina.
+              </h1>
+              <p className="text-[18px] md:text-[21px] font-sans text-slate-500 max-w-[640px] mx-auto mb-[24px]">
+                Explore comprehensive technical guides, detailed API references, and in-depth architecture overviews.
+              </p>
+              
+              <div className="relative max-w-[500px] w-full mt-4">
+                <input 
+                  type="text" 
+                  placeholder="Search documentation..."
+                  className="w-full h-14 pl-14 pr-6 rounded-full border border-white/60 bg-white/40 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.04)] text-[15px] font-sans text-slate-900 focus:outline-none focus:border-[#0071e3]/50 focus:bg-white/60 transition-all placeholder:text-slate-400"
+                />
+                <Search className="w-5 h-5 text-slate-400 absolute left-5 top-1/2 -translate-y-1/2" />
+              </div>
             </div>
-            <h3 className="text-[20px] font-display font-medium text-brand-navy dark:text-white mb-2">
-              {cat.title}
-            </h3>
-            <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 leading-relaxed mb-6">
-              {cat.description}
-            </p>
-            <ul className="space-y-3">
-              {cat.links.map((link, linkIdx) => (
-                <li key={linkIdx}>
-                  <Link href="#" className="text-[14px] font-sans text-brand-navy dark:text-slate-300 hover:text-brand-blue dark:hover:text-brand-blue transition-colors flex items-center gap-2">
-                    <span className="w-1 h-1 rounded-full bg-brand-blue/50" />
-                    {link}
-                  </Link>
-                </li>
+          </PageContainer>
+        </section>
+
+        {/* Documentation Categories */}
+        <section className="px-6 relative z-10">
+          <PageContainer maxWidth="max-w-[1200px]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {categories.map((cat, idx) => (
+                <div key={idx} className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 md:p-10 rounded-[32px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col relative group hover:bg-white/40 hover:shadow-[0_8px_40px_rgba(0,113,227,0.08)] transition-all duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent rounded-[32px] pointer-events-none" />
+                  
+                  <div className="relative z-10 flex items-start gap-5 mb-6">
+                    <div className="w-14 h-14 bg-brand-blue/10 rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-[#0071e3]/10">
+                      <cat.icon className="w-6 h-6 text-[#0071e3]" />
+                    </div>
+                    <div>
+                      <h3 className="text-[22px] font-display font-medium text-slate-900 mb-2">
+                        {cat.title}
+                      </h3>
+                      <p className="text-[15px] font-sans text-slate-600 leading-relaxed">
+                        {cat.description}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <ul className="space-y-4 relative z-10 mt-auto pt-6 border-t border-slate-900/5">
+                    {cat.links.map((link, linkIdx) => (
+                      <li key={linkIdx}>
+                        <Link href="#" className="text-[15px] font-sans text-slate-700 hover:text-[#0071e3] transition-colors flex items-center justify-between group/link">
+                          <span>{link}</span>
+                          <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/link:opacity-100 group-hover/link:translate-x-0 transition-all text-[#0071e3]" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
-          </div>
-        ))}
+            </div>
+          </PageContainer>
+        </section>
+
       </div>
-    </PageContainer>
+    </div>
   );
 }

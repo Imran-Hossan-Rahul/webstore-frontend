@@ -293,3 +293,4 @@ export default function TechParticles({ scatterOnly = false }) {
     />
   );
 }
+

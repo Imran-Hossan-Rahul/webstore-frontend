@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Search, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X } from "lucide-react";
+import { Search, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X, Headset, MessageCircleQuestion } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { hoverModalVariants } from "@/utils/animations";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
@@ -27,6 +27,7 @@ const GlassNavbar = ({
 }) => {
   const router = useRouter();
   const pathname = usePathname();
+  const isHomePage = pathname === '/' || pathname === '';
   const { user, isGuest, logout, loading } = useUser();
   const [searchFocused, setSearchFocused] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
@@ -61,6 +62,33 @@ const GlassNavbar = ({
     window.addEventListener('toggle-navbar-search', handleToggle);
     return () => window.removeEventListener('toggle-navbar-search', handleToggle);
   }, [pathname]);
+
+  const [hasPendingOrders, setHasPendingOrders] = useState(false);
+
+  useEffect(() => {
+    const checkPendingOrders = async () => {
+      try {
+        let orders = [];
+        if (user && user.role !== 'guest') {
+          orders = await api.get('/market/orders');
+        } else {
+          const storedIds = JSON.parse(localStorage.getItem('codalina_guest_orders') || '[]');
+          if (storedIds.length > 0) {
+            orders = await api.post('/market/orders/guest/list', { ids: storedIds });
+          }
+        }
+        if (Array.isArray(orders)) {
+          const hasPending = orders.some(o => o.payment_status !== 'Verified' && o.status !== 'Cancelled');
+          setHasPendingOrders(hasPending);
+        }
+      } catch (err) {
+        // ignore
+      }
+    };
+    checkPendingOrders();
+    window.addEventListener('orderPlaced', checkPendingOrders);
+    return () => window.removeEventListener('orderPlaced', checkPendingOrders);
+  }, [user]);
 
   const [cartCount, setCartCount] = useState(0);
 
@@ -133,12 +161,15 @@ const GlassNavbar = ({
 
     socket.on(`user:${user._id}:unread-count-update`, handleCountUpdate);
     socket.on(`user:${user._id}:newMessage`, handleChatUpdate);
+    socket.on(`user:${user._id}:chatRead`, handleChatUpdate);
+    
     window.addEventListener("notification-count-update", handleLocalCountSync);
     window.addEventListener("chat-count-update", handleLocalChatSync);
 
     return () => {
       socket.off(`user:${user._id}:unread-count-update`, handleCountUpdate);
       socket.off(`user:${user._id}:newMessage`, handleChatUpdate);
+      socket.off(`user:${user._id}:chatRead`, handleChatUpdate);
       window.removeEventListener("notification-count-update", handleLocalCountSync);
       window.removeEventListener("chat-count-update", handleLocalChatSync);
     };
@@ -178,7 +209,7 @@ const GlassNavbar = ({
 
   const handleSearch = () => {
     if (searchQuery?.trim()) {
-        router.push(`/shop?q=${encodeURIComponent(searchQuery)}`);
+        router.push(`/store?q=${encodeURIComponent(searchQuery)}`);
         setSearchFocused(false);
         setMobileSearchOpen(false);
         setIsDropdownOpen(false);
@@ -187,7 +218,7 @@ const GlassNavbar = ({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
-      <div className="w-full bg-white/60 backdrop-blur-2xl saturate-[1.8] border-b border-black/[0.08] shadow-[0_1px_0_rgba(0,0,0,0.06)] pl-[12px] pr-[16px] h-[48px] flex items-center justify-between relative overflow-visible">
+      <div className="w-full bg-white/40 backdrop-blur-2xl saturate-[1.8] border-b border-white/50 shadow-[0_4px_30px_rgba(0,0,0,0.05)] pl-[12px] pr-[16px] h-[48px] flex items-center justify-between relative overflow-visible">
         
         {/* Left Section */}
         <div className={`flex items-center flex-shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 gap-0 md:max-w-none md:opacity-100 md:gap-2' : 'max-w-[50px] md:max-w-none opacity-100 gap-2'}`}>
@@ -228,7 +259,7 @@ const GlassNavbar = ({
                   setTimeout(() => document.getElementById('navbar-search-input')?.focus(), 100);
                 }
               }}
-              className={`relative flex items-center h-[32px] rounded-[6px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] border overflow-visible cursor-text w-full ${mobileSearchOpen ? 'bg-black/5 border-brand-blue/60' : 'bg-black/5 border-black/15'}`} 
+              className={`relative flex items-center h-[32px] rounded-[8px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] border overflow-visible cursor-text w-full ${mobileSearchOpen ? 'bg-white border-brand-blue ring-2 ring-brand-blue/20' : 'bg-white/60 border-black/10 backdrop-blur-sm hover:bg-white/80 hover:border-black/20'}`} 
             >
               
               {/* Left Flex Spacer for Bulletproof Centering */}
@@ -313,7 +344,7 @@ const GlassNavbar = ({
                   setTimeout(() => document.getElementById('desktop-search-input')?.focus(), 100);
                 }
             }}
-            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-black/5 border-brand-blue/60 shadow-sm' : 'bg-black/5 border-black/15'} border rounded-[6px] px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-visible`}
+            className={`hidden md:flex w-full max-w-[500px] items-center ${(searchFocused || searchQuery) ? 'bg-white border-brand-blue ring-2 ring-brand-blue/20 shadow-sm' : 'bg-white/60 border-black/10 backdrop-blur-sm hover:bg-white/80 hover:border-black/20'} border rounded-[8px] px-4 h-[36px] transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] relative cursor-text overflow-visible`}
           >
               
               {/* Left Flex Spacer */}
@@ -390,19 +421,54 @@ const GlassNavbar = ({
         {/* Right Section */}
         <div className={`flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden ${mobileSearchOpen ? 'max-w-0 opacity-0 md:max-w-none md:opacity-100 md:gap-4 gap-0' : 'max-w-none opacity-100 sm:gap-4 gap-2'}`}>
             {/* Cart and Orders Links */}
-            <div className="hidden md:flex items-center gap-2 shrink-0">
-              <Link href="/cart" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
-                    {cartCount}
-                  </span>
+            {pathname !== "/book-call" && (
+              <div className="hidden md:flex items-center gap-2 shrink-0">
+                <Link href="/cart" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+                  {cartCount > 0 && (
+                    <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                      {cartCount}
+                    </span>
+                  )}
+                </Link>
+                <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} title="My Orders" className="p-2 rounded-xl text-black hover:bg-black/5 transition-all relative group flex items-center justify-center">
+                  <div className={`relative transition-colors duration-500 ${hasPendingOrders ? 'text-brand-blue' : ''}`}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={hasPendingOrders ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''}>
+                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                      <path d="M3 6h18"/>
+                      <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    {hasPendingOrders && (
+                      <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75 duration-1000"></span>
+                        <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-brand-blue"></span>
+                      </span>
+                    )}
+                  </div>
+                </Link>
+                {user && (
+                  <button 
+                    onClick={() => {
+                      if (onToggleChat) onToggleChat();
+                      else router.push('/chat');
+                    }}
+                    title="Live Chat" 
+                    className="px-3 py-1.5 ml-1 rounded-full bg-brand-blue/10 text-brand-blue hover:bg-brand-blue/20 transition-all relative group flex items-center gap-2 justify-center border border-brand-blue/20 shadow-sm shadow-brand-blue/5"
+                  >
+                    <div className="relative flex items-center justify-center">
+                      <MessageCircleQuestion size={16} className={unreadChatCount > 0 ? 'animate-[pulse_2s_ease-in-out_infinite]' : ''} />
+                      {unreadChatCount > 0 && (
+                        <span className="absolute -top-[2px] -right-[2px] flex h-[8px] w-[8px]">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 duration-1000"></span>
+                          <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-red-500"></span>
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[13px] font-medium hidden sm:block tracking-wide">Live Chat</span>
+                  </button>
                 )}
-              </Link>
-              <Link href={user ? `/u/${user.username}?tab=orders` : "/orders"} className="p-2 rounded-xl text-black hover:bg-black/5 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-              </Link>
-            </div>
+              </div>
+            )}
 
             <div className="flex items-center gap-1 sm:gap-2 border-r border-black/10 pr-2 sm:pr-4 shrink-0">
                 <div className="hidden sm:block shrink-0">
@@ -412,15 +478,14 @@ const GlassNavbar = ({
 
             {loading ? (
               <div className="flex items-center gap-3 z-50 relative shrink-0">
-                 <div className="hidden xl:block w-24 h-4 bg-brand-surface/10 rounded animate-pulse"></div>
                  <div className="w-9 h-9 rounded-full bg-brand-surface/10 animate-pulse shrink-0"></div>
               </div>
-            ) : (isGuest || user?.role === 'guest') ? (
+            ) : (!user || isGuest || user?.role === 'guest') ? (
               <div className="flex items-center gap-1.5 sm:gap-3 z-50 relative shrink-0">
                 <Link href="/auth/login" className="px-3 sm:px-[15px] py-[7px] rounded-[4px] text-[13px] sm:text-[14px] font-sans font-medium text-black hover:opacity-70 transition-opacity whitespace-nowrap">Log in</Link>
                 <Link href="/auth/register" className="px-3 sm:px-[14px] py-[6px] rounded-[4px] bg-brand-blue border border-brand-blue text-white text-[12px] sm:text-[13px] font-sans font-medium hover:bg-brand-blue/90 transition-all whitespace-nowrap">Join</Link>
               </div>
-            ) : (
+            ) : isHomePage ? (
               <div onClick={() => router.push(`/u/${user?.username}`)} className="flex items-center gap-3 cursor-pointer group shrink-0">
                   <div className="text-right hidden xl:block shrink-0">
                       <div className="text-[14px] font-normal text-black font-sans leading-tight">{user?.name}</div>
@@ -433,7 +498,7 @@ const GlassNavbar = ({
                       )}
                   </div>
               </div>
-            )}
+            ) : null}
         </div>
       </div>
 

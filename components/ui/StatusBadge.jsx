@@ -22,3 +22,4 @@ export const StatusBadge = ({ status, ...props }) => {
     </Badge>
   );
 };
+

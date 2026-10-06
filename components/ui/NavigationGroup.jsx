@@ -14,3 +14,4 @@ export const NavigationGroup = ({ title, children, className = '' }) => {
     </div>
   );
 };
+

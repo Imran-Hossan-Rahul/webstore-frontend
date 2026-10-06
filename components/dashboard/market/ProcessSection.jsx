@@ -251,7 +251,7 @@ const ProcessSection = () => {
                       return (
                         <motion.div
                           key={`chip-${i}`}
-                          initial={{ opacity: 0, scale: 0, x: "-50%", y: 120, rotate: 0 }}
+                          initial={{ opacity: 0, scale: 0.01, x: "-50%", y: 120, rotate: 0 }}
                           animate={{ 
                             opacity: 1, 
                             scale: 1, 
@@ -259,20 +259,27 @@ const ProcessSection = () => {
                             y: "-50%", 
                             rotate: pos.rotate 
                           }}
-                          exit={{ opacity: 0, scale: 0, x: "-50%", y: 120, rotate: 0 }}
+                          exit={{ opacity: 0, scale: 0.01, x: "-50%", y: 120, rotate: 0 }}
                           transition={{
                             type: "spring",
                             stiffness: 240,
                             damping: 18,
                             delay: 0.2 + i * 0.12
                           }}
-                          className="absolute px-4 py-2.5 bg-brand-navy/95 border border-brand-cyan/40 backdrop-blur-xl rounded-xl shadow-[0_10px_30px_rgba(34,197,232,0.25)] whitespace-nowrap"
-                          style={{ left: pos.left, top: pos.top }}
+                          className="absolute px-4 py-2.5 bg-brand-navy/95 border border-brand-cyan/40 backdrop-blur-xl rounded-xl shadow-[0_10px_30px_rgba(34,197,232,0.25)] whitespace-nowrap transform-gpu"
+                          style={{ 
+                            left: pos.left, 
+                            top: pos.top,
+                            backfaceVisibility: "hidden",
+                            WebkitFontSmoothing: "antialiased",
+                            transformStyle: "preserve-3d",
+                            willChange: "transform"
+                          }}
                         >
                           <div className="absolute inset-0 bg-gradient-to-tr from-brand-cyan/10 to-transparent rounded-xl pointer-events-none"></div>
-                          <div className="relative z-10 flex items-center gap-2">
+                          <div className="relative z-10 flex items-center gap-2 transform-gpu" style={{ transform: "translateZ(1px)" }}>
                             <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_rgba(34,197,232,0.8)]"></span>
-                            <span className="text-white/95 font-mono text-[12px] md:text-[13px] font-medium tracking-wide uppercase">{chip}</span>
+                            <span className="text-white font-mono text-[12px] md:text-[13px] font-medium tracking-wide uppercase drop-shadow-sm antialiased">{chip}</span>
                           </div>
                         </motion.div>
                       );

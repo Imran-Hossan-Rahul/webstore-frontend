@@ -15,7 +15,7 @@ const COMPANY = {
 
 function d(val, fallback = '') {
   if (val && String(val).trim() !== '' && String(val).trim() !== ',') return val;
-  return fallback ? `d${fallback}` : 'd—';
+  return fallback ? fallback : '—';
 }
 
 function fmt(price) {
@@ -23,7 +23,7 @@ function fmt(price) {
 }
 
 function fmtDateApple(dateStr) {
-  if (!dateStr) return 'd—';
+  if (!dateStr) return '—';
   const date = new Date(dateStr);
   return date.toLocaleDateString('en-US', {
     month: 'short',
@@ -40,31 +40,36 @@ export function generateInvoice(order) {
   let addrObj = {};
   try { addrObj = typeof order.address === 'string' ? JSON.parse(order.address) : (order.address || {}); } catch(e) {}
 
-  const customerName  = d(addrObj.name,    'Customer Name');
+  const customerName  = d(order.customer_name || order.name || addrObj.name, 'Customer Name');
   const customerPhone = d(order.phone,     'Phone');
-  const customerCity  = d(addrObj.district || addrObj.upazila, 'City');
-  const customerAddr  = d(addrObj.details, 'Address');
+  const customerCity  = d(addrObj.district || addrObj.upazila, '');
+  const customerAddr  = d(addrObj.details, '');
+
+  const customerEmail = d(addrObj.email || order.email, 'Email');
 
   const items        = order.items || [];
   const itemsPrice   = items.reduce((s, i) => s + (i.price_at_purchase * i.quantity), 0);
-  const codCharge    = Math.round(itemsPrice * 0.01);
-  const subtotal     = itemsPrice + codCharge;
-  const status       = order.status || 'Order Placed';
-  const isPaid       = status === 'Delivered';
+  const processingFee = 0;
+  const subtotal     = itemsPrice + processingFee;
+  const status       = order.status || 'Order placed';
+  const isPaid       = order.payment_status === 'Verified' || status === 'Delivered' || status === 'Completed';
   const amountDue    = isPaid ? '0.00' : `${fmt(subtotal)}`;
+  
+  const paymentMethod = d(order.payment_type || order.payment_method, 'Online Payment');
+  const trxId = d(order.payment_trx_id || addrObj.payment_trx_id, 'N/A');
 
   const itemRows = items.map(item => {
     const title    = d(item.product?.title, 'Product Title');
-    const prodNo   = item.product?.id ? item.product.id.toString().slice(-8).toUpperCase() : (item.variants || 'SKU-N/A');
+    const prodDetails = item.variants || (item.product?.id ? item.product.id.toString().slice(-8).toUpperCase() : 'SKU-N/A');
+    const licenseText = isPaid ? (item.license_key ? item.license_key : 'Available in Dashboard') : 'Will be available after verify payment';
     const price    = item.price_at_purchase || 0;
     const qty      = item.quantity || 1;
     const lineTotal = price * qty;
     return `
       <tr>
         <td class="td-left font-medium">${title}</td>
-        <td class="td-left text-muted">${prodNo}</td>
+        <td class="td-left text-muted">${prodDetails}<br/><span style="font-size: 9.5px; font-family: monospace; color: ${isPaid ? '#0071e3' : '#f5a623'};">Key: ${licenseText}</span></td>
         <td class="td-right">${fmt(price)} BDT</td>
-        <td class="td-center">${qty}</td>
         <td class="td-center">${qty}</td>
         <td class="td-right font-bold">${fmt(lineTotal)} BDT</td>
       </tr>`;
@@ -75,7 +80,7 @@ export function generateInvoice(order) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invoice Receipt — ${shortId}</title>
+  <title>Order Receipt — ${shortId}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -302,8 +307,8 @@ export function generateInvoice(order) {
   <!-- Invoice Title & Order Meta Header -->
   <div class="invoice-title-row">
     <div>
-      <div class="invoice-receipt-title">Invoice Receipt</div>
-      <div class="invoice-status-subtitle">${isPaid ? 'Payment Received' : 'Cash on Delivery — Unpaid'}</div>
+      <div class="invoice-receipt-title">Order Receipt</div>
+      <div class="invoice-status-subtitle">${isPaid ? 'Payment Received & Access Granted' : 'Pending Payment'}</div>
     </div>
     <div class="meta-box">
       <div><span class="meta-label">Order Number:</span></div>
@@ -313,20 +318,19 @@ export function generateInvoice(order) {
     </div>
   </div>
 
-  <!-- Sold To / Ship To -->
+  <!-- Billed To / Digital Delivery To -->
   <div class="address-grid">
     <div>
-      <div class="address-title">Sold To:</div>
+      <div class="address-title">Billed To:</div>
       <div>${customerName}</div>
-      <div>${customerAddr}</div>
-      <div>${customerCity}</div>
+      ${customerAddr !== '—' && customerAddr !== '' ? `<div>${customerAddr}</div>` : ''}
+      ${customerCity !== '—' && customerCity !== '' ? `<div>${customerCity}</div>` : ''}
       <div style="margin-top: 4px;">Phone: ${customerPhone}</div>
     </div>
     <div>
-      <div class="address-title">Ship To:</div>
+      <div class="address-title">Digital Delivery To:</div>
       <div>${customerName}</div>
-      <div>${customerAddr}</div>
-      <div>${customerCity}</div>
+      <div>Email: ${customerEmail}</div>
     </div>
   </div>
 
@@ -335,12 +339,11 @@ export function generateInvoice(order) {
   <table>
     <thead>
       <tr>
-        <th style="width:36%">Product Name</th>
-        <th style="width:16%">Product Number</th>
-        <th style="width:14%; text-align:right;">Item Price</th>
-        <th style="width:10%; text-align:center;">Quantity Ordered</th>
-        <th style="width:10%; text-align:center;">Quantity Shipped</th>
-        <th style="width:14%; text-align:right;">Extended Price</th>
+        <th style="width:40%">Product Name</th>
+        <th style="width:25%">License / Variant Details</th>
+        <th style="width:15%; text-align:right;">Unit Price</th>
+        <th style="width:10%; text-align:center;">Qty</th>
+        <th style="width:10%; text-align:right;">Total</th>
       </tr>
     </thead>
     <tbody>
@@ -355,8 +358,8 @@ export function generateInvoice(order) {
       <span>${fmt(itemsPrice)} BDT</span>
     </div>
     <div class="totals-row">
-      <span>Delivery Charge:</span>
-      <span>${fmt(codCharge)} BDT</span>
+      <span>Processing Fee:</span>
+      <span>${fmt(processingFee)} BDT</span>
     </div>
     <div class="totals-row bold" style="margin-top: 2px;">
       <span>Total:</span>
@@ -372,9 +375,9 @@ export function generateInvoice(order) {
   <div class="divider"></div>
   <div class="section-header">Payment Methods</div>
   <div style="font-size: 11px; color: #1d1d1f; margin-bottom: 24px;">
-    ${fmt(subtotal)} BDT charged to Cash on Delivery (COD)
+    ${fmt(subtotal)} BDT paid via ${paymentMethod}
     <br />
-    <span style="font-size: 10px; color: #6e6e73;">For a total of ${fmt(subtotal)} BDT</span>
+    <span style="font-size: 10px; color: #6e6e73;">Transaction ID: ${trxId}</span>
   </div>
 
   <!-- Additional Information Section -->
@@ -382,18 +385,18 @@ export function generateInvoice(order) {
   <table class="info-table">
     <thead>
       <tr>
-        <th style="width: 25%;">Invoice Number</th>
-        <th style="width: 25%;">Invoice Date</th>
-        <th style="width: 25%;">Terms</th>
-        <th style="width: 25%;">Ship Date</th>
+        <th style="width: 25%;">Receipt Number</th>
+        <th style="width: 25%;">Order Date</th>
+        <th style="width: 25%;">Payment Method</th>
+        <th style="width: 25%;">Delivery Status</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>WA${shortId}</td>
         <td>${formattedDate}</td>
-        <td>Cash on Delivery</td>
-        <td>${formattedDate}</td>
+        <td style="text-transform: capitalize;">${paymentMethod.replace('_', ' ')}</td>
+        <td style="font-weight: ${isPaid ? 'normal' : '600'}; color: ${isPaid ? '#1d1d1f' : '#f59e0b'};">${isPaid ? 'Delivered Digitally' : 'Pending Payment'}</td>
       </tr>
     </tbody>
   </table>

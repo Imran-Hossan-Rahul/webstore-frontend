@@ -2,6 +2,7 @@
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import React, { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { api } from "@/utils/api";
 import socket from "@/utils/socket";
 import { webrtcManager } from "@/utils/webrtcManager";
@@ -36,7 +37,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   const typingTimeoutRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", message: "", onConfirm: null });
-  // Message cache: chatId → messages[] — so switching chats shows instant data
+  // Message cache: chatId â†’ messages[] â€” so switching chats shows instant data
   const messageCacheRef = useRef(new Map());
   const activeChatIdRef = useRef(null);
 
@@ -70,7 +71,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
        durationStr = ` (${m}:${s})`;
     }
 
-    const content = `📞 ${isVideo ? 'Video' : 'Audio'} call ${statusLabel}${durationStr}`;
+    const content = `ðŸ“ž ${isVideo ? 'Video' : 'Audio'} call ${statusLabel}${durationStr}`;
     try {
       const res = await api.post(`/chat/message/${currentCallData.chatId}`, {
         content,
@@ -85,6 +86,15 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   useEffect(() => {
     activeChatIdRef.current = (isModalOpen && selectedChat) ? selectedChat._id : null;
   }, [isModalOpen, selectedChat]);
+
+  // Persist "seen" on the server whenever the panel is opened, so the navbar dot
+  // stays cleared after a refresh until a genuinely newer message arrives.
+  useEffect(() => {
+    if (!isModalOpen || !currentUser) return;
+    api.put("/chat/seen")
+      .then(() => window.dispatchEvent(new CustomEvent('chat-count-update', { detail: { count: 0 } })))
+      .catch((e) => console.error("Failed to record chat seen", e));
+  }, [isModalOpen, currentUser?._id]);
 
   useEffect(() => {
     const handleToggleChatEvent = () => {
@@ -138,14 +148,32 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
       }
     };
 
+    const handleOpenOrderRoomEvent = async (event) => {
+      const orderId = event.detail?.orderId;
+      if (!orderId) return;
+      try {
+        const res = await api.get(`/chat/order/${orderId}`);
+        if (res.success && res.chat) {
+          setSelectedChat(res.chat);
+          setChats((prev) => (prev.some((c) => c._id === res.chat._id) ? prev : [res.chat, ...prev]));
+        }
+      } catch (e) {
+        console.error("Failed to open order room", e);
+      }
+      setShowGreeting(false);
+      setIsOpenInternal(true);
+    };
+
     window.addEventListener("toggle-chat", handleToggleChatEvent);
     window.addEventListener("open-chat", handleOpenChatEvent);
     window.addEventListener("open-support-chat", handleOpenSupportChatEvent);
+    window.addEventListener("open-order-room", handleOpenOrderRoomEvent);
 
     return () => {
       window.removeEventListener("toggle-chat", handleToggleChatEvent);
       window.removeEventListener("open-chat", handleOpenChatEvent);
       window.removeEventListener("open-support-chat", handleOpenSupportChatEvent);
+      window.removeEventListener("open-order-room", handleOpenOrderRoomEvent);
     };
   }, [currentUser, selectedChat]);
 
@@ -154,28 +182,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
     if (onClose) onClose();
   };
 
-  // Auto-fetch support chat when modal opens for non-admins
-  useEffect(() => {
-    if (isModalOpen && currentUser && currentUser.role !== 'admin' && !selectedChat && !loading) {
-      const fetchSupportChat = async () => {
-        try {
-          const res = await api.get("/chat/support");
-          if (res.success && res.chat) {
-            setSelectedChat(res.chat);
-            setChats((prev) => {
-              if (!prev.some(c => c._id === res.chat._id)) {
-                return [res.chat, ...prev];
-              }
-              return prev;
-            });
-          }
-        } catch (e) {
-          console.error("Failed to fetch support chat", e);
-        }
-      };
-      fetchSupportChat();
-    }
-  }, [isModalOpen, currentUser, selectedChat, loading]);
+  // Removed auto-fetch support chat so customers can see the sidebar and choose their chats
 
   // Call State
   const [isCallOpen, setIsCallOpen] = useState(false);
@@ -640,109 +647,10 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
   const supportChat = chats.find(c => c.isSupportChat) || chats.find(c => c.participants?.some(p => p.role === 'admin' || p.role === 'superadmin'));
   const hasHistory = supportChat && supportChat.lastMessage;
 
-  if (!isModalOpen && !showIncomingToast) {
-    return (
-      <div className="fixed bottom-[85px] md:bottom-6 right-4 md:right-6 z-[9990] flex items-end gap-4">
-        {/* Greeting Popup */}
-        <AnimatePresence>
-          {showGreeting && (
-            <motion.div
-              initial={{ opacity: 0, x: 20, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1, transition: { delay: 1, duration: 0.3 } }}
-              exit={{ opacity: 0, x: 20, scale: 0.9, transition: { duration: 0.2 } }}
-              className="relative bg-brand-surface dark:bg-brand-surface text-apple-ink dark:text-white px-3 py-2 md:px-5 md:py-3 rounded-xl md:rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-black/5 dark:border-white/10 mb-1 md:mb-2 max-w-[180px] md:max-w-[220px]"
-            >
-              <button 
-                onClick={(e) => { e.stopPropagation(); setShowGreeting(false); }}
-                className="absolute -top-1.5 -left-1.5 md:-top-2 md:-left-2 w-4 h-4 md:w-5 md:h-5 bg-brand-surface dark:bg-[#2c2c2e] border border-black/10 dark:border-white/10 rounded-full flex items-center justify-center text-slate-400 hover:text-apple-ink transition-colors shadow-sm"
-              >
-                <X className="w-2.5 h-2.5 md:w-3 md:h-3" />
-              </button>
-              <p className="text-[11px] md:text-[13px] font-medium leading-snug">
-                {hasHistory ? "Imran" : "Hi, I'm Imran! 👋"}<br/>
-                <span className={`font-normal text-[10px] md:text-[13px] line-clamp-2 mt-0.5 ${supportChat?.unreadCount > 0 ? 'text-apple-ink dark:text-white font-medium' : 'text-apple-muted'}`}>
-                  {hasHistory ? (
-                    supportChat.lastMessage.sender?._id === currentUser?._id ? (
-                      "Thanks for your message! I'll reply soon."
-                    ) : (
-                      <>
-                        {supportChat.lastMessage.type === 'image' ? 'Sent an image' : 
-                         supportChat.lastMessage.type === 'file' ? 'Sent a file' : 
-                         supportChat.lastMessage.content}
-                      </>
-                    )
-                  ) : (
-                    "How can I help you today?"
-                  )}
-                </span>
-              </p>
-              {/* Little triangle pointing to the avatar */}
-              <div className="absolute top-1/2 -right-1.5 md:-right-2 -translate-y-1/2 w-3 h-3 md:w-4 md:h-4 bg-brand-surface dark:bg-brand-surface border-t border-r border-black/5 dark:border-white/10 rotate-45"></div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+  const pathname = usePathname();
+  const isHomePage = pathname === "/" || pathname === "";
 
-        {/* Floating Button */}
-        <button 
-          onClick={async () => { 
-            if (isChatButtonLoading) return;
-            setIsChatButtonLoading(true);
-            setShowGreeting(false); 
-
-            if (isGuest || !currentUser) {
-              try {
-                // Call guest login API
-                const res = await api.post("/auth/guest-login");
-                if (res.success) {
-                  // Refresh the page to load UserContext seamlessly
-                  sessionStorage.setItem("openChatOnLoad", "true");
-                  window.location.reload();
-                }
-              } catch (e) {
-                console.error("Guest login failed", e);
-                if (window.requireAuth) window.requireAuth("chat");
-                setIsChatButtonLoading(false);
-              }
-              return;
-            }
-
-            if (currentUser?.role !== 'admin' && !selectedChat) {
-               try {
-                  const res = await api.get("/chat/support");
-                  if (res.success && res.chat) {
-                    setSelectedChat(res.chat);
-                    setChats((prev) => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev);
-                  }
-               } catch(e) {
-                  console.error(e);
-               }
-            }
-
-            setIsChatButtonLoading(false);
-            setIsOpenInternal(true); 
-          }}
-          className="w-[42px] h-[42px] md:w-[60px] md:h-[60px] rounded-full bg-brand-surface dark:bg-[#1a1a1a] shadow-[0_4px_24px_rgba(0,0,0,0.12)] border border-black/5 dark:border-white/10 flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300 relative shrink-0"
-        >
-          {isChatButtonLoading ? (
-            <div className="w-full h-full bg-brand-blue/10 flex items-center justify-center">
-              <AppleSpinner size={24} className="text-brand-blue" />
-            </div>
-          ) : adminAvatar ? (
-            <img 
-              src={getOptimizedUrl(adminAvatar)} 
-              alt="Chat with Imran" 
-              className="w-full h-full object-cover" 
-              onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
-            />
-          ) : (
-            <div className="w-full h-full bg-brand-blue/10 flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 md:w-7 md:h-7 text-brand-blue" />
-            </div>
-          )}
-        </button>
-      </div>
-    );
-  }
+  if (!isModalOpen && !showIncomingToast && !isHomePage) return null;
 
   return (
     <>
@@ -754,7 +662,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                  {callData.callerAvatar ? (
                    <img src={getOptimizedUrl(callData.callerAvatar)} alt="Caller" className="w-full h-full object-cover" />
                  ) : (
-                   <span className="text-xl">📞</span>
+                   <span className="text-xl">ðŸ“ž</span>
                  )}
                </div>
                <div className="flex-1 min-w-0">
@@ -781,11 +689,10 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
 
       {/* FIXED CHAT WIDGET */}
       {isModalOpen && (
-        <div className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-brand-surface/90 dark:bg-brand-surface/90 backdrop-blur-2xl rounded-[4px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] animate-in slide-in-from-bottom-5 fade-in duration-300">
+        <div onWheel={(e) => e.stopPropagation()} className="fixed bottom-24 right-4 sm:right-6 w-[360px] sm:w-[380px] h-[550px] max-h-[calc(100vh-120px)] bg-brand-surface/90 dark:bg-brand-surface/90 backdrop-blur-2xl rounded-[4px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/10 flex flex-col overflow-hidden z-[9990] overflow-y-auto overscroll-contain animate-in slide-in-from-bottom-5 fade-in duration-300">
            
            {!selectedChat ? (
-              currentUser?.role === 'admin' ? (
-                // Chat Sidebar (List of chats - mostly for admin)
+                // Chat Sidebar (List of chats)
                 <ChatSidebar 
                     currentUser={currentUser}
                     users={users} 
@@ -815,7 +722,6 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                     activeCallChatId={(isCallOpen || showIncomingToast) ? callData?.chatId : null}
                     activeCallStatus={isIncomingCall ? "Ringing..." : "Calling..."}
                 />
-              ) : null
            ) : (
               // Active Conversation Window
               <div className="flex-1 flex flex-col min-h-0 w-full relative">
@@ -834,7 +740,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                    }}
                 />
 
-                <ChatWindow 
+                <ChatWindow onGoToSupport={async () => { const url = '/chat/support'; try { const res = await api.get(url); setSelectedChat(res.chat); setChats(prev => !prev.some(c => c._id === res.chat._id) ? [res.chat, ...prev] : prev); } catch(e){} }} 
                   chat={selectedChat} messages={messages} isLoadingMessages={isLoadingMessages} currentUser={currentUser}
                   isOnline={selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id)}
                   isTyping={isTyping}
@@ -860,7 +766,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
                   }}
                   onMinimize={handleClose}
                   onClose={handleClose}
-                  onBack={currentUser?.role === 'admin' ? () => setSelectedChat(null) : undefined}
+                  onBack={() => setSelectedChat(null)}
                   onUnsendMessage={(id) => {
                     const updateFn = m => m._id === id ? { ...m, isUnsent: true, content: "This message was unsent" } : m;
                     setMessages(prev => prev.map(updateFn));
@@ -931,6 +837,7 @@ export default function ChatModal({ isOpen, onClose, initialUserId, showList = t
           </div>
         </div>
       )}
+
     </>
   );
 }

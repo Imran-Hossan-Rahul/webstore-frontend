@@ -29,24 +29,24 @@ export default function VerifyEmailTab({ profile, onVerified }) {
 
   if (profile.emailVerified) {
     return (
-      <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
+      <div className="bg-brand-surface  rounded-[4px] p-10 shadow-sm border border-slate-100  max-w-2xl mx-auto">
         <div className="flex flex-col items-center text-center py-6">
           {/* Verified icon */}
-          <div className="w-20 h-20 rounded-full bg-emerald-50 dark:bg-brand-teal/10 flex items-center justify-center mb-6">
+          <div className="w-20 h-20 rounded-full bg-emerald-50  flex items-center justify-center mb-6">
             <BadgeCheck className="w-10 h-10 text-brand-teal" strokeWidth={1.5} />
           </div>
 
-          <h2 className="text-[24px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-2">
+          <h2 className="text-[24px] font-semibold tracking-tight text-[#1d1d1f]  mb-2">
             Email Verified
           </h2>
           <p className="text-[15px] text-[#86868b] max-w-sm">
-            Your email address <span className="font-medium text-[#1d1d1f] dark:text-white">{profile.email}</span> has been verified. Your account is fully secure.
+            Your email address <span className="font-medium text-[#1d1d1f] ">{profile.email}</span> has been verified. Your account is fully secure.
           </p>
 
           {/* Decorative badge */}
-          <div className="mt-8 flex items-center gap-2 px-5 py-2.5 bg-emerald-50 dark:bg-brand-teal/10 rounded-full">
+          <div className="mt-8 flex items-center gap-2 px-5 py-2.5 bg-emerald-50  rounded-full">
             <ShieldCheck className="w-4 h-4 text-brand-teal" />
-            <span className="text-[13px] font-semibold text-brand-teal dark:text-emerald-400">Verified Account</span>
+            <span className="text-[13px] font-semibold text-brand-teal ">Verified Account</span>
           </div>
         </div>
       </div>
@@ -54,27 +54,27 @@ export default function VerifyEmailTab({ profile, onVerified }) {
   }
 
   return (
-    <div className="bg-brand-surface dark:bg-brand-surface rounded-[4px] p-10 shadow-sm border border-slate-100 dark:border-[#2c2c2e] max-w-2xl mx-auto">
+    <div className="bg-brand-surface  rounded-[4px] p-10 shadow-sm border border-slate-100  max-w-2xl mx-auto">
       <div className="flex flex-col items-center text-center py-4">
 
         {/* Unverified icon */}
-        <div className="w-20 h-20 rounded-full bg-amber-50 dark:bg-brand-amber/10 flex items-center justify-center mb-6">
+        <div className="w-20 h-20 rounded-full bg-amber-50  flex items-center justify-center mb-6">
           <Mail className="w-10 h-10 text-brand-amber" strokeWidth={1.5} />
         </div>
 
-        <h2 className="text-[24px] font-semibold tracking-tight text-[#1d1d1f] dark:text-white mb-2">
+        <h2 className="text-[24px] font-semibold tracking-tight text-[#1d1d1f]  mb-2">
           Verify Your Email
         </h2>
         <p className="text-[15px] text-[#86868b] max-w-sm">
           We sent a verification link to{' '}
-          <span className="font-medium text-[#1d1d1f] dark:text-white">{profile.email}</span>.
+          <span className="font-medium text-[#1d1d1f] ">{profile.email}</span>.
           Click the link in the email to verify your account.
         </p>
 
         {/* Warning note */}
-        <div className="mt-6 flex items-start gap-3 p-4 bg-amber-50 dark:bg-brand-amber/10 rounded-2xl text-left max-w-sm w-full">
+        <div className="mt-6 flex items-start gap-3 p-4 bg-amber-50  rounded-2xl text-left max-w-sm w-full">
           <AlertCircle className="w-4 h-4 text-brand-amber flex-shrink-0 mt-0.5" />
-          <p className="text-[13px] text-amber-700 dark:text-amber-400">
+          <p className="text-[13px] text-amber-700 ">
             Unverified accounts may have limited access to some features. Please verify your email.
           </p>
         </div>
@@ -82,9 +82,9 @@ export default function VerifyEmailTab({ profile, onVerified }) {
         {/* Resend button */}
         <div className="mt-8 w-full max-w-sm">
           {sent ? (
-            <div className="flex items-center justify-center gap-2 py-3.5 bg-emerald-50 dark:bg-brand-teal/10 rounded-full">
+            <div className="flex items-center justify-center gap-2 py-3.5 bg-emerald-50  rounded-full">
               <CheckCircle2 className="w-4 h-4 text-brand-teal" />
-              <span className="text-[14px] font-medium text-brand-teal dark:text-emerald-400">
+              <span className="text-[14px] font-medium text-brand-teal ">
                 Email sent! Check your inbox.
               </span>
             </div>
@@ -92,7 +92,7 @@ export default function VerifyEmailTab({ profile, onVerified }) {
             <button
               onClick={handleResend}
               disabled={isSending}
-              className="w-full py-3.5 bg-[#1d1d1f] dark:bg-brand-surface text-white dark:text-black rounded-full text-[15px] font-medium transition-all hover:opacity-80 flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-3.5 bg-[#1d1d1f]  text-white  rounded-full text-[15px] font-medium transition-all hover:opacity-80 flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {isSending ? (
                 <AppleSpinner className="w-4 h-4 animate-spin" />
@@ -111,3 +111,5 @@ export default function VerifyEmailTab({ profile, onVerified }) {
     </div>
   );
 }
+
+

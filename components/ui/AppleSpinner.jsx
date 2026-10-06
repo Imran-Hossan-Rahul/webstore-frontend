@@ -16,3 +16,4 @@ export default function AppleSpinner({ size = 48, className = '', ...props }) {
     </svg>
   );
 }
+

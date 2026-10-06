@@ -1,11 +1,15 @@
 "use client";
+import AppleSpinner from "@/components/ui/AppleSpinner";
 import React from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ArrowRight } from "lucide-react";
 import { motion, useMotionValue } from 'framer-motion';
 import { getOptimizedUrl } from './marketUtils';
 
 const StorePreviewSection = ({ products }) => {
+  const [navigatingId, setNavigatingId] = React.useState(null);
+  const router = useRouter();
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const [isHovering, setIsHovering] = React.useState(false);
@@ -37,15 +41,23 @@ const StorePreviewSection = ({ products }) => {
     }
   }, [baseProducts.length]);
 
-  let row1Items = [...baseProducts];
-  if (baseProducts.length > 0) {
-    while (row1Items.length < 6) row1Items = [...row1Items, ...baseProducts];
+  const dummyProducts = Array.from({ length: 6 }).map((_, i) => ({
+    id: `dummy-${i}`,
+    title: `Premium Website Design ${i + 1}`,
+    photos: JSON.stringify([`/assets/placeholder-${(i % 3) + 1}.jpg`]),
+  }));
+
+  const productsToUse = baseProducts.length > 0 ? baseProducts : dummyProducts;
+
+  let row1Items = [...productsToUse];
+  if (productsToUse.length > 0) {
+    while (row1Items.length < 6) row1Items = [...row1Items, ...productsToUse];
   }
   const row1Marquee = [...row1Items, ...row1Items];
 
-  let row2Items = [...baseProducts];
-  if (baseProducts.length > 0) {
-    while (row2Items.length < 10) row2Items = [...row2Items, ...baseProducts];
+  let row2Items = [...productsToUse];
+  if (productsToUse.length > 0) {
+    while (row2Items.length < 10) row2Items = [...row2Items, ...productsToUse];
   }
   const row2Marquee = [...row2Items, ...row2Items];
 
@@ -93,20 +105,37 @@ const StorePreviewSection = ({ products }) => {
   }, [bottomIndex, row2Items.length]);
 
   // Early return if no products (must be called after all hooks)
-  if (baseProducts.length === 0) return null;
+  // if (baseProducts.length === 0) return null;
 
-  const renderCard = (product, idx, widthClass) => (
+  const getFirstPhoto = (photosStr) => {
+    if (!photosStr) return null;
+    try {
+      const parsed = JSON.parse(photosStr);
+      return Array.isArray(parsed) ? parsed[0] : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const renderCard = (product, idx, widthClass) => {
+    const firstPhoto = getFirstPhoto(product.photos);
+    return (
     <Link 
       key={`${product.id || product._id}-${idx}`} 
       href={`/product/${product.id || product._id}`} 
       className={`shrink-0 flex flex-col group cursor-none relative ${widthClass} h-[350px] md:h-[480px] mr-[13px]`}
     >
       {/* Visual Container */}
-      <div className="w-full h-full bg-slate-50 border border-slate-200/80 rounded-none overflow-hidden relative flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-brand-blue/30 group-hover:shadow-[0_20px_40px_-15px_rgba(29,95,209,0.15)]">
+      <div onClick={() => setNavigatingId(`product-${product.id || product._id}`)} className="w-full h-full bg-slate-50 border border-slate-200/80 rounded-none overflow-hidden relative flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-brand-blue/30 group-hover:shadow-[0_20px_40px_-15px_rgba(29,95,209,0.15)]">
+      {navigatingId === `product-${product.id || product._id}` && (
+        <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-[16px]">
+           <AppleSpinner size={32} className="text-[#0071e3]" />
+        </div>
+      )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none"></div>
-        {product.photos && JSON.parse(product.photos)[0] ? (
+        {firstPhoto ? (
           <img 
-            src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
+            src={getOptimizedUrl(firstPhoto)} 
             alt={product.title} 
             className="absolute inset-0 w-full h-full object-cover z-10" 
           />
@@ -144,6 +173,7 @@ const StorePreviewSection = ({ products }) => {
       </div>
     </Link>
   );
+  };
 
   const formatPriceVal = (val) => {
     try {
@@ -186,7 +216,7 @@ const StorePreviewSection = ({ products }) => {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <style>{`
+        <style dangerouslySetInnerHTML={{ __html: `
           .carousel-row-top { --card-width: 85vw; }
           .carousel-row-bottom { --card-width: 60vw; }
           
@@ -215,7 +245,7 @@ const StorePreviewSection = ({ products }) => {
             .carousel-row-top { --card-width: 40vw; }
             .carousel-row-bottom { --card-width: 28.5vw; }
           }
-        `}</style>
+        ` }} />
         
         <div className="flex flex-col gap-[13px] w-full">
           {/* Top Row: 2.5 visible items => ~40vw each (Desktop) / Apple Swiper (Mobile) */}
@@ -277,7 +307,7 @@ const StorePreviewSection = ({ products }) => {
               <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("Open Project Brief Form");
+                  router.push('/submit-brief');
                 }}
                 className="bg-white dark:bg-white hover:bg-slate-50 dark:hover:bg-slate-50 border border-slate-200 dark:border-slate-200 text-brand-navy dark:text-brand-navy px-4 min-[350px]:px-8 py-3 min-[350px]:py-4 rounded-full font-sans text-[13px] min-[350px]:text-[15px] font-semibold transition-all duration-300 flex items-center justify-center w-full sm:w-auto shadow-sm whitespace-nowrap"
               >
@@ -287,7 +317,7 @@ const StorePreviewSection = ({ products }) => {
               <button 
                 onClick={(e) => {
                   e.preventDefault();
-                  console.log("Open Booking Modal");
+                  router.push('/book-call');
                 }}
                 className="bg-brand-navy dark:bg-brand-navy text-white dark:text-white hover:bg-brand-blue dark:hover:bg-brand-blue px-4 min-[350px]:px-8 py-3 min-[350px]:py-4 rounded-full font-sans text-[13px] min-[350px]:text-[15px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand-navy/10 transform hover:-translate-y-1 w-full sm:w-auto whitespace-nowrap"
               >

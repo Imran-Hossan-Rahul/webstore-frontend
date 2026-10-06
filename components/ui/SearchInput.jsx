@@ -15,13 +15,13 @@ export const SearchInput = React.forwardRef(({
       <input 
         ref={ref}
         value={value}
-        className={`w-full bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] h-10 pl-10 pr-10 text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${className}`}
+        className={`w-full bg-brand-surface  border border-brand-navy/[0.08]  rounded-[4px] h-10 pl-10 pr-10 text-[14px] font-sans text-brand-navy  placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${className}`}
         {...props}
       />
       {value && onClear && (
         <button 
           onClick={onClear}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-navy dark:hover:text-white transition-colors"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-navy :text-white transition-colors"
         >
           <X size={14} />
         </button>
@@ -30,3 +30,4 @@ export const SearchInput = React.forwardRef(({
   );
 });
 SearchInput.displayName = 'SearchInput';
+

@@ -14,7 +14,7 @@ export const Input = React.forwardRef(({
   return (
     <div className="flex flex-col w-full">
       {label && (
-        <label htmlFor={generatedId} className="block text-[11px] font-mono tracking-widest text-slate-500 dark:text-slate-400 uppercase mb-1">
+        <label htmlFor={generatedId} className="block text-[11px] font-mono tracking-widest text-slate-500  uppercase mb-1">
           {label}
         </label>
       )}
@@ -27,7 +27,7 @@ export const Input = React.forwardRef(({
         <input 
           id={generatedId}
           ref={ref}
-          className={`w-full bg-brand-surface dark:bg-brand-surface border ${error ? 'border-red-500' : 'border-brand-navy/[0.08] dark:border-white/10'} rounded-[4px] h-10 text-[14px] font-sans text-brand-navy dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${leftElement ? 'pl-10' : 'pl-3'} ${rightElement ? 'pr-10' : 'pr-3'} ${className}`}
+          className={`w-full bg-brand-surface  border ${error ? 'border-red-500' : 'border-brand-navy/[0.08] '} rounded-[4px] h-10 text-[14px] font-sans text-brand-navy  placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${leftElement ? 'pl-10' : 'pl-3'} ${rightElement ? 'pr-10' : 'pr-3'} ${className}`}
           {...props}
         />
         {rightElement && (
@@ -41,3 +41,4 @@ export const Input = React.forwardRef(({
   );
 });
 Input.displayName = 'Input';
+

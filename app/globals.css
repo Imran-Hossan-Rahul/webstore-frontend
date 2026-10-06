@@ -6,7 +6,7 @@
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-brand-navy dark:text-white;
+    @apply font-display text-brand-navy;
   }
 }
 

@@ -22,9 +22,9 @@ export const PRODUCT_TYPES = [
 
 // ─── License Types ───────────────────────────────────────────────────────────
 export const LICENSE_TYPES = [
-  { value: 'Personal',   label: 'Personal Use',   description: 'For personal, non-commercial projects only.' },
-  { value: 'Commercial', label: 'Commercial Use',  description: 'Use in client projects and commercial products.' },
-  { value: 'Extended',   label: 'Extended License', description: 'Resell or include in products sold to end users.' },
+  { value: 'Personal',   label: 'Single License',   description: 'Use for 1 project/domain (Yourself or 1 Client).' },
+  { value: 'Commercial', label: 'Commercial License',  description: 'Use for up to 3 projects/domains (Clients or Yourself).' },
+  { value: 'Extended',   label: 'Extended License', description: 'Unlimited projects/domains and full resell rights.' },
 ];
 
 // ─── Tech Stack Tags ────────────────────────────────────────────────────────

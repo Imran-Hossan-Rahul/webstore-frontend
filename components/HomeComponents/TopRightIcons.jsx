@@ -34,7 +34,7 @@ export default function TopRightIcons() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && searchQuery.trim()) {
-      router.push(`/shop?q=${encodeURIComponent(searchQuery)}`);
+      router.push(`/store?q=${encodeURIComponent(searchQuery)}`);
       setSearchOpen(false);
       setSearchQuery("");
     }

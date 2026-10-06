@@ -1,8 +1,8 @@
 "use client";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/utils/api";
 import socket from "@/utils/socket";
 import { webrtcManager } from "@/utils/webrtcManager";
@@ -12,8 +12,11 @@ import ChatWindow from "@/components/dashboard/chat/ChatWindow";
 import CallInterface from "@/components/dashboard/chat/CallInterface";
 import DraggableResizableWindow from "@/components/dashboard/chat/DraggableResizableWindow";
 
-export default function ChatPage() {
+function ChatContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const roomIdFromUrl = searchParams.get('room');
+  
   const [currentUser, setCurrentUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [chats, setChats] = useState([]);
@@ -45,8 +48,18 @@ export default function ChatPage() {
           return;
         }
         setCurrentUser(user);
+        
+        const fetchedChats = chatsRes.chats || [];
         setUsers(usersRes.users || []);
-        setChats(chatsRes.chats || []);
+        setChats(fetchedChats);
+
+        // Auto-select room from URL
+        if (roomIdFromUrl) {
+          const target = fetchedChats.find(c => String(c._id) === String(roomIdFromUrl));
+          if (target) {
+            setSelectedChat(target);
+          }
+        }
 
         socket.emit("user:online", user._id);
       } catch (error) {
@@ -379,7 +392,7 @@ export default function ChatPage() {
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
         <button 
           onClick={() => setIsMinimized(false)}
-          className="w-14 h-14 rounded-full bg-brand-surface dark:bg-black border-2 border-brand-blue shadow-sm flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
+          className="w-14 h-14 rounded-full bg-brand-surface border-2 border-brand-blue shadow-sm flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity relative"
         >
           {selectedChat && avatar ? (
              <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
@@ -388,7 +401,7 @@ export default function ChatPage() {
           )}
           {/* Online Indicator for minimized head */}
           {selectedChat && onlineUsers.has(getOtherParticipant(selectedChat)?._id) && (
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-brand-teal border-2 border-white dark:border-black rounded-full"></div>
+            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 bg-brand-teal border-2 border-white rounded-full"></div>
           )}
         </button>
       </div>
@@ -397,7 +410,7 @@ export default function ChatPage() {
 
   return (
     <DraggableResizableWindow initialWidth={1200} initialHeight={720} minWidth={620} minHeight={420}>
-      <div className="flex h-full w-full bg-brand-surface dark:bg-brand-surface overflow-hidden relative">
+      <div className="flex h-full w-full bg-brand-surface  overflow-hidden relative">
         {/* Call Overlay */}
         <CallInterface 
            isOpen={isCallOpen}
@@ -437,5 +450,13 @@ export default function ChatPage() {
         />
       </div>
     </DraggableResizableWindow>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense fallback={<div className="flex h-[720px] w-full items-center justify-center">Loading...</div>}>
+      <ChatContent />
+    </Suspense>
   );
 }

@@ -10,7 +10,7 @@ export function InfoLayout({
   sidebarLinks = [] 
 }) {
   return (
-    <div className="w-full min-h-screen ] font-sans bg-brand-main">
+    <div className="w-full min-h-screen font-sans bg-transparent">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
           
@@ -22,11 +22,11 @@ export function InfoLayout({
                   {eyebrow}
                 </p>
               )}
-              <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy dark:text-white mb-6 leading-[1.05] tracking-[-0.02em]">
+              <h1 className="text-[36px] md:text-[48px] font-display font-medium text-brand-navy mb-6 leading-[1.05] tracking-[-0.02em]">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-[17px] font-sans text-slate-500 dark:text-slate-400 max-w-[640px] mb-6 leading-relaxed">
+                <p className="text-[17px] font-sans text-slate-500 max-w-[640px] mb-6 leading-relaxed">
                   {subtitle}
                 </p>
               )}
@@ -40,7 +40,7 @@ export function InfoLayout({
               )}
             </header>
 
-            <div className="prose prose-slate dark:prose-invert prose-headings:font-display prose-headings:font-medium prose-h2:text-[24px] prose-h2:md:text-[28px] prose-h2:mt-12 prose-h2:mb-6 prose-p:text-[15px] prose-p:leading-relaxed prose-p:text-slate-600 dark:text-slate-300 dark:prose-p:text-slate-300 prose-li:text-[15px] prose-li:text-slate-600 dark:text-slate-300 dark:prose-li:text-slate-300 max-w-none">
+            <div className="prose prose-slate prose-headings:font-display prose-headings:font-medium prose-headings:text-brand-navy prose-h2:text-[24px] prose-h2:md:text-[28px] prose-h2:mt-12 prose-h2:mb-6 prose-p:text-[15px] prose-p:leading-relaxed prose-p:text-slate-600 prose-li:text-[15px] prose-li:text-slate-600 max-w-none">
               {children}
             </div>
           </div>
@@ -48,7 +48,7 @@ export function InfoLayout({
           {/* Sticky Sidebar */}
           {sidebarLinks.length > 0 && (
             <aside className="w-full lg:w-[280px] shrink-0 sticky top-[120px]">
-              <div className="rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 bg-brand-surface dark:bg-brand-surface p-5">
+              <div className="rounded-[20px] border border-brand-navy/[0.08] bg-white/40 backdrop-blur-md shadow-sm p-5">
                 <p className="text-[11px] font-mono font-medium uppercase tracking-widest text-slate-400 mb-4">
                   Information & Legal
                 </p>
@@ -57,10 +57,10 @@ export function InfoLayout({
                     <Link
                       key={idx}
                       href={link.href}
-                      className={`text-[13px] font-sans py-2 px-3 rounded-[4px] transition-colors ${
+                      className={`text-[13px] font-sans py-2 px-3 rounded-[12px] transition-colors ${
                         link.active 
-                          ? 'bg-brand-blue/10 text-brand-blue dark:text-brand-blue font-medium' 
-                          : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5'
+                          ? 'bg-brand-blue/10 text-brand-blue font-medium' 
+                          : 'text-slate-600 hover:bg-black/5'
                       }`}
                     >
                       {link.label}
@@ -76,3 +76,4 @@ export function InfoLayout({
     </div>
   );
 }
+

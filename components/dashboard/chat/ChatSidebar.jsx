@@ -51,6 +51,11 @@ export default function ChatSidebar({
       
       return name.includes(searchLower) || username.includes(searchClean);
     }
+  }).sort((a, b) => {
+    if (activeTab === "Chats") {
+      return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+    }
+    return 0;
   });
 
   return (
@@ -76,38 +81,38 @@ export default function ChatSidebar({
         </>
       )}
       {/* Header */}
-      <div className="p-5 border-b border-brand-navy/[0.08]/50 dark:border-white/5 whitespace-nowrap">
-        <div className="flex items-center justify-between mb-5">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Messages</h1>
+      <div className="px-4 pt-[3px] pb-3 border-b border-slate-200/50 dark:border-white/5 whitespace-nowrap mt-2">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-[17px] font-bold tracking-tight text-slate-900">Messages</h1>
           <div className="flex items-center gap-1">
             {(currentUser?.role === 'admin' || currentUser?.role === 'superadmin') && (
               <button
                 onClick={onStartNewChat}
-                className="p-2 hover:bg-black/5 dark:hover:bg-brand-surface/10 rounded-full transition-colors text-brand-slate dark:text-slate-300"
+                className="p-1.5 hover:bg-black/5 dark:hover:bg-brand-surface/10 rounded-full transition-colors text-slate-600"
                 title="New Chat"
               >
-                <Plus size={20} />
+                <Plus size={16} />
               </button>
             )}
             <button
               onClick={onClose}
-              className="p-2 hover:bg-red-50 dark:hover:bg-red-500/10 hover:text-red-500 rounded-full transition-colors text-slate-400"
+              className="w-6 h-6 flex items-center justify-center hover:bg-black/5 rounded-full transition-colors text-slate-500 hover:text-slate-700"
               title="Close Messenger"
             >
-              <X size={20} />
+              <X size={14} strokeWidth={2.5} />
             </button>
           </div>
         </div>
 
         {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 dark:text-slate-400" size={16} />
+        <div className="relative group">
+          <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-brand-blue transition-colors" size={18} />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search messages..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-brand-surface/5 border border-transparent focus:border-brand-navy/[0.08] dark:focus:border-white/20 rounded-xl text-sm focus:outline-none transition-all dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+            className="w-full pl-11 pr-4 py-3 bg-white/60 dark:bg-black/10 border border-slate-200/50 dark:border-white/10 focus:border-brand-blue/30 focus:bg-white/90 dark:focus:bg-black/20 rounded-2xl text-[15px] focus:outline-none focus:ring-4 focus:ring-brand-blue/5 transition-all text-slate-900 placeholder-slate-400 shadow-sm backdrop-blur-md"
           />
         </div>
       </div>
@@ -121,8 +126,8 @@ export default function ChatSidebar({
             onClick={() => setActiveTab(tab.id)}
             className={`flex-1 pb-3 text-sm font-bold transition-colors border-b-2 ${
               activeTab === tab.id
-                ? "border-black dark:border-white text-black dark:text-white"
-                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-black dark:hover:text-white"
+                ? "border-brand-blue text-brand-blue"
+                : "border-transparent text-slate-500 hover:text-slate-900"
             }`}
           >
             {tab.label}
@@ -132,7 +137,7 @@ export default function ChatSidebar({
       )}
 
       {/* List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 px-2 py-2">
+      <div className="flex-1 overflow-y-auto overscroll-contain scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-white/10 px-2 py-2">
         {loading ? (
           <div className="space-y-2 animate-pulse">
             {[...Array(6)].map((_, idx) => (
@@ -174,18 +179,18 @@ export default function ChatSidebar({
               <div className="relative group">
                 <button
                   onClick={() => onSelectUser({ _id: "support_channel", name: "Customer Support", username: "support", role: "admin", isSupportChat: true })}
-                  className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5 dark:hover:bg-brand-surface/5"
+                  className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5"
                 >
                   <div className="relative shrink-0">
-                    <div className="w-11 h-11 rounded-full bg-indigo-100 dark:bg-brand-blue/20 flex items-center justify-center overflow-hidden border border-indigo-200 dark:border-brand-blue/30">
-                      <MessageCircle size={20} className="text-brand-blue dark:text-indigo-400" />
+                    <div className="w-11 h-11 rounded-full bg-indigo-50 flex items-center justify-center overflow-hidden border border-indigo-100">
+                      <MessageCircle size={20} className="text-brand-blue" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0 text-left">
-                    <h3 className="text-[14px] font-bold text-slate-900 dark:text-slate-100 truncate">
+                    <h3 className="text-[14px] font-bold text-slate-900 truncate">
                       Contact Customer Support
                     </h3>
-                    <p className="text-[12px] text-slate-500 dark:text-slate-400 truncate mt-0.5">
+                    <p className="text-[12px] text-slate-500 truncate mt-0.5">
                       Get help from our team
                     </p>
                   </div>
@@ -215,8 +220,10 @@ export default function ChatSidebar({
                   >
                     {/* Avatar */}
                     <div className="relative shrink-0">
-                      <div className="w-11 h-11 rounded-full bg-slate-200 dark:bg-brand-surface/10 flex items-center justify-center overflow-hidden border border-brand-navy/[0.08] dark:border-white/5">
-                        {avatar ? (
+                      <div className="w-11 h-11 rounded-full bg-white flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm">
+                        {currentUser?.role !== 'admin' && currentUser?.role !== 'superadmin' ? (
+                           <img src="/codalina-logo.png" className="w-full h-full object-cover p-1.5" alt="Codalina" />
+                        ) : avatar ? (
                           <img src={getOptimizedUrl(avatar)} className="w-full h-full object-cover" alt="" />
                         ) : (
                           <User size={20} className="text-slate-400 dark:text-slate-500 dark:text-slate-400" />
@@ -231,11 +238,19 @@ export default function ChatSidebar({
                     <div className="flex-1 min-w-0 text-left">
                       {/* Row 1: Name & Time */}
                       <div className="flex items-center justify-between gap-2">
-                        <h3 className={`text-[14px] truncate ${item.unreadCount > 0 ? "font-bold text-black dark:text-white" : "font-bold text-slate-900 dark:text-slate-100"}`}>
-                          {targetUser.name || targetUser.username || "Unknown"}
+                        <h3 className={`text-[14px] truncate flex items-center gap-1.5 ${item.unreadCount > 0 ? "font-bold text-slate-900" : "font-bold text-slate-700"}`}>
+                          {currentUser?.role !== 'admin' && currentUser?.role !== 'superadmin' ? (
+                            isChat && item.orderId ? (
+                              <>Order Chat <span className="text-[10px] bg-slate-200/50 px-1.5 py-0.5 rounded-md text-slate-600">#{item.orderId.toString().toUpperCase()}</span></>
+                            ) : isChat && item.isSupportChat ? (
+                              "Codalina Support"
+                            ) : (targetUser.name || targetUser.username || "Unknown")
+                          ) : (
+                            (targetUser.name || targetUser.username || "Unknown")
+                          )}
                         </h3>
                         {isChat && item.lastMessage && (
-                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-400 dark:text-slate-500 dark:text-slate-400"}`}>
+                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-500"}`}>
                             {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         )}
@@ -244,11 +259,11 @@ export default function ChatSidebar({
                       {/* Row 2: Message & Badge */}
                       <div className="flex items-center justify-between gap-2 mt-0.5">
                         {isChat ? (
-                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-brand-teal font-bold" : item.unreadCount > 0 ? "text-slate-900 dark:text-slate-100 font-bold" : "text-slate-500 dark:text-slate-400"}`}>
+                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-brand-teal font-bold" : item.unreadCount > 0 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
                              {item._id === activeCallChatId ? `📞 ${activeCallStatus || "In call"}` : (item.lastMessage?.content || "No messages yet")}
                            </p>
                         ) : (
-                           <p className="text-[12px] text-slate-400 dark:text-slate-500 dark:text-slate-400 truncate flex-1">
+                           <p className="text-[12px] text-slate-500 truncate flex-1">
                              @{targetUser.username}
                            </p>
                         )}

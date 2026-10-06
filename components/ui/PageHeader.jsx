@@ -4,11 +4,11 @@ export const PageHeader = ({ title, description, actions, className = '', ...pro
   return (
     <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 ${className}`} {...props}>
       <div>
-        <h1 className="text-[24px] md:text-[28px] font-display font-medium text-brand-navy dark:text-white leading-tight">
+        <h1 className="text-[24px] md:text-[28px] font-display font-medium text-brand-navy  leading-tight">
           {title}
         </h1>
         {description && (
-          <p className="text-[14px] font-sans text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-[14px] font-sans text-slate-500  mt-1">
             {description}
           </p>
         )}
@@ -21,3 +21,4 @@ export const PageHeader = ({ title, description, actions, className = '', ...pro
     </div>
   );
 };
+

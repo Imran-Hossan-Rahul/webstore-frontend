@@ -14,7 +14,7 @@ export default function Skeleton({
   style = {},
 }) {
   // Static professional solid backgrounds with a gentle animate-pulse opacity shift
-  const baseClasses = "animate-pulse bg-slate-200 dark:bg-brand-surface/[0.1]/50 dark:bg-brand-surface/10 rounded-[4px]";
+  const baseClasses = "animate-pulse bg-slate-200 /50  rounded-[4px]";
 
   // Compute inline styles if width or height is explicitly passed
   const customStyle = {
@@ -55,7 +55,7 @@ export default function Skeleton({
   // 3. Card Variant (Composite skeleton for typical template/artifact grid items)
   if (variant === "card") {
     return (
-      <div className={`p-4 border border-brand-navy/[0.08]/40 dark:border-zinc-800/50 rounded-[8px] bg-brand-cloud/10 dark:bg-zinc-900/10 w-full flex flex-col gap-4 ${className}`}>
+      <div className={`p-4 border border-brand-navy/[0.08]/40  rounded-[8px] bg-brand-cloud/10  w-full flex flex-col gap-4 ${className}`}>
         {/* Media Block / Image Container */}
         <div className={`${baseClasses} w-full h-40 rounded-[6px]`} />
         
@@ -75,7 +75,7 @@ export default function Skeleton({
         </div>
 
         {/* Footer / Badge Action Row */}
-        <div className="flex items-center justify-between border-t border-slate-100 dark:border-white/5/30 dark:border-zinc-800/20 pt-3">
+        <div className="flex items-center justify-between border-t border-slate-100   pt-3">
           <div className={`${baseClasses} h-6 w-16 rounded-[4px]`} />
           <div className={`${baseClasses} h-6 w-20 rounded-[4px]`} />
         </div>
@@ -90,7 +90,7 @@ export default function Skeleton({
         {Array.from({ length: count }).map((_, index) => (
           <div
             key={index}
-            className={`p-3 border border-slate-100 dark:border-white/5/50 dark:border-zinc-800/30 rounded-[8px] bg-brand-cloud/5 dark:bg-zinc-900/5 flex items-center gap-4 w-full ${className}`}
+            className={`p-3 border border-slate-100   rounded-[8px] bg-brand-cloud/5  flex items-center gap-4 w-full ${className}`}
           >
             {/* Left circular node */}
             <div className={`${baseClasses} w-10 h-10 rounded-full shrink-0`} />
@@ -121,3 +121,4 @@ export default function Skeleton({
     />
   );
 }
+

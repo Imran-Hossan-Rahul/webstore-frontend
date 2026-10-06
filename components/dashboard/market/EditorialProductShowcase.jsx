@@ -6,6 +6,7 @@ import AppleSpinner from "@/components/ui/AppleSpinner";
 import { getOptimizedUrl } from './marketUtils';
 
 const EditorialProductShowcase = ({ products, isLoading }) => {
+  const [navigatingId, setNavigatingId] = React.useState(null);
   if (isLoading) {
     return (
       <div className="w-full py-24 flex items-center justify-center border-t border-brand-navy/[0.08] dark:border-white/5">
@@ -47,7 +48,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
         {/* Main Featured Product */}
         {featured && (
           <div className="lg:col-span-7 flex flex-col group relative">
-            <Link href={`/product/${featured.id || featured._id}`} className="absolute inset-0 z-10"></Link>
+            <Link href={`/product/${featured.id || featured._id}`} onClick={() => setNavigatingId(`product-${featured.id || featured._id}`)} className="absolute inset-0 z-10"></Link>
+            {navigatingId === `product-${featured.id || featured._id}` && (
+              <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-lg">
+                 <AppleSpinner size={32} className="text-[#0071e3]" />
+              </div>
+            )}
             
             {/* Visual Area */}
             <div className="w-full aspect-[4/3] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
@@ -103,7 +109,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
         <div className="lg:col-span-5 flex flex-col gap-8 lg:border-l lg:border-brand-navy/[0.08] lg:dark:border-white/10 lg:pl-8">
           {secondary.map((product) => (
             <div key={product.id || product._id} className="flex-1 flex flex-col group relative">
-              <Link href={`/product/${product.id || product._id}`} className="absolute inset-0 z-10"></Link>
+              <Link href={`/product/${product.id || product._id}`} onClick={() => setNavigatingId(`product-${product.id || product._id}`)} className="absolute inset-0 z-10"></Link>
+            {navigatingId === `product-${product.id || product._id}` && (
+              <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-lg">
+                 <AppleSpinner size={32} className="text-[#0071e3]" />
+              </div>
+            )}
               
               {/* Visual Area */}
               <div className="w-full aspect-[16/9] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
@@ -145,8 +156,8 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
           {/* See All link at the bottom of secondary */}
           {secondary.length > 0 && (
             <div className="mt-auto pt-6 flex justify-end border-t border-slate-100 dark:border-white/5">
-               <Link href="/shop" className="text-[13px] font-semibold text-brand-slate dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition-colors flex items-center gap-1.5 group relative z-20">
-                 Browse all products <ArrowRight size={14} className="transform transition-transform group-hover:translate-x-1" />
+               <Link href="/store" onClick={() => setNavigatingId('store')} className="text-[13px] font-semibold text-brand-slate dark:text-slate-400 hover:text-brand-blue dark:hover:text-brand-blue transition-colors flex items-center gap-1.5 group relative z-20" style={{ pointerEvents: navigatingId === 'store' ? 'none' : 'auto' }}>
+                 {navigatingId === 'store' ? <AppleSpinner size={14} className="text-brand-blue mr-1.5 inline-block" /> : null}Browse all products <ArrowRight size={14} className="transform transition-transform group-hover:translate-x-1" />
                </Link>
             </div>
           )}

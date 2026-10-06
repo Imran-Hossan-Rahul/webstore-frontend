@@ -11,14 +11,14 @@ export const ProductCard = ({ product, getOptimizedUrl, formatPrice, className =
   const isFeatured = product.isFeatured;
   
   return (
-    <Link href={`/product/${product.id}`} className={`group flex flex-col ${isFeatured ? 'bg-brand-dark text-white' : 'bg-brand-surface dark:bg-brand-surface'} border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] overflow-hidden hover:border-brand-blue dark:hover:border-brand-blue/50 transition-all shadow-[1px_1px_10px_rgba(11,37,69,0.02)] ${className}`}>
+    <Link href={`/product/${product.id}`} className={`group flex flex-col ${isFeatured ? 'bg-brand-dark text-white' : 'bg-brand-surface '} border border-brand-navy/[0.08]  rounded-[4px] overflow-hidden hover:border-brand-blue :border-brand-blue/50 transition-all shadow-[1px_1px_10px_rgba(11,37,69,0.02)] ${className}`}>
       {/* Cover Image */}
-      <div className={`aspect-[4/3] w-full ${isFeatured ? 'bg-[#06172E]' : 'bg-brand-cloud dark:bg-brand-surface'} border-b border-brand-navy/[0.08] dark:border-white/10 relative overflow-hidden flex items-center justify-center p-4`}>
+      <div className={`aspect-[4/3] w-full ${isFeatured ? 'bg-[#06172E]' : 'bg-brand-cloud '} border-b border-brand-navy/[0.08]  relative overflow-hidden flex items-center justify-center p-4`}>
         {coverImage ? (
           <img 
             src={coverImage} 
             alt={product.title}
-            className={`w-full h-full object-contain ${!isFeatured && 'mix-blend-multiply dark:mix-blend-normal'} transition-transform duration-300 group-hover:scale-105`}
+            className={`w-full h-full object-contain ${!isFeatured && 'mix-blend-multiply '} transition-transform duration-300 group-hover:scale-105`}
           />
         ) : (
           <span className="text-[10px] font-mono tracking-widest uppercase text-slate-400">No Image</span>
@@ -36,17 +36,17 @@ export const ProductCard = ({ product, getOptimizedUrl, formatPrice, className =
       
       {/* Content */}
       <div className="p-4 flex flex-col flex-1">
-        <h3 className={`text-[14px] font-sans font-medium ${isFeatured ? 'text-white' : 'text-brand-navy dark:text-white'} line-clamp-1 mb-1 group-hover:text-brand-blue transition-colors`}>
+        <h3 className={`text-[14px] font-sans font-medium ${isFeatured ? 'text-white' : 'text-brand-navy '} line-clamp-1 mb-1 group-hover:text-brand-blue transition-colors`}>
           {product.title}
         </h3>
         
-        <div className={`text-[11px] font-mono tracking-widest uppercase ${isFeatured ? 'text-brand-sky/60' : 'text-slate-500 dark:text-slate-400'} line-clamp-1 mb-4`}>
+        <div className={`text-[11px] font-mono tracking-widest uppercase ${isFeatured ? 'text-brand-sky/60' : 'text-slate-500 '} line-clamp-1 mb-4`}>
           {[product.category, product.sub_category].filter(Boolean).join(' • ')}
         </div>
         
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-end gap-2">
-            <span className={`text-[15px] font-mono font-medium ${isFeatured ? 'text-white' : 'text-brand-navy dark:text-white'}`}>
+            <span className={`text-[15px] font-mono font-medium ${isFeatured ? 'text-white' : 'text-brand-navy '}`}>
               BDT {formatPrice(product.selling_price)}
             </span>
           </div>
@@ -55,3 +55,4 @@ export const ProductCard = ({ product, getOptimizedUrl, formatPrice, className =
     </Link>
   );
 };
+

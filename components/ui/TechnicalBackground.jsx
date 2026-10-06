@@ -64,3 +64,4 @@ export default function TechnicalBackground({ variant = 'grid-dark', className =
 
   return null;
 }
+

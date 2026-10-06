@@ -10,3 +10,4 @@ const VerificationBadge = ({ size = 16, className = "" }) => {
 };
 
 export default VerificationBadge;
+

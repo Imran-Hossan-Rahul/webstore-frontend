@@ -14,6 +14,7 @@ import MobileBottomNav from "@/components/navigation/MobileBottomNav";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MarketFooter from "@/components/dashboard/market/MarketFooter";
+import GlassBackground from "@/components/dashboard/market/GlassBackground";
 
 export const DashboardContext = createContext();
 
@@ -37,7 +38,7 @@ export default function DashboardLayout({ children }) {
   // Layout logic
   const isAuthPage = pathname?.startsWith("/auth");
   const isHomePage = pathname === "/" || pathname === "";
-  const isFullWidthPage = ["/messages"].some(path => pathname?.startsWith(path));
+  const isFullWidthPage = ["/messages", "/book-call"].some(path => pathname?.startsWith(path));
 
   // Close mobile sidebar on route change
   React.useEffect(() => {
@@ -55,8 +56,10 @@ export default function DashboardLayout({ children }) {
     pathname.startsWith("/warranty") ||
     pathname.startsWith("/sitemap") ||
     pathname.startsWith("/legal") ||
-    pathname.startsWith("/shop") ||
+    pathname.startsWith("/store") ||
+    pathname.startsWith("/product") ||
     pathname.startsWith("/checkout") ||
+    pathname.startsWith("/orders") ||
     (pathname.startsWith("/challenges/") && (
       pathname.split('/').filter(Boolean).length === 1 ||
       pathname.endsWith("/manage") ||
@@ -86,7 +89,8 @@ export default function DashboardLayout({ children }) {
         openChatWithUser,
       }}
     >
-      <div className="min-h-screen text-brand-slate dark:text-brand-cloud font-sans bg-brand-main">
+      <div className="min-h-screen text-brand-slate font-sans bg-transparent">
+        <GlassBackground />
         <GlassNavbar 
           user={user} 
           sidebarOpen={sidebarOpen}
@@ -118,14 +122,14 @@ export default function DashboardLayout({ children }) {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}
                 transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                className="relative flex-1 flex flex-col max-w-[280px] w-full bg-brand-surface dark:bg-brand-dark h-full p-4 pt-4 z-[60] border-r border-brand-navy/[0.08] dark:border-white/10 shadow-[4px_0_24px_rgba(11,37,69,0.05)]"
+                className="relative flex-1 flex flex-col max-w-[280px] w-full bg-brand-surface  h-full p-4 pt-4 z-[60] border-r border-brand-navy/[0.08]  shadow-[4px_0_24px_rgba(11,37,69,0.05)]"
               >
                 <div className="flex justify-between items-center mb-6 pl-2">
                   <div className="flex items-center gap-2">
                      <img src="/logo.png" alt="Codalina" className="w-6 h-6 object-contain" />
-                     <span className="font-bold text-sm tracking-tight text-slate-900 dark:text-white">Codalina</span>
+                     <span className="font-bold text-sm tracking-tight text-slate-900 ">Codalina</span>
                   </div>
-                  <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-brand-slate dark:text-slate-300 hover:text-black dark:text-slate-400 dark:hover:text-white transition-all bg-brand-surface/50 dark:bg-brand-surface/5 border border-white/60 dark:border-white/10 hover:bg-brand-surface/80 dark:hover:bg-brand-surface/10">
+                  <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-brand-slate  hover:text-black  :text-white transition-all bg-brand-surface/50  border border-white/60  hover:bg-brand-surface/80 :bg-brand-surface/10">
                     <X strokeWidth={1.5} className="w-4 h-4" />
                   </button>
                 </div>
@@ -137,12 +141,12 @@ export default function DashboardLayout({ children }) {
           )}
         </AnimatePresence>
 
-        <div className={`relative z-10 flex ${isHomePage ? 'px-0 max-w-full' : 'px-0 sm:px-4 lg:px-6 gap-[30px] max-w-[1800px]'} min-h-screen mx-auto bg-brand-main`} style={{ paddingTop: 'calc(44px + env(safe-area-inset-top))' }}>
+        <div className={`relative z-10 flex ${isHomePage ? 'px-0 max-w-full' : 'px-0 sm:px-4 lg:px-6 gap-[30px] max-w-[1800px]'} min-h-screen mx-auto bg-transparent`} style={{ paddingTop: 'calc(44px + env(safe-area-inset-top))' }}>
           {/* Left Sidebar - hover expandable */}
           {!isFullWidthPage && !isHomePage && (
             <div className={`hidden lg:block flex-shrink-0 w-[80px] z-50`}>
               <div 
-                className={`group fixed top-[48px] bottom-0 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-brand-navy/[0.08] shadow-[1px_0_10px_rgba(11,37,69,0.02)] dark:border-white/10 transition-all duration-300 ease-in-out w-[80px] hover:w-[240px] bg-brand-surface dark:bg-brand-dark hover:shadow-sm`}
+                className={`group fixed top-[48px] bottom-0 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-brand-navy/[0.08] shadow-[1px_0_10px_rgba(11,37,69,0.02)] transition-all duration-300 ease-in-out w-[80px] hover:w-[280px] bg-white/40 backdrop-blur-2xl border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] hover:shadow-sm`}
               >
                 <Sidebar isHovered={true} isCollapsed={false} />
               </div>
@@ -150,21 +154,12 @@ export default function DashboardLayout({ children }) {
           )}
 
           {/* Main Content Area */}
-          <main className={`flex-1 min-w-0 transition-all duration-300 ${(!isFullWidthPage && !isHomePage) ? 'w-full lg:w-[calc(100%-80px-30px)] xl:w-[calc(100%-280px-80px-60px)]' : 'w-full'} flex flex-col`}>
+          <main className={`flex-1 min-w-0 transition-all duration-300 ${(!isFullWidthPage && !isHomePage) ? 'w-full lg:w-[calc(100%-80px)]' : 'w-full'} flex flex-col`}>
             <div className="flex-1">
               {children}
             </div>
             <MarketFooter />
           </main>
-
-          {/* Right Sidebar */}
-          {!isFullWidthPage && !hideRightSidebar && !isHomePage && (
-            <div className="hidden xl:block w-[300px] flex-shrink-0">
-                 <div className="fixed top-[48px] bottom-0 w-[300px] overflow-y-auto custom-scrollbar border-l border-brand-navy/[0.08] shadow-[-1px_0_10px_rgba(11,37,69,0.02)] dark:border-white/10 bg-brand-surface dark:bg-brand-dark p-6">
-                     <RightSidebar />
-                 </div>
-            </div>
-          )}
         </div>
 
         {/* Global Modals */}
@@ -186,7 +181,7 @@ export default function DashboardLayout({ children }) {
           reason={authModalReason}
         />
         
-        <MobileBottomNav />
+        {pathname !== "/book-call" && <MobileBottomNav />}
       </div>
     </DashboardContext.Provider>
   );

@@ -1,0 +1,17 @@
+            <div className="text-center text-[13px] font-sans text-slate-500 mb-12 flex flex-col items-center gap-1.5">
+              <p>
+                Status:{" "}
+                <span className="font-mono font-medium tracking-widest uppercase text-[11px] text-brand-navy ">
+                {order.status || "Order Placed"}
+                </span>{" "}
+                &mdash; {formatDate(order.createdAt)}
+              </p>
+              {order.projectPhase && order.projectPhase !== 'Not applicable' && (
+                <p>
+                  Project Phase:{" "}
+                  <span className="font-mono font-medium tracking-widest uppercase text-[11px] text-brand-blue bg-brand-blue/10 px-2 py-0.5 rounded-[4px] border border-brand-blue/20">
+                  {order.projectPhase}
+                  </span>
+                </p>
+              )}
+            </div>

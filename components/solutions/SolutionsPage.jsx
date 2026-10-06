@@ -230,7 +230,7 @@ export default function SolutionsPage() {
                 keep them operational long-term.
               </p>
               <div className="flex flex-wrap gap-3">
-                <Link href="/shop">
+                <Link href="/store">
                   <Button variant="primary" size="lg" rightIcon={<ArrowRight size={16} />}>
                     Explore Products
                   </Button>
@@ -314,7 +314,7 @@ export default function SolutionsPage() {
               </div>
 
               <div className="mt-8">
-                <Link href="/shop">
+                <Link href="/store">
                   <Button variant="outline" rightIcon={<ChevronRight size={15} />}>
                     Browse the Marketplace
                   </Button>
@@ -336,7 +336,7 @@ export default function SolutionsPage() {
               ].map((row) => (
                 <Link
                   key={row.cat}
-                  href={`/shop?category=${encodeURIComponent(row.cat)}`}
+                  href={`/store?category=${encodeURIComponent(row.cat)}`}
                   className="flex items-center justify-between px-5 py-4 border-b border-slate-100 dark:border-white/6 last:border-none hover:bg-brand-surface dark:hover:bg-brand-surface/4 transition-colors group"
                 >
                   <div className="flex items-center gap-3">
@@ -563,7 +563,7 @@ export default function SolutionsPage() {
                 These products are built to the same engineering standard as our
                 custom work. Documented, maintained, and updated.
               </p>
-              <Link href="/shop?type=software">
+              <Link href="/store?type=software">
                 <Button variant="outline" rightIcon={<ExternalLink size={14} />}>
                   View Software Products
                 </Button>
@@ -726,7 +726,7 @@ export default function SolutionsPage() {
             to maintain — Codalina is the partner that stays through every phase.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/shop">
+            <Link href="/store">
               <Button
                 size="lg"
                 className="w-full sm:w-auto bg-brand-surface hover:bg-brand-surface/90 text-brand-navy border-white"

@@ -44,15 +44,15 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
 
       {/* Modal Card */}
       <div className="relative z-10 w-full max-w-md animate-in slide-in-from-bottom-4 zoom-in-95 duration-300">
-        <div className="relative bg-brand-surface dark:bg-brand-dark rounded-[4px] shadow-sm overflow-hidden border border-brand-navy/[0.10] dark:border-white/10">
+        <div className="relative bg-brand-surface  rounded-[4px] shadow-sm overflow-hidden border border-brand-navy/[0.10] ">
 
           {/* Subtle line top */}
-          <div className="absolute top-0 left-0 right-0 h-0.5 bg-slate-200 dark:bg-brand-surface/10" />
+          <div className="absolute top-0 left-0 right-0 h-0.5 bg-slate-200 " />
 
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-brand-slate dark:text-slate-300 dark:hover:text-slate-200 hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/10 transition-all z-10"
+            className="absolute top-4 right-4 p-2 rounded-full text-slate-400 hover:text-brand-slate  :text-slate-200 hover:bg-slate-100  :bg-brand-surface/10 transition-all z-10"
           >
             <X size={20} strokeWidth={1.5} />
           </button>
@@ -60,21 +60,21 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
           <div className="px-8 pt-10 pb-8">
             {/* Icon */}
             <div className="flex justify-center mb-5">
-              <div className="w-16 h-16 rounded-[4px] bg-brand-surface dark:bg-brand-surface flex items-center justify-center border border-brand-navy/[0.10] dark:border-white/10">
-                <Users strokeWidth={1.5} className="text-brand-navy dark:text-white" size={28} />
+              <div className="w-16 h-16 rounded-[4px] bg-brand-surface  flex items-center justify-center border border-brand-navy/[0.10] ">
+                <Users strokeWidth={1.5} className="text-brand-navy " size={28} />
               </div>
             </div>
 
             {/* Headline */}
-            <h2 className="text-[24px] font-display font-medium text-center text-brand-navy dark:text-white mb-2 leading-tight">
+            <h2 className="text-[24px] font-display font-medium text-center text-brand-navy  mb-2 leading-tight">
               Join the Community
             </h2>
-            <p className="text-center font-sans text-slate-600 dark:text-slate-400 text-[14px] leading-relaxed mb-8">
+            <p className="text-center font-sans text-slate-600  text-[14px] leading-relaxed mb-8">
               Create a free account to {reasonText} and connect with craftsmen worldwide.
             </p>
 
             {/* Social proof */}
-            <div className="flex items-center justify-center gap-2 mb-7 text-[12px] font-sans font-medium text-slate-500 dark:text-slate-400">
+            <div className="flex items-center justify-center gap-2 mb-7 text-[12px] font-sans font-medium text-slate-500 ">
               <Users size={16} strokeWidth={1.5} />
               <span>Thousands of craftsmen already onboard</span>
             </div>
@@ -91,13 +91,13 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
 
               <button
                 onClick={() => router.push("/auth/login")}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-surface dark:bg-transparent hover:bg-slate-100 dark:bg-brand-surface/[0.05] dark:hover:bg-brand-surface/5 text-brand-navy dark:text-white font-sans font-medium text-[15px] rounded-[4px] border border-brand-navy/[0.10] dark:border-white/20 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-brand-surface  hover:bg-slate-100  :bg-brand-surface/5 text-brand-navy  font-sans font-medium text-[15px] rounded-[4px] border border-brand-navy/[0.10]  transition-all"
               >
                 Already have an account? Log in
               </button>
             </div>
 
-            <p className="text-center text-[11px] font-mono tracking-widest uppercase text-slate-400 dark:text-slate-500 dark:text-slate-400 mt-6">
+            <p className="text-center text-[11px] font-mono tracking-widest uppercase text-slate-400   mt-6">
               Free forever · Token-native platform
             </p>
           </div>
@@ -106,4 +106,5 @@ export default function AuthGuardModal({ isOpen, onClose, reason = "engage" }) {
     </div>
   );
 }
+
 

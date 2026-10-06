@@ -7,3 +7,4 @@ export const PageContainer = ({ children, className = '', maxWidth = 'max-w-[140
     </div>
   );
 };
+

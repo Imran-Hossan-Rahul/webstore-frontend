@@ -1,0 +1,37 @@
+    const displayList = activeTab === "Chats" ? chats : users;
+  
+    const filteredList = displayList.filter((item) => {
+      const searchLower = searchQuery.toLowerCase();
+      
+      if (activeTab === "Chats") {
+        // For support chats, admin may not be in participants array, so find any participant
+        const currentUserId = currentUser?._id;
+        const otherUser = item.participants?.find(p => p._id !== currentUserId && p._id?.toString() !== currentUserId?.toString())
+          ?? item.participants?.[0]; // fallback: show first participant for support chats
+        if (!otherUser) return false;
+        
+        const name = otherUser.name?.toLowerCase() || "";
+        const username = otherUser.username?.toLowerCase() || "";
+        
+        // Support searching with @ or just the name
+        const searchClean = searchLower.startsWith("@") ? searchLower.slice(1) : searchLower;
+        
+        // If no search, show all chats
+        if (!searchLower) return true;
+        return name.includes(searchLower) || username.includes(searchClean);
+      } else {
+        // Directory search
+        const name = item.name?.toLowerCase() || "";
+        const username = item.username?.toLowerCase() || "";
+        const searchClean = searchLower.startsWith("@") ? searchLower.slice(1) : searchLower;
+        
+        return name.includes(searchLower) || username.includes(searchClean);
+      }
+    }).sort((a, b) => {
+      if (activeTab === "Chats") {
+        if (a.isSupportChat && !b.isSupportChat) return -1;
+        if (!a.isSupportChat && b.isSupportChat) return 1;
+        return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+      }
+      return 0;
+    });

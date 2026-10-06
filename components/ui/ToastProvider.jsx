@@ -53,24 +53,24 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="flex items-center gap-3 px-5 py-3 rounded-full bg-brand-surface/90 dark:bg-[#1d1d1f]/90 backdrop-blur-2xl border border-apple-hairline shadow-[0_8px_30px_rgb(0,0,0,0.12)] pointer-events-auto animate-slide-up"
+            className="flex items-center gap-3 px-5 py-3 rounded-full bg-brand-surface/90 /90 backdrop-blur-2xl border border-apple-hairline shadow-[0_8px_30px_rgb(0,0,0,0.12)] pointer-events-auto animate-slide-up"
             style={{ animation: "slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}
           >
             {icons[toast.type]}
             <div className="flex items-center gap-2">
               {toast.title && (
-                <span className="text-[14px] font-semibold text-apple-ink">
+                <span className="text-[14px] font-semibold text-slate-900">
                   {toast.title}
                 </span>
               )}
-              {toast.title && <span className="text-apple-muted/50">•</span>}
-              <span className="text-[14px] font-normal text-apple-ink">
+              {toast.title && <span className="text-slate-500/50">•</span>}
+              <span className="text-[14px] font-normal text-slate-900">
                 {toast.message}
               </span>
             </div>
             <button
               onClick={() => dismiss(toast.id)}
-              className="ml-2 text-apple-muted hover:text-apple-ink transition-colors p-1"
+              className="ml-2 text-slate-500 hover:text-slate-900 transition-colors p-1"
             >
               <X strokeWidth={2} className="w-3.5 h-3.5" />
             </button>
@@ -99,3 +99,4 @@ export function useToast() {
   if (!ctx) throw new Error("useToast must be used inside ToastProvider");
   return ctx;
 }
+

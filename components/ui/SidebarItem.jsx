@@ -7,8 +7,8 @@ export const SidebarItem = ({ icon, label, href, isActive, badge, ...props }) =>
       href={href}
       className={`flex items-center justify-between px-4 py-2.5 rounded-[4px] transition-all group ${
         isActive 
-          ? 'bg-slate-100 dark:bg-brand-surface/5 text-brand-navy dark:text-white' 
-          : 'text-slate-500 dark:text-slate-400 hover:text-brand-navy dark:hover:text-slate-200 hover:bg-slate-50 dark:bg-brand-surface dark:hover:bg-brand-surface/5'
+          ? 'bg-slate-100  text-brand-navy ' 
+          : 'text-slate-500  hover:text-brand-navy :text-slate-200 hover:bg-slate-50  :bg-brand-surface/5'
       }`}
       {...props}
     >
@@ -26,3 +26,4 @@ export const SidebarItem = ({ icon, label, href, isActive, badge, ...props }) =>
     </Link>
   );
 };
+

@@ -7,12 +7,12 @@ export const metadata = {
   openGraph: {
     title: 'Browse Premium Digital Assets | Codalina',
     description: 'Explore a wide variety of production-ready SaaS templates, UI kits, automation scripts, and source code on Codalina.',
-    url: `${BASE_URL}/shop`,
+    url: `${BASE_URL}/store`,
     siteName: 'Codalina',
     type: 'website',
   },
   alternates: {
-    canonical: `${BASE_URL}/shop`
+    canonical: `${BASE_URL}/store`
   }
 };
 

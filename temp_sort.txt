@@ -1,0 +1,13 @@
+      return name.includes(searchLower) || username.includes(searchClean);
+    }
+  }).sort((a, b) => {
+    if (activeTab === "Chats") {
+      // Codalina Support is pinned at the absolute top always
+      if (a.isSupportChat && !b.isSupportChat) return -1;
+      if (!a.isSupportChat && b.isSupportChat) return 1;
+
+      // Sort by latest message time
+      return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+    }
+    return 0;
+  });

@@ -69,7 +69,7 @@ export default function HeroSection() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/shop?q=${encodeURIComponent(query)}`);
+    router.push(`/store?q=${encodeURIComponent(query)}`);
   };
 
   const handleResultClick = (id) => {
@@ -170,7 +170,7 @@ export default function HeroSection() {
                 </li>
               ))}
               <li
-                onClick={() => router.push(`/shop?q=${encodeURIComponent(query)}`)}
+                onClick={() => router.push(`/store?q=${encodeURIComponent(query)}`)}
                 className="flex items-center justify-between px-5 py-4 text-sm font-medium text-purple-600 dark:text-purple-300 cursor-pointer hover:bg-purple-50/80 dark:hover:bg-purple-900/30"
               >
                 View all results
