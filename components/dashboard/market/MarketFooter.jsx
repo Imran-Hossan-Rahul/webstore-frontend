@@ -27,8 +27,7 @@ export default function MarketFooter() {
     {
       title: "Resources",
       links: [
-        { label: "Documentation", href: "/docs" },
-        { label: "Blog", href: "/blog" }
+        { label: "Documentation", href: "/docs" }
       ]
     },
     {

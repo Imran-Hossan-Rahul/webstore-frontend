@@ -9,7 +9,6 @@ import {
   Briefcase, 
   ShieldCheck, 
   CreditCard, 
-  Settings, 
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -23,7 +22,6 @@ const NAV_ITEMS = [
   { name: 'Collaboration Rooms', href: '/admin/orders', icon: Briefcase },
   { name: 'Security & Licenses', href: '/admin/security', icon: ShieldCheck },
   { name: 'Payments & Invoices', href: '/admin/payments', icon: CreditCard },
-  { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 export default function Sidebar() {

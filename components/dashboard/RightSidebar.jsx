@@ -56,20 +56,6 @@ export default function RightSidebar({ isMarket, hideWallet, hideStats }) {
         </div>
       </div>
 
-      <div className="w-full h-[1px] bg-slate-200"></div>
-
-      {/* Custom Project CTA */}
-      <div className="flex flex-col mt-auto bg-brand-navy rounded-[20px] p-5 relative overflow-hidden border border-brand-navy/[0.08]">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/20 rounded-full blur-2xl -mr-8 -mt-8 pointer-events-none" />
-        <h3 className="text-[14px] font-medium text-white mb-1 relative z-10">Need something custom?</h3>
-        <p className="text-[11px] text-white/60 mb-4 relative z-10 font-mono">ENGINEERED TO SPEC</p>
-        <Link 
-          href="/post-job"
-          className="inline-flex items-center justify-center w-full py-2.5 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-[12px] font-medium text-[12px] transition-colors relative z-10 border border-brand-blue/50"
-        >
-          Start a Project →
-        </Link>
-      </div>
 
     </aside>
   );

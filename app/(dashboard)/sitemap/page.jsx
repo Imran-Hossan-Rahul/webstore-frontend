@@ -31,7 +31,6 @@ export default function SitemapPage() {
     {
       title: "Services & Solutions",
       links: [
-        { label: "Solutions Overview", href: "/solutions" },
         { label: "Product Warranty Check", href: "/warranty" },
         { label: "Checkout", href: "/checkout" }
       ]
@@ -41,7 +40,6 @@ export default function SitemapPage() {
       links: [
         { label: "Help & Support", href: "/support" },
         { label: "Documentation", href: "/docs" },
-        { label: "Blog & Updates", href: "/blog" },
         { label: "FAQ", href: "/faq" }
       ]
     },

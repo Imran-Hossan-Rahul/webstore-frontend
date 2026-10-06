@@ -3,18 +3,14 @@ import Image from "next/image";
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 
 import { useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { X, Camera, MapPin, Calendar, Edit2, ArrowRight, User } from "lucide-react";
+import { X, Camera, MapPin, Calendar, Edit2 } from "lucide-react";
 import { api } from "@/utils/api";
 import ImageUploadModal from "./ImageUploadModal";
-import CraftsmanAccountModal from "./CraftsmanAccountModal";
 import { useToast } from "@/components/ui/ToastProvider";
 
 import AppleSpinner from "@/components/ui/AppleSpinner";
 
-export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAccount }) {
-  const router = useRouter();
-  const pathname = usePathname();
+export default function ProfileModal({ isOpen, onClose }) {
   const { showToast } = useToast();
   const [user, setUser] = useState(null);
   const [craftsmanProfile, setCraftsmanProfile] = useState(null);
@@ -24,10 +20,6 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [imageUploadType, setImageUploadType] = useState("profile");
   const [isLoading, setIsLoading] = useState(true);
-  const [showCraftsmanModal, setShowCraftsmanModal] = useState(false);
-
-  // Detect if we're on a craftsman route
-  const isCraftsmanRoute = pathname?.startsWith("/user/craftsman");
 
   useEffect(() => {
     if (isOpen) {
@@ -78,26 +70,14 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
       }
   };
 
-  const goToCraftsmanDashboard = () => {
-    onClose();
-    router.push("/user/craftsman");
-  };
-
   const handleImageUploadSuccess = (data) => {
     // console.log("Upload success data:", data);
     
     // Optimistic update
-    if (data.targetModel === "craftsman") {
-      setCraftsmanProfile(prev => ({
-        ...prev,
-        [data.type === "profile" ? "profilePicture" : "coverPicture"]: data.url
-      }));
-    } else {
-      setUser(prev => ({
-        ...prev,
-        [data.type === "profile" ? "profilePicture" : "coverPicture"]: data.url
-      }));
-    }
+    setUser(prev => ({
+      ...prev,
+      [data.type === "profile" ? "profilePicture" : "coverPicture"]: data.url
+    }));
 
     // Also fetch fresh data to be sure
     fetchUser();
@@ -109,33 +89,13 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
   };
 
   // Determine which profile data to show
-  const displayProfile = isCraftsmanRoute && craftsmanProfile ? craftsmanProfile : user;
-  
-  // Fix: Check if we should show craftsman info (even if fields are empty strings)
-  const showCraftsmanData = isCraftsmanRoute && craftsmanProfile;
-  
-  // Use verified prop if available, otherwise fallback
-  const isCraftsmanAccount = verifiedHasCraftsmanAccount || user?.hasCraftsmanAccount;
+  const displayProfile = user;
 
-  const displayProfilePicture = showCraftsmanData
-    ? craftsmanProfile.profilePicture 
-    : user?.profilePicture;
-    
-  const displayCoverPicture = showCraftsmanData
-    ? craftsmanProfile.coverPicture 
-    : user?.coverPicture;
+  const displayProfilePicture = user?.profilePicture;
+  const displayCoverPicture = user?.coverPicture;
 
-  // Determine upload endpoint based on route
-  const getUploadEndpoint = (type) => {
-    if (isCraftsmanRoute && isCraftsmanAccount) {
-      return type === "profile" 
-        ? "/upload/craftsman/profile-picture" 
-        : "/upload/craftsman/cover-picture";
-    }
-    return type === "profile" 
-      ? "/upload/user/profile-picture" 
-      : "/upload/user/cover-picture";
-  };
+  const getUploadEndpoint = (type) =>
+    type === "profile" ? "/upload/user/profile-picture" : "/upload/user/cover-picture";
 
   if (!isOpen) return null;
 
@@ -199,43 +159,13 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
                           {displayProfile.displayName || displayProfile.name}
                         </h2>
                         <p className="text-slate-500 dark:text-slate-400 text-sm">
-                           {isCraftsmanAccount ? "Craftsman Account" : (user.email || "User")}
+                           {user.email || "User"}
                         </p>
                         
                         <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mt-2">
                             <span className="flex items-center gap-1"><MapPin size={14}/> Earth</span>
                             <span className="flex items-center gap-1"><Calendar size={14}/> Joined {new Date(displayProfile.createdAt || user.createdAt).getFullYear()}</span>
                         </div>
-
-                        
-                        {isCraftsmanAccount ? (
-                          <div className="mt-4">
-                            <button
-                              onClick={goToCraftsmanDashboard}
-                              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition shadow-sm shadow-orange-500/20 flex items-center justify-center gap-2"
-                            >
-                              <User size={18} />
-                              Go to Craftsman Dashboard
-                              <ArrowRight size={18} />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="mt-4 p-4 bg-brand-surface dark:bg-brand-surface rounded-xl border border-slate-100 dark:border-slate-700">
-                            <p className="text-sm text-brand-slate dark:text-slate-400 text-center mb-3">
-                              Ready to share your work?
-                            </p>
-                            <button 
-                                onClick={() => {
-                                    setShowCraftsmanModal(true);
-                                }}
-                                className="w-full bg-black dark:bg-brand-surface text-white dark:text-black px-4 py-2.5 rounded-lg font-bold hover:opacity-80 transition flex items-center justify-center gap-2"
-                            >
-                                <User size={16} />
-                                Start Crafting
-                            </button>
-                          </div>
-                        )}
-                        
 
                         {/* Bio Section */}
                         <div className="mt-6">
@@ -333,11 +263,6 @@ export default function ProfileModal({ isOpen, onClose, verifiedHasCraftsmanAcco
         type={imageUploadType}
         uploadEndpoint={getUploadEndpoint(imageUploadType)}
         title={imageUploadType === "profile" ? "Upload Profile Picture" : "Upload Cover Picture"}
-      />
-
-      <CraftsmanAccountModal 
-        isOpen={showCraftsmanModal} 
-        onClose={() => setShowCraftsmanModal(false)}
       />
     </>
   );

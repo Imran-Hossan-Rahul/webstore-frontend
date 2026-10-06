@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Bell, Menu, User, CheckCircle2, ShoppingCart, ShieldAlert, CreditCard, MessageSquare, Info, AlertTriangle, Check, LogOut, Settings, LayoutDashboard } from 'lucide-react';
+import { Search, Bell, Menu, User, CheckCircle2, ShoppingCart, ShieldAlert, CreditCard, MessageSquare, Info, AlertTriangle, Check, LogOut, LayoutDashboard } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { api } from '@/utils/api';
 import socket from '@/utils/socket';
@@ -246,11 +246,6 @@ export default function Topbar() {
                   )}
                 </div>
                 
-                <div className="p-2 border-t border-white/5 bg-white/[0.01]">
-                  <Link href="/admin/notifications" className="block text-center text-[12px] text-white/50 hover:text-white py-1.5 transition-colors">
-                    View All Notifications
-                  </Link>
-                </div>
               </div>
             )}
           </div>
@@ -284,9 +279,6 @@ export default function Topbar() {
                 <div className="p-2">
                   <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] text-white/70 hover:text-white hover:bg-white/5 transition-colors">
                     <LayoutDashboard className="w-4 h-4" /> Dashboard
-                  </Link>
-                  <Link href="/admin/settings" className="flex items-center gap-2 px-3 py-2 rounded-xl text-[13px] text-white/70 hover:text-white hover:bg-white/5 transition-colors">
-                    <Settings className="w-4 h-4" /> Settings
                   </Link>
                 </div>
                 <div className="p-2 border-t border-white/5">

@@ -106,13 +106,6 @@ export async function middleware(req) {
     return NextResponse.next();
   }
 
-  // ─── Craftsman-only routes ────────────────────────────────────────────────
-  if (pathname.startsWith("/user/craftsman")) {
-    if (!decoded?.hasCraftsmanAccount) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-  }
-
   // ─── Already logged-in users shouldn't see auth pages ────────────────────
   // if (decoded && pathname.startsWith("/auth")) {
   //   return NextResponse.redirect(new URL("/", req.url));
