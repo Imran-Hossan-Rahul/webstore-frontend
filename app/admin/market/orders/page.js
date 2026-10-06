@@ -248,7 +248,7 @@ export default function AdminOrdersPage() {
               const timeSinceOrder = Math.floor((new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24));
 
               let addrObj = {};
-              try { addrObj = typeof order.address === 'string' ? JSON.parse(order.address) : order.address; } catch(e) {}
+              try { addrObj = (typeof order.address === 'string' ? JSON.parse(order.address) : order.address) || {}; } catch(e) {}
 
               return (
                 <React.Fragment key={orderId}>
@@ -447,7 +447,7 @@ export default function AdminOrdersPage() {
           const isExpanded = expandedOrder === orderId;
           const dueAmount = order.status === 'Delivered' || order.status === 'Cancelled' ? 0 : total;
           let addrObj = {};
-          try { addrObj = typeof order.address === 'string' ? JSON.parse(order.address) : order.address; } catch(e) {}
+          try { addrObj = (typeof order.address === 'string' ? JSON.parse(order.address) : order.address) || {}; } catch(e) {}
 
           return (
             <div key={orderId} className="bg-brand-surface dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 rounded-[4px] overflow-hidden">
