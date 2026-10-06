@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
+import Image from 'next/image';
 import Link from "next/link";
 import { Search, Menu, MessageCircle, Plus, Command, UserCheck, ChevronDown, X, Headset, MessageCircleQuestion } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -307,7 +308,7 @@ const GlassNavbar = ({
                     <AppleSpinner size={24} className={isOverDark ? 'text-white' : 'text-black'} />
                   </div>
                 ) : (
-                  <img src="/logo.png" alt="Codalina" className="h-8 w-8 object-contain" />
+                  <Image src="/logo.png" alt="Codalina" width={32} height={32} className="h-8 w-8 object-contain" />
                 )}
                 <div className="hidden sm:flex items-center gap-2">
                   <span className={`font-semibold text-xl tracking-tight font-display ${isOverDark ? 'text-white' : 'text-black'}`}>
@@ -347,7 +348,7 @@ const GlassNavbar = ({
                 className="flex items-center transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] shrink-0 h-full"
                 style={{ flex: mobileSearchOpen ? '1 0 128px' : '0 0 128px' }}
               >
-                <img src="/logo.png" alt="Codalina" className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10 mb-[3px]" />
+                <Image src="/logo.png" alt="Codalina" width={15} height={15} className="w-[15px] h-[15px] object-contain shrink-0 mr-1.5 z-10 mb-[3px]" />
                 
                 <input 
                   id="navbar-search-input"
@@ -590,7 +591,7 @@ const GlassNavbar = ({
                       {navigatingId === 'profile' ? (
                         <AppleSpinner size={18} className={isOverDark ? "text-white" : "text-brand-blue"} />
                       ) : user?.profilePicture ? (
-                        <img src={getOptimizedUrl(user.profilePicture)} alt="" className="w-full h-full object-cover" />
+                        <Image src={getOptimizedUrl(user.profilePicture)} alt="" fill className="object-cover" sizes="40px" />
                       ) : (
                         <div className={`w-full h-full flex items-center justify-center font-bold ${isOverDark ? 'text-white/70' : 'text-black/50'}`}>{user?.name?.[0]}</div>
                       )}

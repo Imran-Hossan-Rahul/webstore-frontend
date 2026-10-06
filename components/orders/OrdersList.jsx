@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Search, Image as ImageIcon, Copy, Eye, FileText, ShoppingBag, Package, Briefcase, Filter, ArrowUpDown } from "lucide-react";
 import { api } from '@/utils/api';
@@ -369,7 +370,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false 
                           {/* Product image */}
                           <div className="w-12 h-12 md:w-14 md:h-14 rounded-[12px] bg-white/60 backdrop-blur-md border border-brand-navy/[0.08] overflow-hidden flex items-center justify-center shrink-0 p-1">
                             {photo
-                              ? <img src={photo} alt="" className="w-full h-full object-contain mix-blend-multiply " />
+                              ? <Image src={photo} alt="" fill className="object-contain mix-blend-multiply" sizes="100px" />
                               : <ImageIcon size={20} className="text-slate-300" strokeWidth={1.5} />
                             }
                           </div>

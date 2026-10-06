@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from "lucide-react";
 import AppleSpinner from "@/components/ui/AppleSpinner";
@@ -59,10 +60,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
             <div className="w-full aspect-[4/3] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
               <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               {featured.photos && JSON.parse(featured.photos)[0] ? (
-                <img 
+                <Image 
                   src={getOptimizedUrl(JSON.parse(featured.photos)[0])}
                   alt={featured.title}
-                  className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:-translate-y-2 relative z-10 drop-shadow-sm group-hover:drop-shadow-sm"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.02] group-hover:-translate-y-2 relative z-10 drop-shadow-sm group-hover:drop-shadow-sm"
                 />
               ) : (
                 <span className="font-mono text-slate-400">NO_IMAGE</span>
@@ -120,10 +123,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
               <div className="w-full aspect-[16/9] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
                 <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 {product.photos && JSON.parse(product.photos)[0] ? (
-                  <img 
+                  <Image 
                     src={getOptimizedUrl(JSON.parse(product.photos)[0])}
                     alt={product.title}
-                    className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:-translate-y-1 relative z-10"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-contain mix-blend-multiply dark:mix-blend-normal transform transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:-translate-y-1 relative z-10"
                   />
                 ) : (
                   <span className="font-mono text-slate-400">NO_IMAGE</span>

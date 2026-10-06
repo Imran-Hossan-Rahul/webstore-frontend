@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from 'next/image';
 import { X, Upload, Camera, Crop } from "lucide-react";
 import { api } from "@/utils/api";
 
@@ -213,13 +214,7 @@ export default function ImageUploadModal({
             <div className="space-y-4">
               {/* Preview */}
               <div className="relative rounded-xl overflow-hidden bg-slate-100 dark:bg-brand-surface">
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className={`w-full ${
-                    type === "profile" ? "aspect-square object-cover" : "aspect-[3/1] object-cover"
-                  }`}
-                />
+                <Image src={preview} alt="Preview" width={800} height={800} className={`w-full h-auto ${type === "profile" ? "aspect-square object-cover" : "aspect-[3/1] object-cover"}`} />
               </div>
 
               {/* Change Image Button */}

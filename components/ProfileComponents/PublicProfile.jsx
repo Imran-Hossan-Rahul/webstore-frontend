@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from 'react';
+import Image from 'next/image';
 import { getOptimizedUrl } from "@/utils/optimizeImage";
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -250,7 +251,7 @@ export default function PublicProfile({ username }) {
               
               <div className="flex items-center gap-6">
                  <div className="relative w-20 h-20 rounded-[20px] overflow-hidden border border-brand-navy/[0.08]  bg-white/40 backdrop-blur-md ">
-                    <img src={profile.profilePicture ? getOptimizedUrl(profile.profilePicture) : "https://via.placeholder.com/150"} className="w-full h-full object-cover" />
+                    <Image src={profile.profilePicture ? getOptimizedUrl(profile.profilePicture) : "https://via.placeholder.com/150"} alt="Profile" fill className="object-cover" sizes="150px" />
                     <label className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer opacity-0 hover:opacity-100 transition-opacity">
                       <Camera className="w-6 h-6 text-white" />
                       <input type="file" className="hidden" accept="image/*" onChange={handleProfilePicChange} />
@@ -375,7 +376,7 @@ export default function PublicProfile({ username }) {
             {/* Avatar */}
             <div className="w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden border border-brand-navy/[0.08]  bg-white/40 backdrop-blur-md  flex-shrink-0 group relative cursor-pointer shadow-sm ">
               {profile.profilePicture ? (
-                <img src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+                <Image src={getOptimizedUrl(profile.profilePicture)} alt={profile.name} fill sizes="300px" className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-[40px] font-display font-medium text-slate-400">
                   {profile.name?.charAt(0).toUpperCase()}

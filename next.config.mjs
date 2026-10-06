@@ -12,6 +12,8 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
 
     remotePatterns: [
+      { protocol: 'https', hostname: 'i.pravatar.cc' },
+      { protocol: 'https', hostname: 'via.placeholder.com' },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import { api } from '@/utils/api';
 import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
@@ -350,12 +351,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
         )}
       {product.photos && JSON.parse(product.photos)[0] ? (
         <div className="aspect-square w-full bg-brand-cloud dark:bg-brand-dark flex items-center justify-center p-4 overflow-hidden relative border-b border-slate-100 dark:border-white/10">
-          <img 
-            src={getOptimizedUrl(JSON.parse(product.photos)[0])} 
-            alt={product.title} 
-            loading="lazy"
-            className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-700 ease-out group-hover:scale-105"
-          />
+          <Image src={getOptimizedUrl(JSON.parse(product.photos)[0])} alt={product.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-contain mix-blend-multiply dark:mix-blend-normal transition-transform duration-700 ease-out group-hover:scale-105" />
           {(user?.role === 'admin' || user?.role === 'superadmin') && (
             <Link 
               href={`/admin/products/${product.id}`}
@@ -689,13 +685,13 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div className="flex items-center md:pl-1">
                 <div className="flex -space-x-2.5 sm:-space-x-3 mr-1.5 min-[380px]:mr-2 sm:mr-3 md:mr-4">
                   <div className="w-6 h-6 min-[400px]:w-7 min-[400px]:h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full border-[2px] md:border-[2.5px] border-white bg-slate-200 overflow-hidden shadow-sm relative z-0">
-                    <img src="https://i.pravatar.cc/100?img=33" alt="user" className="w-full h-full object-cover"/>
+                    <Image src="https://i.pravatar.cc/100?img=33" alt="user" fill className="object-cover" sizes="40px" />
                   </div>
                   <div className="w-6 h-6 min-[400px]:w-7 min-[400px]:h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full border-[2px] md:border-[2.5px] border-white bg-slate-200 overflow-hidden shadow-sm relative z-10">
-                    <img src="https://i.pravatar.cc/100?img=47" alt="user" className="w-full h-full object-cover"/>
+                    <Image src="https://i.pravatar.cc/100?img=47" alt="user" fill className="object-cover" sizes="40px" />
                   </div>
                   <div className="w-6 h-6 min-[400px]:w-7 min-[400px]:h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 rounded-full border-[2px] md:border-[2.5px] border-white bg-slate-200 overflow-hidden shadow-sm relative z-20">
-                    <img src="https://i.pravatar.cc/100?img=12" alt="user" className="w-full h-full object-cover"/>
+                    <Image src="https://i.pravatar.cc/100?img=12" alt="user" fill className="object-cover" sizes="40px" />
                   </div>
                 </div>
                 <span className="hidden min-[320px]:inline-block text-[10px] min-[350px]:text-[11px] min-[380px]:text-[12px] sm:text-[13px] md:text-[16px] font-medium text-slate-600 whitespace-nowrap tracking-tight sm:tracking-normal">
