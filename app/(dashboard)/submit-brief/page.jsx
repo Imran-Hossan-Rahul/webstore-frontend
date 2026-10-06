@@ -173,7 +173,7 @@ export default function SubmitBriefPage() {
       setSubmitted(true);
       window.scrollTo({ top: formRef.current?.offsetTop - 100, behavior: 'smooth' });
     } catch (err) {
-      alert("Failed to submit. Please try again.");
+      console.error('FRONTEND SUBMIT ERROR:', err); alert("Failed to submit. Please try again. Error: " + err.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -647,6 +647,7 @@ export default function SubmitBriefPage() {
     </div>
   );
 }
+
 
 
 
