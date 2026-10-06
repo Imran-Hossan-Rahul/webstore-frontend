@@ -33,7 +33,7 @@ function fmtDateApple(dateStr) {
 }
 
 export function generateInvoice(order) {
-  const oid = order.id?.toString() || order._id?.toString() || 'd000000';
+  const oid = order.id?.toString() || order._id?.toString() || '00000000';
   const shortId = oid.slice(-8).toUpperCase();
   const formattedDate = fmtDateApple(order.createdAt);
 
@@ -52,28 +52,102 @@ export function generateInvoice(order) {
   const processingFee = 0;
   const subtotal     = itemsPrice + processingFee;
   const status       = order.status || 'Order placed';
-  const isPaid       = order.payment_status === 'Verified' || status === 'Delivered' || status === 'Completed';
+  const isPaid       = order.payment_status === 'Verified' || status === 'Delivered' || status === 'Active';
   const amountDue    = isPaid ? '0.00' : `${fmt(subtotal)}`;
   
   const paymentMethod = d(order.payment_type || order.payment_method, 'Online Payment');
   const trxId = d(order.payment_trx_id || addrObj.payment_trx_id, 'N/A');
 
   const itemRows = items.map(item => {
-    const title    = d(item.product?.title, 'Product Title');
-    const prodDetails = item.variants || (item.product?.id ? item.product.id.toString().slice(-8).toUpperCase() : 'SKU-N/A');
-    const licenseText = isPaid ? (item.license_key ? item.license_key : 'Available in Dashboard') : 'Will be available after verify payment';
+    const title    = d(item.product?.title, item.product_name || 'Service Project');
+    const prodDetails = item.variants || (item.product_id ? item.product_id.toString().slice(-8).toUpperCase() : 'SKU-N/A');
+    const licenseText = isPaid ? (item.license_key ? item.license_key : 'Authorized & Granted') : 'Will be available after payment verification';
     const price    = item.price_at_purchase || 0;
     const qty      = item.quantity || 1;
     const lineTotal = price * qty;
     return `
       <tr>
         <td class="td-left font-medium">${title}</td>
-        <td class="td-left text-muted">${prodDetails}<br/><span style="font-size: 9.5px; font-family: monospace; color: ${isPaid ? '#0071e3' : '#f5a623'};">Key: ${licenseText}</span></td>
+        <td class="td-left text-muted">${prodDetails}<br/><span style="font-size: 9.5px; font-family: monospace; color: ${isPaid ? '#0071e3' : '#f5a623'};">Access: ${licenseText}</span></td>
         <td class="td-right">${fmt(price)} BDT</td>
         <td class="td-center">${qty}</td>
         <td class="td-right font-bold">${fmt(lineTotal)} BDT</td>
       </tr>`;
   }).join('');
+
+  // Generate Tracking & Phases HTML
+  const phases = ['Discovery', 'Design', 'Development', 'Testing', 'Launch'];
+  const hasPhases = order.projectPhase && phases.includes(order.projectPhase);
+  let phaseHtml = '';
+
+  if (hasPhases || (order.status && order.status !== 'Pending Verification')) {
+    const currentPhaseIndex = phases.indexOf(order.projectPhase);
+    const isDelivered = order.status === 'Delivered' || order.status === 'Active';
+    
+    let phaseRows = phases.map((phase, idx) => {
+      let phaseStatus = 'Pending';
+      let color = '#6e6e73';
+      let icon = '○';
+
+      if (isDelivered) {
+        phaseStatus = 'Completed';
+        color = '#10B981';
+        icon = '●';
+      } else if (idx < currentPhaseIndex) {
+        phaseStatus = 'Completed';
+        color = '#10B981';
+        icon = '●';
+      } else if (idx === currentPhaseIndex) {
+        phaseStatus = 'In Progress';
+        color = '#0071e3';
+        icon = '◐';
+      }
+
+      return `
+        <tr>
+          <td style="font-weight: 500; color: #1d1d1f;"><span style="color: ${color}; margin-right: 6px; font-size: 14px;">${icon}</span> ${phase}</td>
+          <td style="color: ${color}; font-weight: 500;">${phaseStatus}</td>
+          <td style="color: #6e6e73;">${phaseStatus === 'Completed' ? 'Done' : (phaseStatus === 'In Progress' ? 'Current Phase' : 'Awaiting')}</td>
+        </tr>
+      `;
+    }).join('');
+
+    let tableHtml = '';
+    if (hasPhases) {
+      tableHtml = `
+        <table class="info-table" style="margin-top: 16px;">
+          <thead>
+            <tr>
+              <th style="width: 40%;">Project Phase</th>
+              <th style="width: 30%;">Status</th>
+              <th style="width: 30%;">Tracking</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${phaseRows}
+          </tbody>
+        </table>
+      `;
+    }
+
+    phaseHtml = `
+      <div class="divider"></div>
+      <div class="section-header">Project Tracking & Status</div>
+      <div style="display: flex; gap: 40px; margin-bottom: 16px;">
+        <div>
+          <div style="font-size: 10px; color: #6e6e73; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Current Order Status</div>
+          <div style="font-size: 13px; font-weight: 700; color: ${isDelivered ? '#10B981' : '#0071e3'}; text-transform: uppercase;">${order.status}</div>
+        </div>
+        ${hasPhases ? `
+        <div>
+          <div style="font-size: 10px; color: #6e6e73; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Active Phase</div>
+          <div style="font-size: 13px; font-weight: 700; color: #0071e3; text-transform: uppercase;">${order.projectPhase}</div>
+        </div>
+        ` : ''}
+      </div>
+      ${tableHtml}
+    `;
+  }
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -380,7 +454,10 @@ export function generateInvoice(order) {
     <span style="font-size: 10px; color: #6e6e73;">Transaction ID: ${trxId}</span>
   </div>
 
+  ${phaseHtml}
+
   <!-- Additional Information Section -->
+  <div class="divider"></div>
   <div class="section-header">Additional Information</div>
   <table class="info-table">
     <thead>
@@ -388,7 +465,7 @@ export function generateInvoice(order) {
         <th style="width: 25%;">Receipt Number</th>
         <th style="width: 25%;">Order Date</th>
         <th style="width: 25%;">Payment Method</th>
-        <th style="width: 25%;">Delivery Status</th>
+        <th style="width: 25%;">Receipt Status</th>
       </tr>
     </thead>
     <tbody>
@@ -396,7 +473,7 @@ export function generateInvoice(order) {
         <td>WA${shortId}</td>
         <td>${formattedDate}</td>
         <td style="text-transform: capitalize;">${paymentMethod.replace('_', ' ')}</td>
-        <td style="font-weight: ${isPaid ? 'normal' : '600'}; color: ${isPaid ? '#1d1d1f' : '#f59e0b'};">${isPaid ? 'Delivered Digitally' : 'Pending Payment'}</td>
+        <td style="font-weight: ${isPaid ? 'normal' : '600'}; color: ${isPaid ? '#1d1d1f' : '#f59e0b'};">${isPaid ? 'Paid & Verified' : 'Pending Payment'}</td>
       </tr>
     </tbody>
   </table>
@@ -416,4 +493,3 @@ export function generateInvoice(order) {
     win.document.close();
   }
 }
-
