@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { api } from '@/utils/api';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { DashboardContext } from "@/app/(dashboard)/layout";
 import { Search, Loader2, Edit, ChevronDown, Filter, X, Check } from "lucide-react";
 import AuthGuardModal from "@/components/ui/AuthGuardModal";

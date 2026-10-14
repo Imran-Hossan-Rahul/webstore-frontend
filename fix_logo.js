@@ -1,0 +1,1 @@
+const fs = require('fs');\nlet content = fs.readFileSync('components/dashboard/GlassNavbar.jsx', 'utf8');\ncontent = content.replace(/\\/logo\\.png/g, '/codalina-logo.png');\ncontent = content.replace(/>\\s*Codalina\\s*<\\/span>/g, '>CodalinaHQ</span>');\nfs.writeFileSync('components/dashboard/GlassNavbar.jsx', content, 'utf8');\nconsole.log('Updated logo');

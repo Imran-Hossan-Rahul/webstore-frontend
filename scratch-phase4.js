@@ -1,0 +1,14 @@
+const fs = require('fs'); 
+const path = 'components/blog-editor/RightPanel.jsx'; 
+let c = fs.readFileSync(path, 'utf8'); 
+c = c.replace(/className="w-80 border-l p-4 bg-slate-100 overflow-y-auto"/, 'className="w-80 border-l border-white/20 dark:border-white/10 p-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl overflow-y-auto flex-shrink-0 z-10"'); 
+c = c.replace(/className="w-80 border-l p-4 bg-slate-100 flex flex-col items-center justify-center text-center text-slate-500"/, 'className="w-80 border-l border-white/20 dark:border-white/10 p-4 bg-white/20 dark:bg-black/20 backdrop-blur-xl flex flex-col items-center justify-center text-center text-slate-800 dark:text-slate-300 flex-shrink-0 z-10"');
+c = c.replace(/bg-white/g, 'bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/20 dark:border-white/10');
+c = c.replace(/bg-slate-50/g, 'bg-white/30 dark:bg-white/10');
+c = c.replace(/bg-blue-50/g, 'bg-blue-500/10');
+c = c.replace(/bg-green-50/g, 'bg-green-500/10');
+c = c.replace(/bg-yellow-50/g, 'bg-yellow-500/10');
+c = c.replace(/bg-red-50/g, 'bg-red-500/10');
+c = c.replace(/text-slate-800/g, 'text-black dark:text-white');
+c = c.replace(/text-slate-500/g, 'text-slate-800 dark:text-slate-300');
+fs.writeFileSync(path, c);

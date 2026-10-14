@@ -48,6 +48,19 @@ async function fetchAllArtifacts() {
     }
 }
 
+async function fetchAllBlogs() {
+    try {
+        const res = await fetch(`${API_URL}/blogs?limit=5000&page=1`, {
+            next: { revalidate: 3600 }
+        });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.data || [];
+    } catch {
+        return [];
+    }
+}
+
 async function fetchAllProducts() {
     try {
         const res = await fetch(`${API_URL}/market/products?limit=1000&page=1`, {
@@ -93,12 +106,13 @@ export default async function sitemap() {
     ];
 
     // Fetch dynamic content in parallel
-    const [codexList, devlogList, artifactList, productList, categoryList] = await Promise.all([
+    const [codexList, devlogList, artifactList, productList, categoryList, blogList] = await Promise.all([
         fetchAllCodex(),
         fetchAllDevlogs(),
         fetchAllArtifacts(),
         fetchAllProducts(),
         fetchAllCategories(),
+        fetchAllBlogs(),
     ]);
 
     const codexUrls = codexList.map((item) => ({
@@ -136,5 +150,12 @@ export default async function sitemap() {
         priority: 0.8,
     }));
 
-    return [...staticPages, ...categoryUrls, ...codexUrls, ...devlogUrls, ...artifactUrls, ...productUrls];
+    const blogUrls = blogList.map((item) => ({
+        url: `${BASE_URL}/blog/${item.slug}`,
+        lastModified: new Date(item.publishedAt || item.updatedAt || Date.now()),
+        changeFrequency: 'daily',
+        priority: 0.9,
+    }));
+
+    return [...staticPages, ...categoryUrls, ...codexUrls, ...devlogUrls, ...artifactUrls, ...productUrls, ...blogUrls];
 }

@@ -1,0 +1,11 @@
+const fs = require('fs'); 
+const path = 'components/blog-editor/Toolbar.jsx'; 
+let c = fs.readFileSync(path, 'utf8'); 
+c = c.replace(/bg-slate-50\/60/g, 'bg-white/30 dark:bg-black/30 backdrop-blur-sm'); 
+c = c.replace(/border-slate-100/g, 'border-white/20 dark:border-white/10');
+c = c.replace(/hover:bg-slate-200/g, 'hover:bg-white/40 dark:hover:bg-white/10');
+c = c.replace(/bg-slate-200/g, 'bg-white/50 dark:bg-white/20');
+c = c.replace(/text-slate-600/g, 'text-slate-800 dark:text-slate-200');
+c = c.replace(/text-slate-700/g, 'text-slate-900 dark:text-white');
+c = c.replace(/text-slate-900/g, 'text-black dark:text-white');
+fs.writeFileSync(path, c);

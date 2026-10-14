@@ -1,0 +1,10 @@
+const fs = require('fs'); 
+const path = 'components/blog-editor/LeftPanel.jsx'; 
+let c = fs.readFileSync(path, 'utf8'); 
+c = c.replace(/className="w-64 bg-white border-r h-full flex flex-col relative flex-shrink-0"/, 'className="w-64 bg-white/30 dark:bg-black/30 backdrop-blur-md border-r border-white/20 dark:border-white/10 h-full flex flex-col relative flex-shrink-0 z-10"'); 
+c = c.replace(/bg-white rounded-lg shadow-xl border border-indigo-100/g, 'bg-white/50 dark:bg-black/50 backdrop-blur-md rounded-lg shadow-xl border border-white/30 dark:border-white/10');
+c = c.replace(/text-slate-800/g, 'text-black dark:text-white');
+c = c.replace(/text-slate-500/g, 'text-slate-800 dark:text-slate-300');
+c = c.replace(/bg-indigo-50 /g, 'bg-indigo-500/10 ');
+c = c.replace(/bg-red-50 /g, 'bg-red-500/10 ');
+fs.writeFileSync(path, c);

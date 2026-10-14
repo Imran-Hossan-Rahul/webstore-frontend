@@ -1,0 +1,184 @@
+/* SlashCommands.css - Glassmorphism Styling for Slash Commands Palette */
+
+.tippy-box[data-theme~="slash-commands"] {
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.tippy-box[data-theme~="slash-commands"] .tippy-content {
+  padding: 0;
+}
+
+.slash-commands-list {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 320px;
+  max-width: 400px;
+  padding: 8px;
+}
+
+.slash-commands-list::-webkit-scrollbar {
+  width: 6px;
+}
+.slash-commands-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slash-commands-list::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+.slash-commands-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.slash-command-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.slash-command-item:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.slash-command-item.selected {
+  background-color: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid #3b82f6;
+  padding-left: 9px;
+}
+.slash-command-item.selected:hover {
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+.slash-command-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.slash-command-item.selected .slash-command-icon {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.slash-command-item:hover .slash-command-icon {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: #1e293b;
+}
+
+.slash-command-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.slash-command-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.4;
+}
+
+.slash-command-item.selected .slash-command-title {
+  color: #1e40af;
+}
+
+.slash-command-description {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slash-command-item.selected .slash-command-description {
+  color: #2563eb;
+}
+
+.slash-commands-empty {
+  padding: 24px 16px;
+  text-align: center;
+}
+.slash-commands-empty p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark), [data-theme="dark"] {
+  .tippy-box[data-theme~="slash-commands"] {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .slash-commands-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .slash-commands-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .slash-command-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .slash-command-item.selected {
+    background-color: rgba(59, 130, 246, 0.15);
+  }
+  .slash-command-item.selected:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+  }
+
+  .slash-command-icon {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+  }
+  .slash-command-item.selected .slash-command-icon {
+    background-color: #3b82f6;
+    color: #ffffff;
+  }
+  .slash-command-item:hover .slash-command-icon {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+  }
+
+  .slash-command-title {
+    color: #f8fafc;
+  }
+  .slash-command-item.selected .slash-command-title {
+    color: #60a5fa;
+  }
+
+  .slash-command-description {
+    color: #94a3b8;
+  }
+  .slash-command-item.selected .slash-command-description {
+    color: #3b82f6;
+  }
+}

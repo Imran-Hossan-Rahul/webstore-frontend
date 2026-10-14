@@ -1,0 +1,13 @@
+const fs = require('fs'); 
+const path = 'components/blog-editor/AdvancedColorPicker.jsx'; 
+let c = fs.readFileSync(path, 'utf8'); 
+c = c.replace(/className="fixed z-50 w-72 bg-white border border-slate-200 rounded-xl shadow-2xl p-4/g, 'className="fixed z-50 w-72 bg-white/60 dark:bg-black/60 backdrop-blur-2xl border border-white/30 dark:border-white/10 rounded-xl shadow-2xl p-4');
+c = c.replace(/bg-slate-100/g, 'bg-white/30 dark:bg-black/30 backdrop-blur-md');
+c = c.replace(/bg-white shadow-sm/g, 'bg-white/50 dark:bg-black/50 shadow-sm');
+c = c.replace(/bg-white border-slate-200/g, 'bg-white/40 dark:bg-black/40 border-white/30 dark:border-white/10');
+c = c.replace(/bg-white px-1 rounded/g, 'bg-white/30 dark:bg-black/30 px-1 rounded');
+c = c.replace(/bg-white hover:border-slate-300/g, 'bg-white/40 dark:bg-black/40 hover:border-white/50 dark:hover:border-white/20');
+c = c.replace(/text-slate-500/g, 'text-slate-800 dark:text-slate-300');
+c = c.replace(/text-slate-600/g, 'text-black dark:text-white');
+c = c.replace(/text-slate-700/g, 'text-black dark:text-white');
+fs.writeFileSync(path, c);
