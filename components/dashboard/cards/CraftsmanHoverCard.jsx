@@ -415,10 +415,10 @@ export default function CraftsmanHoverCard({
 
                 <div className="grid grid-cols-4 gap-2">
                   {[
-                    { icon: <Eye size={14} strokeWidth={1.5} className="text-brand-teal" />, val: profile.totalViews || 0, label: "Views" },
+                    { icon: <Eye size={14} strokeWidth={1.5} className="text-[#0E7C86]" />, val: profile.totalViews || 0, label: "Views" },
                     { icon: <Star size={14} strokeWidth={1.5} className="text-pink-500" />, val: profile.totalLikes || 0, label: "Stars" },
-                    { icon: <BookOpen size={14} strokeWidth={1.5} className="text-brand-blue" />, val: profile.totalCodex || 0, label: "Codex" },
-                    { icon: <Layers size={14} strokeWidth={1.5} className="text-purple-500" />, val: profile.totalArtifacts || 0, label: "Assets" },
+                    { icon: <BookOpen size={14} strokeWidth={1.5} className="text-[#111418]" />, val: profile.totalCodex || 0, label: "Codex" },
+                    { icon: <Layers size={14} strokeWidth={1.5} className="text-[#6A727C]" />, val: profile.totalArtifacts || 0, label: "Assets" },
                   ].map(({ icon, val, label }) => (
                     <div
                       key={label}

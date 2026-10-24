@@ -3,13 +3,12 @@
 import AppleSpinner from "@/components/ui/AppleSpinner";
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Network, Server, ShoppingCart, Rocket, MonitorPlay, Check, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ShoppingCart, MonitorPlay, Check, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useLenis } from 'lenis/react';
 import Link from 'next/link';
 import { COMPANY_WEBSITE_PLANS } from '@/constants/companyWebsitePlans';
 import { ECOMMERCE_PLANS } from '@/constants/ecommercePlans';
-import { SOFTWARE_PLANS } from '@/constants/softwarePlans';
-import { WEB_PORTAL_PLANS } from '@/constants/webPortalPlans';
+// Note: Additional plans (software, web portal, internal tools, maintenance) are kept in @/constants for developer reference.
 
 // ─── TIERED CARD (Company Website, E-Commerce, Software) ────────────────────
 /**
@@ -66,7 +65,7 @@ const TieredCard = ({ service }) => {
               <a
                 href={service.positionHint.link.href}
                 onClick={(e) => { e.stopPropagation(); setNavigatingId('service-' + service.id); }}
-                className="text-brand-cyan/60 hover:text-brand-cyan underline underline-offset-2 not-italic focus:outline-none focus:ring-1 focus:ring-brand-cyan rounded"
+                className="text-white/60 hover:text-white underline underline-offset-2 not-italic focus:outline-none focus:ring-1 focus:ring-white/40 rounded"
               >
                 {service.positionHint.link.label}
               </a>
@@ -89,9 +88,9 @@ const TieredCard = ({ service }) => {
               id={`tier-tab-${tier.id}`}
               onClick={(e) => { e.stopPropagation(); setActiveTierIdx(idx); }}
               className={`relative flex-1 py-2 px-3 rounded-[8px] transition-all text-left md:text-center overflow-hidden
-                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-black
+                focus:outline-none focus:ring-2 focus:ring-white/40 focus:ring-offset-1 focus:ring-offset-black
                 ${activeTierIdx === idx
-                  ? 'bg-[#0B1B36] shadow-[inset_0_1px_1px_rgba(147,197,253,0.15)] text-white'
+                  ? 'bg-[#171B21] shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] text-white'
                   : 'bg-transparent hover:bg-white/5 text-white/60 hover:text-white/80'
                 }`}
             >
@@ -99,7 +98,7 @@ const TieredCard = ({ service }) => {
               {activeTierIdx === idx && (
                 <motion.div
                   layoutId={`active-tab-indicator-${service.title.replace(/\s+/g, '-')}`}
-                  className="absolute bottom-0 left-[15%] right-[15%] h-[2px] bg-blue-400 rounded-t-full shadow-[0_0_12px_rgba(96,165,250,0.8)]"
+                  className="absolute bottom-0 left-[15%] right-[15%] h-[2px] bg-white rounded-t-full shadow-[0_0_12px_rgba(255,255,255,0.4)]"
                   initial={false}
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
@@ -111,7 +110,7 @@ const TieredCard = ({ service }) => {
                 </span>
                 {tier.isPopular && (
                   <span className={`text-[9px] md:text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded transition-colors ${
-                    activeTierIdx === idx ? 'text-blue-300 bg-blue-900/60' : 'text-white/40 bg-white/10'
+                    activeTierIdx === idx ? 'text-white bg-white/20' : 'text-white/40 bg-white/10'
                   }`}>
                     Most Popular
                   </span>
@@ -133,9 +132,9 @@ const TieredCard = ({ service }) => {
               return (
                 <li key={idx} className="flex items-start gap-2.5 text-[14px] md:text-[15px] text-white/80 font-sans">
                   {isInheritLine ? (
-                    <ArrowRight aria-hidden="true" className="w-3.5 h-3.5 text-brand-cyan shrink-0 mt-0.5" />
+                    <ArrowRight aria-hidden="true" className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
                   ) : (
-                    <Check aria-hidden="true" className="w-3.5 h-3.5 text-brand-cyan shrink-0 mt-0.5" />
+                    <Check aria-hidden="true" className="w-3.5 h-3.5 text-white shrink-0 mt-0.5" />
                   )}
                   <span className={`leading-tight ${isInheritLine ? 'font-semibold text-white' : ''}`}>
                     {bullet}
@@ -154,7 +153,7 @@ const TieredCard = ({ service }) => {
               {service.process.map((step, idx) => (
                 <li key={idx} className="flex items-start gap-2">
                   <span
-                    className="shrink-0 w-4 h-4 rounded-full bg-brand-cyan/15 border border-brand-cyan/30 text-brand-cyan text-[9px] font-bold flex items-center justify-center mt-0.5"
+                    className="shrink-0 w-4 h-4 rounded-full bg-white/15 border border-white/30 text-white text-[9px] font-bold flex items-center justify-center mt-0.5"
                     aria-hidden="true"
                   >
                     {idx + 1}
@@ -233,14 +232,14 @@ const TieredCard = ({ service }) => {
                 onClick={(e) => { e.stopPropagation(); setNavigatingId('service-' + service.id); }}
                 aria-label={service.ctaLabel || 'Get a Free Quote'}
                 className="group/btn relative w-full min-[450px]:w-auto px-4 py-2
-                  bg-brand-cyan/10 hover:bg-brand-cyan/20
-                  border border-brand-cyan/30 hover:border-brand-cyan/60
-                  rounded-lg text-[15px] md:text-[16px] font-medium text-brand-cyan hover:text-white
+                  bg-white/10 hover:bg-white/20
+                  border border-white/20 hover:border-white/40
+                  rounded-lg text-[15px] md:text-[16px] font-medium text-white hover:text-white
                   transition-all motion-safe:transition-all motion-reduce:transition-none
                   flex items-center justify-center gap-1.5
-                  focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:ring-offset-2 focus:ring-offset-[#080808]"
+                  focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#080808]"
               >
-                {navigatingId === 'service-' + service.id ? <AppleSpinner size={16} className="text-brand-cyan mr-1 inline-block" /> : null}
+                {navigatingId === 'service-' + service.id ? <AppleSpinner size={16} className="text-white mr-1 inline-block" /> : null}
                 {service.ctaText || 'Get a Free Quote'}{' '}
                 <ArrowRight
                   aria-hidden="true"
@@ -261,7 +260,7 @@ const TieredCard = ({ service }) => {
             >
               <ShieldCheck
                 aria-hidden="true"
-                className="w-3.5 h-3.5 text-brand-cyan/65 shrink-0 group-hover/lic:text-brand-cyan/90 transition-colors"
+                className="w-3.5 h-3.5 text-white/65 shrink-0 group-hover/lic:text-white/90 transition-colors"
               />
               <span className="text-[12px] text-white/45 leading-snug group-hover/lic:text-white/70 transition-colors">
                 {service.licenseNote.short}
@@ -300,7 +299,7 @@ const SimpleCard = ({ service }) => {
       <ul className="flex flex-col gap-3 mb-auto relative z-10">
         {service.bullets.map((bullet, idx) => (
           <li key={idx} className="flex items-start gap-2.5 text-[14px] md:text-[15px] text-white/75 font-sans">
-            <Check aria-hidden="true" className="w-4 h-4 text-brand-cyan shrink-0 mt-1" />
+            <Check aria-hidden="true" className="w-4 h-4 text-white shrink-0 mt-1" />
             <span className="leading-tight">{bullet}</span>
           </li>
         ))}
@@ -324,8 +323,8 @@ const SimpleCard = ({ service }) => {
           <Link
             href={service.storeLink || '/store'}
             onClick={(e) => { e.stopPropagation(); setNavigatingId('service-' + service.id); }}
-            className="text-[13px] md:text-[14px] font-medium text-brand-cyan group-hover:text-white flex items-center gap-1.5 transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-brand-cyan focus:ring-offset-2 focus:ring-offset-[#080808] rounded"
-          >{navigatingId === 'service-' + service.id ? <AppleSpinner size={14} className="text-brand-cyan mr-1.5 inline-block" /> : null}Explore{' '}<ArrowRight aria-hidden="true" className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+            className="text-[13px] md:text-[14px] font-medium text-white/80 group-hover:text-white flex items-center gap-1.5 transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-[#080808] rounded"
+          >{navigatingId === 'service-' + service.id ? <AppleSpinner size={14} className="text-white mr-1.5 inline-block" /> : null}Explore{' '}<ArrowRight aria-hidden="true" className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>
@@ -335,7 +334,7 @@ const SimpleCard = ({ service }) => {
 };
 
 // ─── CARD DISPATCHER ─────────────────────────────────────────────────────────
-const CardItem = ({ service, isStacked, index }) => {
+const CardItem = ({ service, index }) => {
   if (service.isTiered) return <TieredCard service={service} />;
   return <SimpleCard service={service} />;
 };
@@ -343,20 +342,14 @@ const CardItem = ({ service, isStacked, index }) => {
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function ServicesStoryteller() {
   const containerRef = useRef(null);
-  const [navigatingId, setNavigatingId] = useState(null);
-  const [phase, setPhase] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(0);
-  const lenis = useLenis();
-  const isAnimatingRef = useRef(false);
   const stickyRef = useRef(null);
+  const lenis = useLenis();
 
+  // Scroll smoothly to services section when triggered from hero CTA
   useEffect(() => {
     const handleExpand = () => {
       const container = containerRef.current;
       if (container) {
-        setVisibleCount(5);
-        setPhase(1);
-        
         const targetY = container.getBoundingClientRect().top + window.scrollY;
         if (lenis) {
           lenis.scrollTo(targetY, { duration: 1.2, offset: 0 });
@@ -370,200 +363,29 @@ export default function ServicesStoryteller() {
     return () => window.removeEventListener('expandServices', handleExpand);
   }, [lenis]);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const handleWheel = (e) => {
-      if (isAnimatingRef.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const rect = container.getBoundingClientRect();
-      const isPinned = rect.top <= 0 && rect.bottom >= window.innerHeight;
-      if (!isPinned) return;
-
-      const isScrollingDown = e.deltaY > 0;
-      const isScrollingUp   = e.deltaY < 0;
-      const isAtTop         = rect.top >= -10;
-
-      const canAdvanceForward  = visibleCount < 5 || phase === 0;
-      const canAdvanceBackward = (phase === 1 && isAtTop) || (phase === 0 && visibleCount > 0);
-
-      if ((isScrollingDown && canAdvanceForward) || (isScrollingUp && canAdvanceBackward)) {
-        e.preventDefault();
-        if (Math.abs(e.deltaY) < 15) return;
-
-        isAnimatingRef.current = true;
-        let cooldown = 250;
-
-        if (isScrollingDown) {
-          if (visibleCount < 5) {
-            setVisibleCount(v => v + 1);
-          } else if (phase === 0) {
-            const targetY = container.getBoundingClientRect().top + window.scrollY;
-            if (lenis) lenis.scrollTo(targetY, { immediate: true });
-            else window.scrollTo(0, targetY);
-            setPhase(1);
-            cooldown = 800;
-          }
-        } else {
-          if (phase === 1) {
-            const targetY = container.getBoundingClientRect().top + window.scrollY;
-            if (lenis) lenis.scrollTo(targetY, { immediate: true });
-            else window.scrollTo(0, targetY);
-            setPhase(0);
-            cooldown = 800;
-          } else if (visibleCount > 0) {
-            setVisibleCount(v => v - 1);
-          }
-        }
-        setTimeout(() => { isAnimatingRef.current = false; }, cooldown);
-      }
-    };
-
-    let touchStartY = 0;
-    const handleTouchStart = (e) => { touchStartY = e.touches[0].clientY; };
-
-    const handleTouchMove = (e) => {
-      if (isAnimatingRef.current) { e.preventDefault(); return; }
-
-      const rect = container.getBoundingClientRect();
-      const isPinned = rect.top <= 0 && rect.bottom >= window.innerHeight;
-      if (!isPinned) return;
-
-      const deltaY         = touchStartY - e.touches[0].clientY;
-      const isScrollingDown = deltaY > 0;
-      const isScrollingUp   = deltaY < 0;
-      const isAtTop         = rect.top >= -10;
-
-      const canAdvanceForward  = visibleCount < 5 || phase === 0;
-      const canAdvanceBackward = (phase === 1 && isAtTop) || (phase === 0 && visibleCount > 0);
-
-      if ((isScrollingDown && canAdvanceForward) || (isScrollingUp && canAdvanceBackward)) {
-        e.preventDefault();
-        if (Math.abs(deltaY) < 20) return;
-
-        isAnimatingRef.current = true;
-        let cooldown = 250;
-
-        if (isScrollingDown) {
-          if (visibleCount < 5) {
-            setVisibleCount(v => v + 1);
-          } else if (phase === 0) {
-            const targetY = container.getBoundingClientRect().top + window.scrollY;
-            if (lenis) lenis.scrollTo(targetY, { immediate: true });
-            else window.scrollTo(0, targetY);
-            setPhase(1);
-            cooldown = 800;
-          }
-        } else {
-          if (phase === 1) {
-            const targetY = container.getBoundingClientRect().top + window.scrollY;
-            if (lenis) lenis.scrollTo(targetY, { immediate: true });
-            else window.scrollTo(0, targetY);
-            setPhase(0);
-            cooldown = 800;
-          } else if (visibleCount > 0) {
-            setVisibleCount(v => v - 1);
-          }
-        }
-        setTimeout(() => { isAnimatingRef.current = false; }, cooldown);
-      }
-    };
-
-    window.addEventListener('wheel',      handleWheel,      { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: false });
-    window.addEventListener('touchmove',  handleTouchMove,  { passive: false });
-
-    return () => {
-      window.removeEventListener('wheel',      handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove',  handleTouchMove);
-    };
-  }, [visibleCount, phase, lenis]);
-
-  const isStacked = phase === 0;
-
-  const getCardAnim = (index) => {
-    if (!isStacked) return { rotate: 0, y: 0, opacity: 1, scale: 1 };
-
-    const activeIndex = visibleCount - 1;
-    const distance    = activeIndex - index;
-
-    if (distance === 0) {
-      return { rotate: 0, y: 0, opacity: 1, scale: 1 };
-    } else if (distance > 0) {
-      return {
-        rotate: 0,
-        y: -(distance * 110),
-        opacity: 1,
-        scale: 1 - distance * 0.05,
-        filter: `brightness(${1 - distance * 0.15})`,
-      };
-    } else {
-      return { rotate: 0, y: 800, opacity: 0, scale: 0.9 };
-    }
-  };
-
   // ── Services data ──────────────────────────────────────────────────────────
-  // Company Website uses the imported tiered data; all others use the inline shape.
+  // Only the first two cards (Company Website & E-Commerce Store) are retained and rendered.
+  // Other service categories are omitted completely from rendering so they cannot be seen,
+  // inspected, or turned on in the browser.
   const services = [
     {
       ...COMPANY_WEBSITE_PLANS,
-      icon: <MonitorPlay aria-hidden="true" className="w-7 h-7 text-green-400" strokeWidth={1.5} />,
+      icon: <MonitorPlay aria-hidden="true" className="w-7 h-7 text-white" strokeWidth={1.5} />,
       flex: "1.2",
     },
     {
       ...ECOMMERCE_PLANS,
-      icon: <ShoppingCart aria-hidden="true" className="w-7 h-7 text-brand-blue" strokeWidth={1.5} />,
+      icon: <ShoppingCart aria-hidden="true" className="w-7 h-7 text-white" strokeWidth={1.5} />,
       flex: "1",
-    },
-    {
-      ...SOFTWARE_PLANS,
-      icon: <Server aria-hidden="true" className="w-7 h-7 text-brand-teal" strokeWidth={1.5} />,
-      flex: "1",
-    },
-    {
-      ...WEB_PORTAL_PLANS,
-      icon: <Network aria-hidden="true" className="w-7 h-7 text-brand-cyan" strokeWidth={1.5} />,
-      flex: "1.2",
-    },
-    {
-      title:     "Internal Tools & APIs",
-      icon:      <Rocket aria-hidden="true" className="w-7 h-7 text-purple-400" strokeWidth={1.5} />,
-      desc:      "Streamline operations with bespoke tools. Engineered to integrate seamlessly with your business workflows.",
-      bullets:   ["Workflow Automation", "Complex Data Pipelines", "Role-based Access Control", "Third-party Integrations"],
-      tags:      ["Python", "AWS", "GraphQL"],
-      price:     "Starts at 3,00,000 BDT",
-      glow:      "from-purple-500/20 to-transparent",
-      flex:      "1",
-      storeLink: "/store?category_name=Internal+Tools+%26+APIs",
-    },
-    {
-      title:     "Proactive Maintenance",
-      icon:      <ShieldCheck aria-hidden="true" className="w-7 h-7 text-pink-400" strokeWidth={1.5} />,
-      desc:      "We don't just launch and leave. Ongoing monitoring, patching, and strategic improvements.",
-      bullets:   ["24/7 Uptime Monitoring", "Critical Security Patching", "Quarterly Performance Audits", "Priority Bug Resolutions"],
-      tags:      ["DevOps", "CI/CD", "Support"],
-      price:     "Monthly Retainer",
-      glow:      "from-pink-500/20 to-transparent",
-      flex:      "1.2",
-      storeLink: "/store?category_name=Proactive+Maintenance",
     },
   ];
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div ref={containerRef} className={`w-full relative z-40 bg-black ${isStacked ? 'h-[800vh]' : 'h-auto'}`}>
+    <div ref={containerRef} className="w-full relative z-40 bg-black h-auto">
       <div
         ref={stickyRef}
-        className={`w-full flex flex-col items-center px-[13px] ${
-          isStacked
-            ? 'sticky top-0 h-screen overflow-hidden justify-center'
-            : 'relative h-auto overflow-visible justify-start pt-[26vh] md:pt-[28vh] pb-[2vh]'
-        }`}
+        className="w-full flex flex-col items-center px-[13px] relative h-auto overflow-visible justify-start pt-[26vh] md:pt-[28vh] pb-[2vh]"
       >
 
         {/* Section heading */}
@@ -577,101 +399,29 @@ export default function ServicesStoryteller() {
           <h2 className="text-[36px] md:text-[48px] font-display font-medium text-white text-center leading-tight tracking-tight">
             Our Services
           </h2>
-          <motion.div
-            initial={false}
-            animate={{
-              opacity:    isStacked ? 0 : 1,
-              height:     isStacked ? 0 : 'auto',
-              marginTop:  isStacked ? 0 : 16,
-            }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
+          <div className="overflow-hidden mt-4">
             <h3 className="text-[20px] min-[350px]:text-[24px] min-[400px]:text-[28px] md:text-[36px] lg:text-[42px] font-display font-medium text-white leading-tight tracking-tight whitespace-nowrap">
               Which one do you need?
             </h3>
-          </motion.div>
+          </div>
         </motion.div>
 
-        {/* Dynamic Grid / Stack */}
-        <div
-          className={`relative z-20 w-full flex flex-col gap-3 justify-center items-center ${
-            isStacked ? 'mt-[18vh] md:mt-[25vh]' : ''
-          }`}
-        >
-
+        {/* Dynamic Grid */}
+        <div className="relative z-20 w-full flex flex-col gap-3 justify-center items-center">
           {/* Row 1 — Company Website + Enterprise E-Commerce */}
-          <div
-            className={`w-full transition-all duration-700 ${
-              isStacked ? 'absolute inset-0 flex items-center justify-center' : 'flex flex-col md:flex-row gap-3'
-            }`}
-          >
-            {[0, 1].map((i) => (
+          <div className="w-full flex flex-col md:flex-row gap-3">
+            {services.map((service, i) => (
               <motion.div
-                key={i}
+                key={service.title || i}
                 layout
-                className={
-                  isStacked
-                    ? 'absolute w-[95%] max-w-[900px] transform-gpu will-change-transform'
-                    : 'w-full transform-gpu will-change-transform'
-                }
-                style={{ flex: isStacked ? 'none' : services[i].flex, zIndex: i + 1 }}
-                animate={getCardAnim(i)}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                className="w-full transform-gpu will-change-transform"
+                style={{ flex: service.flex, zIndex: i + 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
-                <CardItem service={services[i]} isStacked={isStacked} index={i} />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Row 2 */}
-          <div
-            className={`w-full transition-all duration-700 ${
-              isStacked
-                ? 'absolute inset-0 flex items-center justify-center pointer-events-none'
-                : 'flex flex-col md:flex-row gap-3 pointer-events-auto'
-            }`}
-          >
-            {[2, 3].map((i) => (
-              <motion.div
-                key={i}
-                layout
-                className={
-                  isStacked
-                    ? 'absolute w-[95%] max-w-[900px] transform-gpu will-change-transform'
-                    : 'w-full transform-gpu will-change-transform'
-                }
-                style={{ flex: isStacked ? 'none' : services[i].flex, zIndex: i + 1 }}
-                animate={getCardAnim(i)}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              >
-                <CardItem service={services[i]} isStacked={isStacked} index={i} />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Row 3 */}
-          <div
-            className={`w-full transition-all duration-700 ${
-              isStacked
-                ? 'absolute inset-0 flex items-center justify-center pointer-events-none'
-                : 'flex flex-col md:flex-row gap-3 pointer-events-auto'
-            }`}
-          >
-            {[4, 5].map((i) => (
-              <motion.div
-                key={i}
-                layout
-                className={
-                  isStacked
-                    ? 'absolute w-[95%] max-w-[900px] transform-gpu will-change-transform'
-                    : 'w-full transform-gpu will-change-transform'
-                }
-                style={{ flex: isStacked ? 'none' : services[i].flex, zIndex: i + 1 }}
-                animate={getCardAnim(i)}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
-              >
-                <CardItem service={services[i]} isStacked={isStacked} index={i} />
+                <CardItem service={service} index={i} />
               </motion.div>
             ))}
           </div>
@@ -679,15 +429,11 @@ export default function ServicesStoryteller() {
 
         {/* "Not sure yet?" transition heading */}
         <motion.div
-          initial={false}
-          animate={{
-            opacity:   isStacked ? 0 : 1,
-            y:         isStacked ? 20 : 0,
-            height:    isStacked ? 0 : 'auto',
-            marginTop: isStacked ? 0 : 48,
-          }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="w-full flex justify-center overflow-hidden"
+          className="w-full flex justify-center overflow-hidden mt-12 md:mt-16"
         >
           <p className="text-[40px] md:text-[64px] font-display font-medium text-white/40 text-center tracking-tight pb-2">
             Not sure yet?

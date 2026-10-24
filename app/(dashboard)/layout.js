@@ -15,6 +15,7 @@ import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import MarketFooter from "@/components/dashboard/market/MarketFooter";
 import GlassBackground from "@/components/dashboard/market/GlassBackground";
+import CodalinaLogo from "@/components/ui/CodalinaLogo";
 
 export const DashboardContext = createContext();
 
@@ -126,7 +127,7 @@ export default function DashboardLayout({ children }) {
               >
                 <div className="flex justify-between items-center mb-6 pl-2">
                   <div className="flex items-center gap-2">
-                     <img src="/logo.png" alt="Codalina" className="w-6 h-6 object-contain" />
+                     <CodalinaLogo className="w-6 h-6 object-contain" />
                      <span className="font-bold text-sm tracking-tight text-slate-900 ">Codalina</span>
                   </div>
                   <button onClick={() => setSidebarOpen(false)} className="p-2 rounded-xl text-brand-slate  hover:text-black  :text-white transition-all bg-brand-surface/50  border border-white/60  hover:bg-brand-surface/80 :bg-brand-surface/10">
@@ -146,7 +147,7 @@ export default function DashboardLayout({ children }) {
           {!isFullWidthPage && !isHomePage && (
             <div className={`hidden lg:block flex-shrink-0 w-[80px] z-50`}>
               <div 
-                className={`group fixed top-[48px] bottom-0 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-brand-navy/[0.08] shadow-[1px_0_10px_rgba(11,37,69,0.02)] transition-all duration-300 ease-in-out w-[80px] hover:w-[280px] bg-white/40 backdrop-blur-2xl border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] hover:shadow-sm`}
+                className={`group fixed top-[48px] bottom-0 z-50 overflow-x-hidden overflow-y-auto custom-scrollbar border-r border-white/20 transition-all duration-300 ease-in-out w-[80px] hover:w-[280px] bg-white/40 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.05)] hover:shadow-sm`}
               >
                 <Sidebar isHovered={true} isCollapsed={false} />
               </div>

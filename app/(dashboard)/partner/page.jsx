@@ -231,7 +231,7 @@ export default function PartnerPage() {
             <div className="grid md:grid-cols-2 gap-4 xl:gap-6">
               <div 
                 onClick={() => scrollToForm("White-Label Development")}
-                className={`border-2 p-6 rounded-[16px] transition-all flex flex-col h-full cursor-pointer group relative overflow-hidden ${selectedInterest === "White-Label Development" ? "bg-white border-brand-blue shadow-[0_8px_30px_rgba(29,95,209,0.12)]" : "bg-white/60 border-brand-navy/[0.04] hover:border-brand-blue/30 hover:bg-white/80"}`}
+                className={`border-2 p-6 rounded-[16px] transition-all flex flex-col h-full cursor-pointer group relative overflow-hidden ${selectedInterest === "White-Label Development" ? "bg-white border-brand-blue shadow-[0_8px_30px_rgba(17,20,24,0.12)]" : "bg-white/60 border-brand-navy/[0.04] hover:border-brand-blue/30 hover:bg-white/80"}`}
               >
                 <div className="flex justify-center items-start mb-4">
                   <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-[11px] font-semibold rounded-full">
@@ -259,7 +259,7 @@ export default function PartnerPage() {
               
               <div 
                 onClick={() => scrollToForm("Affiliate/Referral")}
-                className={`border-2 p-6 rounded-[16px] transition-all flex flex-col h-full cursor-pointer group relative overflow-hidden ${selectedInterest === "Affiliate/Referral" ? "bg-white border-brand-blue shadow-[0_8px_30px_rgba(29,95,209,0.12)]" : "bg-white/60 border-brand-navy/[0.04] hover:border-brand-blue/30 hover:bg-white/80"}`}
+                className={`border-2 p-6 rounded-[16px] transition-all flex flex-col h-full cursor-pointer group relative overflow-hidden ${selectedInterest === "Affiliate/Referral" ? "bg-white border-brand-blue shadow-[0_8px_30px_rgba(17,20,24,0.12)]" : "bg-white/60 border-brand-navy/[0.04] hover:border-brand-blue/30 hover:bg-white/80"}`}
               >
                 <div className="flex justify-center items-start mb-4">
                   <span className="px-2 py-1 bg-brand-blue/10 text-brand-blue text-[11px] font-semibold rounded-full">

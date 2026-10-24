@@ -10,9 +10,9 @@ import { useUser } from '@/context/UserContext';
 
 const STATUS_STYLE = {
   'Order placed': 'bg-yellow-50 text-[#1d1d1f] border-yellow-200',
-  'Confirmed':    'bg-brand-sky text-[#1d1d1f] border-blue-200',
-  'Processing':   'bg-purple-50 text-[#1d1d1f] border-purple-200',
-  'Shipped':      'bg-cyan-50 text-[#1d1d1f] border-cyan-200',
+  'Confirmed':    'bg-[var(--surface-soft)] text-[#111418] border-[rgba(17,20,24,0.18)]',
+  'Processing':   'bg-[var(--surface-soft)] text-[#111418] border-[rgba(17,20,24,0.18)]',
+  'Shipped':      'bg-[#0E7C86]/10 text-[#0E7C86] border-[#0E7C86]/20',
   'Delivered':    'bg-green-50 text-[#1d1d1f] border-green-200',
   'Cancelled':    'bg-red-50 text-[#1d1d1f] border-red-200',
 };
@@ -33,7 +33,7 @@ const CustomRequestCard = ({ order, router, copyId, copiedId, formatDate, STATUS
   return (
     <div
       onClick={() => router.push(`/orders/${oid}`)}
-      className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-brand-blue/30 transition-all duration-300 group shadow-sm flex flex-col h-full"
+      className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-[#111418]/30 transition-all duration-300 group shadow-sm flex flex-col h-full"
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-slate-100">
         <div className="flex justify-between items-start md:block w-full md:w-auto mb-3 md:mb-0">
@@ -44,13 +44,13 @@ const CustomRequestCard = ({ order, router, copyId, copiedId, formatDate, STATUS
               </span>
               <button
                 onClick={e => copyId(e, `CB${shortId}`)}
-                className="text-slate-400 hover:text-brand-blue transition-colors shrink-0"
+                className="text-slate-400 hover:text-[#111418] transition-colors shrink-0"
                 title="Copy Request Number"
               >
                 <Copy size={14} />
               </button>
               {copiedId === `CB${shortId}` && (
-                <span className="font-mono text-[10px] text-brand-teal font-medium bg-brand-teal/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
+                <span className="font-mono text-[10px] text-[#0E7C86] font-medium bg-[#0E7C86]/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
               )}
             </div>
             <p className="text-[12px] font-sans text-slate-500">
@@ -82,7 +82,7 @@ const CustomRequestCard = ({ order, router, copyId, copiedId, formatDate, STATUS
             </button>
             <button
               onClick={e => { e.stopPropagation(); router.push(`/orders/${oid}?chat=true`); }}
-              className="p-2 flex items-center gap-2 rounded-[4px] bg-brand-blue/10 hover:bg-brand-blue/20 border border-brand-blue/20 text-brand-blue transition-colors shrink-0 whitespace-nowrap"
+              className="p-2 flex items-center gap-2 rounded-[4px] bg-[#111418]/5 hover:bg-[#111418]/10 border border-[rgba(17,20,24,0.18)] text-[#111418] transition-colors shrink-0 whitespace-nowrap"
               title="Open Collaboration Room"
             >
               <span className="font-mono text-[10px] uppercase font-semibold whitespace-nowrap">Chat in Live</span>
@@ -331,7 +331,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
         {!user && (
           <div className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] p-6 mb-6 shadow-sm">
             <h3 className="text-[16px] font-display font-medium text-brand-navy mb-2 flex items-center">
-              {isCustomMode ? <Briefcase className="w-5 h-5 mr-2 text-brand-blue" /> : isProjectsMode ? <Briefcase className="w-5 h-5 mr-2 text-brand-blue" /> : <Package className="w-5 h-5 mr-2 text-brand-blue" />}
+              {isCustomMode ? <Briefcase className="w-5 h-5 mr-2 text-[#111418]" /> : isProjectsMode ? <Briefcase className="w-5 h-5 mr-2 text-[#111418]" /> : <Package className="w-5 h-5 mr-2 text-[#111418]" />}
               {isCustomMode ? 'Track Request' : isProjectsMode ? 'Track Your Project' : 'Track Your Order'}
             </h3>
             <p className="text-[13px] font-sans text-slate-500  mb-4">
@@ -357,7 +357,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
               <button 
                 type="submit" 
                 disabled={trackLoading}
-                className="bg-brand-navy hover:bg-brand-blue text-white px-6 py-2.5 rounded-[12px] text-[13px] font-sans font-medium transition-colors disabled:opacity-70 flex items-center justify-center shrink-0"
+                className="bg-brand-navy hover:bg-[#2B3038] text-white px-6 py-2.5 rounded-[12px] text-[13px] font-sans font-medium transition-colors disabled:opacity-70 flex items-center justify-center shrink-0"
               >
                 {trackLoading ? <AppleSpinner size={16} className="text-white " /> : 'Track Order'}
               </button>
@@ -370,7 +370,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
         {/* Content */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 text-slate-400">
-            <AppleSpinner className="animate-spin mb-3 text-brand-blue" />
+            <AppleSpinner className="animate-spin mb-3 text-[#111418]" />
             <p className="text-[14px] font-sans">Loading your orders...</p>
           </div>
         ) : paginated.length === 0 ? (
@@ -379,7 +379,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
             <p className="text-[14px] font-sans font-medium">{isCustomMode ? 'No custom requests found' : isProjectsMode ? 'No projects found' : 'No orders found'}</p>
             <button
               onClick={() => router.push('/')}
-              className="mt-4 text-brand-blue text-[14px] font-sans hover:underline"
+              className="mt-4 text-[#2B3038] text-[14px] font-sans hover:underline"
             >
               Start shopping
             </button>
@@ -401,7 +401,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
                   <div
                     key={oid}
                   onClick={() => router.push(`/orders/${oid}`)}
-                  className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-brand-blue/30 transition-all duration-300 group shadow-sm"
+                  className="bg-white/40 backdrop-blur-md border border-brand-navy/[0.08] rounded-[20px] overflow-hidden cursor-pointer hover:border-[#111418]/30 transition-all duration-300 group shadow-sm"
                 >
                   {/* Order Header */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between p-4 md:p-5 border-b border-slate-100 ">
@@ -414,13 +414,13 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
                           </span>
                           <button
                             onClick={e => copyId(e, `WA${shortId}`)}
-                            className="text-slate-400 hover:text-brand-blue transition-colors shrink-0"
+                            className="text-slate-400 hover:text-[#111418] transition-colors shrink-0"
                             title="Copy Order Number"
                           >
                             <Copy size={14} />
                           </button>
                           {copiedId === `WA${shortId}` && (
-                            <span className="font-mono text-[10px] text-brand-teal font-medium bg-brand-teal/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
+                            <span className="font-mono text-[10px] text-[#0E7C86] font-medium bg-[#0E7C86]/10 px-1.5 py-0.5 rounded uppercase tracking-widest">Copied</span>
                           )}
                         </div>
                         <p className="text-[12px] font-sans text-slate-500 ">
@@ -434,7 +434,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
                           {order.status || 'Order placed'}
                         </span>
                         {order.projectPhase && order.projectPhase !== 'Not applicable' && (
-                          <span className="font-mono text-[9px] font-medium px-1.5 py-0.5 rounded-[4px] uppercase tracking-widest bg-brand-blue/10 text-brand-blue border border-brand-blue/20">
+                          <span className="font-mono text-[9px] font-medium px-1.5 py-0.5 rounded-[4px] uppercase tracking-widest bg-[#111418]/5 text-[#111418] border border-[rgba(17,20,24,0.18)]">
                             {order.projectPhase}
                           </span>
                         )}
@@ -453,7 +453,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
                       <div className="flex items-center gap-2">
                         <div className="hidden md:flex items-center gap-2">
                           {order.projectPhase && order.projectPhase !== 'Not applicable' && (
-                            <span className="font-mono text-[10px] font-medium tracking-widest uppercase px-2.5 py-1 rounded-[4px] bg-brand-blue/10 text-brand-blue border border-brand-blue/20">
+                            <span className="font-mono text-[10px] font-medium tracking-widest uppercase px-2.5 py-1 rounded-[4px] bg-[#111418]/5 text-[#111418] border border-[rgba(17,20,24,0.18)]">
                               Phase: {order.projectPhase}
                             </span>
                           )}
@@ -500,7 +500,7 @@ export default function OrdersList({ isEmbedded = false, isProjectsMode = false,
 
                           {/* Title + variants + qty */}
                           <div className="flex-1 min-w-0">
-                            <p className="text-[14px] md:text-[15px] font-sans font-medium text-brand-navy  line-clamp-1 group-hover:text-brand-blue transition-colors">
+                            <p className="text-[14px] md:text-[15px] font-sans font-medium text-brand-navy  line-clamp-1 group-hover:text-[#111418] transition-colors">
                               {item.product?.title || 'Unknown Product'}
                             </p>
                             <div className="flex items-center gap-2 mt-1">

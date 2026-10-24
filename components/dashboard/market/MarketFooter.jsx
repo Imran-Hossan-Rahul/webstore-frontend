@@ -27,7 +27,8 @@ export default function MarketFooter() {
     {
       title: "Resources",
       links: [
-        { label: "Documentation", href: "/docs" }
+        { label: "Documentation", href: "/docs" },
+        { label: "Codalina Academy", href: "/blog" }
       ]
     },
     {

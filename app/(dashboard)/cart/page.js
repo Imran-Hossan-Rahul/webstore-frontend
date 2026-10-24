@@ -236,14 +236,14 @@ export default function CartPage() {
                     <button 
                       onClick={() => { setNavigatingId('continue'); router.push('/store'); }}
                       style={{ pointerEvents: navigatingId === 'continue' ? 'none' : 'auto' }}
-                      className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all bg-white text-[#1D5FD1] border border-[#1D5FD1] hover:bg-brand-blue/5"
+                      className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all bg-white text-[#111418] border border-[rgba(17,20,24,0.18)] hover:bg-[#E6E9ED]"
                     >
-                      {navigatingId === 'continue' ? <AppleSpinner size={16} className="text-brand-blue" /> : 'Continue Shopping'}
+                      {navigatingId === 'continue' ? <AppleSpinner size={16} className="text-[#111418]" /> : 'Continue Shopping'}
                     </button>
                     <button 
                       onClick={handleCheckout}
                       style={{ pointerEvents: navigatingId === 'checkout' ? 'none' : 'auto' }}
-                      className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all shadow-md bg-[#1D5FD1] text-white border border-[#1D5FD1] hover:bg-brand-blue/90"
+                      className="w-full sm:w-auto h-12 px-6 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all shadow-md bg-[#111418] text-white border border-[#111418] hover:bg-[#2B3038] active:bg-[#000000]"
                     >
                       {navigatingId === 'checkout' ? <AppleSpinner size={16} className="text-white" /> : 'Check Out'}
                     </button>

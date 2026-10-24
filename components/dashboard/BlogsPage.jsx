@@ -22,20 +22,44 @@ export default function BlogsPage() {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await api.get("/blogs?limit=100&lang=en");
-      let rawBlogs = response.data || response.blogs || [];
+      const academyUrl = process.env.NEXT_PUBLIC_ACADEMY_URL || "https://academy.codalina.com";
       
-      // Map multilingual data to what the old UI expects
+      let rawBlogs = [];
+      // 1. Fetch directly from Codalina Academy live API
+      try {
+        const academyRes = await fetch(`${academyUrl}/api/blogs?status=published&limit=100`, {
+          headers: { Accept: "application/json" },
+          cache: "no-store",
+        });
+        if (academyRes.ok) {
+          const json = await academyRes.json();
+          rawBlogs = json.data || json.blogs || [];
+        }
+      } catch (err) {
+        console.warn("Could not reach Academy API, attempting local fallback:", err);
+      }
+
+      // 2. Fallback to local backend API if Academy API is offline
+      if (!rawBlogs || rawBlogs.length === 0) {
+        try {
+          const response = await api.get("/blogs?limit=100&lang=en");
+          rawBlogs = response.data || response.blogs || [];
+        } catch (e) {}
+      }
+      
+      // Map multilingual data to what the UI expects
       const mappedBlogs = rawBlogs.map(b => ({
-        ...b, type: "blog",
-        title: b.en?.title || b.title,
-        excerpt: b.en?.excerpt || b.excerpt || b.en?.content,
-        content: b.en?.content || b.content
+        ...b,
+        type: "blog",
+        title: b.en?.title || b.bn?.title || b.title,
+        excerpt: b.en?.excerpt || b.bn?.excerpt || b.excerpt || b.en?.content || "",
+        content: b.en?.content || b.bn?.content || b.content || "",
+        category: b.category || "Engineering",
+        isAcademy: true,
+        academyUrl: `${academyUrl}/blog/${b.slug}`,
       }));
       
-      if (mappedBlogs.length > 0) {
-        setBlogs(mappedBlogs);
-      }
+      setBlogs(mappedBlogs);
     } catch (error) {
       console.error("Failed to fetch blogs:", error);
     } finally {
@@ -54,6 +78,35 @@ export default function BlogsPage() {
   return (
     <div className="w-full max-w-6xl pt-8 pb-20 animate-in fade-in duration-500">
       
+      {/* Academy Insights Header Banner */}
+      <div className="mb-8 p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[#DCE3EA]/40 via-white/80 to-[#E6EBF0]/40 dark:from-white/5 dark:via-black/30 dark:to-white/5 border border-[rgba(17,20,24,0.18)] dark:border-white/10 backdrop-blur-xl shadow-xs">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#111418]/5 text-[#111418] dark:text-white border border-[rgba(17,20,24,0.18)] mb-2">
+              <span className="w-2 h-2 rounded-full bg-[#0E7C86] animate-pulse" />
+              Codalina Academy Engineering Hub
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold font-display text-slate-900 dark:text-white tracking-tight">
+              Engineering Insights & Technical Guides
+            </h1>
+            <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-1 max-w-2xl leading-relaxed">
+              In-depth architectural articles, system design tutorials, and developer guides powered by Codalina's software engineering team.
+            </p>
+          </div>
+          <a
+            href={process.env.NEXT_PUBLIC_ACADEMY_URL || "https://academy.codalina.com"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 px-5 py-2.5 rounded-2xl bg-[#111418] hover:bg-[#2B3038] active:bg-[#000000] text-white text-xs md:text-sm font-semibold shadow-md shadow-[rgba(17,20,24,0.20)] transition-all flex items-center gap-2 active:scale-95"
+          >
+            <span>Visit Full Academy</span>
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      </div>
+
       <ViewToolbar 
           viewMode={viewMode}
           setViewMode={setViewMode}

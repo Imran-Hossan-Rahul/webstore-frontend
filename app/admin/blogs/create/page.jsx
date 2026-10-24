@@ -80,7 +80,7 @@ export default function CreateBlogPage() {
       <h1 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">Write a New Blog</h1>
 
       {message && (
-        <div className="mb-4 p-4 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+        <div className="mb-4 p-4 rounded bg-[#E6E9ED] text-[#111418] dark:bg-white/10 dark:text-white">
           {message}
         </div>
       )}
@@ -149,14 +149,14 @@ export default function CreateBlogPage() {
               <button
                 type="button"
                 onClick={() => setActiveLang("en")}
-                className={`px-4 py-2 rounded text-sm ${activeLang === "en" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300"}`}
+                className={`px-4 py-2 rounded text-sm ${activeLang === "en" ? "bg-[#111418] text-white" : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300"}`}
               >
                 English
               </button>
               <button
                 type="button"
                 onClick={() => setActiveLang("bn")}
-                className={`px-4 py-2 rounded text-sm ${activeLang === "bn" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300"}`}
+                className={`px-4 py-2 rounded text-sm ${activeLang === "bn" ? "bg-[#111418] text-white" : "bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-300"}`}
               >
                 Bangla
               </button>
@@ -243,7 +243,7 @@ export default function CreateBlogPage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded shadow-sm disabled:opacity-50"
+            className="px-6 py-3 bg-[#111418] hover:bg-[#2B3038] text-white font-medium rounded shadow-sm disabled:opacity-50"
           >
             {loading ? "Publishing..." : "Publish Blog"}
           </button>

@@ -219,8 +219,8 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
         {isNavigating && (
           <div className="absolute inset-0 z-20 rounded-xl bg-white/60 dark:bg-slate-950/60 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
             <div className="flex items-center gap-2.5">
-              <div className="w-4 h-4 rounded-full border-2 border-indigo-500/30 border-t-indigo-500 animate-spin" />
-              <span className="text-xs font-semibold text-indigo-500">Opening...</span>
+              <div className="w-4 h-4 rounded-full border-2 border-[#111418]/30 border-t-[#111418] animate-spin" />
+              <span className="text-xs font-semibold text-[#111418] dark:text-white">Opening...</span>
             </div>
           </div>
         )}
@@ -265,18 +265,18 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                         displayName={author?.name}
                         wrapperDisplay="inline"
                       >
-                        <span className="font-bold text-slate-900 dark:text-white text-base hover:underline decoration-2 decoration-purple-500 underline-offset-4 cursor-pointer font-sans">
+                        <span className="font-bold text-slate-900 dark:text-white text-base hover:underline decoration-2 decoration-[#111418] dark:decoration-white underline-offset-4 cursor-pointer font-sans">
                             {author?.name || 'Anonymous'}
                         </span>
                      </CraftsmanHoverCard>
                      {author?.isVerified && (
-                          <span className="text-indigo-600">
+                          <span className="text-[#0E7C86]">
                                <CheckCircle size={16} className="fill-current" />
                           </span>
                      )}
                      <span className="text-slate-400 text-xs font-semibold">@{author?.username || "user"}</span>
                      <span className="text-gray-300 dark:text-slate-600 text-xs">•</span>
-                     <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-purple-500 cursor-pointer">{timeAgo(createdAt)}</span>
+                     <span suppressHydrationWarning className="text-slate-400 text-xs font-semibold hover:text-[#111418] dark:hover:text-white cursor-pointer">{timeAgo(createdAt)}</span>
                  </div>
                  
                  <button className="lg:hidden flex-shrink-0 ml-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 p-1 bg-slate-100 dark:bg-white/5 rounded-lg transition-colors" onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }} title="Toggle Details">
@@ -297,7 +297,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
         <div className="mb-4">
           {(excerpt || subtitle) && (
             <div
-              className={`text-black dark:text-white text-base leading-relaxed whitespace-pre-wrap break-words font-normal font-sans ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-indigo-500/30 rounded-lg p-2' : ''}`}
+              className={`text-black dark:text-white text-base leading-relaxed whitespace-pre-wrap break-words font-normal font-sans ${isPreview ? 'focus:outline-none focus:ring-1 focus:ring-[#111418]/30 rounded-lg p-2' : ''}`}
               style={{
                 display: '-webkit-box',
                 WebkitLineClamp: 6,
@@ -347,11 +347,11 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
 
                 const hoverColorMap = {
                     comment: 'group-hover/btn:text-slate-700 dark:group-hover/btn:text-slate-200',
-                    question: 'group-hover/btn:text-indigo-500 dark:group-hover/btn:text-indigo-400',
+                    question: 'group-hover/btn:text-[#111418] dark:group-hover/btn:text-white',
                     answer: 'group-hover/btn:text-emerald-500 dark:group-hover/btn:text-emerald-400',
                     issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
                     suggestion: 'group-hover/btn:text-amber-500 dark:group-hover/btn:text-amber-400',
-                    critique: 'group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400',
+                    critique: 'group-hover/btn:text-[#6A727C] dark:group-hover/btn:text-slate-300',
                     kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                 };
 
@@ -409,7 +409,7 @@ const CodexCard = ({ codex, currentUser, isGuest = false, onRequireAuth, isPrevi
                 className="group/btn flex items-center gap-1.5 py-1 pr-2 transition-all duration-200 cursor-pointer"
                 onClick={handleShare}
             >
-                <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-indigo-600 dark:group-hover/btn:text-indigo-400 group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
+                <Share2 size={16} className="text-slate-700 dark:text-slate-300 group-hover/btn:text-[#111418] dark:group-hover/btn:text-white group-hover/btn:scale-105 transition-all duration-200 stroke-[2.2px]" />
             </button>
           </div>
         </div>

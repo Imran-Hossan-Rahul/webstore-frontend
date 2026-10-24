@@ -71,7 +71,7 @@ export default function ChatSidebar({
           `}</style>
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-slate-100 dark:bg-brand-surface/5 overflow-hidden z-50">
             <div 
-              className="h-full bg-gradient-to-r from-violet-600 via-indigo-500 to-cyan-400 shadow-[0_0_10px_rgba(99,102,241,0.8)]"
+              className="h-full bg-gradient-to-r from-[#111418] via-[#6A727C] to-[#111418] shadow-[0_0_10px_rgba(17,20,24,0.3)]"
               style={{
                 width: '100%',
                 animation: 'chatProgressBar 2s infinite ease-in-out',
@@ -182,8 +182,8 @@ export default function ChatSidebar({
                   className="w-full flex items-center gap-3 p-3 rounded-2xl transition-all hover:bg-black/5"
                 >
                   <div className="relative shrink-0">
-                    <div className="w-11 h-11 rounded-full bg-indigo-50 flex items-center justify-center overflow-hidden border border-indigo-100">
-                      <MessageCircle size={20} className="text-brand-blue" />
+                    <div className="w-11 h-11 rounded-full bg-[#E6E9ED] flex items-center justify-center overflow-hidden border border-[rgba(17,20,24,0.18)]">
+                      <MessageCircle size={20} className="text-[#111418]" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0 text-left">
@@ -230,7 +230,7 @@ export default function ChatSidebar({
                         )}
                       </div>
                       {isOnline && (
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-brand-teal border-2 border-white dark:border-[#0a0a0a] rounded-full"></div>
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-[#0E7C86] border-2 border-white dark:border-[#0a0a0a] rounded-full"></div>
                       )}
                     </div>
 
@@ -250,7 +250,7 @@ export default function ChatSidebar({
                           )}
                         </h3>
                         {isChat && item.lastMessage && (
-                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-brand-blue font-bold" : "text-slate-500"}`}>
+                          <span className={`text-[11px] shrink-0 ${item.unreadCount > 0 ? "text-[#111418] font-bold" : "text-slate-500"}`}>
                             {new Date(item.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         )}
@@ -259,7 +259,7 @@ export default function ChatSidebar({
                       {/* Row 2: Message & Badge */}
                       <div className="flex items-center justify-between gap-2 mt-0.5">
                         {isChat ? (
-                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-brand-teal font-bold" : item.unreadCount > 0 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
+                           <p className={`text-[13px] truncate flex-1 ${item._id === activeCallChatId ? "text-[#0E7C86] font-bold" : item.unreadCount > 0 ? "text-slate-800 font-medium" : "text-slate-500"}`}>
                              {item._id === activeCallChatId ? `📞 ${activeCallStatus || "In call"}` : (item.lastMessage?.content || "No messages yet")}
                            </p>
                         ) : (
@@ -269,7 +269,7 @@ export default function ChatSidebar({
                         )}
                         
                         {isChat && item.unreadCount > 0 && (
-                          <div className="shrink-0 w-5 h-5 bg-brand-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm shadow-blue-500/20 animate-in zoom-in duration-300">
+                          <div className="shrink-0 w-5 h-5 bg-[#0E7C86] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-sm shadow-[#0E7C86]/20 animate-in zoom-in duration-300">
                             {item.unreadCount}
                           </div>
                         )}

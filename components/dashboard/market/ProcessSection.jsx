@@ -36,17 +36,17 @@ const ProcessSection = () => {
       subtitle: "Tailoring to your brand",
       descriptionParts: [
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          After you place an order, our team begins <span className="relative inline">customizing the platform<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span> to align perfectly with your brand vision.
+          After you place an order, our team begins <span className="relative inline">customizing the platform<BrushUnderline colorClass="text-white/60" delay={0} /></span> to align perfectly with your brand vision.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           Development typically takes <span className="relative inline">up to 1–2 months<BrushUnderline colorClass="text-white/40" delay={0.1} /></span> for large-scale projects.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          We maintain <span className="relative inline">100% pricing transparency<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span> upfront. Zero hidden charges, ever.
+          We maintain <span className="relative inline">100% pricing transparency<BrushUnderline colorClass="text-white/60" delay={0.2} /></span> upfront. Zero hidden charges, ever.
         </p>
       ],
       chips: ["Custom Branding", "Feature Adaptation", "Full UI Retouch"],
-      icon: <ShoppingCart size={28} className="text-brand-cyan" />
+      icon: <ShoppingCart size={28} className="text-white" />
     },
     {
       id: "02",
@@ -54,17 +54,17 @@ const ProcessSection = () => {
       subtitle: "Production deployment",
       descriptionParts: [
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          Once customized and thoroughly tested, it&apos;s time to go live. You have <span className="relative inline">full flexibility<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span> in how deployment happens.
+          Once customized and thoroughly tested, it&apos;s time to go live. You have <span className="relative inline">full flexibility<BrushUnderline colorClass="text-white/60" delay={0} /></span> in how deployment happens.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           You can <span className="relative inline">deploy it yourself<BrushUnderline colorClass="text-white/40" delay={0.1} /></span> on your own server. We&apos;ll provide complete handover documentation and guide you through the entire process.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          Or, our engineering team can handle <span className="relative inline">full production deployment for you<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. This covers DNS setup, SSL, server configuration, and go-live verification. <span className="text-white font-medium">No extra charge.</span>
+          Or, our engineering team can handle <span className="relative inline">full production deployment for you<BrushUnderline colorClass="text-white/60" delay={0.2} /></span>. This covers DNS setup, SSL, server configuration, and go-live verification. <span className="text-white font-medium">No extra charge.</span>
         </p>
       ],
       chips: ["Cloud Architecture", "DNS & SSL Setup", "Performance Tuning"],
-      icon: <Rocket size={28} className="text-brand-cyan" />
+      icon: <Rocket size={28} className="text-white" />
     },
     {
       id: "03",
@@ -72,17 +72,17 @@ const ProcessSection = () => {
       subtitle: "Handover & stabilization",
       descriptionParts: [
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          From the <span className="relative inline">exact day of deployment<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span>, we maintain your website or web app for exactly 30 days. Completely free.
+          From the <span className="relative inline">exact day of deployment<BrushUnderline colorClass="text-white/60" delay={0} /></span>, we maintain your website or web app for exactly 30 days. Completely free.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           During this period, we act as your dedicated development team. We fix bugs, push updates, resolve any issues, and ensure <span className="relative inline">zero data or security vulnerabilities<BrushUnderline colorClass="text-white/40" delay={0.1} /></span>.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          This is <span className="relative inline">our offer to you<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. No obligation. If you&apos;d prefer to manage independently after launch, you&apos;re free to skip this. But if you want peace of mind, we&apos;re here.
+          This is <span className="relative inline">our offer to you<BrushUnderline colorClass="text-white/60" delay={0.2} /></span>. No obligation. If you&apos;d prefer to manage independently after launch, you&apos;re free to skip this. But if you want peace of mind, we&apos;re here.
         </p>
       ],
       chips: ["30-Day Free Support", "Bug Fixes & Uploads", "Smooth Handover"],
-      icon: <Shield size={28} className="text-brand-cyan" />
+      icon: <Shield size={28} className="text-white" />
     },
     {
       id: "04",
@@ -90,30 +90,30 @@ const ProcessSection = () => {
       subtitle: "3, 6, or 12 Month Contracts",
       descriptionParts: [
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          After the free period, you can choose to <span className="relative inline">collaborate with us long-term<BrushUnderline colorClass="text-brand-cyan/60" delay={0} /></span>. We offer 3, 6, or 12-month contracts based on what fits you best.
+          After the free period, you can choose to <span className="relative inline">collaborate with us long-term<BrushUnderline colorClass="text-white/60" delay={0} /></span>. We offer 3, 6, or 12-month contracts based on what fits you best.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
           Our developers will be <span className="relative inline">dedicated to your platform<BrushUnderline colorClass="text-white/40" delay={0.1} /></span>. They fix bugs, ship updates, and resolve new issues. You won&apos;t need to hire a separate developer.
         </p>,
         <p key={Math.random()} className="text-white/95 font-sans text-[13px] min-[350px]:text-[14px] md:text-[15px] leading-[1.6] font-normal">
-          Pricing is <span className="relative inline">flexible and project-based<BrushUnderline colorClass="text-brand-cyan/60" delay={0.2} /></span>. What you pay depends on the scale and complexity of your project. No fixed overpriced packages.
+          Pricing is <span className="relative inline">flexible and project-based<BrushUnderline colorClass="text-white/60" delay={0.2} /></span>. What you pay depends on the scale and complexity of your project. No fixed overpriced packages.
         </p>
       ],
       chips: ["Daily Monitoring", "Regular Upgrades", "Priority SLA"],
-      icon: <MonitorPlay size={28} className="text-brand-cyan" />
+      icon: <MonitorPlay size={28} className="text-white" />
     }
   ];
 
   return (
-    <div ref={containerRef} className="h-[500vh] w-full relative bg-[#030712] border-t border-brand-navy/[0.08] dark:border-white/5">
+    <div ref={containerRef} className="h-[500vh] w-full relative bg-[#0E1115] border-t border-white/10 dark:border-white/5">
       {/* Pinned Sticky Viewport */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center overflow-hidden py-12 px-6">
       
       {/* Background Atmosphere - Premium Glow Style */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-black overflow-hidden">
         {/* Premium Cyan/Blue Radial Glow for Glass Refraction */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-cyan/15 blur-[120px] rounded-full mix-blend-screen pointer-events-none opacity-80"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-brand-blue/20 blur-[80px] rounded-full mix-blend-screen pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D0D7DF]/15 blur-[120px] rounded-full mix-blend-screen pointer-events-none opacity-80"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#E1E7EE]/15 blur-[80px] rounded-full mix-blend-screen pointer-events-none"></div>
         
         {/* {<TechParticles scatterOnly={true} />} */}
         
@@ -266,7 +266,7 @@ const ProcessSection = () => {
                             damping: 18,
                             delay: 0.2 + i * 0.12
                           }}
-                          className="absolute px-4 py-2.5 bg-brand-navy/95 border border-brand-cyan/40 backdrop-blur-xl rounded-xl shadow-[0_10px_30px_rgba(34,197,232,0.25)] whitespace-nowrap transform-gpu"
+                          className="absolute px-4 py-2.5 bg-[#171B21]/95 border border-[rgba(255,255,255,0.18)] backdrop-blur-xl rounded-xl shadow-[0_10px_30px_rgba(17,20,24,0.20)] whitespace-nowrap transform-gpu"
                           style={{ 
                             left: pos.left, 
                             top: pos.top,
@@ -276,9 +276,9 @@ const ProcessSection = () => {
                             willChange: "transform"
                           }}
                         >
-                          <div className="absolute inset-0 bg-gradient-to-tr from-brand-cyan/10 to-transparent rounded-xl pointer-events-none"></div>
+                          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent rounded-xl pointer-events-none"></div>
                           <div className="relative z-10 flex items-center gap-2 transform-gpu" style={{ transform: "translateZ(1px)" }}>
-                            <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_8px_rgba(34,197,232,0.8)]"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#0E7C86] shadow-[0_0_8px_rgba(14,124,134,0.8)]"></span>
                             <span className="text-white font-mono text-[12px] md:text-[13px] font-medium tracking-wide uppercase drop-shadow-sm antialiased">{chip}</span>
                           </div>
                         </motion.div>
@@ -295,7 +295,7 @@ const ProcessSection = () => {
 
       {/* Interactive Scroll Helper Hint */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-slate-500 text-[11px] font-mono uppercase tracking-widest pt-1 z-30">
-        <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-ping"></span>
+        <span className="w-1.5 h-1.5 rounded-full bg-[#0E7C86] animate-ping"></span>
         <span>Scroll to Rotate</span>
       </div>
 

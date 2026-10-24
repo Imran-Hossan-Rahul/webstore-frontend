@@ -9,36 +9,49 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        ink: {
+          DEFAULT: 'var(--ink)',
+          hover: 'var(--ink-hover)',
+          active: 'var(--ink-active)',
+          foreground: 'var(--on-ink)',
+        },
+        'on-ink': 'var(--on-ink)',
+        link: 'var(--link)',
+        body: 'var(--body)',
+        muted: 'var(--muted)',
+        'surface-soft': 'var(--surface-soft)',
+        'border-soft': 'var(--border-soft)',
+        'focus-ring': 'var(--focus-ring)',
+        signal: 'var(--signal)',
         dark: {
-          bg: '#000000',
-          surface: '#0A0A0A',
+          bg: '#0E1115',
+          surface: '#171B21',
           text: '#FFFFFF',
-          border: '#262626',
+          border: 'rgba(255, 255, 255, 0.15)',
         },
         brand: {
           /* New Semantic Tokens */
           main: 'var(--bg-main)',
           surface: 'var(--bg-surface)',
           dark: 'var(--bg-dark-section)',
-          interaction: 'var(--bg-primary-interaction)',
-          accent: 'var(--bg-tech-accent)',
-          cta: 'var(--bg-important-cta)',
-          success: 'var(--bg-success)',
-          text: 'var(--text-primary)',
-          muted: 'var(--text-secondary)',
+          interaction: 'var(--ink)',
+          accent: 'var(--muted)',
+          cta: 'var(--ink)',
+          success: 'var(--signal)',
+          text: 'var(--ink)',
+          muted: 'var(--muted)',
           
-          navy: '#0B2545', // Midnight Navy (Primary)
-          blue: '#1D5FD1', // Trust Blue (Primary Action)
-          cyan: '#22C7E8', // Circuit Cyan (Tech Accent)
-          amber: '#F5A623', // Signal Amber (Commercial CTA)
-          teal: '#0B7A68', // Verified Teal (Success)
-          sky: '#DCE9FB', // Sky Tint (Soft surface)
-          cloud: '#F4F7FB', // Cloud (Background)
-          slate: '#34435A', // Slate (Body text)
+          navy: 'var(--ink)', // Maps to #111418
+          blue: 'var(--ink)', // Primary action maps to #111418
+          cyan: 'var(--muted)', // Tech accent maps to #6A727C
+          amber: 'var(--ink)', // Commercial CTA maps to #111418
+          teal: 'var(--signal)', // Functional signal #0E7C86
+          sky: 'var(--surface-soft)', // Surface soft tint #E6E9ED
+          cloud: '#F7F9FB', // Pearl white background
+          slate: 'var(--body)', // Body text #3B424A
           // Keep these for backwards compatibility with existing components
-          primary: '#0B2545',
-          secondary: '#1D5FD1',
-          
+          primary: 'var(--ink)',
+          secondary: 'var(--link)',
           
           "glass": 'rgba(255, 255, 255, 0.02)',
         },

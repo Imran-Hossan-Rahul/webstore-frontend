@@ -8,7 +8,7 @@ export default function SpinnerLink({
   href, 
   children, 
   className = '', 
-  spinnerColor = 'text-[#0071e3]',
+  spinnerColor = 'text-[#111418]',
   spinnerSize = 16,
   ...props 
 }) {

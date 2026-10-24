@@ -153,10 +153,10 @@ export default function Topbar() {
   const getNotificationIcon = (type) => {
     switch (type) {
       case 'order': return <ShoppingCart className="w-4 h-4 text-emerald-400" />;
-      case 'payment': return <CreditCard className="w-4 h-4 text-blue-400" />;
+      case 'payment': return <CreditCard className="w-4 h-4 text-white" />;
       case 'security': return <ShieldAlert className="w-4 h-4 text-red-400" />;
       case 'bug': return <AlertTriangle className="w-4 h-4 text-orange-400" />;
-      case 'message': return <MessageSquare className="w-4 h-4 text-purple-400" />;
+      case 'message': return <MessageSquare className="w-4 h-4 text-slate-300" />;
       case 'success': return <CheckCircle2 className="w-4 h-4 text-green-400" />;
       default: return <Info className="w-4 h-4 text-brand-cyan" />;
     }
@@ -255,7 +255,7 @@ export default function Topbar() {
           {/* Profile Dropdown */}
           <div className="relative" ref={profileRef}>
             <button onClick={() => setShowProfile(!showProfile)} className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-cyan to-blue-600 p-[1px]">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-white/30 to-white/80 p-[1px]">
                 <div className="w-full h-full bg-[#080808] rounded-full flex items-center justify-center overflow-hidden">
                   {user?.profilePicture ? (
                     <img src={user.profilePicture} alt="Profile" className="w-full h-full object-cover" />

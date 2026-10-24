@@ -122,7 +122,7 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                         <div className="flex justify-center mb-8">
                             <div 
                                 onClick={() => fileInputRef.current?.click()}
-                                className="w-32 h-32 rounded-full border-2 border-dashed border-brand-navy/[0.10] dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-purple-500 hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all relative overflow-hidden group"
+                                className="w-32 h-32 rounded-full border-2 border-dashed border-brand-navy/[0.10] dark:border-white/20 flex flex-col items-center justify-center cursor-pointer hover:border-[#111418] dark:hover:border-white hover:bg-[#E6E9ED] dark:hover:bg-white/10 transition-all relative overflow-hidden group"
                             >
                                 {previewUrl ? (
                                     <Image src={getOptimizedUrl(previewUrl)} alt="Preview" fill sizes="128px" className="object-cover" />
@@ -174,8 +174,8 @@ export default function UserOnboardingModal({ isOpen, onClose }) {
                                     onClick={() => toggleInterest(interest)}
                                     className={`px-4 py-2 rounded-full text-sm font-bold border transition-all ${
                                         selectedInterests.includes(interest)
-                                        ? "bg-brand-blue border-brand-blue text-white shadow-sm shadow-blue-500/30"
-                                        : "bg-brand-surface dark:bg-brand-surface/5 border-brand-navy/[0.10] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-blue-400"
+                                        ? "bg-[#111418] border-[#111418] text-white shadow-sm shadow-[rgba(17,20,24,0.20)]"
+                                        : "bg-brand-surface dark:bg-brand-surface/5 border-brand-navy/[0.10] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:border-[#111418]"
                                     }`}
                                 >
                                     {interest}

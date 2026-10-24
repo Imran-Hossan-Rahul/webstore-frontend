@@ -22,27 +22,28 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
     let TypeIcon = Code;
     let typeLabel = "Devlog";
     let href = `/post/${item._id}`;
-    let iconColor = "text-purple-500";
-    let bgColor = "bg-purple-50 dark:bg-purple-500/10";
+    let iconColor = "text-[#111418]";
+    let bgColor = "bg-[#E6E9ED] dark:bg-white/10";
 
     if (type === 'codex') {
         TypeIcon = PenTool;
         typeLabel = "Codex";
         href = `/codex/${item.slug}`;
-        iconColor = "text-orange-500";
-        bgColor = "bg-orange-50 dark:bg-orange-500/10";
+        iconColor = "text-[#111418]";
+        bgColor = "bg-[#E6E9ED] dark:bg-white/10";
     } else if (type === 'blog') {
-        TypeIcon = PenTool; // Or any icon
-        typeLabel = "Blog";
-        href = `/blog/${item.slug}`;
-        iconColor = "text-emerald-500";
-        bgColor = "bg-emerald-50 dark:bg-emerald-500/10";
+        const academyBase = process.env.NEXT_PUBLIC_ACADEMY_URL || "https://academy.codalina.com";
+        TypeIcon = PenTool;
+        typeLabel = "Academy";
+        href = item.academyUrl || `${academyBase}/blog/${item.slug}`;
+        iconColor = "text-[#111418]";
+        bgColor = "bg-[#E6E9ED] dark:bg-white/10";
     } else if (type === 'artifact') {
         TypeIcon = Layout;
         typeLabel = "Artifact";
         href = `/artifacts/${item._id}`;
-        iconColor = "text-brand-blue";
-        bgColor = "bg-brand-sky dark:bg-brand-blue/10";
+        iconColor = "text-[#111418]";
+        bgColor = "bg-[#E6E9ED] dark:bg-white/10";
     }
 
     const authorName = item.user?.name || item.author?.name || "Craftsman";
@@ -188,11 +189,15 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                            </span>
                        </CraftsmanHoverCard>
                        <span className="text-slate-400 text-sm">·</span>
-                       <button className="text-[13px] text-brand-blue hover:text-brand-blue dark:hover:text-blue-400 font-bold transition-colors">Follow</button>
+                       <button className="text-[13px] text-[#111418] dark:text-white hover:underline font-bold transition-colors">Follow</button>
                   </div>
 
                   {/* Title */}
-                  <Link href={href}>
+                  <Link 
+                    href={href}
+                    target={type === 'blog' ? "_blank" : undefined}
+                    rel={type === 'blog' ? "noopener noreferrer" : undefined}
+                  >
                       <h2 className="text-[18px] sm:text-[20px] font-bold text-slate-900 dark:text-white leading-snug tracking-tight mb-2">
                           {item.title || "Untitled"}
                       </h2>
@@ -218,7 +223,12 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                {/* Right side content */}
                <div className="w-[120px] sm:w-[150px] flex flex-col shrink-0 items-end">
                    <div className="relative w-full h-[90px] sm:h-[110px] rounded-xl overflow-hidden mb-4 bg-slate-100 dark:bg-brand-surface border border-brand-navy/[0.08] dark:border-white/10 transition-colors">
-                       <Link href={href} className="block w-full h-full">
+                       <Link 
+                           href={href} 
+                           target={type === 'blog' ? "_blank" : undefined}
+                           rel={type === 'blog' ? "noopener noreferrer" : undefined}
+                           className="block w-full h-full"
+                       >
                             {displayImage ? (
                                 <img src={getOptimizedUrl(displayImage)} className="object-cover w-full h-full" />
                             ) : (
@@ -227,7 +237,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                        </Link>
                         {isOwner && type === 'devlog' && (
                              <button 
-                                 className="absolute top-2 right-2 z-40 p-1.5 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                                 className="absolute top-2 right-2 z-40 p-1.5 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-[#111418] dark:hover:text-white hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                                  title="Edit Devlog"
                                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/upload-devlog?edit=${item._id || item.id}`); }}
                              >
@@ -236,7 +246,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                          )}
                          {isOwner && type === 'codex' && (
                              <button 
-                                 className="absolute top-2 right-2 z-40 p-1.5 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                                 className="absolute top-2 right-2 z-40 p-1.5 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-[#111418] dark:hover:text-white hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                                  title="Edit Codex"
                                  onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/codex-editor?slug=${item.slug}`); }}
                              >
@@ -281,7 +291,12 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
 
     return (
         <>
-        <Link href={href} className="group block w-full h-full">
+        <Link 
+            href={href} 
+            target={type === 'blog' ? "_blank" : undefined}
+            rel={type === 'blog' ? "noopener noreferrer" : undefined}
+            className="group block w-full h-full"
+        >
             <div className="flex flex-col h-full bg-brand-surface dark:bg-slate-900/20 backdrop-blur-md border border-brand-navy/[0.08] dark:border-white/10 rounded-2xl hover:bg-brand-cloud dark:hover:bg-slate-900/40 transition-all duration-300 hover:shadow-sm hover:-translate-y-0.5 shadow-sm relative overflow-hidden">
                 <div className="relative w-full aspect-[3/2] bg-brand-cloud dark:bg-slate-900 border-b border-slate-100 dark:border-white/5 transition-all duration-300 overflow-hidden">
                     {displayImage ? (
@@ -298,7 +313,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
 
                     {isOwner && type === 'devlog' && (
                         <button 
-                            className="absolute top-4 right-4 z-40 p-2 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                            className="absolute top-4 right-4 z-40 p-2 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-[#111418] dark:hover:text-white hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                             title="Edit Devlog"
                             onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/upload-devlog?edit=${item._id || item.id}`); }}
                         >
@@ -307,7 +322,7 @@ export default function ClassicExploreCard({ item, viewMode = 'grid', gridCols =
                     )}
                     {isOwner && type === 'codex' && (
                         <button 
-                            className="absolute top-4 right-4 z-40 p-2 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-brand-blue dark:hover:text-blue-400 hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
+                            className="absolute top-4 right-4 z-40 p-2 bg-brand-surface/90 dark:bg-slate-900/90 backdrop-blur-md rounded-full shadow-sm border border-brand-navy/[0.08] dark:border-white/10 text-brand-slate dark:text-slate-300 hover:text-[#111418] dark:hover:text-white hover:opacity-80 transition-all opacity-0 group-hover:opacity-100"
                             title="Edit Codex"
                             onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.push(`/codex-editor?slug=${item.slug}`); }}
                         >

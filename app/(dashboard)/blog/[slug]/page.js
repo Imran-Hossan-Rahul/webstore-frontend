@@ -103,6 +103,28 @@ export default function BlogDetailPage() {
     const params = useParams();
     const router = useRouter();
     const { slug } = params || {};
+
+    // Instant seamless redirect to full Codalina Academy reader
+    useEffect(() => {
+        if (slug) {
+            const academyBase = process.env.NEXT_PUBLIC_ACADEMY_URL || "https://academy.codalina.com";
+            window.location.replace(`${academyBase}/blog/${slug}`);
+        }
+    }, [slug]);
+
+    return (
+        <div className="min-h-[70vh] flex flex-col items-center justify-center p-6 text-center font-sans">
+            <div className="w-10 h-10 border-3 border-[#111418] border-t-transparent rounded-full animate-spin mb-4" />
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Connecting to Codalina Academy...</h2>
+            <p className="text-sm text-slate-500 mt-1">Opening the full interactive engineering article with code explorer & notes.</p>
+        </div>
+    );
+}
+
+function LegacyBlogDetailPage() {
+    const params = useParams();
+    const router = useRouter();
+    const { slug } = params || {};
     
     const [blog, setBlog] = useState(null);
     const [loading, setLoading] = useState(true);

@@ -123,7 +123,7 @@ export default function NotificationDropdown() {
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-brand-blue hover:bg-brand-sky dark:hover:bg-blue-900/20 px-3 py-1.5 rounded-lg font-medium transition-colors"
+                  className="text-sm text-[#111418] dark:text-white hover:bg-[#E6E9ED] dark:hover:bg-white/10 px-3 py-1.5 rounded-lg font-medium transition-colors"
                 >
                   Mark all as read
                 </button>
@@ -144,7 +144,7 @@ export default function NotificationDropdown() {
                   <div
                     key={notif._id}
                     className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-brand-cloud dark:hover:bg-slate-900/50 transition-all cursor-pointer relative ${
-                      !notif.read ? "bg-brand-sky dark:bg-blue-900/20 border-l-4 border-l-blue-500" : ""
+                      !notif.read ? "bg-[#E6E9ED]/50 dark:bg-white/5 border-l-4 border-l-[#111418] dark:border-l-white" : ""
                     }`}
                     onClick={async () => {
                       if (!notif.read) await markAsRead(notif._id);
@@ -157,7 +157,7 @@ export default function NotificationDropdown() {
                     }}
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold flex-shrink-0 shadow-sm relative overflow-hidden">
+                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#111418] to-[#3B424A] flex items-center justify-center text-white font-bold flex-shrink-0 shadow-sm relative overflow-hidden">
                         {notif.sender?.profilePicture ? (
                           <Image src={getOptimizedUrl(notif.sender.profilePicture)} alt="Profile" fill sizes="44px" className="object-cover" />
                         ) : (
@@ -170,9 +170,9 @@ export default function NotificationDropdown() {
                           <span className="text-brand-slate dark:text-slate-400">{notif.message.replace(notif.sender?.name || "", "").trim()}</span>
                         </p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <p className="text-xs text-brand-blue dark:text-blue-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
+                          <p className="text-xs text-[#6A727C] dark:text-slate-400 font-medium">{getTimeAgo(notif.createdAt)}</p>
                           {!notif.read && (
-                            <div className="w-2 h-2 bg-brand-blue rounded-full" />
+                            <div className="w-2 h-2 bg-[#0E7C86] rounded-full" />
                           )}
                         </div>
                       </div>
@@ -184,7 +184,7 @@ export default function NotificationDropdown() {
 
             {notifications.length > 0 && (
               <Link href="/notifications">
-                <div className="p-4 text-center text-sm text-brand-blue hover:bg-brand-sky dark:hover:bg-blue-900/20 font-semibold cursor-pointer border-t border-brand-navy/[0.10] dark:border-slate-800 transition-colors">
+                <div className="p-4 text-center text-sm text-[#111418] dark:text-white hover:bg-[#E6E9ED] dark:hover:bg-white/10 font-semibold cursor-pointer border-t border-brand-navy/[0.10] dark:border-slate-800 transition-colors">
                   See all notifications
                 </div>
               </Link>

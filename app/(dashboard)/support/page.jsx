@@ -22,7 +22,7 @@ export default function SupportPage() {
       <div className="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <header className="text-center mb-16">
-          <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-semibold text-[#0071e3] mb-4 drop-shadow-sm">
+          <p className="uppercase tracking-[0.12em] text-[11px] font-mono font-semibold text-[#111418] mb-4 drop-shadow-sm">
             Customer Support
           </p>
           <h1 className="text-[36px] md:text-[48px] font-display font-medium text-slate-900 mb-6 leading-[1.05] tracking-[-0.02em]">
@@ -64,12 +64,12 @@ export default function SupportPage() {
             <Link key={idx} href={item.href} className="group block p-6 rounded-[20px] border border-white/20 bg-white/60 backdrop-blur-lg shadow-sm hover:bg-white/80 transition-all duration-300 hover:shadow-md">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-[12px] bg-white/80 shadow-sm border border-white/40 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                  <svg className="w-6 h-6 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <svg className="w-6 h-6 text-[#111418]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-[16px] font-semibold font-sans text-slate-900 mb-1 group-hover:text-[#0071e3] transition-colors">
+                  <h3 className="text-[16px] font-semibold font-sans text-slate-900 mb-1 group-hover:text-[#111418] transition-colors">
                     {item.title}
                   </h3>
                   <p className="text-[14px] font-sans text-slate-600 leading-relaxed">
@@ -121,11 +121,11 @@ export default function SupportPage() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 mt-2">
-              <button type="submit" disabled={loading} className="w-full sm:w-auto h-12 px-8 rounded-[20px] bg-[#0071e3] text-white text-[14px] font-medium font-sans hover:bg-[#0077ed] transition-colors shadow-[0_4px_12px_rgba(0,0,0,0.1)] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
+              <button type="submit" disabled={loading} className="w-full sm:w-auto h-12 px-8 rounded-[20px] bg-[#111418] text-white text-[14px] font-medium font-sans hover:bg-[#2B3038] active:bg-[#000000] transition-colors shadow-[0_4px_12px_rgba(17,20,24,0.15)] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed">
                 {loading ? "Sending..." : "Send Message"}
               </button>
               <button type="button" onClick={() => window.dispatchEvent(new CustomEvent("toggle-chat"))} className="w-full sm:w-auto h-12 px-8 rounded-[20px] bg-white/60 border border-white/40 text-slate-900 text-[14px] font-medium font-sans hover:bg-white/80 transition-colors shadow-sm active:scale-95 flex items-center justify-center gap-2">
-                <svg className="w-4 h-4 text-[#0071e3]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4 text-[#111418]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
                 Chat with our team

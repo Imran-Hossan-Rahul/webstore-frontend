@@ -12,11 +12,11 @@ import AppleSpinner from "@/components/ui/AppleSpinner";
 
 const FEEDBACK_TYPES = [
     { id: 'comment', label: 'Discussion', icon: MessageCircle, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-100 dark:bg-brand-surface/10' },
-    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-brand-blue dark:text-blue-400', bg: 'bg-brand-sky dark:bg-blue-950/30 border border-blue-100/50 dark:border-blue-900/30' },
-    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-brand-teal dark:text-emerald-400', bg: 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100/50 dark:border-emerald-900/30' },
+    { id: 'question', label: 'Question', icon: HelpCircle, color: 'text-[#111418] dark:text-white', bg: 'bg-[#E6E9ED] dark:bg-white/10 border border-[rgba(17,20,24,0.18)]' },
+    { id: 'answer', label: 'Answer', icon: CheckCircle, color: 'text-[#0E7C86] dark:text-[#0E7C86]', bg: 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100/50 dark:border-emerald-900/30' },
     { id: 'issue', label: 'Issue', icon: AlertCircle, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-50 dark:bg-rose-950/30 border border-rose-100/50 dark:border-rose-900/30' },
     { id: 'suggestion', label: 'Idea', icon: Lightbulb, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-50 dark:bg-amber-950/30 border border-amber-100/50 dark:border-amber-900/30' },
-    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-brand-blue dark:text-indigo-400', bg: 'bg-brand-sky dark:bg-indigo-950/30 border border-indigo-100/50 dark:border-indigo-900/30' },
+    { id: 'critique', label: 'Critique', icon: Eye, color: 'text-[#6A727C] dark:text-slate-300', bg: 'bg-[#E6E9ED] dark:bg-white/10 border border-[rgba(17,20,24,0.18)]' },
     { id: 'kudos', label: 'Kudos', icon: Flame, color: 'text-pink-600 dark:text-pink-400', bg: 'bg-pink-50 dark:bg-pink-950/30 border border-pink-100/50 dark:border-pink-900/30' },
 ];
 
@@ -104,7 +104,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                     comment.feedbackType === 'issue' ? 'border-rose-500/20 dark:border-rose-500/10 bg-rose-50/5 dark:bg-rose-950/5' : 
                     comment.feedbackType === 'suggestion' ? 'border-amber-500/20 dark:border-amber-500/10 bg-amber-50/5 dark:bg-amber-950/5' : 
                     comment.feedbackType === 'answer' ? 'border-brand-teal/20 dark:border-brand-teal/10 bg-emerald-50/5 dark:bg-emerald-950/5' :
-                    comment.feedbackType === 'critique' ? 'border-brand-blue/20 dark:border-brand-blue/10 bg-brand-sky/5 dark:bg-indigo-950/5' :
+                    comment.feedbackType === 'critique' ? 'border-[rgba(17,20,24,0.18)] dark:border-white/10 bg-[#E6E9ED]/20 dark:bg-white/5' :
                     comment.feedbackType === 'kudos' ? 'border-pink-500/20 dark:border-pink-500/10 bg-pink-50/5 dark:bg-pink-950/5' :
                     'border-brand-navy/[0.08] dark:border-white/5'
                   } z-10`
@@ -154,7 +154,7 @@ const CommentNode = ({ comment, depth = 0, onReply, isReplyingToThis, onSubmitRe
                         <div className="flex items-center gap-4 mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                              <button 
                                 onClick={() => onReply(comment._id)}
-                                className="text-[10px] font-bold text-slate-400 hover:text-purple-500 flex items-center gap-1 transition-colors"
+                                className="text-[10px] font-bold text-slate-400 hover:text-[#111418] dark:hover:text-white flex items-center gap-1 transition-colors"
                              >
                                  Reply
                              </button>
@@ -269,7 +269,7 @@ const AdvancedInput = ({ onSubmit, onCancel, placeholder, autoFocus = false }) =
                     <button 
                         onClick={handleSubmit}
                         disabled={!text.trim()}
-                        className="px-4 py-2 bg-brand-blue text-white text-xs font-bold rounded-xl hover:bg-brand-blue disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-indigo-600/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+                        className="px-4 py-2 bg-[#111418] text-white text-xs font-bold rounded-xl hover:bg-[#2B3038] active:bg-[#000000] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-[rgba(17,20,24,0.20)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
                     >
                         <Send size={12} /> Post
                     </button>
@@ -656,7 +656,7 @@ const AdvancedCommentSection = ({ postId, postAuthorId, initialComments = [], on
                         { (searchQuery || activeFilter) && (
                             <button 
                                 onClick={() => { setSearchQuery(""); setActiveFilter(null); }}
-                                className="text-xs font-bold text-brand-blue dark:text-indigo-400 hover:underline"
+                                className="text-xs font-bold text-[#111418] dark:text-white hover:underline"
                             >
                                 Clear all filters
                             </button>

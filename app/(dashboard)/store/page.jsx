@@ -448,7 +448,7 @@ export default function ShopPage() {
             }}
             disabled={loadingCartId === (product.id || product._id)}
             className={`flex-auto text-white py-[6px] md:py-[8px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-colors flex items-center justify-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed ${
-              isAdded ? 'bg-emerald-500 hover:bg-emerald-600' : 'bg-[#0071e3] hover:bg-[#0077ed]'
+              isAdded ? 'bg-[#0E7C86] hover:bg-[#0E7C86]/90' : 'bg-[#111418] hover:bg-[#2B3038] active:bg-[#000000] shadow-[0_4px_12px_rgba(17,20,24,0.20)]'
             }`}
           >
             {loadingCartId === (product.id || product._id) ? (
@@ -462,10 +462,10 @@ export default function ShopPage() {
           <button 
             onClick={(e) => handleBuyNow(e, product)}
             disabled={isPending && loadingBuyId === (product.id || product._id)}
-            className="flex-auto bg-white/20 backdrop-blur-lg border border-[#0071e3]/50 text-[#0071e3] py-[6px] md:py-[8px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-all hover:bg-white/40 hover:border-[#0071e3]/70 shadow-[0_4px_12px_rgba(0,0,0,0.05)] flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
+            className="flex-auto bg-white/20 backdrop-blur-lg border border-[rgba(17,20,24,0.18)] text-[#111418] py-[6px] md:py-[8px] px-2 md:px-4 text-[12px] md:text-[13px] whitespace-nowrap font-sans font-normal rounded-full transition-all hover:bg-white/40 hover:border-[rgba(17,20,24,0.30)] shadow-[0_4px_12px_rgba(0,0,0,0.05)] flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
           >
             {isPending && loadingBuyId === (product.id || product._id) ? (
-              <AppleSpinner size={16} className="text-[#0071e3]" />
+              <AppleSpinner size={16} className="text-[#111418]" />
             ) : (
               product.productType ? 'Get Now' : 'Buy Now'
             )}
@@ -484,16 +484,16 @@ export default function ShopPage() {
         
         {/* Sidebar Filters — mobile: full-screen overlay, desktop: sticky column */}
         <div className={`
-          fixed inset-0 z-[45] bg-brand-cloud  backdrop-blur-xl shadow-sm md:bg-transparent md:backdrop-blur-none md:shadow-none
+          fixed inset-0 z-[45] bg-brand-cloud backdrop-xl shadow-sm
           md:relative md:inset-auto md:z-auto
-          md:bg-white/10 md:backdrop-blur-2xl md:shadow-[0_4px_30px_rgba(0,0,0,0.05)] md:border-r md:border-white/20
-          md:w-52 lg:w-60 flex-shrink-0 
+          md:bg-white/40 md:backdrop-blur-2xl md:shadow-[0_4px_30px_rgba(0,0,0,0.05)] md:border-r md:border-white/20
+          md:w-[calc(13rem+30px)] lg:w-[calc(15rem+30px)] md:-ml-[30px] md:pl-[30px] flex-shrink-0 
           transform ${showMobileFilters ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300
         `}>
           <div className="h-full md:sticky md:top-20 md:max-h-[calc(100vh-80px)] overflow-y-auto p-6 pt-20 md:pt-6 scrollbar-hide">
             <div className="flex items-center justify-between mb-8 md:hidden">
-              <h2 className="text-[20px] font-display font-medium text-brand-navy ">Filters</h2>
-              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-slate-500  hover:text-brand-navy  transition-colors">
+              <h2 className="text-[20px] font-display font-medium text-[#111418]">Filters</h2>
+              <button onClick={() => setShowMobileFilters(false)} className="p-2 text-[#5B636D] hover:text-[#111418] transition-colors">
                 <X size={24} />
               </button>
             </div>
@@ -501,27 +501,27 @@ export default function ShopPage() {
 
 
             <div className="mb-8 mt-4">
-              <h3 className="text-[12px] font-sans font-semibold tracking-wide uppercase text-slate-900 mb-4" style={{ color: '#0f172a' }}>Price (BDT)</h3>
+              <h3 className="text-[12px] font-sans font-semibold tracking-wide uppercase text-[#111418] mb-4">Price (BDT)</h3>
               <div className="flex items-center gap-2 mb-4">
                 <input 
                   type="number" 
                   value={tempMinPrice}
                   onChange={e => setTempMinPrice(e.target.value)}
                   placeholder="Min" 
-                  className="w-full bg-white/80 border border-brand-navy/10 rounded-[10px] px-3 py-2.5 text-[13px] outline-none focus:outline-none focus:border-brand-navy focus:ring-0 transition-colors text-slate-900 placeholder:text-slate-500 shadow-inner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full bg-white/80 border border-[rgba(17,20,24,0.18)] rounded-[10px] px-3 py-2.5 text-[13px] outline-none focus:outline-none focus:border-[#111418] focus:ring-2 focus:ring-[rgba(17,20,24,0.50)] transition-colors text-[#111418] placeholder:text-[#6A727C] shadow-inner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
-                <span className="text-slate-600 font-medium">-</span>
+                <span className="text-[#3B424A] font-medium">-</span>
                 <input 
                   type="number" 
                   value={tempMaxPrice}
                   onChange={e => setTempMaxPrice(e.target.value)}
                   placeholder="Max" 
-                  className="w-full bg-white/80 border border-brand-navy/10 rounded-[10px] px-3 py-2.5 text-[13px] outline-none focus:outline-none focus:border-brand-navy focus:ring-0 transition-colors text-slate-900 placeholder:text-slate-500 shadow-inner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  className="w-full bg-white/80 border border-[rgba(17,20,24,0.18)] rounded-[10px] px-3 py-2.5 text-[13px] outline-none focus:outline-none focus:border-[#111418] focus:ring-2 focus:ring-[rgba(17,20,24,0.50)] transition-colors text-[#111418] placeholder:text-[#6A727C] shadow-inner [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
               <button 
                 onClick={applyPriceFilter}
-                className="w-full bg-brand-navy text-white py-2.5 px-4 text-[13px] font-sans font-medium rounded-[10px] transition-all hover:bg-brand-navy/90 hover:shadow-[0_4px_12px_rgba(11,37,69,0.3)] flex items-center justify-center"
+                className="w-full bg-[#111418] text-[#FFFFFF] py-2.5 px-4 text-[13px] font-sans font-medium rounded-[10px] transition-all hover:bg-[#2B3038] active:bg-[#000000] hover:shadow-[0_4px_12px_rgba(17,20,24,0.20)] flex items-center justify-center"
               >
                 Apply Price
               </button>
@@ -534,89 +534,89 @@ export default function ShopPage() {
         <div className="flex-1 flex flex-col min-h-screen bg-transparent">
           
           {/* Top Bar Container */}
-          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-5 lg:px-6 md:py-3 md:pb-3 md:border-b border-brand-navy/[0.08] ">
+          <div className="contents md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:px-5 lg:px-6 md:py-3 md:pb-3 md:border-b border-[rgba(17,20,24,0.18)] ">
             
             {/* Breadcrumbs (Scrolls away on mobile) */}
             <div className="w-full md:max-w-md flex items-center overflow-hidden px-4 pt-[22px] pb-1.5 md:p-0 -mt-[16px] md:mt-0 relative z-30 bg-transparent">
               {searchQuery ? (
-                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] font-sans font-medium text-brand-navy  w-full pb-0.5 md:pb-0">
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[15px] md:text-[16px] font-sans font-medium text-[#111418]  w-full pb-0.5 md:pb-0">
                   Search Results for "{searchQuery}"
                 </div>
               ) : activeBreadcrumb ? (
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-mono tracking-widest uppercase text-slate-400 w-full pb-0.5 md:pb-0">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] font-mono tracking-widest uppercase text-[#6A727C] w-full pb-0.5 md:pb-0">
                   {activeBreadcrumb.map((crumb, i) => (
                     <React.Fragment key={i}>
                       {i > 0 && <span className="opacity-40 shrink-0">/</span>}
                       {crumb.onClick ? (
                         <button
                           onClick={crumb.onClick}
-                          className={`transition-colors hover:text-brand-blue shrink-0 ${
-                            i === activeBreadcrumb.length - 1 ? 'text-brand-navy  pointer-events-none' : ''
+                          className={`transition-colors hover:text-[#2B3038] shrink-0 ${
+                            i === activeBreadcrumb.length - 1 ? 'text-[#111418]  pointer-events-none' : ''
                           }`}
                         >
                           {crumb.label}
                         </button>
                       ) : (
-                        <span className="text-brand-navy  shrink-0">{crumb.label}</span>
+                        <span className="text-[#111418]  shrink-0">{crumb.label}</span>
                       )}
                     </React.Fragment>
                   ))}
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5 text-[14px] md:text-[14px] text-brand-navy  font-medium md:font-normal">
+                <div className="flex items-center gap-1.5 text-[14px] md:text-[14px] text-[#111418]  font-medium md:font-normal">
                   Store
                 </div>
               )}
             </div>
             
             {/* Filter + Sort By (Sticky on mobile globally) */}
-            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-brand-navy/[0.08]  md:border-none md:p-0 bg-brand-surface/80  backdrop-blur-[20px] md:bg-transparent md:backdrop-blur-none flex items-center justify-between md:justify-end gap-2 mt-0">
-              <span className="text-[13px] md:text-[14px] font-sans text-slate-500  whitespace-nowrap hidden md:block">Sort by:</span>
+            <div className="sticky md:static top-[44px] z-40 w-full md:w-auto px-4 pt-0.5 pb-1.5 border-b border-[rgba(17,20,24,0.18)]  md:border-none md:p-0 bg-brand-surface/80  backdrop-blur-[20px] md:bg-transparent md:backdrop-blur-none flex items-center justify-between md:justify-end gap-2 mt-0">
+              <span className="text-[13px] md:text-[14px] font-sans text-[#6A727C]  whitespace-nowrap hidden md:block">Sort by:</span>
               
               <div className="flex items-center gap-2 w-full md:w-auto">
-                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-brand-surface  border border-brand-navy/[0.08]  text-[13px] text-brand-navy  py-1.5 px-3 rounded-[4px] transition-colors flex-1 hover:bg-brand-cloud ">
-                  <Filter size={14} className="text-brand-navy " />
+                <button onClick={() => setShowMobileFilters(true)} className="md:hidden flex items-center justify-center gap-1.5 bg-brand-surface  border border-[rgba(17,20,24,0.18)]  text-[13px] text-[#111418]  py-1.5 px-3 rounded-[4px] transition-colors flex-1 hover:bg-[#E6E9ED] ">
+                  <Filter size={14} className="text-[#111418] " />
                   Filter
                 </button>
 
                 <div className="relative flex-1 md:flex-none">
                   <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className="w-full md:w-auto bg-brand-surface  border border-brand-navy/[0.08]  md:bg-transparent md:border-transparent md:hover:bg-slate-100 .05] text-[13px] md:text-[14px] text-brand-navy  font-medium md:font-normal py-1.5 px-3 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer rounded-[4px] transition-colors shadow-sm md:shadow-none"
+                    className="w-full md:w-auto bg-brand-surface  border border-[rgba(17,20,24,0.18)]  md:bg-transparent md:border-transparent md:hover:bg-[#E6E9ED] text-[13px] md:text-[14px] text-[#111418]  font-medium md:font-normal py-1.5 px-3 flex items-center justify-center md:justify-end gap-1.5 cursor-pointer rounded-[4px] transition-colors shadow-sm md:shadow-none"
                   >
                     {sortOrder === 'latest' ? 'Latest Arrivals' : sortOrder === 'price_asc' ? 'Price: Low to High' : 'Price: High to Low'}
-                    <ChevronDown className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] text-slate-500  transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-[14px] h-[14px] md:w-[16px] md:h-[16px] text-[#6A727C]  transition-transform duration-200 ${isSortOpen ? 'rotate-180' : ''}`} />
                   </button>
 
                 {isSortOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsSortOpen(false)}></div>
-                    <div className="absolute right-0 top-[calc(100%+4px)] w-[200px] bg-brand-surface  border border-brand-navy/[0.08]  rounded-[4px] shadow-sm overflow-hidden z-50 p-1">
+                    <div className="absolute right-0 top-[calc(100%+4px)] w-[200px] bg-brand-surface  border border-[rgba(17,20,24,0.18)]  rounded-[4px] shadow-sm overflow-hidden z-50 p-1">
                       <button
                         onClick={() => { setSortOrder('latest'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'latest' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy  hover:bg-slate-100 .05] '}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'latest' ? 'bg-[#E6E9ED] text-[#111418] font-medium' : 'text-[#111418]  hover:bg-[#E6E9ED] '}`}
                       >
                         Latest Arrivals
                         {sortOrder === 'latest' && (
-                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
+                          <Check className="w-4 h-4 text-[#111418]" strokeWidth={2.5} />
                         )}
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_asc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy  hover:bg-slate-100 .05] '}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_asc' ? 'bg-[#E6E9ED] text-[#111418] font-medium' : 'text-[#111418]  hover:bg-[#E6E9ED] '}`}
                       >
                         Price: Low to High
                         {sortOrder === 'price_asc' && (
-                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
+                          <Check className="w-4 h-4 text-[#111418]" strokeWidth={2.5} />
                         )}
                       </button>
                       <button
                         onClick={() => { setSortOrder('price_desc'); setIsSortOpen(false); }}
-                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-brand-blue/10 text-brand-blue font-medium' : 'text-brand-navy  hover:bg-slate-100 .05] '}`}
+                        className={`w-full text-left px-3 py-2 text-[13px] transition-colors rounded-[2px] flex items-center justify-between ${sortOrder === 'price_desc' ? 'bg-[#E6E9ED] text-[#111418] font-medium' : 'text-[#111418]  hover:bg-[#E6E9ED] '}`}
                       >
                         Price: High to Low
                         {sortOrder === 'price_desc' && (
-                          <Check className="w-4 h-4 text-brand-blue" strokeWidth={2.5} />
+                          <Check className="w-4 h-4 text-[#111418]" strokeWidth={2.5} />
                         )}
                       </button>
                     </div>

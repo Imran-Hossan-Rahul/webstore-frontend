@@ -127,10 +127,10 @@ const StorePreviewSection = ({ products }) => {
       className={`shrink-0 flex flex-col group cursor-none relative ${widthClass} h-[350px] md:h-[480px] mr-[13px]`}
     >
       {/* Visual Container */}
-      <div onClick={() => setNavigatingId(`product-${product.id || product._id}`)} className="w-full h-full bg-slate-50 border border-slate-200/80 rounded-none overflow-hidden relative flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-brand-blue/30 group-hover:shadow-[0_20px_40px_-15px_rgba(29,95,209,0.15)]">
+      <div onClick={() => setNavigatingId(`product-${product.id || product._id}`)} className="w-full h-full bg-slate-50 border border-slate-200/80 rounded-none overflow-hidden relative flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-[#111418]/30 group-hover:shadow-[0_20px_40px_-15px_rgba(17,20,24,0.15)]">
       {navigatingId === `product-${product.id || product._id}` && (
         <div className="absolute inset-0 z-[100] flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-[16px]">
-           <AppleSpinner size={32} className="text-[#0071e3]" />
+           <AppleSpinner size={32} className="text-[#111418]" />
         </div>
       )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20 pointer-events-none"></div>
@@ -149,7 +149,7 @@ const StorePreviewSection = ({ products }) => {
             {idx % 4 === 0 ? "7 Days Delivery" : idx % 4 === 1 ? "15 Days Delivery" : idx % 4 === 2 ? "3 Days Delivery" : "1 Month Delivery"}
           </div>
           <div 
-            className="bg-brand-blue hover:bg-blue-600 text-white px-5 py-2 rounded-full font-sans text-[13px] font-semibold tracking-tight shadow-lg shadow-brand-blue/30 flex items-center gap-2 cursor-pointer transition-colors"
+            className="bg-[#111418] hover:bg-[#2B3038] active:bg-[#000000] text-white px-5 py-2 rounded-full font-sans text-[13px] font-semibold tracking-tight shadow-lg shadow-[rgba(17,20,24,0.20)] flex items-center gap-2 cursor-pointer transition-colors"
             onMouseEnter={(e) => {
               e.stopPropagation();
               setIsHoveringBuyBtn(true);
@@ -182,7 +182,7 @@ const StorePreviewSection = ({ products }) => {
 
   return (
     <div className="w-full bg-white pt-10 pb-20 md:pt-16 md:pb-32 relative border-t border-slate-200 z-30 pointer-events-auto overflow-hidden">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-brand-blue/30 to-transparent"></div>
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[#111418]/20 to-transparent"></div>
       
       <div className="max-w-[1400px] w-full mx-auto flex flex-col items-center text-center px-6 md:px-12 mb-16 relative z-10">
         <div className="flex flex-col items-center gap-5">
@@ -296,7 +296,7 @@ const StorePreviewSection = ({ products }) => {
               </div>
               <div className="flex flex-col">
                 <span className="text-brand-navy dark:text-brand-navy font-sans text-[16px] font-semibold tracking-tight">Talk directly to the Founder</span>
-                <span className="text-brand-blue dark:text-brand-blue font-sans text-[14px]">Available for discovery calls</span>
+                <span className="text-[#3B424A] dark:text-[#3B424A] font-sans text-[14px]">Available for discovery calls</span>
               </div>
             </div>
 
@@ -316,7 +316,7 @@ const StorePreviewSection = ({ products }) => {
                   e.preventDefault();
                   router.push('/book-call');
                 }}
-                className="bg-brand-navy dark:bg-brand-navy text-white dark:text-white hover:bg-brand-blue dark:hover:bg-brand-blue px-4 min-[350px]:px-8 py-3 min-[350px]:py-4 rounded-full font-sans text-[13px] min-[350px]:text-[15px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-brand-navy/10 transform hover:-translate-y-1 w-full sm:w-auto whitespace-nowrap"
+                className="bg-[#111418] dark:bg-[#111418] text-white dark:text-white hover:bg-[#2B3038] dark:hover:bg-[#2B3038] px-4 min-[350px]:px-8 py-3 min-[350px]:py-4 rounded-full font-sans text-[13px] min-[350px]:text-[15px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-[rgba(17,20,24,0.20)] transform hover:-translate-y-1 w-full sm:w-auto whitespace-nowrap"
               >
                 Book a Strategy Call <ArrowRight size={18} />
               </button>

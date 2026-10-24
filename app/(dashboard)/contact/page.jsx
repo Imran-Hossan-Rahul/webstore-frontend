@@ -35,36 +35,36 @@ export default function ContactPage() {
               
               {/* Email */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <Mail className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <Mail className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Email Us</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   For general inquiries, partnerships, and technical questions.
                 </p>
-                <a href="mailto:info@codalina.com" className="text-[15px] font-medium text-[#0071e3] hover:underline">
+                <a href="mailto:info@codalina.com" className="text-[15px] font-medium text-[#2B3038] hover:underline">
                   info@codalina.com
                 </a>
               </div>
 
               {/* Live Chat */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <MessageCircleQuestion className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <MessageCircleQuestion className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Live Chat</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   Talk to our support team instantly directly from the platform.
                 </p>
-                <SpinnerLink href="/support" className="text-[15px] font-medium text-[#0071e3] hover:underline" spinnerSize={14}>
+                <SpinnerLink href="/support" className="text-[15px] font-medium text-[#2B3038] hover:underline" spinnerSize={14}>
                   Open Support Chat
                 </SpinnerLink>
               </div>
 
               {/* Location */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <MapPin className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <MapPin className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Our Office</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
@@ -77,42 +77,42 @@ export default function ContactPage() {
 
               {/* Phone */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <Phone className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <Phone className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Phone</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   Call us directly for urgent inquiries.
                 </p>
-                <a href="tel:+8801900000000" className="text-[15px] font-medium text-[#0071e3] hover:underline">
+                <a href="tel:+8801900000000" className="text-[15px] font-medium text-[#2B3038] hover:underline">
                   +880 1900 000000
                 </a>
               </div>
 
               {/* Facebook */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <Facebook className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <Facebook className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Facebook</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   Follow us for the latest updates and announcements.
                 </p>
-                <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="text-[15px] font-medium text-[#0071e3] hover:underline">
+                <a href="https://www.facebook.com/profile.php?id=61591711877853" target="_blank" rel="noreferrer" className="text-[15px] font-medium text-[#2B3038] hover:underline">
                   @codalinaglobal
                 </a>
               </div>
 
               {/* Instagram */}
               <div className="bg-white/30 backdrop-blur-3xl border border-white/50 p-8 rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.03)] flex flex-col items-center text-center transition-transform hover:-translate-y-1">
-                <div className="w-14 h-14 bg-brand-blue/10 rounded-full flex items-center justify-center mb-6">
-                  <Instagram className="w-6 h-6 text-[#0071e3]" />
+                <div className="w-14 h-14 bg-[#111418]/5 rounded-full flex items-center justify-center mb-6">
+                  <Instagram className="w-6 h-6 text-[#111418]" />
                 </div>
                 <h3 className="text-[20px] font-display font-medium text-slate-900 mb-2">Instagram</h3>
                 <p className="text-[15px] font-sans text-slate-600 mb-6 flex-1">
                   Check out behind-the-scenes and our daily stories.
                 </p>
-                <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="text-[15px] font-medium text-[#0071e3] hover:underline">
+                <a href="https://www.instagram.com/codalinaglobal/" target="_blank" rel="noreferrer" className="text-[15px] font-medium text-[#2B3038] hover:underline">
                   @codalinaglobal
                 </a>
               </div>

@@ -237,7 +237,7 @@ export default function LoginPage() {
             className="space-y-8"
           >
             <div className="flex justify-center">
-              <div className="w-20 h-20 rounded-[2rem] bg-brand-sky dark:bg-brand-blue/10 flex items-center justify-center text-brand-blue dark:text-indigo-400">
+              <div className="w-20 h-20 rounded-[2rem] bg-brand-sky dark:bg-brand-blue/10 flex items-center justify-center text-[#111418] dark:text-[#E6EBF0]">
                 <Shield size={40} />
               </div>
             </div>

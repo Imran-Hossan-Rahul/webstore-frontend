@@ -68,7 +68,7 @@ export function generateInvoice(order) {
     return `
       <tr>
         <td class="td-left font-medium">${title}</td>
-        <td class="td-left text-muted">${prodDetails}<br/><span style="font-size: 9.5px; font-family: monospace; color: ${isPaid ? '#0071e3' : '#f5a623'};">Access: ${licenseText}</span></td>
+        <td class="td-left text-muted">${prodDetails}<br/><span style="font-size: 9.5px; font-family: monospace; color: ${isPaid ? '#111418' : '#f5a623'};">Access: ${licenseText}</span></td>
         <td class="td-right">${fmt(price)} BDT</td>
         <td class="td-center">${qty}</td>
         <td class="td-right font-bold">${fmt(lineTotal)} BDT</td>
@@ -109,7 +109,7 @@ export function generateInvoice(order) {
           trackingText = 'Delivered Here';
         } else {
           phaseStatus = 'In Progress';
-          color = '#0071e3';
+          color = '#111418';
           icon = '◐';
           trackingText = 'Current Phase';
         }
@@ -154,12 +154,12 @@ export function generateInvoice(order) {
       `;
     }
 
-    let statusColor = '#0071e3';
+    let statusColor = '#111418';
     if (isDelivered) statusColor = '#10B981';
     if (order.status === 'Suspended') statusColor = '#F59E0B';
     if (order.status === 'Cancelled' || order.status === 'Payment Failed') statusColor = '#EF4444';
 
-    let phaseColor = '#0071e3';
+    let phaseColor = '#111418';
     let phaseLabel = 'Active Phase';
     if (isHalted) {
        phaseColor = '#F59E0B';
@@ -214,7 +214,7 @@ export function generateInvoice(order) {
       margin-bottom: 24px;
     }
     .print-btn {
-      background: #0071e3;
+      background: #111418;
       color: #ffffff;
       border: none;
       padding: 8px 20px;
@@ -224,7 +224,7 @@ export function generateInvoice(order) {
       cursor: pointer;
       transition: background 0.2s;
     }
-    .print-btn:hover { background: #0077ed; }
+    .print-btn:hover { background: #2B3038; }
 
     /* Header Section */
     .header-logo {

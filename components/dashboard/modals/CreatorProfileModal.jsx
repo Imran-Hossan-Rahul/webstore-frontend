@@ -86,7 +86,7 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
     if (!isOpen) return null;
 
     const coverGradient = isFullCreator && profile?.level === 'pro'
-        ? 'from-purple-600 to-indigo-600'
+        ? 'from-[#111418] to-[#3B424A]'
         : 'from-emerald-500 to-teal-600';
 
     return (
@@ -225,7 +225,7 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
                                         {profile.displayName}
                                     </h2>
                                     {profile.isVerified && (
-                                        <span className="text-blue-500 bg-blue-500/10 p-0.5 rounded-full" title="Verified">
+                                        <span className="text-[#0E7C86] bg-[#0E7C86]/10 p-0.5 rounded-full" title="Verified">
                                             <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                                         </span>
                                     )}
@@ -257,12 +257,12 @@ const CreatorProfileModal = ({ isOpen, onClose, userId }) => {
                                     <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-0.5">Likes</span>
                                 </div>
                                 <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
-                                    <BookOpen size={18} className="text-blue-500 mb-1.5" />
+                                    <BookOpen size={18} className="text-[#111418] mb-1.5" />
                                     <span className="text-xl font-black text-gray-900 dark:text-white">{(profile.totalBlogs || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-0.5">Articles</span>
                                 </div>
                                 <div className="bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/5 p-4 rounded-2xl flex flex-col items-center justify-center">
-                                    <Layers size={18} className="text-purple-500 mb-1.5" />
+                                    <Layers size={18} className="text-[#6A727C] mb-1.5" />
                                     <span className="text-xl font-black text-gray-900 dark:text-white">{(profile.totalTemplates || 0).toLocaleString()}</span>
                                     <span className="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-0.5">Templates</span>
                                 </div>

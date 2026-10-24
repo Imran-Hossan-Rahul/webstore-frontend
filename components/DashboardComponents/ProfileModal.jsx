@@ -185,7 +185,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                                       <textarea 
                                           value={editBio} 
                                           onChange={(e) => setEditBio(e.target.value)} 
-                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm min-h-[100px]"
+                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-[#111418] focus:ring-1 focus:ring-[rgba(17,20,24,0.50)] text-sm min-h-[100px]"
                                           placeholder="Write a bio..."
                                       />
                                     </div>
@@ -195,7 +195,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                                           type="text"
                                           value={editSkills} 
                                           onChange={(e) => setEditSkills(e.target.value)} 
-                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-purple-500 text-sm"
+                                          className="w-full p-3 rounded-xl border border-brand-navy/[0.10] dark:border-slate-700 bg-brand-surface dark:bg-brand-surface text-slate-900 dark:text-white outline-none focus:border-[#111418] focus:ring-1 focus:ring-[rgba(17,20,24,0.50)] text-sm"
                                           placeholder="UI/UX, Web Dev, Design..."
                                       />
                                     </div>
@@ -217,7 +217,7 @@ export default function ProfileModal({ isOpen, onClose }) {
                             <div className="flex flex-wrap gap-2">
                                 {displayProfile?.skills && displayProfile.skills.length > 0 ? (
                                     displayProfile.skills.map((skill, index) => (
-                                        <span key={`${skill}-${index}`} className="px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-lg text-xs font-medium">
+                                        <span key={`${skill}-${index}`} className="px-3 py-1.5 bg-[#E6E9ED] dark:bg-white/10 text-[#111418] dark:text-white rounded-lg text-xs font-medium">
                                             {skill}
                                         </span>
                                     ))

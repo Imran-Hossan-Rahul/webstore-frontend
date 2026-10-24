@@ -154,7 +154,7 @@ export default function AdminOrdersPage() {
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-2 items-start">
                         <span className={"inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-wider " +
-                          (order.status === 'In Collaboration' || order.status === 'Active' ? 'bg-blue-500/10 text-blue-400' : 
+                          (order.status === 'In Collaboration' || order.status === 'Active' ? 'bg-white/10 text-white' : 
                             order.status === 'Pending Verification' ? 'bg-yellow-500/10 text-yellow-400' :
                             'bg-green-500/10 text-green-400')
                         }>

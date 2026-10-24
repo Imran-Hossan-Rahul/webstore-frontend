@@ -52,12 +52,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
             <Link href={`/product/${featured.id || featured._id}`} onClick={() => setNavigatingId(`product-${featured.id || featured._id}`)} className="absolute inset-0 z-10"></Link>
             {navigatingId === `product-${featured.id || featured._id}` && (
               <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-lg">
-                 <AppleSpinner size={32} className="text-[#0071e3]" />
+                 <AppleSpinner size={32} className="text-[#111418]" />
               </div>
             )}
             
             {/* Visual Area */}
-            <div className="w-full aspect-[4/3] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
+            <div className="w-full aspect-[4/3] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-8 md:p-12 flex items-center justify-center overflow-hidden mb-6 transition-colors duration-500 group-hover:border-[#111418]/30 relative">
               <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               {featured.photos && JSON.parse(featured.photos)[0] ? (
                 <Image 
@@ -115,12 +115,12 @@ const EditorialProductShowcase = ({ products, isLoading }) => {
               <Link href={`/product/${product.id || product._id}`} onClick={() => setNavigatingId(`product-${product.id || product._id}`)} className="absolute inset-0 z-10"></Link>
             {navigatingId === `product-${product.id || product._id}` && (
               <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px] rounded-lg">
-                 <AppleSpinner size={32} className="text-[#0071e3]" />
+                 <AppleSpinner size={32} className="text-[#111418]" />
               </div>
             )}
               
               {/* Visual Area */}
-              <div className="w-full aspect-[16/9] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-brand-blue/30 relative">
+              <div className="w-full aspect-[16/9] bg-brand-surface dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/10 p-6 flex items-center justify-center overflow-hidden mb-4 transition-colors duration-500 group-hover:border-[#111418]/30 relative">
                 <div className="absolute inset-0 bg-brand-cloud/50 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 {product.photos && JSON.parse(product.photos)[0] ? (
                   <Image 

@@ -27,7 +27,7 @@ export const Input = React.forwardRef(({
         <input 
           id={generatedId}
           ref={ref}
-          className={`w-full bg-brand-surface  border ${error ? 'border-red-500' : 'border-brand-navy/[0.08] '} rounded-[4px] h-10 text-[14px] font-sans text-brand-navy  placeholder:text-slate-400 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-colors ${leftElement ? 'pl-10' : 'pl-3'} ${rightElement ? 'pr-10' : 'pr-3'} ${className}`}
+          className={`w-full bg-brand-surface border ${error ? 'border-red-500' : 'border-[rgba(17,20,24,0.18)]'} rounded-[4px] h-10 text-[14px] font-sans text-[#111418] placeholder:text-[#6A727C] focus:outline-none focus:border-[#111418] focus:ring-1 focus:ring-[rgba(17,20,24,0.50)] transition-colors ${leftElement ? 'pl-10' : 'pl-3'} ${rightElement ? 'pr-10' : 'pr-3'} ${className}`}
           {...props}
         />
         {rightElement && (

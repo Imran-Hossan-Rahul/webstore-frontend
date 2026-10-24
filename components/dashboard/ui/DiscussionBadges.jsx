@@ -56,11 +56,11 @@ export default function DiscussionBadges({ item, href, initialCounts = null }) {
 
                 const hoverColorMap = {
                     comment: 'group-hover/btn:text-brand-slate dark:text-slate-300 dark:group-hover/btn:text-slate-200',
-                    question: 'group-hover/btn:text-brand-blue dark:group-hover/btn:text-indigo-400',
-                    answer: 'group-hover/btn:text-brand-teal dark:group-hover/btn:text-emerald-400',
+                    question: 'group-hover/btn:text-[#111418] dark:group-hover/btn:text-white',
+                    answer: 'group-hover/btn:text-[#0E7C86] dark:group-hover/btn:text-[#0E7C86]',
                     issue: 'group-hover/btn:text-rose-500 dark:group-hover/btn:text-rose-400',
                     suggestion: 'group-hover/btn:text-brand-amber dark:group-hover/btn:text-amber-400',
-                    critique: 'group-hover/btn:text-violet-500 dark:group-hover/btn:text-violet-400',
+                    critique: 'group-hover/btn:text-[#6A727C] dark:group-hover/btn:text-slate-300',
                     kudos: 'group-hover/btn:text-orange-500 dark:group-hover/btn:text-orange-400'
                 };
 

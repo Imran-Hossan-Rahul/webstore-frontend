@@ -346,7 +346,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
         <Link href={`/product/${product.id}`} onClick={() => setNavigatingId(`product-${product.id}`)} className="absolute inset-0 z-10"></Link>
         {navigatingId === `product-${product.id}` && (
           <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/40 dark:bg-black/40 backdrop-blur-[2px]">
-             <AppleSpinner size={32} className="text-[#0071e3]" />
+             <AppleSpinner size={32} className="text-[#111418]" />
           </div>
         )}
       {product.photos && JSON.parse(product.photos)[0] ? (
@@ -374,9 +374,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
             {product.productType}
           </span>
         )}
-        <h3 className="font-medium text-[15px] text-brand-navy dark:text-white leading-[1.4] mb-2 line-clamp-2" style={{ minHeight: 'calc(1.4 * 15px * 2)' }}>{product.title}</h3>
+        <h3 className="font-medium text-[15px] text-[#111418] leading-[1.4] mb-2 line-clamp-2" style={{ minHeight: 'calc(1.4 * 15px * 2)' }}>{product.title}</h3>
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-[15px] font-semibold text-brand-navy dark:text-white">BDT {formatPrice(product.selling_price)}</span>
+          <span className="text-[15px] font-semibold text-[#111418]">BDT {formatPrice(product.selling_price)}</span>
           {Number(product.original_price) > Number(product.selling_price) && (
             <span className="text-[13px] text-slate-400 line-through">BDT {formatPrice(product.original_price)}</span>
           )}
@@ -395,7 +395,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
             }}
             disabled={loadingCartId === (product.id || product._id)}
             className={`flex-auto text-white py-2 px-3 text-[13px] font-sans font-medium rounded-[4px] transition-colors duration-200 flex items-center justify-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed z-20 ${
-              isAdded ? 'bg-brand-teal hover:bg-brand-teal/90' : 'bg-brand-blue hover:bg-brand-blue/90'
+              isAdded ? 'bg-[#0E7C86] hover:bg-[#0E7C86]/90' : 'bg-[#111418] hover:bg-[#2B3038] active:bg-[#000000] shadow-[0_4px_12px_rgba(17,20,24,0.20)]'
             }`}
           >
             {loadingCartId === (product.id || product._id) ? (
@@ -409,10 +409,10 @@ export default function MarketClientView({ initialData = [], initialPagination =
           <button 
             onClick={(e) => handleBuyNow(e, product)}
             disabled={isPending && loadingBuyId === (product.id || product._id)}
-            className="flex-auto bg-transparent border border-brand-navy/[0.08] dark:border-white/20 text-brand-navy dark:text-white py-2 px-3 text-[13px] font-sans font-medium rounded-[4px] transition-colors duration-200 hover:border-brand-blue hover:text-brand-blue dark:hover:border-brand-blue dark:hover:text-brand-blue flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
+            className="flex-auto bg-transparent border border-[rgba(17,20,24,0.18)] text-[#111418] py-2 px-3 text-[13px] font-sans font-medium rounded-[4px] transition-colors duration-200 hover:border-[#111418] hover:text-[#111418] flex items-center justify-center disabled:opacity-80 disabled:cursor-not-allowed"
           >
             {isPending && loadingBuyId === (product.id || product._id) ? (
-              <AppleSpinner size={16} className="text-brand-navy dark:text-white" />
+              <AppleSpinner size={16} className="text-[#111418]" />
             ) : (
               <>
                 <span>{product.productType ? 'Get Now' : 'Buy Now'}</span>
@@ -599,7 +599,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
               <div className="absolute top-0 left-0 w-full h-[100vh] pointer-events-none z-20 overflow-visible">
                 {/* Left Boxes */}
                 <div 
-                  className="absolute rounded-r-full bg-gradient-to-r from-brand-blue to-brand-blue/0 shadow-[0_0_35px_rgba(29,95,209,0.6)] opacity-[0.30] blur-[25px]"
+                  className="absolute rounded-r-full bg-gradient-to-r from-[#D0D7DF] to-[#D0D7DF]/0 shadow-[0_0_35px_rgba(208,215,223,0.25)] opacity-[0.30] blur-[25px]"
                   style={{
                     left: '0px',
                     top: leftBox1.y,
@@ -611,7 +611,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 />
 
                 <div 
-                  className="absolute rounded-r-full bg-gradient-to-r from-brand-blue to-brand-blue/0 shadow-[0_0_50px_rgba(29,95,209,0.7)] opacity-[0.40] blur-[22px]"
+                  className="absolute rounded-r-full bg-gradient-to-r from-[#E3EDF5] to-[#E3EDF5]/0 shadow-[0_0_50px_rgba(227,237,245,0.30)] opacity-[0.40] blur-[22px]"
                   style={{
                     left: '0px',
                     top: leftBox2.y,
@@ -624,7 +624,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
                 {/* Right Boxes */}
                 <div 
-                  className="absolute rounded-l-full bg-gradient-to-l from-brand-blue to-brand-blue/0 shadow-[0_0_35px_rgba(29,95,209,0.6)] opacity-[0.30] blur-[25px]"
+                  className="absolute rounded-l-full bg-gradient-to-l from-[#E4E2F0] to-[#E4E2F0]/0 shadow-[0_0_35px_rgba(228,226,240,0.25)] opacity-[0.30] blur-[25px]"
                   style={{
                     right: '0px',
                     top: rightBox1.y,
@@ -636,7 +636,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                 />
 
                 <div 
-                  className="absolute rounded-l-full bg-gradient-to-l from-brand-blue to-brand-blue/0 shadow-[0_0_50px_rgba(29,95,209,0.7)] opacity-[0.40] blur-[22px]"
+                  className="absolute rounded-l-full bg-gradient-to-l from-[#E1E7EE] to-[#E1E7EE]/0 shadow-[0_0_50px_rgba(225,231,238,0.30)] opacity-[0.40] blur-[22px]"
                   style={{
                     right: '0px',
                     top: rightBox2.y,
@@ -649,7 +649,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
 
                 {/* Center Ambient Bridge */}
                 <div 
-                  className="absolute rounded-full bg-brand-blue opacity-[0.12] blur-[80px]"
+                  className="absolute rounded-full bg-[#F7F9FB] opacity-[0.20] blur-[80px]"
                   style={{
                     left: '50%',
                     top: '0px',
@@ -780,7 +780,7 @@ export default function MarketClientView({ initialData = [], initialPagination =
                   router.push('/partner');
                 }}
                 disabled={navigatingId === 'partner'}
-                  className="group relative px-4 py-2 min-[320px]:px-5 min-[320px]:py-2.5 min-[380px]:px-8 min-[380px]:py-3.5 md:py-4 md:px-10 rounded-full border border-transparent bg-brand-blue text-white overflow-hidden transition-all duration-300 hover:bg-blue-600 hover:shadow-[0_8px_30px_-5px_rgba(37,99,235,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+                  className="group relative px-4 py-2 min-[320px]:px-5 min-[320px]:py-2.5 min-[380px]:px-8 min-[380px]:py-3.5 md:py-4 md:px-10 rounded-full border border-transparent bg-[#111418] text-white overflow-hidden transition-all duration-300 hover:bg-[#2B3038] active:bg-[#000000] hover:shadow-[0_8px_30px_-5px_rgba(17,20,24,0.30)] hover:scale-[1.02] active:scale-[0.98]"
                 >
                   <span className="relative z-10 font-medium text-[11px] min-[320px]:text-[13px] min-[380px]:text-[15px] md:text-[17px] tracking-tight flex items-center gap-1.5 min-[380px]:gap-2 whitespace-nowrap">
                   {navigatingId === 'partner' ? (
@@ -822,9 +822,9 @@ export default function MarketClientView({ initialData = [], initialPagination =
       
         {/* Search Empty State */}
         {query && displayedProducts.length === 0 && (
-          <div className="text-center py-20 bg-brand-cloud dark:bg-brand-surface rounded-[4px] border border-brand-navy/[0.08] dark:border-white/5 w-full my-8">
-            <h3 className="text-lg font-semibold text-brand-navy dark:text-white">No products found</h3>
-            <p className="text-slate-500 dark:text-slate-400 mt-2">Try adjusting your search query</p>
+          <div className="text-center py-20 bg-brand-cloud dark:bg-brand-surface rounded-[4px] border border-[rgba(17,20,24,0.18)]/40 w-full my-8">
+            <h3 className="text-lg font-semibold text-[#111418]">No products found</h3>
+            <p className="text-[#3B424A] mt-2">Try adjusting your search query</p>
           </div>
         )}
         

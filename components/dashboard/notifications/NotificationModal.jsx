@@ -146,10 +146,10 @@ export default function NotificationModal({ isOpen, onClose }) {
 
   const getIcon = (type) => {
     switch (type) {
-      case "message": return <MessageCircle className="text-brand-blue" size={18} />;
+      case "message": return <MessageCircle className="text-[#111418]" size={18} />;
       case "like": return <Star className="text-red-500 fill-red-500" size={18} />;
-      case "follow": return <UserPlus className="text-purple-500" size={18} />;
-      case "purchase": return <ShoppingBag className="text-brand-teal" size={18} />;
+      case "follow": return <UserPlus className="text-[#111418]" size={18} />;
+      case "purchase": return <ShoppingBag className="text-[#0E7C86]" size={18} />;
       case "comment": return <MessageCircle className="text-brand-amber" size={18} />;
       default: return <Info className="text-slate-500 dark:text-slate-400" size={18} />;
     }
@@ -230,7 +230,7 @@ export default function NotificationModal({ isOpen, onClose }) {
               >
                 {/* Status Dot */}
                 {!notif.read && (
-                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brand-blue rounded-full shadow-sm shadow-blue-500/50" />
+                  <div className="absolute left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#0E7C86] rounded-full shadow-sm shadow-[#0E7C86]/50" />
                 )}
 
                 {/* Sender Avatar / Icon */}

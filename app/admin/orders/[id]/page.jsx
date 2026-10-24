@@ -17,8 +17,8 @@ const STATUS_STYLES = {
   'Pending Verification': 'bg-yellow-500/10 text-yellow-400',
   'Payment Failed': 'bg-red-500/10 text-red-400',
   'Confirmed': 'bg-emerald-500/10 text-emerald-400',
-  'In Collaboration': 'bg-blue-500/10 text-blue-400',
-  'Provisioning': 'bg-purple-500/10 text-purple-400',
+  'In Collaboration': 'bg-white/10 text-white',
+  'Provisioning': 'bg-white/10 text-slate-300',
   'Active': 'bg-emerald-500/10 text-emerald-400',
   'Delivered': 'bg-emerald-500/10 text-emerald-400',
   'Suspended': 'bg-orange-500/10 text-orange-400',
@@ -312,7 +312,7 @@ export default function OrderCollaborationRoom({ params }) {
                       <div
                         title={senderName}
                         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[12px] font-medium ${
-                          fromCustomer ? 'bg-blue-500/20 text-blue-400' : 'bg-brand-cyan/20 text-brand-cyan'
+                          fromCustomer ? 'bg-white/20 text-white' : 'bg-brand-cyan/20 text-brand-cyan'
                         }`}
                       >
                         {initials(senderName)}
@@ -335,8 +335,8 @@ export default function OrderCollaborationRoom({ params }) {
                             )}
                             {msg.type !== 'image' && (
                               <div className="flex items-center gap-3 p-3 bg-[#040608] border border-white/5 rounded-xl">
-                                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0">
-                                  <Paperclip className="w-5 h-5 text-blue-400" />
+                                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+                                  <Paperclip className="w-5 h-5 text-white" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <p className="text-[13px] font-medium text-white truncate">{msg.fileName || msg.content}</p>

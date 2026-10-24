@@ -164,7 +164,7 @@ export default function AdminProductsPage() {
                           </span>
                         )}
                         {product.hasVideo && (
-                          <span title="Video Demo Included" className="p-1.5 rounded-md bg-purple-500/10 text-purple-400">
+                          <span title="Video Demo Included" className="p-1.5 rounded-md bg-white/10 text-white/80">
                             <Video className="w-4 h-4" />
                           </span>
                         )}
@@ -173,7 +173,7 @@ export default function AdminProductsPage() {
                             <Github className="w-4 h-4" />
                           </span>
                         )}
-                        <span title="Download ZIP" className="p-1.5 rounded-md bg-blue-500/10 text-blue-400">
+                        <span title="Download ZIP" className="p-1.5 rounded-md bg-white/10 text-white/80">
                           <Download className="w-4 h-4" />
                         </span>
                       </div>

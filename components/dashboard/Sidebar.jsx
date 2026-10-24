@@ -66,6 +66,7 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
     { label: "Enterprise E-Commerce", href: "/store?category_name=Enterprise+E-Commerce", icon: ShoppingCart, categoryName: "Enterprise E-Commerce" },
     { label: "Internal Tools & APIs", href: "/store?category_name=Internal+Tools+%26+APIs", icon: Code, categoryName: "Internal Tools & APIs" },
     { label: "Proactive Maintenance", href: "/store?category_name=Proactive+Maintenance", icon: Heart, categoryName: "Proactive Maintenance" },
+    { label: "Academy & Insights", href: "/blog", icon: Book, categoryName: null },
   ];
 
   const SidebarItem = ({ icon: Icon, label, href, isStoreRoot, categoryName }) => {
@@ -88,19 +89,19 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
         title={label}
         className={`group/item relative flex items-center px-[12px] py-[10px] mb-1.5 rounded-[10px] transition-all duration-200 border ${
           active
-            ? "border-[#0071e3]/50 shadow-sm text-[#0071e3] bg-white/20"
-            : "border-transparent text-slate-700 hover:bg-black/5"
+            ? "border-[#111418] shadow-sm text-[#111418] bg-[#E6E9ED]"
+            : "border-transparent text-[#5B636D] hover:text-[#111418] hover:bg-black/5"
         }`}
       >
         <div className="relative z-10 flex items-center w-full justify-start gap-4">
           <div className="flex items-center justify-center shrink-0 w-[24px]">
             <Icon
               className={`w-[20px] h-[20px] transition-all duration-300 ${
-                active ? "stroke-[2.5px] text-[#0071e3]" : "stroke-[2px] opacity-80"
+                active ? "stroke-[2.5px] text-[#111418]" : "stroke-[2px] text-[#5B636D] group-hover/item:text-[#111418]"
               }`}
             />
           </div>
-          <span className={`text-[14px] font-sans tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 opacity-100 max-w-[200px] lg:opacity-0 lg:max-w-0 lg:group-hover:opacity-100 lg:group-hover:max-w-[200px] ${active ? 'font-semibold' : 'font-medium'}`}>
+          <span className={`text-[14px] font-sans tracking-wide whitespace-nowrap overflow-hidden transition-all duration-300 opacity-100 max-w-[200px] lg:opacity-0 lg:max-w-0 lg:group-hover:opacity-100 lg:group-hover:max-w-[200px] ${active ? 'font-semibold text-[#111418]' : 'font-medium text-[#5B636D] group-hover/item:text-[#111418]'}`}>
             {label}
           </span>
         </div>
@@ -118,7 +119,7 @@ export default function Sidebar({ isHovered = false, isCollapsed = false }) {
       </nav>
 
       {/* Bottom Navigation */}
-      <div className="px-3 mt-auto pt-4 border-t border-brand-navy/[0.08] space-y-1">
+      <div className="px-3 mt-auto pt-4 border-t border-[rgba(17,20,24,0.18)] space-y-1">
         <SidebarItem label="Support" href="/support" icon={Headset} />
         
         {loading ? (

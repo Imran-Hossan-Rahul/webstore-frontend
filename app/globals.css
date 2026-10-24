@@ -90,67 +90,98 @@ body {
   overscroll-behavior-y: none;
 }
 
+::selection {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+
+* {
+  caret-color: var(--ink);
+}
+
 :root {
-  /* Codalina Global Background System (Dark Theme by Default) */
-  --bg-main: #000000;
-  --bg-surface: #0A0A0A;
-  --bg-dark-section: #000000;
-  --bg-primary-interaction: #1D5FD1;
-  --bg-tech-accent: #22C7E8;
-  --bg-important-cta: #F5A623;
-  --bg-success: #0B7A68;
+  /* Graphite and Silver Design Tokens (Single Source of Truth) */
+  --ink: #111418;
+  --ink-hover: #2B3038;
+  --ink-active: #000000;
+  --on-ink: #FFFFFF;
+  --link: #2B3038;
+  --body: #3B424A;
+  --muted: #5B636D;
+  --surface-soft: #E6E9ED;
+  --border-soft: rgba(17, 20, 24, 0.18);
+  --focus-ring: rgba(17, 20, 24, 0.50);
+  --signal: #0E7C86;
+
+  /* Global background and surface system */
+  --bg-main: #FFFFFF;
+  --bg-surface: #F7F9FB;
+  --bg-dark-section: #111418;
+  --bg-primary-interaction: #111418;
+  --bg-tech-accent: #5B636D;
+  --bg-important-cta: #111418;
+  --bg-success: #0E7C86;
   
-  /* Codalina Typography (Dark Mode by Default) */
-  --text-primary: #FFFFFF;
-  --text-secondary: #8DA4C4;
+  /* Typography */
+  --text-primary: #111418;
+  --text-secondary: #3B424A;
 
   /* Legacy Fallbacks */
   --background: var(--bg-main);
   --foreground: var(--text-primary);
-  --clr: rgba(26, 26, 46, 0.5);
+  --clr: rgba(17, 20, 24, 0.05);
   --font-inter: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Apple Design Tokens (Dark Mode) */
-  --apple-ink: #ffffff;
-  --apple-text-secondary: #cccccc;
-  --apple-text-muted: #86868b;
-  --apple-canvas: #000000;
-  --apple-parchment: #272729;
-  --apple-surface-dark: #2a2a2c;
-  --apple-hairline: rgba(255, 255, 255, 0.1);
-  --apple-accent: #2997ff;
-  --apple-accent-ondark: #2997ff;
+  /* Apple Design Tokens */
+  --apple-ink: #111418;
+  --apple-text-secondary: #3B424A;
+  --apple-text-muted: #5B636D;
+  --apple-canvas: #FFFFFF;
+  --apple-parchment: #F7F9FB;
+  --apple-surface-dark: #171B21;
+  --apple-hairline: rgba(17, 20, 24, 0.18);
+  --apple-accent: #111418;
+  --apple-accent-ondark: #FFFFFF;
 }
 
 [data-theme="dark"] {
-  /* Codalina Global Background System (Dark Mode) */
-  --bg-main: #000000;
-  --bg-surface: #0A0A0A;
-  --bg-dark-section: #000000;
-  --bg-primary-interaction: #1D5FD1;
-  --bg-tech-accent: #22C7E8;
-  --bg-important-cta: #F5A623;
-  --bg-success: #0B7A68;
-  
-  /* Codalina Typography (Dark Mode) */
-  --text-primary: #FFFFFF;
-  --text-secondary: #8DA4C4;
+  /* Graphite and Silver Tokens preserved in data-theme="dark" context */
+  --ink: #111418;
+  --ink-hover: #2B3038;
+  --ink-active: #000000;
+  --on-ink: #FFFFFF;
+  --link: #2B3038;
+  --body: #3B424A;
+  --muted: #5B636D;
+  --surface-soft: #E6E9ED;
+  --border-soft: rgba(17, 20, 24, 0.18);
+  --focus-ring: rgba(17, 20, 24, 0.50);
+  --signal: #0E7C86;
 
-  /* Legacy Fallbacks */
+  --bg-main: #FFFFFF;
+  --bg-surface: #F7F9FB;
+  --bg-dark-section: #111418;
+  --bg-primary-interaction: #111418;
+  --bg-tech-accent: #5B636D;
+  --bg-important-cta: #111418;
+  --bg-success: #0E7C86;
+  
+  --text-primary: #111418;
+  --text-secondary: #3B424A;
+
   --background: var(--bg-main);
   --foreground: var(--text-primary);
 
-  /* Apple Design Tokens (Dark Mode) */
-  --apple-ink: #ffffff;
-  --apple-text-secondary: #cccccc;
-  --apple-text-muted: #86868b;
-  --apple-canvas: #000000;
-  --apple-parchment: #272729;
-  --apple-surface-dark: #2a2a2c;
-  --apple-hairline: rgba(255, 255, 255, 0.1);
-  --apple-accent: #2997ff;
-  --apple-accent-ondark: #2997ff;
+  --apple-ink: #111418;
+  --apple-text-secondary: #3B424A;
+  --apple-text-muted: #5B636D;
+  --apple-canvas: #FFFFFF;
+  --apple-parchment: #F7F9FB;
+  --apple-surface-dark: #171B21;
+  --apple-hairline: rgba(17, 20, 24, 0.18);
+  --apple-accent: #111418;
+  --apple-accent-ondark: #FFFFFF;
 }
 
 @theme inline {
@@ -347,9 +378,8 @@ body {
 }
 
 [data-theme="dark"] ::selection {
-  background-color: #0071e3;
-  /* Apple dark mode selection blue */
-  color: #ffffff;
+  background-color: var(--surface-soft);
+  color: var(--ink);
   text-shadow: none;
 }
 
@@ -768,8 +798,7 @@ pre::-webkit-scrollbar-thumb:hover {
 .tiptap-image-handle {
   width: 12px;
   height: 12px;
-  background-color: #3b82f6;
-  /* blue-500 */
+  background-color: var(--ink);
   position: absolute;
   bottom: 0;
   right: 0;
@@ -864,32 +893,24 @@ pre::-webkit-scrollbar-thumb:hover {
     caret-color: #ffffff;
   }
 
-  /* White */
   66% {
-    caret-color: #3b82f6;
+    caret-color: var(--ink);
   }
-
-  /* Blue */
 }
 
 .ProseMirror {
   animation: dynamicCaret 1.5s steps(1) infinite !important;
-  /* সব ধরনের ব্যাকগ্রাউন্ডে যেন কার্সারটি জ্বলজ্বল করে */
 }
 
-/* ProseMirror দ্বারা নির্বাচিত কোনো নোড */
+/* ProseMirror selected node */
 .ProseMirror .ProseMirror-selectednode {
-  /* এটি কোনো ব্লক নোডের চারপাশে নীল সিলেকশন তৈরি করে */
-  outline: 2px solid #007bff;
-  /* নীল রঙের বর্ডার */
+  outline: 2px solid var(--ink);
   outline-offset: 4px;
-  /* বর্ডার এবং ইমেজের মধ্যে স্পেস */
   cursor: pointer;
-  /* মাউস কার্সারকে চেঞ্জ করে ইউজারকে ইঙ্গিত দিন */
 }
 
 [data-theme="dark"] .ProseMirror .ProseMirror-selectednode {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid var(--border-soft);
 }
 
 /* আপনার কাস্টম ইমেজ র্যাপার */
@@ -1093,7 +1114,7 @@ pre::-webkit-scrollbar-thumb:hover {
 [data-theme="dark"] .codex-prose blockquote {
   background: rgba(30, 41, 59, 0.5);
   color: #cbd5e1;
-  border-left-color: #38bdf8;
+  border-left-color: var(--muted);
 }
 
 .codex-prose blockquote::before {
@@ -1119,7 +1140,7 @@ pre::-webkit-scrollbar-thumb:hover {
 }
 
 .codex-prose ul li::marker {
-  color: #38bdf8;
+  color: var(--muted);
   font-size: 1.2rem;
 }
 
@@ -1244,10 +1265,10 @@ pre::-webkit-scrollbar-thumb:hover {
 /* Premium Links - Professional Color Accent */
 .tiptap a,
 .codex-prose a {
-  color: #2563eb !important;
+  color: var(--link) !important;
   text-decoration: none;
   font-weight: 500;
-  border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+  border-bottom: 1px solid var(--border-soft);
   padding-bottom: 1px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -1255,22 +1276,22 @@ pre::-webkit-scrollbar-thumb:hover {
 
 .tiptap a:hover,
 .codex-prose a:hover {
-  color: #1d4ed8 !important;
-  border-bottom-color: #1d4ed8;
-  background-color: rgba(37, 99, 235, 0.05);
+  color: var(--ink) !important;
+  border-bottom-color: var(--ink);
+  background-color: var(--surface-soft);
 }
 
 [data-theme="dark"] .tiptap a,
 [data-theme="dark"] .codex-prose a {
-  color: #60a5fa !important;
-  border-bottom-color: rgba(96, 165, 250, 0.3);
+  color: #FFFFFF !important;
+  border-bottom-color: rgba(255, 255, 255, 0.3);
 }
 
 [data-theme="dark"] .tiptap a:hover,
 [data-theme="dark"] .codex-prose a:hover {
-  color: #93c5fd !important;
-  border-bottom-color: #93c5fd;
-  background-color: rgba(96, 165, 250, 0.1);
+  color: #FFFFFF !important;
+  border-bottom-color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Images - Floating with Depth */

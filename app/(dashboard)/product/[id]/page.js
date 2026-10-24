@@ -580,7 +580,7 @@ export default function ProductDetails({ params }) {
                     <div className="mt-2">
                       <Link 
                         href={`/admin/products/${product.id}`}
-                        className="text-xs bg-blue-100  text-brand-blue  px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-blue-200  transition"
+                        className="text-xs bg-[#111418]/5 text-[#111418] px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-[#111418]/10 transition"
                       >
                         <Edit size={12} /> Edit Product
                       </Link>
@@ -958,11 +958,11 @@ export default function ProductDetails({ params }) {
               <div className="flex flex-col gap-4 relative z-10 mb-6">
                 <div className="flex flex-col sm:flex-row gap-3 w-full">
                   <button 
-                    className={`flex-1 h-12 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all ${addedToCart ? 'hover:bg-brand-teal/90' : 'hover:bg-brand-blue/5'}`}
+                    className={`flex-1 h-12 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all ${addedToCart ? 'hover:bg-[#0E7C86]/90' : 'hover:bg-[#E6E9ED]'}`}
                     style={{ 
-                      backgroundColor: addedToCart ? '#0B7A68' : '#ffffff', 
-                      color: addedToCart ? '#ffffff' : '#1D5FD1', 
-                      borderColor: addedToCart ? '#0B7A68' : '#1D5FD1', 
+                      backgroundColor: addedToCart ? '#0E7C86' : '#ffffff', 
+                      color: addedToCart ? '#ffffff' : '#111418', 
+                      borderColor: addedToCart ? '#0E7C86' : 'rgba(17,20,24,0.18)', 
                       borderWidth: '1px', 
                       borderStyle: 'solid' 
                     }}
@@ -977,7 +977,7 @@ export default function ProductDetails({ params }) {
                     disabled={isAddingToCart || navigatingId === 'cart'}
                   >
                     {navigatingId === 'cart' || isAddingToCart ? (
-                      <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-brand-blue"} />
+                      <AppleSpinner size={18} className={addedToCart ? "text-white" : "text-[#111418]"} />
                     ) : addedToCart ? (
                       <><Check size={18} strokeWidth={1.5} className="mr-2" /> Added</>
                     ) : (
@@ -985,11 +985,11 @@ export default function ProductDetails({ params }) {
                     )}
                   </button>
                   <button 
-                    className="flex-1 h-12 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all shadow-md hover:bg-brand-blue/90"
+                    className="flex-1 h-12 rounded-[20px] font-sans font-medium text-[15px] flex items-center justify-center transition-all shadow-[0_2px_8px_rgba(17,20,24,0.20)] hover:bg-[#2B3038] active:bg-[#000000]"
                     style={{ 
-                      backgroundColor: '#1D5FD1', 
+                      backgroundColor: '#111418', 
                       color: '#ffffff', 
-                      borderColor: '#1D5FD1',
+                      borderColor: '#111418',
                       borderWidth: '1px',
                       borderStyle: 'solid'
                     }}

@@ -67,7 +67,7 @@ export default function Sidebar() {
               href={item.href}
               className={`group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 relative
                 ${isActive 
-                  ? 'bg-blue-500/10 text-blue-400' 
+                  ? 'bg-white/10 text-white' 
                   : 'text-white/40 hover:bg-white/5 hover:text-white/80'
                 }
               `}
@@ -77,7 +77,7 @@ export default function Sidebar() {
               {isActive && (
                 <motion.div 
                   layoutId="activeNav"
-                  className="absolute left-0 top-[15%] bottom-[15%] w-1 bg-blue-500 rounded-r-full shadow-[0_0_10px_rgba(59,130,246,0.6)]"
+                  className="absolute left-0 top-[15%] bottom-[15%] w-1 bg-white rounded-r-full shadow-[0_0_10px_rgba(255,255,255,0.4)]"
                 />
               )}
               

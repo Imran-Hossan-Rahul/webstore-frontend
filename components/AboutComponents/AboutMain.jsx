@@ -21,7 +21,7 @@ export default function AboutMain() {
       <section className="text-center pt-[80px] pb-[60px] px-6">
         <PageContainer maxWidth="max-w-[980px]">
           <div className="flex flex-col items-center">
-            <span className="text-[12px] font-mono font-semibold uppercase tracking-widest text-[#0071e3] mb-[18px] block bg-white/60 px-4 py-1.5 rounded-full shadow-sm border border-[#0071e3]/10">
+            <span className="text-[12px] font-mono font-semibold uppercase tracking-widest text-[#111418] mb-[18px] block bg-white/60 px-4 py-1.5 rounded-full shadow-sm border border-[rgba(17,20,24,0.18)]">
               OUR VISION
             </span>
             <h1 className="text-[40px] md:text-[56px] font-display font-medium text-slate-900 leading-[1.1] mb-[20px] max-w-[800px]">
@@ -78,15 +78,15 @@ export default function AboutMain() {
               </h2>
               <ul className="list-none space-y-4 text-[15px] font-sans text-slate-600 leading-relaxed">
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#111418] mt-2 shrink-0"></span>
                   <span><strong className="text-slate-900 font-medium">Precision:</strong> Pixel-perfect frontends matched with rock-solid, scalable backend architectures.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#111418] mt-2 shrink-0"></span>
                   <span><strong className="text-slate-900 font-medium">Performance:</strong> Lightning-fast load times and optimized workflows that keep your users engaged.</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0071e3] mt-2 shrink-0"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#111418] mt-2 shrink-0"></span>
                   <span><strong className="text-slate-900 font-medium">Reliability:</strong> We build mission-critical systems that you can depend on 24/7/365.</span>
                 </li>
               </ul>
@@ -100,7 +100,7 @@ export default function AboutMain() {
       <section className="mt-16 px-6">
         <PageContainer maxWidth="max-w-[800px]">
           <div className="bg-brand-navy rounded-[32px] p-10 md:p-14 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0071e3]/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
             <h2 className="text-[28px] md:text-[36px] font-display font-medium text-white mb-4 relative z-10">
               Ready to transform your business?
             </h2>
@@ -108,7 +108,7 @@ export default function AboutMain() {
               Let's discuss how our engineering expertise can help you launch, scale, and dominate your market.
             </p>
             <div className="relative z-10">
-              <Link href="/support" onClick={() => setNavigatingId('support')} style={{ pointerEvents: navigatingId === 'support' ? 'none' : 'auto' }} className="inline-flex h-12 min-w-[150px] items-center justify-center rounded-full bg-[#0071e3] px-8 text-[15px] font-medium text-white hover:bg-[#0077ed] transition-colors shadow-[0_8px_20px_rgba(0,113,227,0.3)]">
+              <Link href="/support" onClick={() => setNavigatingId('support')} style={{ pointerEvents: navigatingId === 'support' ? 'none' : 'auto' }} className="inline-flex h-12 min-w-[150px] items-center justify-center rounded-full bg-[#111418] px-8 text-[15px] font-medium text-white hover:bg-[#2B3038] active:bg-[#000000] transition-colors shadow-[0_8px_20px_rgba(17,20,24,0.25)]">
                 {navigatingId === 'support' ? <AppleSpinner size={16} className="text-white" /> : 'Start a Project'}
               </Link>
             </div>

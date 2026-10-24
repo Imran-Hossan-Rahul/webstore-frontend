@@ -77,7 +77,7 @@ export default function LegalPage() {
                   <Link 
                     key={linkIdx} 
                     href={link.href}
-                    className="group flex items-center gap-2 text-[14px] font-sans font-medium text-brand-blue hover:text-blue-700 transition-colors"
+                    className="group flex items-center gap-2 text-[14px] font-sans font-medium text-[#111418] hover:text-[#2B3038] transition-colors"
                   >
                     {link.label}
                     <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />

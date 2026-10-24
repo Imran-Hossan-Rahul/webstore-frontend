@@ -55,8 +55,8 @@ const PRODUCT_TYPE_ICONS = {
 
 // ─── Product Type Badge Colors ───────────────────────────────────────────────
 export const PRODUCT_TYPE_COLORS = {
-  'SaaS Tool':          'bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300',
-  'Web Template':       'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+  'SaaS Tool':          'bg-[#E6E9ED] text-[#111418] dark:bg-white/10 dark:text-white',
+  'Web Template':       'bg-[#E6E9ED] text-[#111418] dark:bg-white/10 dark:text-white',
   'Script/Automation':  'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
   'Source Code':        'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
   'UI Kit/Plugin':      'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-300',
@@ -65,7 +65,7 @@ export const PRODUCT_TYPE_COLORS = {
 // ─── License Badge Colors ────────────────────────────────────────────────────
 const LICENSE_COLORS = {
   'Personal':   'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300',
-  'Commercial': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+  'Commercial': 'bg-[#E6E9ED] text-[#111418] dark:bg-white/10 dark:text-white',
   'Extended':   'bg-gold-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
 };
 

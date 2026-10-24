@@ -211,7 +211,7 @@ export default function NewProductPage() {
                   
                   <div>
                     <label className="flex items-center gap-2 text-[13px] text-white/60 mb-2">
-                      <UploadCloud className="w-4 h-4 text-blue-400" /> Upload Images & Video Demo (Cloudinary)
+                      <UploadCloud className="w-4 h-4 text-white/80" /> Upload Images & Video Demo (Cloudinary)
                     </label>
                     <label className="w-full h-32 border-2 border-dashed border-white/10 rounded-xl flex flex-col items-center justify-center hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-colors cursor-pointer text-white/40">
                       <UploadCloud className="w-6 h-6 mb-2" />
@@ -253,12 +253,12 @@ export default function NewProductPage() {
                 <h3 className="text-lg font-medium text-white border-b border-white/10 pb-4">Source Code & Deliverables</h3>
                 
                 <div className="space-y-6">
-                  <div className="p-6 rounded-xl bg-blue-500/5 border border-blue-500/20">
+                  <div className="p-6 rounded-xl bg-white/5 border border-white/20">
                     <h4 className="flex items-center gap-2 text-[15px] font-medium text-white mb-2">
                       <Github className="w-4 h-4 text-white" /> Link Private GitHub Repository
                     </h4>
                     <p className="text-[13px] text-white/60 mb-4">Grant access to clients automatically upon purchase using our GitHub App integration.</p>
-                    <input type="url" placeholder="https://github.com/codalinahq/..." className="w-full bg-[#080808] border border-white/10 rounded-xl px-4 py-3 text-white text-[14px] focus:outline-none focus:border-blue-500/50" />
+                    <input type="url" placeholder="https://github.com/codalinahq/..." className="w-full bg-[#080808] border border-white/10 rounded-xl px-4 py-3 text-white text-[14px] focus:outline-none focus:border-white/50" />
                   </div>
                   
                   <div className="relative text-center text-white/40 text-[13px] my-4">
@@ -417,7 +417,7 @@ export default function NewProductPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-white font-medium mb-1">
                           <input type="checkbox" checked={prices.commercial.enabled} onChange={(e) => setPrices({...prices, commercial: {...prices.commercial, enabled: e.target.checked}})} className="w-4 h-4 rounded bg-[#080808] border-white/20 text-brand-cyan focus:ring-brand-cyan cursor-pointer" />
-                          <span className="w-2 h-2 rounded-full bg-blue-400"></span>
+                          <span className="w-2 h-2 rounded-full bg-[#0E7C86]"></span>
                           Commercial
                         </div>
                       </div>
@@ -438,14 +438,14 @@ export default function NewProductPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[11px] text-blue-400/80 mb-1 uppercase tracking-wider font-medium">Sale Price</label>
+                        <label className="block text-[11px] text-white/80 mb-1 uppercase tracking-wider font-medium">Sale Price</label>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400/80">৳</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/80">৳</span>
                           <input 
                             type="number" 
                             value={prices.commercial.sale}
                             onChange={(e) => setPrices({...prices, commercial: { ...prices.commercial, sale: Number(e.target.value) }})}
-                            className="w-full bg-[#040608] border border-blue-400/30 rounded-lg pl-7 pr-3 py-2 text-white text-[13px] focus:outline-none focus:border-blue-400" 
+                            className="w-full bg-[#040608] border border-white/30 rounded-lg pl-7 pr-3 py-2 text-white text-[13px] focus:outline-none focus:border-white/60" 
                           />
                         </div>
                       </div>
@@ -458,7 +458,7 @@ export default function NewProductPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2 text-white font-medium mb-1">
                           <input type="checkbox" checked={prices.extended.enabled} onChange={(e) => setPrices({...prices, extended: {...prices.extended, enabled: e.target.checked}})} className="w-4 h-4 rounded bg-[#080808] border-white/20 text-brand-cyan focus:ring-brand-cyan cursor-pointer" />
-                          <span className="w-2 h-2 rounded-full bg-purple-400"></span>
+                          <span className="w-2 h-2 rounded-full bg-white/60"></span>
                           Extended
                         </div>
                       </div>
@@ -479,14 +479,14 @@ export default function NewProductPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-[11px] text-purple-400/80 mb-1 uppercase tracking-wider font-medium">Sale Price</label>
+                        <label className="block text-[11px] text-white/80 mb-1 uppercase tracking-wider font-medium">Sale Price</label>
                         <div className="relative">
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400/80">৳</span>
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/80">৳</span>
                           <input 
                             type="number" 
                             value={prices.extended.sale}
                             onChange={(e) => setPrices({...prices, extended: { ...prices.extended, sale: Number(e.target.value) }})}
-                            className="w-full bg-[#040608] border border-purple-400/30 rounded-lg pl-7 pr-3 py-2 text-white text-[13px] focus:outline-none focus:border-purple-400" 
+                            className="w-full bg-[#040608] border border-white/30 rounded-lg pl-7 pr-3 py-2 text-white text-[13px] focus:outline-none focus:border-white/60" 
                           />
                         </div>
                       </div>

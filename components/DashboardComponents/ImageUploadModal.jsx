@@ -185,7 +185,7 @@ export default function ImageUploadModal({
               onClick={() => fileInputRef.current?.click()}
               className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
                 dragActive
-                  ? "border-brand-blue bg-brand-sky dark:bg-indigo-900/10"
+                  ? "border-[#111418] bg-[#E6E9ED] dark:bg-white/10"
                   : "border-brand-navy/[0.10] dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600"
               }`}
             >

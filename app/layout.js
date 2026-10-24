@@ -49,6 +49,11 @@ export const metadata = {
   authors: [{ name: "Codalina" }],
   creator: "Codalina",
   publisher: "Codalina",
+  icons: {
+    icon: '/assets/codalina-logo.svg',
+    shortcut: '/assets/codalina-logo.svg',
+    apple: '/assets/apple-touch-icon.png',
+  },
   robots: {
     index: true,
     follow: true,
@@ -69,7 +74,7 @@ export const metadata = {
     description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/assets/codalina-logo.png",
         width: 1200,
         height: 630,
         alt: "Codalina | Digital Technology Partner",
@@ -81,8 +86,15 @@ export const metadata = {
     site: "@codalina",
     title: "Codalina | Digital Technology Partner",
     description: "Codalina is a digital technology partner that builds, sells, maintains, and continuously improves digital products and custom technology solutions.",
-    images: ["/og-image.jpg"],
+    images: ["/assets/codalina-logo.png"],
   },
+};
+
+export const viewport = {
+  themeColor: '#E6EBF0',
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover'
 };
 
 export default function RootLayout({ children }) {
@@ -90,7 +102,10 @@ export default function RootLayout({ children }) {
     <html lang="en" className="dark" data-theme="dark">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        </head>
+        <meta name="theme-color" content="#E6EBF0" />
+        <link rel="icon" href="/assets/codalina-logo.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+      </head>
       <body className={`${inter.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} ${notoSansBengali.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>

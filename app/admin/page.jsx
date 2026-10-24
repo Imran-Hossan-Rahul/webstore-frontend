@@ -25,8 +25,8 @@ import {
   BarChart, Bar, PieChart, Pie, Cell, Legend, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar
 } from 'recharts';
 
-const COLORS = ['#00FFFF', '#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#EC4899'];
-const ALT_COLORS = ['#8B5CF6', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#00FFFF', '#3B82F6'];
+const COLORS = ['#FFFFFF', '#B4BFCC', '#6A727C', '#10B981', '#F59E0B', '#EF4444', '#0E7C86'];
+const ALT_COLORS = ['#6A727C', '#0E7C86', '#EF4444', '#F59E0B', '#10B981', '#FFFFFF', '#B4BFCC'];
 
 // Custom Hover List Component
 const HoverList = ({ title, items, renderItem, className = "", hoverClasses = "group-hover:opacity-100 group-hover:visible group-hover:translate-y-0" }) => (
@@ -309,7 +309,7 @@ export default function AdminPage() {
 
             <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default flex flex-col">
               <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-blue-500/10 text-blue-400">
+                <div className="p-3 rounded-xl bg-white/10 text-white">
                   <Activity className="w-6 h-6" />
                 </div>
               </div>
@@ -325,7 +325,7 @@ export default function AdminPage() {
                         <span className="text-white">{order.items?.[0]?.product_id?.title || order.items?.[0]?.product_name || 'Custom Project'}</span>
                         <span className="text-white/40">{order.customer_name}</span>
                       </div>
-                      <span className="text-blue-400 text-[10px] uppercase bg-blue-500/10 px-2 py-1 rounded ml-3">{order.status}</span>
+                      <span className="text-white text-[10px] uppercase bg-white/10 px-2 py-1 rounded ml-3">{order.status}</span>
                     </div>
                   )} 
                 />
@@ -334,13 +334,13 @@ export default function AdminPage() {
 
             <div className="p-6 rounded-2xl bg-[#080808] border border-white/5 shadow-xl hover:border-brand-cyan/20 transition-colors cursor-default flex flex-col">
               <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-purple-500/10 text-purple-400">
+                <div className="p-3 rounded-xl bg-white/10 text-slate-300">
                   <Users className="w-6 h-6" />
                 </div>
                 
                 {/* Repeat Badge acts as its own hover group */}
                 <div className="relative group/badge">
-                  <div className="bg-purple-500/10 px-2 py-1 rounded-md text-xs font-bold text-purple-400 flex items-center gap-1 cursor-help hover:bg-purple-500/20 transition-colors">
+                  <div className="bg-white/10 px-2 py-1 rounded-md text-xs font-bold text-slate-300 flex items-center gap-1 cursor-help hover:bg-white/20 transition-colors">
                     <Repeat className="w-3 h-3"/> {analytics.repeatRate}% Repeat
                   </div>
                   
